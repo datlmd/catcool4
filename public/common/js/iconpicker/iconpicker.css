@@ -1,0 +1,62 @@
+.icon-picker-list {
+    /*display: flex;*/
+    /*flex-flow: row wrap;*/
+    width: 100%;
+    list-style: none;
+    padding: 0 10px;
+    min-height: 400px;
+    max-height: 60vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.icon-picker-list li {
+    /*display: flex;*/
+    /*flex: 0 0 20%;*/
+    float: left;
+    width: 20%;
+    height: 55px;
+    overflow: hidden;
+}
+
+.icon-picker-list a {
+    background-color: #f9f9f9;
+    border: 1px solid #fff;
+    color: black;
+    display: block;
+    flex: 1 1 auto;
+    font-size: 24px;
+    min-height: 55px;
+    padding: 10px;
+    text-align: center;
+    user-select: none;
+}
+.icon-picker-list a:hover span, .icon-picker-list a.active span {
+    color: #ff407b;
+}
+.icon-picker-list a:hover,
+.icon-picker-list a.active{
+    background-color: rgba(204, 236, 255, .5);
+    color: #ff407b;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.icon-picker-list .fa {
+    font-size: 24px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.icon-picker-list .name-class {
+    display: none;
+    text-align: center;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 12px;
+}
+
+.icon-picker-demo:hover i {
+    color: #ff407b;
+}

@@ -2,6 +2,7 @@
 
 use CodeIgniter\Config\Services as CoreServices;
 use App\Libraries\CI4Smarty;
+use App\Libraries\Breadcrumb;
 
 
 /**
@@ -30,7 +31,11 @@ class Services extends CoreServices
 	//        return new \CodeIgniter\Example();
 	//    }
 
-    public static function SmartyEngine($getShared = true){
+    public static function SmartyEngine($getShared = true) {
         return ($getShared === true ? static::getSharedInstance('SmartyEngine') : new CI4Smarty());
+    }
+
+    public static function Breadcrumb($getShared = true) {
+        return ($getShared === true ? static::getSharedInstance('Breadcrumb') : new Breadcrumb());
     }
 }

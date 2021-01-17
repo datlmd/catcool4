@@ -4,11 +4,11 @@ require_once APPPATH.'ThirdParty/Smarty/Autoloader.php';
 
 use \Smarty_Autoloader;
 
-Smarty_Autoloader::register();
+Smarty_Autoloader::registerBC();
 
-use \Smarty;
+use \SmartyBC;
 
-class CI4Smarty extends Smarty
+class CI4Smarty extends SmartyBC
 {
     public $template_ext = 'tpl';
 
@@ -16,9 +16,22 @@ class CI4Smarty extends Smarty
     {
         parent::__construct();
 
-        parent::setTemplateDir('content/themes');
+        parent::setDebugging(FALSE);
+
+        parent::setTemplateDir(FCPATH.'/themes');
         parent::setCompileDir(WRITEPATH . 'smarty/templates_c/')->setCacheDir(WRITEPATH . 'smarty/cache/');
 
+        // Disable Smarty security policy
+        parent::disableSecurity();
+
+        parent::muteExpectedErrors();
+
+        //$this->assign("this", $this);
+
+        $this->assign( 'FCPATH', FCPATH );     // path to website
+        $this->assign( 'APPPATH', APPPATH );   // path to application directory
+        $this->assign( 'ROOTPATH', ROOTPATH ); // path to system directory
+        $this->assign( 'WRITEPATH', WRITEPATH ); // path to system directory
     }
 
     public function view($tpl_name) {

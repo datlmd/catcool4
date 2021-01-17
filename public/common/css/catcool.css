@@ -1,0 +1,138 @@
+html,
+body {
+
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+
+}
+
+h1 {
+
+}
+
+h2 {
+
+}
+
+h3 {
+
+}
+
+h4 {
+
+}
+
+h5 {
+
+}
+
+h6 {
+
+}
+
+p {
+
+}
+
+img {
+
+}
+
+input:focus,
+select:focus,
+button:focus,
+textarea:focus {
+
+}
+
+a:hover,
+a:focus {
+
+}
+
+ul,
+ol {
+
+}
+
+/* add appropriate colors to fb, zalo and google buttons */
+.social-list .social-item {
+	color: white;
+	opacity: 0.85;
+	text-align: center;
+	width: 40px;
+	height: 40px;
+	line-height: 33px;
+	overflow: hidden;
+	display: inline-block;
+	margin-right: 5px;
+}
+
+.social-list .social-item:hover {
+	opacity: 1;
+}
+
+.social-list .social-item i {
+	font-size: 20px;
+	padding-right: 15px;
+}
+
+.social-list .fb {
+	background-color: #3b5998;
+	/*width: calc(100% - 110px);*/
+}
+
+.social-list .fb i {
+	padding-right: 13px;
+}
+
+.social-list .twitter {
+	background-color: #1ab2e8;
+}
+
+.social-list .twitter i {
+	margin-left: -2px;
+}
+
+.social-list .zalo {
+	background: url('../images/zalo.png') no-repeat;
+	background-size: cover;
+	text-indent: 200px;
+}
+
+.social-list .google {
+	background-color: #db402c;
+}
+
+.social-list .google i {
+	margin-left: -1px;
+}
+/* add appropriate colors to fb, zalo and google buttons */
+
+
+.text-center-line {
+	text-align: center;
+	position: relative;
+	padding-top: 15px;
+	padding-bottom: 25px;
+}
+
+.text-center-line:after, .text-center-line:before {
+	content: '';
+	width: 40%;
+	height: 1px;
+	display: block;
+	position: absolute;
+	top: 45%;
+	z-index: 999;
+	background-color: #d3d3d3;
+}
+.text-center-line:after {
+	right: 0;
+}

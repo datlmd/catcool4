@@ -1,36 +1,37 @@
 <?php namespace App\Modules\Dummy\Controllers;
-use App\Controllers\BaseController;
 
+use App\Controllers\AdminController;
+use App\Libraries\Themes;
 
-
-class Manage extends BaseController
+class Manage extends AdminController
 {
-    protected $theme;
+    protected $themes = null;
 
     CONST MANAGE_ROOT = 'dummy/manage';
     CONST MANAGE_URL  = 'dummy/manage';
 
     public function __construct()
     {
-        helper(['theme','catcool', 'html', 'form']);
+        parent::__construct();
+
+        $this->themes = Themes::init()->setTheme('admin')
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar');
+
+
 
         //create url manage
         service('SmartyEngine')->assign('manage_url', self::MANAGE_URL);
         service('SmartyEngine')->assign('manage_root', self::MANAGE_ROOT);
 
-        $this->theme = service('Theme');
-
-
-        //set theme
-        $this->theme->theme('admin')
-            ->add_partial('header')
-            ->add_partial('footer')
-            ->add_partial('sidebar');
+        //add breadcrumb
+        service('Breadcrumb')->add("Home", "url");
     }
 
 	public function index()
 	{
-        $this->theme->title(lang("heading_title"));
+        //$this->theme->title(lang("heading_title"));
 
 
 	    $data = [
@@ -43,7 +44,8 @@ class Manage extends BaseController
             'filter_limit' => !empty($this->request->getGetPost('filter[filter_limit]')) ? $this->request->getGetPost('filter[filter_limit]') : '',
         ];
 
-        theme_load('Manage/list', $data);
+        $this->themes::load('manage/list', $data);
+        //theme_load('Manage/list', $data);
         //return service('SmartyEngine')->view('Modules/Dummy/Views/index', $data);
         //return view('App\Modules\Dummy\Views\index');
 

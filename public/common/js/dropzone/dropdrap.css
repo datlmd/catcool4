@@ -1,0 +1,22 @@
+.drop-drap-file .upload-area {
+    width: 100%;
+    border-radius: 3px;
+    margin: 0 auto;
+    margin-top: 15px;
+    text-align: center;
+    overflow: hidden;
+}
+.drop-drap-file .upload-area:hover{ cursor: pointer; }
+.drop-drap-file .upload-area h5{
+    text-align: center;
+    font-weight: normal;
+    font-family: sans-serif;
+    line-height: 20px;
+}
+.drop-drap-file #file{ display: none; }
+/* Thumbnail */
+.drop-drap-file #image_thumb { width: 100%; clear: both; margin-bottom: 10px; overflow: hidden;  }
+.drop-drap-file .thumbnail { width: 100%; margin: 5px 0; adding: 2px; border-radius: 3px; float: left; }
+.drop-drap-file .thumbnail img { width: 60px; float: left; }
+.drop-drap-file .size { padding: 0 5px; font-size:12px; width: 40%; }
+.drop-drap-file .delete { float: right; }

@@ -29,4 +29,9 @@ defined('SHOW_DEBUG_BACKTRACE') || define('SHOW_DEBUG_BACKTRACE', true);
   | items. It can always be used within your own application too.
  */
 
-defined('CI_DEBUG') || define('CI_DEBUG', true);
+if (!empty($_SERVER['REQUEST_URI']) && substr($_SERVER['REQUEST_URI'], 0, 8 ) === "/common/")
+{
+    define('CI_DEBUG', 0);
+} else {
+    defined('CI_DEBUG') || define('CI_DEBUG', true);
+}

@@ -18,6 +18,7 @@ use CodeIgniter\Controller;
 
 class BaseController extends Controller
 {
+    protected $_site_lang;
 
 	/**
 	 * An array of helpers to be loaded automatically upon
@@ -26,7 +27,7 @@ class BaseController extends Controller
 	 *
 	 * @var array
 	 */
-	protected $helpers = ['html', 'url', 'theme', 'catcool', 'form'];
+	protected $helpers = ['html', 'url', 'themes', 'catcool', 'form'];
 
 	/**
 	 * Constructor.
@@ -44,11 +45,16 @@ class BaseController extends Controller
 
         service('SmartyEngine')->assign("this", $this);
 
+
+	}
+
+    public function __construct()
+    {
         foreach ($this->helpers as $helper) {
             helper($helper);
         }
 
-
-	}
+        $this->_site_lang = get_lang();
+    }
 
 }
