@@ -4,8 +4,8 @@ use CodeIgniter\Config\BaseConfig;
 
 class CustomConfig extends BaseConfig
 {
-    public $language = "vn";
-    public $list_language_cache = '{"1":{"id":"1","name":"Vietnames","code":"vn","icon":null,"user_id":"1","published":"1"},"2":{"id":"2","name":"English","code":"english","icon":"flag-icon flag-icon-gb","user_id":"1","published":"1"}}';
+    public $language = "vi";
+    public $list_language_cache = '{"1":{"id":"1","name":"Vietnames","code":"vi","icon":null,"user_id":"1","published":"1"},"2":{"id":"2","name":"English","code":"en","icon":"flag-icon flag-icon-gb","user_id":"1","published":"1"}}';
     public $is_show_select_language = true;
     public $theme_frontend = "kenhtraitim";
     public $theme_admin = "admin";
@@ -169,7 +169,7 @@ class CustomConfig extends BaseConfig
 
     public $image_watermark_opacity = 50;
 
-    public $language_admin = "english";
+    public $language_admin = "en";
 
     public $length_class = 1;
 

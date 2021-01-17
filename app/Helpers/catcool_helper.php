@@ -41,9 +41,8 @@ if (!function_exists('get_lang'))
             return get_config_lang($is_admin);
         }
 
-        $session = session();
-        if (!empty($session->get(get_name_session_lang($is_admin)))) {
-            return $session->get(get_name_session_lang($is_admin));
+        if (!empty(session(get_name_session_lang($is_admin)))) {
+            return session(get_name_session_lang($is_admin));
         }
         helper('cookie');
 
@@ -60,7 +59,7 @@ if (!function_exists('get_lang'))
             $language_value = get_config_lang($is_admin);
         }
 
-        $session->set(get_name_session_lang($is_admin), $language_value);
+        session(get_name_session_lang($is_admin), $language_value);
 
         return $language_value;
     }
@@ -70,6 +69,7 @@ if (!function_exists('set_lang'))
 {
     function set_lang($lang, $is_admin = false)
     {
+        helper('cookie');
 
         if (is_multi_lang() == false || empty($lang)) {
             return get_config_lang($is_admin);

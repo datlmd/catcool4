@@ -9,7 +9,8 @@ class AdminController extends UserController
     {
         parent::__construct();
 
-        $this->_site_lang = get_lang(true);
+        \Config\Services::language()->setLocale(get_lang(true));
+
 
 //        $this->load->model("menus/Menu", 'Menu');
 //        $menu_admin = $this->Menu->get_menu_active(['is_admin' => STATUS_ON]);

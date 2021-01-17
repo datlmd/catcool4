@@ -54,7 +54,7 @@ class BaseController extends Controller
             helper($helper);
         }
 
-        $this->_site_lang = get_lang();
+        \Config\Services::language()->setLocale(get_lang());
     }
 
 }
