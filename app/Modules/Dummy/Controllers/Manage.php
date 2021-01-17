@@ -6,6 +6,7 @@ use App\Libraries\Themes;
 class Manage extends AdminController
 {
     protected $themes = null;
+    protected $model = null;
 
     CONST MANAGE_ROOT = 'dummy/manage';
     CONST MANAGE_URL  = 'dummy/manage';
@@ -20,6 +21,7 @@ class Manage extends AdminController
             ->addPartial('sidebar');
 
 
+        $this->model = new \App\Modules\Dummy\Models\DummyModel();
 
         //create url manage
         service('SmartyEngine')->assign('manage_url', self::MANAGE_URL);
@@ -31,8 +33,6 @@ class Manage extends AdminController
 
 	public function index()
 	{
-        //$this->theme->title(lang("heading_title"));
-
 
 	    $data = [
 	        'manage_url' => self::MANAGE_URL,
@@ -42,8 +42,9 @@ class Manage extends AdminController
             'name' => !empty($this->request->getGetPost('filter[name]')) ? $this->request->getGetPost('filter[name]') : '',
             'id' => !empty($this->request->getGetPost('filter[id]')) ? $this->request->getGetPost('filter[id]') : '',
             'filter_limit' => !empty($this->request->getGetPost('filter[filter_limit]')) ? $this->request->getGetPost('filter[filter_limit]') : '',
-        ];
 
+        ];
+        //$data['list'] = $this->model->get_all_by_filter();
         $this->themes::load('manage/list', $data);
         //theme_load('Manage/list', $data);
         //return service('SmartyEngine')->view('Modules/Dummy/Views/index', $data);
