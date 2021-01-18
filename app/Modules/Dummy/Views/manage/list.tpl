@@ -10,7 +10,7 @@
 			<button type="button" id="btn_search" class="btn btn-sm btn-brand" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Dummy.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
 		</div>
 	</div>
-	<div class="row collapse {if $filter_active}show{/if}" id="filter_manage">
+	<div class="row collapse {if !empty($filter_active)}show{/if}" id="filter_manage">
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="card">
                 {form_open(uri_string(), ['id' => 'filter_validationform', 'method' => 'get'])}
@@ -28,15 +28,15 @@
 						<div class="row">
 							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 								{lang('Dummy.filter_name')}
-								{form_input('filter[name]', $filter.name, ['class' => 'form-control form-control-sm', 'placeholder' => lang('Dummy.filter_name')])}
+								{form_input('filter[name]', set_value('filter[name]'), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Dummy.filter_name')])}
 							</div>
 							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 								{lang('Dummy.filter_id')}
-								{form_input('filter[id]', $filter.name, ['class' => 'form-control form-control-sm', 'placeholder' => lang('Dummy.filter_id')])}
+								{form_input('filter[id]', set_value('filter[id]'), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Dummy.filter_id')])}
 							</div>
 							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 								{lang('Dummy.text_limit')}
-								{form_dropdown('filter_limit', get_list_limit(), $filter.filter_limit, ['class' => 'form-control form-control-sm'])}
+								{form_dropdown('filter_limit', get_list_limit(), set_value('filter_limit'), ['class' => 'form-control form-control-sm'])}
 							</div>
 						</div>
 					</div>
@@ -67,8 +67,8 @@
 								{foreach $list as $item}
 									<tr>
 										<td class="text-center">{anchor("$manage_url/edit/`$item.dummy_id`", $item.dummy_id, 'class="text-primary"')}</td>
-										<td>{anchor("$manage_url/edit/`$item.dummy_id`", $item.detail.name, 'class="text-primary"')}</td>
-										<td>{$item.detail.description}</td>
+										<td>{anchor("$manage_url/edit/`$item.dummy_id`", $item.name, 'class="text-primary"')}</td>
+										<td>{$item.description}</td>
 										<td class="text-center">{$item.sort_order}</td>
 										<td>
 											<div class="switch-button switch-button-xs catcool-center">
@@ -88,7 +88,8 @@
 								</tbody>
 							</table>
 						</div>
-						{include file=get_theme_path('views/inc/paging.inc.tpl')}
+						{$pager->links('dummy', 'admin')}
+{*						{include file=get_theme_path('views/inc/paging.inc.tpl')}*}
 					{else}
 						{lang('GeneralManage.text_no_results')}
 					{/if}

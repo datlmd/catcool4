@@ -15,10 +15,35 @@ namespace App\Controllers;
  */
 
 use CodeIgniter\Controller;
+use App\Libraries\Themes;
 
 class BaseController extends Controller
 {
-    protected $_site_lang;
+    /**
+     * @var string|null
+     */
+    protected $site_lang = null;
+
+    /**
+     * @var |null
+     */
+    protected $themes = null;
+
+    /**
+     * @var mixed|null
+     */
+    protected $breadcrumb = null;
+
+    /**
+     * @var mixed|null
+     */
+    protected $smarty = null;
+
+    /**
+     * set model parent module
+     * @var null
+     */
+    protected $model = null;
 
 	/**
 	 * An array of helpers to be loaded automatically upon
@@ -43,18 +68,25 @@ class BaseController extends Controller
 		// E.g.:
 		// $this->session = \Config\Services::session();
 
-        service('SmartyEngine')->assign("this", $this);
-
-
+        session();
 	}
 
     public function __construct()
     {
-        foreach ($this->helpers as $helper) {
-            helper($helper);
-        }
+        $this->loadHelpers();
 
         \Config\Services::language()->setLocale(get_lang());
-    }
 
+        //set time zone
+        if (!empty(config_item('timezone'))) {
+            date_default_timezone_set(config_item('timezone'));//'Asia/Saigon'
+        } else {
+            date_default_timezone_set('Asia/Saigon');
+        }
+
+        $this->site_lang  =  \Config\Services::language()->getLocale();
+        $this->themes     = Themes::init();
+        $this->breadcrumb = service('Breadcrumb');
+        $this->smarty     = service('SmartyEngine');
+    }
 }
