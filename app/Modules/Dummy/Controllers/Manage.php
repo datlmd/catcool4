@@ -2,9 +2,14 @@
 
 use App\Controllers\AdminController;
 use App\Modules\Dummy\Models\DummyModel;
+use App\Modules\Dummy\Models\DummyDescriptionModel;
 
 class Manage extends AdminController
 {
+    protected $errors = [];
+
+    protected $model_lang;
+
     CONST MANAGE_ROOT = 'dummy/manage';
     CONST MANAGE_URL  = 'dummy/manage';
 
@@ -18,6 +23,7 @@ class Manage extends AdminController
             ->addPartial('sidebar');
 
         $this->model = new DummyModel();
+        $this->model_lang = new DummyDescriptionModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -54,23 +60,23 @@ class Manage extends AdminController
     {
         if (isset($_POST) && !empty($_POST) && $this->validate_form() === TRUE) {
             $add_data = [
-                'sort_order' => $this->input->post('sort_order', true),
+                'sort_order' => $this->request->getPost('sort_order'),
                 'published'  => (isset($_POST['published'])) ? STATUS_ON : STATUS_OFF,
                 'ctime'      => get_date(),
                 //ADD_DUMMY_ROOT
             ];
-            $id = $this->Dummy->insert($add_data);
+            $id = $this->model->save($add_data);
             if ($id === FALSE) {
                 set_alert(lang('error'), ALERT_ERROR);
                 redirect(self::MANAGE_URL . '/add');
             }
 
-            $add_data_description = $this->input->post('manager_description');
+            $add_data_description = $this->request->getPost('manager_description');
             foreach (get_list_lang() as $key => $value) {
                 $add_data_description[$key]['language_id'] = $key;
                 $add_data_description[$key]['dummy_id']    = $id;
             }
-            $this->Dummy_description->insert($add_data_description);
+            $this->model_lang->save($add_data_description);
 
             set_alert(lang('text_add_success'), ALERT_SUCCESS);
             redirect(self::MANAGE_URL);
@@ -133,7 +139,7 @@ class Manage extends AdminController
             $data['text_form']   = lang('text_edit');
             $data['text_submit'] = lang('button_save');
 
-            $data_form = $this->Dummy->with_details()->get($id);
+            $data_form = $this->model->find($id);
             if (empty($data_form)) {
                 set_alert(lang('error_empty'), ALERT_ERROR);
                 redirect(self::MANAGE_URL);
@@ -152,24 +158,27 @@ class Manage extends AdminController
         $data['text_cancel']   = lang('text_cancel');
         $data['button_cancel'] = base_url(self::MANAGE_URL.http_get_query());
 
-        if (!empty($this->errors)) {
-            $data['errors'] = $this->errors;
-        }
+        $data['errors'] = $this->errors;
 
-        $this->theme->title($data['text_form']);
+        $data['validator'] = \Config\Services::validation();
+        $data['request'] = $this->request;
+
+        $this->themes->setPageTitle($data['text_form']);
         $this->breadcrumb->add($data['text_form'], base_url(self::MANAGE_URL));
 
-        theme_load('manage/form', $data);
+        $this->themes::load('manage/form', $data);
+        //theme_load('manage/form', $data);
     }
 
     protected function validate_form()
     {
+
         foreach(get_list_lang() as $key => $value) {
-            $this->form_validation->set_rules(sprintf('manager_description[%s][name]', $key), lang('text_name') . ' (' . $value['name']  . ')', 'trim|required');
+            \Config\Services::validation()->setRule(sprintf('manager_description[%s][name]', $key), lang('Dummy.text_name') . ' (' . $value['name']  . ')', 'trim|required');
         }
 
-        $is_validation = $this->form_validation->run();
-        $this->errors  = $this->form_validation->error_array();
+        $is_validation = \Config\Services::validation()->run();
+        $this->errors  = \Config\Services::validation()->getErrors();
 
         return $is_validation;
     }
@@ -236,13 +245,8 @@ class Manage extends AdminController
 
     public function publish()
     {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
-        }
-
-        //phai full quyen hoac duoc cap nhat
-        if (!$this->acl->check_acl()) {
-            json_output(['status' => 'ng', 'msg' => lang('error_permission_edit')]);
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
         if (empty($_POST)) {

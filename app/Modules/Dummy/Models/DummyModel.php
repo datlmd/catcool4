@@ -8,7 +8,7 @@ class DummyModel extends Model
     protected $table      = 'dummy';
     protected $primaryKey = 'dummy_id';
 
-    protected $allowedFields = ['name', 'address', 'created_at', 'updated_at'];
+    protected $allowedFields = ['dummy_id', 'sort_order', 'published', 'ctime', 'mtime'];
 
     public function __construct()
     {

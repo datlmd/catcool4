@@ -20,6 +20,7 @@
                     {include file=get_theme_path('views/inc/alert.tpl') message=$errors type='danger'}
                 </div>
             {/if}
+
             <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                 <div class="card">
                     <h5 class="card-header"><i class="fas {if !empty($edit_data.dummy_id)}fa-edit{else}fa-plus{/if} mr-2"></i>{$text_form}</h5>
@@ -28,16 +29,16 @@
                             {include file=get_theme_path('views/inc/tab_language.inc.tpl') languages=$list_lang}
                             <div class="tab-content border-0 p-3" id="dummy_tab_content">
                                 {foreach $list_lang as $language}
-                                    <div class="tab-pane fade {if $language.active}show active{/if}" role="tabpanel" id="lanuage_content_{$language.id}"  aria-labelledby="language_tab_{$language.id}">
+                                    <div class="tab-pane fade {if !empty($language.active)}show active{/if}" role="tabpanel" id="lanuage_content_{$language.id}"  aria-labelledby="language_tab_{$language.id}">
                                         <div class="form-group row required has-error">
                                             <label class="col-12 col-sm-3 col-form-label required-label text-sm-right">
                                                 {lang('text_name')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-7">
-                                                <input type="text" name="manager_description[{$language.id}][name]" value='{set_value("manager_description[`$language.id`][name]", $edit_data.details[$language.id].name)}' id="input-name[{$language.id}]" class="form-control {if !empty(form_error("manager_description[`$language.id`][name]"))}is-invalid{/if}">
-                                                {if !empty(form_error("manager_description[`$language.id`][name]"))}
-                                                    <div class="invalid-feedback">{form_error("manager_description[`$language.id`][name]")}</div>
-                                                {/if}
+                                                <input type="text" name="manager_description[{$language.id}][name]" value='{set_value("manager_description[`$language.id`][name]")}' id="input-name[{$language.id}]" class="form-control {if $validator->hasError("manager_description[`$language.id`][name]")}is-invalid{/if}">
+                                                <div class="invalid-feedback">
+                                                    {$validator->getError("manager_description[`$language.id`][name]")}
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -45,7 +46,7 @@
                                                 {lang('text_description')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-7">
-                                                <textarea name="manager_description[{$language.id}][description]" cols="40" rows="2" id="input-description[{$language.id}]" type="textarea" class="form-control">{set_value("manager_description[`$language.id`][description]", $edit_data.details[$language.id].description)}</textarea>
+                                                <textarea name="manager_description[{$language.id}][description]" cols="40" rows="2" id="input-description[{$language.id}]" type="textarea" class="form-control">{set_value("manager_description[`$language.id`][description]")}</textarea>
                                             </div>
                                         </div>
                                         {*TPL_DUMMY_DESCRIPTION*}
@@ -63,22 +64,23 @@
                         <div class="form-group">
                             {lang('text_published')}
                             <div class="switch-button switch-button-xs float-right mt-1">
-                                {if isset($edit_data.published)}
-                                    <input type="checkbox" name="published" value="{STATUS_ON}" {set_checkbox('published', STATUS_ON, ($edit_data.published == STATUS_ON))} id="published">
-                                {else}
-                                    <input type="checkbox" name="published" value="{STATUS_ON}" {set_checkbox('published', STATUS_ON, true)} id="published">
-                                {/if}
+{*                                {if isset($edit_data.published)}*}
+{*                                    <input type="checkbox" name="published" value="{STATUS_ON}" {set_checkbox('published', STATUS_ON, ($edit_data.published == STATUS_ON))} id="published">*}
+{*                                {else}*}
+{*                                    *}
+{*                                {/if}*}
+                                <input type="checkbox" name="published" value="{STATUS_ON}" {set_checkbox('published', STATUS_ON, true)} id="published">
                                 <span><label for="published"></label></span>
                             </div>
                         </div>
                         {*TPL_DUMMY_ROOT*}
                         <div class="form-group">
                             {lang('text_sort_order')}
-                            <input type="number" name="sort_order" value="{if $edit_data.dummy_id || !empty(set_value('sort_order', $edit_data.sort_order))}{set_value('sort_order', $edit_data.sort_order)}{else}0{/if}" id="sort_order" min="0" class="form-control">
+                            <input type="number" name="sort_order" value="" id="sort_order" min="0" class="form-control">
                         </div>
                     </div>
                 </div>
-                {if $edit_data.dummy_id}
+                {if !empty($edit_data.dummy_id)}
                     {include file=get_theme_path('views/inc/status_form.inc.tpl')}
                 {/if}
             </div>
