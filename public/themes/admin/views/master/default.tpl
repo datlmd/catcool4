@@ -14,14 +14,14 @@
     {if !empty($css_files)}{$css_files}{/if}
 
     <!--[if lt IE 9]>
-    <script type="text/javascript" src="{site_url('common/js/html5shiv-3.7.3.min.js')}"></script>
-    <script type="text/javascript" src="{site_url('common/js/respond-1.4.2.min.js')}"></script>
+    <script type="text/javascript" src="{base_url('common/js/html5shiv-3.7.3.min.js')}"></script>
+    <script type="text/javascript" src="{base_url('common/js/respond-1.4.2.min.js')}"></script>
     <![endif]-->
 
-    <script src="{site_url('common/plugin/jquery/jquery-3.4.1.min.js')}" type="text/javascript"></script>
-    <script src="{site_url('common/plugin/bootstrap/js/popper.min.js')}" type="text/javascript"></script>
-    <script src="{site_url('common/plugin/bootstrap/js/bootstrap.bundle.js')}" type="text/javascript"></script>
-    <script src="{site_url('common/js/admin/catcool.js')}?{CACHE_TIME_JS}" type="text/javascript"></script>
+    <script src="{base_url('common/plugin/jquery/jquery-3.4.1.min.js')}" type="text/javascript"></script>
+    <script src="{base_url('common/plugin/bootstrap/js/popper.min.js')}" type="text/javascript"></script>
+    <script src="{base_url('common/plugin/bootstrap/js/bootstrap.bundle.js')}" type="text/javascript"></script>
+    <script src="{base_url('common/js/admin/catcool.js')}?{CACHE_TIME_JS}" type="text/javascript"></script>
 
 {*    *}{*<script src="{js_url('vendor/bootstrap/js/bootstrap.min', 'common')}" type="text/javascript"></script>*}
 

@@ -324,7 +324,7 @@ class Themes
 		{
 			foreach($plugin_files as $plugin_file)
 			{
-				$plugin_path = str_replace(site_url(), FCPATH, $plugin_url);
+				$plugin_path = str_replace(base_url(), FCPATH, $plugin_url);
 
 				if (!is_file($plugin_path . $plugin_file))
 				{
@@ -416,9 +416,9 @@ class Themes
 		}
 
 		self::$instance->setVar([
-			'theme_url'  => site_url(self::$config[THEME_PATH] . '/' . self::$config[THEME]) . '/',
-			'image_url'  => site_url(self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[IMAGE_PATH]) . '/',
-			'plugin_url' => site_url(self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[PLUGIN_PATH]) . '/',
+			'theme_url'  => base_url(self::$config[THEME_PATH] . '/' . self::$config[THEME]) . '/',
+			'image_url'  => base_url(self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[IMAGE_PATH]) . '/',
+			'plugin_url' => base_url(self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[PLUGIN_PATH]) . '/',
             'theme_path' => FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/',
 		]);
 
@@ -914,7 +914,7 @@ class Themes
 					$latest_version = filemtime($css_file);
 
 					$css_file   = str_replace(FCPATH, '', $css_file);
-					$latest_css = site_url($css_file . '?v=' . $latest_version);
+					$latest_css = base_url($css_file . '?v=' . $latest_version);
 
 					echo link_tag($latest_css);
 				}
@@ -943,7 +943,7 @@ class Themes
 					$latest_version = filemtime($js_file);
 					
 					$js_file   = str_replace(FCPATH, '', $js_file);
-					$latest_js = site_url($js_file . '?v=' . $latest_version);
+					$latest_js = base_url($js_file . '?v=' . $latest_version);
 
 					echo script_tag($latest_js);
 				}

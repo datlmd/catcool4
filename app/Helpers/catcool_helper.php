@@ -1634,7 +1634,7 @@ if(!function_exists('get_avatar'))
         $upload_path = get_upload_url();
         $avatar      = empty($avatar) ? 'users/' . session('username') . $image_ext : $avatar;
         if (!is_file( WRITEPATH . $upload_path . $avatar)) {
-            return (session('user_gender') == GENDER_MALE) ? site_url('common/'.config('Config')->avatar_default_male) : site_url('common/'.config('Config')->avatar_default_female);
+            return (session('user_gender') == GENDER_MALE) ? base_url('common/'.config('Config')->avatar_default_male) : base_url('common/'.config('Config')->avatar_default_female);
         }
 
         return image_url($avatar);
