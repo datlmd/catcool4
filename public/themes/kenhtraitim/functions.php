@@ -95,7 +95,7 @@ class Theme_class
         //set_meta_seo();
 
 		// And why not more!
-		//add_meta('manifest', base_url('site.webmanifest'), 'rel');
+		//add_meta('manifest', site_url('site.webmanifest'), 'rel');
 	}
 
 	// ------------------------------------------------------------------------

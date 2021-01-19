@@ -4,9 +4,9 @@
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<base href="<?php echo base_url(); ?>">
+	<base href="<?php echo site_url(); ?>">
 	<title>{Events::trigger('the_title', $title, 'string')}</title>
-	<link rel="icon" href="{base_url('favicon.ico')}">
+	<link rel="icon" href="{site_url('favicon.ico')}">
 	{$metadata}
 
 	<!-- StyleSheets -->

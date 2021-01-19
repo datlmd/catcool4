@@ -8,7 +8,7 @@
 			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
 			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></a>
 			<button type="button" id="btn_search" class="btn btn-sm btn-brand" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
-			<a href="{base_url("users/groups_manage")}" class="btn btn-sm btn-primary"><i class="fas fa-list mr-1"></i> {lang('module_group')}</a>
+			<a href="{site_url("users/groups_manage")}" class="btn btn-sm btn-primary"><i class="fas fa-list mr-1"></i> {lang('module_group')}</a>
 		</div>
 	</div>
 	<div class="row collapse {if $filter_active}show{/if}" id="filter_manage">

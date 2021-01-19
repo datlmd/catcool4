@@ -3,14 +3,14 @@
 	{if !empty($menu_main)}
 		{foreach $menu_main as $key => $item}
 			<li class="dropdown">
-				<a class="dropdown-item dropdown-toggle" href="{base_url({$item.detail.slug})}">
+				<a class="dropdown-item dropdown-toggle" href="{site_url({$item.detail.slug})}">
 					{$item.detail.name}
 				</a>
 				{if $item.subs}
 					<ul class="dropdown-menu">
 						{foreach $item.subs as $sub}
 							<li>
-								<a class="dropdown-item" href="{base_url({$sub.detail.slug})}">
+								<a class="dropdown-item" href="{site_url({$sub.detail.slug})}">
 									{$sub.detail.name}
 								</a>
 							</li>

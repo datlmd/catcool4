@@ -9,7 +9,7 @@
 				{form_checkbox("published_`$category.category_id`", ($category.published eq STATUS_ON) ? true : false, ($category.published eq STATUS_ON) ? true : false, ['id' => 'published_'|cat:$category.category_id, 'data-id' => $category.category_id, 'data-published' => $category.published, 'class' => 'change_publish'])}
 				<span><label for="published_{$category.category_id}"></label></span>
 			</div>
-			<a href="{base_url($manage_url)}/edit/{$category.category_id}{http_get_query()}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
+			<a href="{site_url($manage_url)}/edit/{$category.category_id}{http_get_query()}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
 			<button type="button" data-id="{$category.category_id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 		</div>
 	</div>

@@ -135,8 +135,8 @@ class Theme_class
 		add_meta('og:image', get_theme_url('screenshot.png'));
 
 		// And why not more!
-		add_meta('manifest', base_url('site.webmanifest'), 'rel');
-		add_meta('apple-touch-icon', base_url('icon.png'), 'rel');
+		add_meta('manifest', site_url('site.webmanifest'), 'rel');
+		add_meta('apple-touch-icon', site_url('icon.png'), 'rel');
 	}
 
 	// ------------------------------------------------------------------------

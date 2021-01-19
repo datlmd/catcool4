@@ -8,7 +8,7 @@
 {*                    <span>*}
 {*                        <i class="far fa-folder"></i>*}
 {*                        {foreach explode(',', $detail.tags) as $tag}*}
-{*                            <a href="{base_url()}tags/{$tag}">{$tag}</a>*}
+{*                            <a href="{site_url()}tags/{$tag}">{$tag}</a>*}
 {*                        {/foreach}*}
 {*                    </span>*}
 {*                {/if}*}

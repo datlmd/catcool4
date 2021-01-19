@@ -19,12 +19,12 @@
 			<div class="collapse navbar-collapse" id="menu_admin">
 				<ul class="navbar-nav flex-column">
 					<li class="nav-divider pb-0 d-xl-none d-lg-none">
-						<a class="" href="{base_url('users/manage/edit/'|cat:session('user_id'))}">
+						<a class="" href="{site_url('users/manage/edit/'|cat:session('user_id'))}">
 							<span class="badge badge-info"><i class="fas fa-user-circle mr-1"></i>{session('full_name')} ({session('username')})</span>
 						</a>
 					</li>
 					<li class="nav-item mt-xl-2 mt-lg-2">
-						<a class="nav-link" href="{base_url(CATCOOL_DASHBOARD)}"><i class="fas fa-home"></i>{lang('catcool_dashboard')}</a>
+						<a class="nav-link" href="{site_url(CATCOOL_DASHBOARD)}"><i class="fas fa-home"></i>{lang('catcool_dashboard')}</a>
 					</li>
 					{foreach $menu_admin as $key => $item}
 						<li class="nav-item">
@@ -36,7 +36,7 @@
 									<ul class="nav flex-column">
 										{foreach $item.subs as $sub}
 											<li class="nav-item">
-												<a class="nav-link {if $sub.selected eq $this->uri->uri_string()}active{/if}" href="{base_url($sub.detail.slug)}" {$sub.attributes}><i class="fas fa-angle-double-right mr-2"></i>{$sub.detail.name}</a>
+												<a class="nav-link {if $sub.selected eq $this->uri->uri_string()}active{/if}" href="{site_url($sub.detail.slug)}" {$sub.attributes}><i class="fas fa-angle-double-right mr-2"></i>{$sub.detail.name}</a>
 											</li>
 										{/foreach}
 									</ul>
@@ -45,7 +45,7 @@
 						</li>
 					{/foreach}
 					<li class="nav-item d-xl-none d-lg-none">
-						<a class="nav-link" href="{base_url('users/manage/logout')}"><i class="fas fa-power-off"></i>{lang('text_logout')}</a>
+						<a class="nav-link" href="{site_url('users/manage/logout')}"><i class="fas fa-power-off"></i>{lang('text_logout')}</a>
 					</li>
 				</ul>
 			</div>
@@ -83,7 +83,7 @@
 							<div class="row">
 							{foreach $item.subs as $sub}
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 text-center mt-2 mb-4">
-									<a href="{base_url($sub.detail.slug)}" class="menu-sub-left-icon {if $sub.selected eq $this->uri->uri_string()}active{/if}" {$sub.attributes}>
+									<a href="{site_url($sub.detail.slug)}" class="menu-sub-left-icon {if $sub.selected eq $this->uri->uri_string()}active{/if}" {$sub.attributes}>
 										<i class="{if !empty($sub.icon)}{$sub.icon}{else}fas fa-angle-double-right{/if}"></i>
 									</a>
 									<p class="text-dark mt-2">{$sub.detail.name}</p>

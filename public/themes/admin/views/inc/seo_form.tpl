@@ -27,7 +27,7 @@
 				{lang('text_slug')}
 				<div class="input-group">
 					<div class="input-group-prepend">
-						<span class="input-group-text bg-linght pr-0" id="input_group_slug">{base_url($name_seo_url)}</span>
+						<span class="input-group-text bg-linght pr-0" id="input_group_slug">{site_url($name_seo_url)}</span>
 					</div>
 					<input type="hidden" name="seo_urls[{$language.id}][id]" value="{$seo_urls[$language.id].id}">
 					<input type="text" name="seo_urls[{$language.id}][route]" data-is-slug="true" data-seo-id="seo_meta_url_{$language.id}" onkeyup="Catcool.setContentSeo(this);"  value='{set_value("seo_urls[`$language.id`][route]", $seo_urls[$language.id].route)}' placeholder="{$seo_urls[$language.id].route}" id="input_slug_{$language.id}" describedby="input_group_slug" class="form-control form-control-lg pl-0 border-left-0 {if !empty($errors["seo_url_{$language.id}"])}is-invalid{/if}">

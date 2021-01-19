@@ -21,7 +21,7 @@
 								{if $item.subs}
 									<ul class="dropdown-menu">
 										{foreach $item.subs as $sub}
-											<p class="mb-1"><a href="{base_url({$sub.detail.slug})}" class="text-3 link-hover-style-1">{$sub.detail.name}</a></p>>
+											<p class="mb-1"><a href="{site_url({$sub.detail.slug})}" class="text-3 link-hover-style-1">{$sub.detail.name}</a></p>>
 										{/foreach}
 									</ul>
 								{/if}

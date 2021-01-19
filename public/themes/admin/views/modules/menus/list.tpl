@@ -20,8 +20,8 @@
 				<div class="card-body">
 					{if !empty($this->session->super_admin)}
 						<div class="mb-3">
-							<a href="{base_url($manage_url|cat:"?is_admin=1")}" class="btn btn-sm btn-light {if $is_admin eq 1}active{/if}">Admin</a>
-							<a href="{base_url($manage_url|cat:"?is_admin=0")}" class="btn btn-sm btn-light ml-2 {if $is_admin eq 0}active{/if}">Frontend</a>
+							<a href="{site_url($manage_url|cat:"?is_admin=1")}" class="btn btn-sm btn-light {if $is_admin eq 1}active{/if}">Admin</a>
+							<a href="{site_url($manage_url|cat:"?is_admin=0")}" class="btn btn-sm btn-light ml-2 {if $is_admin eq 0}active{/if}">Frontend</a>
 						</div>
 					{/if}
                     {if !empty($list)}

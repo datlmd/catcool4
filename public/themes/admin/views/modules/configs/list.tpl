@@ -8,7 +8,7 @@
 			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
 			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></a>
 			<a href="{$manage_url}/write" class="btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_write')}"><i class="fas fa-save"></i></a>
-			<a href="{base_url('configs/groups_manage')}" class="btn btn-sm btn-primary"><i class="fas fa-list mr-1"></i>{lang('text_group')}</a>
+			<a href="{site_url('configs/groups_manage')}" class="btn btn-sm btn-primary"><i class="fas fa-list mr-1"></i>{lang('text_group')}</a>
 		</div>
 	</div>
 	<div class="row">

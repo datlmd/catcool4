@@ -30,7 +30,7 @@
                                     {if !empty($menu_top)}
                                         {foreach $menu_top as $key => $item}
                                             <li class="nav-item nav-item-anim-icon d-none d-md-block">
-                                                <a class="nav-link pl-0" href="{base_url({$item.detail.slug})}"><i class="fas fa-angle-right"></i> {$item.detail.name}</a>
+                                                <a class="nav-link pl-0" href="{site_url({$item.detail.slug})}"><i class="fas fa-angle-right"></i> {$item.detail.name}</a>
                                             </li>
                                         {/foreach}
                                     {/if}
@@ -130,14 +130,14 @@
                                             {if !empty($menu_main)}
                                                 {foreach $menu_main as $key => $item}
                                                     <li class="dropdown">
-                                                        <a class="dropdown-item dropdown-toggle" href="{base_url({$item.detail.slug})}">
+                                                        <a class="dropdown-item dropdown-toggle" href="{site_url({$item.detail.slug})}">
                                                             {$item.detail.name}
                                                         </a>
                                                         {if $item.subs}
                                                             <ul class="dropdown-menu">
                                                                 {foreach $item.subs as $sub}
                                                                     <li>
-                                                                        <a class="dropdown-item" href="{base_url({$sub.detail.slug})}">
+                                                                        <a class="dropdown-item" href="{site_url({$sub.detail.slug})}">
                                                                             {$sub.detail.name}
                                                                         </a>
                                                                     </li>

@@ -7,7 +7,7 @@
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-right">
 			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
 			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></a>
-			<a href="{base_url("configs/manage")}" class="btn btn-sm btn-primary"><i class="fas fa-list mr-1"></i> {lang('module_configs')}</a>
+			<a href="{site_url("configs/manage")}" class="btn btn-sm btn-primary"><i class="fas fa-list mr-1"></i> {lang('module_configs')}</a>
 		</div>
 	</div>
 	<div class="row">
