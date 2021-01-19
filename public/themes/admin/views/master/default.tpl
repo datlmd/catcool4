@@ -5,12 +5,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <base href="{site_url()}">
-    <title>{if !empty($title)}{$title}{/if}</title>
+    <title>{if !empty($page_title)}{$page_title}{/if}</title>
 
     {$metadata}
 
     <!-- StyleSheets -->
-    {include file=get_theme_path('views/master/base/css.tpl')}
+    {include file=get_theme_path('views/master/common/css.tpl')}
     {if !empty($css_files)}{$css_files}{/if}
 
     <!--[if lt IE 9]>
@@ -34,7 +34,7 @@
 
 {$layout}
 
-{include file=get_theme_path('views/master/base/js.tpl')}
+{include file=get_theme_path('views/master/common/js.tpl')}
 {if !empty($js_files)}{$js_files}{/if}
 {*<script src="{{js_url('alert.min', 'common')}}"></script>*}
 

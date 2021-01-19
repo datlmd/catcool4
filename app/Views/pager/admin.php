@@ -7,9 +7,9 @@
 $pager->setSurroundCount(2);
 ?>
 <div class="row mt-2">
-    <div class="col-8 pl-3">
+    <div class="col-12">
         <nav aria-label="<?= lang('Pager.pageNavigation') ?>" class="table-responsive">
-            <ul class="pagination float-right">
+            <ul class="pagination">
                 <?php if ($pager->hasPrevious()) : ?>
                     <li class="page-item">
                         <a href="<?= $pager->getFirst() ?>" aria-label="<?= lang('Pager.first') ?>" class="page-link">
@@ -45,9 +45,6 @@ $pager->setSurroundCount(2);
                 <?php endif ?>
             </ul>
         </nav>
-    </div>
-    <div class="col-4 pr-3 text-right {if !empty($pager)}mt-sm-3 mt-2{/if}">
-        {*        {$paging.pagination_title}*}
     </div>
 </div>
 

@@ -1634,7 +1634,7 @@ if(!function_exists('get_avatar'))
         $upload_path = get_upload_url();
         $avatar      = empty($avatar) ? 'users/' . session('username') . $image_ext : $avatar;
         if (!is_file( WRITEPATH . $upload_path . $avatar)) {
-            return (session('user_gender') == GENDER_MALE) ? img_url(config('Config')->avatar_default_male, 'common') : img_url(config('Config')->avatar_default_female, 'common');
+            return (session('user_gender') == GENDER_MALE) ? site_url('common/'.config('Config')->avatar_default_male) : site_url('common/'.config('Config')->avatar_default_female);
         }
 
         return image_url($avatar);
@@ -1768,76 +1768,85 @@ if(!function_exists('get_fonts'))
     }
 }
 
-if(!function_exists('set_meta_seo'))
+if(!function_exists('add_meta'))
 {
-    function set_meta_seo($data = null)
+    function add_meta($data = null, $theme, $is_admin = false)
     {
-        $title       = !empty($data['title']) ? $data['title'] : config('Config')->site_name;
-        $description = !empty($data['description']) ? $data['description'] : config('Config')->site_description;
-        $keywords    = !empty($data['keywords']) ? $data['keywords'] : config('Config')->site_keywords;
-        $url         = !empty($data['url']) ? $data['url'] : config('Config')->site_url;
-        $image       = !empty($data['image']) ? $data['image'] : config('Config')->site_image;
+        try
+        {
+            $title = !empty($data['title']) ? $data['title'] : config('Config')->site_name;
+            $description = !empty($data['description']) ? $data['description'] : config('Config')->site_description;
+            $keywords = !empty($data['keywords']) ? $data['keywords'] : config('Config')->site_keywords;
+            $url = !empty($data['url']) ? $data['url'] : config('Config')->site_url;
+            $image = !empty($data['image']) ? $data['image'] : config('Config')->site_image;
 
-        $CI = & get_instance();
-        $CI->theme->title($title);
+            //$theme = \App\Libraries\Themes::init();
 
-        add_meta('robots', 'index,follow');
-        add_meta('revisit-after', '1 days');
 
-        add_meta('generator', 'Cat Cool CMS');
-        add_meta('copyright', 'Cat Cool CMS');
-        add_meta('author', 'Dat Le');
-        add_meta('author', 'https://kenhtraitim.com', 'rel');
+            $theme->setPageTitle($title);
 
-        add_meta('description', $description, 'meta', ['id' => 'meta_description']);
-        add_meta('keywords', $keywords, 'meta', ['id' => 'meta_keywords']);
-        add_meta('news_keywords', $keywords, 'meta', ['id' => 'meta_news_keywords']);
-        add_meta('canonical', $url, 'ref');
-        add_meta('alternate', $url, 'ref');
+            $theme->addMeta('robots', 'index,follow');
+            $theme->addMeta('revisit-after', '1 days');
 
-        // Let's add some extra tags.
+            $theme->addMeta('generator', 'Cat Cool CMS');
+            $theme->addMeta('copyright', 'Cat Cool CMS');
+            $theme->addMeta('author', 'Dat Le');
+            $theme->addMeta('author', 'https://kenhtraitim.com', 'rel');
 
-        if (!empty(config('Config')->fb_app_id)) {
-            add_meta('og:fb:app_id', config('Config')->fb_app_id, 'meta', ['property' => 'fb:app_id']);
-        }
-        if (!empty(config('Config')->fb_pages)) {
-            add_meta('og:fb:pages', config('Config')->fb_pages, 'meta', ['property' => 'fb:pages']);
-        }
-        add_meta('og:type', 'article');
-        add_meta('og:url', $url);
-        add_meta('og:title', $title);
-        add_meta('og:description', $description);
-        add_meta('og:image', $image);
-        if (!empty($image)) {
-            $image = CATCOOLPATH . str_ireplace([base_url(), site_url()], ['',''], $image);
-            if (is_file($image)) {
-                $image_data = getimagesize($image);
-                if (!empty($image_data['mime']) && !empty($image_data[0]) && !empty($image_data[1])) {
-                    add_meta('og:image:type', $image_data['mime']);
-                    add_meta('og:image:width', $image_data[0]);
-                    add_meta('og:image:height', $image_data[1]);
+            $theme->addMeta('description', $description, 'meta', ['id' => 'meta_description']);
+            $theme->addMeta('keywords', $keywords, 'meta', ['id' => 'meta_keywords']);
+            $theme->addMeta('news_keywords', $keywords, 'meta', ['id' => 'meta_news_keywords']);
+            $theme->addMeta('canonical', $url, 'ref');
+            $theme->addMeta('alternate', $url, 'ref');
+
+            // Let's add some extra tags.
+
+            if (!empty(config('Config')->fb_app_id)) {
+                $theme->addMeta('og:fb:app_id', config('Config')->fb_app_id, 'meta', ['property' => 'fb:app_id']);
+            }
+            if (!empty(config('Config')->fb_pages)) {
+                $theme->addMeta('og:fb:pages', config('Config')->fb_pages, 'meta', ['property' => 'fb:pages']);
+            }
+            $theme->addMeta('og:type', 'article');
+            $theme->addMeta('og:url', $url);
+            $theme->addMeta('og:title', $title);
+            $theme->addMeta('og:description', $description);
+            $theme->addMeta('og:image', $image);
+            if (!empty($image)) {
+                $image = WRITEPATH . str_ireplace([base_url(), site_url()], ['', ''], $image);
+                if (is_file($image)) {
+                    $image_data = getimagesize($image);
+                    if (!empty($image_data['mime']) && !empty($image_data[0]) && !empty($image_data[1])) {
+                        $theme->addMeta('og:image:type', $image_data['mime']);
+                        $theme->addMeta('og:image:width', $image_data[0]);
+                        $theme->addMeta('og:image:height', $image_data[1]);
+                    }
                 }
             }
+
+            $theme->addMeta('og:twitter:image', 'summary', 'meta', ['property' => 'twitter:image']);
+            $theme->addMeta('og:twitter:card', 'summary_large_image', 'meta', ['property' => 'twitter:card']);
+            $theme->addMeta('og:twitter:url', $url, 'meta', ['property' => 'twitter:url']);
+            $theme->addMeta('og:twitter:title', $title, 'meta', ['property' => 'twitter:title']);
+            $theme->addMeta('og:twitter:description', $description, 'meta', ['property' => 'twitter:description']);
+
+            $theme->addMeta('resource-type', 'Document');
+            $theme->addMeta('distribution', 'Global');
+
+            if (!empty(config('Config')->google_site_verification)) {
+                $theme->addMeta('google-site-verification', config('Config')->google_site_verification);
+            }
+
+            if (!empty(config('Config')->alexa_verify_id)) {
+                $theme->addMeta('alexaVerifyID', config('Config')->alexa_verify_id);
+            }
+        }
+        catch (\Exception $e)
+        {
+            die($e->getMessage());
         }
 
-        add_meta('og:twitter:image', 'summary', 'meta', ['property'=> 'twitter:image']);
-        add_meta('og:twitter:card', 'summary_large_image', 'meta', ['property'=> 'twitter:card']);
-        add_meta('og:twitter:url', $url, 'meta', ['property'=> 'twitter:url']);
-        add_meta('og:twitter:title', $title, 'meta', ['property'=> 'twitter:title']);
-        add_meta('og:twitter:description', $description, 'meta', ['property'=> 'twitter:description']);
-
-        add_meta('resource-type', 'Document');
-        add_meta('distribution', 'Global');
-
-        if (!empty(config('Config')->google_site_verification)) {
-            add_meta('google-site-verification', config('Config')->google_site_verification);
-        }
-
-        if (!empty(config('Config')->alexa_verify_id)) {
-            add_meta('alexaVerifyID', config('Config')->alexa_verify_id);
-        }
-
-        return true;
+        return $theme;
     }
 }
 

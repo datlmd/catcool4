@@ -201,6 +201,8 @@ class CustomConfig extends BaseConfig
     public $robots = "";
 
     public $compression = "";
+
+    public $site_image = "";
 }
 
 

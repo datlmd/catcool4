@@ -30,6 +30,8 @@ class Manage extends AdminController
 
 	public function index()
 	{
+        add_meta(['name' => lang("Dummy.heading_title")], $this->themes);
+
         $filter = [
             'id'    => (string)$this->request->getGetPost('filter_id'),
             'name'  => (string)$this->request->getGetPost('filter_name'),
