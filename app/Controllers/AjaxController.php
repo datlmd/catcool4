@@ -9,5 +9,9 @@ class AjaxController extends BaseController
     {
         parent::__construct();
 
+        if (!$this->request->isAJAX())
+        {
+
+        }
     }
 }

@@ -9,5 +9,11 @@ class ApiController extends BaseController
     {
         parent::__construct();
 
+        // Check for CLI Request
+        if (!$this->request->isCLI())
+        {
+            // ...
+        }
+
     }
 }

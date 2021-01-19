@@ -69,6 +69,11 @@ class BaseController extends Controller
 		// $this->session = \Config\Services::session();
 
         session();
+
+        if (!$this->request->isSecure())
+        {
+            force_https();
+        }
 	}
 
     public function __construct()

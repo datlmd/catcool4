@@ -15,7 +15,7 @@ class DummyModel extends Model
         parent::__construct();
     }
 
-    public function getAllByFilter($filter = null, $limit = 0, $offset = 0, $order = null)
+    public function getAllByFilter($filter = null, $sort = 'dummy_id', $order = 'DESC')
     {
         $where = "dummy_description.language_id=" . get_lang_id();
 
@@ -30,7 +30,7 @@ class DummyModel extends Model
         $this->select('dummy.*, dummy_description.name AS name, dummy_description.description AS description')
             ->join('dummy_description', 'dummy_description.dummy_id = dummy.dummy_id')
             ->where($where)
-            ->orderBy('dummy_id', 'DESC');
+            ->orderBy($sort, $order);
 
         return $this;
     }
