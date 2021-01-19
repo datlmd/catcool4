@@ -32,7 +32,7 @@ Options All -Indexes
 	RewriteCond %{REQUEST_FILENAME} !-d
 	#RewriteRule ^([\s\S]*)$ index.php/$1 [L,NC,QSA]
 	RewriteRule ^(.*)$ index.php/$1 [L]
-	RewriteCond $1 !^(index\.php|writable|system|content|user_guide|robots\.txt|favicon\.ico|.*.swf|piattos_xml|piattos_items|assets|.*.unity3d|crossdomain\.xml)
+	RewriteCond $1 !^(index\.php|media|writable|system|content|user_guide|robots\.txt|favicon\.ico|.*.swf|piattos_xml|piattos_items|assets|.*.unity3d|crossdomain\.xml)
 
 	# Ensure Authorization header is passed along
     RewriteCond %{HTTP:Authorization} .

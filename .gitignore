@@ -64,6 +64,22 @@ writable/debugbar/*
 
 writable/smarty/*
 
+media/cache/*
+!media/cache/index.html
+
+media/logs/*
+!media/logs/index.html
+
+media/session/*
+!media/session/index.html
+
+media/uploads/*
+!media/uploads/index.html
+
+media/debugbar/*
+
+media/smarty/*
+
 php_errors.log
 
 #-------------------------
