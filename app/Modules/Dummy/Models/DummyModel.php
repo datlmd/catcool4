@@ -35,6 +35,26 @@ class DummyModel extends Model
         return $this;
     }
 
+    public function getDetail($id, $language_id = 1)
+    {
+        if (empty($id) || !is_numeric($id)) {
+            return null;
+        }
+
+        $where = "dummy.dummy_id=" . $id;
+        if (!is_null($language_id) && is_numeric($language_id)) {
+            $where .= " AND dummy_description.language_id=" . $language_id;
+        }
+
+        $result = $this->select('dummy.*, dummy_description.*')
+            ->join('dummy_description', 'dummy_description.dummy_id = dummy.dummy_id')
+            ->where($where)
+            ->find();
+
+        cc_debug($result);
+
+    }
+
     public function get_list_full_detail($ids)
     {
         if (empty($ids)) {

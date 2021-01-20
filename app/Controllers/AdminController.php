@@ -18,5 +18,7 @@ class AdminController extends UserController
         $menu_admin = [];
         $this->smarty->assign('menu_admin', $menu_admin);
 
+        $this->smarty->assign('validator', \Config\Services::validation());
+
     }
 }

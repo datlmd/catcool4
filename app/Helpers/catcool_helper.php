@@ -149,11 +149,12 @@ if (!function_exists('get_list_lang'))
         }
 
         foreach ($list_language as $key => $value) {
+            $list_language[$key]['active'] = false;
             if ($value['code'] == get_lang()) {
                 $list_language[$key]['active'] = true;
             }
             if (empty($value['icon'])) {
-                $list_language[$key]['icon'] = '<i class="flag-icon flag-icon-' . $value['code'] . ' mr-2"></i>';
+                $list_language[$key]['icon'] = '<i class="flag-icon flag-icon-' . (($value['code'] == 'vi') ? 'vn' : $value['code']) . ' mr-2"></i>';
             } else {
                 $list_language[$key]['icon'] = '<i class="' . $value['icon'] . ' mr-2"></i>';
             }
@@ -181,6 +182,27 @@ if (!function_exists('get_lang_id'))
         }
 
         return $language_id;
+    }
+}
+
+if ( ! function_exists('set_alert'))
+{
+    function set_alert($message = '', $type = 'info')
+    {
+        // If not message is set, nothing to do.
+        if (empty($message)) {
+            return false;
+        }
+        if (is_array($message)) {
+            foreach ($message as $_type => $_message) {
+                $messages[] = ['type' => $_type, 'message' => $_message];
+            }
+        } else {
+            $messages[] = ['type' => $type, 'message' => $message];
+        }
+
+        // Set flashdata.
+        session()->setFlashdata('__ci_flash', $messages);
     }
 }
 

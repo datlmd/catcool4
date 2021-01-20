@@ -1,27 +1,16 @@
-<?php namespace App\Modules\Dummy\Models;
+<?php namespace App\Models;
 
-use App\Models\DynaModel;
+use CodeIgniter\Model;
 
-class DummyDescriptionModel extends DynaModel
+class DummyDescriptionModel extends Model
 {
-    protected $relationships = ['dummy'];
+    protected $table      = 'dummy_description';
+    protected $primaryKey = 'dummy_id';
 
-    function __construct()
+    protected $allowedFields = ['dummy_id', 'language_id', 'name', 'description'];
+
+    public function __construct()
     {
         parent::__construct();
-
-        $this->table = 'dummy_description';
-        $this->primaryKey = 'dummy_id';
-
-        $this->fieldInfo = [
-            "dummy_id",
-            "language_id",
-            "name",
-            "description",
-            //FIELD_DESCRIPTION
-        ];
-
-
-
     }
 }

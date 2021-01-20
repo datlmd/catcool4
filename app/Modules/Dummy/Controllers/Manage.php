@@ -139,11 +139,20 @@ class Manage extends AdminController
             $data['text_form']   = lang('text_edit');
             $data['text_submit'] = lang('button_save');
 
-            $data_form = $this->model->find($id);
+            $data_form = $this->model->getDetail($id);
             if (empty($data_form)) {
                 set_alert(lang('error_empty'), ALERT_ERROR);
                 redirect(self::MANAGE_URL);
             }
+
+            $data_lang = $this->model_lang->find($id);
+
+            if (!empty($data_lang)) {
+                foreach ($data_lang as $value) {
+
+                }
+            }
+
 
             $data_form = format_data_lang_id($data_form);
 
@@ -160,25 +169,21 @@ class Manage extends AdminController
 
         $data['errors'] = $this->errors;
 
-        $data['validator'] = \Config\Services::validation();
-        $data['request'] = $this->request;
-
         $this->themes->setPageTitle($data['text_form']);
         $this->breadcrumb->add($data['text_form'], base_url(self::MANAGE_URL));
 
         $this->themes::load('manage/form', $data);
-        //theme_load('manage/form', $data);
     }
 
     protected function validate_form()
     {
-
+        $this->validator->setRule('sort_order', lang('GeneralManage.sort_order'), 'is_natural');
         foreach(get_list_lang() as $key => $value) {
-            \Config\Services::validation()->setRule(sprintf('manager_description[%s][name]', $key), lang('Dummy.text_name') . ' (' . $value['name']  . ')', 'trim|required');
+            $this->validator->setRule(sprintf('manager_description[%s][name]', $key), lang('GeneralManage.text_name') . ' (' . $value['name']  . ')', 'trim|required');
         }
 
-        $is_validation = \Config\Services::validation()->run();
-        $this->errors  = \Config\Services::validation()->getErrors();
+        $is_validation = $this->validator->run();
+        $this->errors  = $this->validator->getErrors();
 
         return $is_validation;
     }
