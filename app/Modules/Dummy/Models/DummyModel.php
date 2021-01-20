@@ -4,16 +4,31 @@ use CodeIgniter\Model;
 
 class DummyModel extends Model
 {
+    use \Tatter\Relations\Traits\ModelTrait;
 
     protected $table      = 'dummy';
     protected $primaryKey = 'dummy_id';
 
-    protected $allowedFields = ['dummy_id', 'sort_order', 'published', 'ctime', 'mtime'];
+    protected $returnType = 'array';
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $allowedFields = [
+        'dummy_id',
+        'sort_order',
+        'published',
+        'ctime',
+        'mtime'
+    ];
+
+    protected $validationRules    = [];
+    protected $validationMessages = [];
+    protected $skipValidation     = false;
+
+    protected $with = ['dummy_description'];
+//    public function __construct()
+//    {
+//        parent::__construct();
+//    }
+
 
     public function getAllByFilter($filter = null, $sort = 'dummy_id', $order = 'DESC')
     {
@@ -37,6 +52,8 @@ class DummyModel extends Model
 
     public function getDetail($id, $language_id = 1)
     {
+        $fsd = $this->where('dummy_id=16')->findAll()->hasMany('dummy_description', 'App\Modules\Dummy\Models\DummyDescriptionModel');
+        cc_debug($fsd);
         if (empty($id) || !is_numeric($id)) {
             return null;
         }

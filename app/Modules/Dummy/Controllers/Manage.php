@@ -2,7 +2,6 @@
 
 use App\Controllers\AdminController;
 use App\Modules\Dummy\Models\DummyModel;
-use App\Modules\Dummy\Models\DummyDescriptionModel;
 
 class Manage extends AdminController
 {
@@ -23,7 +22,6 @@ class Manage extends AdminController
             ->addPartial('sidebar');
 
         $this->model = new DummyModel();
-        $this->model_lang = new DummyDescriptionModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -44,12 +42,14 @@ class Manage extends AdminController
             'limit' => (string)$this->request->getGetPost('filter_limit'),
         ];
 
-        $list = $this->model->getAllByFilter($filter);
+        $sff = $this->model->findAll();
+//cc_debug($sff);
+        //$list = $this->model->getAllByFilter($filter);
 
 	    $data = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($this->request->getGetPost('filter_limit'), 'dummy'),
-            'pager'      => $list->pager,
+            'list'       => null,//$list->paginate($this->request->getGetPost('filter_limit'), 'dummy'),
+            'pager'      => null,//$list->pager,
             'filter'     => $filter,
         ];
 
