@@ -41,7 +41,9 @@ class Autoload extends AutoloadConfig
 	public $psr4 = [
 		APP_NAMESPACE => APPPATH, // For custom app namespace
 		'Config'      => APPPATH . 'Config',
-        'App\Modules' => APPPATH.'modules',
+        'App\Modules' => APPPATH . 'Modules',
+        'Tatter\Schemas' => APPPATH . "ThirdParty/Models",
+        'Tatter\Relations' => APPPATH . "ThirdParty/Models",
 	];
 
 	/**
