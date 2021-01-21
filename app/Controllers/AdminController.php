@@ -5,6 +5,8 @@ use App\Controllers\UserController;
 
 class AdminController extends UserController
 {
+    protected $validator;
+
     public function __construct()
     {
         parent::__construct();
@@ -20,5 +22,6 @@ class AdminController extends UserController
 
         $this->smarty->assign('validator', \Config\Services::validation());
 
+        $this->validator = \Config\Services::validation();
     }
 }

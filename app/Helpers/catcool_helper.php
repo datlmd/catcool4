@@ -185,39 +185,18 @@ if (!function_exists('get_lang_id'))
     }
 }
 
-if ( ! function_exists('set_alert'))
-{
-    function set_alert($message = '', $type = 'info')
-    {
-        // If not message is set, nothing to do.
-        if (empty($message)) {
-            return false;
-        }
-        if (is_array($message)) {
-            foreach ($message as $_type => $_message) {
-                $messages[] = ['type' => $_type, 'message' => $_message];
-            }
-        } else {
-            $messages[] = ['type' => $type, 'message' => $message];
-        }
-
-        // Set flashdata.
-        session()->setFlashdata('__ci_flash', $messages);
-    }
-}
-
 if (!function_exists('format_data_lang_id'))
 {
     /**
      * @param $data
      * @return mixed
      */
-    function format_data_lang_id($data)
+    function format_data_lang_id($data, $key_sort)
     {
-        if (empty($data['details'])) {
+        if (empty($data[$key_sort])) {
             return $data;
         }
-        $data['details'] = array_column($data['details'], null, 'language_id');
+        $data[$key_sort] = array_column($data[$key_sort], null, 'language_id');
 
         return $data;
     }
@@ -234,7 +213,7 @@ if (!function_exists('create_token'))
             return [];
         }
 
-        helper('string');
+        helper('text');
 
         $key   = 't_' . md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . random_string('alnum', 8));
         $value = md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . random_string('alnum', 20));

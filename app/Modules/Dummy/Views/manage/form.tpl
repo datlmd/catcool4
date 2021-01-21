@@ -3,7 +3,7 @@
     {form_open(uri_string(), ['id' => 'validationform'])}
         <div class="row">
             <div class="col-sm-7 col-12">
-                {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
+                {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('Dummy.heading_title')}
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-right">
                 <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
@@ -35,9 +35,9 @@
                                                 {lang('text_name')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-7">
-                                                <input type="text" name="manager_description[{$language.id}][name]" value='{set_value("manager_description[`$language.id`][name]")}' id="input-name[{$language.id}]" class="form-control {if $validator->hasError("manager_description[`$language.id`][name]")}is-invalid{/if}">
+                                                <input type="text" name="manager_lang[{$language.id}][name]" value='{old("manager_lang[`$language.id`][name]", $edit_data.dummy_lang[$language.id].name)}' id="input-name[{$language.id}]" class="form-control {if $validator->hasError("manager_lang[`$language.id`][name]")}is-invalid{/if}">
                                                 <div class="invalid-feedback">
-                                                    {$validator->getError("manager_description[`$language.id`][name]")}
+                                                    {$validator->getError("manager_lang[`$language.id`][name]")}
                                                 </div>
                                             </div>
                                         </div>
@@ -46,7 +46,7 @@
                                                 {lang('text_description')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-7">
-                                                <textarea name="manager_description[{$language.id}][description]" cols="40" rows="2" id="input-description[{$language.id}]" type="textarea" class="form-control">{set_value("manager_description[`$language.id`][description]")}</textarea>
+                                                <textarea name="manager_lang[{$language.id}][description]" cols="40" rows="2" id="input-description[{$language.id}]" type="textarea" class="form-control">{old("manager_lang[`$language.id`][description]", $edit_data.dummy_lang[$language.id].description)}</textarea>
                                             </div>
                                         </div>
                                         {*TPL_DUMMY_DESCRIPTION*}
@@ -64,19 +64,18 @@
                         <div class="form-group">
                             {lang('text_published')}
                             <div class="switch-button switch-button-xs float-right mt-1">
-{*                                {if isset($edit_data.published)}*}
-{*                                    <input type="checkbox" name="published" value="{STATUS_ON}" {set_checkbox('published', STATUS_ON, ($edit_data.published == STATUS_ON))} id="published">*}
-{*                                {else}*}
-{*                                    *}
-{*                                {/if}*}
-                                <input type="checkbox" name="published" value="{STATUS_ON}" {set_checkbox('published', STATUS_ON, true)} id="published">
+                                {if isset($edit_data.published)}
+                                    <input type="checkbox" name="published" value="{STATUS_ON}" {set_checkbox('published', STATUS_ON, ($edit_data.published == STATUS_ON))} id="published">
+                                {else}
+                                    <input type="checkbox" name="published" value="{STATUS_ON}" {set_checkbox('published', STATUS_ON, true)} id="published">
+                                {/if}
                                 <span><label for="published"></label></span>
                             </div>
                         </div>
                         {*TPL_DUMMY_ROOT*}
                         <div class="form-group">
                             {lang('text_sort_order')}
-                            <input type="number" name="sort_order" value="" id="sort_order" min="0" class="form-control">
+                            <input type="number" name="sort_order" value="{old('sort_order', $edit_data.sort_order)}" id="sort_order" min="0" class="form-control">
                         </div>
                     </div>
                 </div>

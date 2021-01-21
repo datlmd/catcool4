@@ -1,11 +1,9 @@
 <?php namespace App\Modules\Dummy\Models;
 
-use CodeIgniter\Model;
+use App\Models\MyModel;
 
-class DummyModel extends Model
+class DummyModel extends MyModel
 {
-    use \Tatter\Relations\Traits\ModelTrait;
-
     protected $table      = 'dummy';
     protected $primaryKey = 'dummy_id';
 
@@ -23,16 +21,16 @@ class DummyModel extends Model
     protected $validationMessages = [];
     protected $skipValidation     = false;
 
-    protected $with = ['dummy_description'];
-//    public function __construct()
-//    {
-//        parent::__construct();
-//    }
+    protected $with = ['dummy_lang'];
 
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     public function getAllByFilter($filter = null, $sort = 'dummy_id', $order = 'DESC')
     {
-        $where = "dummy_description.language_id=" . get_lang_id();
+        $where = "dummy_lang.language_id=" . get_lang_id();
 
         if (!empty($filter["id"])) {
             $where .= " AND dummy.dummy_id=" . is_array($filter["id"]) ? $filter["id"] : explode(",", $filter["id"]);
@@ -42,45 +40,31 @@ class DummyModel extends Model
             $where .= " AND dummy.name LIKE %" . $filter["name"] . '%';
         }
 
-        $this->select('dummy.*, dummy_description.name AS name, dummy_description.description AS description')
-            ->join('dummy_description', 'dummy_description.dummy_id = dummy.dummy_id')
+        $this->select('dummy.*, dummy_lang.name AS name, dummy_lang.description AS description')
+            ->with(false)
+            ->join('dummy_lang', 'dummy_lang.dummy_id = dummy.dummy_id')
             ->where($where)
             ->orderBy($sort, $order);
 
         return $this;
     }
 
-    public function getDetail($id, $language_id = 1)
+    public function getDetail($id, $language_id = null)
     {
-        $fsd = $this->where('dummy_id=16')->findAll()->hasMany('dummy_description', 'App\Modules\Dummy\Models\DummyDescriptionModel');
-        cc_debug($fsd);
         if (empty($id) || !is_numeric($id)) {
             return null;
         }
 
-        $where = "dummy.dummy_id=" . $id;
-        if (!is_null($language_id) && is_numeric($language_id)) {
-            $where .= " AND dummy_description.language_id=" . $language_id;
+        $result = $this->find($id);
+        if (empty($result)) {
+            return null;
         }
 
-        $result = $this->select('dummy.*, dummy_description.*')
-            ->join('dummy_description', 'dummy_description.dummy_id = dummy.dummy_id')
-            ->where($where)
-            ->find();
+        $result = format_data_lang_id($result, 'dummy_lang');
 
-        cc_debug($result);
-
-    }
-
-    public function get_list_full_detail($ids)
-    {
-        if (empty($ids)) {
-            return false;
+        if (!empty($language_id) && !empty($result['dummy_lang'][$language_id])) {
+            $result['dummy_lang'] = $result['dummy_lang'][$language_id];
         }
-
-        $ids           = is_array($ids) ? $ids : explode(",", $ids);
-        $filter_detail = sprintf("where:language_id=%d", get_lang_id());
-        $result        = $this->where("dummy_id", $ids)->with_detail($filter_detail)->get_all();
 
         return $result;
     }

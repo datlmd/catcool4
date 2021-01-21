@@ -110,6 +110,50 @@ function translate(string $file, array $langs = [])
 	return $contents;
 }
 
+if ( ! function_exists('print_alert'))
+{
+    /**
+     * Prints an alert.
+     *
+     * @param   string  $message    the message to print.
+     * @param   string  $type       type of the message.
+     * @param   string  $view       by default 'alert' but can be overriden.
+     * @return  string
+     */
+    function print_alert($message = '', $type = 'info', $view = 'alert')
+    {
+        if (empty($message))
+        {
+            return null;
+        }
+        return App\Libraries\Themes::partial($view, [
+            'type' => $type,
+            'message' => $message
+        ], true);
+    }
+}
+
+if ( ! function_exists('set_alert'))
+{
+    function set_alert($message = '', $type = 'info')
+    {
+        // If not message is set, nothing to do.
+        if (empty($message)) {
+            return false;
+        }
+        if (is_array($message)) {
+            foreach ($message as $_type => $_message) {
+                $messages[] = ['type' => $_type, 'message' => $_message];
+            }
+        } else {
+            $messages[] = ['type' => $type, 'message' => $message];
+        }
+
+        // Set flashdata.
+        session()->setFlashdata('__ci_flash', $messages);
+    }
+}
+
 if ( ! function_exists('print_flash_alert'))
 {
     /**
@@ -120,10 +164,11 @@ if ( ! function_exists('print_flash_alert'))
      */
     function print_flash_alert($view = 'alert')
     {
-        if (isset($_SESSION['__ci_flash']) && is_array($_SESSION['__ci_flash']))
+        $alert_list = session('__ci_flash');
+        if (!empty($alert_list) && is_array($alert_list))
         {
             $output = '';
-            foreach ($_SESSION['__ci_flash'] as $message)
+            foreach ($alert_list as $message)
             {
                 $output .= print_alert($message['message'], $message['type'], $view);
             }
