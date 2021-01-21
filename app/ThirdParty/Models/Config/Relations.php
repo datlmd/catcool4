@@ -11,5 +11,5 @@ class Relations extends BaseConfig
 	public $allowNesting = true;
 	
 	// Return type to fall back to if no model is available
-	public $defaultReturnType = 'object';
+	public $defaultReturnType = 'array';
 }

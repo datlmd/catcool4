@@ -169,7 +169,7 @@ trait BaseTrait
 		// No model - use a generic getResult
 		else
 		{
-			$results = $builder->get()->getResult();
+			$results = $builder->get()->getResult($returnType);
 		}
 		
 		// Clean up
