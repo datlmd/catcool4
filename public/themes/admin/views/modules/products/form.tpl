@@ -64,7 +64,7 @@
 {capture name=product_data}
     <div class="form-group">
         {lang('text_published')}
-        <div class="switch-button switch-button-xs float-right mt-1">
+        <div class="switch-button switch-button-xs float-end mt-1">
             {if isset($edit_data.published)}
                 <input type="checkbox" name="status" value="{STATUS_ON}" {set_checkbox('status', STATUS_ON, ($edit_data.status == STATUS_ON))} id="status">
             {else}

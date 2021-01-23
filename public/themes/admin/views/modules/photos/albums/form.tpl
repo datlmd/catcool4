@@ -80,14 +80,14 @@
                     <div class="card-body">
                         <div class="form-group">
                             {lang('text_published')}
-                            <div class="switch-button switch-button-xs float-right mt-1">
+                            <div class="switch-button switch-button-xs float-end mt-1">
                                 <input type="checkbox" name="published" value="{STATUS_ON}" {if $edit_data.album_id}{if $edit_data.published eq true}checked="checked"{/if}{else}checked="checked"{/if} id="published">
                                 <span><label for="published"></label></span>
                             </div>
                         </div>
                         <div class="form-group">
                             {lang('text_is_comment')}
-                            <div class="switch-button switch-button-xs float-right mt-1">
+                            <div class="switch-button switch-button-xs float-end mt-1">
                                 <input type="checkbox" name="is_comment" value="{STATUS_ON}" {if $edit_data.album_id}{if $edit_data.is_comment eq true}checked="checked"{/if}{else}checked="checked"{/if} id="is_comment">
                                 <span><label for="is_comment"></label></span>
                             </div>

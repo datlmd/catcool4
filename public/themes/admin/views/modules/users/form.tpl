@@ -191,7 +191,7 @@
                     </div>
                     <div class="form-group">
                         {lang('text_active')}
-                        <div class="switch-button switch-button-xs float-right mt-1">
+                        <div class="switch-button switch-button-xs float-end mt-1">
                             {if isset($edit_data.active)}
                                 <input type="checkbox" name="active" value="{STATUS_ON}" {set_checkbox('active', STATUS_ON, ($edit_data.active == STATUS_ON))} id="active">
                             {else}
@@ -203,7 +203,7 @@
                     {if $is_super_admin}
                         <div class="form-group">
                             {lang('text_super_admin')}
-                            <div class="switch-button switch-button-xs float-right mt-1">
+                            <div class="switch-button switch-button-xs float-end mt-1">
                                 {if isset($edit_data.super_admin)}
                                     <input type="checkbox" name="super_admin" value="{STATUS_ON}" {set_checkbox('super_admin', STATUS_ON, ($edit_data.super_admin == STATUS_ON))} id="super_admin">
                                 {else}

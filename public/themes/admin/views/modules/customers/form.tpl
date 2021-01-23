@@ -189,7 +189,7 @@
                     </div>
                     <div class="form-group">
                         {lang('text_active')}
-                        <div class="switch-button switch-button-xs float-right mt-1">
+                        <div class="switch-button switch-button-xs float-end mt-1">
                             <input type="checkbox" name="active" value="{STATUS_ON}" {if $edit_data.id}{if $edit_data.active eq true}checked="checked"{/if}{else}checked="checked"{/if} id="active">
                             <span><label for="active"></label></span>
                         </div>
@@ -197,7 +197,7 @@
                     {if $is_super_admin}
                         <div class="form-group">
                             {lang('text_super_admin')}
-                            <div class="switch-button switch-button-xs float-right mt-1">
+                            <div class="switch-button switch-button-xs float-end mt-1">
                                 <input type="checkbox" name="super_admin" value="{STATUS_ON}" {if $edit_data.id}{if $edit_data.super_admin eq true}checked="checked"{/if}{else}checked="checked"{/if} id="super_admin">
                                 <span><label for="super_admin"></label></span>
                             </div>

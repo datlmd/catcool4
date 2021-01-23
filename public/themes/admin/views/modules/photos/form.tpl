@@ -99,14 +99,14 @@
                             <h3 class="ps-1">{lang('text_manage_more')}</h3>
                             <div class="form-group ps-1">
                                 {lang('text_published')}
-                                <div class="switch-button switch-button-xs float-right mt-1">
+                                <div class="switch-button switch-button-xs float-end mt-1">
                                     <input type="checkbox" name="published" value="{STATUS_ON}" {if $edit_data.photo_id}{if $edit_data.published eq true}checked="checked"{/if}{else}checked="checked"{/if} id="published_photo">
                                     <span><label for="published_photo"></label></span>
                                 </div>
                             </div>
                             <div class="form-group ps-1">
                                 {lang('text_is_comment')}
-                                <div class="switch-button switch-button-xs float-right mt-1">
+                                <div class="switch-button switch-button-xs float-end mt-1">
                                     <input type="checkbox" name="is_comment" value="{STATUS_ON}" {if $edit_data.photo_id}{if $edit_data.is_comment eq true}checked="checked"{/if}{else}checked="checked"{/if} id="is_comment_photo">
                                     <span><label for="is_comment_photo"></label></span>
                                 </div>

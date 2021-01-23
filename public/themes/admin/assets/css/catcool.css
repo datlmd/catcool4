@@ -194,7 +194,6 @@ label {
     -o-transform: translate(0px,0px);
     -ms-transform: translate(0px,0px);
 }
-.float-right { float: right; }
 .content-height .ck-content {
     min-height: 500px;
 }

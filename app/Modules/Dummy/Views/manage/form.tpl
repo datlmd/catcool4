@@ -33,7 +33,7 @@
                                 {foreach $list_lang as $language}
                                     <div class="tab-pane fade {if !empty($language.active)}show active{/if}" role="tabpanel" id="lanuage_content_{$language.id}"  aria-labelledby="language_tab_{$language.id}">
                                         <div class="form-group row required has-error">
-                                            <label class="col-12 col-sm-3 col-form-label required-label text-sm-right">
+                                            <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
                                                 {lang('text_name')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-7">
@@ -44,7 +44,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">
+                                            <label class="col-12 col-sm-3 col-form-label text-sm-end">
                                                 {lang('text_description')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-7">
