@@ -555,15 +555,15 @@ $(function () {
         $(this).ekkoLightbox();
     });
 
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
+    // var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    // var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    //     return new bootstrap.Tooltip(tooltipTriggerEl)
+    // })
 
-    // if ($('[data-bs-toggle=\'tooltip\']').length) {
-    //     $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
-    //     $('[data-bs-toggle=\'tooltip\']').tooltip();
-    // }
+    if ($('[data-bs-toggle=\'tooltip\']').length) {
+        $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
+        $('[data-bs-toggle=\'tooltip\']').tooltip();
+    }
     if ($('[data-toggle=\'popover\']').length) {
         $('[data-toggle=\'popover\']').popover('dispose')
         $('[data-toggle=\'popover\']').popover()

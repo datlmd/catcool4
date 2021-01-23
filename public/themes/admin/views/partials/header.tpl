@@ -27,7 +27,7 @@
 				</li>
 				<li class="nav-item dropdown notification">
 					<a class="nav-link nav-icons icon-animation" href="#" id="navbarDropdownMenuLink1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-bell"></i> <span class="indicator"></span></a>
-					<ul class="dropdown-menu dropdown-menu-right notification-dropdown">
+					<ul class="dropdown-menu dropdown-menu-end notification-dropdown">
 						<li>
 							<div class="notification-title"> Notification</div>
 							<div class="notification-list">
@@ -50,7 +50,7 @@
 				</li>
 				<li class="nav-item dropdown connection">
 					<a class="nav-link icon-animation" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-fw fa-th"></i> </a>
-					<ul class="dropdown-menu dropdown-menu-right connection-dropdown">
+					<ul class="dropdown-menu dropdown-menu-end connection-dropdown">
 						<li class="connection-list">
 							<div class="row">
 								<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">
@@ -82,7 +82,7 @@
 				</li>
 				<li class="nav-item dropdown nav-user">
 					<a class="nav-link nav-user-img icon-animation" href="#" id="navbar_dropdown_user_info" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{get_avatar()}" alt="" class="user-avatar-md rounded-circle"></a>
-					<div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbar_dropdown_user_info">
+					<div class="dropdown-menu dropdown-menu-end nav-user-dropdown" aria-labelledby="navbar_dropdown_user_info">
 						<div class="nav-user-info">
 							<h5 class="mb-0 text-white nav-user-name">{session('full_name')}</h5>
 							<span class="status"></span><span class="ms-2">{session('username')}</span>
@@ -94,7 +94,7 @@
 				{if config_item('enable_icon_menu_admin')}
 					<li class="nav-item dropdown nav-more pt-2">
 						<a class="px-3 icon-animation" href="#" id="navbar_dropdown_menu_all" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-angle-double-down font-20 mt-2"></i></a>
-						<div class="dropdown-menu dropdown-menu-right nav-user-dropdown navbar-dropdown-menu-top" aria-labelledby="navbar_dropdown_menu_all">
+						<div class="dropdown-menu dropdown-menu-end nav-user-dropdown navbar-dropdown-menu-top" aria-labelledby="navbar_dropdown_menu_all">
 							{*hien thi menu all*}
 							{foreach $menu_admin as $key => $item}
 								<a class="dropdown-item" href="{$item.detail.slug}" {$item.attributes}>

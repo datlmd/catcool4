@@ -5,9 +5,9 @@
             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('Dummy.heading_title')}
 		</div>
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-bs-toggle="tooltip" data-bs-placement="top" title="{lang('GeneralManage.button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
-			<a href="{site_url($manage_url)}/add{http_get_query()}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="{lang('GeneralManage.button_add')}"><i class="fas fa-plus"></i></a>
-			<button type="button" id="btn_search" class="btn btn-sm btn-brand" data-bs-toggle="tooltip" data-bs-placement="top" title="{lang('GeneralManage.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
+			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{lang('GeneralManage.button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
+			<a href="{site_url($manage_url)}/add{http_get_query()}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{lang('GeneralManage.button_add')}"><i class="fas fa-plus"></i></a>
+			<button type="button" id="btn_search" class="btn btn-sm btn-brand" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{lang('GeneralManage.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
 		</div>
 	</div>
 	<div class="row collapse {if !empty($filter_active)}show{/if}" id="filter_manage">
@@ -78,8 +78,8 @@
 										</td>
 										<td class="text-center">
 											<div class="btn-group ms-auto">
-												<a href="{site_url($manage_url)}/edit/{$item.dummy_id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-bs-toggle="tooltip" data-bs-placement="top" title="{lang('GeneralManage.button_edit')}"{/if}><i class="fas fa-edit"></i></a>
-												<button type="button" data-id="{$item.dummy_id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-bs-placement="top" title="{lang('GeneralManage.button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
+												<a href="{site_url($manage_url)}/edit/{$item.dummy_id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{lang('GeneralManage.button_edit')}"{/if}><i class="fas fa-edit"></i></a>
+												<button type="button" data-id="{$item.dummy_id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{lang('GeneralManage.button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 											</div>
 										</td>
 										<td class="text-center">{form_checkbox('manage_ids[]', $item.dummy_id)}</td>
