@@ -537,12 +537,10 @@ $(function () {
         }
     });
     /* load alert neu ton tai session */
-    if ($('input[name="alert_msg"]').length) {
-        if ($('input[name="alert_type"]').length) {
-            $.notify($('input[name="alert_msg"]').val(),{type: $('input[name="alert_type"]').val()});
-        } else {
-            $.notify($('input[name="alert_msg"]').val());
-        }
+    if ($('input[name="alert_msg[]"]').length) {
+        $('input[name="alert_msg[]"]').each(function(){
+            $.notify($(this).val(),{type: $(this).attr('data-type')});
+        });
     }
 
     Catcool.checkBoxDelete();

@@ -135,7 +135,7 @@ if ( ! function_exists('print_alert'))
 
 if ( ! function_exists('set_alert'))
 {
-    function set_alert($message = '', $type = 'info')
+    function set_alert($message = '', $type = 'info', $view = 'alert')
     {
         // If not message is set, nothing to do.
         if (empty($message)) {
@@ -143,10 +143,13 @@ if ( ! function_exists('set_alert'))
         }
         if (is_array($message)) {
             foreach ($message as $_type => $_message) {
-                $messages[] = ['type' => $_type, 'message' => $_message];
+                if (!in_array($_type, ['success','danger','warning','info','light','dark','primary','secondary'])) {
+                    $_type = $type;
+                }
+                $messages[] = ['type' => $_type, 'message' => $_message, 'view' => $view];
             }
         } else {
-            $messages[] = ['type' => $type, 'message' => $message];
+            $messages[] = ['type' => $type, 'message' => $message, 'view' => $view];
         }
 
         // Set flashdata.
@@ -168,9 +171,10 @@ if ( ! function_exists('print_flash_alert'))
         if (!empty($alert_list) && is_array($alert_list))
         {
             $output = '';
-            foreach ($alert_list as $message)
-            {
-                $output .= print_alert($message['message'], $message['type'], $view);
+            foreach ($alert_list as $message) {
+                if ($message['view'] == $view) {
+                    $output .= print_alert($message['message'], $message['type'], $view);
+                }
             }
             return $output;
         }

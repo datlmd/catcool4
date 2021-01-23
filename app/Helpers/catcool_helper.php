@@ -202,6 +202,36 @@ if (!function_exists('format_data_lang_id'))
     }
 }
 
+if (!function_exists('format_lang_form'))
+{
+    /**
+     * @param $data
+     * @return array
+     */
+    function format_lang_form($data)
+    {
+        if (empty($data)) {
+            return $data;
+        }
+
+        $input_list = [];
+        foreach (get_list_lang() as $lang) {
+            foreach ($data as $key => $value) {
+                if (strrpos($key, $lang['id']) !== FALSE) {
+                    $lang_tmp = explode('_', $key);
+                    if (empty($lang_tmp) || count($lang_tmp) < 3) {
+                        continue;
+                    }
+                    //lang_{$language.id}_description
+                    $input_list[$lang_tmp[1]][$lang_tmp[2]] = $value;
+                }
+            }
+        }
+
+        return $input_list;
+    }
+}
+
 if (!function_exists('create_token'))
 {
     /**

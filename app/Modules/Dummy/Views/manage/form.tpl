@@ -15,12 +15,14 @@
             {create_input_token($csrf)}
         {/if}
         <div class="row">
+            {if !empty(print_flash_alert())}
+                <div class="col-12">{print_flash_alert()}</div>
+            {/if}
             {if !empty($errors)}
                 <div class="col-12">
                     {include file=get_theme_path('views/inc/alert.tpl') message=$errors type='danger'}
                 </div>
             {/if}
-
             <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                 <div class="card">
                     <h5 class="card-header"><i class="fas {if !empty($edit_data.dummy_id)}fa-edit{else}fa-plus{/if} mr-2"></i>{$text_form}</h5>
@@ -35,9 +37,9 @@
                                                 {lang('text_name')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-7">
-                                                <input type="text" name="manager_lang[{$language.id}][name]" value='{old("manager_lang[`$language.id`][name]", $edit_data.dummy_lang[$language.id].name)}' id="input-name[{$language.id}]" class="form-control {if $validator->hasError("manager_lang[`$language.id`][name]")}is-invalid{/if}">
+                                                <input type="text" name="lang_{$language.id}_name" value='{if !empty($edit_data.dummy_lang[$language.id].name)}{old("lang_`$language.id`_name", $edit_data.dummy_lang[$language.id].name)}{/if}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang_`$language.id`_name")}is-invalid{/if}">
                                                 <div class="invalid-feedback">
-                                                    {$validator->getError("manager_lang[`$language.id`][name]")}
+                                                    {$validator->getError("lang_`$language.id`_name")}
                                                 </div>
                                             </div>
                                         </div>
@@ -46,7 +48,7 @@
                                                 {lang('text_description')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-7">
-                                                <textarea name="manager_lang[{$language.id}][description]" cols="40" rows="2" id="input-description[{$language.id}]" type="textarea" class="form-control">{old("manager_lang[`$language.id`][description]", $edit_data.dummy_lang[$language.id].description)}</textarea>
+                                                <textarea name="lang_{$language.id}_description" cols="40" rows="2" id="input_description_{$language.id}" type="textarea" class="form-control">{if !empty($edit_data.dummy_lang[$language.id].description)}{old("lang_`$language.id`_description", $edit_data.dummy_lang[$language.id].description)}{/if}</textarea>
                                             </div>
                                         </div>
                                         {*TPL_DUMMY_DESCRIPTION*}
@@ -75,7 +77,7 @@
                         {*TPL_DUMMY_ROOT*}
                         <div class="form-group">
                             {lang('text_sort_order')}
-                            <input type="number" name="sort_order" value="{old('sort_order', $edit_data.sort_order)}" id="sort_order" min="0" class="form-control">
+                            <input type="number" name="sort_order" value="{if !empty($edit_data.sort_order)}{old('sort_order', $edit_data.sort_order)}{else}0{/if}" id="sort_order" min="0" class="form-control">
                         </div>
                     </div>
                 </div>

@@ -59,28 +59,36 @@ class Manage extends AdminController
 
     public function add()
     {
-        if (isset($_POST) && !empty($_POST) && $this->validate_form() === TRUE) {
+        if (!empty($this->request->getPost()))
+        {
+            if (!$this->validate_form())
+            {
+                //set_alert(lang('error_token'), ALERT_ERROR);
+                set_alert($this->errors, ALERT_ERROR);
+                return redirect()->back()->withInput();
+            }
+
             $add_data = [
                 'sort_order' => $this->request->getPost('sort_order'),
-                'published'  => (isset($_POST['published'])) ? STATUS_ON : STATUS_OFF,
+                'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
                 'ctime'      => get_date(),
                 //ADD_DUMMY_ROOT
             ];
             $id = $this->model->save($add_data);
             if ($id === FALSE) {
                 set_alert(lang('error'), ALERT_ERROR);
-                redirect(self::MANAGE_URL . '/add');
+                return redirect()->back()->withInput();
             }
 
-            $add_data_description = $this->request->getPost('manager_description');
+            $add_data_lang = format_lang_form($this->request);
             foreach (get_list_lang() as $key => $value) {
-                $add_data_description[$key]['language_id'] = $key;
-                $add_data_description[$key]['dummy_id']    = $id;
+                $add_data_lang[$key]['language_id'] = $key;
+                $add_data_lang[$key]['dummy_id']    = $id;
             }
-            $this->model_lang->save($add_data_description);
+            $this->model_lang->save($add_data_lang);
 
-            set_alert(lang('text_add_success'), ALERT_SUCCESS);
-            redirect(self::MANAGE_URL);
+            set_alert(lang('text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
+            return redirect()->to(site_url(self::MANAGE_URL));
         }
 
         $this->get_form();
@@ -90,17 +98,26 @@ class Manage extends AdminController
     {
         if (is_null($id)) {
             set_alert(lang('error_empty'), ALERT_ERROR);
-            return redirect()->to(site_url(self::MANAGE_URL)); //with('error', $this->model->errors());
+            return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()) && $this->validate_form()) {
-            // do we have a valid request?
-            if (valid_token() === FALSE || $id != $this->request->getPost('dummy_id')) {
-                set_alert(lang('error_token'), ALERT_ERROR);
-                return redirect()->to(site_url(self::MANAGE_URL));
+        if (!empty($this->request->getPost()))
+        {
+            if (!$this->validate_form())
+            {
+                //set_alert(lang('error_token'), ALERT_ERROR);
+                set_alert($this->errors, ALERT_ERROR);
+                return redirect()->back()->withInput();
             }
 
-            $edit_data_lang = $this->request->getPost('manager_lang');
+            // do we have a valid request?
+            if (valid_token() === FALSE || $id != $this->request->getPost('dummy_id'))
+            {
+                set_alert(lang('error_token'), ALERT_ERROR);
+                return redirect()->back()->withInput();
+            }
+
+            $edit_data_lang = format_lang_form($this->request);
             foreach (get_list_lang() as $key => $value) {
                 $edit_data_lang[$key]['language_id'] = $key;
                 $edit_data_lang[$key]['dummy_id']    = $id;
@@ -110,25 +127,22 @@ class Manage extends AdminController
                 } else {
                     $this->model_lang->insert($edit_data_lang[$key]);
                 }
-
-                //$this->model_lang->save($edit_data_lang[$key]);
             }
 
             $edit_data = [
                 'dummy_id'   => $id,
                 'sort_order' => $this->request->getPost('sort_order'),
-                'published'  => (isset($_POST['published'])) ? STATUS_ON : STATUS_OFF,
+                'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
                 'mtime'      => get_date(),
                 //ADD_DUMMY_ROOT
             ];
             if ($this->model->save($edit_data) !== FALSE) {
-                set_alert(lang('text_edit_success'), ALERT_SUCCESS);
+                set_alert(lang('text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
             } else {
-                set_alert(lang('error'), ALERT_ERROR);
+                set_alert(lang('error'), ALERT_ERROR, ALERT_POPUP);
             }
 
-            return redirect()->back();//->with('success', 'Email sent');
-            //redirect(self::MANAGE_URL . '/edit/' . $id);
+            return redirect()->back()->withInput();
         }
 
         $this->get_form($id);
@@ -170,15 +184,15 @@ class Manage extends AdminController
 
     protected function validate_form()
     {
-        //$this->validator->setRule('sort_order', lang('GeneralManage.sort_order'), 'is_natural');
+        $this->validator->setRule('sort_order', lang('GeneralManage.text_sort_order'), 'is_natural');
         foreach(get_list_lang() as $key => $value) {
-            //$this->validator->setRule(sprintf('manager_lang[%s][name]', $key), lang('GeneralManage.text_name') . ' (' . $value['name']  . ')', 'required');
+            $this->validator->setRule(sprintf('lang_%s_name', $key), lang('GeneralManage.text_name') . ' (' . $value['name']  . ')', 'required');
         }
 
-        $is_validation = $this->validator->run();
+        $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();
 
-        return true;
+        return $is_validation;
     }
 
     public function delete($id = null)

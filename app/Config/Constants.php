@@ -84,6 +84,7 @@ defined('CACHE_TIME_CSS') OR define('CACHE_TIME_CSS', '20200419');
 defined('CACHE_TIME_JS') OR define('CACHE_TIME_JS', '20200419');
 
 // CAT COOL
+defined('ALERT_POPUP')   OR define('ALERT_POPUP', 'alert_popup'); // view alert popup
 defined('ALERT_SUCCESS') OR define('ALERT_SUCCESS', 'success'); // alert type
 defined('ALERT_WARNING') OR define('ALERT_WARNING', 'warning'); // alert type
 defined('ALERT_DANGER')  OR define('ALERT_DANGER', 'danger'); // alert type
