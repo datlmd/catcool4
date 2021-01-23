@@ -5,9 +5,9 @@
             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
 		</div>
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
-			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></a>
-			<a href="{$manage_url}/write" class="btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_write')}"><i class="fas fa-save"></i></a>
+			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
+			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></a>
+			<a href="{$manage_url}/write" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_write')}"><i class="fas fa-save"></i></a>
 			<a href="{site_url('configs/groups_manage')}" class="btn btn-sm btn-primary"><i class="fas fa-list me-1"></i>{lang('text_group')}</a>
 		</div>
 	</div>
@@ -22,11 +22,11 @@
 					<div class="tab-regular">
 						<ul class="nav nav-tabs border-bottom ps-3" id="config_tab" role="tablist">
 							<li class="nav-item">
-								<a class="nav-link p-2 ps-3 pe-3 {if empty($ses_config_group_id)}active{/if}" id="config_group_id_all" data-toggle="tab" href="#config_content_group_id_all" role="tab" aria-controls="config_group_id_all" aria-selected="{if empty($ses_config_group_id)}true{else}false{/if}">{lang('text_all')}</a>
+								<a class="nav-link p-2 ps-3 pe-3 {if empty($ses_config_group_id)}active{/if}" id="config_group_id_all" data-bs-toggle="tab" href="#config_content_group_id_all" role="tab" aria-controls="config_group_id_all" aria-selected="{if empty($ses_config_group_id)}true{else}false{/if}">{lang('text_all')}</a>
 							</li>
 							{foreach $groups as $group}
 								<li class="nav-item">
-									<a class="nav-link p-2 ps-3 pe-3 {if $group.id eq $ses_config_group_id}active{/if}" id="config_group_id_{$group.id}" data-toggle="tab" href="#config_content_group_id_{$group.id}" role="tab" aria-controls="config_group_id_{$group.id}" aria-selected="{if $group.id eq $ses_config_group_id}true{else}false{/if}">{$group.name}</a>
+									<a class="nav-link p-2 ps-3 pe-3 {if $group.id eq $ses_config_group_id}active{/if}" id="config_group_id_{$group.id}" data-bs-toggle="tab" href="#config_content_group_id_{$group.id}" role="tab" aria-controls="config_group_id_{$group.id}" aria-selected="{if $group.id eq $ses_config_group_id}true{else}false{/if}">{$group.name}</a>
 								</li>
 							{/foreach}
 						</ul>
@@ -61,8 +61,8 @@
 													</td>
 													<td class="text-center">
 														<div class="btn-group ms-auto">
-															<a href="{$manage_url}/edit/{$item.id}?tab_group_id=0" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
-															<button type="button" data-id="{$item.id}" class="btn btn-sm btn-outline-light btn_delete_single" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
+															<a href="{$manage_url}/edit/{$item.id}?tab_group_id=0" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
+															<button type="button" data-id="{$item.id}" class="btn btn-sm btn-outline-light btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 														</div>
 													</td>
 													<td class="text-center">{form_checkbox('manage_ids[]', $item.id)}</td>
@@ -107,8 +107,8 @@
 																</td>
 																<td class="text-center">
 																	<div class="btn-group ms-auto">
-																		<a href="{$manage_url}/edit/{$item.id}?tab_group_id={$group.id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
-																		<button type="button" data-id="{$item.id}" class="btn btn-sm btn-outline-light btn_delete_single" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
+																		<a href="{$manage_url}/edit/{$item.id}?tab_group_id={$group.id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
+																		<button type="button" data-id="{$item.id}" class="btn btn-sm btn-outline-light btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 																	</div>
 																</td>
 																<td class="text-center">{form_checkbox('manage_ids[]', $item.id)}</td>

@@ -6,8 +6,8 @@
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
-                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
+                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
+                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
             </div>
         </div>
         {if !empty($edit_data.category_id)}
@@ -30,7 +30,7 @@
                                 {foreach $list_lang as $language}
                                     <div class="tab-pane fade {if $language.active}show active{/if}" role="tabpanel" id="lanuage_content_{$language.id}"  aria-labelledby="language_tab_{$language.id}">
                                         <div class="form-group row required has-error">
-                                            <label class="col-12 col-sm-3 col-form-label required-label text-sm-right">
+                                            <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
                                                 {lang('text_name')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-8">
@@ -41,7 +41,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">
+                                            <label class="col-12 col-sm-3 col-form-label text-sm-end">
                                                 {lang('text_description')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-8">
@@ -49,7 +49,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-12 col-sm-3 col-form-label text-sm-right">
+                                            <label class="col-12 col-sm-3 col-form-label text-sm-end">
                                                 {lang('tab_seo')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-8 mt-2">
@@ -81,7 +81,7 @@
                         <div class="form-group">
                             {lang("text_image")}
                             <!-- Drag and Drop container-->
-                            <a href="javascript:void(0);" id="thumb-image" data-target="input-image-path" data-thumb="load-thumb-image" data-toggle="image">
+                            <a href="javascript:void(0);" id="thumb-image" data-target="input-image-path" data-thumb="load-thumb-image" data-bs-toggle="image">
                                 <img src="{if !empty(set_value('image', $edit_data.image))}{image_thumb_url(set_value('image', $edit_data.image))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}"/>
                                 <button type="button" id="button-image" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('text_photo_edit')}</button>
                                 <button type="button" id="button-clear" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('text_photo_clear')}</button>

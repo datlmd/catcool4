@@ -25,47 +25,47 @@
                 <div class="card-body">
                     {form_open('user/auth/create_user', 'id="validationform" data-parsley-validate="" novalidate=""')}
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('create_user_fname_label')}</label>
+                        <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('create_user_fname_label')}</label>
                         <div class="col-12 col-sm-8 col-lg-6">
                             {form_input($first_name, '', 'required="" placeholder="Type something" class="form-control"')}
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('create_user_lname_label')}</label>
+                        <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('create_user_lname_label')}</label>
                         <div class="col-12 col-sm-8 col-lg-6">
                             {form_input($last_name, '', 'required="" placeholder="" class="form-control"')}
                         </div>
                     </div>
                     {if $identity_column !== 'email'}
                         <div class="form-group row">
-                            <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('create_user_identity_label')}</label>
+                            <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('create_user_identity_label')}</label>
                             <div class="col-12 col-sm-8 col-lg-6">
                                 {form_input($identity, '', 'required="" placeholder="Type something" class="form-control"')}
                             </div>
                         </div>
                     {/if}
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('create_user_company_label')}</label>
+                        <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('create_user_company_label')}</label>
                         <div class="col-12 col-sm-8 col-lg-6">
                             {form_input($company, '', 'required="" placeholder="Type something" class="form-control"')}
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('create_user_email_label')}</label>
+                        <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('create_user_email_label')}</label>
                         <div class="col-12 col-sm-8 col-lg-6">
                             {form_input($email, '', 'required="" placeholder="Type something" class="form-control"')}
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('create_user_phone_label')}</label>
+                        <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('create_user_phone_label')}</label>
                         <div class="col-12 col-sm-8 col-lg-6">
                             {form_input($phone, '', 'required="" placeholder="Type something" class="form-control"')}
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('create_user_password_label')}</label>
+                        <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('create_user_password_label')}</label>
                         <div class="col-sm-4 col-lg-3 mb-3 mb-sm-0">
                             {form_input($password, '', 'required="" placeholder="Password" class="form-control"')}
                         </div>

@@ -1,4 +1,4 @@
-{assign var="class_colum_label" value="col-12 col-sm-3 col-form-label required-label text-sm-right"}
+{assign var="class_colum_label" value="col-12 col-sm-3 col-form-label required-label text-sm-end"}
 {assign var="class_colum_input" value="col-12 col-sm-8 col-lg-6"}
 {form_hidden('manage_url', $manage_url)}
 <div class="container-fluid  dashboard-content">
@@ -8,8 +8,8 @@
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
-                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
+                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
+                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
             </div>
         </div>
         {if !empty($edit_data.id)}

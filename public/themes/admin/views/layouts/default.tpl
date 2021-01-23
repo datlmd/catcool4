@@ -1,4 +1,4 @@
-{*<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>*}
+<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>
 <div class="dashboard-main-wrapper">
 	{$header}
 	{$sidebar}

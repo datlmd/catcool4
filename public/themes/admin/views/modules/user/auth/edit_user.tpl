@@ -25,32 +25,32 @@
                 <div class="card-body">
                     {form_open(uri_string(), 'id="validationform" data-parsley-validate="" novalidate=""')}
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('edit_user_fname_label')}</label>
+                        <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('edit_user_fname_label')}</label>
                         <div class="col-12 col-sm-8 col-lg-6">
                             {form_input($first_name, '', 'required="" placeholder="Type something" class="form-control"')}
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('edit_user_lname_label')}</label>
+                        <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('edit_user_lname_label')}</label>
                         <div class="col-12 col-sm-8 col-lg-6">
                             {form_input($last_name, '', 'required="" placeholder="" class="form-control"')}
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('edit_user_company_label')}</label>
+                        <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('edit_user_company_label')}</label>
                         <div class="col-12 col-sm-8 col-lg-6">
                             {form_input($company, '', 'required="" placeholder="Type something" class="form-control"')}
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('edit_user_phone_label')}</label>
+                        <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('edit_user_phone_label')}</label>
                         <div class="col-12 col-sm-8 col-lg-6">
                             {form_input($phone, '', 'required="" placeholder="Type something" class="form-control"')}
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('edit_user_password_label')}</label>
+                        <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('edit_user_password_label')}</label>
                         <div class="col-sm-4 col-lg-3 mb-3 mb-sm-0">
                             {form_input($password, '', 'required="" placeholder="Password" class="form-control"')}
                         </div>
@@ -60,7 +60,7 @@
                     </div>
                     {if $this->ion_auth->is_admin()}
                         <div class="form-group row">
-                            <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('edit_user_groups_heading')}</label>
+                            <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('edit_user_groups_heading')}</label>
                             <div class="col-12 col-sm-8 col-lg-6">
                                 {foreach $groups as $group}
                                     {capture name="checked"}{/capture}

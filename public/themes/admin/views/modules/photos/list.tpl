@@ -6,9 +6,9 @@
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
 			</div>
 			<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-				<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
-				<button id="btn_photo_add" type="button" class="btn btn-sm btn-primary" onclick="Photo.photoAddModal();" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></button>
-				<button type="button" id="btn_search" class="btn btn-sm btn-brand" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
+				<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
+				<button id="btn_photo_add" type="button" class="btn btn-sm btn-primary" onclick="Photo.photoAddModal();" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></button>
+				<button type="button" id="btn_search" class="btn btn-sm btn-brand" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
 				<a href="{site_url("photos/albums_manage")}" class="btn btn-sm btn-primary"><i class="fas fa-list me-1"></i> {lang('module_album')}</a>
 			</div>
 		</div>
@@ -128,8 +128,8 @@
 													</td>
 													<td class="text-center">
 														<div class="btn-group ms-auto">
-															<button type="button" onclick="Photo.photoEditModal({$item.photo_id});" class="btn btn-xs btn-outline-light" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></button>
-															<button type="button" data-id="{$item.photo_id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
+															<button type="button" onclick="Photo.photoEditModal({$item.photo_id});" class="btn btn-xs btn-outline-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></button>
+															<button type="button" data-id="{$item.photo_id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 														</div>
 													</td>
 													<td class="text-center">{form_checkbox('manage_ids[]', $item.photo_id)}</td>

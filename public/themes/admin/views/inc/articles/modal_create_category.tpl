@@ -13,7 +13,7 @@
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     {form_open('categories/manage/api_add', ['id' => 'modal_add_data'])}
 						<div class="form-group row">
-							<label class="col-12 col-sm-3 col-form-label text-sm-right">
+							<label class="col-12 col-sm-3 col-form-label text-sm-end">
 								{lang('text_name')}
 							</label>
 							<div class="col-12 col-sm-8 col-lg-6">
@@ -21,7 +21,7 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-12 col-sm-3 col-form-label text-sm-right">
+							<label class="col-12 col-sm-3 col-form-label text-sm-end">
 								{lang('text_description')}
 							</label>
 							<div class="col-12 col-sm-8 col-lg-6">

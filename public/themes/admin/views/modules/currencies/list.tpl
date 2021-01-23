@@ -5,9 +5,9 @@
             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
 		</div>
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-			<a href="{$manage_url}/refresh" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_refresh')}"><i class="fas fa-sync"></i></a>
-			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
-			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></a>
+			<a href="{$manage_url}/refresh" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_refresh')}"><i class="fas fa-sync"></i></a>
+			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
+			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></a>
 		</div>
 	</div>
 	<div class="row">
@@ -53,8 +53,8 @@
 										</td>
 										<td class="text-center">
 											<div class="btn-group ms-auto">
-												<a href="{$manage_url}/edit/{$item.currency_id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
-												<button type="button" data-id="{$item.currency_id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
+												<a href="{$manage_url}/edit/{$item.currency_id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
+												<button type="button" data-id="{$item.currency_id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 											</div>
 										</td>
 										<td class="text-center">{form_checkbox('manage_ids[]', $item.currency_id)}</td>

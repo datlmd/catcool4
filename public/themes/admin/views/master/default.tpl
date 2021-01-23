@@ -18,12 +18,14 @@
     <script type="text/javascript" src="{base_url('common/js/respond-1.4.2.min.js')}"></script>
     <![endif]-->
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
     <script src="{base_url('common/plugin/jquery/jquery-3.4.1.min.js')}" type="text/javascript"></script>
-    <script src="{base_url('common/plugin/bootstrap/js/popper.min.js')}" type="text/javascript"></script>
-    <script src="{base_url('common/plugin/bootstrap/js/bootstrap.bundle.js')}" type="text/javascript"></script>
     <script src="{base_url('common/js/admin/catcool.js')}?{CACHE_TIME_JS}" type="text/javascript"></script>
 
-{*    *}{*<script src="{js_url('vendor/bootstrap/js/bootstrap.min', 'common')}" type="text/javascript"></script>*}
+{*    <script src="{base_url('common/plugin/bootstrap/js/bootstrap.min.js')}" type="text/javascript"></script>*}
+{*    <script src="{base_url('common/plugin/bootstrap/js/popper.min.js')}" type="text/javascript"></script>*}
+{*    <script src="{base_url('common/plugin/bootstrap/js/bootstrap.bundle.js')}" type="text/javascript"></script>*}
 
     <script>{script_global()}</script>
 </head>

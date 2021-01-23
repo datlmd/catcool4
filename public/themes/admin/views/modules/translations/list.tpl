@@ -5,7 +5,7 @@
             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
         </div>
         <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-            <button type="button" id="btn_search" class="btn btn-sm btn-brand" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
+            <button type="button" id="btn_search" class="btn btn-sm btn-brand" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
         </div>
     </div>
 	<div class="row">
@@ -58,7 +58,7 @@
                             <h5 class="mb-0 mt-1"><i class="fas fa-list me-2"></i>{lang('text_list')}</h5>
                         </div>
                         <div class="col-7 text-end">
-                            <button type="button" class="btn btn-sm btn-space btn-primary" data-toggle="modal" data-target="#addLang"><i class="fas fa-plus me-1"></i>{lang('text_add')}</button>
+                            <button type="button" class="btn btn-sm btn-space btn-primary" data-bs-toggle="modal" data-target="#addLang"><i class="fas fa-plus me-1"></i>{lang('text_add')}</button>
                             <button type="button" id="btn_save_translate" onclick="save_translate()" class="btn btn-sm btn-space btn-secondary"><i class="fas fa-save me-1"></i>{lang('button_save')}</button>
                             <button type="button" id="btn_write_translate" onclick="write_translate({$module.id})" class="btn btn-sm btn-space btn-success"><i class="fas fa-sync me-1"></i>{lang('button_write')}</button>
                         </div>
@@ -137,7 +137,7 @@
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     {form_open('translations/manage/add', ['id' => 'add_lang_form'])}
 						<div class="form-group row">
-							<label class="col-12 col-sm-3 col-form-label required-label text-sm-right">
+							<label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
 								Key:
 							</label>
 							<div class="col-12 col-sm-8 col-lg-6">
@@ -146,7 +146,7 @@
 						</div>
 						{foreach $list_lang as $lang}
 							<div class="form-group row">
-								<label class="col-12 col-sm-3 col-form-label required-label text-sm-right">
+								<label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
 									{$lang.name|capitalize}
 								</label>
 								<div class="col-12 col-sm-8 col-lg-6">

@@ -5,9 +5,9 @@
             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
 		</div>
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
-			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></a>
-			<button type="button" id="btn_search" class="btn btn-sm btn-brand" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
+			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
+			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></a>
+			<button type="button" id="btn_search" class="btn btn-sm btn-brand" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
 			<a href="{site_url("users/groups_manage")}" class="btn btn-sm btn-primary"><i class="fas fa-list me-1"></i> {lang('module_group')}</a>
 		</div>
 	</div>
@@ -91,10 +91,10 @@
 										</td>
 										<td class="text-center">
 											<div class="btn-group ms-auto">
-												<a href="{$manage_url}/edit/{$item.customer_id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
-												<a href="{$manage_url}/change_password/{$item.customer_id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('text_change_password')}"{/if}><i class="fas fa-key"></i></a>
-												<a href="{$manage_url}/permission/{$item.customer_id}" class="btn btn-sm btn-outline-light text-brand" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('text_permission_select')}"{/if}><i class="fas fa-lock-open"></i></a>
-												<button type="button" data-id="{$item.customer_id}" class="btn btn-sm btn-outline-light btn_delete_single text-danger" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
+												<a href="{$manage_url}/edit/{$item.customer_id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
+												<a href="{$manage_url}/change_password/{$item.customer_id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('text_change_password')}"{/if}><i class="fas fa-key"></i></a>
+												<a href="{$manage_url}/permission/{$item.customer_id}" class="btn btn-sm btn-outline-light text-brand" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('text_permission_select')}"{/if}><i class="fas fa-lock-open"></i></a>
+												<button type="button" data-id="{$item.customer_id}" class="btn btn-sm btn-outline-light btn_delete_single text-danger" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 											</div>
 										</td>
 										<td class="text-center">{form_checkbox('manage_ids[]', $item.customer_id)}</td>

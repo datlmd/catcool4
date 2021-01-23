@@ -13,7 +13,7 @@
 					<img src="{image_url(config_item('image_logo_url'))}" alt="logo">
 				</a>
             {/if}
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu_admin" aria-controls="menu_admin" aria-expanded="false" aria-label="Menu Admin">
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#menu_admin" aria-controls="menu_admin" aria-expanded="false" aria-label="Menu Admin">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="menu_admin">
@@ -28,7 +28,7 @@
 					</li>
 					{foreach $menu_admin as $key => $item}
 						<li class="nav-item">
-							<a class="nav-link {if $item.selected|strstr:$this->uri->segment(1,'none')}collapsed active show{/if}" href="{$item.detail.slug}" {$item.attributes} {if $item.subs}data-toggle="collapse" aria-expanded="true"{/if} data-target="#submenu-{$key}" aria-controls="submenu-{$key}">
+							<a class="nav-link {if $item.selected|strstr:$this->uri->segment(1,'none')}collapsed active show{/if}" href="{$item.detail.slug}" {$item.attributes} {if $item.subs}data-bs-toggle="collapse" aria-expanded="true"{/if} data-target="#submenu-{$key}" aria-controls="submenu-{$key}">
 								{if !empty($item.icon)}<i class="{$item.icon}"></i>{/if}{$item.detail.name}
 							</a>
 							{if $item.subs}
@@ -55,7 +55,7 @@
 		{if config_item('enable_icon_menu_admin')}
 			<div class="d-xl-block d-lg-block d-none">
 				{foreach $menu_admin as $key => $item}
-					<a href="{$item.detail.slug}" {$item.attributes} {if $item.subs}data-toggle="modal" data-target="#popup_menu_left_{$key}"{/if}>
+					<a href="{$item.detail.slug}" {$item.attributes} {if $item.subs}data-bs-toggle="modal" data-target="#popup_menu_left_{$key}"{/if}>
 						<div class="menu-left-icon {if strpos($item.selected, $this->uri->segment(1,'none')) !== false}active{/if}">
 							<i class="{if !empty($item.icon)}{$item.icon}{else}fas fa-angle-double-right{/if}"></i>
 							<div class="tooltiptext">{$item.detail.name}</div>

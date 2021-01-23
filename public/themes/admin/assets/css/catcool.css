@@ -292,7 +292,7 @@ ul.list-album-photos {
     top: 5px;
     right: 15px;
 }
-a[data-toggle="image"] {
+a[data-bs-toggle="image"] {
     width: 100%;
     max-width: 150px;
     margin: 10px auto;

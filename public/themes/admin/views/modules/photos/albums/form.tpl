@@ -8,11 +8,11 @@
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
                 {if $edit_data.album_id}
-                    <button type="button" onclick="Photo.submitAlbum('validationform_album', true);" class="btn btn-sm btn-space btn-primary mb-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
+                    <button type="button" onclick="Photo.submitAlbum('validationform_album', true);" class="btn btn-sm btn-space btn-primary mb-0" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
                 {else}
-                    <button type="button" onclick="Photo.submitAlbum('validationform_album');" class="btn btn-sm btn-space btn-primary mb-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
+                    <button type="button" onclick="Photo.submitAlbum('validationform_album');" class="btn btn-sm btn-space btn-primary mb-0" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
                 {/if}
-                <button type="button" onclick="Photo.loadView('{get_last_url($manage_url)}');" class="btn btn-sm btn-space btn-secondary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></button>
+                <button type="button" onclick="Photo.loadView('{get_last_url($manage_url)}');" class="btn btn-sm btn-space btn-secondary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></button>
             </div>
         </div>
         {if !empty($edit_data.album_id)}

@@ -20,7 +20,7 @@
 					{/if}
                     {form_open(uri_string(), ['id' => 'add_validationform'])}
 						<div class="form-group row">
-							<label class="col-12 col-sm-3 col-form-label required-label text-sm-right">
+							<label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
 								{lang('module_name')}
 							</label>
 							<div class="col-12 col-sm-8 col-lg-6">
@@ -29,7 +29,7 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-12 col-sm-3 col-form-label required-label text-sm-right">
+							<label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
 								{lang('controller_name')}
 							</label>
 							<div class="col-12 col-sm-8 col-lg-6">
@@ -38,7 +38,7 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-12 col-sm-3 col-form-label required-label text-sm-right">
+							<label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
 								{lang('model_name')}
 							</label>
 							<div class="col-12 col-sm-8 col-lg-6">
@@ -47,7 +47,7 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-12 col-sm-3 col-form-label required-label text-sm-right">
+							<label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
 								{lang('table_name')}
 							</label>
 							<div class="col-12 col-sm-8 col-lg-6">
@@ -56,7 +56,7 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-12 col-sm-3 col-form-label required-label text-sm-right">
+							<label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
 								Is Language?
 							</label>
 							<div class="col-12 col-sm-8 col-lg-6">
@@ -67,7 +67,7 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<div class="col-12 col-sm-3 col-form-label text-sm-right"></div>
+							<div class="col-12 col-sm-3 col-form-label text-sm-end"></div>
 							<div class="col-12 col-sm-8 col-lg-6">
 								<button type="submit" class="btn btn-sm btn-space btn-primary"><i class="fas fa-file-medical me-1"></i>{lang('btn_create_module')}</button>
 								<button type="reset" class="btn btn-sm btn-space btn-secondary"><i class="fas fa-undo me-1"></i>{lang('button_reset')}</button>

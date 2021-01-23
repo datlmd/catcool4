@@ -6,8 +6,8 @@
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
-                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
+                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
+                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
             </div>
         </div>
         {if !empty($edit_data.id)}
@@ -28,7 +28,7 @@
                     <h5 class="card-header"><i class="fas {if !empty($edit_data.id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                     <div class="card-body">
                         <div class="form-group row">
-                            {lang('text_module', 'text_module', ['class' => 'col-12 col-sm-3 col-form-label required-label text-sm-right'])}
+                            {lang('text_module', 'text_module', ['class' => 'col-12 col-sm-3 col-form-label required-label text-sm-end'])}
                             <div class="col-12 col-sm-8 col-lg-6">
                                 <input type="text" name="module" value="{set_value('module', $edit_data.module)}" id="module" class="form-control {if !empty($errors["module"])}is-invalid{/if}">
                                 {if !empty($errors["module"])}
@@ -37,13 +37,13 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            {lang('text_sub_module', 'text_sub_module', ['class' => 'col-12 col-sm-3 col-form-label text-sm-right'])}
+                            {lang('text_sub_module', 'text_sub_module', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
                             <div class="col-12 col-sm-8 col-lg-6">
                                 <input type="text" name="sub_module" value="{set_value('sub_module', $edit_data.sub_module)}" id="sub_module" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
-                            {lang('text_published', 'text_published', ['class' => 'col-12 col-sm-3 col-form-label text-sm-right'])}
+                            {lang('text_published', 'text_published', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
                             <div class="col-12 col-sm-8 col-lg-6">
                                 <div class="switch-button switch-button-xs mt-2">
                                     {if isset($edit_data.published)}

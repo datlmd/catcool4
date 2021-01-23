@@ -6,8 +6,8 @@
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
-                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
+                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
+                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
             </div>
         </div>
         {if !empty($edit_data.news_id)}
@@ -42,7 +42,7 @@
                         <div class="form-group row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <span class="required-label">{lang('text_content')}</span>
-                                <textarea name="content" cols="40" rows="5" data-toggle="tinymce" id="input-content" type="textarea" class="form-control">{set_value("content", $edit_data.content)|unescape:"html"}</textarea>
+                                <textarea name="content" cols="40" rows="5" data-bs-toggle="tinymce" id="input-content" type="textarea" class="form-control">{set_value("content", $edit_data.content)|unescape:"html"}</textarea>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -106,13 +106,13 @@
                         <div class="form-group">
                             {lang('text_publish_date')}
                             <div class="input-group">
-                                <input type="text" name="publish_date" id="publish_date" class="form-control show-date-picker" data-date-format="DD/MM/YYYY" data-target="#publish_date" data-toggle="datetimepicker" value="{set_value('publish_date', $edit_data.publish_date)|date_format:'d/m/Y'}" autocomplete="off"  />
-                                <input type="text" name="publish_date_hour" id="publish_date_hour" class="form-control show-time-picker" data-date-format="LT" data-target="#publish_date_hour" data-toggle="datetimepicker" value="{set_value('publish_date_hour', $edit_data.publish_date)|date_format:'H:i'}" autocomplete="off">
+                                <input type="text" name="publish_date" id="publish_date" class="form-control show-date-picker" data-date-format="DD/MM/YYYY" data-target="#publish_date" data-bs-toggle="datetimepicker" value="{set_value('publish_date', $edit_data.publish_date)|date_format:'d/m/Y'}" autocomplete="off"  />
+                                <input type="text" name="publish_date_hour" id="publish_date_hour" class="form-control show-time-picker" data-date-format="LT" data-target="#publish_date_hour" data-bs-toggle="datetimepicker" value="{set_value('publish_date_hour', $edit_data.publish_date)|date_format:'H:i'}" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
                             {lang('text_image')}
-                            <a href="javascript:void(0);" id="thumb_image_root" data-target="input_image_root_path" data-thumb="load_thumb_image_root" data-toggle="image">
+                            <a href="javascript:void(0);" id="thumb_image_root" data-target="input_image_root_path" data-thumb="load_thumb_image_root" data-bs-toggle="image">
                                 <img src="{if !empty(set_value('images[root]', $edit_data.images.root))}{image_url(set_value('images[root]', $edit_data.images.root))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_root" data-placeholder="{image_default_url()}"/>
                                 <button type="button" id="button_image_root" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('text_photo_edit')}</button>
                                 <button type="button" id="button_clear_root" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('text_photo_clear')}</button>
@@ -120,14 +120,14 @@
                             <input type="hidden" name="images[root]" value="{set_value('images[root]', $edit_data.images.root)}" id="input_image_root_path" />
 
                             Robot<br/>
-                            <a href="javascript:void(0);" id="thumb_image_robot" data-target="input_image_robot_path" data-thumb="load_thumb_image_robot" data-toggle="image">
+                            <a href="javascript:void(0);" id="thumb_image_robot" data-target="input_image_robot_path" data-thumb="load_thumb_image_robot" data-bs-toggle="image">
                                 <img src="{if !empty(set_value('images[robot]', $edit_data.images.robot))}{image_url(set_value('images[robot]', $edit_data.images.robot))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_robot" data-placeholder="{image_default_url()}"/>
                                 <button type="button" id="button_image_robot" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('text_photo_edit')}</button>
                                 <button type="button" id="button_clear_robot" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('text_photo_clear')}</button>
                             </a>
                             <input type="hidden" name="images[robot]" value="{set_value('images[robot]', $edit_data.images.robot)}" id="input_image_robot_path" />
                             Robot FB<br/>
-                            <a href="javascript:void(0);" id="thumb_image_robot_fb" data-target="input_image_robot_fb_path" data-thumb="load_thumb_image_robot_fb" data-toggle="image">
+                            <a href="javascript:void(0);" id="thumb_image_robot_fb" data-target="input_image_robot_fb_path" data-thumb="load_thumb_image_robot_fb" data-bs-toggle="image">
                                 <img src="{if !empty(set_value('images[robot_fb]', $edit_data.images.robot_fb))}{image_url(set_value('images[robot_fb]', $edit_data.images.robot_fb))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_robot_fb" data-placeholder="{image_default_url()}"/>
                                 <button type="button" id="button_image_robot_fb" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('text_photo_edit')}</button>
                                 <button type="button" id="button_clear_robot_fb" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('text_photo_clear')}</button>

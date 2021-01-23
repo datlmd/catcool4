@@ -25,19 +25,19 @@
                         <div class="card-body">
                             {form_open('user/auth/change_password', 'id="validationform" data-parsley-validate="" novalidate=""')}
                               <div class="form-group row">
-                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('change_password_old_password_label')}</label>
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('change_password_old_password_label')}</label>
                                     <div class="col-12 col-sm-8 col-lg-6">
                                         {form_input($old_password, '', 'required="" placeholder="Type something" class="form-control"')}
                                     </div>
                               </div>
                               <div class="form-group row">
-                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">{sprintf(lang('change_password_new_password_label'), $min_password_length)}</label>
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-end">{sprintf(lang('change_password_new_password_label'), $min_password_length)}</label>
                                     <div class="col-12 col-sm-8 col-lg-6">
                                         {form_input($new_password, '', 'required="" placeholder="" class="form-control"')}
                                     </div>
                               </div>
                               <div class="form-group row">
-                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('change_password_new_password_confirm_label')}</label>
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('change_password_new_password_confirm_label')}</label>
                                     <div class="col-12 col-sm-8 col-lg-6">
                                         {form_input($new_password_confirm, '', 'required="" placeholder="" class="form-control"')}
                                     </div>

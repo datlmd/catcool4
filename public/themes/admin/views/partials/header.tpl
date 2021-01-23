@@ -7,7 +7,7 @@
 			{*<div class="logo-block block-four"></div>*}
 		{*</div>*}
 		{include file=get_theme_path('views/inc/logo.tpl')}
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse " id="navbarSupportedContent">
@@ -26,7 +26,7 @@
 					</div>
 				</li>
 				<li class="nav-item dropdown notification">
-					<a class="nav-link nav-icons icon-animation" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-bell"></i> <span class="indicator"></span></a>
+					<a class="nav-link nav-icons icon-animation" href="#" id="navbarDropdownMenuLink1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-bell"></i> <span class="indicator"></span></a>
 					<ul class="dropdown-menu dropdown-menu-right notification-dropdown">
 						<li>
 							<div class="notification-title"> Notification</div>
@@ -49,7 +49,7 @@
 					</ul>
 				</li>
 				<li class="nav-item dropdown connection">
-					<a class="nav-link icon-animation" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-fw fa-th"></i> </a>
+					<a class="nav-link icon-animation" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-fw fa-th"></i> </a>
 					<ul class="dropdown-menu dropdown-menu-right connection-dropdown">
 						<li class="connection-list">
 							<div class="row">
@@ -81,7 +81,7 @@
 					</ul>
 				</li>
 				<li class="nav-item dropdown nav-user">
-					<a class="nav-link nav-user-img icon-animation" href="#" id="navbar_dropdown_user_info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{get_avatar()}" alt="" class="user-avatar-md rounded-circle"></a>
+					<a class="nav-link nav-user-img icon-animation" href="#" id="navbar_dropdown_user_info" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{get_avatar()}" alt="" class="user-avatar-md rounded-circle"></a>
 					<div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbar_dropdown_user_info">
 						<div class="nav-user-info">
 							<h5 class="mb-0 text-white nav-user-name">{session('full_name')}</h5>
@@ -93,7 +93,7 @@
 				</li>
 				{if config_item('enable_icon_menu_admin')}
 					<li class="nav-item dropdown nav-more pt-2">
-						<a class="px-3 icon-animation" href="#" id="navbar_dropdown_menu_all" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-angle-double-down font-20 mt-2"></i></a>
+						<a class="px-3 icon-animation" href="#" id="navbar_dropdown_menu_all" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-angle-double-down font-20 mt-2"></i></a>
 						<div class="dropdown-menu dropdown-menu-right nav-user-dropdown navbar-dropdown-menu-top" aria-labelledby="navbar_dropdown_menu_all">
 							{*hien thi menu all*}
 							{foreach $menu_admin as $key => $item}

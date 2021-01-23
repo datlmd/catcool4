@@ -6,8 +6,8 @@
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
-                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
+                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
+                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
             </div>
         </div>
         {if !empty($edit_data.id)}
@@ -25,7 +25,7 @@
                     <h5 class="card-header"><i class="fas {if !empty($edit_data.id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                     <div class="card-body">
                         <div class="form-group row">
-                            {lang('text_route', 'text_route', ['class' => 'col-12 col-sm-3 col-form-label required-label text-sm-right'])}
+                            {lang('text_route', 'text_route', ['class' => 'col-12 col-sm-3 col-form-label required-label text-sm-end'])}
                             <div class="col-12 col-sm-8 col-lg-6">
                                 <input type="text" name="route" value="{set_value('route', $edit_data.route)}" id="route" class="form-control {if !empty($errors["route"])}is-invalid{/if}">
                                 {if !empty($errors["route"])}
@@ -34,7 +34,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            {lang('text_module', 'text_module', ['class' => 'col-12 col-sm-3 col-form-label required-label text-sm-right'])}
+                            {lang('text_module', 'text_module', ['class' => 'col-12 col-sm-3 col-form-label required-label text-sm-end'])}
                             <div class="col-12 col-sm-8 col-lg-6">
                                 <input type="text" name="module" value="{set_value('module', $edit_data.module)}" id="module" class="form-control {if !empty($errors["module"])}is-invalid{/if}">
                                 {if !empty($errors["module"])}
@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            {lang('text_resource', 'text_resource', ['class' => 'col-12 col-sm-3 col-form-label required-label text-sm-right'])}
+                            {lang('text_resource', 'text_resource', ['class' => 'col-12 col-sm-3 col-form-label required-label text-sm-end'])}
                             <div class="col-12 col-sm-8 col-lg-6">
                                 <input type="text" name="resource" value="{set_value('resource', $edit_data.resource)}" id="resource" class="form-control {if !empty($errors["resource"])}is-invalid{/if}">
                                 {if !empty($errors["resource"])}
@@ -52,7 +52,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            {lang('text_language', 'text_language', ['class' => 'col-12 col-sm-3 col-form-label required-label text-sm-right'])}
+                            {lang('text_language', 'text_language', ['class' => 'col-12 col-sm-3 col-form-label required-label text-sm-end'])}
                             <div class="col-12 col-sm-8 col-lg-6">
                                 <select name="language_id" id="language_id" class="form-control">
                                     {foreach $list_lang as $language}
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            {lang('text_published', 'text_published', ['class' => 'col-12 col-sm-3 col-form-label text-sm-right'])}
+                            {lang('text_published', 'text_published', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
                             <div class="col-12 col-sm-8 col-lg-6">
                                 <div class="switch-button switch-button-xs mt-2">
                                     {if isset($edit_data.published)}
@@ -75,7 +75,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <div class="col-12 col-sm-3 col-form-label text-sm-right">{lang('text_example')}</div>
+                            <div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('text_example')}</div>
                             <code class="col-12 col-sm-8 col-lg-6 text-start">
                                 $route["product/:num"] = "catalog/product_lookup";<br />
                                 $route["journals"] = "blogs";<br />

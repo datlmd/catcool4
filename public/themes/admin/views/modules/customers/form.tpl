@@ -6,8 +6,8 @@
             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
         </div>
         <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-            <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
-            <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
+            <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
+            <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
         </div>
     </div>
     {if !empty($edit_data.id)}
@@ -25,7 +25,7 @@
                 <h5 class="card-header"><i class="fas {if !empty($edit_data.id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                 <div class="card-body">
                     <div class="form-group row required has-error">
-                        <label class="col-12 col-sm-3 col-form-label required-label text-sm-right">
+                        <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
                             {lang('text_username')}
                         </label>
                         <div class="col-12 col-sm-8 col-lg-7">
@@ -37,7 +37,7 @@
                     </div>
                     {if empty($edit_data)}
                         <div class="form-group row">
-                            <label class="col-12 col-sm-3 col-form-label required-label text-sm-right">
+                            <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
                                 {lang('text_password')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-7">
@@ -48,7 +48,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-12 col-sm-3 col-form-label required-label text-sm-right">
+                            <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
                                 {lang('text_confirm_password')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-7">
@@ -60,14 +60,14 @@
                         </div>
                     {else}
                         <div class="form-group row">
-                            <label class="col-12 col-sm-3 col-form-label text-sm-right"></label>
+                            <label class="col-12 col-sm-3 col-form-label text-sm-end"></label>
                             <div class="col-12 col-sm-8 col-lg-7">
                                 <a href="{$manage_url}/change_password/{$edit_data.customer_id}" class="text-dark"><i class="fas fa-key me-2"></i>{lang('text_change_password')}</a>
                             </div>
                         </div>
                     {/if}
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label required-label text-sm-right">
+                        <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
                             {lang('text_full_name')}
                         </label>
                         <div class="col-12 col-sm-8 col-lg-7">
@@ -78,7 +78,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label required-label text-sm-right">
+                        <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
                             {lang('text_email')}
                         </label>
                         <div class="col-12 col-sm-8 col-lg-7">
@@ -89,7 +89,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">
+                        <label class="col-12 col-sm-3 col-form-label text-sm-end">
                             {lang('text_gender')}
                         </label>
                         <div class="col-12 col-sm-8 col-lg-7">
@@ -108,20 +108,20 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">
+                        <label class="col-12 col-sm-3 col-form-label text-sm-end">
                             {lang('text_dob')}
                         </label>
                         <div class="col-sm-4 col-lg-3 mb-3 mb-sm-0">
                             <div class="input-group date show-date-picker" id="show-date-picker" data-target-input="nearest" data-date-format="DD/MM/YYYY">
                                 <input type="text" name="dob" id="dob" class="form-control datetimepicker-input" {if $edit_data.dob}value="{$edit_data.dob|date_format:'d/m/Y'}"{/if} placeholder="dd/mm/yyyy" data-target="#show-datet-picker" />
-                                <div class="input-group-append" data-target="#show-date-picker" data-toggle="datetimepicker">
+                                <div class="input-group-append" data-target="#show-date-picker" data-bs-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">
+                        <label class="col-12 col-sm-3 col-form-label text-sm-end">
                             {lang('text_phone')}
                         </label>
                         <div class="col-12 col-sm-8 col-lg-7">
@@ -129,7 +129,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">
+                        <label class="col-12 col-sm-3 col-form-label text-sm-end">
                             {lang('text_address')}
                         </label>
                         <div class="col-12 col-sm-8 col-lg-7">
@@ -137,7 +137,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-12 col-sm-3 col-form-label text-sm-right">
+                        <label class="col-12 col-sm-3 col-form-label text-sm-end">
                             {lang('text_company')}
                         </label>
                         <div class="col-12 col-sm-8 col-lg-7">

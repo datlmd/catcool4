@@ -6,8 +6,8 @@
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
-                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
+                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
+                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
             </div>
         </div>
         {if !empty($edit_data.menu_id)}
@@ -31,7 +31,7 @@
                                 {foreach $list_lang as $language}
                                     <div class="tab-pane fade {if $language.active}show active{/if}" role="tabpanel" id="lanuage_content_{$language.id}"  aria-labelledby="language_tab_{$language.id}">
                                         <div class="form-group row required has-error">
-                                            <label class="col-12 col-sm-2 col-form-label required-label text-sm-right">
+                                            <label class="col-12 col-sm-2 col-form-label required-label text-sm-end">
                                                 {lang('text_name')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-8">
@@ -42,7 +42,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-12 col-sm-2 col-form-label text-sm-right">
+                                            <label class="col-12 col-sm-2 col-form-label text-sm-end">
                                                 {lang('text_description')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-8">
@@ -50,7 +50,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-12 col-sm-2 col-form-label text-sm-right">
+                                            <label class="col-12 col-sm-2 col-form-label text-sm-end">
                                                 {lang('text_url')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-8">
@@ -66,31 +66,31 @@
                     <h5 class="card-header">{lang('text_attribute')}</h5>
                     <div class="card-body mb-3">
                         <div class="form-group row">
-                            <label class="col-12 col-sm-2 col-form-label text-sm-right">{lang('text_attributes')}</label>
+                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('text_attributes')}</label>
                             <div class="col-12 col-sm-8 col-lg-8">
                                 <input type="text" name="attributes" value="{set_value('attributes', $edit_data.attributes)}" id="attributes" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-12 col-sm-2 col-form-label text-sm-right">{lang('text_selected')}</label>
+                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('text_selected')}</label>
                             <div class="col-12 col-sm-8 col-lg-8">
                                 <input type="text" name="selected" value="{set_value('selected', $edit_data.selected)}" id="selected" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-12 col-sm-2 col-form-label text-sm-right">{lang('text_nav_key')}</label>
+                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('text_nav_key')}</label>
                             <div class="col-12 col-sm-8 col-lg-8">
                                 <input type="text" name="nav_key" value="{set_value('nav_key', $edit_data.nav_key)}" id="nav_key" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-12 col-sm-2 col-form-label text-sm-right">{lang('text_label')}</label>
+                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('text_label')}</label>
                             <div class="col-12 col-sm-8 col-lg-8">
                                 <input type="text" name="label" value="{set_value('label', $edit_data.label)}" id="label" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-12 col-sm-2 col-form-label text-sm-right">{lang('text_icon')}</label>
+                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('text_icon')}</label>
                             <div class="input-group col-12 col-sm-8 col-lg-8">
                                 <input type="text" name="icon" value="{set_value('icon', $edit_data.icon)}" id="icon" class="form-control icon-picker-class-input">
                                 <div class="input-group-append">
@@ -99,7 +99,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-12 col-sm-2 col-form-label text-sm-right">{lang('text_context')}</label>
+                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('text_context')}</label>
                             <div class="col-12 col-sm-8 col-lg-8 pt-1">
                                 <label class="custom-control custom-radio custom-control-inline">
                                     <input type="radio" name="context" class="custom-control-input" value="{MENU_POSITION_MAIN}" {if set_value('context', $edit_data.context) eq MENU_POSITION_MAIN}checked="checked"{/if}><span class="custom-control-label">{MENU_POSITION_MAIN}</span>
@@ -139,7 +139,7 @@
                         <div class="form-group">
                             {lang("text_image")}
                             <!-- Drag and Drop container-->
-                            <a href="javascript:void(0);" id="thumb-image" data-target="input-image-path" data-thumb="load-thumb-image" data-toggle="image">
+                            <a href="javascript:void(0);" id="thumb-image" data-target="input-image-path" data-thumb="load-thumb-image" data-bs-toggle="image">
                                 <img src="{if !empty($edit_data.image)}{image_thumb_url($edit_data.image)}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}"/>
                                 <button type="button" id="button-image" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('text_photo_edit')}</button>
                                 <button type="button" id="button-clear" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('text_photo_clear')}</button>

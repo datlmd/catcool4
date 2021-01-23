@@ -16,9 +16,9 @@
                     <div class="row mb-2">
                         <div class="col text-end">
                             {if $edit_data.album_id}
-                                <button type="button" id="submit_photo" onclick="Photo.submitPhoto('validationform_photo', true);" class="btn btn-sm btn-space btn-primary mb-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
+                                <button type="button" id="submit_photo" onclick="Photo.submitPhoto('validationform_photo', true);" class="btn btn-sm btn-space btn-primary mb-0" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
                             {else}
-                                <button type="button" id="submit_photo" onclick="Photo.submitPhoto('validationform_photo');" class="btn btn-sm btn-space btn-primary mb-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
+                                <button type="button" id="submit_photo" onclick="Photo.submitPhoto('validationform_photo');" class="btn btn-sm btn-space btn-primary mb-0" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
                             {/if}
                             <a href="#" class="btn btn-sm btn-space btn-light mb-0" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true"><i class="fas fa-reply"></i> {lang('button_close')}</span>

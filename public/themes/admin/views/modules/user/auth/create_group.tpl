@@ -25,13 +25,13 @@
                         <div class="card-body">
                             {form_open('user/auth/create_group', 'id="validationform" data-parsley-validate="" novalidate=""')}
                               <div class="form-group row">
-                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('create_group_name_label')}</label>
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('create_group_name_label')}</label>
                                     <div class="col-12 col-sm-8 col-lg-6">
                                         {form_input($group_name, '', 'required="" placeholder="Type something" class="form-control"')}
                                     </div>
                               </div>
                               <div class="form-group row">
-                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">{lang('create_group_desc_label')}</label>
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('create_group_desc_label')}</label>
                                     <div class="col-12 col-sm-8 col-lg-6">
                                         {form_input($description, '', 'required="" placeholder="" class="form-control"')}
                                     </div>
