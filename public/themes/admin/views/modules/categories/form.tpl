@@ -5,7 +5,7 @@
             <div class="col-sm-7 col-12">
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
             </div>
-            <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-right">
+            <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
                 <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
                 <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
             </div>
@@ -22,7 +22,7 @@
             {/if}
             <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
                 <div class="card">
-                    <h5 class="card-header"><i class="fas {if !empty($edit_data.category_id)}fa-edit{else}fa-plus{/if} mr-2"></i>{$text_form}</h5>
+                    <h5 class="card-header"><i class="fas {if !empty($edit_data.category_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                     <div class="card-body p-0 pt-3 bg-light">
                         <div class="tab-regular">
                             {include file=get_theme_path('views/inc/tab_language.inc.tpl') languages=$list_lang}
@@ -82,9 +82,9 @@
                         <div class="form-group">
                             {lang("text_image")}
                             <a href="javascript:void(0);" id="thumb-image" data-target="input-image-path" data-thumb="load-thumb-image" data-toggle="image">
-                                <img src="{if !empty(set_value('image', $edit_data.image))}{image_thumb_url(set_value('image', $edit_data.image))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 mr-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}"/>
-                                <button type="button" id="button-image" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt mr-1"></i>{lang('text_photo_edit')}</button>
-                                <button type="button" id="button-clear" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash mr-1"></i>{lang('text_photo_clear')}</button>
+                                <img src="{if !empty(set_value('image', $edit_data.image))}{image_thumb_url(set_value('image', $edit_data.image))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}"/>
+                                <button type="button" id="button-image" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('text_photo_edit')}</button>
+                                <button type="button" id="button-clear" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('text_photo_clear')}</button>
                             </a>
                             <input type="hidden" name="image" value="{set_value('image', $edit_data.image)}" id="input-image-path" />
                         </div>

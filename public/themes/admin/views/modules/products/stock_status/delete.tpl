@@ -9,7 +9,7 @@
         <div class="modal-body">
             {form_open(uri_string(), ['id' => 'delete_validationform'])}
                 {if !empty($list_delete)}
-                    <ul class="list-unstyled bullet-check font-14 ml-5">
+                    <ul class="list-unstyled bullet-check font-14 ms-5">
                         {foreach $list_delete as $item}
                             <li class="text-danger">{$item.detail.name} (ID={$item.stock_status_id})</li>
                         {/foreach}
@@ -19,7 +19,7 @@
                     {form_hidden('ids', $ids)}
                     {form_hidden('is_delete', true)}
                     {create_input_token($csrf)}
-                    <button type="button" id="submit_delete" onclick="Catcool.submitDelete('delete_validationform');" class="btn btn-sm btn-space btn-danger"><i class="fas fa-trash-alt mr-2"></i>{lang('button_delete')}</button>
+                    <button type="button" id="submit_delete" onclick="Catcool.submitDelete('delete_validationform');" class="btn btn-sm btn-space btn-danger"><i class="fas fa-trash-alt me-2"></i>{lang('button_delete')}</button>
                     <a href="#" class="btn btn-sm btn-space btn-light" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="fas fa-reply"></i> {lang('button_cancel')}</span>
                     </a>

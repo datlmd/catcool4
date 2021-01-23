@@ -4,7 +4,7 @@
         <div class="col-sm-7 col-12">
             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
         </div>
-        <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-right">
+        <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
             <button type="button" id="btn_search" class="btn btn-sm btn-brand" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
         </div>
     </div>
@@ -19,10 +19,10 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-6">
-                                <h5 class="mb-0 mt-1 ml-2"><i class="fas fa-filter mr-2"></i>{lang('filter_header')}</h5>
+                                <h5 class="mb-0 mt-1 ms-2"><i class="fas fa-filter me-2"></i>{lang('filter_header')}</h5>
                             </div>
-                            <div class="col-6 text-right">
-                                <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search mr-1"></i>{lang('filter_submit')}</button>
+                            <div class="col-6 text-end">
+                                <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('filter_submit')}</button>
                             </div>
                         </div>
                     </div>
@@ -55,12 +55,12 @@
                 <div class="card-header pb-2">
                     <div class="row">
                         <div class="col-5">
-                            <h5 class="mb-0 mt-1"><i class="fas fa-list mr-2"></i>{lang('text_list')}</h5>
+                            <h5 class="mb-0 mt-1"><i class="fas fa-list me-2"></i>{lang('text_list')}</h5>
                         </div>
-                        <div class="col-7 text-right">
-                            <button type="button" class="btn btn-sm btn-space btn-primary" data-toggle="modal" data-target="#addLang"><i class="fas fa-plus mr-1"></i>{lang('text_add')}</button>
-                            <button type="button" id="btn_save_translate" onclick="save_translate()" class="btn btn-sm btn-space btn-secondary"><i class="fas fa-save mr-1"></i>{lang('button_save')}</button>
-                            <button type="button" id="btn_write_translate" onclick="write_translate({$module.id})" class="btn btn-sm btn-space btn-success"><i class="fas fa-sync mr-1"></i>{lang('button_write')}</button>
+                        <div class="col-7 text-end">
+                            <button type="button" class="btn btn-sm btn-space btn-primary" data-toggle="modal" data-target="#addLang"><i class="fas fa-plus me-1"></i>{lang('text_add')}</button>
+                            <button type="button" id="btn_save_translate" onclick="save_translate()" class="btn btn-sm btn-space btn-secondary"><i class="fas fa-save me-1"></i>{lang('button_save')}</button>
+                            <button type="button" id="btn_write_translate" onclick="write_translate({$module.id})" class="btn btn-sm btn-space btn-success"><i class="fas fa-sync me-1"></i>{lang('button_write')}</button>
                         </div>
                     </div>
                 </div>
@@ -104,7 +104,7 @@
                                                 </td>
                                             {/foreach}
                                             <td class="text-center">
-                                                <div class="btn-group ml-auto">
+                                                <div class="btn-group ms-auto">
                                                     <button type="button" class="btn btn-sm btn-outline-light text-danger" data-module="{$module.id}" data-key="{$key}" onclick="delete_translate(this)" title="{lang('button_delete')}"><i class="fas fa-trash-alt"></i></button>
                                                 </div>
                                             </td>
@@ -158,7 +158,7 @@
 							<div class="col-12 col-sm-3"></div>
 							<div class="col-12 col-sm-8 col-lg-6">
 								<input type="hidden" name="module_id" value="{$module.id}">
-								<button type="button" onclick="add_translate()" class="btn btn-sm btn-space btn-primary btn-add-translate"><i class="fas fa-save mr-1"></i>{lang('button_save')}</button>
+								<button type="button" onclick="add_translate()" class="btn btn-sm btn-space btn-primary btn-add-translate"><i class="fas fa-save me-1"></i>{lang('button_save')}</button>
                                 <a href="#" class="btn btn-sm btn-space btn-light" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true"><i class="fas fa-reply"></i> {lang('button_cancel')}</span>
                                 </a>
@@ -182,10 +182,10 @@
             type: 'POST',
             data: $("#add_lang_form").serialize(),
             beforeSend: function () {
-                $('.btn-add-translate').find('i').replaceWith('<i class="fas fa-spinner fa-spin mr-1"></i>');
+                $('.btn-add-translate').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
             },
             complete: function () {
-                $('.btn-add-translate').find('i').replaceWith('<i class="fas fa-save mr-1"></i>');
+                $('.btn-add-translate').find('i').replaceWith('<i class="fas fa-save me-1"></i>');
             },
             success: function (data) {
                 var response = JSON.stringify(data);
@@ -207,10 +207,10 @@
             type: 'POST',
             data: $("#save_validationform").serialize(),
             beforeSend: function () {
-                $('#btn_save_translate').find('i').replaceWith('<i class="fas fa-spinner fa-spin mr-1"></i>');
+                $('#btn_save_translate').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
             },
             complete: function () {
-                $('#btn_save_translate').find('i').replaceWith('<i class="fas fa-save mr-1"></i>');
+                $('#btn_save_translate').find('i').replaceWith('<i class="fas fa-save me-1"></i>');
             },
             success: function (data) {
                 var response = JSON.stringify(data);
@@ -304,10 +304,10 @@
                                 module_id: module_id
                             },
                             beforeSend: function () {
-                                $('#btn_write_translate').find('i').replaceWith('<i class="fas fa-spinner fa-spin mr-1"></i>');
+                                $('#btn_write_translate').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
                             },
                             complete: function () {
-                                $('#btn_write_translate').find('i').replaceWith('<i class="fas fa-sync mr-1"></i>');
+                                $('#btn_write_translate').find('i').replaceWith('<i class="fas fa-sync me-1"></i>');
                             },
                             success: function (data) {
                                 var response = JSON.stringify(data);

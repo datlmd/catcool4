@@ -2,17 +2,17 @@
 	{if is_array($message)}
 		{foreach $message as $mess}
 			{if $type eq 'danger' || $type eq 'info'}
-				<i class="fas fa-exclamation-circle mr-1"></i>
+				<i class="fas fa-exclamation-circle me-1"></i>
 			{elseif $type eq 'success'}
-				<i class="fas fa-check mr-1"></i>
+				<i class="fas fa-check me-1"></i>
 			{/if}
 			{$mess}<br />
 		{/foreach}
 	{else}
 		{if $type eq 'danger' || $type eq 'info'}
-			<i class="fas fa-exclamation-circle mr-1"></i>
+			<i class="fas fa-exclamation-circle me-1"></i>
 		{elseif $type eq 'success'}
-			<i class="fas fa-check mr-1"></i>
+			<i class="fas fa-check me-1"></i>
 		{/if}
 		{$message}
 	{/if}

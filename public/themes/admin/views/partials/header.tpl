@@ -11,7 +11,7 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse " id="navbarSupportedContent">
-			<ul class="navbar-nav ml-auto navbar-right-top">
+			<ul class="navbar-nav ms-auto navbar-right-top">
 				<li class="nav-item">
 					<div id="custom-search" class="top-search-bar">
 						{if is_multi_lang() == true}
@@ -85,10 +85,10 @@
 					<div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbar_dropdown_user_info">
 						<div class="nav-user-info">
 							<h5 class="mb-0 text-white nav-user-name">{session('full_name')}</h5>
-							<span class="status"></span><span class="ml-2">{session('username')}</span>
+							<span class="status"></span><span class="ms-2">{session('username')}</span>
 						</div>
-						<a class="dropdown-item" href="{site_url('users/manage/edit/'|cat:session('user_id'))}"><i class="fas fa-user-circle mr-2"></i>{lang('text_profile')}</a>
-						<a class="dropdown-item" href="{site_url('users/manage/logout')}"><i class="fas fa-sign-out-alt mr-2"></i>{lang('text_logout')}</a>
+						<a class="dropdown-item" href="{site_url('users/manage/edit/'|cat:session('user_id'))}"><i class="fas fa-user-circle me-2"></i>{lang('text_profile')}</a>
+						<a class="dropdown-item" href="{site_url('users/manage/logout')}"><i class="fas fa-sign-out-alt me-2"></i>{lang('text_logout')}</a>
 					</div>
 				</li>
 				{if config_item('enable_icon_menu_admin')}
@@ -98,11 +98,11 @@
 							{*hien thi menu all*}
 							{foreach $menu_admin as $key => $item}
 								<a class="dropdown-item" href="{$item.detail.slug}" {$item.attributes}>
-									{if !empty($item.icon)}<i class="{$item.icon} mr-2"></i>{/if}{$item.detail.name}
+									{if !empty($item.icon)}<i class="{$item.icon} me-2"></i>{/if}{$item.detail.name}
 								</a>
 								{if $item.subs}
 									{foreach $item.subs as $sub}
-										<a class="dropdown-item py-2" href="{site_url($sub.detail.slug)}" {$sub.attributes}><i class="fas fa-angle-double-right ml-3 mr-2"></i>{$sub.detail.name}</a>
+										<a class="dropdown-item py-2" href="{site_url($sub.detail.slug)}" {$sub.attributes}><i class="fas fa-angle-double-right ms-3 me-2"></i>{$sub.detail.name}</a>
 									{/foreach}
 								{/if}
 							{/foreach}

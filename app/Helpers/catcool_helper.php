@@ -154,9 +154,9 @@ if (!function_exists('get_list_lang'))
                 $list_language[$key]['active'] = true;
             }
             if (empty($value['icon'])) {
-                $list_language[$key]['icon'] = '<i class="flag-icon flag-icon-' . (($value['code'] == 'vi') ? 'vn' : $value['code']) . ' mr-2"></i>';
+                $list_language[$key]['icon'] = '<i class="flag-icon flag-icon-' . (($value['code'] == 'vi') ? 'vn' : $value['code']) . ' ms-2"></i>';
             } else {
-                $list_language[$key]['icon'] = '<i class="' . $value['icon'] . ' mr-2"></i>';
+                $list_language[$key]['icon'] = '<i class="' . $value['icon'] . ' ms-2"></i>';
             }
         }
 
@@ -1543,7 +1543,7 @@ if(!function_exists('print_captcha'))
         // create session
         $_SESSION['captcha'] = md5(strtolower($cap['word']) . config('Config')->catcool_hash);
 
-        return '<div id="ci_captcha_image" style="width:'.($width + 20).'px;height:'.$height.'px; display: inline;">'.$cap['image']. '<a href="javascript:void(0);" onclick="Catcool.changeCaptcha();" class="btn btn-rounded btn-light js-re-captcha ml-2"><i class="fas fa-sync font-18"></i></a></div>';
+        return '<div id="ci_captcha_image" style="width:'.($width + 20).'px;height:'.$height.'px; display: inline;">'.$cap['image']. '<a href="javascript:void(0);" onclick="Catcool.changeCaptcha();" class="btn btn-rounded btn-light js-re-captcha ms-2"><i class="fas fa-sync font-18"></i></a></div>';
     }
 }
 
@@ -1581,7 +1581,7 @@ if(!function_exists('print_re_captcha'))
         // create session
         $_SESSION['captcha'] = md5(strtolower($cap['word']) . config('Config')->catcool_hash);
 
-        return $cap['image']. '<a href="javascript:void(0);" onclick="Catcool.changeCaptcha();" class="btn btn-rounded btn-light js-re-captcha ml-2"><i class="fas fa-sync font-18"></i></a>';
+        return $cap['image']. '<a href="javascript:void(0);" onclick="Catcool.changeCaptcha();" class="btn btn-rounded btn-light js-re-captcha ms-2"><i class="fas fa-sync font-18"></i></a>';
     }
 }
 

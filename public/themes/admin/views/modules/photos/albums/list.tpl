@@ -5,11 +5,11 @@
 			<div class="col-sm-7 col-12">
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
 			</div>
-			<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-right">
-				<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt mr-2"></i></span>
+			<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
+				<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt me-2"></i></span>
 				<button type="button" onclick="Photo.loadView('{$manage_url}/add');" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></button>
 				<button type="button" id="btn_search" class="btn btn-sm btn-brand" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
-				<a href="{site_url("photos/manage")}" class="btn btn-sm btn-primary"><i class="fas fa-list mr-1"></i> {lang('module_photo')}</a>
+				<a href="{site_url("photos/manage")}" class="btn btn-sm btn-primary"><i class="fas fa-list me-1"></i> {lang('module_photo')}</a>
 			</div>
 		</div>
 		<div class="row collapse {if $filter_active}show{/if}" id="filter_manage">
@@ -19,10 +19,10 @@
 						<div class="card-header">
 							<div class="row">
 								<div class="col-6">
-									<h5 class="mb-0 mt-1 ml-2"><i class="fas fa-filter mr-2"></i>{lang('filter_header')}</h5>
+									<h5 class="mb-0 mt-1 ms-2"><i class="fas fa-filter me-2"></i>{lang('filter_header')}</h5>
 								</div>
-								<div class="col-6 text-right">
-									<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search mr-1"></i>{lang('filter_submit')}</button>
+								<div class="col-6 text-end">
+									<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('filter_submit')}</button>
 								</div>
 							</div>
 						</div>
@@ -50,7 +50,7 @@
 						<div class="row">
 							<div class="col-12">
 								<button type="button" onclick="Photo.loadView('{$manage_url}?display={DISPLAY_GRID}');" class="btn btn-sm btn-outline-light"><i class="fas fa-th"></i></button>
-								<button type="button" onclick="Photo.loadView('{$manage_url}?display={DISPLAY_LIST}');" class="btn btn-sm btn-outline-light mr-1"><i class="fas fa-list"></i></button>
+								<button type="button" onclick="Photo.loadView('{$manage_url}?display={DISPLAY_LIST}');" class="btn btn-sm btn-outline-light me-1"><i class="fas fa-list"></i></button>
                                 {lang('text_list')}
 							</div>
 						</div>
@@ -99,7 +99,7 @@
 												<td class="text-center">{$item.album_id}</td>
 												<td>
 													<a href="{image_url($item.image)}" data-lightbox="photos">
-														<img src="{image_url($item.image)}" class="img-thumbnail mr-1 img-fluid">
+														<img src="{image_url($item.image)}" class="img-thumbnail me-1 img-fluid">
 													</a>
 												</td>
 												<td>
@@ -113,7 +113,7 @@
 													</div>
 												</td>
 												<td class="text-center">
-													<div class="btn-group ml-auto">
+													<div class="btn-group ms-auto">
 														<button type="button" onclick="Photo.loadView('{$manage_url}/edit/{$item.album_id}');" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></button>
 														<button type="button" data-id="{$item.album_id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 													</div>

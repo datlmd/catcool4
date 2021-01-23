@@ -7,7 +7,7 @@
             <div class="col-sm-7 col-12">
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
             </div>
-            <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-right">
+            <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
                 <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_save')}"><i class="fas fa-save"></i></button>
                 <a href="{site_url($manage_url)}" class="btn btn-sm btn-space btn-secondary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('text_cancel')}"><i class="fas fa-reply"></i></a>
             </div>
@@ -20,7 +20,7 @@
             {/if}
             <div class="col-12">
                 <div class="card">
-                    <h5 class="card-header"><i class="fas fa-lock-open mr-2"></i>{lang('text_permission_select')}</h5>
+                    <h5 class="card-header"><i class="fas fa-lock-open me-2"></i>{lang('text_permission_select')}</h5>
                     <div class="card-body">
                         <h3>ID#{$item_edit.id} - {$item_edit.username} ({$item_edit.first_name})</h3>
                         {if !empty($permissions)}

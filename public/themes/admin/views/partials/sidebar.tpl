@@ -20,7 +20,7 @@
 				<ul class="navbar-nav flex-column">
 					<li class="nav-divider pb-0 d-xl-none d-lg-none">
 						<a class="" href="{site_url('users/manage/edit/'|cat:session('user_id'))}">
-							<span class="badge badge-info"><i class="fas fa-user-circle mr-1"></i>{session('full_name')} ({session('username')})</span>
+							<span class="badge badge-info"><i class="fas fa-user-circle me-1"></i>{session('full_name')} ({session('username')})</span>
 						</a>
 					</li>
 					<li class="nav-item mt-xl-2 mt-lg-2">
@@ -36,7 +36,7 @@
 									<ul class="nav flex-column">
 										{foreach $item.subs as $sub}
 											<li class="nav-item">
-												<a class="nav-link {if $sub.selected eq $this->uri->uri_string()}active{/if}" href="{site_url($sub.detail.slug)}" {$sub.attributes}><i class="fas fa-angle-double-right mr-2"></i>{$sub.detail.name}</a>
+												<a class="nav-link {if $sub.selected eq $this->uri->uri_string()}active{/if}" href="{site_url($sub.detail.slug)}" {$sub.attributes}><i class="fas fa-angle-double-right me-2"></i>{$sub.detail.name}</a>
 											</li>
 										{/foreach}
 									</ul>
@@ -74,7 +74,7 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h4 class="modal-title" id="modal_label_{$key}"><i class="mr-2 {if !empty($item.icon)}{$item.icon}{else}fas fa-angle-double-right{/if}"></i>{$item.detail.name}</h4>
+							<h4 class="modal-title" id="modal_label_{$key}"><i class="me-2 {if !empty($item.icon)}{$item.icon}{else}fas fa-angle-double-right{/if}"></i>{$item.detail.name}</h4>
 							<a href="#" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</a>

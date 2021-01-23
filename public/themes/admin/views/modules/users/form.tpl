@@ -5,7 +5,7 @@
         <div class="col-sm-7 col-12">
             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
         </div>
-        <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-right">
+        <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
             <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
             <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
         </div>
@@ -22,7 +22,7 @@
         {/if}
         <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
             <div class="card">
-                <h5 class="card-header"><i class="fas {if !empty($edit_data.id)}fa-edit{else}fa-plus{/if} mr-2"></i>{$text_form}</h5>
+                <h5 class="card-header"><i class="fas {if !empty($edit_data.id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                 <div class="card-body">
                     <div class="form-group row required has-error">
                         <label class="col-12 col-sm-3 col-form-label required-label text-sm-right">
@@ -62,7 +62,7 @@
                         <div class="form-group row">
                             <label class="col-12 col-sm-3 col-form-label text-sm-right"></label>
                             <div class="col-12 col-sm-8 col-lg-7">
-                                <a href="{$manage_url}/change_password/{$edit_data.id}" class="text-dark"><i class="fas fa-key mr-2"></i>{lang('text_change_password')}</a>
+                                <a href="{$manage_url}/change_password/{$edit_data.id}" class="text-dark"><i class="fas fa-key me-2"></i>{lang('text_change_password')}</a>
                             </div>
                         </div>
                     {/if}
@@ -147,7 +147,7 @@
                 </div>
             </div>
             <div class="card">
-                <h5 class="card-header"><i class="fas fa-lock-open mr-2"></i>{lang('text_permission_select')}</h5>
+                <h5 class="card-header"><i class="fas fa-lock-open me-2"></i>{lang('text_permission_select')}</h5>
                 <div class="card-body">
                     {if !empty($permissions)}
                         <label class="custom-control custom-checkbox border-bottom pb-2">
@@ -183,9 +183,9 @@
                                 {/if}
                             </div>
                             <input type="file" name="file" id="file" size="20" />
-                            <button type="button" id="button-image-crop" class="btn btn-xs btn-primary w-100 mt-2" {if !empty(set_value('avatar', $edit_data.image))}onclick="Catcool.cropImage('{set_value('avatar', $edit_data.image)}', 1);"{else}style="display: none;"{/if}><i class="fas fa-crop mr-1"></i>{lang('text_photo_crop')}</button>
+                            <button type="button" id="button-image-crop" class="btn btn-xs btn-primary w-100 mt-2" {if !empty(set_value('avatar', $edit_data.image))}onclick="Catcool.cropImage('{set_value('avatar', $edit_data.image)}', 1);"{else}style="display: none;"{/if}><i class="fas fa-crop me-1"></i>{lang('text_photo_crop')}</button>
                             <div class="upload-area dropzone dz-clickable " id="uploadfile">
-                                <h5 class="dz-message py-3"><i class="fas fa-plus mr-1"></i><i class="fas fa-image"></i></h5>
+                                <h5 class="dz-message py-3"><i class="fas fa-plus me-1"></i><i class="fas fa-image"></i></h5>
                             </div>
                         </div>
                     </div>

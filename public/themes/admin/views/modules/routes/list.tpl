@@ -4,11 +4,11 @@
 		<div class="col-sm-7 col-12">
             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
 		</div>
-		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-right">
+		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
 			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
 			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></a>
 			<button type="button" id="btn_search" class="btn btn-sm btn-brand" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
-			<a href="{$manage_url}/write" class="btn btn-sm btn-secondary"><i class="fas fa-save mr-1"></i>{lang('button_write')}</a>
+			<a href="{$manage_url}/write" class="btn btn-sm btn-secondary"><i class="fas fa-save me-1"></i>{lang('button_write')}</a>
 		</div>
 	</div>
 	<div class="row collapse {if $filter_active}show{/if}" id="filter_manage">
@@ -18,10 +18,10 @@
 					<div class="card-header">
 						<div class="row">
 							<div class="col-6">
-								<h5 class="mb-0 mt-1 ml-2"><i class="fas fa-filter mr-2"></i>{lang('filter_header')}</h5>
+								<h5 class="mb-0 mt-1 ms-2"><i class="fas fa-filter me-2"></i>{lang('filter_header')}</h5>
 							</div>
-							<div class="col-6 text-right">
-								<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search mr-1"></i>{lang('filter_submit')}</button>
+							<div class="col-6 text-end">
+								<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('filter_submit')}</button>
 							</div>
 						</div>
 					</div>
@@ -48,7 +48,7 @@
 	<div class="row">
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="card">
-				<h5 class="card-header"><i class="fas fa-list mr-2"></i>{lang('text_list')}</h5>
+				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('text_list')}</h5>
 				<div class="card-body">
 					{if !empty($list)}
 						<div class="table-responsive">
@@ -80,7 +80,7 @@
 											</div>
 										</td>
 										<td class="text-center">
-											<div class="btn-group ml-auto">
+											<div class="btn-group ms-auto">
 												<a href="{$manage_url}/edit/{$item.id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
 												<button type="button" data-id="{$item.id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" {if count($list) > 1}data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 											</div>

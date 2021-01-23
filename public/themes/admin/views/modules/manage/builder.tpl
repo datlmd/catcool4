@@ -16,7 +16,7 @@
 						{ul($error_created, ['class' => 'text-danger'])}
 					{elseif !empty($success)}
 						{include file=get_theme_path('views/inc/alert.tpl') message=$success type='success'}
-						<a href="{$tool_manage}" target="_blank" class="badge badge-info py-2 px-4 mb-3"><i class="fas fa-link mr-2"></i>Tool: {$tool_manage}</a>
+						<a href="{$tool_manage}" target="_blank" class="badge badge-info py-2 px-4 mb-3"><i class="fas fa-link me-2"></i>Tool: {$tool_manage}</a>
 					{/if}
                     {form_open(uri_string(), ['id' => 'add_validationform'])}
 						<div class="form-group row">
@@ -69,8 +69,8 @@
 						<div class="form-group row">
 							<div class="col-12 col-sm-3 col-form-label text-sm-right"></div>
 							<div class="col-12 col-sm-8 col-lg-6">
-								<button type="submit" class="btn btn-sm btn-space btn-primary"><i class="fas fa-file-medical mr-1"></i>{lang('btn_create_module')}</button>
-								<button type="reset" class="btn btn-sm btn-space btn-secondary"><i class="fas fa-undo mr-1"></i>{lang('button_reset')}</button>
+								<button type="submit" class="btn btn-sm btn-space btn-primary"><i class="fas fa-file-medical me-1"></i>{lang('btn_create_module')}</button>
+								<button type="reset" class="btn btn-sm btn-space btn-secondary"><i class="fas fa-undo me-1"></i>{lang('button_reset')}</button>
 							</div>
 						</div>
 					{form_close()}

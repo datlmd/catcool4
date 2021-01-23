@@ -78,7 +78,7 @@
 <div class="form-group row mt-3">
 	<div class="col-12 col-sm-3 col-form-label text-sm-right"></div>
 	<div class="col-12 col-sm-8 col-lg-6">
-		<button type="submit" class="btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_save')}"><i class="fas fa-save mr-1"></i>{lang('button_save')}</button>
+		<button type="submit" class="btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_save')}"><i class="fas fa-save me-1"></i>{lang('button_save')}</button>
 	</div>
 </div>
 {form_close()}

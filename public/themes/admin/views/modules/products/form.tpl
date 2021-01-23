@@ -1,14 +1,14 @@
 {* thong tin ve san pham *}
 {capture name=product_info}
     <div class="tab-regular">
-        <ul class="nav nav-tabs border-bottom pl-3" id="tab_multi_language" role="tablist">
+        <ul class="nav nav-tabs border-bottom ps-3" id="tab_multi_language" role="tablist">
             {if count($list_lang) > 1}
                 {foreach $list_lang as $language}
                     <li class="nav-item">
                         {if !empty($id_content_tab)}
-                            <a class="nav-link p-2 pl-3 pr-3 {if $language.active}active{/if}" id="{$id_content_tab}_tab_{$language.id}" data-toggle="tab" href="#{$id_content_tab}_{$language.id}" role="tab" aria-controls="{$id_content_tab}_{$language.id}" aria-selected="{if $language.active}true{else}false{/if}">{$language.icon}{$language.name}</a>
+                            <a class="nav-link p-2 ps-3 pe-3 {if $language.active}active{/if}" id="{$id_content_tab}_tab_{$language.id}" data-toggle="tab" href="#{$id_content_tab}_{$language.id}" role="tab" aria-controls="{$id_content_tab}_{$language.id}" aria-selected="{if $language.active}true{else}false{/if}">{$language.icon}{$language.name}</a>
                         {else}
-                            <a class="nav-link p-2 pl-3 pr-3 {if $language.active}active{/if}" id="language_tab_{$language.id}" data-toggle="tab" href="#lanuage_content_{$language.id}" role="tab" aria-controls="lanuage_content_{$language.id}" aria-selected="{if $language.active}true{else}false{/if}">{$language.icon}{$language.name}</a>
+                            <a class="nav-link p-2 ps-3 pe-3 {if $language.active}active{/if}" id="language_tab_{$language.id}" data-toggle="tab" href="#lanuage_content_{$language.id}" role="tab" aria-controls="lanuage_content_{$language.id}" aria-selected="{if $language.active}true{else}false{/if}">{$language.icon}{$language.name}</a>
                         {/if}
                     </li>
                 {/foreach}
@@ -187,9 +187,9 @@
 {capture name=product_image}
     <div class="form-group">
         <a href="javascript:void(0);" id="thumb-image" data-target="input-image-path" data-thumb="load-thumb-image" data-toggle="image">
-            <img src="{if !empty($edit_data.images)}{image_thumb_url($edit_data.images)}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 mr-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}"/>
-            <button type="button" id="button-image" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt mr-1"></i>{lang('text_photo_edit')}</button>
-            <button type="button" id="button-clear" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash mr-1"></i>{lang('text_photo_clear')}</button>
+            <img src="{if !empty($edit_data.images)}{image_thumb_url($edit_data.images)}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}"/>
+            <button type="button" id="button-image" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('text_photo_edit')}</button>
+            <button type="button" id="button-clear" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('text_photo_clear')}</button>
         </a>
         <input type="hidden" name="image" value="{$edit_data.images}" id="input-image-path" />
     </div>
@@ -312,7 +312,7 @@
             <div class="col-sm-7 col-12">
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
             </div>
-            <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-right">
+            <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
                 <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
                 <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
             </div>
@@ -331,7 +331,7 @@
             {/if}
             <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
                 <div class="card">
-                    <h5 class="card-header"><i class="fas {if !empty($edit_data.product_id)}fa-edit{else}fa-plus{/if} mr-2"></i>{$text_form}</h5>
+                    <h5 class="card-header"><i class="fas {if !empty($edit_data.product_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                     <div class="card-body p-0 pt-3 bg-light">
                         {$smarty.capture.product_info}
                     </div>{*end card-body*}

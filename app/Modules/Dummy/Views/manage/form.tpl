@@ -5,7 +5,7 @@
             <div class="col-sm-7 col-12">
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('Dummy.heading_title')}
             </div>
-            <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-right">
+            <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
                 <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
                 <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
             </div>
@@ -25,7 +25,7 @@
             {/if}
             <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                 <div class="card">
-                    <h5 class="card-header"><i class="fas {if !empty($edit_data.dummy_id)}fa-edit{else}fa-plus{/if} mr-2"></i>{$text_form}</h5>
+                    <h5 class="card-header"><i class="fas {if !empty($edit_data.dummy_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                     <div class="card-body p-0 pt-3 bg-light">
                         <div class="tab-regular">
                             {include file=get_theme_path('views/inc/tab_language.inc.tpl') languages=$list_lang}

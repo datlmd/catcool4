@@ -5,7 +5,7 @@
             <div class="col-sm-7 col-12">
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
             </div>
-            <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-right">
+            <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
                 <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
                 <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
             </div>
@@ -22,7 +22,7 @@
             {/if}
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="card">
-                    <h5 class="card-header"><i class="fas {if !empty($edit_data.id)}fa-edit{else}fa-plus{/if} mr-2"></i>{$text_form}</h5>
+                    <h5 class="card-header"><i class="fas {if !empty($edit_data.id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                     <div class="card-body">
                         <div class="form-group row">
                             {lang('text_route', 'text_route', ['class' => 'col-12 col-sm-3 col-form-label required-label text-sm-right'])}
@@ -76,7 +76,7 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-12 col-sm-3 col-form-label text-sm-right">{lang('text_example')}</div>
-                            <code class="col-12 col-sm-8 col-lg-6 text-left">
+                            <code class="col-12 col-sm-8 col-lg-6 text-start">
                                 $route["product/:num"] = "catalog/product_lookup";<br />
                                 $route["journals"] = "blogs";<br />
                                 $route["blog/joe"] = "blogs/users/34";<br />

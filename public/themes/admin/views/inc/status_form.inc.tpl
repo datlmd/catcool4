@@ -4,9 +4,9 @@
 			<p class="col-4 m-0">Status</p>
 			<p class="col-8 m-0">
                 {if !empty($edit_data.published) || !empty($status)}
-					<span class="badge-dot badge-success mr-1"></span>Active
+					<span class="badge-dot badge-success me-1"></span>Active
 				{else}
-					<span class="badge-dot border border-dark mr-1"></span>Disabled
+					<span class="badge-dot border border-dark me-1"></span>Disabled
                 {/if}
 			</p>
 		</div>

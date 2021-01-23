@@ -14,7 +14,7 @@
                         <div id="token_content_photo">{create_input_token($csrf)}</div>
                     {/if}
                     <div class="row mb-2">
-                        <div class="col text-right">
+                        <div class="col text-end">
                             {if $edit_data.album_id}
                                 <button type="button" id="submit_photo" onclick="Photo.submitPhoto('validationform_photo', true);" class="btn btn-sm btn-space btn-primary mb-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
                             {else}
@@ -47,10 +47,10 @@
                             <div class="drop-drap-file" data-is-multi="false">
                                 <input type="file" name="file" id="file" accept="audio/*,video/*,image/*" /> {*multiple*}
                                 <div class="upload-area dropzone dz-clickable" id="uploadfile">
-                                    <h5 class="dz-message py-4"><i class="fas fa-plus mr-1 font-20"></i><i class="fas fa-image font-20"></i></h5>
+                                    <h5 class="dz-message py-4"><i class="fas fa-plus me-1 font-20"></i><i class="fas fa-image font-20"></i></h5>
                                 </div>
                             </div>
-                            <button type="button" id="button-image-crop" class="btn btn-xs btn-primary w-100 mt-2 mb-4" {if !empty($edit_data.image)}onclick="Catcool.cropImage('{$edit_data.image}', 0);"{else}style="display: none;"{/if}><i class="fas fa-crop mr-1"></i>{lang('text_photo_crop')}</button>
+                            <button type="button" id="button-image-crop" class="btn btn-xs btn-primary w-100 mt-2 mb-4" {if !empty($edit_data.image)}onclick="Catcool.cropImage('{$edit_data.image}', 0);"{else}style="display: none;"{/if}><i class="fas fa-crop me-1"></i>{lang('text_photo_crop')}</button>
                         </div>
                         <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
                             <div class="tab-regular">
@@ -96,22 +96,22 @@
                                     {/foreach}
                                 </div>
                             </div>
-                            <h3 class="pl-1">{lang('text_manage_more')}</h3>
-                            <div class="form-group pl-1">
+                            <h3 class="ps-1">{lang('text_manage_more')}</h3>
+                            <div class="form-group ps-1">
                                 {lang('text_published')}
                                 <div class="switch-button switch-button-xs float-right mt-1">
                                     <input type="checkbox" name="published" value="{STATUS_ON}" {if $edit_data.photo_id}{if $edit_data.published eq true}checked="checked"{/if}{else}checked="checked"{/if} id="published_photo">
                                     <span><label for="published_photo"></label></span>
                                 </div>
                             </div>
-                            <div class="form-group pl-1">
+                            <div class="form-group ps-1">
                                 {lang('text_is_comment')}
                                 <div class="switch-button switch-button-xs float-right mt-1">
                                     <input type="checkbox" name="is_comment" value="{STATUS_ON}" {if $edit_data.photo_id}{if $edit_data.is_comment eq true}checked="checked"{/if}{else}checked="checked"{/if} id="is_comment_photo">
                                     <span><label for="is_comment_photo"></label></span>
                                 </div>
                             </div>
-                            <div class="form-group pl-1">
+                            <div class="form-group ps-1">
                                 {lang('text_album')}
                                 <select name="album_id" id="album_id" class="form-control">
                                     <option value="">{lang('text_select')}</option>
@@ -120,16 +120,16 @@
                                     {/foreach}
                                 </select>
                             </div>
-                            <div class="form-group pl-1">
+                            <div class="form-group ps-1">
                                 {lang('text_tags')}
                                 <input type="text" name="tags" value="{set_value('tags', $edit_data.tags)}" id="tags" class="form-control" data-role="tagsinput">
                             </div>
-                            <div class="form-group pl-1 mb-3">
+                            <div class="form-group ps-1 mb-3">
                                 {lang('text_sort_order')}
                                 <input type="number" name="sort_order" value="{if $edit_data.photo_id}{set_value('sort_order', $edit_data.sort_order)}{else}0{/if}" id="sort_order" min="0" class="form-control">
                             </div>
                             {if $edit_data.photo_id}
-                                <div class="pl-1">{include file=get_theme_path('views/inc/status_form.inc.tpl')}</div>
+                                <div class="ps-1">{include file=get_theme_path('views/inc/status_form.inc.tpl')}</div>
                             {/if}
                         </div>
                     </div>

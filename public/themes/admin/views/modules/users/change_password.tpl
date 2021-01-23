@@ -5,7 +5,7 @@
             <div class="col-sm-7 col-12">
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
             </div>
-            <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-right">
+            <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
                 <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_save')}"><i class="fas fa-save"></i></button>
                 <a href="{$manage_url}/edit/{$edit_data.id}" class="btn btn-sm btn-space btn-secondary mb-0"  data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('text_cancel')}"><i class="fas fa-reply"></i></a>
             </div>
@@ -22,14 +22,14 @@
             {/if}
             <div class="col-12">
                 <div class="card">
-                    <h5 class="card-header"><i class="fas fa-key mr-2"></i>{lang('text_change_password')}</h5>
+                    <h5 class="card-header"><i class="fas fa-key me-2"></i>{lang('text_change_password')}</h5>
                     <div class="card-body">
                         <div class="form-group row required has-error">
                             <label class="col-12 col-sm-3 col-form-label text-sm-right">
                                 {lang('text_username')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-7 pt-1">
-                                <a href="{$manage_url}/edit/{$edit_data.id}" class="text-dark"><i class="fas fa-user mr-2"></i>{$edit_data.username}</a>
+                                <a href="{$manage_url}/edit/{$edit_data.id}" class="text-dark"><i class="fas fa-user me-2"></i>{$edit_data.username}</a>
                             </div>
                         </div>
                         <div class="form-group row">

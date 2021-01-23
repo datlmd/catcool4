@@ -6,7 +6,7 @@
             <div class="col-sm-7 col-12">
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
             </div>
-            <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-right">
+            <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
                 {if $edit_data.album_id}
                     <button type="button" onclick="Photo.submitAlbum('validationform_album', true);" class="btn btn-sm btn-space btn-primary mb-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
                 {else}
@@ -27,7 +27,7 @@
             {/if}
             <div class="col-xl-9 col-lg-9 col-md-8 col-sm-12 col-12">
                 <div class="card">
-                    <h5 class="card-header"><i class="fas {if !empty($edit_data.album_id)}fa-edit{else}fa-plus{/if} mr-2"></i>{$text_form}</h5>
+                    <h5 class="card-header"><i class="fas {if !empty($edit_data.album_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                     <div class="card-body p-0 pt-3 bg-light">
                         <div class="tab-regular">
                             {include file=get_theme_path('views/inc/tab_language.inc.tpl') languages=$list_lang}
@@ -96,7 +96,7 @@
                             <div class="form-group">
                                 {lang('text_image')}<br />
                                 <a href="{image_url($edit_data.image)}" data-lightbox="photos">
-                                    <img src="{image_url($edit_data.image)}" class="img-thumbnail w-50 mr-1 img-fluid" alt="" title=""/>
+                                    <img src="{image_url($edit_data.image)}" class="img-thumbnail w-50 me-1 img-fluid" alt="" title=""/>
                                 </a>
                             </div>
                         {/if}
@@ -120,7 +120,7 @@
                         <div class="drop-drap-file" data-is-multi="multiple">
                             <input type="file" name="file" id="file" multiple accept="audio/*,video/*,image/*" /> {*multiple*}
                             <div class="upload-area dropzone dz-clickable"  id="uploadfile">
-                                <h5 class="dz-message py-4"><i class="fas fa-plus mr-1 font-20"></i><i class="fas fa-image font-20"></i></h5>
+                                <h5 class="dz-message py-4"><i class="fas fa-plus me-1 font-20"></i><i class="fas fa-image font-20"></i></h5>
                             </div>
                         </div>
                         <ul id="image_thumb" class="row list-album-photos sortable_photos mt-2">
