@@ -17,10 +17,10 @@ $(function () {
                 url: 'common/filemanager?target=' + encodeURIComponent(element.parent().attr('data-target')) + '&thumb=' + encodeURIComponent(element.parent().attr('data-thumb')),
                 dataType: 'html',
                 beforeSend: function () {
-                    element.find('i').replaceWith('<i class="fas fa-spinner fa-spin mr-1"></i>');
+                    element.find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
                 },
                 complete: function () {
-                    element.find('i').replaceWith('<i class="fas fa-pencil-alt mr-1"></i>');
+                    element.find('i').replaceWith('<i class="fas fa-pencil-alt me-1"></i>');
                 },
                 success: function (html) {
                     is_processing = false;

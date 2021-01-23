@@ -12,10 +12,10 @@ function submitSort () {
         type: 'POST',
         data: {ids: JSON.stringify($('.dd').nestable('serialize'))},
         beforeSend: function () {
-            $('#btn_category_sort').find('i').replaceWith('<i class="fas fa-spinner fa-spin mr-1"></i>');
+            $('#btn_category_sort').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
         },
         complete: function () {
-            $('#btn_category_sort').find('i').replaceWith('<i class="fas fa-save mr-1"></i>');
+            $('#btn_category_sort').find('i').replaceWith('<i class="fas fa-save me-1"></i>');
         },
         success: function (data) {
             is_processing = false;

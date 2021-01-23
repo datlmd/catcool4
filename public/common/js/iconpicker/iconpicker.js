@@ -28,7 +28,7 @@ if ($('.icon-picker-list').length) {
 	$('.icon-picker-class-input').each(function () {
 		if ($(this).val() != null && $(this).val() != '') {
 			$('.icon-picker-demo').find('i').replaceWith('<i class="' + $(this).val() + '"></i>');
-			$('#change_icon_picker').find('i').replaceWith('<i class="' + $(this).val() + ' mr-2"></i>');
+			$('#change_icon_picker').find('i').replaceWith('<i class="' + $(this).val() + ' me-2"></i>');
 		} else {
 			$('.icon-picker-demo').find('i').replaceWith('<i class="fas fa-plus"></i>');
 		}
@@ -61,7 +61,7 @@ if ($('.icon-picker-list').length) {
 		$('.icon-picker-list a').removeClass('active');
 		// Sets active class
 		$('.icon-picker-list a').eq(selectedIcon).addClass('active');
-		$('#change_icon_picker').find('i').replaceWith('<i class="' + icons[selectedIcon].icon + ' mr-2"></i>');
+		$('#change_icon_picker').find('i').replaceWith('<i class="' + icons[selectedIcon].icon + ' me-2"></i>');
 	});
 
 	// Update icon input

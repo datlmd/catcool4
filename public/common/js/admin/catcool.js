@@ -254,10 +254,10 @@ var Catcool = {
             type: 'POST',
             data: $("#" + form_id).serialize(),
             beforeSend: function () {
-                $('#' + form_id + ' #submit_delete').find('i').replaceWith('<i class="fas fa-spinner fa-spin mr-2"></i>');
+                $('#' + form_id + ' #submit_delete').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-2"></i>');
             },
             complete: function () {
-                $('#' + form_id + ' #submit_delete').find('i').replaceWith('<i class="fas fa-trash-alt mr-2"></i>');
+                $('#' + form_id + ' #submit_delete').find('i').replaceWith('<i class="fas fa-trash-alt me-2"></i>');
             },
             success: function (data) {
                 is_processing = false;
@@ -347,7 +347,7 @@ var Catcool = {
             type: 'POST',
             data: [],
             beforeSend: function () {
-                $('.js-re-captcha').find('i').replaceWith('<i class="fas fa-spinner fa-spin mr-2"></i>');
+                $('.js-re-captcha').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-2"></i>');
             },
             complete: function () {
                 $('.js-re-captcha').find('i').replaceWith('<i class="fas fa-sync font-18"></i>');

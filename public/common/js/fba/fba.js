@@ -7,7 +7,7 @@
 
 var fba = function(g) {
     if (g.host != undefined && g.api != undefined && g.route != undefined && g.host != '' && g.api != '' && g.route != '') {
-        var j = '<div class="fba_direktori"></div>' + '<div class="fba_read_file"><i class="fas fa-code text-primary mr-1"></i> <span id="rf"></span> <span id="perms"></span><button type="button" id="w_file" class="btn btn-xs btn-warning float-right" style="margin-top: -3px;">Save</button> </div>' + '<textarea id="fba_text"></textarea>',
+        var j = '<div class="fba_direktori"></div>' + '<div class="fba_read_file"><i class="fas fa-code text-primary me-1"></i> <span id="rf"></span> <span id="perms"></span><button type="button" id="w_file" class="btn btn-xs btn-warning float-right" style="margin-top: -3px;">Save</button> </div>' + '<textarea id="fba_text"></textarea>',
             k = getParameterByName('path');
         $("#fba").html(j);
         if (k != '') {
@@ -42,7 +42,7 @@ var fba = function(g) {
         }).done(function(c) {
             if (c.status == 'success') {
                 var r = "";
-                r += '<div class="fba_header"><div class="name">Name</div><div class="size pr-3">Size</div><div class="modif pr-3">Last Modified</div></div>';
+                r += '<div class="fba_header"><div class="name">Name</div><div class="size pe-3">Size</div><div class="modif pe-3">Last Modified</div></div>';
 
                 if (e != "") {
                     var d = e.split('/'),
@@ -52,7 +52,7 @@ var fba = function(g) {
                     }
                     var f = (d.length > 1 ? ee.join('/') : '');
 
-                    r += '<div class="fba_root"><i class="bsub fas fa-level-up-alt btn btn-xs btn-success mr-2 mb-1 px-3" data-bsub="' + f + '" title="Up"></i>' + e + "</div>"
+                    r += '<div class="fba_root"><i class="bsub fas fa-level-up-alt btn btn-xs btn-success me-2 mb-1 px-3" data-bsub="' + f + '" title="Up"></i>' + e + "</div>"
                     r += '<div class="fba_body">';
                 } else {
                     r += '<div class="fba_body">';
@@ -76,13 +76,13 @@ var fba = function(g) {
                             case "aspx":
                             case "jsp":
                             case "py":
-                                r += '<div class="fba_content"><div class="name"><span class="rfile fa" data-rfile="' + c.data[i].path + '"><i class="far fa-file text-dark mr-1"></i> ' + c.data[i].name + '</span></div><div class="size">' + b + '</div><div class="modif">' + c.data[i].modif + '</div></div>';
+                                r += '<div class="fba_content"><div class="name"><span class="rfile fa" data-rfile="' + c.data[i].path + '"><i class="far fa-file text-dark me-1"></i> ' + c.data[i].name + '</span></div><div class="size">' + b + '</div><div class="modif">' + c.data[i].modif + '</div></div>';
                                 break;
                             case "apk":
-                                r += '<div class="fba_content"><div class="name"><a href="' + g.host + c.data[i].dir + '/' + c.data[i].path + '" target="_blank"><i class="fab fa-android text-warning mr-1"></i> ' + c.data[i].name + '</a></div><div class="size">' + b + '</div><div class="modif">' + c.data[i].modif + '</div></div>'
+                                r += '<div class="fba_content"><div class="name"><a href="' + g.host + c.data[i].dir + '/' + c.data[i].path + '" target="_blank"><i class="fab fa-android text-warning me-1"></i> ' + c.data[i].name + '</a></div><div class="size">' + b + '</div><div class="modif">' + c.data[i].modif + '</div></div>'
                                 break;
                             case "pdf":
-                                r += '<div class="fba_content"><div class="name"><a href="' + g.host + c.data[i].dir + '/' + c.data[i].path + '" target="_blank"><i class="far fa-file-pdf text-danger mr-1"></i> ' + c.data[i].name + '</a></div><div class="size">' + b + '</div><div class="modif">' + c.data[i].modif + '</div></div>'
+                                r += '<div class="fba_content"><div class="name"><a href="' + g.host + c.data[i].dir + '/' + c.data[i].path + '" target="_blank"><i class="far fa-file-pdf text-danger me-1"></i> ' + c.data[i].name + '</a></div><div class="size">' + b + '</div><div class="modif">' + c.data[i].modif + '</div></div>'
                                 break;
                             case "jpg":
                             case "JPG":
@@ -94,10 +94,10 @@ var fba = function(g) {
                             case "PNG":
                             case "bmp":
                             case "BMP":
-                                r += '<div class="fba_content"><div class="name"><a href="' + g.host + c.data[i].dir + '/' + c.data[i].path + '" target="_blank"><i class="fas fa-file-image text-primary mr-1"></i> ' + c.data[i].name + '</a></div><div class="size">' + b + '</div><div class="modif">' + c.data[i].modif + '</div></div>'
+                                r += '<div class="fba_content"><div class="name"><a href="' + g.host + c.data[i].dir + '/' + c.data[i].path + '" target="_blank"><i class="fas fa-file-image text-primary me-1"></i> ' + c.data[i].name + '</a></div><div class="size">' + b + '</div><div class="modif">' + c.data[i].modif + '</div></div>'
                                 break;
                             default:
-                                r += '<div class="fba_content"><div class="name"><a href="' + g.host + c.data[i].dir + '/' + c.data[i].path + '" target="_blank"><i class="fas fa-download text-secondary mr-1"></i> ' + c.data[i].name + '</a></div><div class="size">' + b + '</div><div class="modif">' + c.data[i].modif + '</div></div>'
+                                r += '<div class="fba_content"><div class="name"><a href="' + g.host + c.data[i].dir + '/' + c.data[i].path + '" target="_blank"><i class="fas fa-download text-secondary me-1"></i> ' + c.data[i].name + '</a></div><div class="size">' + b + '</div><div class="modif">' + c.data[i].modif + '</div></div>'
                         }
                     }
                 });

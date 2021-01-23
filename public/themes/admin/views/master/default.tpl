@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="{if !empty($html_class)}{$html_class}{/if}" dir="{lang('direction')}" lang="{lang('code')}">
+<html class="{if !empty($html_class)}{$html_class}{/if}" dir="{lang('General.direction')}" lang="{lang('General.code')}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
