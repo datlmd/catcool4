@@ -10,7 +10,7 @@
 			<button type="button" id="btn_search" class="btn btn-sm btn-brand" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{lang('GeneralManage.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
 		</div>
 	</div>
-	<div class="row collapse {if !empty($filter_active)}show{/if}" id="filter_manage">
+	<div class="row collapse {if !empty($filter.active)}show{/if}" id="filter_manage">
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="card">
                 {form_open(uri_string(), ['id' => 'filter_validationform', 'method' => 'get'])}
@@ -54,10 +54,38 @@
 							<table class="table table-striped table-hover table-bordered second">
 								<thead>
 									<tr class="text-center">
-										<th width="50">{lang('GeneralManage.column_id')}</th>
-										<th>{lang('GeneralManage.column_name')}</th>
-										<th>{lang('GeneralManage.column_description')}</th>
-										<th>{lang('GeneralManage.column_sort_order')}</th>
+										<th width="50">
+											<a href="{site_url($manage_url)}?sort=dummy_id&order={$order}{$url}" class="text-dark">
+												{lang('GeneralManage.column_id')}
+												{if $sort eq 'dummy_id'}
+													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if}"></i>
+												{/if}
+											</a>
+										</th>
+										<th>
+											<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
+												{lang('GeneralManage.column_name')}
+												{if $sort eq 'name'}
+													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if}"></i>
+												{/if}
+											</a>
+										</th>
+										<th>
+											<a href="{site_url($manage_url)}?sort=description&order={$order}{$url}" class="text-dark">
+												{lang('GeneralManage.column_description')}
+												{if $sort eq 'description'}
+													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if}"></i>
+												{/if}
+											</a>
+										</th>
+										<th>
+											<a href="{site_url($manage_url)}?sort=sort_order&order={$order}{$url}" class="text-dark">
+												{lang('GeneralManage.column_sort_order')}
+												{if $sort eq 'sort_order'}
+													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if}"></i>
+												{/if}
+											</a>
+										</th>
 										<th>{lang('GeneralManage.column_published')}</th>
 										<th width="160">{lang('GeneralManage.column_function')}</th>
 										<th width="50">{form_checkbox('manage_check_all')}</th>

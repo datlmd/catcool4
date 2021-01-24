@@ -189,7 +189,8 @@ if (!function_exists('format_data_lang_id'))
 {
     /**
      * @param $data
-     * @return mixed
+     * @param $key_sort
+     * @return array
      */
     function format_data_lang_id($data, $key_sort)
     {

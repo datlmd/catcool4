@@ -39,19 +39,35 @@ class Manage extends AdminController
         add_meta(['title' => lang("Dummy.heading_title")], $this->themes);
 
         $filter = [
-            'id'    => (string)$this->request->getGetPost('filter_id'),
-            'name'  => (string)$this->request->getGetPost('filter_name'),
-            'limit' => (string)$this->request->getGetPost('filter_limit'),
+            'active' => !empty($this->request->getGet(['filter_id','filter_name','filter_limit'])) ? true : false,
+            'id'     => (string)$this->request->getGetPost('filter_id'),
+            'name'   => (string)$this->request->getGetPost('filter_name'),
+            'limit'  => (string)$this->request->getGetPost('filter_limit'),
         ];
 
+        $list = $this->model->getAllByFilter($filter, $this->request->getGet('sort'), $this->request->getGet('order'));
 
-        $list = $this->model->getAllByFilter($filter);
+        $url = '';
+        if (!empty($this->request->getGet('filter_id'))) {
+            $url .= '&filter_id=' . $this->request->getGet('filter_id');
+        }
+
+        if (!empty($this->request->getGet('filter_name'))) {
+            $url .= '&filter_name=' . urlencode(html_entity_decode($this->request->getGet('filter_name'), ENT_QUOTES, 'UTF-8'));
+        }
+
+        if (!empty($this->request->getGet('filter_limit'))) {
+            $url .= '&filter_limit=' . $this->request->getGet('filter_limit');
+        }
 
 	    $data = [
             'breadcrumb' => $this->breadcrumb->render(),
             'list'       => $list->paginate($this->request->getGetPost('filter_limit'), 'dummy'),
             'pager'      => $list->pager,
             'filter'     => $filter,
+            'sort'       => empty($this->request->getGet('sort')) ? 'id' : $this->request->getGet('sort'),
+            'order'      => ($this->request->getGet('order') == 'ASC') ? 'DESC' : 'ASC',
+            'url'        => $url,
         ];
 
         $this->themes::load('manage/list', $data);
@@ -98,7 +114,7 @@ class Manage extends AdminController
     public function edit($id = null)
     {
         if (is_null($id)) {
-            set_alert(lang('error_empty'), ALERT_ERROR);
+            set_alert(lang('GeneralManage.error_empty'), ALERT_ERROR);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -162,7 +178,7 @@ class Manage extends AdminController
 
             $data_form = $this->model->getDetail($id);
             if (empty($data_form)) {
-                set_alert(lang('error_empty'), ALERT_ERROR);
+                set_alert(lang('GeneralManage.error_empty'), ALERT_ERROR);
                 redirect(self::MANAGE_URL);
             }
 
@@ -202,62 +218,49 @@ class Manage extends AdminController
 
     public function delete($id = null)
     {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
-        }
-        //phai full quyen hoac duowc xoa
-        if (!$this->acl->check_acl()) {
-            set_alert(lang('error_permission_delete'), ALERT_ERROR);
-            json_output(['status' => 'redirect', 'url' => 'permissions/not_allowed']);
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
         //delete
-        if (isset($_POST['is_delete']) && isset($_POST['ids']) && !empty($_POST['ids'])) {
-            if (valid_token() == FALSE) {
-                set_alert(lang('error_token'), ALERT_ERROR);
-                json_output(['status' => 'ng', 'msg' => lang('error_token')]);
-            }
-
-            $ids = $this->input->post('ids', true);
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
+        {
+            $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
-            $list_delete = $this->Dummy->get_list_full_detail($ids);
+            $list_delete = $this->model->getListDetail($ids);
             if (empty($list_delete)) {
-                json_output(['status' => 'ng', 'msg' => lang('error_empty')]);
+                json_output(['status' => 'ng', 'msg' => lang('GeneralManage.error_empty')]);
             }
-            try {
-                foreach($list_delete as $value){
-                    $this->Dummy_description->delete($value['dummy_id']);
-                    $this->Dummy->delete($value['dummy_id']);
-                }
-                set_alert(lang('text_delete_success'), ALERT_SUCCESS);
-            } catch (Exception $e) {
-                set_alert($e->getMessage(), ALERT_ERROR);
-            }
-            json_output(['status' => 'redirect', 'url' => self::MANAGE_URL]);
+
+            $this->model_lang->delete($ids);
+            $this->model->delete($ids);
+
+            set_alert(lang('GeneralManage.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
+            json_output(['status' => 'redirect', 'url' => site_url(self::MANAGE_URL)]);
         }
 
         $delete_ids = $id;
 
         //truong hop chon xoa nhieu muc
-        if (isset($_POST['delete_ids']) && !empty($_POST['delete_ids'])) {
-            $delete_ids = $this->input->post('delete_ids', true);
+        if (!empty($this->request->getPost('delete_ids'))) {
+            $delete_ids = $this->request->getPost('delete_ids');
         }
+
         if (empty($delete_ids)) {
-            json_output(['status' => 'ng', 'msg' => lang('error_empty')]);
+            json_output(['status' => 'ng', 'msg' => lang('GeneralManage.error_empty')]);
         }
 
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->Dummy->get_list_full_detail($delete_ids);
+        $list_delete = $this->model->getListDetail($delete_ids, get_lang_id());
         if (empty($list_delete)) {
-            json_output(['status' => 'ng', 'msg' => lang('error_empty')]);
+            json_output(['status' => 'ng', 'msg' => lang('GeneralManage.error_empty')]);
         }
 
-        $data['csrf']        = create_token();
         $data['list_delete'] = $list_delete;
         $data['ids']         = $delete_ids;
 
-        json_output(['data' => theme_view('manage/delete', $data, true)]);
+        json_output(['data' => $this->themes::view('manage/delete', $data)]);
     }
 
     public function publish()
@@ -267,25 +270,22 @@ class Manage extends AdminController
         }
 
         if (empty($_POST)) {
-            json_output(['status' => 'ng', 'msg' => lang('error_json')]);
+            json_output(['status' => 'ng', 'msg' => lang('GeneralManage.error_json')]);
         }
 
-        $id        = $this->input->post('id');
-        $item_edit = $this->Dummy->get($id);
+        $id        = $this->request->getPost('id');
+        $item_edit = $this->model->find($id);
         if (empty($item_edit)) {
-            json_output(['status' => 'ng', 'msg' => lang('error_empty')]);
+            json_output(['status' => 'ng', 'msg' => lang('GeneralManage.error_empty')]);
         }
 
         $item_edit['published'] = !empty($_POST['published']) ? STATUS_ON : STATUS_OFF;
-        if (!$this->Dummy->update($item_edit, $id)) {
-            $data = ['status' => 'ng', 'msg' => lang('error_json')];
+        if (!$this->model->update($id, $item_edit)) {
+            $data = ['status' => 'ng', 'msg' => lang('GeneralManage.error_json')];
         } else {
-            $data = ['status' => 'ok', 'msg' => lang('text_published_success')];
+            $data = ['status' => 'ok', 'msg' => lang('GeneralManage.text_published_success')];
         }
 
         json_output($data);
     }
-
-	//--------------------------------------------------------------------
-
 }

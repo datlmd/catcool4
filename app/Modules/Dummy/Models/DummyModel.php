@@ -28,16 +28,27 @@ class DummyModel extends MyModel
         parent::__construct();
     }
 
-    public function getAllByFilter($filter = null, $sort = 'dummy_id', $order = 'DESC')
+    public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
+        $sort_data = [
+            'dummy_id',
+            'name',
+            'description',
+            'sort_order',
+        ];
+
+        $sort  = in_array($sort, $sort_data) ? $sort : 'dummy_id';
+        $order = ($order == 'ASC') ? 'ASC' : 'DESC';
+
+
         $where = "dummy_lang.language_id=" . get_lang_id();
 
         if (!empty($filter["id"])) {
-            $where .= " AND dummy.dummy_id=" . is_array($filter["id"]) ? $filter["id"] : explode(",", $filter["id"]);
+            $where .= " AND id IN(" . (is_array($filter["id"]) ? implode(',', $filter["id"]) : $filter["id"]) . ")";
         }
 
         if (!empty($filter["name"])) {
-            $where .= " AND dummy.name LIKE %" . $filter["name"] . '%';
+            $where .= " AND dummy.name LIKE '%" . $filter["name"] . "%'";
         }
 
         $this->select('dummy.*, dummy_lang.name AS name, dummy_lang.description AS description')
@@ -61,9 +72,29 @@ class DummyModel extends MyModel
         }
 
         $result = format_data_lang_id($result, 'dummy_lang');
-
         if (!empty($language_id) && !empty($result['dummy_lang'][$language_id])) {
             $result['dummy_lang'] = $result['dummy_lang'][$language_id];
+        }
+
+        return $result;
+    }
+
+    public function getListDetail($ids, $language_id = null)
+    {
+        if (empty($ids)) {
+            return null;
+        }
+
+        $result = $this->find($ids);
+        if (empty($result)) {
+            return null;
+        }
+
+        foreach ($result as $key => $value) {
+            $result[$key] = format_data_lang_id($value, 'dummy_lang');
+            if (!empty($language_id) && !empty($result[$key]['dummy_lang'][$language_id])) {
+                $result[$key]['dummy_lang'] = $result[$key]['dummy_lang'][$language_id];
+            }
         }
 
         return $result;
