@@ -3,7 +3,7 @@
     {form_open(uri_string(), ['id' => 'validationform'])}
         <div class="row">
             <div class="col-sm-7 col-12">
-                {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('Dummy.heading_title')}
+                {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=$text_form}
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
                 <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
@@ -23,7 +23,7 @@
                     {include file=get_theme_path('views/inc/alert.tpl') message=$errors type='danger'}
                 </div>
             {/if}
-            <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
                 <div class="card">
                     <h5 class="card-header"><i class="fas {if !empty($edit_data.dummy_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                     <div class="card-body p-0 pt-3 bg-light">
@@ -34,10 +34,15 @@
                                     <div class="tab-pane fade {if !empty($language.active)}show active{/if}" role="tabpanel" id="lanuage_content_{$language.id}"  aria-labelledby="language_tab_{$language.id}">
                                         <div class="form-group row required has-error">
                                             <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
-                                                {lang('text_name')}
+                                                {lang('GeneralManage.text_name')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-7">
-                                                <input type="text" name="lang_{$language.id}_name" value='{if !empty($edit_data.dummy_lang[$language.id].name)}{old("lang_`$language.id`_name", $edit_data.dummy_lang[$language.id].name)}{/if}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang_`$language.id`_name")}is-invalid{/if}">
+                                                {if !empty($edit_data.dummy_lang[$language.id].name)}
+                                                    {assign var="name" value="`$edit_data.dummy_lang[$language.id].name`"}
+                                                {else}
+                                                    {assign var="name" value=""}
+                                                {/if}
+                                                <input type="text" name="lang_{$language.id}_name" value='{old("lang_`$language.id`_name", $name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang_`$language.id`_name")}is-invalid{/if}">
                                                 <div class="invalid-feedback">
                                                     {$validator->getError("lang_`$language.id`_name")}
                                                 </div>
@@ -45,10 +50,15 @@
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-12 col-sm-3 col-form-label text-sm-end">
-                                                {lang('text_description')}
+                                                {lang('GeneralManage.text_description')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-7">
-                                                <textarea name="lang_{$language.id}_description" cols="40" rows="2" id="input_description_{$language.id}" type="textarea" class="form-control">{if !empty($edit_data.dummy_lang[$language.id].description)}{old("lang_`$language.id`_description", $edit_data.dummy_lang[$language.id].description)}{/if}</textarea>
+                                                {if !empty($edit_data.dummy_lang[$language.id].description)}
+                                                    {assign var="description" value="`$edit_data.dummy_lang[$language.id].description`"}
+                                                {else}
+                                                    {assign var="description" value=""}
+                                                {/if}
+                                                <textarea name="lang_{$language.id}_description" cols="40" rows="2" id="input_description_{$language.id}" type="textarea" class="form-control">{old("lang_`$language.id`_description", $description)}</textarea>
                                             </div>
                                         </div>
                                         {*TPL_DUMMY_DESCRIPTION*}
@@ -59,25 +69,35 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                 <div class="card">
-                    <h5 class="card-header">{lang('text_manage_more')}</h5>
+                    <h5 class="card-header">{lang('GeneralManage.text_manage_more')}</h5>
                     <div class="card-body">
                         <div class="form-group">
-                            {lang('text_published')}
-                            <div class="switch-button switch-button-xs float-right mt-1">
-                                {if isset($edit_data.published)}
-                                    <input type="checkbox" name="published" value="{STATUS_ON}" {set_checkbox('published', STATUS_ON, ($edit_data.published == STATUS_ON))} id="published">
-                                {else}
-                                    <input type="checkbox" name="published" value="{STATUS_ON}" {set_checkbox('published', STATUS_ON, true)} id="published">
-                                {/if}
-                                <span><label for="published"></label></span>
-                            </div>
+                            {lang('GeneralManage.text_published')}
+                            {if isset($edit_data.published)}
+                                {assign var="published" value="`$edit_data.published`"}
+                            {else}
+                                {assign var="published" value="`STATUS_ON`"}
+                            {/if}
+                            <label class="form-check form-check-inline ms-2">
+                                <input type="radio" name="published" value="{STATUS_ON}" {if set_value('published', $published) eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
+                                <label class="form-check-label" for="published_on">ON</label>
+                            </label>
+                            <label class="form-check form-check-inline me-2">
+                                <input type="radio" name="published" value="{STATUS_OFF}" {if set_value('published', $published) eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
+                                <label class="form-check-label" for="published_off">OFF</label>
+                            </label>
                         </div>
                         {*TPL_DUMMY_ROOT*}
                         <div class="form-group">
-                            {lang('text_sort_order')}
-                            <input type="number" name="sort_order" value="{if !empty($edit_data.sort_order)}{old('sort_order', $edit_data.sort_order)}{else}0{/if}" id="sort_order" min="0" class="form-control">
+                            {lang('GeneralManage.text_sort_order')}
+                            {if !empty($edit_data.sort_order)}
+                                {assign var="sort_order" value="`$edit_data.sort_order`"}
+                            {else}
+                                {assign var="sort_order" value="0"}
+                            {/if}
+                            <input type="number" name="sort_order" value="{set_value('sort_order', $sort_order)}" id="sort_order" min="0" class="form-control">
                         </div>
                     </div>
                 </div>

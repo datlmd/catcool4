@@ -26,6 +26,8 @@ label {
     color: #2b353f;
 }
 
+.form-check-input {display: block !important;}
+
 .form-control, select.form-control {
     color: #2b353f;
 }

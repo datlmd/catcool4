@@ -36,7 +36,7 @@ class Manage extends AdminController
 
 	public function index()
 	{
-        add_meta(['name' => lang("Dummy.heading_title")], $this->themes);
+        add_meta(['title' => lang("Dummy.heading_title")], $this->themes);
 
         $filter = [
             'id'    => (string)$this->request->getGetPost('filter_id'),
@@ -63,7 +63,6 @@ class Manage extends AdminController
         {
             if (!$this->validate_form())
             {
-                //set_alert(lang('error_token'), ALERT_ERROR);
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
@@ -74,20 +73,22 @@ class Manage extends AdminController
                 'ctime'      => get_date(),
                 //ADD_DUMMY_ROOT
             ];
-            $id = $this->model->save($add_data);
-            if ($id === FALSE) {
-                set_alert(lang('error'), ALERT_ERROR);
+            $id = $this->model->insert($add_data);
+            if ($id === FALSE)
+            {
+                set_alert(lang('GeneralManage.error'), ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
 
-            $add_data_lang = format_lang_form($this->request);
-            foreach (get_list_lang() as $key => $value) {
+            $add_data_lang = format_lang_form($this->request->getPost());
+            foreach (get_list_lang() as $key => $value)
+            {
                 $add_data_lang[$key]['language_id'] = $key;
                 $add_data_lang[$key]['dummy_id']    = $id;
+                $this->model_lang->insert($add_data_lang[$key]);
             }
-            $this->model_lang->save($add_data_lang);
 
-            set_alert(lang('text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
+            set_alert(lang('GeneralManage.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -105,7 +106,6 @@ class Manage extends AdminController
         {
             if (!$this->validate_form())
             {
-                //set_alert(lang('error_token'), ALERT_ERROR);
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
@@ -113,12 +113,13 @@ class Manage extends AdminController
             // do we have a valid request?
             if (valid_token() === FALSE || $id != $this->request->getPost('dummy_id'))
             {
-                set_alert(lang('error_token'), ALERT_ERROR);
+                set_alert(lang('GeneralManage.error_token'), ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
 
-            $edit_data_lang = format_lang_form($this->request);
-            foreach (get_list_lang() as $key => $value) {
+            $edit_data_lang = format_lang_form($this->request->getPost());
+            foreach (get_list_lang() as $key => $value)
+            {
                 $edit_data_lang[$key]['language_id'] = $key;
                 $edit_data_lang[$key]['dummy_id']    = $id;
 
@@ -133,16 +134,18 @@ class Manage extends AdminController
                 'dummy_id'   => $id,
                 'sort_order' => $this->request->getPost('sort_order'),
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-                'mtime'      => get_date(),
                 //ADD_DUMMY_ROOT
             ];
-            if ($this->model->save($edit_data) !== FALSE) {
-                set_alert(lang('text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
-            } else {
-                set_alert(lang('error'), ALERT_ERROR, ALERT_POPUP);
+            if ($this->model->save($edit_data) !== FALSE)
+            {
+                set_alert(lang('GeneralManage.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
+            }
+            else
+            {
+                set_alert(lang('GeneralManage.error'), ALERT_ERROR, ALERT_POPUP);
             }
 
-            return redirect()->back()->withInput();
+            return redirect()->back();
         }
 
         $this->get_form($id);
@@ -176,8 +179,10 @@ class Manage extends AdminController
 
         $data['errors'] = $this->errors;
 
-        $this->themes->setPageTitle($data['text_form']);
         $this->breadcrumb->add($data['text_form'], base_url(self::MANAGE_URL));
+        add_meta(['title' => $data['text_form']], $this->themes);
+
+        $data['breadcrumb'] = $this->breadcrumb->render();
 
         $this->themes::load('manage/form', $data);
     }
