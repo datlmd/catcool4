@@ -694,6 +694,17 @@ class Themes
         return $objTheme->_loadFile('partial', $view, $data, $return);
     }
 
+    public static function view($view, $data = [], $return = false)
+    {
+        if (is_null(self::$instance))
+        {
+            self::init();
+        }
+        $objTheme = self::$instance;
+
+        return $objTheme->_loadFile('view', $view, $data, $return);
+    }
+
     public function addMeta($name, $content = null, $type = 'meta', $attrs = [])
     {
         if (is_null(self::$instance))

@@ -239,7 +239,7 @@ if (!function_exists('create_token'))
      */
     function create_token()
     {
-        if (empty(config('Config')->is_check_csrf_admin)) { // neu config is_check_csrf_admin = false khong can check
+        if (empty(config_item('is_check_csrf_admin'))) { // neu config is_check_csrf_admin = false khong can check
             return [];
         }
 
@@ -248,8 +248,8 @@ if (!function_exists('create_token'))
         $key   = 't_' . md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . random_string('alnum', 8));
         $value = md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . random_string('alnum', 20));
 
-        if (!empty(config('Config')->csrf_cookie_expire)) {
-            $expire = config('Config')->csrf_cookie_expire;
+        if (!empty(config_item('csrf_cookie_expire'))) {
+            $expire = config_item('csrf_cookie_expire');
         } else {
             $expire = 7200; // 2 gio
         }
@@ -260,12 +260,12 @@ if (!function_exists('create_token'))
             'domain' => '',
             'path' => '/',
             'prefix' => '',
-            'secure' => FALSE
+            'secure' => TRUE
         ];
 
         set_cookie($cookie_config);
 
-        return [config('Config')->csrf_name_key => $key, config('Config')->csrf_name_value => $value];
+        return [config_item('csrf_name_key') => $key, config_item('csrf_name_value') => $value];
     }
 }
 
@@ -284,21 +284,21 @@ if (!function_exists('valid_token'))
         $csrf_value = '';
 
         if ($is_get === FALSE && $_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (!isset($_POST[config('Config')->csrf_name_key]) || !isset($_POST[config('Config')->csrf_name_value])) {
+            if (!isset($_POST[config_item('csrf_name_key')]) || !isset($_POST[config_item('csrf_name_value')])) {
                 return FALSE;
             }
-            $csrf_key   = $_POST[config('Config')->csrf_name_key];
-            $csrf_value = $_POST[config('Config')->csrf_name_value];
-            unset($_POST[config('Config')->csrf_name_key]);
-            unset($_POST[config('Config')->csrf_name_value]);
+            $csrf_key   = $_POST[config_item('csrf_name_key')];
+            $csrf_value = $_POST[config_item('csrf_name_value')];
+            unset($_POST[config_item('csrf_name_key')]);
+            unset($_POST[config_item('csrf_name_value')]);
         } else {
-            if (!isset($_GET[config('Config')->csrf_name_key]) || !isset($_GET[config('Config')->csrf_name_value])) {
+            if (!isset($_GET[config_item('csrf_name_key')]) || !isset($_GET[config_item('csrf_name_value')])) {
                 return FALSE;
             }
-            $csrf_key   = $_GET[config('Config')->csrf_name_key];
-            $csrf_value = $_GET[config('Config')->csrf_name_value];
-            unset($_GET[config('Config')->csrf_name_key]);
-            unset($_GET[config('Config')->csrf_name_value]);
+            $csrf_key   = $_GET[config_item('csrf_name_key')];
+            $csrf_value = $_GET[config_item('csrf_name_value')];
+            unset($_GET[config_item('csrf_name_key')]);
+            unset($_GET[config_item('csrf_name_value')]);
         }
 
         if (!isset($_COOKIE[$csrf_key])) {
@@ -308,12 +308,10 @@ if (!function_exists('valid_token'))
         if (!empty($csrf_value) && $csrf_value == get_cookie($csrf_key)) {
             //xoa token cookie
             delete_cookie($csrf_key);
-
             return TRUE;
         }
 
         return FALSE;
-
     }
 }
 
