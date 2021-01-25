@@ -38,36 +38,29 @@ class Manage extends AdminController
 	{
         add_meta(['title' => lang("Dummy.heading_title")], $this->themes);
 
+        $filter_id    = $this->request->getGet('filter_id');
+        $filter_name  = $this->request->getGet('filter_name');
+        $filter_limit = $this->request->getGet('filter_limit');
+        $sort         = $this->request->getGet('sort');
+        $order        = $this->request->getGet('order');
+
         $filter = [
-            'active' => !empty($this->request->getGet(['filter_id','filter_name','filter_limit'])) ? true : false,
-            'id'     => (string)$this->request->getGetPost('filter_id'),
-            'name'   => (string)$this->request->getGetPost('filter_name'),
-            'limit'  => (string)$this->request->getGetPost('filter_limit'),
+            'active' => count(array_filter(array_filter($this->request->getGet(['filter_id', 'filter_name', 'filter_limit'])))) > 0,
+            'id'     => (string)$filter_id,
+            'name'   => (string)$filter_name,
+            'limit'  => (string)$filter_limit,
         ];
 
-        $list = $this->model->getAllByFilter($filter, $this->request->getGet('sort'), $this->request->getGet('order'));
-
-        $url = '';
-        if (!empty($this->request->getGet('filter_id'))) {
-            $url .= '&filter_id=' . $this->request->getGet('filter_id');
-        }
-
-        if (!empty($this->request->getGet('filter_name'))) {
-            $url .= '&filter_name=' . urlencode(html_entity_decode($this->request->getGet('filter_name'), ENT_QUOTES, 'UTF-8'));
-        }
-
-        if (!empty($this->request->getGet('filter_limit'))) {
-            $url .= '&filter_limit=' . $this->request->getGet('filter_limit');
-        }
+        $list = $this->model->getAllByFilter($filter, $sort, $this->request->getGet('order'));
 
 	    $data = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($this->request->getGetPost('filter_limit'), 'dummy'),
+            'list'       => $list->paginate($filter_limit, 'dummy'),
             'pager'      => $list->pager,
             'filter'     => $filter,
-            'sort'       => empty($this->request->getGet('sort')) ? 'id' : $this->request->getGet('sort'),
-            'order'      => ($this->request->getGet('order') == 'ASC') ? 'DESC' : 'ASC',
-            'url'        => $url,
+            'sort'       => empty($sort) ? 'dummy_id' : $sort,
+            'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url'        => $this->getUrlFilter(),
         ];
 
         $this->themes::load('manage/list', $data);
@@ -75,10 +68,8 @@ class Manage extends AdminController
 
     public function add()
     {
-        if (!empty($this->request->getPost()))
-        {
-            if (!$this->validate_form())
-            {
+        if (!empty($this->request->getPost())) {
+            if (!$this->validate_form()) {
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
@@ -90,15 +81,13 @@ class Manage extends AdminController
                 //ADD_DUMMY_ROOT
             ];
             $id = $this->model->insert($add_data);
-            if ($id === FALSE)
-            {
+            if ($id === FALSE) {
                 set_alert(lang('GeneralManage.error'), ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
 
             $add_data_lang = format_lang_form($this->request->getPost());
-            foreach (get_list_lang() as $key => $value)
-            {
+            foreach (get_list_lang() as $key => $value) {
                 $add_data_lang[$key]['language_id'] = $key;
                 $add_data_lang[$key]['dummy_id']    = $id;
                 $this->model_lang->insert($add_data_lang[$key]);
@@ -118,24 +107,20 @@ class Manage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()))
-        {
-            if (!$this->validate_form())
-            {
+        if (!empty($this->request->getPost())) {
+            if (!$this->validate_form()) {
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
 
             // do we have a valid request?
-            if (valid_token() === FALSE || $id != $this->request->getPost('dummy_id'))
-            {
+            if (valid_token() === FALSE || $id != $this->request->getPost('dummy_id')) {
                 set_alert(lang('GeneralManage.error_token'), ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
 
             $edit_data_lang = format_lang_form($this->request->getPost());
-            foreach (get_list_lang() as $key => $value)
-            {
+            foreach (get_list_lang() as $key => $value) {
                 $edit_data_lang[$key]['language_id'] = $key;
                 $edit_data_lang[$key]['dummy_id']    = $id;
 
@@ -152,12 +137,9 @@ class Manage extends AdminController
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
                 //ADD_DUMMY_ROOT
             ];
-            if ($this->model->save($edit_data) !== FALSE)
-            {
+            if ($this->model->save($edit_data) !== FALSE) {
                 set_alert(lang('GeneralManage.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
-            }
-            else
-            {
+            } else {
                 set_alert(lang('GeneralManage.error'), ALERT_ERROR, ALERT_POPUP);
             }
 
@@ -223,8 +205,7 @@ class Manage extends AdminController
         }
 
         //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 

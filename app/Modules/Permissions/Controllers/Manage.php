@@ -34,36 +34,29 @@ class Manage extends AdminController
     {
         add_meta(['title' => lang("PermissionsManage.heading_title")], $this->themes);
 
+        $filter_id    = $this->request->getGet('filter_id');
+        $filter_name  = $this->request->getGet('filter_name');
+        $filter_limit = $this->request->getGet('filter_limit');
+        $sort         = $this->request->getGet('sort');
+        $order        = $this->request->getGet('order');
+
         $filter = [
-            'active' => !empty($this->request->getGet(['filter_id','filter_name','filter_limit'])) ? true : false,
-            'id'     => (string)$this->request->getGetPost('filter_id'),
-            'name'   => (string)$this->request->getGetPost('filter_name'),
-            'limit'  => (string)$this->request->getGetPost('filter_limit'),
+            'active' => count(array_filter(array_filter($this->request->getGet(['filter_id', 'filter_name', 'filter_limit'])))) > 0,
+            'id'     => (string)$filter_id,
+            'name'   => (string)$filter_name,
+            'limit'  => (string)$filter_limit,
         ];
 
-        $list = $this->model->getAllByFilter($filter, $this->request->getGet('sort'), $this->request->getGet('order'));
-
-        $url = '';
-        if (!empty($this->request->getGet('filter_id'))) {
-            $url .= '&filter_id=' . $this->request->getGet('filter_id');
-        }
-
-        if (!empty($this->request->getGet('filter_name'))) {
-            $url .= '&filter_name=' . urlencode(html_entity_decode($this->request->getGet('filter_name'), ENT_QUOTES, 'UTF-8'));
-        }
-
-        if (!empty($this->request->getGet('filter_limit'))) {
-            $url .= '&filter_limit=' . $this->request->getGet('filter_limit');
-        }
+        $list = $this->model->getAllByFilter($filter, $sort, $order);
 
         $data = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($this->request->getGetPost('filter_limit'), 'permissions'),
+            'list'       => $list->paginate($filter_limit, 'permissions'),
             'pager'      => $list->pager,
             'filter'     => $filter,
-            'sort'       => empty($this->request->getGet('sort')) ? 'id' : $this->request->getGet('sort'),
-            'order'      => ($this->request->getGet('order') == 'ASC') ? 'DESC' : 'ASC',
-            'url'        => $url,
+            'sort'       => empty($sort) ? 'id' : $sort,
+            'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url'        => $this->getUrlFilter(),
         ];
 
         set_last_url();

@@ -44,7 +44,7 @@ class DummyModel extends MyModel
         $where = "dummy_lang.language_id=" . get_lang_id();
 
         if (!empty($filter["id"])) {
-            $where .= " AND id IN(" . (is_array($filter["id"]) ? implode(',', $filter["id"]) : $filter["id"]) . ")";
+            $where .= " AND dummy.dummy_id IN(" . (is_array($filter["id"]) ? implode(',', $filter["id"]) : $filter["id"]) . ")";
         }
 
         if (!empty($filter["name"])) {
