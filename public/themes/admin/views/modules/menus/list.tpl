@@ -2,23 +2,23 @@
 <div class="container-fluid  dashboard-content">
 	<div class="row">
 		<div class="col-sm-7 col-12">
-            {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
+            {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('Menus.heading_title')}
 		</div>
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-			{if !$filter_active}
-				<button type="button" id="btn_category_sort" onclick="submitSort();" style="display: none;" class="btn btn-sm btn-secondary"><i class="fas fa-save me-1"></i>{lang('button_save_sort')}</button>
-			{/if}
 
-			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
-			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></a>
+				<button type="button" id="btn_category_sort" onclick="submitSort();" style="display: none;" class="btn btn-sm btn-secondary"><i class="fas fa-save me-1"></i>{lang('button_save_sort')}</button>
+
+
+			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
+			<a href="{site_url($manage_url)}/add{http_get_query()}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></a>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="card">
-				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('text_list')} {if !empty($this->session->is_menu_admin)}(Admin){else}(Frontend){/if}</h5>
+				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('text_list')} {if !empty(session('is_menu_admin'))}(Admin){else}(Frontend){/if}</h5>
 				<div class="card-body">
-					{if !empty($this->session->super_admin)}
+					{if !empty(session('super_admin'))}
 						<div class="mb-3">
 							<a href="{site_url($manage_url|cat:"?is_admin=1")}" class="btn btn-sm btn-light {if $is_admin eq 1}active{/if}">Admin</a>
 							<a href="{site_url($manage_url|cat:"?is_admin=0")}" class="btn btn-sm btn-light ms-2 {if $is_admin eq 0}active{/if}">Frontend</a>
@@ -32,7 +32,6 @@
 								{/foreach}
 							</ol>
 						</div>
-						{include file=get_theme_path('views/inc/paging.inc.tpl')}
                     {else}
 						{lang('text_no_results')}
 					{/if}
