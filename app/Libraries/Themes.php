@@ -24,7 +24,7 @@ class Themes
 	/**
 	 * Constant of key for css themes
 	 */
-	const CSS_THEME = 'css_themes';
+	const CSS_THEME = 'css_file';
 
 	/**
 	 * Constant of key for external css
@@ -34,7 +34,7 @@ class Themes
 	/**
 	 * Constant of key for js themes
 	 */
-	const JS_THEME = 'js_themes';
+	const JS_THEME = 'js_file';
 
 	/**
 	 * Constant of key for external js
@@ -456,8 +456,10 @@ class Themes
         $data_master['title']       = !empty($data['title']) ? $data['title'] : (!empty(self::$metadata['title']) ? self::$metadata['title'] : "");
         $data_master['description'] = !empty($data['description']) ? $data['description'] : (!empty(self::$metadata['description']) ? self::$metadata['description'] : "");
         $data_master['keywords']    = !empty($data['keywords']) ? $data['keywords'] : (!empty(self::$metadata['keywords']) ? self::$metadata['keywords'] : "");
-        $data_master['metadata']    = $objTheme->_output_meta();
-
+        $data_master['metadata']    = $objTheme->_outputMeta();
+        $data_master['css_files']   = $objTheme->_outputCSS();
+        $data_master['js_files']    = $objTheme->_outputJS();
+//cc_debug($data_master);
         $objTheme->setVar($data_master);
 
         $layout = [];
@@ -478,7 +480,6 @@ class Themes
         // Prepare layout content
         $objTheme->setVar('layout', $objTheme->_loadFile('layout', self::$config[LAYOUT], $layout, true));
 
-        //cc_debug($objTheme::getData());
         // Prepare the output
         $output = $objTheme->_loadFile('default', self::$config[MASTER], $objTheme::getData(), true);
 
@@ -494,7 +495,8 @@ class Themes
             $output = $objTheme->_compress_output($output);
         }
 
-        echo \Config\Services::renderer()->renderString($output);
+        //echo \Config\Services::renderer()->renderString($output);
+        echo $output;
 	}
 
     protected function _loadFile($type = 'view', $view = '', $data = [], $return = false)
@@ -794,7 +796,7 @@ class Themes
         return "<{$tag}{$attributes}>\n\t";
     }
 
-    protected function _output_meta()
+    protected function _outputMeta()
     {
         if (is_null(self::$instance))
         {
@@ -944,6 +946,37 @@ class Themes
 		}
 	}
 
+    protected function _outputCSS($attrs = '')
+    {
+        $css_list = [];
+
+        if (array_key_exists(self::CSS_THEME, self::$themeVars))
+        {
+            foreach(self::$themeVars[self::CSS_THEME] as $css)
+            {
+                $paths = [
+                    FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config['css_path'] . '/' . validate_ext($css, '.css'),
+                    FCPATH . validate_ext($css, '.css'),
+                ];
+
+                foreach ($paths as $path) {
+                    if (!is_file($path)) {
+                        continue;
+                    }
+
+                    $latest_version = "";//filemtime($path);
+
+                    $css_file   = str_replace(FCPATH, '', $path);
+                    $latest_css = base_url($css_file . '?v=' . $latest_version);
+
+                    $css_list[] = '<link rel="stylesheet" type="text/css" href="' . $latest_css . '"' . _stringify_attributes($attrs) . '>' . "\n";
+                }
+            }
+        }
+
+        return implode("\t", $css_list);
+    }
+
 	/**
 	 * render JS themes
 	 */
@@ -987,6 +1020,36 @@ class Themes
 			echo $inline_js;
 		}
 	}
+
+    protected function _outputJS($attrs = '')
+    {
+        $js_list = [];
+
+        if (array_key_exists(self::JS_THEME, self::$themeVars)) {
+            foreach (self::$themeVars[self::JS_THEME] as $js) {
+                $paths = [
+                    FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[JS_PATH] . '/' . validate_ext($js, '.js'),
+                    FCPATH . validate_ext($js, '.js'),
+                ];
+
+                foreach ($paths as $path) {
+                    if (!is_file($path)) {
+                        continue;
+                    }
+
+                    $latest_version = "";//filemtime($path);
+
+                    $path = str_replace(FCPATH, '', $path);
+                    $latest_js = base_url($path . '?v=' . $latest_version);
+
+                    $js_list[] = '<script type="text/javascript" src="' . $latest_js . '"' . _stringify_attributes($attrs) . '></script>' . "\n";
+
+                }
+            }
+        }
+
+        return implode("\t", $js_list);
+    }
 
 	/**
 	 * Render Inline JS

@@ -59,8 +59,6 @@ class Manage extends AdminController
             'url'        => $this->getUrlFilter(),
         ];
 
-        set_last_url();
-
         $this->themes::load('list', $data);
     }
 
@@ -95,7 +93,7 @@ class Manage extends AdminController
     public function edit($id = null)
     {
         if (is_null($id)) {
-            set_alert(lang('GeneralManage.error_empty'), ALERT_ERROR);
+            set_alert(lang('GeneralManage.error_empty'), ALERT_ERROR, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -190,8 +188,8 @@ class Manage extends AdminController
 
             $data_form = $this->model->find($id);
             if (empty($data_form)) {
-                set_alert(lang('GeneralManage.error_empty'), ALERT_ERROR);
-                redirect(self::MANAGE_URL);
+                set_alert(lang('GeneralManage.error_empty'), ALERT_ERROR, ALERT_POPUP);
+                return redirect()->to(site_url(self::MANAGE_URL));
             }
 
             // display the edit user form

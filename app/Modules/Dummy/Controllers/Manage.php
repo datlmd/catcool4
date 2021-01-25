@@ -103,7 +103,7 @@ class Manage extends AdminController
     public function edit($id = null)
     {
         if (is_null($id)) {
-            set_alert(lang('GeneralManage.error_empty'), ALERT_ERROR);
+            set_alert(lang('GeneralManage.error_empty'), ALERT_ERROR, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -125,7 +125,7 @@ class Manage extends AdminController
                 $edit_data_lang[$key]['dummy_id']    = $id;
 
                 if (!empty($this->model_lang->where(['dummy_id' => $id, 'language_id' => $key])->find())) {
-                    $this->model_lang->where('language_id='.$key)->update($id,$edit_data_lang[$key]);
+                    $this->model_lang->where('language_id', $key)->update($id,$edit_data_lang[$key]);
                 } else {
                     $this->model_lang->insert($edit_data_lang[$key]);
                 }
@@ -161,7 +161,7 @@ class Manage extends AdminController
             $data_form = $this->model->getDetail($id);
             if (empty($data_form)) {
                 set_alert(lang('GeneralManage.error_empty'), ALERT_ERROR);
-                redirect(self::MANAGE_URL);
+                return redirect()->to(site_url(self::MANAGE_URL));
             }
 
             // display the edit user form

@@ -44,7 +44,6 @@ if (!function_exists('get_lang'))
         if (!empty(session(get_name_session_lang($is_admin)))) {
             return session(get_name_session_lang($is_admin));
         }
-        helper('cookie');
 
         $language_value = '';
         if (!empty(is_multi_lang()) && is_multi_lang() == true) {
@@ -59,7 +58,7 @@ if (!function_exists('get_lang'))
             $language_value = get_config_lang($is_admin);
         }
 
-        session(get_name_session_lang($is_admin), $language_value);
+        session()->set(get_name_session_lang($is_admin), $language_value);
 
         return $language_value;
     }
@@ -69,8 +68,6 @@ if (!function_exists('set_lang'))
 {
     function set_lang($lang, $is_admin = false)
     {
-        helper('cookie');
-
         if (is_multi_lang() == false || empty($lang)) {
             return get_config_lang($is_admin);
         }
@@ -660,11 +657,11 @@ if(!function_exists('image_default_url'))
 {
     function image_default_url() {
         $upload_path = get_upload_url();
-        if (!empty(config('Config')->image_none) && is_file( CATCOOLPATH . $upload_path . config('Config')->image_none)) {
+        if (!empty(config_item('image_none')) && is_file( FCPATH . $upload_path . config_item('image_none'))) {
             return image_domain($upload_path . config('Config')->image_none);
         }
 
-        return img_url(UPLOAD_IMAGE_DEFAULT, 'common');
+        return base_url('common/'.UPLOAD_IMAGE_DEFAULT);
     }
 }
 
@@ -718,7 +715,7 @@ if(!function_exists('image_url'))
         }
 
         $upload_path = get_upload_url();
-        if (! is_file( CATCOOLPATH . $upload_path . $image)) {
+        if (! is_file( FCPATH . $upload_path . $image)) {
             return image_default_url();
         }
 
@@ -738,7 +735,7 @@ if(!function_exists('image_thumb_url'))
         $width = !empty($width) ? $width : (!empty(config('Config')->image_thumbnail_small_width) ? config('Config')->image_thumbnail_small_width : RESIZE_IMAGE_THUMB_WIDTH);
         $height = !empty($height) ? $height : (!empty(config('Config')->image_thumbnail_small_height) ? config('Config')->image_thumbnail_small_height : RESIZE_IMAGE_THUMB_HEIGHT);
         $upload_path = get_upload_url();
-        if (! is_file( CATCOOLPATH . $upload_path . $image)) {
+        if (! is_file( FCPATH . $upload_path . $image)) {
             return image_default_url();
         }
 
@@ -767,7 +764,7 @@ if ( ! function_exists('img_alt'))
      */
     function img_alt($width, $height = null, $text = null, $background = null, $foreground = null)
     {
-        $params = array();
+        $params = [];
         if (is_array($width))
         {
             $params = $width;
@@ -797,7 +794,7 @@ if ( ! function_exists('img_alt_url'))
      */
     function img_alt_url($width, $height = null, $text = null, $background = null, $foreground = null)
     {
-        $params = array();
+        $params = [];
         if (is_array($width))
         {
             $params = $width;
@@ -873,117 +870,6 @@ if ( ! function_exists('save_image_from_url'))
     }
 }
 
-//set last url
-if(!function_exists('set_last_url'))
-{
-    function set_last_url($except_methods = FALSE)
-    {
-        if(URL_LAST_FLAG == 0)
-        {
-            return false;
-        }
-
-        if($except_methods)
-        {
-            //fetch array
-            $except_methods = explode(',', $except_methods);
-
-
-            //$current_method = $CI->router->method;
-
-            foreach($except_methods as $except)
-            {
-                if($except == $current_method)
-                {
-                    return;
-                }
-            }
-        }
-
-        $_SESSION[URL_LAST_SESS_NAME] = full_url();
-    }
-
-}
-
-/**
- * get link url
- *
- * @param string $uri
- * @return string full link
- */
-function full_url()
-{
-    $pageURL = 'http';
-
-    if(isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on")
-    {
-        $pageURL .= "s";
-    }
-
-    $pageURL .= "://";
-    if($_SERVER["SERVER_PORT"] != "80")
-    {
-        $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
-    }
-    else
-    {
-        $pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
-    }
-    return $pageURL;
-}
-
-//set last url sử dụng trong admin
-if(!function_exists('get_last_url'))
-{
-    function get_last_url($last_url = FALSE)
-    {
-        $last_url = $last_url ? $last_url : base_url();
-
-        if(isset($_SESSION[URL_LAST_SESS_NAME]))
-        {
-            $last_url = $_SESSION[URL_LAST_SESS_NAME];
-            unset($_SESSION[URL_LAST_SESS_NAME]);
-        }
-
-        return $last_url;
-    }
-
-}
-
-//get previous url
-if(!function_exists('previous_url'))
-{
-    function previous_url()
-    {
-        if(isset($_SESSION[URL_LAST_SESS_NAME]))
-        {
-            $url = $_SESSION[URL_LAST_SESS_NAME];
-
-            unset($_SESSION[URL_LAST_SESS_NAME]);
-        }
-        else
-        {
-            $url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url();
-        }
-
-        return $url;
-    }
-}
-
-//get previous url
-if(!function_exists('keep_previous_url'))
-{
-    function keep_previous_url()
-    {
-        $url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : base_url();
-
-        if(!isset($_SESSION[URL_LAST_SESS_NAME]))
-        {
-
-            $_SESSION[URL_LAST_SESS_NAME] = $url;
-        }
-    }
-}
 /**
  * Upload file
  *
@@ -1232,10 +1118,10 @@ if(!function_exists('get_upload_path'))
     function get_upload_path($upload_uri = NULL)
     {
         if (!empty($upload_uri)) {
-            return CATCOOLPATH . UPLOAD_FILE_DIR . $upload_uri;
+            return FCPATH . UPLOAD_FILE_DIR . $upload_uri;
         }
 
-        return CATCOOLPATH . UPLOAD_FILE_DIR;
+        return FCPATH . UPLOAD_FILE_DIR;
     }
 }
 
@@ -1460,7 +1346,7 @@ if(!function_exists('write_html_cache'))
     function write_html_cache($key, $output_cache)
     {
         helper('file');
-        write_file(CATCOOLPATH . config('Config')->cache_path . "cache__html__$key.html", $output_cache);
+        write_file(FCPATH . config('Config')->cache_path . "cache__html__$key.html", $output_cache);
     }
 }
 
@@ -1471,7 +1357,7 @@ if(!function_exists('get_html_cache'))
 {
     function get_html_cache($key)
     {
-        @include CATCOOLPATH . config('Config')->cache_path .  "cache__html__$key.html";
+        @include FCPATH . config('Config')->cache_path .  "cache__html__$key.html";
     }
 }
 
@@ -1522,9 +1408,9 @@ if(!function_exists('print_captcha'))
 
         $vals = [
             'word'       => $code,
-            'img_path'   => CATCOOLPATH . 'media/captcha/',
+            'img_path'   => FCPATH . 'media/captcha/',
             'img_url'    => base_url('media/captcha') . '/',
-            'font_path'  => CATCOOLPATH . 'system/fonts/TAHOMA.TTF',
+            'font_path'  => FCPATH . 'system/fonts/TAHOMA.TTF',
             'font_size'  => 20,
             'img_width'  => $width,
             'img_height' => $height,
@@ -1560,9 +1446,9 @@ if(!function_exists('print_re_captcha'))
 
         $vals = [
             'word'       => $code,
-            'img_path'   => CATCOOLPATH . 'media/captcha/',
+            'img_path'   => FCPATH . 'media/captcha/',
             'img_url'    => base_url('media/captcha') . '/',
-            'font_path'  => CATCOOLPATH . 'system/fonts/TAHOMA.TTF',
+            'font_path'  => FCPATH . 'system/fonts/TAHOMA.TTF',
             'font_size'  => 20,
             'img_width'  => $width,
             'img_height' => $height,

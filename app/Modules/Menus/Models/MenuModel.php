@@ -52,21 +52,25 @@ class MenuModel extends MyModel
             $where .= " AND menu.menu_id IN(" . (is_array($filter["id"]) ? implode(',', $filter["id"]) : $filter["id"]) . ")";
         }
 
-        if (!empty($filter["is_admin"])) {
-            $where .= " AND menu.is_admin =" . $filter["is_admin"];
+        if (isset($filter["is_admin"])) {
+            $where .= " AND menu.is_admin=" . $filter["is_admin"];
         }
 
         if (!empty($filter["name"])) {
             $where .= " AND menu.name LIKE '%" . $filter["name"] . "%'";
         }
 
-        $this->select('menu.*, menu_lang.name AS name, menu_lang.description AS description, menu_lang.slug AS slug')
+        $result = $this->select('menu.*, menu_lang.name AS name, menu_lang.description AS description, menu_lang.slug AS slug')
             ->with(false)
             ->join('menu_lang', 'menu_lang.menu_id = menu.menu_id')
             ->where($where)
-            ->orderBy($sort, $order);
+            ->orderBy($sort, $order)->findAll();
 
-        return $this;
+        if (empty($result)) {
+            return null;
+        }
+
+        return $result;
     }
 
     public function getDetail($id, $language_id = null)

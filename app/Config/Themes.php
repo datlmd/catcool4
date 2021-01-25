@@ -31,12 +31,12 @@ class Themes extends BaseConfig
 	/**
 	 * CSS path inside theme path
 	 */
-	public $css_path = 'css';
+	public $css_path = 'assets/css';
 
 	/**
 	 * JS path inside theme path
 	 */
-	public $js_path = 'js';
+	public $js_path = 'assets/js';
 
 	/**
 	 * Image path inside theme path

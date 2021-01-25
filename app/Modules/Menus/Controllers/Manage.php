@@ -31,270 +31,244 @@ class Manage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('GeneralManage.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('Menus.heading_title'), base_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang('MenusManage.heading_title'), base_url(self::MANAGE_URL));
     }
 
     public function index()
     {
-        add_meta(['title' => lang("Menus.heading_title")], $this->themes);
+        add_meta(['title' => lang("MenusManage.heading_title")], $this->themes);
 
-        $this->themes->addJS('common/plugin/shortable-nestable/jquery.nestable');
-        $this->themes->addJS('common/js/admin/category');
+        $this->themes->addJS('common/plugin/shortable-nestable/jquery.nestable.js');
+        $this->themes->addJS('common/js/admin/category.js');
 
         if (isset($_GET['is_admin'])) {
-            session('is_menu_admin', $_GET['is_admin']);
+            session()->set('is_menu_admin', $_GET['is_admin']);
         } elseif (!session()->has('is_menu_admin')) {
-            session('is_menu_admin', false);
+            session()->set('is_menu_admin', 0);
         }
         $list = $this->model->getAllByFilter(['is_admin' => session('is_menu_admin')]);
 
         $data = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->findAll(),
+            'list'       => $list,
             'is_admin'   => session('is_menu_admin'),
         ];
-
-        set_last_url();
 
         $this->themes::load('list', $data);
     }
 
     public function add()
     {
-        //phai full quyen hoac duoc them moi
-        if (!$this->acl->check_acl()) {
-            set_alert(lang('error_permission_add'), ALERT_ERROR);
-            redirect('permissions/not_allowed');
-        }
+        if (!empty($this->request->getPost())) {
+            if (!$this->validateForm()) {
+                set_alert($this->errors, ALERT_ERROR);
+                return redirect()->back()->withInput();
+            }
 
-        if (isset($_POST) && !empty($_POST) && $this->validate_form() === TRUE) {
             $add_data = [
-                'context'    => $this->input->post('context', true),
-                'icon'       => $this->input->post('icon', true),
-                'image'      => $this->input->post('image'),
-                'nav_key'    => $this->input->post('nav_key', true),
-                'label'      => $this->input->post('label', true),
-                'attributes' => $this->input->post('attributes', true),
-                'selected'   => $this->input->post('selected', true),
+                'context'    => $this->request->getPost('context'),
+                'icon'       => $this->request->getPost('icon'),
+                'image'      => $this->request->getPost('image'),
+                'nav_key'    => $this->request->getPost('nav_key'),
+                'label'      => $this->request->getPost('label'),
+                'attributes' => $this->request->getPost('attributes'),
+                'selected'   => $this->request->getPost('selected'),
                 'user_id'    => $this->get_user_id(),
-                'parent_id'  => $this->input->post('parent_id', true),
-                'sort_order' => $this->input->post('sort_order', true),
-                'published'  => (isset($_POST['published'])) ? STATUS_ON : STATUS_OFF,
-                'is_admin'   => !empty($this->session->is_menu_admin) ? STATUS_ON : STATUS_OFF,
-                'hidden'     => (isset($_POST['hidden'])) ? STATUS_ON : STATUS_OFF,
+                'parent_id'  => $this->request->getPost('parent_id'),
+                'sort_order' => $this->request->getPost('sort_order'),
+                'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'is_admin'   => !empty(session('is_menu_admin')) ? STATUS_ON : STATUS_OFF,
+                'hidden'     => !empty($this->request->getPost('hidden')) ? STATUS_ON : STATUS_OFF,
                 'ctime'      => get_date(),
             ];
 
-            $id = $this->Menu->insert($add_data);
+            $id = $this->model->insert($add_data);
             if ($id === FALSE) {
-                set_alert(lang('error'), ALERT_ERROR);
-                redirect(self::MANAGE_URL . '/add');
+                set_alert(lang('GeneralManage.error'), ALERT_ERROR);
+                return redirect()->back()->withInput();
             }
 
-            $add_data_description = $this->input->post('manager_description');
+            $add_data_lang = format_lang_form($this->request->getPost());
             foreach (get_list_lang() as $key => $value) {
-                $add_data_description[$key]['language_id'] = $key;
-                $add_data_description[$key]['menu_id']     = $id;
+                $add_data_lang[$key]['language_id'] = $key;
+                $add_data_lang[$key]['menu_id']     = $id;
+                $this->model_lang->insert($add_data_lang);
             }
-
-            $this->Menu_description->insert($add_data_description);
 
             //reset cache
-            $this->Menu->delete_cache();
+            $this->model->delete_cache();
 
-            set_alert(lang('text_add_success'), ALERT_SUCCESS);
-            redirect(self::MANAGE_URL);
+            set_alert(lang('GeneralManage.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
+            return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        $this->get_form();
+        $this->getForm();
     }
 
     public function edit($id = null)
     {
-        //phai full quyen hoac duoc cap nhat
-        if (!$this->acl->check_acl()) {
-            set_alert(lang('error_permission_edit'), ALERT_ERROR);
-            redirect('permissions/not_allowed');
+        if (is_null($id)) {
+            set_alert(lang('GeneralManage.error_empty'), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (empty($id)) {
-            set_alert(lang('error_empty'), ALERT_ERROR);
-            redirect(self::MANAGE_URL);
-        }
-
-        if (isset($_POST) && !empty($_POST) && $this->validate_form() === TRUE) {
-            // do we have a valid request?
-            if (valid_token() === FALSE || $id != $this->input->post('menu_id')) {
-                set_alert(lang('error_token'), ALERT_ERROR);
-                redirect(self::MANAGE_URL);
+        if (!empty($this->request->getPost())) {
+            if (!$this->validateForm()) {
+                set_alert($this->errors, ALERT_ERROR);
+                return redirect()->back()->withInput();
             }
 
-            $edit_data_description = $this->input->post('manager_description');
-            foreach (get_list_lang() as $key => $value) {
-                $edit_data_description[$key]['language_id'] = $key;
-                $edit_data_description[$key]['menu_id']     = $id;
+            // do we have a valid request?
+            if (valid_token() === FALSE || $id != $this->request->getPost('menu_id')) {
+                set_alert(lang('GeneralManage.error_token'), ALERT_ERROR);
+                return redirect()->back()->withInput();
+            }
 
-                if (!empty($this->Menu_description->get(['menu_id' => $id, 'language_id' => $key]))) {
-                    $this->Menu_description->where('menu_id', $id)->update($edit_data_description[$key], 'language_id');
+            $edit_data_lang = format_lang_form($this->request->getPost());
+            foreach (get_list_lang() as $key => $value) {
+                $edit_data_lang[$key]['language_id'] = $key;
+                $edit_data_lang[$key]['menu_id']     = $id;
+
+                if (!empty($this->model_lang->where(['menu_id' => $id, 'language_id' => $key])->find())) {
+                    $this->model_lang->where('language_id', $key)->update($id, $edit_data_lang[$key]);
                 } else {
-                    $this->Menu_description->insert($edit_data_description[$key]);
+                    $this->model_lang->insert($edit_data_lang[$key]);
                 }
             }
 
-            $edit_data['context']    = $this->input->post('context', true);
-            $edit_data['icon']       = $this->input->post('icon', true);
-            $edit_data['image']       = $this->input->post('image', true);
-            $edit_data['nav_key']    = $this->input->post('nav_key', true);
-            $edit_data['label']      = $this->input->post('label', true);
-            $edit_data['attributes'] = $this->input->post('attributes', true);
-            $edit_data['selected']   = $this->input->post('selected', true);
-            $edit_data['user_id']    = $this->get_user_id();
-            $edit_data['parent_id']  = $this->input->post('parent_id', true);
-            $edit_data['sort_order'] = $this->input->post('sort_order', true);
-            $edit_data['is_admin']   = !empty($this->session->is_menu_admin) ? STATUS_ON : STATUS_OFF;
-            $edit_data['hidden']     = (isset($_POST['hidden'])) ? STATUS_ON : STATUS_OFF;
-            $edit_data['published']  = (isset($_POST['published'])) ? STATUS_ON : STATUS_OFF;
-            $edit_data['mtime']      = get_date();
+            $edit_data = [
+                'context'    => $this->request->getPost('context'),
+                'icon'       => $this->request->getPost('icon'),
+                'image'      => $this->request->getPost('image'),
+                'nav_key'    => $this->request->getPost('nav_key'),
+                'label'      => $this->request->getPost('label'),
+                'attributes' => $this->request->getPost('attributes'),
+                'selected'   => $this->request->getPost('selected'),
+                'user_id'    => $this->get_user_id(),
+                'parent_id'  => $this->request->getPost('parent_id'),
+                'sort_order' => $this->request->getPost('sort_order'),
+                'is_admin'   => !empty(session('is_menu_admin')) ? STATUS_ON : STATUS_OFF,
+                'hidden'     => !empty($this->request->getPost('hidden')) ? STATUS_ON : STATUS_OFF,
+                'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'mtime'      => get_date(),
+            ];
 
-            if ($this->Menu->update($edit_data, $id) !== FALSE) {
-                //reset cache
-                $this->Menu->delete_cache();
-
-                set_alert(lang('text_edit_success'), ALERT_SUCCESS);
-            } else {
-                set_alert(lang('error'), ALERT_ERROR);
+            if (!$this->model->update($id, $edit_data)) {
+                set_alert(lang('GeneralManage.error'), ALERT_ERROR, ALERT_POPUP);
+                return redirect()->back()->withInput();
             }
-            redirect(self::MANAGE_URL . '/edit/' . $id);
+
+            //reset cache
+            $this->model->delete_cache();
+
+            set_alert(lang('GeneralManage.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
+            return redirect()->back();
         }
 
-        $this->get_form($id);
+        $this->getForm($id);
     }
 
     public function delete($id = null)
     {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
-        }
-
-        //phai full quyen hoac duowc xoa
-        if (!$this->acl->check_acl()) {
-            set_alert(lang('error_permission_delete'), ALERT_ERROR);
-            json_output(['status' => 'redirect', 'url' => 'permissions/not_allowed']);
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
         //delete
-        if (isset($_POST['is_delete']) && isset($_POST['ids']) && !empty($_POST['ids'])) {
-            if (valid_token() == FALSE) {
-                set_alert(lang('error_token'), ALERT_ERROR);
-                json_output(['status' => 'ng', 'msg' => lang('error_token')]);
-            }
-
-            $ids = $this->input->post('ids', true);
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
+            $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
-            $list_delete = $this->Menu->get_list_full_detail($ids);
+            $list_delete = $this->model->getListDetail($ids);
             if (empty($list_delete)) {
-                json_output(['status' => 'ng', 'msg' => lang('error_empty')]);
+                json_output(['status' => 'ng', 'msg' => lang('GeneralManage.error_empty')]);
             }
 
-            try {
-                foreach($list_delete as $value){
-                    $this->Menu_description->delete($value['menu_id']);
-                    $this->Menu->delete($value['menu_id']);
-                }
-                //reset cache
-                $this->Menu->delete_cache();
+            $this->model_lang->delete($ids);
+            $this->model->delete($ids);
 
-                set_alert(lang('text_delete_success'), ALERT_SUCCESS);
-            } catch (Exception $e) {
-                set_alert($e->getMessage(), ALERT_ERROR);
-            }
+            //reset cache
+            $this->model->delete_cache();
 
-            json_output(['status' => 'redirect', 'url' => self::MANAGE_URL]);
+            set_alert(lang('GeneralManage.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
+            json_output(['status' => 'redirect', 'url' => site_url(self::MANAGE_URL)]);
         }
 
         $delete_ids = $id;
 
         //truong hop chon xoa nhieu muc
-        if (isset($_POST['delete_ids']) && !empty($_POST['delete_ids'])) {
-            $delete_ids = $this->input->post('delete_ids', true);
+        if (!empty($this->request->getPost('delete_ids'))) {
+            $delete_ids = $this->request->getPost('delete_ids');
         }
 
         if (empty($delete_ids)) {
-            json_output(['status' => 'ng', 'msg' => lang('error_empty')]);
+            json_output(['status' => 'ng', 'msg' => lang('GeneralManage.error_empty')]);
         }
 
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->Menu->get_list_full_detail($delete_ids);
+        $list_delete = $this->model->getListDetail($delete_ids, get_lang_id());
         if (empty($list_delete)) {
-            json_output(['status' => 'ng', 'msg' => lang('error_empty')]);
+            json_output(['status' => 'ng', 'msg' => lang('GeneralManage.error_empty')]);
         }
 
-        $data['csrf']        = create_token();
         $data['list_delete'] = $list_delete;
         $data['ids']         = $delete_ids;
 
-        json_output(['data' => theme_view('delete', $data, true)]);
+        json_output(['data' => $this->themes::view('manage/delete', $data)]);
     }
 
-    protected function get_form($id = null)
+    protected function getForm($id = null)
     {
-        add_style(css_url('js/iconpicker/iconpicker', 'common'));
-        $this->theme->add_js(js_url('js/iconpicker/iconpicker', 'common'));
-
-        $this->theme->add_js(js_url('js/admin/filemanager', 'common'));
+        $this->themes->addCSS('common/js/iconpicker/iconpicker');
+        //  $this->themes->addJS('common/js/iconpicker/iconpicker');
+        $this->themes->addJS('common/js/admin/filemanager');
 
         $data['list_lang'] = get_list_lang();
 
-        list($list_all) = $this->Menu->get_all_by_filter(['is_admin' => $this->session->is_menu_admin]);
+        $list_all = $this->model->getAllByFilter(['is_admin' => session('is_menu_admin')]);
         $data['list_patent'] = format_tree(['data' => $list_all, 'key_id' => 'menu_id']);
 
         //edit
         if (!empty($id) && is_numeric($id)) {
-            $data['text_form']   = lang('text_edit') . (!empty($this->session->is_menu_admin) ? ' (Admin)' : '');
-            $data['text_submit'] = lang('button_save');
+            $data['text_form']   = lang('MenusManage.text_edit') . (!empty(session('is_menu_admin')) ? ' (Admin)' : '');
+            $data['text_submit'] = lang('GeneralManage.button_save');
 
-            $data_form = $this->Menu->with_details()->get($id);
+            $data_form = $this->model->getDetail($id);
             if (empty($data_form)) {
-                set_alert(lang('error_empty'), ALERT_ERROR);
-                redirect(self::MANAGE_URL);
+                set_alert(lang('GeneralManage.error_empty'), ALERT_ERROR, ALERT_POPUP);
+                return redirect()->to(site_url(self::MANAGE_URL));
             }
-
-            $data_form = format_data_lang_id($data_form);
 
             // display the edit user form
             $data['csrf']      = create_token();
             $data['edit_data'] = $data_form;
         } else {
-            $data['text_form']   = lang('text_add') . (!empty($this->session->is_menu_admin) ? ' (Admin)' : '');
-            $data['text_submit'] = lang('button_add');
+            $data['text_form']   = lang('MenusManage.text_add') . (!empty(session('is_menu_admin')) ? ' (Admin)' : '');
+            $data['text_submit'] = lang('GeneralManage.button_add');
         }
 
-        $data['text_cancel']   = lang('text_cancel');
+        $data['text_cancel']   = lang('GeneralManage.text_cancel');
         $data['button_cancel'] = base_url(self::MANAGE_URL.http_get_query());
 
-        if (!empty($this->errors)) {
-            $data['errors'] = $this->errors;
-        }
+        $data['errors'] = $this->errors;
 
-        $this->theme->title($data['text_form']);
         $this->breadcrumb->add($data['text_form'], base_url(self::MANAGE_URL));
+        $data['breadcrumb'] = $this->breadcrumb->render();
 
-        theme_load('form', $data);
+        add_meta(['title' => $data['text_form']], $this->themes);
+
+        $this->themes::load('form', $data);
     }
 
-    protected function validate_form()
+    protected function validateForm()
     {
+        $this->validator->setRule('sort_order', lang('GeneralManage.text_sort_order'), 'is_natural');
         foreach(get_list_lang() as $key => $value) {
-            $this->form_validation->set_rules(sprintf('manager_description[%s][name]', $key), lang('text_name') . ' (' . $value['name']  . ')', 'trim|required');
+            $this->validator->setRule(sprintf('lang_%s_name', $key), lang('GeneralManage.text_name') . ' (' . $value['name']  . ')', 'required');
         }
 
-        $is_validation = $this->form_validation->run();
-        $this->errors  = $this->form_validation->error_array();
-
-        if (!empty($this->errors)) {
-            return FALSE;
-        }
+        $is_validation = $this->validator->withRequest($this->request)->run();
+        $this->errors  = $this->validator->getErrors();
 
         return $is_validation;
     }
@@ -314,7 +288,7 @@ class Manage extends AdminController
             json_output(['status' => 'ng', 'msg' => lang('error_json')]);
         }
 
-        $id        = $this->input->post('id');
+        $id        = $this->request->getPost('id');
         $item_edit = $this->Menu->get($id);
         if (empty($item_edit)) {
             json_output(['status' => 'ng', 'msg' => lang('error_empty')]);
