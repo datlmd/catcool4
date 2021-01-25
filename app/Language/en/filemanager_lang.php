@@ -1,0 +1,22 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+$lang["entry_folder"] = "Folder Name";
+$lang["entry_search"] = "Search...";
+$lang["error_delete"] = "You can not delete this directory!";
+$lang["error_directory"] = "Directory does not exist!";
+$lang["error_exists"] = "A file or directory with the same name already exists!";
+$lang["error_filename"] = "Filename must be between 3 and 255!";
+$lang["error_filesize"] = "Incorrect file size! The file is too large, please choose below 300kb and the height or width should not exceed 1000px!";
+$lang["error_filetype"] = "Incorrect file type!";
+$lang["error_file_null"] = "Please select an executable file!";
+$lang["error_folder"] = "Folder name must be between 3 and 255!";
+$lang["error_folder_null"] = "Please enter the folder name!";
+$lang["error_permission"] = "Permission Denied!";
+$lang["error_rotation"] = "System error! Please try it again!";
+$lang["error_search_null"] = "Please enter your search information!";
+$lang["error_upload"] = "File could not be uploaded for an unknown reason!";
+$lang["heading_title"] = "File Manager";
+$lang["text_delete"] = "Your file or directory has been deleted!";
+$lang["text_directory"] = "Directory created!";
+$lang["text_rotation"] = "Image rotated!";
+$lang["text_uploaded"] = "Your file has been uploaded!";
