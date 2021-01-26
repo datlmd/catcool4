@@ -708,23 +708,23 @@ if(!function_exists('get_image_resize_info'))
 
 if(!function_exists('image_url'))
 {
-    function image_url($image = null)
+    function image_url($image = null, $width = null, $height = null, $is_watermark = false)
     {
         if (stripos($image, "https://") !== false || stripos($image, "http://") !== false) {
             return $image;
         }
 
-        $upload_path = get_upload_url();
-        if (! is_file( ROOTPATH . $upload_path . $image)) {
-            return image_default_url();
-        }
 
+        if (!is_null($width) && is_numeric($width) && !is_null($height) && is_numeric($height)) {
+            $image = sprintf('%dx%d/%s', $width, $height, $image);
+        }
+        $image = 'img/'.$image;
 
         if (!empty(session()->get('is_admin'))) {
-            return base_url($upload_path) . $image . '?' . time();
+            return image_domain($image) . '?' . time();
         }
 
-        return image_domain($upload_path . $image);
+        return image_domain( $image);
     }
 }
 
@@ -993,8 +993,7 @@ if(!function_exists('move_file_tmp'))
             return FALSE;
         }
 
-        $CI = & get_instance();
-        $CI->load->helper('file');
+        helper('filesystem');
 
         $upload_path = get_upload_path();
         $file_info   = pathinfo($upload_path . $field_name_tmp);
@@ -1023,11 +1022,8 @@ if(!function_exists('delete_file_upload_tmp'))
 {
     function delete_file_upload_tmp($field_name_tmp = null, $expired_time = 7200)
     {
-        $CI = & get_instance();
-
         //delete file old
-        $CI->load->helper('directory');
-        $CI->load->helper('file');
+        helper('filesystem');
 
         $upload_path = empty($field_name_tmp) ? get_upload_path('tmp') : $field_name_tmp;
         $list_file   = directory_map($upload_path);
@@ -1321,7 +1317,7 @@ if(!function_exists('filter_bad_word_comment_content'))
         static $filter;
 
         if (!$filter) {
-            $filter = file_get_contents(APPPATH . 'modules/comments/config/filter_comment.txt');
+            $filter = file_get_contents(APPPATH . 'Modules/Comments/Config/Filter_comment.txt');
 
             $filter = explode(';', $filter);
 
@@ -1554,17 +1550,6 @@ if(!function_exists('get_avatar'))
         }
 
         return image_url($avatar);
-    }
-}
-
-if(!function_exists('is_mobile'))
-{
-    function is_mobile($device_name = null)
-    {
-        $CI = & get_instance();
-        $CI->load->library('user_agent');
-
-        return $CI->agent->is_mobile($device_name);
     }
 }
 

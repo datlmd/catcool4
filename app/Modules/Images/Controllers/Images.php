@@ -1,34 +1,60 @@
 <?php namespace App\Modules\Images\Controllers;
 
+use App\Controllers\BaseController;
+
 class Images extends BaseController
 {
-    private $_image_path = '';
-    private $_image_url  = '';
+    private $_image_path;
+    private $_image_url;
+    private $_image_tool;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->load->model('images/image_tool', 'image_tool');
+        $this->_image_tool = new \App\Libraries\ImageTool();
 
-        helper('file');
+        helper('filesystem');
 
-        $this->lang->load('images', $this->_site_lang);
 
         $this->_image_path = get_upload_path();
         $this->_image_url  = get_upload_url();
     }
 
-    public function index()
+    public function index($img_wh = null)
     {
-        $image_url = $this->input->get("c");
+        $agent = $this->request->getUserAgent();
+        $width = 0;
+        $height = 0;
 
-        $width  = (is_mobile()) ? config_item('image_width_mobile') : config_item('image_width_pc');
-        $height = (is_mobile()) ? config_item('image_height_mobile') : config_item('image_height_pc');
+        $image_url = str_replace(base_url('img/'), '', current_url());
 
-        $computedImage = image_thumb_url($image_url, $width, $height);
+        if (!empty($img_wh)) {
+            $img_wh = strtolower($img_wh);
+            $img_wh = explode('/', $img_wh);
+            if (!empty($img_wh[0]) && stripos($img_wh[0], "x") !== false) {
+                $wh_tmp = explode('x', $img_wh[0]);
+                $width = $wh_tmp[0];
+                $height = $wh_tmp[1];
+                $image_url = str_replace(sprintf('%sx%s/', $width, $height), '', $image_url);
+            }
+        }
 
-        $this->output->set_content_type(get_mime_by_extension($computedImage))->set_output(file_get_contents_ssl($computedImage));
+        //$width  = ($agent->isMobile()) ? config_item('image_width_mobile') : config_item('image_width_pc');
+        //$height = ($agent->isMobile()) ? config_item('image_height_mobile') : config_item('image_height_pc');
+
+        if (!empty($width) && !empty($height)) {
+            $image_url = $this->_image_tool->resize($image_url, $width, $height);
+        }
+
+        $computedImage = $this->_image_path.$image_url;//image_thumb_url($image_url, $width, $height);
+        $computedImage = str_replace('//','/', $computedImage);
+
+        $this->response
+            ->setStatusCode(200)
+            ->setContentType(mime_content_type($computedImage))
+            ->setBody(file_get_contents($computedImage))
+            ->send();
     }
 
     public function alt($wh = null, $background = null, $foreground = null)

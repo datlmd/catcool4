@@ -153,7 +153,7 @@ class FileManager extends AdminController
                     case "bmp":
                     case "BMP":
                         $data['images'][] = [
-                            'thumb' => $server . $this->dir_image . $this->image_tool->resize(substr($image, strlen($this->dir_image_path)), $this->image_thumb_width, $this->image_thumb_height) . '?' . time(),
+                            'thumb' => image_url(substr($image, strlen($this->dir_image_path))),
                             'name'  => implode(' ', $name) . ' (' . $this->_convert_filesize($file_size[$image], 0) . ')',
                             'type'  => 'image',
                             'path'  => substr($image, strlen($this->dir_image_path)),
@@ -235,18 +235,18 @@ class FileManager extends AdminController
 
         $data['heading_title'] = lang('FileManager.heading_title');
 
-        $data['text_no_results'] = lang('FileManager.text_no_results');
-        $data['text_confirm']    = lang('FileManager.text_confirm');
+        $data['text_no_results'] = lang('GeneralManage.text_no_results');
+        $data['text_confirm']    = lang('GeneralManage.text_confirm');
 
         $data['entry_search'] = lang('FileManager.entry_search');
         $data['entry_folder'] = lang('FileManager.entry_folder');
 
-        $data['button_parent']  = lang('FileManager.button_parent');
-        $data['button_refresh'] = lang('FileManager.button_refresh');
-        $data['button_upload']  = lang('FileManager.button_upload');
-        $data['button_folder']  = lang('FileManager.button_folder');
-        $data['button_delete']  = lang('FileManager.button_delete');
-        $data['button_search']  = lang('FileManager.button_search');
+        $data['button_parent']  = lang('GeneralManage.button_parent');
+        $data['button_refresh'] = lang('GeneralManage.button_refresh');
+        $data['button_upload']  = lang('GeneralManage.button_upload');
+        $data['button_folder']  = lang('GeneralManage.button_folder');
+        $data['button_delete']  = lang('GeneralManage.button_delete');
+        $data['button_search']  = lang('GeneralManage.button_search');
 
         $data['error_folder_null'] = lang('FileManager.error_folder_null');
         $data['error_file_null']   = lang('FileManager.error_file_null');

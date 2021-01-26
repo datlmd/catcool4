@@ -5,7 +5,6 @@ $(function () {
     /** filemanager **/
     if ($('a[data-bs-toggle=\'image\'] .button-image').length) {
         $(document).on('click', 'a[data-bs-toggle=\'image\'] .button-image', function (e) {
-            console.log(is_processing);
             if (is_processing) {
                 return false;
             }

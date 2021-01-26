@@ -36,7 +36,6 @@ class ImageTool
         $image_old = $filename;
         $image_new = UPLOAD_FILE_CACHE_DIR . substr($filename, 0, strrpos($filename, '.')) . '-' . $width . 'x' . $height . '.' . $extension;
 
-
         if (is_file($this->dir_image_path . $image_new)) {
             $file_info_old = get_file_info($this->dir_image_path . $image_old);
             $file_info_new = get_file_info($this->dir_image_path . $image_new);
@@ -48,7 +47,7 @@ class ImageTool
 
         $image_old_info = getimagesize($this->dir_image_path . $image_old);
         if (isset($image_old_info[0]) && isset($image_old_info[1]) && $width > $image_old_info[0] && $height > $image_old_info[0]) {
-            write_file($this->dir_image_path . $image_new, file_get_contents_ssl($this->dir_image_path . $image_old));
+            write_file($this->dir_image_path . $image_new, file_get_contents($this->dir_image_path . $image_old));
             return $image_new;
         }
 
@@ -66,9 +65,11 @@ class ImageTool
             }
 
             $quality = !empty(config_item('image_quality')) ? config_item('image_quality') : 100;
+            $master_dimm = !empty(config_item('image_master_dimm')) ? config_item('image_master_dimm') : 'width';
 
+            $this->image = \Config\Services::image('imagick');
             $this->image->withFile($this->dir_image_path . $image_old)
-                ->resize($width, $height, true, 'height')
+                ->resize($width, $height, true, $master_dimm)
                 ->save($this->dir_image_path . $image_new, $quality);
         }
 

@@ -4,7 +4,7 @@
             <a href="{$parent}" data-bs-toggle="tooltip" title="{$button_parent}" data-placement="top" data-bs-original-title="{$button_parent}" id="button-parent" class="btn btn-sm btn-light"><i class="fas fa-level-up-alt"></i></a>
             <a href="{$refresh}" data-bs-toggle="tooltip" title="{$button_refresh}" data-placement="top" data-bs-original-title="{$button_refresh}" id="button-refresh" class="btn btn-sm btn-secondary"><i class="fas fa-sync"></i></a>
             <button type="button" data-bs-toggle="tooltip" title="{$button_upload}" data-placement="top" data-bs-original-title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary"><i class="fas fa-upload"></i></button>
-            <button type="button" data-bs-toggle="tooltip" title="{$button_folder}" data-placement="top" data-bs-original-title="{$button_folder}"  id="button-folder" class="btn btn-sm btn-success"><i class="fas fa-folder"></i></button>
+            <button type="button" title="{$button_folder}" id="button-folder" class="btn btn-sm btn-success"><i class="fas fa-folder"></i></button>
             <button type="button" data-bs-toggle="tooltip" title="{$button_delete}" data-placement="top" data-bs-original-title="{$button_delete}" id="button-delete" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
             <a href="{base_url('photos/manage/editor')}" data-bs-toggle="tooltip" title="Photo Editor" data-placement="top" id="button-parent" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt me-1"></i>Photo Editor</a>
         </div>
@@ -23,7 +23,7 @@
     {*{foreach array_chunk($images, 6) as $item}*}
     <div class="row">
         {foreach $images as $image}
-            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6 mb-2 text-center">
+            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6 mb-2 text-center position-relative">
                 {if $image.type == 'directory'}
                     <div class="text-center"><a href="{$image.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-5x"></i></a></div>
                     <label>
@@ -31,14 +31,14 @@
                         {$image.name}
                     </label>
                 {elseif $image.type == 'image'}
-                    <a href="{$image.href}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail">
+                    <a href="{image_url($image.path)}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail">
                         <img src="{$image.thumb}" style="background-image: url('{$image.thumb}');" alt="{$image.name}" title="{$image.name}" class="img-thumbnail img-fluid img-photo-list" />
                     </a>
                     <label>
                         <input type="checkbox" name="path[]" value="{$image.path}" />
                         {$image.name}
                     </label>
-                    <button type="button" class="btn btn-xs btn-primary image-setting"><i class="fas fa-ellipsis-h"></i></button>
+                    <button type="button" class="btn btn-xs btn-primary image-setting" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
                 {elseif $image.type == 'video'}
                     <div class="text-center">
                         <video controls height="60" width="90" >
@@ -188,7 +188,7 @@
                 }
 
                 $.ajax({
-                    url: base_url + 'common/filemanager/upload?directory={{$directory}}',
+                    url: base_url + '/common/filemanager/upload?directory={{$directory}}',
                     type: 'post',
                     dataType: 'json',
                     data: form_data,
@@ -387,6 +387,7 @@
         e.preventDefault();
 
         // destroy all image popovers
+
         $('.image-setting').popover('dispose');
         // remove flickering (do not re-add popover when clicking for removal)
         if ($popover) {
@@ -400,7 +401,7 @@
             placement: 'top',
             trigger: 'manual',
             content: function() {
-                var html = '<a href="' + image_root_url + image_setting.parent().find("input").val() + '" data-lightbox="photos" id="button-image-zoom" class="btn btn-xs btn-info"><i class="fas fa-search-plus"></i></a>';
+                var html = '<a href="' + image_setting.parent().find("a.thumbnail").attr('href') + '" data-lightbox="photos" id="button-image-zoom" class="btn btn-xs btn-info"><i class="fas fa-search-plus"></i></a>';
                 html += ' <button type="button" id="btn-rotation-left" class="btn btn-xs btn-secondary"><i class="fas fa-undo"></i></button>';
                 html += ' <button type="button" id="btn-rotation-hor" class="btn btn-xs btn-primary"><i class="fas fa-arrows-alt-h"></i></button> <button type="button" id="btn-rotation-vrt" class="btn btn-xs btn-primary"><i class="fas fa-arrows-alt-v"></i></button>';
                 html += ' <button type="button" id="btn-image-crop" onclick="Catcool.cropImage(\'' + image_setting.parent().find("input").val() + '\', 0)" class="btn btn-xs btn-warning"><i class="fas fa-crop"></i></button>';
@@ -552,7 +553,7 @@
     function filemanager_dispose_all() {
         $('.image-setting').popover('dispose');
         $('#button-folder').popover('dispose');
-        $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
+        //$('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
     }
 
     $(function () {
