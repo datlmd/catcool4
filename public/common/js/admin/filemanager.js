@@ -3,14 +3,15 @@ var is_processing = false;
 /* action - event */
 $(function () {
     /** filemanager **/
-    if ($('a[data-toggle=\'image\'] .button-image').length) {
-        $(document).on('click', 'a[data-toggle=\'image\'] .button-image', function (e) {
+    if ($('a[data-bs-toggle=\'image\'] .button-image').length) {
+        $(document).on('click', 'a[data-bs-toggle=\'image\'] .button-image', function (e) {
+            console.log(is_processing);
             if (is_processing) {
                 return false;
             }
             is_processing = true;
             e.preventDefault();
-            $('[data-toggle="tooltip"]').tooltip('dispose');
+            //$('[data-bs-toggle="tooltip"]').tooltip('dispose');
             $('#modal-image').remove();//target=$element.parent().find('input').attr('id')
             var element = $(this);
             $.ajax({
@@ -25,10 +26,10 @@ $(function () {
                 success: function (html) {
                     is_processing = false;
 
-                    $('body').append('<div id="modal-image" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">' + html + '</div>');
+                    $('body').append('<div id="modal-image" class="modal fade" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">' + html + '</div>');
 
                     $('#modal-image').modal('show');
-                    $('[data-toggle="tooltip"]').tooltip();
+                    $('[data-bs-toggle="tooltip"]').tooltip();
                 },
                 error: function (xhr, errorType, error) {
                     is_processing = false;
@@ -36,8 +37,8 @@ $(function () {
             });
         });
     }
-    if ($('a[data-toggle=\'image\'] .button-clear').length) {
-        $(document).on('click', 'a[data-toggle=\'image\'] .button-clear', function (e) {
+    if ($('a[data-bs-toggle=\'image\'] .button-clear').length) {
+        $(document).on('click', 'a[data-bs-toggle=\'image\'] .button-clear', function (e) {
             e.preventDefault();
             $($(this).parent().attr('data-target')).val('');
             $(this).parent().find('img').attr('src', $(this).parent().find('img').attr('data-placeholder'));

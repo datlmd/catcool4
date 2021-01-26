@@ -123,9 +123,9 @@ class CustomConfig extends BaseConfig
     //Kich thuoc file toi da
     public $file_max_size = 300000;
 
-    public $file_ext_allowed = "zip|txt|png|PNG|jpe|JPE|jpeg|JPEG|jpg|JPG|gif|GIF|bmp|BMP|ico|tiff|tif|svg|svgz|zip|rar|msi|cab|mp3|qt|mov|pdf|psd|ai|eps|ps|doc|mp4";
+    public $file_ext_allowed = "zip,txt,png,PNG,jpe,JPE,jpeg,JPEG,jpg,JPG,gif,GIF,bmp,BMP,ico,tiff,tif,svg,svgz,zip,rar,msi,cab,mp3,qt,mov,pdf,psd,ai,eps,ps,doc,mp4";
 
-    public $file_mime_allowed = 'text/plain|image/png|image/jpeg|image/gif|image/bmp|image/tiff|image/svg+xml|application/zip|"application/zip"|application/x-zip|"application/x-zip"|application/x-zip-compressed|"application/x-zip-compressed"|application/rar|"application/rar"|application/x-rar|"application/x-rar"|application/x-rar-compressed|"application/x-rar-compressed"|application/octet-stream|"application/octet-stream"|audio/mpeg|video/quicktime|application/pdf';
+    public $file_mime_allowed = 'text/plain,image/png,image/jpeg,image/gif,image/bmp,image/tiff,image/svg+xml,application/zip,"application/zip",application/x-zip,"application/x-zip",application/x-zip-compressed,"application/x-zip-compressed",application/rar,"application/rar",application/x-rar,"application/x-rar",application/x-rar-compressed,"application/x-rar-compressed",application/octet-stream,"application/octet-stream",audio/mpeg,video/quicktime,application/pdf';
 
     public $file_max_width = 0;
 

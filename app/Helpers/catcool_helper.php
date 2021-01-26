@@ -657,7 +657,7 @@ if(!function_exists('image_default_url'))
 {
     function image_default_url() {
         $upload_path = get_upload_url();
-        if (!empty(config_item('image_none')) && is_file( FCPATH . $upload_path . config_item('image_none'))) {
+        if (!empty(config_item('image_none')) && is_file( ROOTPATH . $upload_path . config_item('image_none'))) {
             return image_domain($upload_path . config('Config')->image_none);
         }
 
@@ -715,7 +715,7 @@ if(!function_exists('image_url'))
         }
 
         $upload_path = get_upload_url();
-        if (! is_file( FCPATH . $upload_path . $image)) {
+        if (! is_file( ROOTPATH . $upload_path . $image)) {
             return image_default_url();
         }
 
@@ -735,7 +735,7 @@ if(!function_exists('image_thumb_url'))
         $width = !empty($width) ? $width : (!empty(config('Config')->image_thumbnail_small_width) ? config('Config')->image_thumbnail_small_width : RESIZE_IMAGE_THUMB_WIDTH);
         $height = !empty($height) ? $height : (!empty(config('Config')->image_thumbnail_small_height) ? config('Config')->image_thumbnail_small_height : RESIZE_IMAGE_THUMB_HEIGHT);
         $upload_path = get_upload_url();
-        if (! is_file( FCPATH . $upload_path . $image)) {
+        if (! is_file( ROOTPATH . $upload_path . $image)) {
             return image_default_url();
         }
 
@@ -1118,10 +1118,10 @@ if(!function_exists('get_upload_path'))
     function get_upload_path($upload_uri = NULL)
     {
         if (!empty($upload_uri)) {
-            return FCPATH . UPLOAD_FILE_DIR . $upload_uri;
+            return ROOTPATH . UPLOAD_FILE_DIR . $upload_uri;
         }
 
-        return FCPATH . UPLOAD_FILE_DIR;
+        return ROOTPATH . UPLOAD_FILE_DIR;
     }
 }
 
@@ -1346,7 +1346,7 @@ if(!function_exists('write_html_cache'))
     function write_html_cache($key, $output_cache)
     {
         helper('file');
-        write_file(FCPATH . config('Config')->cache_path . "cache__html__$key.html", $output_cache);
+        write_file(ROOTPATH . config('Config')->cache_path . "cache__html__$key.html", $output_cache);
     }
 }
 
@@ -1357,7 +1357,7 @@ if(!function_exists('get_html_cache'))
 {
     function get_html_cache($key)
     {
-        @include FCPATH . config('Config')->cache_path .  "cache__html__$key.html";
+        @include ROOTPATH . config('Config')->cache_path .  "cache__html__$key.html";
     }
 }
 
@@ -1408,9 +1408,9 @@ if(!function_exists('print_captcha'))
 
         $vals = [
             'word'       => $code,
-            'img_path'   => FCPATH . 'media/captcha/',
+            'img_path'   => ROOTPATH . 'media/captcha/',
             'img_url'    => base_url('media/captcha') . '/',
-            'font_path'  => FCPATH . 'system/fonts/TAHOMA.TTF',
+            //'font_path'  => ROOTPATH . 'system/fonts/TAHOMA.TTF',
             'font_size'  => 20,
             'img_width'  => $width,
             'img_height' => $height,
@@ -1446,9 +1446,9 @@ if(!function_exists('print_re_captcha'))
 
         $vals = [
             'word'       => $code,
-            'img_path'   => FCPATH . 'media/captcha/',
+            'img_path'   => ROOTPATH . 'media/captcha/',
             'img_url'    => base_url('media/captcha') . '/',
-            'font_path'  => FCPATH . 'system/fonts/TAHOMA.TTF',
+            'font_path'  => ROOTPATH . 'system/fonts/TAHOMA.TTF',
             'font_size'  => 20,
             'img_width'  => $width,
             'img_height' => $height,
