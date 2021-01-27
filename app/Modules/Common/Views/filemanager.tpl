@@ -143,7 +143,7 @@
 
     $('#button_search').on('click', function(e) {
         filemanager_dispose_all();
-        var url = base_url + 'common/filemanager?directory={{$directory}}';
+        var url = base_url + '/common/filemanager?directory={{$directory}}';
         var filter_name = $('input[name=\'search\']').val();
         if (filter_name) {
             url += '&filter_name=' + encodeURIComponent(filter_name);
@@ -161,7 +161,7 @@
             url += '&target=' + $('input[name=\'file_target\']').val();
         }
 
-        $('#modal_image').load($(this).attr('href'));
+        $('#modal_image').load(url);
     });
 
     $('#button-upload').on('click', function() {
@@ -348,7 +348,7 @@
                         is_processing = true;
 
                         $.ajax({
-                            url: base_url + 'common/filemanager/delete',
+                            url: base_url + '/common/filemanager/delete',
                             type: 'post',
                             dataType: 'json',
                             data: $('input[name^=\'path\']:checked'),
@@ -427,7 +427,7 @@
             }
             is_processing = true;
             $.ajax({
-                url: base_url + 'common/filemanager/rotation/90',
+                url: base_url + '/common/filemanager/rotation/90',
                 type: 'POST',
                 data: {
                     'path': image_setting.parent().find("input").val()
@@ -471,7 +471,7 @@
             }
             is_processing = true;
             $.ajax({
-                url: base_url + 'common/filemanager/rotation/hor',
+                url: base_url + '/common/filemanager/rotation/hor',
                 type: 'POST',
                 data: {
                     'path': image_setting.parent().find("input").val()
@@ -515,7 +515,7 @@
             }
             is_processing = true;
             $.ajax({
-                url: base_url + 'common/filemanager/rotation/vrt',
+                url: base_url + '/common/filemanager/rotation/vrt',
                 type: 'POST',
                 data: {
                     'path': image_setting.parent().find("input").val()
@@ -564,6 +564,7 @@
             if ($(e.target).closest('.popover').length != 0 || $(e.target).closest('.image-setting').length != 0 || $(e.target).closest('#button_folder').length != 0 ) {
                 return true;
             }
+
             $('.image-setting').popover('dispose');
             $('#button_folder').popover('dispose');
             is_disposing = false;

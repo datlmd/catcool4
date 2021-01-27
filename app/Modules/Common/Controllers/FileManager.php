@@ -578,10 +578,6 @@ class FileManager extends AdminController
     {
         $json = [];
 
-        //phai full quyen hoac duoc cap nhat
-        if (!$this->acl->check_acl()) {
-            $json['error'] = lang('FileManager.error_permission_execute');
-        }
 
         $path = $this->request->getPost('path');
         // Check path exsists
@@ -601,7 +597,7 @@ class FileManager extends AdminController
             }
         }
 
-        $this->output->set_content_type('application/json')->set_output(json_encode($json));
+        json_output($json);
     }
 
     public function pagination($data)

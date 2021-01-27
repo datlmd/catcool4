@@ -10,5 +10,5 @@ $routes->group('common', ['namespace' => 'App\Modules\Common\Controllers'], func
     $subroutes->add('filemanager/upload', 'FileManager::upload');
     $subroutes->add('filemanager/folder', 'FileManager::folder');
     $subroutes->add('filemanager/delete', 'FileManager::delete');
-    $subroutes->add('filemanager/rotation', 'FileManager::rotation');
+    $subroutes->add('filemanager/rotation/(:any)', 'FileManager::rotation/$1');
 });

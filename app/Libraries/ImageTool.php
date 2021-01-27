@@ -17,24 +17,24 @@ class ImageTool
     /**
      * resize tao hinh thumbnail, hinh goc van khong anh huong
      *
-     * @param $filename
+     * @param $file_name
      * @param $width
      * @param $height
      * @return string|void
      */
-    public function resize($filename, $width = null, $height = null)
+    public function resize($file_name, $width = null, $height = null)
     {
         $width = !empty($width) ? $width : (!empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH);
         $height = !empty($height) ? $height : (!empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT);
 
-        if (!is_file($this->dir_image_path . $filename) || substr(str_replace('\\', '/', realpath($this->dir_image_path . $filename)), 0, strlen($this->dir_image_path)) != $this->dir_image_path) {
+        if (!is_file($this->dir_image_path . $file_name) || substr(str_replace('\\', '/', realpath($this->dir_image_path . $file_name)), 0, strlen($this->dir_image_path)) != $this->dir_image_path) {
             return;
         }
 
-        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $extension = pathinfo($file_name, PATHINFO_EXTENSION);
 
-        $image_old = $filename;
-        $image_new = UPLOAD_FILE_CACHE_DIR . substr($filename, 0, strrpos($filename, '.')) . '-' . $width . 'x' . $height . '.' . $extension;
+        $image_old = $file_name;
+        $image_new = UPLOAD_FILE_CACHE_DIR . substr($file_name, 0, strrpos($file_name, '.')) . '-' . $width . 'x' . $height . '.' . $extension;
 
         if (is_file($this->dir_image_path . $image_new)) {
             $file_info_old = get_file_info($this->dir_image_path . $image_old);
@@ -67,71 +67,135 @@ class ImageTool
             $quality = !empty(config_item('image_quality')) ? config_item('image_quality') : 100;
             $master_dimm = !empty(config_item('image_master_dimm')) ? config_item('image_master_dimm') : 'width';
 
-            $this->image = \Config\Services::image('imagick');
-            $this->image->withFile($this->dir_image_path . $image_old)
-                ->resize($width, $height, true, $master_dimm)
-                ->save($this->dir_image_path . $image_new, $quality);
+            try {
+                \Config\Services::image('imagick')->withFile($this->dir_image_path . $image_old)
+                    ->resize($width, $height, true, $master_dimm)
+                    ->save($this->dir_image_path . $image_new, $quality);
+            }
+            catch (CodeIgniter\Images\ImageException $e)
+            {
+                return false;
+            }
         }
 
         return $image_new;
     }
 
-    public function rotation($filename, $angle = '90')
+    public function rotation($file_name, $angle = '90')
     {
-        if (!is_file($this->dir_image_path . $filename)) {
+        if (!is_file($this->dir_image_path . $file_name)) {
             return false;
         }
 
-        $config['image_library']  = 'gd2';
-        $config['source_image']   = $this->dir_image_path . $filename;
-        $config['rotation_angle'] = $angle;
-        $config['quality']        = !empty(config_item('image_quality')) ? config_item('image_quality') : 100;
+        $quality = !empty(config_item('image_quality')) ? config_item('image_quality') : 100;
 
-        $this->image->clear();
-        $this->image->initialize($config);
+        try {
+            $this->image = \Config\Services::image('imagick');
 
-        if (!$this->image->rotate()) {
-            error_log($this->image->display_errors());
+            if (in_array($angle, ['hor', 'horizontal', 'vrt', 'vertical'])) {
+                if ($angle == 'hor') {
+                    $angle = 'horizontal';
+                } elseif ($angle == 'vrt') {
+                    $angle = 'vertical';
+                }
+                $this->image->withFile($this->dir_image_path . $file_name)
+                    ->flip($angle)
+                    ->save($this->dir_image_path . $file_name, $quality);
+            } else {
+                $this->image->withFile($this->dir_image_path . $file_name)
+                    ->reorient()
+                    ->rotate($angle)
+                    ->save($this->dir_image_path . $file_name, $quality);
+            }
+        }
+        catch (CodeIgniter\Images\ImageException $e)
+        {
             return false;
         }
 
-        return $this->resize($filename);
-    }
-    
-    public function crop($filename, $width, $height, $x_axis, $y_axis, $is_new = false)
-    {
-        $image_root = $filename;
-        if (!is_file($this->dir_image_path . $filename)) {
-            return false;
-        }
-        $source_img = $this->dir_image_path . $filename;
-
-        $config = [
-            'image_library'  => 'gd2',
-            'source_image'   => $source_img,
-            'new_image'      => $source_img,
-            'quality'        => !empty(config_item('image_quality')) ? config_item('image_quality') : 100,
-            'maintain_ratio' => FALSE,
-            'width'          => $width,
-            'height'         => $height,
-            'x_axis'         => $x_axis,
-            'y_axis'         => $y_axis,
-        ];
-
-        $this->image->clear();
-        $this->image->initialize($config);
-
-        if (!$this->image->crop()) {
-            error_log($this->image->display_errors());
-            return false;
-        }
-
-        return $image_root;
+        return $file_name;
     }
 
-    public function watermark($filename, $position = null)
+    public function getInfo($file_name)
     {
-        $image_root = $filename;
+        if (!is_file($this->dir_image_path . $file_name)) {
+            return null;
+        }
+        $info = \Config\Services::image('imagick')->withFile($this->dir_image_path . $file_name)
+                ->getFile()
+                ->getProperties(true);
+
+        return $info;
+    }
+
+    /**
+     * @param $file_name
+     * @param $file_new
+     * @param $width
+     * @param $height
+     * @param $position: ‘top-left’, ‘top’, ‘top-right’, ‘left’, ‘center’, ‘right’, ‘bottom-left’, ‘bottom’, ‘bottom-right’.
+     * @return bool
+     */
+    public function thumb($file_name, $file_new, $width, $height, $position = 'center')
+    {
+        if (!is_file($this->dir_image_path . $file_name)) {
+            return false;
+        }
+
+        try {
+            \Config\Services::image('imagick')->withFile($this->dir_image_path . $file_name)
+                ->fit($width, $height, $position)
+                ->save($this->dir_image_path . $file_new);
+        }
+        catch (CodeIgniter\Images\ImageException $e)
+        {
+            return false;
+        }
+
+        return $file_new;
+    }
+    public function crop($file_name, $width, $height, $xOffset, $yOffset, $is_new = false)
+    {
+        if (!is_file($this->dir_image_path . $file_name)) {
+            return false;
+        }
+
+        try {
+            \Config\Services::image('imagick')
+                ->withFile($this->dir_image_path . $file_name)
+                ->crop($width, $height, $xOffset, $yOffset)
+                ->save($this->dir_image_path . $file_name);
+        }
+        catch (CodeIgniter\Images\ImageException $e)
+        {
+            return false;
+        }
+
+        return $file_name;
+    }
+
+    public function convert($file_name, $file_new, $image_type = IMAGETYPE_PNG)
+    {
+        if (!is_file($this->dir_image_path . $file_name)) {
+            return false;
+        }
+
+        try {
+            \Config\Services::image('imagick')->withFile($file_name)
+                ->convert($image_type)
+                ->save($file_new);
+        }
+        catch (CodeIgniter\Images\ImageException $e)
+        {
+            return false;
+        }
+
+        return $file_new;
+    }
+
+    public function watermark($file_name, $position = null)
+    {
+        $image_root = $file_name;
 
         $watermark_text = !empty(config_item('image_watermark_text')) ? config_item('image_watermark_text') : null;
         $watermark_path = !empty(config_item('image_watermark_path')) ? config_item('image_watermark_path') : null;
@@ -143,7 +207,7 @@ class ImageTool
             return $image_root;
         }
 
-        if (!is_file($this->dir_image_path . $filename)) {
+        if (!is_file($this->dir_image_path . $file_name)) {
             return $image_root;
         }
 
@@ -156,7 +220,7 @@ class ImageTool
         if (!empty($watermark_path)) {
 
             $config = [
-                'source_image'     => $this->dir_image_path . $filename,
+                'source_image'     => $this->dir_image_path . $file_name,
                 'wm_type'          => 'overlay',
                 'quality'          => !empty(config_item('image_quality')) ? config_item('image_quality') : 100,
                 'dynamic_output'   => FALSE,
@@ -170,7 +234,7 @@ class ImageTool
             ];
         } else {
             $config = [
-                'source_image' => $this->dir_image_path . $filename,
+                'source_image' => $this->dir_image_path . $file_name,
                 'wm_type' => 'text',
                 'wm_text' => $watermark_text,
                 'wm_font_path' => !empty(config_item('image_watermark_font_path')) ? config_item('image_watermark_font_path') : './system/fonts/texb.ttf',
@@ -198,15 +262,15 @@ class ImageTool
         return $image_root;
     }
 
-    public function watermark_demo($filename = null)
+    public function watermark_demo($file_name = null)
     {
-        $filename = !empty($filename) ? get_upload_path() . $filename : FCPATH . 'content/common/images/watermark_bg.jpg';
+        $file_name = !empty($file_name) ? get_upload_path() . $file_name : FCPATH . 'content/common/images/watermark_bg.jpg';
 
         $watermark = 'tmp/watermark_bg.jpg';
         if (is_file(get_upload_path() . $watermark)) {
             delete_files(unlink(get_upload_path() . $watermark));
         }
-        write_file(get_upload_path() . $watermark, read_file($filename));
+        write_file(get_upload_path() . $watermark, read_file($file_name));
 
         //$this->resize($watermark, config_item('image_width_pc'), config_item('image_height_pc'));
         $this->watermark($watermark);
