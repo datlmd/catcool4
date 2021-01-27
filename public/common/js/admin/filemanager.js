@@ -10,7 +10,7 @@ $(function () {
             }
             is_processing = true;
             e.preventDefault();
-            //$('[data-bs-toggle="tooltip"]').tooltip('dispose');
+
             $('#modal-image').remove();//target=$element.parent().find('input').attr('id')
             var element = $(this);
             $.ajax({
@@ -26,9 +26,7 @@ $(function () {
                     is_processing = false;
 
                     $('body').append('<div id="modal-image" class="modal fade" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">' + html + '</div>');
-
                     $('#modal-image').modal('show');
-                    $('[data-bs-toggle="tooltip"]').tooltip();
                 },
                 error: function (xhr, errorType, error) {
                     is_processing = false;

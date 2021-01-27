@@ -1,18 +1,18 @@
 {capture name="content_filemanager"}
     <div class="row">
-        <div class="col-sm-8 col-12 mb-2">
-            <a href="{$parent}" data-bs-toggle="tooltip" title="{$button_parent}" data-placement="top" data-bs-original-title="{$button_parent}" id="button-parent" class="btn btn-sm btn-light"><i class="fas fa-level-up-alt"></i></a>
-            <a href="{$refresh}" data-bs-toggle="tooltip" title="{$button_refresh}" data-placement="top" data-bs-original-title="{$button_refresh}" id="button-refresh" class="btn btn-sm btn-secondary"><i class="fas fa-sync"></i></a>
-            <button type="button" data-bs-toggle="tooltip" title="{$button_upload}" data-placement="top" data-bs-original-title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary"><i class="fas fa-upload"></i></button>
-            <button type="button" title="{$button_folder}" id="button-folder" class="btn btn-sm btn-success"><i class="fas fa-folder"></i></button>
-            <button type="button" data-bs-toggle="tooltip" title="{$button_delete}" data-placement="top" data-bs-original-title="{$button_delete}" id="button-delete" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-            <a href="{base_url('photos/manage/editor')}" data-bs-toggle="tooltip" title="Photo Editor" data-placement="top" id="button-parent" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt me-1"></i>Photo Editor</a>
+        <div class="col-sm-8 col-12 mb-1">
+            <a href="{$parent}" title="{$button_parent}" id="button_parent" class="btn btn-sm btn-light mb-2"><i class="fas fa-level-up-alt me-2"></i>{$button_parent}</a>
+            <a href="{$refresh}" title="{$button_refresh}" id="button_refresh" class="btn btn-sm btn-secondary mb-2"><i class="fas fa-sync me-2"></i>{$button_refresh}</a>
+            <button type="button" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary mb-2"><i class="fas fa-upload me-2"></i>{$button_upload}</button>
+            <button type="button" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success mb-2"><i class="fas fa-folder me-2"></i>{$button_folder}</button>
+            <button type="button" title="{$button_delete}" id="button_delete" class="btn btn-sm btn-danger mb-2"><i class="fas fa-trash me-2"></i>{$button_delete}</button>
+            <a href="{base_url('photos/manage/editor')}" title="Photo Editor" class="btn btn-sm btn-warning mb-2"><i class="fas fa-pencil-alt me-2"></i>Photo Editor</a>
         </div>
-        <div class="col-sm-4 col-12 mb-2">
+        <div class="col-sm-4 col-12 mb-1">
             <div class="input-group">
                 <input type="text" name="search" value="{$filter_name}" placeholder="{$entry_search}" class="form-control">
                 <span class="input-group-append">
-                    <button type="button" data-bs-toggle="tooltip" title="{$button_search}" id="button-search" class="btn btn-sm btn-primary"><i class="fas fa-search"></i></button>
+                    <button type="button" title="{$button_search}" id="button_search" class="btn btn-sm btn-primary"><i class="fas fa-search me-2"></i>{$button_search}</button>
                 </span>
             </div>
         </div>
@@ -67,7 +67,7 @@
 {/capture}
 
 {if !empty(is_ajax)}
-    <div id="filemanager" class="modal-dialog modal-xl">
+    <div id="filemanager" class="modal-dialog modal-xl px-4" style="max-width: 100% !important;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="photoModalLabel">{$heading_title}</h5>
@@ -98,6 +98,7 @@
 {if $target}{form_hidden('file_target', $target)}{/if}
 <script type="text/javascript">
     var is_processing = false;
+    var is_disposing = false;
 
     if ($('input[name=\'file_target\']').length) {
         $('a.thumbnail').on('click', function (e) {
@@ -120,12 +121,12 @@
         e.preventDefault();
         $('#modal-image').load($(this).attr('href'));
     });
-    $('#button-parent').on('click', function(e) {
+    $('#button_parent').on('click', function(e) {
         filemanager_dispose_all();
         e.preventDefault();
         $('#modal-image').load($(this).attr('href'));
     });
-    $('#button-refresh').on('click', function(e) {
+    $('#button_refresh').on('click', function(e) {
         if (is_processing) {
             return false;
         }
@@ -136,10 +137,10 @@
     });
     $('input[name=\'search\']').on('keydown', function(e) {
         if (e.which == 13) {
-            $('#button-search').trigger('click');
+            $('#button_search').trigger('click');
         }
     });
-    $('#button-search').on('click', function(e) {
+    $('#button_search').on('click', function(e) {
         filemanager_dispose_all();
         var url = base_url + 'common/filemanager?directory={{$directory}}';
         var filter_name = $('input[name=\'search\']').val();
@@ -225,7 +226,7 @@
                         }
                         if (json['success']) {
                             $.notify(json['success']);
-                            $('#button-refresh').trigger('click');
+                            $('#button_refresh').trigger('click');
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
@@ -236,16 +237,15 @@
         }, 500);
     });
 
-    $('#button-folder').on('click', function (e) {
+    $('#button_folder').on('click', function (e) {
         var button_folder = $(this);
         var $popover = button_folder.data('bs.popover'); // element has bs popover?
 
         e.preventDefault();
 
-        // destroy all image popovers
-        $('#button-folder').popover('dispose');
-        // remove flickering (do not re-add popover when clicking for removal)
-        if ($popover) {
+        if (is_disposing) {
+            $('#button_folder').popover('dispose');
+            is_disposing = false;
             return;
         }
 
@@ -265,7 +265,8 @@
             }
         });
 
-        button_folder.popover('show');
+        button_folder.popover('toggle');
+        is_disposing = true;
 
         $('#button-create-folder').on('click', function() {
             if (!$('input[name=\'folder_filemanager\']').val()) {
@@ -291,6 +292,7 @@
                 },
                 success: function(json) {
                     is_processing = false;
+                    is_disposing = false;
                     if (json['error']) {
                         $.notify(json['error'], {
                             'type':'danger'
@@ -299,20 +301,21 @@
                     }
                     if (json['success']) {
                         $.notify(json['success']);
-                        $('#button-refresh').trigger('click');
+                        $('#button_refresh').trigger('click');
                     }
-                    $('#button-folder').popover('dispose');
+                    $('#button_folder').popover('dispose');
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     is_processing = false;
+                    is_disposing = false;
                     alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                    $('#button-folder').popover('dispose');
+                    $('#button_folder').popover('dispose');
                 }
             });
         });
     });
 
-    $('#modal-image #button-delete').on('click', function(e) {
+    $('#modal-image #button_delete').on('click', function(e) {
         if ( ! $('input[name^=\'path\']:checked').length) {
             $.notify('{{$error_file_null}}', {
                 'type':'danger'
@@ -348,10 +351,10 @@
                             dataType: 'json',
                             data: $('input[name^=\'path\']:checked'),
                             beforeSend: function() {
-                                $('#button-delete').prop('disabled', true);
+                                $('#button_delete').prop('disabled', true);
                             },
                             complete: function() {
-                                $('#button-delete').prop('disabled', false);
+                                $('#button_delete').prop('disabled', false);
                             },
                             success: function(json) {
                                 is_processing = false;
@@ -362,7 +365,7 @@
                                 }
                                 if (json['success']) {
                                     $.notify(json['success']);
-                                    $('#button-refresh').trigger('click');
+                                    $('#button_refresh').trigger('click');
                                 }
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
@@ -389,8 +392,9 @@
         // destroy all image popovers
 
         $('.image-setting').popover('dispose');
-        // remove flickering (do not re-add popover when clicking for removal)
-        if ($popover) {
+        if (is_disposing) {
+            $('.image-setting').popover('dispose');
+            is_disposing = false;
             return;
         }
 
@@ -401,17 +405,18 @@
             placement: 'top',
             trigger: 'manual',
             content: function() {
-                var html = '<a href="' + image_setting.parent().find("a.thumbnail").attr('href') + '" data-lightbox="photos" id="button-image-zoom" class="btn btn-xs btn-info"><i class="fas fa-search-plus"></i></a>';
+                var html = '<a href="' + image_setting.parent().find("a.thumbnail").attr('href') + '" data-lightbox="photos" id="button_image_zoom" class="btn btn-xs btn-info"><i class="fas fa-search-plus"></i></a>';
                 html += ' <button type="button" id="btn-rotation-left" class="btn btn-xs btn-secondary"><i class="fas fa-undo"></i></button>';
-                html += ' <button type="button" id="btn-rotation-hor" class="btn btn-xs btn-primary"><i class="fas fa-arrows-alt-h"></i></button> <button type="button" id="btn-rotation-vrt" class="btn btn-xs btn-primary"><i class="fas fa-arrows-alt-v"></i></button>';
-                html += ' <button type="button" id="btn-image-crop" onclick="Catcool.cropImage(\'' + image_setting.parent().find("input").val() + '\', 0)" class="btn btn-xs btn-warning"><i class="fas fa-crop"></i></button>';
+                html += ' <button type="button" id="btn_rotation_hor" class="btn btn-xs btn-primary"><i class="fas fa-arrows-alt-h"></i></button> <button type="button" id="btn_rotation_vrt" class="btn btn-xs btn-primary"><i class="fas fa-arrows-alt-v"></i></button>';
+                html += ' <button type="button" id="btn_image_crop" onclick="Catcool.cropImage(\'' + image_setting.parent().find("input").val() + '\', 0)" class="btn btn-xs btn-warning"><i class="fas fa-crop"></i></button>';
                 return html;
             }
         });
 
-        image_setting.popover('show');
+        image_setting.popover('toggle');
+        is_disposing = true;
 
-        $(document).on('click', '#button-image-zoom', function(e) {
+        $(document).on('click', '#button_image_zoom', function(e) {
             e.preventDefault();
             $(this).ekkoLightbox();
         });
@@ -435,10 +440,10 @@
                 complete: function() {
                     $('#btn-rotation-left i').replaceWith('<i class="fas fa-undo"></i>');
                     $('#btn-rotation-left').prop('disabled', false);
-                    //$('.image-setting').popover('dispose');
                 },
                 success: function(json) {
                     is_processing = false;
+                    is_disposing = false;
                     if (json['error']) {
                         $.notify(json['error'], {
                             'type':'danger'
@@ -455,11 +460,12 @@
                     is_processing = false;
                     alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
                     $('.image-setting').popover('dispose');
+                    is_disposing = false;
                 }
             });
         });
 
-        $('#btn-rotation-hor').on('click', function (e) {
+        $('#btn_rotation_hor').on('click', function (e) {
             if (is_processing) {
                 return false;
             }
@@ -472,16 +478,16 @@
                 },
                 dataType: 'json',
                 beforeSend: function() {
-                    $('#btn-rotation-hor i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
-                    $('#btn-rotation-hor').prop('disabled', true);
+                    $('#btn_rotation_hor i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
+                    $('#btn_rotation_hor').prop('disabled', true);
                 },
                 complete: function() {
-                    $('#btn-rotation-hor i').replaceWith('<i class="fas fa-arrows-alt-h"></i>');
-                    $('#btn-rotation-hor').prop('disabled', false);
-                    //$('.image-setting').popover('dispose');
+                    $('#btn_rotation_hor i').replaceWith('<i class="fas fa-arrows-alt-h"></i>');
+                    $('#btn_rotation_hor').prop('disabled', false);
                 },
                 success: function(json) {
                     is_processing = false;
+                    is_disposing = false;
                     if (json['error']) {
                         $.notify(json['error'], {
                             'type':'danger'
@@ -498,11 +504,12 @@
                     is_processing = false;
                     alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
                     $('.image-setting').popover('dispose');
+                    is_disposing = false;
                 }
             });
         });
 
-        $('#btn-rotation-vrt').on('click', function (e) {
+        $('#btn_rotation_vrt').on('click', function (e) {
             if (is_processing) {
                 return false;
             }
@@ -515,16 +522,16 @@
                 },
                 dataType: 'json',
                 beforeSend: function() {
-                    $('#btn-rotation-vrt i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
-                    $('#btn-rotation-vrt').prop('disabled', true);
+                    $('#btn_rotation_vrt i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
+                    $('#btn_rotation_vrt').prop('disabled', true);
                 },
                 complete: function() {
-                    $('#btn-rotation-vrt i').replaceWith('<i class="fas fa-arrows-alt-v"></i>');
-                    $('#btn-rotation-vrt').prop('disabled', false);
-                    //$('.image-setting').popover('dispose');
+                    $('#btn_rotation_vrt i').replaceWith('<i class="fas fa-arrows-alt-v"></i>');
+                    $('#btn_rotation_vrt').prop('disabled', false);
                 },
                 success: function(json) {
                     is_processing = false;
+                    is_disposing = false;
                     if (json['error']) {
                         $.notify(json['error'], {
                             'type':'danger'
@@ -541,27 +548,31 @@
                     is_processing = false;
                     alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
                     $('.image-setting').popover('dispose');
+                    is_disposing = false;
                 }
             });
         });
 
-        $(document).on('click', '#btn-image-crop', function(e) {
+        $(document).on('click', '#btn_image_crop', function(e) {
             $('.image-setting').popover('dispose');
+            is_disposing = false;
         });
     });
 
     function filemanager_dispose_all() {
-        $('.image-setting').popover('dispose');
-        $('#button-folder').popover('dispose');
-        //$('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
+        $(document).on('click', '#filemanager', function(e) {
+            if ($(e.target).closest('.popover').length != 0 || $(e.target).closest('.image-setting').length != 0 || $(e.target).closest('#button_folder').length != 0 ) {
+                return true;
+            }
+            $('.image-setting').popover('dispose');
+            $('#button_folder').popover('dispose');
+            is_disposing = false;
+            return false;
+        });
     }
 
     $(function () {
         filemanager_dispose_all();
-
-        if ($('[data-bs-toggle=\'tooltip\']').length) {
-            $('[data-bs-toggle=\'tooltip\']').tooltip();
-        }
 
         $("html").on("dragover", function (e) {
             e.preventDefault();
@@ -640,7 +651,7 @@
                             }
                             if (json['success']) {
                                 $.notify(json['success']);
-                                $('#button-refresh').trigger('click');
+                                $('#button_refresh').trigger('click');
                             }
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
