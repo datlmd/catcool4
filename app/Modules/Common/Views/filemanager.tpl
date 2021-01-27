@@ -22,7 +22,7 @@
     {if !empty($directory)}<div class="badge badge-info mb-3 p-2"><i class="fas fa-folder me-1"></i>{$directory}</div>{/if}
     {*{foreach array_chunk($images, 6) as $item}*}
     <div class="row">
-        {foreach $images as $image}
+        {foreach $images as $key => $image}
             <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6 mb-2 text-center position-relative">
                 {if $image.type == 'directory'}
                     <div class="text-center"><a href="{$image.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-5x"></i></a></div>
@@ -38,7 +38,7 @@
                         <input type="checkbox" name="path[]" value="{$image.path}" />
                         {$image.name}
                     </label>
-                    <button type="button" class="btn btn-xs btn-primary image-setting" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
+                    <button type="button" class="btn btn-xs btn-primary image-setting shadow-sm" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
                 {elseif $image.type == 'video'}
                     <div class="text-center">
                         <video controls height="60" width="90" >
@@ -47,7 +47,7 @@
                             <source src="{$image.href}" type="video/avi">
                             <source src="{$image.href}" type="video/ogg">
                             <p>Your browser doesn't support HTML5 video. Here is
-                                a <a href="myVideo.mp4">link to the video</a> instead.</p>
+                                a <a href="{$image.href}">link to the video</a> instead.</p>
                         </video>
                     </div>
                     <label>
@@ -107,24 +107,24 @@
                 $('#' + $('input[name=\'file_thumb\']').val()).attr('src', $(this).find('img').attr('src'));
             }
             $('#' + $('input[name=\'file_target\']').val()).val($(this).parent().find('input').val());
-            $('#modal-image').modal('hide');
+            $('#modal_image').modal('hide');
         });
     }
 
     $('a.directory').on('click', function(e) {
         filemanager_dispose_all();
         e.preventDefault();
-        $('#modal-image').load($(this).attr('href'));
+        $('#modal_image').load($(this).attr('href'));
     });
     $('.pagination a').on('click', function(e) {
         filemanager_dispose_all();
         e.preventDefault();
-        $('#modal-image').load($(this).attr('href'));
+        $('#modal_image').load($(this).attr('href'));
     });
     $('#button_parent').on('click', function(e) {
         filemanager_dispose_all();
         e.preventDefault();
-        $('#modal-image').load($(this).attr('href'));
+        $('#modal_image').load($(this).attr('href'));
     });
     $('#button_refresh').on('click', function(e) {
         if (is_processing) {
@@ -133,13 +133,14 @@
         is_processing = true;
         filemanager_dispose_all();
         e.preventDefault();
-        $('#modal-image').load($(this).attr('href'));
+        $('#modal_image').load($(this).attr('href'));
     });
     $('input[name=\'search\']').on('keydown', function(e) {
         if (e.which == 13) {
             $('#button_search').trigger('click');
         }
     });
+
     $('#button_search').on('click', function(e) {
         filemanager_dispose_all();
         var url = base_url + 'common/filemanager?directory={{$directory}}';
@@ -160,9 +161,9 @@
             url += '&target=' + $('input[name=\'file_target\']').val();
         }
 
-        $('#modal-image').load($(this).attr('href'));
+        $('#modal_image').load($(this).attr('href'));
     });
-    
+
     $('#button-upload').on('click', function() {
         filemanager_dispose_all();
 
@@ -239,11 +240,12 @@
 
     $('#button_folder').on('click', function (e) {
         var button_folder = $(this);
+        var $popover = button_folder.data('bs.popover');
 
         e.preventDefault();
 
-        if (is_disposing) {
-            $('#button_folder').popover('dispose');
+        $('#button-folder').popover('dispose');
+        if ($popover) {
             is_disposing = false;
             return;
         }
@@ -253,7 +255,8 @@
             sanitize: false,
             html: true,
             placement: 'bottom',
-            trigger: 'click',
+            customClass: 'shadow',
+            trigger: 'manual',
             title: '{{$entry_folder}}',
             content: function () {
                 html = '<div class="input-group">';
@@ -314,7 +317,7 @@
         });
     });
 
-    $('#modal-image #button_delete').on('click', function(e) {
+    $('#modal_image #button_delete').on('click', function(e) {
         if ( ! $('input[name^=\'path\']:checked').length) {
             $.notify('{{$error_file_null}}', {
                 'type':'danger'
@@ -325,8 +328,8 @@
         filemanager_dispose_all();
 
         $.confirm({
-            title: '{{lang("FileManager.text_confirm_title")}}',
-            content: '{{lang("FileManager.text_confirm_delete")}}',
+            title: '{{lang("GeneralManage.text_confirm_title")}}',
+            content: '{{lang("GeneralManage.text_confirm_delete")}}',
             icon: 'fa fa-question',
             //theme: 'bootstrap',
             closeIcon: true,
@@ -384,11 +387,12 @@
 
     $('.image-setting').on('click', function (e) {
         var image_setting = $(this);
+        var $popover = image_setting.data('bs.popover');
 
         e.preventDefault();
 
-        if (is_disposing) {
-            $('.image-setting').popover('dispose');
+        $('.image-setting').popover('dispose');
+        if ($popover) {
             is_disposing = false;
             return;
         }
@@ -398,6 +402,7 @@
             html: true,
             sanitize: false,
             placement: 'top',
+            customClass: 'shadow',
             trigger: 'manual',
             content: function() {
                 var html = '<a href="' + image_setting.parent().find("a.thumbnail").attr('href') + '" data-lightbox="photos" id="button_image_zoom" class="btn btn-xs btn-info"><i class="fas fa-search-plus"></i></a>';
@@ -416,8 +421,7 @@
             $(this).ekkoLightbox();
         });
 
-        $('#' +
-            '').on('click', function (e) {
+        $('#btn_rotation_left').on('click', function (e) {
             if (is_processing) {
                 return false;
             }

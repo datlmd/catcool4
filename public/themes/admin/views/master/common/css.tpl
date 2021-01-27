@@ -1,5 +1,3 @@
-<link rel="stylesheet" type="text/css" href="{base_url('common/plugin/bootstrap/css/bootstrap-reboot.min.css')}">
-<link rel="stylesheet" type="text/css" href="{base_url('common/plugin/bootstrap/css/bootstrap-grid.min.css')}">
 <link rel="stylesheet" type="text/css" href="{base_url('common/plugin/bootstrap/css/bootstrap.min.css')}">
 <link rel="stylesheet" type="text/css" href="{base_url('common/plugin/bootstrap/css/bootstrap-utilities.min.css')}">
 

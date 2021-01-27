@@ -11,7 +11,7 @@ $(function () {
             is_processing = true;
             e.preventDefault();
 
-            $('#modal-image').remove();//target=$element.parent().find('input').attr('id')
+            $('#modal_image').remove();//target=$element.parent().find('input').attr('id')
             var element = $(this);
             $.ajax({
                 url: 'common/filemanager?target=' + encodeURIComponent(element.parent().attr('data-target')) + '&thumb=' + encodeURIComponent(element.parent().attr('data-thumb')),
@@ -25,8 +25,8 @@ $(function () {
                 success: function (html) {
                     is_processing = false;
 
-                    $('body').append('<div id="modal-image" class="modal fade" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">' + html + '</div>');
-                    $('#modal-image').modal('show');
+                    $('body').append('<div id="modal_image" class="modal fade" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">' + html + '</div>');
+                    $('#modal_image').modal('show');
                 },
                 error: function (xhr, errorType, error) {
                     is_processing = false;
@@ -42,8 +42,8 @@ $(function () {
             $($(this).parent()).parent().find('input').val('');
         });
     }
-    $(document).on('hidden.bs.modal, hide.bs.modal','#modal-image', function () {
-        $('#button-folder').popover('dispose');
+    $(document).on('hidden.bs.modal, hide.bs.modal','#modal_image', function () {
+        //$('#button_folder').popover('dispose');
     });
     /** filemanager **/
 });
