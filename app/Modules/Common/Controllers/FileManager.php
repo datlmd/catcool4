@@ -458,13 +458,6 @@ class FileManager extends AdminController
     {
         $json = [];
 
-        //$json['server'] = $this->input->server('REQUEST_METHOD');
-
-        //phai full quyen hoac duoc cap nhat
-        if (!$this->acl->check_acl()) {
-            $json['error'] = lang('FileManager.error_permission_execute');
-        }
-
         // Make sure we have the correct directory
         $directory = $this->request->getGet('directory');
         if (isset($directory)) {
@@ -479,9 +472,9 @@ class FileManager extends AdminController
         }
 
 
-        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+        if (!empty($this->request->getPost())) {
             // Sanitize the folder name
-            $folder = basename(html_entity_decode($this->input->post('folder'), ENT_QUOTES, 'UTF-8'));
+            $folder = basename(html_entity_decode($this->request->getPost('folder'), ENT_QUOTES, 'UTF-8'));
 
             $json['folder'] = $folder;
             // Validate the filename length
@@ -504,19 +497,14 @@ class FileManager extends AdminController
             $json['success'] = lang('FileManager.text_directory');
         }
 
-        $this->output->set_content_type('application/json')->set_output(json_encode($json));
+        json_output($json);
     }
 
     public function delete()
     {
         $json = [];
 
-        //phai full quyen hoac duoc cap nhat
-        if (!$this->acl->check_acl()) {
-            $json['error'] = lang('FileManager.error_permission_execute');
-        }
-
-        $path = $this->input->post('path');
+        $path = $this->request->getPost('path');
         if (isset($path)) {
             $paths = $path;
         } else {
@@ -583,7 +571,7 @@ class FileManager extends AdminController
             $json['success'] = lang('FileManager.text_delete');
         }
 
-        $this->output->set_content_type('application/json')->set_output(json_encode($json));
+        json_output($json);
     }
 
     public function rotation($type = '90')
@@ -595,7 +583,7 @@ class FileManager extends AdminController
             $json['error'] = lang('FileManager.error_permission_execute');
         }
 
-        $path = $this->input->post('path');
+        $path = $this->request->getPost('path');
         // Check path exsists
         if (!is_file($this->dir_image_path . $path)) {
             $json['error'] = lang('FileManager.error_rotation');

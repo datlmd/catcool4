@@ -239,7 +239,6 @@
 
     $('#button_folder').on('click', function (e) {
         var button_folder = $(this);
-        var $popover = button_folder.data('bs.popover'); // element has bs popover?
 
         e.preventDefault();
 
@@ -259,7 +258,7 @@
             content: function () {
                 html = '<div class="input-group">';
                 html += '  <input type="text" name="folder_filemanager" value="" placeholder="{{$entry_folder}}" class="form-control">';
-                html += '  <span class="input-group-append"><button type="button" title="{{$button_folder}}" id="button-create-folder" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i></button></span>';
+                html += '  <span class="input-group-append"><button type="button" title="{{$button_folder}}" id="button_create_folder" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i></button></span>';
                 html += '</div>';
                 return html;
             }
@@ -268,7 +267,7 @@
         button_folder.popover('toggle');
         is_disposing = true;
 
-        $('#button-create-folder').on('click', function() {
+        $('#button_create_folder').on('click', function() {
             if (!$('input[name=\'folder_filemanager\']').val()) {
                 $.notify('{{$error_folder_null}}', {
                     'type':'danger'
@@ -280,15 +279,15 @@
             }
             is_processing = true;
             $.ajax({
-                url: base_url + 'common/filemanager/folder?directory={{$directory}}',
+                url: base_url + '/common/filemanager/folder?directory={{$directory}}',
                 type: 'post',
                 dataType: 'json',
                 data: 'folder=' + encodeURIComponent($('input[name=\'folder_filemanager\']').val()),
                 beforeSend: function() {
-                    $('#button-create').prop('disabled', true);
+                    $('#button_create_folder').prop('disabled', true);
                 },
                 complete: function() {
-                    $('#button-create').prop('disabled', false);
+                    $('#button_create_folder').prop('disabled', false);
                 },
                 success: function(json) {
                     is_processing = false;
@@ -385,13 +384,9 @@
 
     $('.image-setting').on('click', function (e) {
         var image_setting = $(this);
-        var $popover = image_setting.data('bs.popover'); // element has bs popover?
 
         e.preventDefault();
 
-        // destroy all image popovers
-
-        $('.image-setting').popover('dispose');
         if (is_disposing) {
             $('.image-setting').popover('dispose');
             is_disposing = false;
@@ -406,7 +401,7 @@
             trigger: 'manual',
             content: function() {
                 var html = '<a href="' + image_setting.parent().find("a.thumbnail").attr('href') + '" data-lightbox="photos" id="button_image_zoom" class="btn btn-xs btn-info"><i class="fas fa-search-plus"></i></a>';
-                html += ' <button type="button" id="btn-rotation-left" class="btn btn-xs btn-secondary"><i class="fas fa-undo"></i></button>';
+                html += ' <button type="button" id="btn_rotation_left" class="btn btn-xs btn-secondary"><i class="fas fa-undo"></i></button>';
                 html += ' <button type="button" id="btn_rotation_hor" class="btn btn-xs btn-primary"><i class="fas fa-arrows-alt-h"></i></button> <button type="button" id="btn_rotation_vrt" class="btn btn-xs btn-primary"><i class="fas fa-arrows-alt-v"></i></button>';
                 html += ' <button type="button" id="btn_image_crop" onclick="Catcool.cropImage(\'' + image_setting.parent().find("input").val() + '\', 0)" class="btn btn-xs btn-warning"><i class="fas fa-crop"></i></button>';
                 return html;
@@ -421,7 +416,8 @@
             $(this).ekkoLightbox();
         });
 
-        $('#btn-rotation-left').on('click', function (e) {
+        $('#' +
+            '').on('click', function (e) {
             if (is_processing) {
                 return false;
             }
@@ -434,12 +430,12 @@
                 },
                 dataType: 'json',
                 beforeSend: function() {
-                    $('#btn-rotation-left i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
-                    $('#btn-rotation-left').prop('disabled', true);
+                    $('#btn_rotation_left i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
+                    $('#btn_rotation_left').prop('disabled', true);
                 },
                 complete: function() {
-                    $('#btn-rotation-left i').replaceWith('<i class="fas fa-undo"></i>');
-                    $('#btn-rotation-left').prop('disabled', false);
+                    $('#btn_rotation_left i').replaceWith('<i class="fas fa-undo"></i>');
+                    $('#btn_rotation_left').prop('disabled', false);
                 },
                 success: function(json) {
                     is_processing = false;
