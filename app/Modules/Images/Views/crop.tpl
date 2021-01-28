@@ -13,7 +13,7 @@
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" id="btn_submit_crop" class="btn btn-sm btn-brand btn-space" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Image.text_crop_image')}" data-target="#filter_manage"><i class="fas fa-crop"></i> {lang('Image.text_crop_image')}</button>
-                <a href="javascript:void(0);" class="btn btn-sm btn-space btn-light" data-dismiss="modal" aria-label="Close">
+                <a href="javascript:void(0);" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><i class="fas fa-reply"></i> {lang('GeneralManage.text_close')}</span>
                 </a>
             </div>
