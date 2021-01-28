@@ -19,7 +19,7 @@
     </div>
     <hr />
     <div id="msg" class="text-secondary"></div>
-    {if !empty($directory)}<div class="badge badge-info mb-3 p-2"><i class="fas fa-folder me-1"></i>{$directory}</div>{/if}
+    {if !empty($directory)}<div class="badge badge-info mb-3 p-2"><i class="fas fa-folder me-2"></i>{$directory|urldecode}</div>{/if}
     {*{foreach array_chunk($images, 6) as $item}*}
     <div class="row">
         {foreach $images as $key => $image}
@@ -561,7 +561,7 @@
 
     function filemanager_dispose_all() {
         $(document).on('click', '#filemanager', function(e) {
-            if ($(e.target).closest('.popover').length != 0 || $(e.target).closest('.image-setting').length != 0 || $(e.target).closest('#button_folder').length != 0 ) {
+            if ($(e.target).closest('.popover').length != 0 || $(e.target).closest('.image-setting').length != 0 || $(e.target).closest('#button_folder').length != 0 || $(e.target).closest('a.thumbnail').length != 0) {
                 return true;
             }
 
