@@ -2,10 +2,8 @@
     <div id="crop_manager" class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="photoModalLabel">{lang('text_crop_image')}</h5>
-                <a href="#" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </a>
+                <h5 class="modal-title" id="photoModalLabel">{lang('Image.text_crop_image')}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body px-3 py-4 text-center">
                 <div id="custom-preview-wrapper"></div>
@@ -14,13 +12,12 @@
                 </div>
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" id="btn_submit_crop" class="btn btn-sm btn-brand btn-space" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('text_crop_image')}" data-target="#filter_manage"><i class="fas fa-crop"></i> {lang('text_crop_image')}</button>
+                <button type="button" id="btn_submit_crop" class="btn btn-sm btn-brand btn-space" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Image.text_crop_image')}" data-target="#filter_manage"><i class="fas fa-crop"></i> {lang('Image.text_crop_image')}</button>
                 <a href="javascript:void(0);" class="btn btn-sm btn-space btn-light" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><i class="fas fa-reply"></i> {lang('text_close')}</span>
+                    <span aria-hidden="true"><i class="fas fa-reply"></i> {lang('GeneralManage.text_close')}</span>
                 </a>
             </div>
         </div>
-
         <input type="hidden" name="image_crop_url" id="image_crop_url" value="{$image_url}">
         <input type="hidden" name="aspect_ratio" id="aspect_ratio" value="{$aspect_ratio}">
         <input type="hidden" name="image_mime" id="image_mime" value="{$mime}">
@@ -46,11 +43,30 @@
 
     var is_processing = false;
 
-    $(document).ready(function(){
+    $(function() {
         'use strict';
         setTimeout(function(){
             $('#image_cropper').show();
-            $('#image_cropper').rcrop({
+            $('#image_cropper').on({
+                ready: function(e) {
+                    console.log(e.type);
+                },
+                cropstart: function(e) {
+                    console.log(e.type, e.detail.action);
+                },
+                cropmove: function(e) {
+                    console.log(e.type, e.detail.action);
+                },
+                cropend: function(e) {
+                    console.log(e.type, e.detail.action);
+                },
+                crop: function(e) {
+                    console.log(e.type);
+                },
+                zoom: function(e) {
+                    console.log(e.type, e.detail.ratio);
+                }
+            }).rcrop({
                     minSize : [100,100],
                     preserveAspectRatio : {{$aspect_ratio}},
                     preview : {
@@ -60,8 +76,7 @@
                     }
                 }
             );
-        },300);
-
+        },400);
     });
 
     $(document).on("click", '#btn_submit_crop', function(event) {
@@ -73,12 +88,14 @@
         var srcOriginal = $('#image_cropper').rcrop('getDataURL');
 
         $.ajax({
-            url: base_url + 'images/crop',
+            url: 'image/crop',
             type: 'POST',
             data: {
                 'path': $("#image_crop_url").val(),
-                'image_data': srcOriginal,
-                'mime': $("#image_mime").val(),
+                'width': $("#modal_image_crop #crop_manager input[name=\'width[]\']").val(),
+                'height': $("#modal_image_crop #crop_manager input[name=\'height[]\']").val(),
+                'xoffset': $("#modal_image_crop #crop_manager input[name=\'xoffset[]\']").val(),
+                'yoffset': $("#modal_image_crop #crop_manager input[name=\'yoffset[]\']").val(),
             },
             dataType: 'json',
             beforeSend: function() {
@@ -98,7 +115,7 @@
                 }
                 if (json['success']) {
                     if ($("#filemanager").length) {
-                        $('#filemanager #button-refresh').trigger('click');
+                        $('#filemanager #button_refresh').trigger('click');
                     } else if ($(".image-crop-target").length) {
                         $(".image-crop-target a").attr("href", json['image']);
                         $(".image-crop-target img").attr("src", json['image']);
@@ -110,7 +127,6 @@
             error: function(xhr, ajaxOptions, thrownError) {
                 is_processing = false;
                 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                $('.image-setting').popover('dispose');
             }
         });
     });

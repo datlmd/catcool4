@@ -441,7 +441,7 @@ var Catcool = {
         $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
 
         $.ajax({
-            url: 'images/crop',
+            url: 'image/crop',
             data: {
                 image_url: url,
                 preserve_aspect_ratio: preserve_aspect_ratio,

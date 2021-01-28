@@ -72,7 +72,7 @@ class ImageTool
                     ->resize($width, $height, true, $master_dimm)
                     ->save($this->dir_image_path . $image_new, $quality);
             }
-            catch (CodeIgniter\Images\ImageException $e)
+            catch (\Exception $e)
             {
                 return false;
             }
@@ -108,7 +108,7 @@ class ImageTool
                     ->save($this->dir_image_path . $file_name, $quality);
             }
         }
-        catch (CodeIgniter\Images\ImageException $e)
+        catch (\Exception $e)
         {
             return false;
         }
@@ -121,9 +121,16 @@ class ImageTool
         if (!is_file($this->dir_image_path . $file_name)) {
             return null;
         }
-        $info = \Config\Services::image('imagick')->withFile($this->dir_image_path . $file_name)
+
+        try {
+            $info = \Config\Services::image('imagick')->withFile($this->dir_image_path . $file_name)
                 ->getFile()
                 ->getProperties(true);
+        }
+        catch (\Exception $e)
+        {
+            return false;
+        }
 
         return $info;
     }
@@ -147,7 +154,7 @@ class ImageTool
                 ->fit($width, $height, $position)
                 ->save($this->dir_image_path . $file_new);
         }
-        catch (CodeIgniter\Images\ImageException $e)
+        catch (\Exception $e)
         {
             return false;
         }
@@ -166,7 +173,7 @@ class ImageTool
                 ->crop($width, $height, $xOffset, $yOffset)
                 ->save($this->dir_image_path . $file_name);
         }
-        catch (CodeIgniter\Images\ImageException $e)
+        catch (\Exception $e)
         {
             return false;
         }
@@ -185,7 +192,7 @@ class ImageTool
                 ->convert($image_type)
                 ->save($file_new);
         }
-        catch (CodeIgniter\Images\ImageException $e)
+        catch (\Exception $e)
         {
             return false;
         }
