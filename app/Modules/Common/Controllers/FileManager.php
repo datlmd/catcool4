@@ -153,7 +153,7 @@ class FileManager extends AdminController
                     case "bmp":
                     case "BMP":
                         $data['images'][] = [
-                            'thumb' => image_url(substr($image, strlen($this->dir_image_path))),
+                            'thumb' => image_url(substr($image, strlen($this->dir_image_path))) . '?' . time(),
                             'name'  => implode(' ', $name) . ' (' . $this->_convert_filesize($file_size[$image], 0) . ')',
                             'type'  => 'image',
                             'path'  => substr($image, strlen($this->dir_image_path)),
@@ -591,7 +591,7 @@ class FileManager extends AdminController
 
             if (!empty($image)) {
                 $json['success'] = lang('FileManager.text_rotation');
-                $json['image'] = image_url($image);
+                $json['image'] = image_url($image) . '?' . time();
             } else {
                 $json['error'] = lang('FileManager.error_rotation');
             }

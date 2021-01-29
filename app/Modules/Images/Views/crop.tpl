@@ -47,35 +47,15 @@
         'use strict';
         setTimeout(function(){
             $('#image_cropper').show();
-            $('#image_cropper').on({
-                ready: function(e) {
-                    console.log(e.type);
-                },
-                cropstart: function(e) {
-                    console.log(e.type, e.detail.action);
-                },
-                cropmove: function(e) {
-                    console.log(e.type, e.detail.action);
-                },
-                cropend: function(e) {
-                    console.log(e.type, e.detail.action);
-                },
-                crop: function(e) {
-                    console.log(e.type);
-                },
-                zoom: function(e) {
-                    console.log(e.type, e.detail.ratio);
+            $('#image_cropper').rcrop({
+                minSize : [100,100],
+                preserveAspectRatio : {{$aspect_ratio}},
+                preview : {
+                    display: false,
+                    size : [100,100],
+                    wrapper : '#custom-preview-wrapper',
                 }
-            }).rcrop({
-                    minSize : [100,100],
-                    preserveAspectRatio : {{$aspect_ratio}},
-                    preview : {
-                        display: false,
-                        size : [100,100],
-                        wrapper : '#custom-preview-wrapper',
-                    }
-                }
-            );
+            });
         },400);
     });
 
@@ -94,8 +74,8 @@
                 'path': $("#image_crop_url").val(),
                 'width': $("#modal_image_crop #crop_manager input[name=\'width[]\']").val(),
                 'height': $("#modal_image_crop #crop_manager input[name=\'height[]\']").val(),
-                'xoffset': $("#modal_image_crop #crop_manager input[name=\'xoffset[]\']").val(),
-                'yoffset': $("#modal_image_crop #crop_manager input[name=\'yoffset[]\']").val(),
+                'xoffset': $("#modal_image_crop #crop_manager input[name=\'x[]\']").val(),
+                'yoffset': $("#modal_image_crop #crop_manager input[name=\'y[]\']").val(),
             },
             dataType: 'json',
             beforeSend: function() {
