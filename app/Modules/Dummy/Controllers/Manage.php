@@ -69,7 +69,7 @@ class Manage extends AdminController
     public function add()
     {
         if (!empty($this->request->getPost())) {
-            if (!$this->validate_form()) {
+            if (!$this->_validateForm()) {
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
@@ -97,7 +97,7 @@ class Manage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        $this->get_form();
+        $this->_getForm();
     }
 
     public function edit($id = null)
@@ -108,7 +108,7 @@ class Manage extends AdminController
         }
 
         if (!empty($this->request->getPost())) {
-            if (!$this->validate_form()) {
+            if (!$this->_validateForm()) {
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
@@ -146,10 +146,10 @@ class Manage extends AdminController
             return redirect()->back();
         }
 
-        $this->get_form($id);
+        $this->_getForm($id);
     }
 
-    protected function get_form($id = null)
+    private function _getForm($id = null)
     {
         $data['list_lang'] = get_list_lang();
 
@@ -185,7 +185,7 @@ class Manage extends AdminController
         $this->themes::load('manage/form', $data);
     }
 
-    protected function validate_form()
+    private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         foreach(get_list_lang() as $key => $value) {

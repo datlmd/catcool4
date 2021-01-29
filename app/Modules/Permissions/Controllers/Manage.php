@@ -67,7 +67,7 @@ class Manage extends AdminController
 
         if (!empty($this->request->getPost()))
         {
-            if (!$this->validate_form()) {
+            if (!$this->_validateForm()) {
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
@@ -87,7 +87,7 @@ class Manage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        $this->get_form();
+        $this->_getForm();
     }
 
     public function edit($id = null)
@@ -99,7 +99,7 @@ class Manage extends AdminController
 
         if (!empty($this->request->getPost()))
         {
-            if (!$this->validate_form()) {
+            if (!$this->_validateForm()) {
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
@@ -124,7 +124,7 @@ class Manage extends AdminController
             return redirect()->back();
         }
 
-        $this->get_form($id);
+        $this->_getForm($id);
     }
 
     public function delete($id = null)
@@ -172,14 +172,14 @@ class Manage extends AdminController
         json_output(['data' => $this->themes::view('delete', $data)]);
     }
 
-    public function not_permission()
+    public function notPermission()
     {
         $this->data['title'] = $this->lang->line('not_permission_heading');
 
         $this->theme->layout('empty')->load('manage/not_permission', $this->data);
     }
 
-    protected function get_form($id = null)
+    private function _getForm($id = null)
     {
         //edit
         if (!empty($id) && is_numeric($id)) {
@@ -213,7 +213,7 @@ class Manage extends AdminController
         $this->themes::load('form', $data);
     }
 
-    protected function validate_form()
+    private function _validateForm()
     {
         $this->validator->setRule('name', lang('PermissionAdmin.text_name'), 'required|is_unique[permission.name]');
 
