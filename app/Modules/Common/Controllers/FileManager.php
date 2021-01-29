@@ -196,7 +196,7 @@ class FileManager extends AdminController
                             'name'  => implode(' ', $name) . ' (' . $this->_convert_filesize($file_size[$image], 0) . ')',
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->dir_image_path)),
-                            'class' => 'far fa-file text-dark fa-5x',
+                            'class' => 'far fa-file text-dark fa-4x',
                             'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)),
                         ];
                         break;
@@ -206,7 +206,7 @@ class FileManager extends AdminController
                             'name'  => implode(' ', $name) . ' (' . $this->_convert_filesize($file_size[$image], 0) . ')',
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->dir_image_path)),
-                            'class' => 'fab fa-android text-warning fa-5x',
+                            'class' => 'fab fa-android text-warning fa-4x',
                             'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)),
                         ];
                         break;
@@ -225,7 +225,7 @@ class FileManager extends AdminController
                             'name'  => implode(' ', $name) . ' (' . $this->_convert_filesize($file_size[$image], 0) . ')',
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->dir_image_path)),
-                            'class' => 'fas fa-download text-secondary fa-5x',
+                            'class' => 'fas fa-download text-secondary fa-4x',
                             'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)),
                         ];
                         break;

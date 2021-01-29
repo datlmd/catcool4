@@ -11,9 +11,7 @@
         <div class="col-sm-4 col-12 mb-1">
             <div class="input-group">
                 <input type="text" name="search" value="{$filter_name}" placeholder="{$entry_search}" class="form-control">
-                <span class="input-group-append">
-                    <button type="button" title="{$button_search}" id="button_search" class="btn btn-sm btn-primary"><i class="fas fa-search me-2"></i>{$button_search}</button>
-                </span>
+                <button type="button" title="{$button_search}" id="button_search" class="btn btn-sm btn-primary">{$button_search}</button>
             </div>
         </div>
     </div>
@@ -23,9 +21,9 @@
     {*{foreach array_chunk($images, 6) as $item}*}
     <div class="row">
         {foreach $images as $key => $image}
-            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6 mb-2 text-center position-relative">
+            <div class="col-xl-1 col-lg-2 col-md-2 col-sm-3 col-4 mb-2 text-center position-relative">
                 {if $image.type == 'directory'}
-                    <div class="text-center"><a href="{$image.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-5x"></i></a></div>
+                    <div class="text-center"><a href="{$image.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a></div>
                     <label>
                         <input type="checkbox" name="path[]" value="{$image.path}" />
                         {$image.name}
@@ -66,33 +64,20 @@
     </div>
 {/capture}
 
-{if !empty(is_ajax)}
-    <div id="filemanager" class="modal-dialog modal-xl px-4" style="max-width: 100% !important;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="photoModalLabel">{$heading_title}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4">
-                {$smarty.capture.content_filemanager}
-            </div>
-            <div class="modal-footer">
-                <nav aria-label="Page navigation" class="table-responsive text-center"><ul class="pagination p-0 m-0">{$pagination}</ul></nav>
-            </div>
+<div id="filemanager" class="modal-dialog modal-xl px-4" style="max-width: 100% !important;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="photoModalLabel">{$heading_title}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+            {$smarty.capture.content_filemanager}
+        </div>
+        <div class="modal-footer">
+            <nav aria-label="Page navigation" class="table-responsive text-center"><ul class="pagination p-0 m-0">{$pagination}</ul></nav>
         </div>
     </div>
-{else}
-    <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="card">
-                <h5 class="card-header"><i class="fas fa-list me-2"></i>{$heading_title}</h5>
-                <div class="card-body">
-                    {$smarty.capture.content_filemanager}
-                </div>
-            </div>
-        </div>
-    </div>
-{/if}
+</div>
 
 {if $thumb}{form_hidden('file_thumb', $thumb)}{/if}
 {if $target}{form_hidden('file_target', $target)}{/if}
