@@ -469,41 +469,6 @@ var Catcool = {
         });
         return false;
     },
-    cropImage_BK: function (url, is_filemanager) {
-        if (is_processing) {
-            return false;
-        }
-        is_processing = true;
-
-        $('#cropper_html').remove();
-        $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
-
-        $.ajax({
-            url: 'images/crop',
-            data: {image_url: url},
-            dataType: 'html',
-            success: function (html) {
-                is_processing = false;
-                $('.loading').remove().fadeOut();
-
-                var response = JSON.stringify(html);
-                response = JSON.parse(response);
-                if (response.status == 'ng') {
-                    $.notify(response.msg, {'type': 'danger'});
-                    return false;
-                }
-
-                $('body').append('<div id="cropper_html">' + html + '</div>');
-                $('#modal_image_crop').modal('toggle');
-                $('[data-toggle="tooltip"]').tooltip();
-            },
-            error: function (xhr, errorType, error) {
-                is_processing = false;
-                $('.loading').remove().fadeOut();
-            }
-        });
-        return false;
-    },
 };
 
 /* action - event */

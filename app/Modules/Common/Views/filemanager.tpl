@@ -6,7 +6,7 @@
             <button type="button" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary mb-2"><i class="fas fa-upload me-2"></i>{$button_upload}</button>
             <button type="button" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success mb-2"><i class="fas fa-folder me-2"></i>{$button_folder}</button>
             <button type="button" title="{$button_delete}" id="button_delete" class="btn btn-sm btn-danger mb-2"><i class="fas fa-trash me-2"></i>{$button_delete}</button>
-            <a href="{base_url('photos/manage/editor')}" title="Photo Editor" class="btn btn-sm btn-warning mb-2"><i class="fas fa-pencil-alt me-2"></i>Photo Editor</a>
+            <a href="{base_url('image/editor')}" title="Photo Editor" class="btn btn-sm btn-warning mb-2"><i class="fas fa-pencil-alt me-2"></i>Photo Editor</a>
         </div>
         <div class="col-sm-4 col-12 mb-1">
             <div class="input-group">
@@ -18,13 +18,12 @@
     <hr />
     <div id="msg" class="text-secondary"></div>
     {if !empty($directory)}<div class="badge badge-info mb-3 p-2"><i class="fas fa-folder me-2"></i>{$directory|urldecode}</div>{/if}
-    {*{foreach array_chunk($images, 6) as $item}*}
-    <div class="row">
+    <div class="row" id="filemanager_list">
         {foreach $images as $key => $image}
             <div class="col-xl-1 col-lg-2 col-md-2 col-sm-3 col-4 mb-2 text-center position-relative">
                 {if $image.type == 'directory'}
                     <div class="text-center"><a href="{$image.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a></div>
-                    <p>
+                    <p class="mt-1">
                         <input type="checkbox" name="path[]" value="{$image.path}" />
                         {$image.name}
                     </p>
@@ -32,7 +31,7 @@
                     <a href="{$image.path}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail">
                         <img src="{$image.thumb}" style="background-image: url('{$image.thumb}');" alt="{$image.name}" title="{$image.name}" class="img-thumbnail img-fluid img-photo-list" />
                     </a>
-                    <p>
+                    <p class="mt-1">
                         <input type="checkbox" name="path[]" value="{$image.path}" />
                         {$image.name}
                     </p>
@@ -48,13 +47,13 @@
                                 a <a href="{$image.href}">link to the video</a> instead.</p>
                         </video>
                     </div>
-                    <p>
+                    <p class="mt-1">
                         <input type="checkbox" name="path[]" value="{$image.path}" />
                         {$image.name}
                     </p>
                 {else}
                     <a href="{$image.href}" target="_blank" class="thumbnail" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
-                    <p>
+                    <p class="mt-1">
                         <input type="checkbox" name="path[]" value="{$image.path}" />
                         {$image.name}
                     </p>
@@ -547,7 +546,8 @@
     function filemanager_dispose_all() {
         $(document).on('click', '#filemanager', function(e) {
             if ($(e.target).closest('.popover').length != 0 || $(e.target).closest('.image-setting').length != 0 || $(e.target).closest('#button_folder').length != 0
-                || $(e.target).closest('a.thumbnail').length != 0 || $(e.target).closest('input[type=\'checkbox\']').length != 0) {
+                || $(e.target).closest('a.thumbnail').length != 0 || $(e.target).closest('input[type=\'checkbox\']').length != 0 || $(e.target).closest('button').length != 0
+                || $(e.target).closest('a').length != 0) {
                 return true;
             }
 

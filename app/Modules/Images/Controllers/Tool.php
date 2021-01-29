@@ -16,7 +16,6 @@ class Tool extends BaseController
 
         helper('filesystem');
 
-
         $this->_image_path = get_upload_path();
         $this->_image_url  = get_upload_url();
     }
@@ -91,5 +90,14 @@ class Tool extends BaseController
 
             return $this->themes::view('crop', $data);
         }
+    }
+
+    public function editor()
+    {
+        $this->themes->setTheme(config_item('theme_admin'))
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::view('editor');
     }
 }

@@ -40,7 +40,6 @@
 </style>
 {/literal}
 <script>
-
     var is_processing = false;
 
     $(function() {
@@ -64,9 +63,6 @@
             return false;
         }
         is_processing = true;
-
-        var srcOriginal = $('#image_cropper').rcrop('getDataURL');
-
         $.ajax({
             url: 'image/crop',
             type: 'POST',
@@ -100,7 +96,6 @@
                         $(".image-crop-target a").attr("href", json['image']);
                         $(".image-crop-target img").attr("src", json['image']);
                     }
-
                     $("#modal_image_crop").modal("hide");
                 }
             },
@@ -110,7 +105,6 @@
             }
         });
     });
-
     $('#modal_image_crop').on('hidden.bs.modal', function() {
         if ($('#load_view_modal #formPhotoModal').length) {
             $('body').addClass('modal-open');
