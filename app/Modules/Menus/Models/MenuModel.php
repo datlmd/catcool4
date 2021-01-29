@@ -5,7 +5,7 @@ use App\Models\MyModel;
 class MenuModel extends MyModel
 {
     protected $table      = 'menu';
-    protected $primaryKey = 'menu';
+    protected $primaryKey = 'menu_id';
     protected $with       = ['menu_lang'];
 
     protected $allowedFields = [
@@ -143,11 +143,11 @@ class MenuModel extends MyModel
         return $result;
     }
 
-    public function delete_cache($cache_name = null)
+    public function deleteCache($cache_name = null)
     {
-        $this->load->driver('cache', ['adapter' => 'file', 'key_prefix' => '']);
+        $cache = \Config\Services::cache();
         if (!empty($cache_name) && !empty($this->cache->get($cache_name))) {
-            $this->cache->save($cache_name, [], 0);
+            $cache->save($cache_name, [], 0);
             return true;
         }
 
@@ -163,10 +163,7 @@ class MenuModel extends MyModel
         ];
 
         foreach ($list_name as $name) {
-            if (empty($this->cache->get($name))) {
-                continue;
-            }
-            $this->cache->save($name, [], 0);
+            $cache->delete($name);
         }
 
         return true;

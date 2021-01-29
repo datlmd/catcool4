@@ -11,5 +11,5 @@ $routes->group('menus', ['namespace' => 'App\Modules\Menus\Controllers'], functi
     $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
     $subroutes->add('manage/delete', 'Manage::delete');
     $subroutes->add('manage/publish', 'Manage::publish');
-
+    $subroutes->add('manage/update_sort', 'Manage::updateSort');
 });

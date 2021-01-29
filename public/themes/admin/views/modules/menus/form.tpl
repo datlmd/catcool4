@@ -6,8 +6,8 @@
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=$text_form}
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
-                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
+                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"><i class="fas fa-save me-1"></i>{$text_submit}</button>
+                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"><i class="fas fa-reply me-1"></i>{$text_cancel}</a>
             </div>
         </div>
         {if !empty($edit_data.menu_id)}
@@ -76,7 +76,7 @@
                                                 {else}
                                                     {assign var="slug" value=""}
                                                 {/if}
-                                                <input type="text" name="lang_{$language.id}_slug" value='{old("lang_`$language.id`_slug", $name)}' id="input_slug_{$language.id}" class="form-control">
+                                                <input type="text" name="lang_{$language.id}_slug" value='{old("lang_`$language.id`_slug", $slug)}' id="input_slug_{$language.id}" class="form-control">
                                                 <small>{lang('MenuAdmin.help_url')}</small>
                                             </div>
                                         </div>
@@ -85,8 +85,8 @@
                             </div>
                         </div>
                     </div>
-                    <h5 class="card-header">{lang('Admin.Manage.text_attribute')}</h5>
-                    <div class="card-body mb-3">
+                    <h5 class="card-header">{lang('Admin.text_attribute')}</h5>
+                    <div class="card-body bg-light">
                         <div class="form-group row">
                             <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('MenuAdmin.text_attributes')}</label>
                             <div class="col-12 col-sm-8 col-lg-8">
@@ -133,20 +133,20 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('MenuAdmin.text_icon')}</label>
-                            <div class="input-group col-12 col-sm-8 col-lg-8">
+                            <div class="col-12 col-sm-8 col-lg-8">
                                 {if isset($edit_data.icon)}
                                     {assign var="icon" value="`$edit_data.icon`"}
                                 {else}
                                     {assign var="icon" value=""}
                                 {/if}
-                                <input type="text" name="icon" value="{old('icon', $icon)}" id="icon" class="form-control icon-picker-class-input">
-                                <div class="input-group-append">
+                                <div class="input-group">
+                                    <input type="text" name="icon" value="{old('icon', $icon)}" id="icon" class="form-control icon-picker-class-input">
                                     <span class="input-group-text icon-picker-demo" id="input_icon_picker"><i class="{$icon}"></i></span>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('MenuAdmin.text_context')}</label>
+                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('Admin.text_context')}</label>
                             <div class="col-12 col-sm-8 col-lg-8 pt-1">
                                 {if isset($edit_data.context)}
                                     {assign var="context" value="`$edit_data.context`"}
@@ -201,17 +201,17 @@
                         <div class="form-group">
                             <label class="form-label">{lang("Admin.text_image")}</label>
                             {if isset($edit_data.image)}
-                                {assign var="image" value="`$edit_data.published`"}
+                                {assign var="image" value="`$edit_data.image`"}
                             {else}
                                 {assign var="image" value=""}
                             {/if}
                             <!-- Drag and Drop container-->
                             <a href="javascript:void(0);" id="thumb-image" data-target="input-image-path" data-thumb="load-thumb-image" data-bs-toggle="image">
-                                <img src="{if !empty($image)}{image_thumb_url($image)}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}"/>
-                                <button type="button" id="button-image" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('text_photo_edit')}</button>
-                                <button type="button" id="button-clear" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('text_photo_clear')}</button>
+                                <img src="{if !empty($image)}{image_url(old('image', $image))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}"/>
+                                <button type="button" id="button-image" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-2"></i>{lang('Admin.text_photo_edit')}</button>
+                                <button type="button" id="button-clear" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-2"></i>{lang('Admin.text_photo_clear')}</button>
                             </a>
-                            <input type="hidden" name="image" value="{$image}" id="input-image-path" />
+                            <input type="hidden" name="image" value="{old('image', $image)}" id="input-image-path" />
                         </div>
                         <div class="form-group">
                             <label class="form-label">{lang('Admin.text_sort_order')}</label>
@@ -232,7 +232,7 @@
                             <select name="parent_id" id="parent_id" class="form-control">
                                 <option value="">{lang('Admin.text_select')}</option>
                                 {$output_html = '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>'}
-                                {draw_tree_output_name(['data' => $list_patent, 'key_id' => 'menu_id', 'id_root' => $menu_id], $output_html, 0, $parent_id)}
+                                {draw_tree_output_name(['data' => $list_patent, 'key_id' => 'menu_id', 'id_root' => $menu_id], $output_html, 0, old('parent_id', $parent_id))}
                             </select>
                         </div>
                     </div>
