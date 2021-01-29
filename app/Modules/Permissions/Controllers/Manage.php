@@ -229,7 +229,7 @@ class Manage extends AdminController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        if (empty($_POST)) {
+        if (empty($this->request->getPost())) {
             json_output(['status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
@@ -239,7 +239,7 @@ class Manage extends AdminController
             json_output(['status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $item_edit['published'] = !empty($_POST['published']) ? STATUS_ON : STATUS_OFF;
+        $item_edit['published'] = !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF;
         if (!$this->model->update($id, $item_edit)) {
             $data = ['status' => 'ng', 'msg' => lang('Admin.error_json')];
         } else {
