@@ -31,12 +31,12 @@ class Manage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('MenusManage.heading_title'), base_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang('MenuAdmin.heading_title'), base_url(self::MANAGE_URL));
     }
 
     public function index()
     {
-        add_meta(['title' => lang("MenusManage.heading_title")], $this->themes);
+        add_meta(['title' => lang("MenuAdmin.heading_title")], $this->themes);
 
         $this->themes->addJS('common/plugin/shortable-nestable/jquery.nestable.js');
         $this->themes->addJS('common/js/admin/category.js');
@@ -230,7 +230,7 @@ class Manage extends AdminController
 
         //edit
         if (!empty($id) && is_numeric($id)) {
-            $data['text_form']   = lang('MenusManage.text_edit') . (!empty(session('is_menu_admin')) ? ' (Admin)' : '');
+            $data['text_form']   = lang('MenuAdmin.text_edit') . (!empty(session('is_menu_admin')) ? ' (Admin)' : '');
             $data['text_submit'] = lang('Admin.button_save');
 
             $data_form = $this->model->getDetail($id);
@@ -243,7 +243,7 @@ class Manage extends AdminController
             $data['csrf']      = create_token();
             $data['edit_data'] = $data_form;
         } else {
-            $data['text_form']   = lang('MenusManage.text_add') . (!empty(session('is_menu_admin')) ? ' (Admin)' : '');
+            $data['text_form']   = lang('MenuAdmin.text_add') . (!empty(session('is_menu_admin')) ? ' (Admin)' : '');
             $data['text_submit'] = lang('Admin.button_add');
         }
 

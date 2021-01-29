@@ -2,7 +2,7 @@
 <div class="container-fluid  dashboard-content">
 	<div class="row">
 		<div class="col-sm-7 col-12">
-            {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('MenusManage.heading_title')}
+            {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('MenuAdmin.heading_title')}
 		</div>
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
 
@@ -16,7 +16,7 @@
 	<div class="row">
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="card">
-				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('MenusManage.text_list')} {if !empty(session('is_menu_admin'))}(Admin){else}(Frontend){/if}</h5>
+				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('MenuAdmin.text_list')} {if !empty(session('is_menu_admin'))}(Admin){else}(Frontend){/if}</h5>
 				<div class="card-body">
 					{if !empty(session('super_admin'))}
 						<div class="mb-3">

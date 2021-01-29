@@ -39,7 +39,7 @@
                                     <div class="tab-pane fade {if !empty($language.active)}show active{/if}" role="tabpanel" id="lanuage_content_{$language.id}"  aria-labelledby="language_tab_{$language.id}">
                                         <div class="form-group row required has-error">
                                             <label class="col-12 col-sm-2 col-form-label required-label text-sm-end">
-                                                {lang('MenusManage.text_name')}
+                                                {lang('MenuAdmin.text_name')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-8">
                                                 {if !empty($edit_data.menu_lang[$language.id].name)}
@@ -68,7 +68,7 @@
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-12 col-sm-2 col-form-label text-sm-end">
-                                                {lang('MenusManage.text_url')}
+                                                {lang('MenuAdmin.text_url')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-8">
                                                 {if !empty($edit_data.menu_lang[$language.id].slug)}
@@ -77,7 +77,7 @@
                                                     {assign var="slug" value=""}
                                                 {/if}
                                                 <input type="text" name="lang_{$language.id}_slug" value='{old("lang_`$language.id`_slug", $name)}' id="input_slug_{$language.id}" class="form-control">
-                                                <small>{lang('MenusManage.help_url')}</small>
+                                                <small>{lang('MenuAdmin.help_url')}</small>
                                             </div>
                                         </div>
                                     </div>
@@ -88,7 +88,7 @@
                     <h5 class="card-header">{lang('Admin.Manage.text_attribute')}</h5>
                     <div class="card-body mb-3">
                         <div class="form-group row">
-                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('MenusManage.text_attributes')}</label>
+                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('MenuAdmin.text_attributes')}</label>
                             <div class="col-12 col-sm-8 col-lg-8">
                                 {if isset($edit_data.attributes)}
                                     {assign var="attributes" value="`$edit_data.attributes`"}
@@ -99,7 +99,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('MenusManage.text_selected')}</label>
+                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('MenuAdmin.text_selected')}</label>
                             <div class="col-12 col-sm-8 col-lg-8">
                                 {if isset($edit_data.selected)}
                                     {assign var="selected" value="`$edit_data.selected`"}
@@ -110,7 +110,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('MenusManage.text_nav_key')}</label>
+                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('MenuAdmin.text_nav_key')}</label>
                             <div class="col-12 col-sm-8 col-lg-8">
                                 {if isset($edit_data.nav_key)}
                                     {assign var="nav_key" value="`$edit_data.nav_key`"}
@@ -121,7 +121,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('MenusManage.text_label')}</label>
+                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('MenuAdmin.text_label')}</label>
                             <div class="col-12 col-sm-8 col-lg-8">
                                 {if isset($edit_data.label)}
                                     {assign var="label" value="`$edit_data.label`"}
@@ -132,7 +132,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('MenusManage.text_icon')}</label>
+                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('MenuAdmin.text_icon')}</label>
                             <div class="input-group col-12 col-sm-8 col-lg-8">
                                 {if isset($edit_data.icon)}
                                     {assign var="icon" value="`$edit_data.icon`"}
@@ -146,7 +146,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('MenusManage.text_context')}</label>
+                            <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('MenuAdmin.text_context')}</label>
                             <div class="col-12 col-sm-8 col-lg-8 pt-1">
                                 {if isset($edit_data.context)}
                                     {assign var="context" value="`$edit_data.context`"}
