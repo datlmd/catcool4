@@ -199,7 +199,7 @@
                             </label>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">{lang("GeneralManage.text_image")}</label>
+                            <label class="form-label">{lang("Admin.text_image")}</label>
                             {if isset($edit_data.image)}
                                 {assign var="image" value="`$edit_data.published`"}
                             {else}

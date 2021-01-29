@@ -312,8 +312,8 @@
         filemanager_dispose_all();
 
         $.confirm({
-            title: '{{lang("GeneralManage.text_confirm_title")}}',
-            content: '{{lang("GeneralManage.text_confirm_delete")}}',
+            title: '{{lang("Admin.text_confirm_title")}}',
+            content: '{{lang("Admin.text_confirm_delete")}}',
             icon: 'fa fa-question',
             //theme: 'bootstrap',
             closeIcon: true,

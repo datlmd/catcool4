@@ -27,12 +27,12 @@ class Manage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('PermissionsManage.heading_title'), base_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang('PermissionAdmin.heading_title'), base_url(self::MANAGE_URL));
     }
 
     public function index()
     {
-        add_meta(['title' => lang("PermissionsManage.heading_title")], $this->themes);
+        add_meta(['title' => lang("PermissionAdmin.heading_title")], $this->themes);
 
         $filter_id    = $this->request->getGet('filter_id');
         $filter_name  = $this->request->getGet('filter_name');
@@ -183,7 +183,7 @@ class Manage extends AdminController
     {
         //edit
         if (!empty($id) && is_numeric($id)) {
-            $data['text_form']   = lang('PermissionsManage.text_edit');
+            $data['text_form']   = lang('PermissionAdmin.text_edit');
             $data['text_submit'] = lang('Admin.button_save');
 
             $data_form = $this->model->find($id);
@@ -196,7 +196,7 @@ class Manage extends AdminController
             $data['csrf']      = create_token();
             $data['edit_data'] = $data_form;
         } else {
-            $data['text_form']   = lang('PermissionsManage.text_add');
+            $data['text_form']   = lang('PermissionAdmin.text_add');
             $data['text_submit'] = lang('Admin.button_add');
         }
 
@@ -215,7 +215,7 @@ class Manage extends AdminController
 
     protected function validate_form()
     {
-        $this->validator->setRule('name', lang('PermissionsManage.text_name'), 'required|is_unique[permission.name]');
+        $this->validator->setRule('name', lang('PermissionAdmin.text_name'), 'required|is_unique[permission.name]');
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();

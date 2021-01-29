@@ -3,7 +3,7 @@
     {form_open(uri_string(), ['id' => 'validationform'])}
         <div class="row">
             <div class="col-sm-7 col-12">
-                {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('PermissionsManage.heading_title')}
+                {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('PermissionAdmin.heading_title')}
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
                 <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
@@ -29,7 +29,7 @@
                     <div class="card-body">
                         <div class="form-group row">
                             <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
-                                {lang('PermissionsManage.text_name')}
+                                {lang('PermissionAdmin.text_name')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
                                 {if isset($edit_data.name)}
@@ -43,7 +43,7 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-12 col-sm-3 col-form-label text-sm-end">
-                                {lang('PermissionsManage.text_description')}
+                                {lang('PermissionAdmin.text_description')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
                                 {if isset($edit_data.description)}

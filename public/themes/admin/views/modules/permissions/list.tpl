@@ -2,11 +2,11 @@
 <div class="container-fluid  dashboard-content">
 	<div class="row">
 		<div class="col-sm-7 col-12">
-            {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('PermissionsManage.heading_title')}
+            {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('PermissionAdmin.heading_title')}
 		</div>
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
 			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
-			<a href="{site_url($manage_url)}/add{http_get_query()}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{lang('PermissionsManage.text_add')}"><i class="fas fa-plus"></i></a>
+			<a href="{site_url($manage_url)}/add{http_get_query()}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{lang('PermissionAdmin.text_add')}"><i class="fas fa-plus"></i></a>
 			<button type="button" id="btn_search" class="btn btn-sm btn-brand" data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
 		</div>
 	</div>
@@ -47,7 +47,7 @@
 	<div class="row">
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="card">
-				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('PermissionsManage.text_list')}</h5>
+				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('PermissionAdmin.text_list')}</h5>
 				<div class="card-body">
 					{if !empty($list)}
 						<div class="table-responsive">
@@ -64,7 +64,7 @@
 									</th>
 									<th>
 										<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
-											{lang('PermissionsManage.column_name')}
+											{lang('PermissionAdmin.column_name')}
 											{if $sort eq 'name'}
 												<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if}"></i>
 											{/if}
