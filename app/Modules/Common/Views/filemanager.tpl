@@ -1,7 +1,7 @@
 {capture name="content_filemanager"}
     <div class="row">
         <div class="col-sm-8 col-12 mb-1">
-            <a href="{$parent}" title="{$button_parent}" id="button_parent" class="btn btn-sm btn-light mb-2"><i class="fas fa-level-up-alt me-2"></i>{$button_parent}</a>
+            <a href="{$parent}" title="{$button_parent}" id="button_parent" class="btn btn-sm btn-light mb-2"><i class="fas fa-level-up-alt"></i></a>
             <a href="{$refresh}" title="{$button_refresh}" id="button_refresh" class="btn btn-sm btn-secondary mb-2"><i class="fas fa-sync me-2"></i>{$button_refresh}</a>
             <button type="button" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary mb-2"><i class="fas fa-upload me-2"></i>{$button_upload}</button>
             <button type="button" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success mb-2"><i class="fas fa-folder me-2"></i>{$button_folder}</button>
@@ -24,18 +24,18 @@
             <div class="col-xl-1 col-lg-2 col-md-2 col-sm-3 col-4 mb-2 text-center position-relative">
                 {if $image.type == 'directory'}
                     <div class="text-center"><a href="{$image.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a></div>
-                    <label>
+                    <p>
                         <input type="checkbox" name="path[]" value="{$image.path}" />
                         {$image.name}
-                    </label>
+                    </p>
                 {elseif $image.type == 'image'}
-                    <a href="{image_url($image.path)}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail">
+                    <a href="{$image.path}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail">
                         <img src="{$image.thumb}" style="background-image: url('{$image.thumb}');" alt="{$image.name}" title="{$image.name}" class="img-thumbnail img-fluid img-photo-list" />
                     </a>
-                    <label>
+                    <p>
                         <input type="checkbox" name="path[]" value="{$image.path}" />
                         {$image.name}
-                    </label>
+                    </p>
                     <button type="button" class="btn btn-xs btn-primary image-setting shadow-sm" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
                 {elseif $image.type == 'video'}
                     <div class="text-center">
@@ -48,16 +48,16 @@
                                 a <a href="{$image.href}">link to the video</a> instead.</p>
                         </video>
                     </div>
-                    <label>
+                    <p>
                         <input type="checkbox" name="path[]" value="{$image.path}" />
                         {$image.name}
-                    </label>
+                    </p>
                 {else}
                     <a href="{$image.href}" target="_blank" class="thumbnail" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
-                    <label>
+                    <p>
                         <input type="checkbox" name="path[]" value="{$image.path}" />
                         {$image.name}
-                    </label>
+                    </p>
                 {/if}
             </div>
         {/foreach}
@@ -246,7 +246,7 @@
             content: function () {
                 html = '<div class="input-group">';
                 html += '  <input type="text" name="folder_filemanager" value="" placeholder="{{$entry_folder}}" class="form-control">';
-                html += '  <span class="input-group-append"><button type="button" title="{{$button_folder}}" id="button_create_folder" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i></button></span>';
+                html += '  <button type="button" title="{{$button_folder}}" id="button_create_folder" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i></button>';
                 html += '</div>';
                 return html;
             }
@@ -546,7 +546,8 @@
 
     function filemanager_dispose_all() {
         $(document).on('click', '#filemanager', function(e) {
-            if ($(e.target).closest('.popover').length != 0 || $(e.target).closest('.image-setting').length != 0 || $(e.target).closest('#button_folder').length != 0 || $(e.target).closest('a.thumbnail').length != 0) {
+            if ($(e.target).closest('.popover').length != 0 || $(e.target).closest('.image-setting').length != 0 || $(e.target).closest('#button_folder').length != 0
+                || $(e.target).closest('a.thumbnail').length != 0 || $(e.target).closest('input[type=\'checkbox\']').length != 0) {
                 return true;
             }
 

@@ -110,7 +110,6 @@ class FileManager extends AdminController
         // Split the array based on current page number and max number of items per page of 10
         $images = array_splice($images, ($page - 1) * self::FILE_PAGE_LIMIT, self::FILE_PAGE_LIMIT);
 
-
         foreach ($images as $image) {
             $name = str_split(basename($image), 14);
 
@@ -154,7 +153,7 @@ class FileManager extends AdminController
                     case "BMP":
                         $data['images'][] = [
                             'thumb' => image_url(substr($image, strlen($this->dir_image_path))) . '?' . time(),
-                            'name'  => implode(' ', $name) . ' (' . $this->_convert_filesize($file_size[$image], 0) . ')',
+                            'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',
                             'type'  => 'image',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)) . '?' . time(),
@@ -164,7 +163,7 @@ class FileManager extends AdminController
                     case "SVG":
                         $data['images'][] = [
                             'thumb' => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)). '?' . time(),
-                            'name'  => implode(' ', $name) . ' (' . $this->_convert_filesize($file_size[$image], 0) . ')',
+                            'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',
                             'type'  => 'image',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)) . '?' . time(),
@@ -173,7 +172,7 @@ class FileManager extends AdminController
                     case "pdf":
                         $data['images'][] = [
                             'thumb' => '',
-                            'name'  => implode(' ', $name) . ' (' . $this->_convert_filesize($file_size[$image], 0) . ')',
+                            'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'class' => 'far fa-file-pdf text-danger fa-5x',
@@ -193,7 +192,7 @@ class FileManager extends AdminController
                     case "py":
                         $data['images'][] = [
                             'thumb' => '',
-                            'name'  => implode(' ', $name) . ' (' . $this->_convert_filesize($file_size[$image], 0) . ')',
+                            'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'class' => 'far fa-file text-dark fa-4x',
@@ -203,7 +202,7 @@ class FileManager extends AdminController
                     case "apk":
                         $data['images'][] = [
                             'thumb' => '',
-                            'name'  => implode(' ', $name) . ' (' . $this->_convert_filesize($file_size[$image], 0) . ')',
+                            'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'class' => 'fab fa-android text-warning fa-4x',
@@ -213,7 +212,7 @@ class FileManager extends AdminController
                     case "mp4":
                         $data['images'][] = [
                             'thumb' => '',
-                            'name'  => implode(' ', $name) . ' (' . $this->_convert_filesize($file_size[$image], 0) . ')',
+                            'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',
                             'type'  => 'video',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)),
@@ -222,7 +221,7 @@ class FileManager extends AdminController
                     default:
                         $data['images'][] = [
                             'thumb' => '',
-                            'name'  => implode(' ', $name) . ' (' . $this->_convert_filesize($file_size[$image], 0) . ')',
+                            'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'class' => 'fas fa-download text-secondary fa-4x',
@@ -578,7 +577,6 @@ class FileManager extends AdminController
     {
         $json = [];
 
-
         $path = $this->request->getPost('path');
         // Check path exsists
         if (!is_file($this->dir_image_path . $path)) {
@@ -619,7 +617,7 @@ class FileManager extends AdminController
         return $p;
     }
 
-    private function _convert_filesize($bytes, $decimals = 2)
+    private function _convertFileSize($bytes, $decimals = 2)
     {
         $size   = array('B','kB','MB','GB','TB','PB','EB','ZB','YB');
         $factor = floor((strlen($bytes) - 1) / 3);
