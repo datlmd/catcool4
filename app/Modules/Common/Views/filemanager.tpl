@@ -17,7 +17,6 @@
     </div>
     <hr />
     <div id="msg" class="text-secondary"></div>
-    {if !empty($directory)}<div class="badge badge-info mb-3 p-2"><i class="fas fa-folder me-2"></i>{$directory|urldecode}</div>{/if}
     <div class="row" id="filemanager_list">
         {foreach $images as $key => $image}
             <div class="col-xl-1 col-lg-2 col-md-2 col-sm-3 col-4 mb-2 text-center position-relative">
@@ -66,7 +65,7 @@
 <div id="filemanager" class="modal-dialog modal-xl px-4" style="max-width: 100% !important;">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="photoModalLabel">{$heading_title}</h5>
+            <h5 class="modal-title" id="photoModalLabel">{$heading_title}{if !empty($directory)} ({$directory|urldecode}){/if}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body p-4">
