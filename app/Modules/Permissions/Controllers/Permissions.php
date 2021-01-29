@@ -20,7 +20,7 @@ class Permissions extends AdminController
 
 
         //add breadcrumb
-        $this->breadcrumb->add(lang('GeneralManage.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
+        $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
     }
 
     public function index()

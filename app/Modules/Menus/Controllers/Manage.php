@@ -30,7 +30,7 @@ class Manage extends AdminController
         $this->smarty->assign('manage_root', self::MANAGE_ROOT);
 
         //add breadcrumb
-        $this->breadcrumb->add(lang('GeneralManage.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
+        $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
         $this->breadcrumb->add(lang('MenusManage.heading_title'), base_url(self::MANAGE_URL));
     }
 
@@ -84,7 +84,7 @@ class Manage extends AdminController
 
             $id = $this->model->insert($add_data);
             if ($id === FALSE) {
-                set_alert(lang('GeneralManage.error'), ALERT_ERROR);
+                set_alert(lang('Admin.error'), ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
 
@@ -98,7 +98,7 @@ class Manage extends AdminController
             //reset cache
             $this->model->delete_cache();
 
-            set_alert(lang('GeneralManage.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
+            set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -108,7 +108,7 @@ class Manage extends AdminController
     public function edit($id = null)
     {
         if (is_null($id)) {
-            set_alert(lang('GeneralManage.error_empty'), ALERT_ERROR, ALERT_POPUP);
+            set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -120,7 +120,7 @@ class Manage extends AdminController
 
             // do we have a valid request?
             if (valid_token() === FALSE || $id != $this->request->getPost('menu_id')) {
-                set_alert(lang('GeneralManage.error_token'), ALERT_ERROR);
+                set_alert(lang('Admin.error_token'), ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
 
@@ -154,14 +154,14 @@ class Manage extends AdminController
             ];
 
             if (!$this->model->update($id, $edit_data)) {
-                set_alert(lang('GeneralManage.error'), ALERT_ERROR, ALERT_POPUP);
+                set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->back()->withInput();
             }
 
             //reset cache
             $this->model->delete_cache();
 
-            set_alert(lang('GeneralManage.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
+            set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->back();
         }
 
@@ -181,7 +181,7 @@ class Manage extends AdminController
 
             $list_delete = $this->model->getListDetail($ids);
             if (empty($list_delete)) {
-                json_output(['status' => 'ng', 'msg' => lang('GeneralManage.error_empty')]);
+                json_output(['status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
 
             $this->model_lang->delete($ids);
@@ -190,7 +190,7 @@ class Manage extends AdminController
             //reset cache
             $this->model->delete_cache();
 
-            set_alert(lang('GeneralManage.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
+            set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
             json_output(['status' => 'redirect', 'url' => site_url(self::MANAGE_URL)]);
         }
 
@@ -202,13 +202,13 @@ class Manage extends AdminController
         }
 
         if (empty($delete_ids)) {
-            json_output(['status' => 'ng', 'msg' => lang('GeneralManage.error_empty')]);
+            json_output(['status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
         $list_delete = $this->model->getListDetail($delete_ids, get_lang_id());
         if (empty($list_delete)) {
-            json_output(['status' => 'ng', 'msg' => lang('GeneralManage.error_empty')]);
+            json_output(['status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $data['list_delete'] = $list_delete;
@@ -231,11 +231,11 @@ class Manage extends AdminController
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form']   = lang('MenusManage.text_edit') . (!empty(session('is_menu_admin')) ? ' (Admin)' : '');
-            $data['text_submit'] = lang('GeneralManage.button_save');
+            $data['text_submit'] = lang('Admin.button_save');
 
             $data_form = $this->model->getDetail($id);
             if (empty($data_form)) {
-                set_alert(lang('GeneralManage.error_empty'), ALERT_ERROR, ALERT_POPUP);
+                set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
@@ -244,10 +244,10 @@ class Manage extends AdminController
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form']   = lang('MenusManage.text_add') . (!empty(session('is_menu_admin')) ? ' (Admin)' : '');
-            $data['text_submit'] = lang('GeneralManage.button_add');
+            $data['text_submit'] = lang('Admin.button_add');
         }
 
-        $data['text_cancel']   = lang('GeneralManage.text_cancel');
+        $data['text_cancel']   = lang('Admin.text_cancel');
         $data['button_cancel'] = base_url(self::MANAGE_URL.http_get_query());
 
         $data['errors'] = $this->errors;
@@ -262,9 +262,9 @@ class Manage extends AdminController
 
     protected function validateForm()
     {
-        $this->validator->setRule('sort_order', lang('GeneralManage.text_sort_order'), 'is_natural');
+        $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         foreach(get_list_lang() as $key => $value) {
-            $this->validator->setRule(sprintf('lang_%s_name', $key), lang('GeneralManage.text_name') . ' (' . $value['name']  . ')', 'required');
+            $this->validator->setRule(sprintf('lang_%s_name', $key), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();

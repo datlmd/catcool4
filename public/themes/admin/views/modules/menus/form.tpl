@@ -55,7 +55,7 @@
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-12 col-sm-2 col-form-label text-sm-end">
-                                                {lang('GeneralManage.text_description')}
+                                                {lang('Admin.text_description')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-8">
                                                 {if !empty($edit_data.menu_lang[$language.id].description)}
@@ -85,7 +85,7 @@
                             </div>
                         </div>
                     </div>
-                    <h5 class="card-header">{lang('GeneralManage.Manage.text_attribute')}</h5>
+                    <h5 class="card-header">{lang('Admin.Manage.text_attribute')}</h5>
                     <div class="card-body mb-3">
                         <div class="form-group row">
                             <label class="col-12 col-sm-2 col-form-label text-sm-end">{lang('MenusManage.text_attributes')}</label>
@@ -180,10 +180,10 @@
             </div>
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                 <div class="card">
-                    <h5 class="card-header">{lang('GeneralManage.text_manage_more')}</h5>
+                    <h5 class="card-header">{lang('Admin.text_manage_more')}</h5>
                     <div class="card-body">
                         <div class="form-group">
-                            <label class="form-label">{lang('GeneralManage.text_published')}</label>
+                            <label class="form-label">{lang('Admin.text_published')}</label>
                             {if isset($edit_data.published)}
                                 {assign var="published" value="`$edit_data.published`"}
                             {else}
@@ -214,7 +214,7 @@
                             <input type="hidden" name="image" value="{$image}" id="input-image-path" />
                         </div>
                         <div class="form-group">
-                            <label class="form-label">{lang('GeneralManage.text_sort_order')}</label>
+                            <label class="form-label">{lang('Admin.text_sort_order')}</label>
                             {if !empty($edit_data.sort_order)}
                                 {assign var="sort_order" value="`$edit_data.sort_order`"}
                             {else}
@@ -223,14 +223,14 @@
                             <input type="number" name="sort_order" value="{old('sort_order', $sort_order)}" id="sort_order" min="0" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">{lang('GeneralManage.text_parent')}</label>
+                            <label class="form-label">{lang('Admin.text_parent')}</label>
                             {if isset($edit_data.parent_id)}
                                 {assign var="parent_id" value="`$edit_data.parent_id`"}
                             {else}
                                 {assign var="parent_id" value=""}
                             {/if}
                             <select name="parent_id" id="parent_id" class="form-control">
-                                <option value="">{lang('GeneralManage.text_select')}</option>
+                                <option value="">{lang('Admin.text_select')}</option>
                                 {$output_html = '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>'}
                                 {draw_tree_output_name(['data' => $list_patent, 'key_id' => 'menu_id', 'id_root' => $menu_id], $output_html, 0, $parent_id)}
                             </select>

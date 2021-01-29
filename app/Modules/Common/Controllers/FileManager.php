@@ -234,18 +234,18 @@ class FileManager extends AdminController
 
         $data['heading_title'] = lang('FileManager.heading_title');
 
-        $data['text_no_results'] = lang('GeneralManage.text_no_results');
-        $data['text_confirm']    = lang('GeneralManage.text_confirm');
+        $data['text_no_results'] = lang('Admin.text_no_results');
+        $data['text_confirm']    = lang('Admin.text_confirm');
 
         $data['entry_search'] = lang('FileManager.entry_search');
         $data['entry_folder'] = lang('FileManager.entry_folder');
 
-        $data['button_parent']  = lang('GeneralManage.button_parent');
-        $data['button_refresh'] = lang('GeneralManage.button_refresh');
-        $data['button_upload']  = lang('GeneralManage.button_upload');
-        $data['button_folder']  = lang('GeneralManage.button_folder');
-        $data['button_delete']  = lang('GeneralManage.button_delete');
-        $data['button_search']  = lang('GeneralManage.button_search');
+        $data['button_parent']  = lang('Admin.button_parent');
+        $data['button_refresh'] = lang('Admin.button_refresh');
+        $data['button_upload']  = lang('Admin.button_upload');
+        $data['button_folder']  = lang('Admin.button_folder');
+        $data['button_delete']  = lang('Admin.button_delete');
+        $data['button_search']  = lang('Admin.button_search');
 
         $data['error_folder_null'] = lang('FileManager.error_folder_null');
         $data['error_file_null']   = lang('FileManager.error_file_null');

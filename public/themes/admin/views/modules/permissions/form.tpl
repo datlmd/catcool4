@@ -56,7 +56,7 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-12 col-sm-3 col-form-label text-sm-end">
-                                {lang('GeneralManage.text_published')}
+                                {lang('Admin.text_published')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
                                 {if isset($edit_data.published)}

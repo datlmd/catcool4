@@ -39,7 +39,7 @@ class Manage extends AdminController
         $this->smarty->assign('manage_root', self::MANAGE_ROOT);
 
         //add breadcrumb
-        $this->breadcrumb->add(lang('GeneralManage.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
+        $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
         $this->breadcrumb->add(lang('Users.heading_title'), base_url(self::MANAGE_URL));
     }
 

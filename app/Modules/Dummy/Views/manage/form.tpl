@@ -34,7 +34,7 @@
                                     <div class="tab-pane fade {if !empty($language.active)}show active{/if}" role="tabpanel" id="lanuage_content_{$language.id}"  aria-labelledby="language_tab_{$language.id}">
                                         <div class="form-group row required has-error">
                                             <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
-                                                {lang('GeneralManage.text_name')}
+                                                {lang('Admin.text_name')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-7">
                                                 {if !empty($edit_data.dummy_lang[$language.id].name)}
@@ -50,7 +50,7 @@
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-12 col-sm-3 col-form-label text-sm-end">
-                                                {lang('GeneralManage.text_description')}
+                                                {lang('Admin.text_description')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-7">
                                                 {if !empty($edit_data.dummy_lang[$language.id].description)}
@@ -71,10 +71,10 @@
             </div>
             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                 <div class="card">
-                    <h5 class="card-header">{lang('GeneralManage.text_manage_more')}</h5>
+                    <h5 class="card-header">{lang('Admin.text_manage_more')}</h5>
                     <div class="card-body">
                         <div class="form-group">
-                            {lang('GeneralManage.text_published')}
+                            {lang('Admin.text_published')}
                             {if isset($edit_data.published)}
                                 {assign var="published" value="`$edit_data.published`"}
                             {else}
@@ -91,7 +91,7 @@
                         </div>
                         {*TPL_DUMMY_ROOT*}
                         <div class="form-group">
-                            {lang('GeneralManage.text_sort_order')}
+                            {lang('Admin.text_sort_order')}
                             {if !empty($edit_data.sort_order)}
                                 {assign var="sort_order" value="`$edit_data.sort_order`"}
                             {else}
