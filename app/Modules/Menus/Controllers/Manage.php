@@ -62,7 +62,7 @@ class Manage extends AdminController
         if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
                 set_alert($this->errors, ALERT_ERROR);
-                return redirect()->to(site_url(self::MANAGE_URL) . '/add')->withInput();
+                return redirect()->back()->withInput();
             }
 
             $add_data = [
@@ -85,7 +85,7 @@ class Manage extends AdminController
             $id = $this->model->insert($add_data);
             if ($id === FALSE) {
                 set_alert(lang('Admin.error'), ALERT_ERROR);
-                return redirect()->to(site_url(self::MANAGE_URL) . '/add')->withInput();
+                return redirect()->back()->withInput();
             }
 
             $add_data_lang = format_lang_form($this->request->getPost());
@@ -115,13 +115,12 @@ class Manage extends AdminController
         if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
                 set_alert($this->errors, ALERT_ERROR);
-                return redirect()->to(site_url(self::MANAGE_URL) . '/edit/' . $id)->withInput();
+                return redirect()->back()->withInput();
             }
 
-            // do we have a valid request?
-            if (valid_token() === FALSE || $id != $this->request->getPost('menu_id')) {
+            if ($id != $this->request->getPost('menu_id')) {
                 set_alert(lang('Admin.error_token'), ALERT_ERROR);
-                return redirect()->to(site_url(self::MANAGE_URL) . '/edit/' . $id)->withInput();
+                return redirect()->back()->withInput();
             }
 
             $edit_data_lang = format_lang_form($this->request->getPost());
@@ -154,14 +153,14 @@ class Manage extends AdminController
 
             if (!$this->model->update($id, $edit_data)) {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
-                return redirect()->to(site_url(self::MANAGE_URL) . '/edit/' . $id)->withInput();
+                return redirect()->back()->withInput();
             }
 
             //reset cache
             $this->model->deleteCache();
 
             set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
-            return redirect()->to(site_url(self::MANAGE_URL) . '/edit/' . $id);
+            return redirect()->back();
         }
 
         $this->_getForm($id);
@@ -173,6 +172,8 @@ class Manage extends AdminController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
+        $token = csrf_hash();
+
         //delete
         if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
@@ -180,7 +181,7 @@ class Manage extends AdminController
 
             $list_delete = $this->model->getListDetail($ids);
             if (empty($list_delete)) {
-                json_output(['status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+                json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
 
             $this->model_lang->delete($ids);
@@ -201,19 +202,19 @@ class Manage extends AdminController
         }
 
         if (empty($delete_ids)) {
-            json_output(['status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
         $list_delete = $this->model->getListDetail($delete_ids, get_lang_id());
         if (empty($list_delete)) {
-            json_output(['status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $data['list_delete'] = $list_delete;
         $data['ids']         = $delete_ids;
 
-        json_output(['data' => $this->themes::view('delete', $data)]);
+        json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }
 
     private function _getForm($id = null)
@@ -239,7 +240,6 @@ class Manage extends AdminController
             }
 
             // display the edit user form
-            $data['csrf']      = create_token();
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form']   = lang('MenuAdmin.text_add') . (!empty(session('is_menu_admin')) ? ' (Admin)' : '');

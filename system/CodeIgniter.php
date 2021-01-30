@@ -1061,6 +1061,10 @@ class CodeIgniter
 		{
 			return;
 		}
+		//dat datlm them vao, khong luu duong dan load hinh
+        if (stripos($uri, base_url('img/')) !== false) {
+            return;
+        }
 
 		// This is mainly needed during testing...
 		if (is_string($uri))

@@ -211,9 +211,13 @@ var Catcool = {
         $('[data-toggle=\'tooltip\']').tooltip();
         var manage = $('input[name="manage_url"]').val();
         var url    = manage + '/delete';
+        // CSRF Hash
+        var csrfName = $('#cc_token').attr('name'); // CSRF Token name
+        var csrfHash = $('#cc_token').val(); // CSRF hash
+
         $.ajax({
             url: url,
-            data: {delete_ids: delete_data},
+            data: {delete_ids: delete_data, [csrfName]: csrfHash},
             type: 'POST',
             beforeSend: function () {
                 obj.find('i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
@@ -222,9 +226,16 @@ var Catcool = {
                 obj.find('i').replaceWith('<i class="fas fa-trash-alt"></i>');
             },
             success: function (data) {
+
                 is_processing = false;
                 var response = JSON.stringify(data);
                 response = JSON.parse(response);
+
+                if (response.token) {
+                    // Update CSRF hash
+                    $('#cc_token').val(response.token);
+                }
+
                 if (response.status == 'ng') {
                     $.notify(response.msg, {'type':'danger'});
                     return false;

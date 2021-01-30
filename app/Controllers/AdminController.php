@@ -23,6 +23,11 @@ class AdminController extends UserController
         $this->smarty->assign('validator', \Config\Services::validation());
 
         $this->validator = \Config\Services::validation();
+
+        $error_token = session()->getFlashdata('error_token');
+        if (!empty($error_token)) {
+            set_alert(lang('Admin.error_token'), ALERT_ERROR,ALERT_POPUP);
+        }
     }
 
     protected function getUrlFilter()

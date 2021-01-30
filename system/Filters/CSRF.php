@@ -91,7 +91,7 @@ class CSRF implements FilterInterface
 		{
 			if (config('App')->CSRFRedirect && ! $request->isAJAX())
 			{
-				return redirect()->back()->with('error', $e->getMessage());
+				return redirect()->back()->with('error_token', $e->getMessage());
 			}
 
 			throw $e;

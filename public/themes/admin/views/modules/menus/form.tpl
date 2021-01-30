@@ -13,7 +13,7 @@
         {if !empty($edit_data.menu_id)}
             {form_hidden('menu_id', $edit_data.menu_id)}
             {form_hidden('is_admin', session('is_menu_admin'))}
-            {create_input_token($csrf)}
+            {csrf_field('cc_token')}
 
             {assign var="menu_id" value="`$edit_data.menu_id`"}
         {else}
@@ -207,7 +207,7 @@
                             {/if}
                             <!-- Drag and Drop container-->
                             <a href="javascript:void(0);" id="thumb-image" data-target="input-image-path" data-thumb="load-thumb-image" data-bs-toggle="image">
-                                <img src="{if !empty($image)}{image_url(old('image', $image))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}"/>
+                                <img src="{if !empty(old('image', $image))}{image_url(old('image', $image))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}"/>
                                 <button type="button" id="button-image" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-2"></i>{lang('Admin.text_photo_edit')}</button>
                                 <button type="button" id="button-clear" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-2"></i>{lang('Admin.text_photo_clear')}</button>
                             </a>
