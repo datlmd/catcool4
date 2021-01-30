@@ -73,7 +73,7 @@ class Manage extends AdminController
                 'label'      => $this->request->getPost('label'),
                 'attributes' => $this->request->getPost('attributes'),
                 'selected'   => $this->request->getPost('selected'),
-                'user_id'    => 1,//$this->get_user_id(),
+                'user_id'    => $this->get_user_id(),
                 'parent_id'  => $this->request->getPost('parent_id'),
                 'sort_order' => $this->request->getPost('sort_order'),
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
@@ -144,7 +144,7 @@ class Manage extends AdminController
                 'label'      => $this->request->getPost('label'),
                 'attributes' => $this->request->getPost('attributes'),
                 'selected'   => $this->request->getPost('selected'),
-                'user_id'    => 1,//$this->get_user_id(),
+                'user_id'    => $this->get_user_id(),
                 'parent_id'  => $this->request->getPost('parent_id'),
                 'sort_order' => $this->request->getPost('sort_order'),
                 'is_admin'   => !empty(session('is_menu_admin')) ? STATUS_ON : STATUS_OFF,
@@ -305,21 +305,18 @@ class Manage extends AdminController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        if (isset($_POST['ids']) && !empty($_POST['ids'])) {
-
-            $data_sort = filter_sort_array(json_decode($_POST['ids'], true), 0 , "menu_id");
-
-
-            if (!$this->model->updateBatch($data_sort, 'menu_id')) {
-                json_output(['status' => 'ng', 'msg' => lang('Admin.error_json')]);
-            }
-
-            //reset cache
-            $this->model->deleteCache();
-
-            json_output(['status' => 'ok', 'msg' => lang('Admin.text_sort_success')]);
+        if (empty($this->request->getPost())) {
+            json_output(['status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        json_output(['status' => 'ng', 'msg' => lang('Admin.error_json')]);
+        $data_sort = filter_sort_array(json_decode($this->request->getPost('ids'), true), 0 , "menu_id");
+        if (!$this->model->updateBatch($data_sort, 'menu_id')) {
+            json_output(['status' => 'ng', 'msg' => lang('Admin.error_json')]);
+        }
+
+        //reset cache
+        $this->model->deleteCache();
+
+        json_output(['status' => 'ok', 'msg' => lang('Admin.text_sort_success')]);
     }
 }

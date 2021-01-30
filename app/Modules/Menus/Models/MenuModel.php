@@ -113,8 +113,9 @@ class MenuModel extends MyModel
         return $result;
     }
 
-    public function get_menu_active($filter = null, $expire_time = 3600, $is_cache = true)
+    public function getMenuActive($filter = null, $expire_time = 3600, $is_cache = true)
     {
+        $cache = cache();
         $cache_name = SET_CACHE_NAME_MENU;
 
         $filter['published'] = isset($filter['published']) ? $filter['published'] : STATUS_ON;
@@ -127,17 +128,23 @@ class MenuModel extends MyModel
             $cache_name = (!empty($filter['context'])) ?  $cache_name . '_' . $filter['context'] : $cache_name;
         }
 
-        $this->load->driver('cache', ['adapter' => 'file', 'key_prefix' => '']);
-
-        $result = $this->cache->get($cache_name);
+        $result = $is_cache ? $cache->get($cache_name) : null;
         if (empty($result)) {
-            $result = $this->order_by(['sort_order' => 'DESC'])->where($filter)->with_detail('where:language_id=' . get_lang_id())->get_all();
+            $result = $this->orderBy('sort_order', 'DESC')->where($filter)->findAll();
             if (empty($result)) {
                 return false;
             }
 
+            $language_id = get_lang_id();
+            foreach ($result as $key => $value) {
+                $result[$key] = format_data_lang_id($value, 'menu_lang');
+                if (!empty($result[$key]['menu_lang'][$language_id])) {
+                    $result[$key]['menu_lang'] = $result[$key]['menu_lang'][$language_id];
+                }
+            }
+
             // Save into the cache for $expire_time 1hour
-            $this->cache->save($cache_name, $result, $expire_time);
+            $cache->save($cache_name, $result, $expire_time);
         }
 
         return $result;
@@ -145,7 +152,7 @@ class MenuModel extends MyModel
 
     public function deleteCache($cache_name = null)
     {
-        $cache = \Config\Services::cache();
+        $cache = cache();
         if (!empty($cache_name) && !empty($this->cache->get($cache_name))) {
             $cache->save($cache_name, [], 0);
             return true;
