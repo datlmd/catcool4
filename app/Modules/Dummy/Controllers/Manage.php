@@ -150,7 +150,6 @@ class Manage extends AdminController
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form']   = lang('Admin.text_edit');
-            $data['text_submit'] = lang('Admin.button_save');
 
             $data_form = $this->model->getDetail($id);
             if (empty($data_form)) {
@@ -161,11 +160,7 @@ class Manage extends AdminController
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form']   = lang('Admin.text_add');
-            $data['text_submit'] = lang('Admin.button_add');
         }
-
-        $data['text_cancel']   = lang('Admin.text_cancel');
-        $data['button_cancel'] = base_url(self::MANAGE_URL.http_get_query());
 
         $data['errors'] = $this->errors;
 

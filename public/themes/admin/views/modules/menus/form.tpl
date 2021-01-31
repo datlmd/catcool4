@@ -6,8 +6,8 @@
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('MenuAdmin.heading_title')}
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"><i class="fas fa-save me-1"></i>{$text_submit}</button>
-                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"><i class="fas fa-reply me-1"></i>{$text_cancel}</a>
+                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
+                <a href="{base_url($manage_url)}{http_get_query()}" class="btn btn-sm btn-space btn-secondary mb-0" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_cancel')}</a>
             </div>
         </div>
         {if !empty($edit_data.menu_id)}
@@ -153,23 +153,23 @@
                                 {else}
                                     {assign var="context" value="main"}
                                 {/if}
-                                <label class="form-check form-check-inline ms-2">
+                                <label class="form-check form-check-inline ms-2 mt-1">
                                     <input type="radio" name="context" class="form-check-input" id="rd_context_main" value="{MENU_POSITION_MAIN}" {if old('context', $context) eq MENU_POSITION_MAIN}checked="checked"{/if}>
                                     <label class="form-check-label" for="rd_context_main">{MENU_POSITION_MAIN}</label>
                                 </label>
-                                <label class="form-check form-check-inline ms-2">
+                                <label class="form-check form-check-inline ms-2 mt-1">
                                     <input type="radio" name="context" class="form-check-input" id="rd_context_footer" value="{MENU_POSITION_FOOTER}" {if old('context', $context) eq MENU_POSITION_FOOTER}checked="checked"{/if}>
                                     <label class="form-check-label" for="rd_context_footer">{MENU_POSITION_FOOTER}</label>
                                 </label>
-                                <label class="form-check form-check-inline ms-2">
+                                <label class="form-check form-check-inline ms-2 mt-1">
                                     <input type="radio" name="context" class="form-check-input" id="rd_context_top" value="{MENU_POSITION_TOP}" {if old('context', $context) eq MENU_POSITION_TOP}checked="checked"{/if}>
                                     <label class="form-check-label" for=""rd_context_top>{MENU_POSITION_TOP}</label>
                                 </label>
-                                <label class="form-check form-check-inline ms-2">
+                                <label class="form-check form-check-inline ms-2 mt-1">
                                     <input type="radio" name="context" class="form-check-input" id="rd_context_bottom" value="{MENU_POSITION_BOTTOM}" {if old('context', $context) eq MENU_POSITION_BOTTOM}checked="checked"{/if}>
                                     <label class="form-check-label" for="rd_context_bottom">{MENU_POSITION_BOTTOM}</label>
                                 </label>
-                                <label class="form-check form-check-inline ms-2">
+                                <label class="form-check form-check-inline ms-2 mt-1">
                                     <input type="radio" name="context" class="form-check-input" id="rd_context_other" value="{MENU_POSITION_OTHER}" {if old('context', $context) eq MENU_POSITION_OTHER}checked="checked"{/if}>
                                     <label class="form-check-label" for="rd_context_other">{MENU_POSITION_OTHER}</label>
                                 </label>
