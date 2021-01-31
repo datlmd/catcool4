@@ -27,7 +27,7 @@
                         {$image.name}
                     </p>
                 {elseif $image.type == 'image'}
-                    <a href="{$image.path}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail">
+                    <a href="{$image.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail">
                         <img src="{$image.thumb}" style="background-image: url('{$image.thumb}');" alt="{$image.name}" title="{$image.name}" class="img-thumbnail img-fluid img-photo-list" />
                     </a>
                     <p class="mt-1">
