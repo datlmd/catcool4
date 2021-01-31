@@ -229,10 +229,10 @@ var Catcool = {
             data: {delete_ids: delete_data, [csrfName]: csrfHash},
             type: 'POST',
             beforeSend: function () {
-                obj.find('i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
+                obj.find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
             },
             complete: function () {
-                obj.find('i').replaceWith('<i class="fas fa-trash-alt"></i>');
+                obj.find('i').replaceWith('<i class="fas fa-trash-alt me-1"></i>');
             },
             success: function (data) {
 
@@ -273,10 +273,10 @@ var Catcool = {
             type: 'POST',
             data: $("#" + form_id).serialize(),
             beforeSend: function () {
-                $('#' + form_id + ' #submit_delete').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-2"></i>');
+                $('#' + form_id + ' #submit_delete').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
             },
             complete: function () {
-                $('#' + form_id + ' #submit_delete').find('i').replaceWith('<i class="fas fa-trash-alt me-2"></i>');
+                $('#' + form_id + ' #submit_delete').find('i').replaceWith('<i class="fas fa-trash-alt me-1"></i>');
             },
             success: function (data) {
                 is_processing = false;
