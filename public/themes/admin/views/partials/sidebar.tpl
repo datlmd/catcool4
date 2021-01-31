@@ -55,7 +55,7 @@
 		{if config_item('enable_icon_menu_admin')}
 			<div class="d-xl-block d-lg-block d-none">
 				{foreach $menu_admin as $key => $item}
-					<a href="{$item.menu_lang.slug}" {$item.attributes} {if !empty($item.subs)}data-bs-toggle="modal" data-target="#popup_menu_left_{$key}"{/if}>
+					<a href="{$item.menu_lang.slug}" {$item.attributes} {if !empty($item.subs)}data-bs-toggle="modal" data-bs-target="#popup_menu_left_{$key}"{/if}>
 						<div class="menu-left-icon {if strpos($item.selected, $menu_current) !== false}active{/if}">
 							<i class="{if !empty($item.icon)}{$item.icon}{else}fas fa-angle-double-right{/if}"></i>
 							<div class="tooltiptext">{$item.menu_lang.name}</div>
@@ -75,9 +75,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h4 class="modal-title" id="modal_label_{$key}"><i class="me-2 {if !empty($item.icon)}{$item.icon}{else}fas fa-angle-double-right{/if}"></i>{$item.menu_lang.name}</h4>
-							<a href="#" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</a>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
 							<div class="row">

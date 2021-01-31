@@ -418,7 +418,7 @@ var Catcool = {
         }
         is_processing = true;
 
-        $('#modal-image').remove();//target=$element.parent().find('input').attr('id')
+        $('#modal_image').remove();//target=$element.parent().find('input').attr('id')
         $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
 
         $.ajax({
@@ -438,9 +438,9 @@ var Catcool = {
                     return false;
                 }
 
-                $('body').append('<div id="modal-image" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">' + html + '</div>');
+                $('body').append('<div id="modal_image" class="modal fade" role="dialog" data-keyboard="false" data-bs-backdrop="static">' + html + '</div>');
 
-                $('#modal-image').modal('show');
+                $('#modal_image').modal('show');
             },
             error: function (xhr, errorType, error) {
                 is_processing = false;
