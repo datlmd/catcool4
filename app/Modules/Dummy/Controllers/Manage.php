@@ -107,15 +107,9 @@ class Manage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost())) {
+        if (!empty($this->request->getPost()) && $id != $this->request->getPost('dummy_id')) {
             if (!$this->_validateForm()) {
                 set_alert($this->errors, ALERT_ERROR);
-                return redirect()->back()->withInput();
-            }
-
-            // do we have a valid request?
-            if (valid_token() === FALSE || $id != $this->request->getPost('dummy_id')) {
-                set_alert(lang('Admin.error_token'), ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
 
@@ -164,8 +158,6 @@ class Manage extends AdminController
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
-            // display the edit user form
-            $data['csrf']      = create_token();
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form']   = lang('Admin.text_add');
@@ -204,6 +196,8 @@ class Manage extends AdminController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
+        $token = csrf_hash();
+
         //delete
         if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
@@ -211,14 +205,14 @@ class Manage extends AdminController
 
             $list_delete = $this->model->getListDetail($ids);
             if (empty($list_delete)) {
-                json_output(['status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+                json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
 
             $this->model_lang->delete($ids);
             $this->model->delete($ids);
 
             set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
-            json_output(['status' => 'redirect', 'url' => site_url(self::MANAGE_URL)]);
+            json_output(['token' => $token, 'status' => 'redirect', 'url' => site_url(self::MANAGE_URL)]);
         }
 
         $delete_ids = $id;
@@ -229,19 +223,19 @@ class Manage extends AdminController
         }
 
         if (empty($delete_ids)) {
-            json_output(['status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
         $list_delete = $this->model->getListDetail($delete_ids, get_lang_id());
         if (empty($list_delete)) {
-            json_output(['status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $data['list_delete'] = $list_delete;
         $data['ids']         = $delete_ids;
 
-        json_output(['data' => $this->themes::view('manage/delete', $data)]);
+        json_output(['token' => $token, 'data' => $this->themes::view('manage/delete', $data)]);
     }
 
     public function publish()
@@ -250,23 +244,23 @@ class Manage extends AdminController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
+        $token = csrf_hash();
+
         if (empty($this->request->getPost())) {
-            json_output(['status' => 'ng', 'msg' => lang('Admin.error_json')]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
         $id        = $this->request->getPost('id');
         $item_edit = $this->model->find($id);
         if (empty($item_edit)) {
-            json_output(['status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $item_edit['published'] = !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF;
         if (!$this->model->update($id, $item_edit)) {
-            $data = ['status' => 'ng', 'msg' => lang('Admin.error_json')];
-        } else {
-            $data = ['status' => 'ok', 'msg' => lang('Admin.text_published_success')];
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        json_output($data);
+        json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')]);
     }
 }

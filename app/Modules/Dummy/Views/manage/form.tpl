@@ -6,13 +6,13 @@
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=$text_form}
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
-                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
+                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0" title="{$text_submit}"><i class="fas fa-save me-1"></i>{$text_submit}</button>
+                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  title="{$text_cancel}"><i class="fas fa-reply me-1"></i>{$text_cancel}</a>
             </div>
         </div>
         {if !empty($edit_data.dummy_id)}
             {form_hidden('dummy_id', $edit_data.dummy_id)}
-            {create_input_token($csrf)}
+            {csrf_field('cc_token')}
         {/if}
         <div class="row">
             {if !empty(print_flash_alert())}

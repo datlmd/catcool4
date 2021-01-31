@@ -217,8 +217,7 @@ var Catcool = {
             return false;
         }
         is_processing = true;
-        $('[data-toggle=\'tooltip\']').tooltip('dispose');
-        $('[data-toggle=\'tooltip\']').tooltip();
+
         var manage = $('input[name="manage_url"]').val();
         var url    = manage + '/delete';
         // CSRF Hash
@@ -256,7 +255,7 @@ var Catcool = {
                 $('#modal_delete_confirm').remove();
                 $('body').append('<div id="modal_delete_confirm" class="modal fade" role="dialog">' + response.data + '</div>');
                 $('#modal_delete_confirm').modal('show');
-                obj.tooltip('hide');
+
             },
             error: function (xhr, errorType, error) {
                 is_processing = false;
@@ -267,8 +266,7 @@ var Catcool = {
         if (is_processing) {
             return false;
         }
-        $('[data-toggle=\'tooltip\']').tooltip('dispose');
-        $('[data-toggle=\'tooltip\']').tooltip();
+
         is_processing = true;
         $.ajax({
             url: $('#' + form_id).attr('action'),
@@ -419,7 +417,7 @@ var Catcool = {
             return false;
         }
         is_processing = true;
-        $('[data-toggle="tooltip"]').tooltip('dispose');
+
         $('#modal-image').remove();//target=$element.parent().find('input').attr('id')
         $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
 
@@ -443,7 +441,6 @@ var Catcool = {
                 $('body').append('<div id="modal-image" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">' + html + '</div>');
 
                 $('#modal-image').modal('show');
-                $('[data-toggle="tooltip"]').tooltip();
             },
             error: function (xhr, errorType, error) {
                 is_processing = false;
@@ -481,7 +478,6 @@ var Catcool = {
 
                 $('body').append('<div id="cropper_html">' + html + '</div>');
                 $('#modal_image_crop').modal('toggle');
-                $('[data-toggle="tooltip"]').tooltip();
             },
             error: function (xhr, errorType, error) {
                 is_processing = false;
@@ -541,15 +537,6 @@ $(function () {
         $(this).ekkoLightbox();
     });
 
-    // var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    // var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    //     return new bootstrap.Tooltip(tooltipTriggerEl)
-    // })
-
-    if ($('[data-bs-toggle=\'tooltip\']').length) {
-        $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
-        $('[data-bs-toggle=\'tooltip\']').tooltip();
-    }
     if ($('[data-toggle=\'popover\']').length) {
         $('[data-toggle=\'popover\']').popover('dispose')
         $('[data-toggle=\'popover\']').popover()
@@ -558,7 +545,6 @@ $(function () {
     if ($('#btn_search').length) {
         $(document).on('click','#btn_search', function () {
             $($('#btn_search').attr('data-target')).collapse('toggle');
-            $('#btn_search').tooltip('hide');
         });
     }
 

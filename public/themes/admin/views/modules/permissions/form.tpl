@@ -6,13 +6,13 @@
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('PermissionAdmin.heading_title')}
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
-                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
+                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0" title="{$text_submit}"><i class="fas fa-save me-1"></i>{$text_submit}</button>
+                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0" title="{$text_cancel}"><i class="fas fa-reply me-1"></i>{$text_cancel}</a>
             </div>
         </div>
         {if !empty($edit_data.id)}
             {form_hidden('id', $edit_data.id)}
-            {create_input_token($csrf)}
+            {csrf_field('cc_token')}
         {/if}
         <div class="row">
             {if !empty(print_flash_alert())}
