@@ -278,23 +278,25 @@ class Manage extends AdminController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
+        $token = csrf_hash();
+
         if (empty($this->request->getPost())) {
-            json_output(['status' => 'ng', 'msg' => lang('Admin.error_json')]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
         $id        = $this->request->getPost('id');
         $item_edit = $this->model->find($id);
         if (empty($item_edit)) {
-            json_output(['status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $item_edit['published'] = !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF;
         if (!$this->model->update($id, $item_edit)) {
-            $data = ['status' => 'ng', 'msg' => lang('Admin.error_json')];
-        } else {
-            $this->model->deleteCache();
-            $data = ['status' => 'ok', 'msg' => lang('Admin.text_published_success')];
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
+
+        $this->model->deleteCache();
+        $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')];
 
         json_output($data);
     }
@@ -305,18 +307,20 @@ class Manage extends AdminController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
+        $token = csrf_hash();
+
         if (empty($this->request->getPost())) {
-            json_output(['status' => 'ng', 'msg' => lang('Admin.error_json')]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
         $data_sort = filter_sort_array(json_decode($this->request->getPost('ids'), true), 0 , "menu_id");
         if (!$this->model->updateBatch($data_sort, 'menu_id')) {
-            json_output(['status' => 'ng', 'msg' => lang('Admin.error_json')]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
         //reset cache
         $this->model->deleteCache();
 
-        json_output(['status' => 'ok', 'msg' => lang('Admin.text_sort_success')]);
+        json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_sort_success')]);
     }
 }

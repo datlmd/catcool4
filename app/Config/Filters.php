@@ -16,7 +16,7 @@ class Filters extends BaseConfig
 	public $globals = [
 		'before' => [
 			//'honeypot'
-            'csrf' => ['except' => ['*/publish', '*/update_sort', '*/manage/index', 'img/*', 'image/*', 'common/filemanager/*']],
+            'csrf' => ['except' => ['users/auth/recaptcha', '*/manage/index', 'img/*', 'image/*', 'common/filemanager/*']],
 		],
 		'after'  => [
 			'toolbar',

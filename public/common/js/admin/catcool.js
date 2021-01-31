@@ -125,16 +125,26 @@ var Catcool = {
             is_check = 1;
         }
 
+        // CSRF Hash
+        var csrfName = $('#cc_token').attr('name'); // CSRF Token name
+        var csrfHash = $('#cc_token').val(); // CSRF hash
+
         is_processing = true;
         $.ajax({
             url: url_api,
-            data: {'id' : id, 'published': is_check},
+            data: {'id' : id, 'published': is_check, [csrfName]: csrfHash},
             type:'POST',
             success: function (data) {
                 is_processing = false;
 
                 var response = JSON.stringify(data);
                 response = JSON.parse(response);
+
+                if (response.token) {
+                    // Update CSRF hash
+                    $('#cc_token').val(response.token);
+                }
+
                 if (response.status == 'ng') {
                     $.notify(response.msg, {'type':'danger'});
                     $(obj).prop("checked", $(obj).attr("value"));
