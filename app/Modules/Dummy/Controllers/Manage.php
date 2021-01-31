@@ -107,7 +107,7 @@ class Manage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()) && $id != $this->request->getPost('dummy_id')) {
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('dummy_id')) {
             if (!$this->_validateForm()) {
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
