@@ -203,7 +203,6 @@ class Manage extends AdminController
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
 
-            $this->model_lang->delete($ids);
             $this->model->delete($ids);
 
             set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);

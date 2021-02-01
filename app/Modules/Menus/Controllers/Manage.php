@@ -179,7 +179,6 @@ class Manage extends AdminController
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
 
-            $this->model_lang->delete($ids);
             $this->model->delete($ids);
 
             //reset cache
