@@ -1,12 +1,13 @@
+{strip}
 {capture name="content_filemanager"}
     <div class="row">
         <div class="col-sm-8 col-12 mb-1">
-            <a href="{$parent}" title="{$button_parent}" id="button_parent" class="btn btn-sm btn-light mb-2"><i class="fas fa-level-up-alt"></i></a>
-            <a href="{$refresh}" title="{$button_refresh}" id="button_refresh" class="btn btn-sm btn-secondary mb-2"><i class="fas fa-sync me-2"></i>{$button_refresh}</a>
-            <button type="button" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary mb-2"><i class="fas fa-upload me-2"></i>{$button_upload}</button>
-            <button type="button" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success mb-2"><i class="fas fa-folder me-2"></i>{$button_folder}</button>
-            <button type="button" title="{$button_delete}" id="button_delete" class="btn btn-sm btn-danger mb-2"><i class="fas fa-trash me-2"></i>{$button_delete}</button>
-            <a href="{base_url('image/editor')}" title="Photo Editor" class="btn btn-sm btn-warning mb-2"><i class="fas fa-pencil-alt me-2"></i>Photo Editor</a>
+            <a href="{$parent}" title="{$button_parent}" id="button_parent" class="btn btn-sm btn-light btn-space"><i class="fas fa-level-up-alt"></i></a>
+            <a href="{$refresh}" title="{$button_refresh}" id="button_refresh" class="btn btn-sm btn-secondary btn-space"><i class="fas fa-sync me-1"></i>{$button_refresh}</a>
+            <button type="button" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary btn-space"><i class="fas fa-upload me-1"></i>{$button_upload}</button>
+            <button type="button" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success btn-space"><i class="fas fa-folder me-1"></i>{$button_folder}</button>
+            <button type="button" title="{$button_delete}" id="button_delete" class="btn btn-sm btn-danger btn-space"><i class="fas fa-trash me-1"></i>{$button_delete}</button>
+            <a href="{base_url('image/editor')}" title="Photo Editor" class="btn btn-sm btn-warning btn-space"><i class="fas fa-pencil-alt me-1"></i>Photo Editor</a>
         </div>
         <div class="col-sm-4 col-12 mb-1">
             <div class="input-group">
@@ -61,7 +62,6 @@
         {/foreach}
     </div>
 {/capture}
-
 <div id="filemanager" class="modal-dialog modal-xl px-4" style="max-width: 100% !important;">
     <div class="modal-content">
         <div class="modal-header">
@@ -76,6 +76,7 @@
         </div>
     </div>
 </div>
+{/strip}
 
 {if $thumb}{form_hidden('file_thumb', $thumb)}{/if}
 {if $target}{form_hidden('file_target', $target)}{/if}
