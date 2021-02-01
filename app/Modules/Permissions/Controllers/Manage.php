@@ -41,7 +41,7 @@ class Manage extends AdminController
         $order        = $this->request->getGet('order');
 
         $filter = [
-            'active' => count(array_filter(array_filter($this->request->getGet(['filter_id', 'filter_name', 'filter_limit'])))) > 0,
+            'active' => count(array_filter($this->request->getGet(['filter_id', 'filter_name', 'filter_limit']))) > 0,
             'id'     => (string)$filter_id,
             'name'   => (string)$filter_name,
             'limit'  => (string)$filter_limit,
