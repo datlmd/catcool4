@@ -93,8 +93,8 @@
 					</div>
 				</li>
 				{if config_item('enable_icon_menu_admin')}
-					<li class="nav-item dropdown nav-more pt-2">
-						<a class="px-3 icon-animation" href="#" id="navbar_dropdown_menu_all" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-angle-double-down font-20 mt-2"></i></a>
+					<li class="nav-item dropdown nav-more">
+						<a class="px-3 icon-animation nav-link" href="#" id="navbar_dropdown_menu_all" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-angle-double-down"></i></a>
 						<div class="dropdown-menu dropdown-menu-end nav-user-dropdown navbar-dropdown-menu-top" aria-labelledby="navbar_dropdown_menu_all">
 							{*hien thi menu all*}
 							{foreach $menu_admin as $key => $item}
