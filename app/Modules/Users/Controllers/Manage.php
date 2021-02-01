@@ -1,7 +1,12 @@
 <?php namespace App\Modules\Users\Controllers;
 
 use App\Controllers\AdminController;
+use App\Modules\Permissions\Models\PermissionModel;
+use App\Modules\Users\Models\AuthModel;
+use App\Modules\Users\Models\GroupModel;
+use App\Modules\Users\Models\UserGroupModel;
 use App\Modules\Users\Models\UserModel;
+use App\Modules\Users\Models\UserPermissionModel;
 
 class Manage extends AdminController
 {
@@ -10,11 +15,12 @@ class Manage extends AdminController
     CONST MANAGE_ROOT = 'users/manage';
     CONST MANAGE_URL  = 'users/manage';
 
-    protected $model_group;
-    protected $model_group_relationship;
-    protected $model_permission;
-    protected $model_permission_relationship;
-    protected $model_auth;
+    protected $group_model;
+    protected $user_group_model;
+    protected $permission_model;
+    protected $user_permission_model;
+    protected $auth_model;
+
     public function __construct()
     {
         parent::__construct();
@@ -24,15 +30,12 @@ class Manage extends AdminController
             ->addPartial('footer')
             ->addPartial('sidebar');
 
-        $this->model = new UserModel();
-
-        //load model manage
-        $this->load->model("users/User", 'User');
-        $this->load->model("users/User_group", 'Group');
-        $this->load->model("users/User_group_relationship", 'User_group_relationship');
-        $this->load->model("users/User_permission_relationship", 'User_permission_relationship');
-        $this->load->model("users/Auth", 'Auth');
-        $this->load->model("permissions/Permission", 'Permission');
+        $this->model                 = new UserModel();
+        $this->group_model           = new GroupModel();
+        $this->user_group_model      = new UserGroupModel();
+        $this->permission_model      = new PermissionModel();
+        $this->user_permission_model = new UserPermissionModel();
+        $this->auth_model            = new AuthModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -40,34 +43,39 @@ class Manage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('Users.heading_title'), base_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang('UserAdmin.heading_title'), base_url(self::MANAGE_URL));
     }
 
     public function index()
     {
-        $this->theme->title(lang('heading_title'));
+        add_meta(['title' => lang("UserAdmin.heading_title")], $this->themes);
 
-        //phai full quyen hoac chi duoc doc
-        if (!$this->acl->check_acl()) {
-            set_alert(lang('error_permission_read'), ALERT_ERROR);
-            redirect('permissions/not_allowed');
-        }
+        $filter_id    = $this->request->getGet('filter_id');
+        $filter_name  = $this->request->getGet('filter_name');
+        $filter_limit = $this->request->getGet('filter_limit');
+        $sort         = $this->request->getGet('sort');
+        $order        = $this->request->getGet('order');
 
-        $filter = $this->input->get('filter');
-        if (!empty($filter)) {
-            $data['filter_active'] = true;
-        }
+        $filter = [
+            'active' => count(array_filter($this->request->getGet(['filter_id', 'filter_name', 'filter_limit']))) > 0,
+            'id'     => (string)$filter_id,
+            'name'   => (string)$filter_name,
+            'limit'  => (string)$filter_limit,
+        ];
 
-        $limit              = empty($this->input->get('filter_limit', true)) ? get_pagination_limit(true) : $this->input->get('filter_limit', true);
-        $start_index        = (isset($_GET['page']) && is_numeric($_GET['page'])) ? ($_GET['page'] - 1) * $limit : 0;
-        list($list, $total) = $this->User->get_all_by_filter($filter, $limit, $start_index);
+        $list = $this->model->getAllByFilter($filter, $sort, $order);
 
-        $data['list']   = $list;
-        $data['paging'] = $this->get_paging_admin(base_url(self::MANAGE_URL), $total, $limit, $this->input->get('page'));
+        $data = [
+            'breadcrumb' => $this->breadcrumb->render(),
+            'list'       => $list->paginate($filter_limit, 'users'),
+            'pager'      => $list->pager,
+            'filter'     => $filter,
+            'sort'       => empty($sort) ? 'id' : $sort,
+            'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url'        => $this->getUrlFilter(),
+        ];
 
-        set_last_url();
-
-        theme_load('list', $data);
+        $this->themes::load('list', $data);
     }
 
     private function _load_asset()

@@ -1,6 +1,8 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php namespace App\Modules\Users\Models;
 
-class Auth extends CI_Model
+use App\Models\MyModel;
+
+class AuthModel extends MyModel
 {
     /**
      * Max cookie lifetime constant
@@ -16,19 +18,18 @@ class Auth extends CI_Model
     {
         parent::__construct();
 
-
     }
 
-    public function generate_selector_validator_couple($selector_size = 40, $validator_size = 128)
+    public function generateSelectorValidatorCouple($selector_size = 40, $validator_size = 128)
     {
         // The selector is a simple token to retrieve the user
-        $selector = $this->_random_token($selector_size);
+        $selector = $this->_randomToken($selector_size);
 
         // The validator will strictly validate the user and should be more complex
-        $validator = $this->_random_token($validator_size);
+        $validator = $this->_randomToken($validator_size);
 
         // The validator is hashed for storing in DB (avoid session stealing in case of DB leaked)
-        $validator_hashed = $this->hash_password($validator);
+        $validator_hashed = $this->hashPassword($validator);
 
         // The code to be used user-side
         $user_code = "$selector.$validator";
@@ -40,7 +41,7 @@ class Auth extends CI_Model
         ];
     }
 
-    public function retrieve_selector_validator_couple($user_code)
+    public function retrieveSelectorValidatorCouple($user_code)
     {
         // Check code
         if ($user_code)
@@ -59,7 +60,7 @@ class Auth extends CI_Model
         return FALSE;
     }
 
-    protected function _random_token($result_length = 32)
+    protected function _randomToken($result_length = 32)
     {
         if(!isset($result_length) || intval($result_length) <= 8 ){
             $result_length = 32;
@@ -84,12 +85,12 @@ class Auth extends CI_Model
         return FALSE;
     }
 
-    public function hash_password($password)
+    public function hashPassword($password)
     {
         return password_hash(md5($password) . md5(config_item('catcool_hash')), PASSWORD_DEFAULT, ['cost' => 12]);
     }
 
-    public function check_password($password, $password_db)
+    public function checkPassword($password, $password_db)
     {
         if (empty($password) || empty($password_db) || strpos($password, "\0") !== FALSE
             || strlen($password) > self::MAX_PASSWORD_SIZE_BYTES)
@@ -100,7 +101,7 @@ class Auth extends CI_Model
         return password_verify(md5($password) . md5(config_item('catcool_hash')), $password_db);
     }
 
-    public function set_session($user_info, $is_check_admin = false)
+    public function setSession($user_info, $is_check_admin = false)
     {
         if (empty($user_info)) {
             return false;
@@ -122,29 +123,29 @@ class Auth extends CI_Model
             }
         }
 
-        $this->session->set_userdata($session_data);
+        session()->set($session_data);
     }
 
-    public function get_user_id()
+    public function getUserId()
     {
-        return $this->session->userdata('user_id');
+        return session('user_id');
     }
 
-    public function clear_session()
+    public function clearSession()
     {
-        $this->session->unset_userdata(['username', 'user_id']);
+        session()->remove(['username', 'user_id']);
 
         // Destroy the session
-        $this->session->sess_destroy();
+        session()->destroy();
     }
 
-    public function set_cookie($token)
+    public function setCookie($token)
     {
         if (empty($token)) {
             return false;
         }
 
-        $cookie_config = array(
+        $cookie_config = [
             'name' => config_item('remember_cookie_name'),
             'value' => $token['user_code'],
             'expire' => (config_item('user_expire') === 0) ? self::MAX_COOKIE_LIFETIME : config_item('user_expire'),
@@ -152,17 +153,17 @@ class Auth extends CI_Model
             'path' => '/',
             'prefix' => '',
             'secure' => FALSE
-        );
+        ];
 
         set_cookie($cookie_config);
     }
 
-    public function get_cookie()
+    public function getCookie()
     {
         return get_cookie(config_item('remember_cookie_name'));
     }
 
-    public function delete_cookie()
+    public function deleteCookie()
     {
         // delete the remember me cookies if they exist
         delete_cookie(config_item('remember_cookie_name'));

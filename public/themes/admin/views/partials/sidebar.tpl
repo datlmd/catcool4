@@ -1,3 +1,4 @@
+{strip}
 <div class="nav-left-sidebar sidebar-dark {if empty(config_item('enable_scroll_menu_admin'))}nav-left-sidebar-scrolled{/if} {if empty(config_item('enable_icon_menu_admin'))}navbar-full-text{/if}">
 	<div class="menu-list">
 		<button type="button" class="btn btn-xs {if empty(config_item('enable_scroll_menu_admin'))}btn-warning{else}btn-light{/if} border-0 d-xl-block d-lg-block d-none navbar-light btn-scroll" onclick="Catcool.scrollMenu(this);"><i class="{if empty(config_item('enable_scroll_menu_admin'))}fas fa-angle-double-right font-20 text-dark{else}fas fa-angle-double-left font-22{/if}"></i></button>
@@ -95,3 +96,4 @@
 		{/if}
 	{/foreach}
 {/if}
+{/strip}

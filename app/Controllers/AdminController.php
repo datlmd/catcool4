@@ -14,8 +14,8 @@ class AdminController extends UserController
         \Config\Services::language()->setLocale(get_lang(true));
 
         //get menu
-        $model_menu = new \App\Modules\Menus\Models\MenuModel();
-        $menu_admin = $model_menu->getMenuActive(['is_admin' => STATUS_ON]);
+        $menu_model = new \App\Modules\Menus\Models\MenuModel();
+        $menu_admin = $menu_model->getMenuActive(['is_admin' => STATUS_ON]);
         $menu_admin = format_tree(['data' => $menu_admin, 'key_id' => 'menu_id']);
         $this->smarty->assign('menu_admin', $menu_admin);
         $this->smarty->assign('menu_current', service('uri')->getSegment(1));

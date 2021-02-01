@@ -1,3 +1,4 @@
+{strip}
 <div class="dashboard-header">
 	<nav class="navbar navbar-expand-lg fixed-top">
 		{*<div class="logo-bg">*}
@@ -113,3 +114,4 @@
 		</div>
 	</nav>
 </div>
+{/strip}
