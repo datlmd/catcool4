@@ -537,6 +537,8 @@ if (!function_exists('get_list_limit'))
             50  => 50,
             100 => 100,
             200 => 200,
+            250 => 250,
+            500 => 500,
         ];
 
         return $limit_array;
