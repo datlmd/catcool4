@@ -166,7 +166,7 @@ var Catcool = {
         }
 
         $(document).on('change', 'input[name="manage_check_all"]', function() {
-            $('#delete_multiple').show();
+            $('#delete_multiple').addClass(['animate__animated', 'animate__fadeIn']).show();
             $('input[name="manage_ids[]"]').prop('checked', $(this).prop("checked"));
             if (!$('input[name="manage_ids[]"]:checked').length) {
                 $('#delete_multiple').hide();
@@ -175,7 +175,7 @@ var Catcool = {
         $(document).on('change', 'input[name="manage_ids[]"]', function() {
             $('input[name="manage_ids[]"]').each(function(){
                 if($(this).is(":checked")) {
-                    $('#delete_multiple').show();
+                    $('#delete_multiple').addClass(['animate__animated', 'animate__fadeIn']).show();
                 }
             });
 
