@@ -1,3 +1,4 @@
+{strip}
 {form_hidden('manage_url', $manage_url)}
 {csrf_field('cc_token')}
 <div class="container-fluid  dashboard-content">
@@ -6,9 +7,9 @@
             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('PermissionAdmin.heading_title')}
 		</div>
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
-			<a href="{site_url($manage_url)}/add{http_get_query()}" class="btn btn-sm btn-primary" title="{lang('PermissionAdmin.text_add')}"><i class="fas fa-plus me-1"></i>{lang('PermissionAdmin.text_add')}</a>
-			<button type="button" id="btn_search" class="btn btn-sm btn-brand" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter me-1"></i>{lang('Admin.filter_header')}</button>
+			<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
+			<a href="{site_url($manage_url)}/add{http_get_query()}" class="btn btn-sm btn-primary btn-space" title="{lang('PermissionAdmin.text_add')}"><i class="fas fa-plus me-1"></i>{lang('PermissionAdmin.text_add')}</a>
+			<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter me-1"></i>{lang('Admin.filter_header')}</button>
 		</div>
 	</div>
 	<div class="row collapse {if !empty($filter.active)}show{/if}" id="filter_manage">
@@ -59,7 +60,7 @@
 										<a href="{site_url($manage_url)}?sort=id&order={$order}{$url}" class="text-dark">
 											{lang('Admin.column_id')}
 											{if $sort eq 'id'}
-												<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if}"></i>
+												<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 											{/if}
 										</a>
 									</th>
@@ -67,7 +68,7 @@
 										<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
 											{lang('PermissionAdmin.column_name')}
 											{if $sort eq 'name'}
-												<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if}"></i>
+												<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 											{/if}
 										</a>
 									</th>
@@ -108,3 +109,4 @@
 		</div>
 	</div>
 </div>
+{/strip}
