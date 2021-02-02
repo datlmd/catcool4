@@ -1,13 +1,13 @@
+{strip}
 <li class="dd-item" data-id="{$menu.menu_id}">
 	<div class="dd-handle">
-		{*<span class="drag-indicator"></span>*}
 		<div>
 			<a href="{site_url($manage_url)}/edit/{$menu.menu_id}" class="text-primary">
 				<i class="{if !empty($menu.icon)}{$menu.icon}{else}fas fa-angle-double-right{/if} me-2"></i>{$menu.name}
 			</a>
 		</div>
 		<div class="dd-nodrag btn-group ms-auto">
-			<div class="switch-button switch-button-xs catcool-center mt-1 me-3">
+			<div class="switch-button switch-button-xs catcool-center mt-2 me-3">
 				{form_checkbox("published_`$menu.menu_id`", ($menu.published eq STATUS_ON) ? true : false, ($menu.published eq STATUS_ON) ? true : false, ['id' => 'published_'|cat:$menu.menu_id, 'data-id' => $menu.menu_id, 'data-published' => $menu.published, 'class' => 'change_publish'])}
 				<span><label for="published_{$menu.menu_id}"></label></span>
 			</div>
@@ -23,3 +23,4 @@
 		</ol>
 	{/if}
 </li>
+{/strip}

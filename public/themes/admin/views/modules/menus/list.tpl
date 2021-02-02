@@ -1,3 +1,4 @@
+{strip}
 {form_hidden('manage_url', $manage_url)}
 {csrf_field('cc_token')}
 <div class="container-fluid  dashboard-content">
@@ -37,3 +38,4 @@
 		</div>
 	</div>
 </div>
+{/strip}

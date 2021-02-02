@@ -206,10 +206,10 @@ var Catcool = {
         $(document).on('click', ".btn_delete_single", function(e) {
             e.preventDefault();
             var element = $(this);
-            Catcool.getModalDelete(element, element.attr('data-id'));
+            Catcool.getModalDelete(element, element.attr('data-id'), true);
         });
     },
-    getModalDelete: function (obj, delete_data) {
+    getModalDelete: function (obj, delete_data, is_single) {
         if (!$('input[name="manage_url"]').length || !delete_data.length) {
             return false;
         }
@@ -229,10 +229,18 @@ var Catcool = {
             data: {delete_ids: delete_data, [csrfName]: csrfHash},
             type: 'POST',
             beforeSend: function () {
-                obj.find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
+                if (is_single) {
+                    obj.find('i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
+                } else {
+                    obj.find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
+                }
             },
             complete: function () {
-                obj.find('i').replaceWith('<i class="fas fa-trash-alt me-1"></i>');
+                if (is_single) {
+                    obj.find('i').replaceWith('<i class="fas fa-trash-alt"></i>');
+                } else {
+                    obj.find('i').replaceWith('<i class="fas fa-trash-alt me-1"></i>');
+                }
             },
             success: function (data) {
 

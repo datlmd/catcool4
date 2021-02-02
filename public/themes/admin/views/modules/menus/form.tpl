@@ -1,3 +1,4 @@
+{strip}
 {form_hidden('manage_url', $manage_url)}
 <div class="container-fluid  dashboard-content">
     {form_open(uri_string(), ['id' => 'validationform'])}
@@ -245,3 +246,5 @@
     {form_close()}
 </div>
 {include file=get_theme_path('views/inc/icon_picker_popup.tpl')}
+{/strip}
+
