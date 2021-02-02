@@ -22,9 +22,6 @@
         <script src="{base_url('common/plugin/jquery/jquery.min.js')}" type="text/javascript"></script>
         <script src="{base_url('common/js/admin/catcool.js')}?{CACHE_TIME_JS}" type="text/javascript"></script>
 
-    {*    <script src="{base_url('common/plugin/bootstrap/js/bootstrap.min.js')}" type="text/javascript"></script>*}
-    {*    <script src="{base_url('common/plugin/bootstrap/js/popper.min.js')}" type="text/javascript"></script>*}
-
         <script>{script_global()}</script>
     </head>
     <body class="{if !empty($body_class)}{$body_class}{/if}">
@@ -36,7 +33,6 @@
 
         {include file=get_theme_path('views/master/common/js.tpl')}
         {if !empty($js_files)}{$js_files}{/if}
-        {*<script src="{{js_url('alert.min', 'common')}}"></script>*}
 
         {if (config_item('ga_enabled') && (! empty(config_item('ga_siteid')) && config_item('ga_siteid') != 'UA-XXXXX-Y'))}
             {literal}

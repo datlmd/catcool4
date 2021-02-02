@@ -4,4 +4,3 @@
 <script type="text/javascript" src="{base_url('common/js/lightbox/lightbox.js')}"></script>
 <script type="text/javascript" src="{base_url('common/js/rcrop/rcrop.min.js')}"></script>
 <script type="text/javascript" src="{base_url('common/js/alert.min.js')}"></script>
-

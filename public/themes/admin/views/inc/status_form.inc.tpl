@@ -1,3 +1,4 @@
+{strip}
 <div class="card bg-light">
 	<div class="card-body">
 		<div class="form-group row">
@@ -24,3 +25,4 @@
 		</div>
 	</div>
 </div>
+{/strip}

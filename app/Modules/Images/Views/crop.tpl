@@ -1,3 +1,4 @@
+{strip}
 <div id="modal_image_crop" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
     <div id="crop_manager" class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -39,6 +40,7 @@
     #image-cropper-wrapper .clayfy-touch-device.clayfy-handler { background: none; border : 0 solid #51aeff; border-bottom-width: 6px; border-right-width: 6px; }
 </style>
 {/literal}
+{/strip}
 <script>
     var is_processing = false;
 

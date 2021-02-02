@@ -1,3 +1,4 @@
+{strip}
 <div class="sidebar-nav-fixed">
 	<ul class="list-unstyled">
 		<li><a href="{site_url('configs/manage')}" {if $active eq 'configs'}class="active"{/if}>Confgs</a></li>
@@ -10,3 +11,4 @@
 		<li><a href="{site_url('utilities/manage/php_info')}" {if $active eq 'php_info'}class="active"{/if}>PHP Info</a></li>
 	</ul>
 </div>
+{/strip}

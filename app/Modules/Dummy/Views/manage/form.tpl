@@ -1,3 +1,4 @@
+{strip}
 {form_hidden('manage_url', $manage_url)}
 <div class="container-fluid  dashboard-content">
     {form_open(uri_string(), ['id' => 'validationform'])}
@@ -74,7 +75,7 @@
                     <h5 class="card-header">{lang('Admin.text_manage_more')}</h5>
                     <div class="card-body">
                         <div class="form-group">
-                            {lang('Admin.text_published')}
+                            <label class="form-label">{lang('Admin.text_published')}</label>
                             {if isset($edit_data.published)}
                                 {assign var="published" value="`$edit_data.published`"}
                             {else}
@@ -91,7 +92,7 @@
                         </div>
                         {*TPL_DUMMY_ROOT*}
                         <div class="form-group">
-                            {lang('Admin.text_sort_order')}
+                            <label class="form-label">{lang('Admin.text_sort_order')}</label>
                             {if !empty($edit_data.sort_order)}
                                 {assign var="sort_order" value="`$edit_data.sort_order`"}
                             {else}
@@ -108,3 +109,4 @@
         </div>
     {form_close()}
 </div>
+{/strip}

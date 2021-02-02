@@ -1,3 +1,4 @@
+{strip}
 <div class="content-seo">
 	<div class="badge badge-info w-100 text-start pt-2 pb-2" data-bs-toggle="collapse" data-target="#collapse_seo" aria-expanded="true" aria-controls="collapse_seo">
 		<span class="fab fa-hubspot me-2"></span>{lang('text_seo_header_title')}
@@ -56,3 +57,4 @@
 		</div>
 	</div>
 </div>
+{/strip}

@@ -1,3 +1,4 @@
+{strip}
 {if empty(config_item('image_logo_url'))}
 	<a class="navbar-brand logo-text" href="{site_url(CATCOOL_DASHBOARD)}">
 		<span class="logo-main">{LOGO_TEXT}</span>
@@ -8,3 +9,4 @@
 		<img src="{image_url(config_item('image_logo_url'))}" alt="logo">
 	</a>
 {/if}
+{/strip}

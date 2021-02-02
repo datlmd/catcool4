@@ -1,3 +1,4 @@
+{strip}
 <div class="alert alert-{if $type}{$type}{else}info{/if} alert-dismissible fade show animate__animated animate__fadeIn">
 	{if is_array($message)}
 		{foreach $message as $mess}
@@ -18,4 +19,4 @@
 	{/if}
 	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
-
+{/strip}

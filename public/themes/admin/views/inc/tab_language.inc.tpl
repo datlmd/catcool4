@@ -1,3 +1,4 @@
+{strip}
 {if count($languages) > 1}
 	<ul class="nav nav-tabs border-bottom ps-3" id="tab_multi_language" role="tablist">
 		{foreach $languages as $language}
@@ -11,3 +12,4 @@
 		{/foreach}
 	</ul>
 {/if}
+{/strip}

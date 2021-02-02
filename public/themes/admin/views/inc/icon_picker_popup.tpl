@@ -1,3 +1,4 @@
+{strip}
 <div id="icon_picker_modal" class="modal fade">
 	<div class="modal-dialog modal-lg modal-dialog-centered">
 		<div class="modal-content">
@@ -28,3 +29,4 @@
 		</div>
 	</div>
 </div>
+{/strip}

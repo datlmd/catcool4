@@ -1,6 +1,5 @@
 <link rel="stylesheet" type="text/css" href="{base_url('common/plugin/bootstrap/css/bootstrap.min.css')}">
 <link rel="stylesheet" type="text/css" href="{base_url('common/plugin/bootstrap/css/bootstrap-utilities.min.css')}">
-
 <link rel="stylesheet" type="text/css" href="{base_url('common/plugin/fonts/fontawesome/css/fontawesome-all.css')}">
 <link rel="stylesheet" type="text/css" href="{base_url('common/js/iconpicker/iconpicker.css')}">
 <link rel="stylesheet" type="text/css" href="{base_url('common/plugin/fonts/circular-std/style.css')}">
