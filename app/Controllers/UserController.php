@@ -11,7 +11,7 @@ class UserController extends BaseController
 
     }
 
-    public function is_super_admin()
+    public function isSuperAdmin()
     {
         $super_admin = session('super_admin');
         if (!empty($super_admin) && $super_admin === TRUE) {
@@ -21,7 +21,7 @@ class UserController extends BaseController
         return FALSE;
     }
 
-    public function get_user_id()
+    public function getUserId()
     {
         $user_id = session('user_id');
         if (!empty($user_id)) {

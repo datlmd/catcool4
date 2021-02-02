@@ -78,43 +78,40 @@ class Manage extends AdminController
         $this->themes::load('list', $data);
     }
 
-    private function _load_asset()
+    private function _loadAsset()
     {
-        //add datetimepicker
-        add_style(css_url('vendor/datepicker/tempusdominus-bootstrap-4', 'common'));
-        prepend_script(js_url('vendor/datepicker/tempusdominus-bootstrap-4', 'common'));
-        prepend_script(js_url('vendor/datepicker/moment', 'common'));
+        $this->themes->addCSS('common/js/plugin/datepicker/tempusdominus-bootstrap-4');
+        $this->themes->addCSS('common/js/dropzone/dropdrap');
+        $this->themes->addCSS('common/js/plugin/bootstrap-select/js/bootstrap-select');
 
-        //add dropdrap
-        add_style(css_url('js/dropzone/dropdrap', 'common'));
-        $this->theme->add_js(js_url('js/dropzone/dropdrap', 'common'));
-
-        add_style(css_url('vendor/bootstrap-select/css/bootstrap-select', 'common'));
-        prepend_script(js_url('vendor/bootstrap-select/js/bootstrap-select', 'common'));
+        $this->themes->addJS('common/js/plugin/datepicker/tempusdominus-bootstrap-4');
+        $this->themes->addJS('common/js/plugin/datepicker/moment');
+        $this->themes->addJS('common/js/dropzone/dropzone');
+        $this->themes->addJS('common/js/plugin/bootstrap-select/js/bootstrap-select');
     }
 
     public function add()
     {
-        if (!$this->acl->check_acl()) {
-            set_alert(lang('error_permissin_add'), ALERT_ERROR);
-            redirect('permissions/not_allowed');
+        if (!$this->isSuperAdmin()) {
+            set_alert(lang('Admin.error_permission_super_admin'), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->to(self::MANAGE_URL);
         }
 
-        if (!$this->is_super_admin()) {
-            set_alert(lang('error_permission_super_admin'), ALERT_ERROR);
-            redirect(self::MANAGE_URL);
-        }
-
-        if (isset($_POST) && !empty($_POST) && $this->validate_form() === TRUE) {
-            $dob = $this->input->post('dob', true);
+        if (!empty($this->request->getPost())) {
+            if (!$this->_validateForm()) {
+                set_alert($this->errors, ALERT_ERROR);
+                return redirect()->back()->withInput();
+            }
+            
+            $dob = $this->request->getPost('dob');
             if (!empty($dob)) {
                 $dob = standar_date($dob);
             } else {
                 $dob = '1990-01-01';
             }
 
-            $username = strtolower($this->input->post('username', true));
-            $avatar   = $this->input->post('avatar', true);
+            $username = strtolower($this->request->getPost('username'));
+            $avatar   = $this->request->getPost('avatar');
             if (!empty($avatar)) {
                 $avatar_name = 'users/' . $username . '_ad.jpg'; //pathinfo($avatar, PATHINFO_EXTENSION);
                 $avatar      = move_file_tmp($avatar, $avatar_name);
@@ -122,131 +119,120 @@ class Manage extends AdminController
 
             $add_data = [
                 'username'   => $username,
-                'email'      => strtolower($this->input->post('email', true)),
-                'password'   => $this->Auth->hash_password($this->input->post('password')),
-                'first_name' => $this->input->post('first_name', true),
-                'company'    => $this->input->post('company', true),
-                'phone'      => $this->input->post('phone', true),
-                'address'    => $this->input->post('address', true),
+                'email'      => strtolower($this->request->getPost('email')),
+                'password'   => $this->auth_model->hashPassword($this->request->getPost('password')),
+                'first_name' => $this->request->getPost('first_name'),
+                'company'    => $this->request->getPost('company'),
+                'phone'      => $this->request->getPost('phone'),
+                'address'    => $this->request->getPost('address'),
                 'dob'        => $dob,
-                'gender'     => $this->input->post('gender', true),
+                'gender'     => $this->request->getPost('gender'),
                 'image'      => $avatar,
-                'active'     => isset($_POST['active']) ? true : false,
-                'user_ip'    => get_client_ip(),
+                'active'     => !empty($this->request->getPost('active')) ? STATUS_ON : STATUS_OFF,
+                'user_ip'    => $this->request->getIPAddress(),
                 'ctime'      => get_date(),
             ];
 
-            if ($this->is_super_admin()) {
-                $add_data['super_admin'] = (isset($_POST['super_admin'])) ? true : false;
+            if ($this->isSuperAdmin()) {
+                $add_data['super_admin'] = !empty($this->request->getPost('super_admin')) ? STATUS_ON : STATUS_OFF;
             }
 
-            $id = $this->User->insert($add_data);
+            $id = $this->model->insert($add_data);
             if (empty($id)) {
                 set_alert(lang('error'), ALERT_ERROR);
-                redirect(self::MANAGE_URL . '/add');
+                return redirect()->back()->withInput();
             }
 
-            $group_ids = $this->input->post('groups', true);
+            $group_ids = $this->request->getPost('groups');
             if (!empty($group_ids)) {
-                $list_group = $this->Group->where('id', $group_ids)->get_all();
+                $list_group = $this->group_model->find($group_ids);
                 if (!empty($list_group)) {
                     foreach ($list_group as $group) {
-                        $this->User_group_relationship->insert(['user_id' => $id, 'group_id' => $group['id']]);
+                        $this->user_group_model->insert(['user_id' => $id, 'group_id' => $group['id']]);
                     }
                 }
             }
 
-            $permission_ids = $this->input->post('permissions', true);
+            $permission_ids = $this->request->getPost('permissions');
             if (!empty($permission_ids)) {
-                $list_permission = $this->Permission->where([['id', $permission_ids], ['published', STATUS_ON]])->get_all();
+                $list_permission = $this->permission_model->where(['published', STATUS_ON])->find($permission_ids);
                 if (!empty($list_permission)) {
                     foreach ($list_permission as $permission) {
-                        $this->User_permission_relationship->insert(['user_id' => $id, 'permission_id' => $permission['id']]);
+                        $this->user_permission_model->insert(['user_id' => $id, 'permission_id' => $permission['id']]);
                     }
                 }
             }
 
-            set_alert(lang('account_creation_successful'), ALERT_SUCCESS);
-            redirect(self::MANAGE_URL);
+            set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
+            return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        $this->get_form();
+        $this->_getForm();
     }
 
-    protected function get_form($id = null)
+    private function _getForm($id = null)
     {
-        $this->_load_asset();
+        $this->_loadAsset();
 
         $data['list_lang'] = get_list_lang();
 
-        list($list_group, $total)      = $this->Group->get_all_by_filter();
-        $list_permission = $this->Permission->get_list_published();
+        $group_list      = $this->group_model->findAll();
+        $permission_list = $this->permission_model->findAll();
 
-        $data['groups']      = array_column($list_group, null, 'id');
-        $data['permissions'] = $list_permission;
+        $data['groups']      = array_column($group_list, null, 'id');
+        $data['permissions'] = $permission_list;
 
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form']   = lang('text_edit');
-            $data['text_submit'] = lang('button_save');
 
-            $data_form = $this->User->where(['is_delete' => STATUS_OFF])->get($id);
+            $data_form = $this->model->where(['is_delete' => STATUS_OFF])->find($id);
             if (empty($data_form)) {
-                set_alert(lang('error_empty'), ALERT_ERROR);
-                redirect(self::MANAGE_URL);
+                set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+                return redirect()->to(site_url(self::MANAGE_URL));
             }
 
-            $data_form = format_data_lang_id($data_form);
-
-            $data['user_groups']      = $this->User_group_relationship->get_all(['user_id' => $id]);
-            $data['user_permissions'] = $this->User_permission_relationship->get_all(['user_id' => $id]);
-
-            // display the edit user form
-            $data['csrf']      = create_token();
+            $data['user_groups']      = $this->user_group_model->find($id);
+            $data['user_permissions'] = $this->user_permission_model->find($id);
+            
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form']   = lang('text_add');
-            $data['text_submit'] = lang('button_add');
         }
 
-        $data['text_cancel']   = lang('text_cancel');
-        $data['button_cancel'] = base_url(self::MANAGE_URL.http_get_query());
-
-        if (!empty($this->errors)) {
-            $data['errors'] = $this->errors;
-        }
-
-        $data['is_super_admin'] = $this->is_super_admin();
+        $data['errors'] = $this->errors;
+        $data['is_super_admin'] = $this->isSuperAdmin();
 
         $this->breadcrumb->add($data['text_form'], base_url(self::MANAGE_URL));
+        $data['breadcrumb'] = $this->breadcrumb->render();
 
-        $this->theme->title($data['text_form']);
+        add_meta(['title' => $data['text_form']], $this->themes);
 
-        theme_load('form', $data);
+        $this->themes::load('form', $data);
     }
 
-    protected function validate_form($id = null)
+    private function _validateForm($id = null)
     {
-        $this->form_validation->set_rules('first_name', lang('text_full_name'), 'required');
-        $this->form_validation->set_rules('email', lang('text_email'), 'required');
+        $this->validator->setRule('first_name', lang('UserAdmin.text_full_name'), 'required');
+        $this->validator->setRule('email', lang('UserAdmin.text_email'), 'required');
 
         if (empty($id)) {
-            $this->form_validation->set_rules('username', lang('text_username'), 'trim|required|is_unique[user.username]');
-            $this->form_validation->set_rules('password', lang('text_password'), 'required|min_length[' . config_item('min_password_length') . ']|matches[password_confirm]');
-            $this->form_validation->set_rules('password_confirm', lang('text_password_confirm'), 'required');
+            $this->validator->setRule('username', lang('UserAdmin.text_username'), 'required|is_unique[user.username]');
+            $this->validator->setRule('password', lang('UserAdmin.text_password'), 'required|min_length[' . config_item('min_password_length') . ']|matches[password_confirm]');
+            $this->validator->setRule('password_confirm', lang('UserAdmin.text_password_confirm'), 'required');
         }
 
-        $is_validation = $this->form_validation->run();
-        $this->errors  = $this->form_validation->error_array();
+        $is_validation = $this->validator->withRequest($this->request)->run();
+        $this->errors  = $this->validator->getErrors();
 
-        if (!empty($this->input->post('email'))) {
-            if (!empty($this->input->post('id'))) {
-                $email = $this->User->where(['email' => $this->input->post('email'), 'id !=' => $this->input->post('id')])->get_all();
+        if (!empty($this->request->getPost('email'))) {
+            if (!empty($this->request->getPost('id'))) {
+                $email = $this->model->where(['email' => $this->request->getPost('email'), 'id !=' => $this->request->getPost('id')])->findAll();
             } else {
-                $email = $this->User->where('email', $this->input->post('email'))->get_all();
+                $email = $this->model->where('email', $this->request->getPost('email'))->findAll();
             }
             if (!empty($email)) {
-                $this->errors['email'] = lang('account_creation_duplicate_email');
+                $this->errors['email'] = lang('UserAdmin.account_creation_duplicate_email');
             }
         }
 
@@ -259,104 +245,97 @@ class Manage extends AdminController
 
     public function edit($id = null)
     {
-        //phai full quyen hoac duoc cap nhat
-        if (!$this->acl->check_acl()) {
-            set_alert(lang('error_permission_edit'), ALERT_ERROR);
-            redirect('permissions/not_allowed');
+        if (!$this->isSuperAdmin()) {
+            set_alert(lang('UserAdmin.error_permission_super_admin'), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!$this->is_super_admin()) {
-            set_alert(lang('error_permission_super_admin'), ALERT_ERROR);
-            redirect(self::MANAGE_URL);
+        if (is_null($id)) {
+            set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (empty($id)) {
-            set_alert(lang('error_empty'), ALERT_ERROR);
-            redirect(self::MANAGE_URL);
-        }
-
-        if (isset($_POST) && !empty($_POST) && $this->validate_form($id) === TRUE) {
-            // do we have a valid request?
-            if (valid_token() === FALSE || $id != $this->input->post('id')) {
-                set_alert(lang('error_token'), ALERT_ERROR);
-                redirect(self::MANAGE_URL);
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('id')) {
+            if (!$this->_validateForm()) {
+                set_alert($this->errors, ALERT_ERROR);
+                return redirect()->back()->withInput();
             }
 
-            $item_edit = $this->User->where(['is_delete' => STATUS_OFF])->get($id);
+            $item_edit = $this->model->where(['is_delete' => STATUS_OFF])->find($id);
             if (empty($item_edit)) {
-                set_alert(lang('error_empty'), ALERT_ERROR);
-                redirect(self::MANAGE_URL);
+                set_alert(lang('error_empty'), ALERT_ERROR, ALERT_POPUP);
+                return redirect()->to(site_url(self::MANAGE_URL));
             }
 
-            $dob = $this->input->post('dob', true);
+            $dob = $this->request->getPost('dob');
             if (!empty($dob)) {
                 $dob = standar_date($dob);
             } else {
                 $dob = '1990-01-01';
             }
 
-            $avatar = $this->input->post('avatar', true);
+            $avatar = $this->request->getPost('avatar');
             if (!empty($avatar)) {
                 $avatar_name = 'users/' . $item_edit['username'] . '_ad.jpg';
                 $avatar      = move_file_tmp($avatar, $avatar_name);
             } else {
-                $avatar = $this->input->post('avatar_root', true);
+                $avatar = $this->request->getPost('avatar_root');
             }
 
             $edit_data = [
-                'email'      => strtolower($this->input->post('email', true)),
-                'first_name' => $this->input->post('first_name', true),
-                'company'    => $this->input->post('company', true),
-                'phone'      => $this->input->post('phone', true),
-                'address'    => $this->input->post('address', true),
+                'email'      => strtolower($this->request->getPost('email')),
+                'first_name' => $this->request->getPost('first_name'),
+                'company'    => $this->request->getPost('company'),
+                'phone'      => $this->request->getPost('phone'),
+                'address'    => $this->request->getPost('address'),
                 'dob'        => $dob,
-                'gender'     => $this->input->post('gender', true),
+                'gender'     => $this->request->getPost('gender'),
                 'image'      => $avatar,
-                'user_ip'    => get_client_ip(),
+                'user_ip'    => $this->request->getIPAddress(),
                 'mtime'      => get_date(),
             ];
 
-            if ($id != $this->get_user_id()) {
-                $edit_data['active'] =isset($_POST['active']) ? true : false;
+            if ($id != $this->getUserId()) {
+                $edit_data['active'] = !empty($this->request->getPost('active')) ? STATUS_ON : STATUS_OFF;
             }
-            if ($this->is_super_admin()) {
-                $edit_data['super_admin'] = (isset($_POST['super_admin'])) ? true : false;
+            if ($this->isSuperAdmin()) {
+                $edit_data['super_admin'] = !empty($this->request->getPost('super_admin')) ? STATUS_ON : STATUS_OFF;
             }
 
-            if ($this->User->update($edit_data, $id) === FALSE) {
+            if (!$this->model->update($id, $edit_data)) {
                 set_alert(lang('error'), ALERT_ERROR);
-                redirect(self::MANAGE_URL . '/edit/' . $id);
+                return redirect()->back()->withInput();
             }
 
-            $this->User_group_relationship->force_delete(['user_id' => $id]);
+            $this->user_group_model->delete(['user_id' => $id]);
 
-            $group_ids  = $this->input->post('groups', true);
+            $group_ids  = $this->request->getPost('groups');
             if (!empty($group_ids)) {
-                $list_group = $this->Group->where('id', $group_ids)->get_all();
+                $list_group = $this->group_model->find($group_ids);
                 if (!empty($list_group)) {
                     foreach ($list_group as $group) {
-                        $this->User_group_relationship->insert(['user_id' => $id, 'group_id' => $group['id']]);
+                        $this->user_group_model->insert(['user_id' => $id, 'group_id' => $group['id']]);
                     }
                 }
             }
 
-            $this->User_permission_relationship->force_delete(['user_id' => $id]);
+            $this->user_permission_model->delete(['user_id' => $id]);
 
-            $permission_ids  = $this->input->post('permissions', true);
+            $permission_ids  = $this->request->getPost('permissions');
             if (!empty($permission_ids)) {
-                $list_permission = $this->Permission->where([['id', $permission_ids], ['published', STATUS_ON]])->get_all();
+                $list_permission = $this->permission_model->where([['id', $permission_ids], ['published', STATUS_ON]])->findAll();
                 if (!empty($list_permission)) {
                     foreach ($list_permission as $permission) {
-                        $this->User_permission_relationship->insert(['user_id' => $id, 'permission_id' => $permission['id']]);
+                        $this->user_permission_model->insert(['user_id' => $id, 'permission_id' => $permission['id']]);
                     }
                 }
             }
 
-            set_alert(lang('update_successful'), ALERT_SUCCESS);
-            redirect(self::MANAGE_URL . '/edit/' . $id);
+            set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
+            return redirect()->back();
         }
 
-        $this->get_form($id);
+        $this->_getForm($id);
     }
 
     public function change_password($id = null)
@@ -388,18 +367,18 @@ class Manage extends AdminController
 
         if (isset($_POST) && !empty($_POST) && $this->form_validation->run() === TRUE) {
             // do we have a valid request?
-            if (valid_token() === FALSE || $id != $this->input->post('id')) {
+            if (valid_token() === FALSE || $id != $this->request->getPost('id')) {
                 set_alert(lang('error_token'), ALERT_ERROR);
                 redirect(self::MANAGE_URL);
             }
 
-            if ($this->Auth->check_password($this->input->post('password_old'), $data_form['password']) === FALSE) {
+            if ($this->Auth->check_password($this->request->getPost('password_old'), $data_form['password']) === FALSE) {
                 set_alert(lang('error_password_old'), ALERT_ERROR);
                 redirect(self::MANAGE_URL . '/change_password/' . $id);
             }
 
             $edit_data = [
-                'password' => $this->Auth->hash_password($this->input->post('password_new')),
+                'password' => $this->Auth->hash_password($this->request->getPost('password_new')),
                 'mtime'    => get_date(),
             ];
             if ($this->User->update($edit_data, $id) === FALSE) {
@@ -446,14 +425,14 @@ class Manage extends AdminController
 
         if (isset($_POST) && !empty($_POST)) {
             // do we have a valid request?
-            if (valid_token() === FALSE || $id != $this->input->post('id')) {
+            if (valid_token() === FALSE || $id != $this->request->getPost('id')) {
                 set_alert(lang('error_token'), ALERT_ERROR);
                 redirect(self::MANAGE_URL);
             }
 
             $this->User_permission_relationship->force_delete(['user_id' => $id]);
 
-            $permission_ids = $this->input->post('permissions', true);
+            $permission_ids = $this->request->getPost('permissions', true);
             if (!empty($permission_ids)) {
                 $list_permission = $this->Permission->where([['id', $permission_ids], ['published', STATUS_ON]])->get_all();
                 if (!empty($list_permission)) {
@@ -499,7 +478,7 @@ class Manage extends AdminController
                 json_output(['status' => 'ng', 'msg' => lang('error_token')]);
             }
 
-            $ids = $this->input->post('ids', true);
+            $ids = $this->request->getPost('ids', true);
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
             $list_delete = $this->User->where('id', $ids)->get_all();
@@ -527,7 +506,7 @@ class Manage extends AdminController
 
         //truong hop chon xoa nhieu muc
         if (isset($_POST['delete_ids']) && !empty($_POST['delete_ids'])) {
-            $delete_ids = $this->input->post('delete_ids', true);
+            $delete_ids = $this->request->getPost('delete_ids', true);
         }
 
         if (empty($delete_ids)) {
@@ -571,7 +550,7 @@ class Manage extends AdminController
             json_output(['status' => 'ng', 'msg' => lang('error_json')]);
         }
 
-        $id = $this->input->post('id');
+        $id = $this->request->getPost('id');
         if ($id == $this->get_user_id()) {
             json_output(['status' => 'ng', 'msg' => lang('error_permission_owner')]);
         }
@@ -616,11 +595,11 @@ class Manage extends AdminController
 
         if (isset($_POST) && !empty($_POST) && $this->form_validation->run() === TRUE)
         {
-            if(!check_captcha($this->input->post('captcha'))) {
+            if(!check_captcha($this->request->getPost('captcha'))) {
                 $data['errors'] = lang('error_captcha');
             } else {
-                $remember = (bool)$this->input->post('remember');
-                if ($this->User->login($this->input->post('username'), $this->input->post('password'), $remember, true)) {
+                $remember = (bool)$this->request->getPost('remember');
+                if ($this->User->login($this->request->getPost('username'), $this->request->getPost('password'), $remember, true)) {
                     set_alert(lang('text_login_successful'), ALERT_SUCCESS);
                     redirect(self::MANAGE_URL);
                 }
@@ -658,7 +637,7 @@ class Manage extends AdminController
         $this->form_validation->set_rules('email', lang('text_forgot_password_input'), 'required');
         if (isset($_POST) && !empty($_POST) && $this->form_validation->run() === TRUE) {
             // Generate code
-            $user_info = $this->User->forgot_password($this->input->post('email'));
+            $user_info = $this->User->forgot_password($this->request->getPost('email'));
             if (!empty($user_info)) {
                 $data = [
                     'username' => $user_info['username'],
@@ -708,7 +687,7 @@ class Manage extends AdminController
 
         if (isset($_POST) && !empty($_POST) && $this->form_validation->run() === TRUE) {
             // do we have a valid request?
-            if (valid_token() === FALSE || $user['id'] != $this->input->post('id')) {
+            if (valid_token() === FALSE || $user['id'] != $this->request->getPost('id')) {
                 // something fishy might be up
                 $this->User->clear_forgotten_password_code($user['username']);
                 $this->session->set_flashdata('errors', lang('error_token'));
@@ -716,7 +695,7 @@ class Manage extends AdminController
                 // finally change the password
                 // When setting a new password, invalidate any other token
                 $data = [
-                    'password'                    => $this->Auth->hash_password($this->input->post('new_password')),
+                    'password'                    => $this->Auth->hash_password($this->request->getPost('new_password')),
                     'forgotten_password_selector' => NULL,
                     'forgotten_password_code'     => NULL,
                     'forgotten_password_time'     => NULL
