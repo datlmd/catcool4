@@ -78,24 +78,12 @@ class Manage extends AdminController
         $this->themes::load('list', $data);
     }
 
-    private function _loadAsset()
-    {
-        $this->themes->addCSS('common/js/plugin/datepicker/tempusdominus-bootstrap-4');
-        $this->themes->addCSS('common/js/dropzone/dropdrap');
-        $this->themes->addCSS('common/js/plugin/bootstrap-select/js/bootstrap-select');
-
-        $this->themes->addJS('common/js/plugin/datepicker/tempusdominus-bootstrap-4');
-        $this->themes->addJS('common/js/plugin/datepicker/moment');
-        $this->themes->addJS('common/js/dropzone/dropzone');
-        $this->themes->addJS('common/js/plugin/bootstrap-select/js/bootstrap-select');
-    }
-
     public function add()
     {
-        if (!$this->isSuperAdmin()) {
-            set_alert(lang('Admin.error_permission_super_admin'), ALERT_ERROR, ALERT_POPUP);
-            return redirect()->to(self::MANAGE_URL);
-        }
+//        if (!$this->isSuperAdmin()) {
+//            set_alert(lang('Admin.error_permission_super_admin'), ALERT_ERROR, ALERT_POPUP);
+//            return redirect()->to(site_url(self::MANAGE_URL));
+//        }
 
         if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
@@ -172,7 +160,14 @@ class Manage extends AdminController
 
     private function _getForm($id = null)
     {
-        $this->_loadAsset();
+        $this->themes->addCSS('common/plugin/datepicker/tempusdominus-bootstrap-4');
+        $this->themes->addCSS('common/js/dropzone/dropdrap');
+        $this->themes->addCSS('common/plugin/bootstrap-select/js/bootstrap-select');
+
+        $this->themes->addJS('common/plugin/datepicker/moment');
+        $this->themes->addJS('common/plugin/datepicker/tempusdominus-bootstrap-4');
+        $this->themes->addJS('common/js/dropzone/dropzone');
+        $this->themes->addJS('common/plugin/bootstrap-select/js/bootstrap-select');
 
         $data['list_lang'] = get_list_lang();
 
@@ -184,7 +179,7 @@ class Manage extends AdminController
 
         //edit
         if (!empty($id) && is_numeric($id)) {
-            $data['text_form']   = lang('text_edit');
+            $data['text_form']   = lang('UserAdmin.text_edit');
 
             $data_form = $this->model->where(['is_delete' => STATUS_OFF])->find($id);
             if (empty($data_form)) {
@@ -197,7 +192,7 @@ class Manage extends AdminController
             
             $data['edit_data'] = $data_form;
         } else {
-            $data['text_form']   = lang('text_add');
+            $data['text_form']   = lang('UserAdmin.text_add');
         }
 
         $data['errors'] = $this->errors;

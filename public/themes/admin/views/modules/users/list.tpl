@@ -50,7 +50,7 @@
 	<div class="row">
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="card">
-				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('text_list')}</h5>
+				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('UserAdmin.text_list')}</h5>
 				<div class="card-body">
 					{if !empty($list)}
 						<div class="table-responsive">
@@ -90,7 +90,7 @@
 											</a>
 										</th>
 										<th>{lang('UserAdmin.text_phone')}</th>
-										<th>{lang('UserAdmin.text_active')}</th>
+										<th>{lang('Admin.text_active')}</th>
 										<th width="160">{lang('Admin.column_function')}</th>
 										<th width="50">{form_checkbox('manage_check_all')}</th>
 									</tr>
