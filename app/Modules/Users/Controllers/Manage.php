@@ -162,7 +162,7 @@ class Manage extends AdminController
     {
         $this->themes->addCSS('common/plugin/datepicker/tempusdominus-bootstrap-4');
         $this->themes->addCSS('common/js/dropzone/dropdrap');
-        $this->themes->addCSS('common/plugin/bootstrap-select/js/bootstrap-select');
+        $this->themes->addCSS('common/plugin/bootstrap-select/css/bootstrap-select');
 
         $this->themes->addJS('common/plugin/datepicker/moment');
         $this->themes->addJS('common/plugin/datepicker/tempusdominus-bootstrap-4');
