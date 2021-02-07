@@ -1,6 +1,8 @@
-<?php namespace Config;
+<?php
 
-use CodeIgniter\Config\Services as CoreServices;
+namespace Config;
+
+use CodeIgniter\Config\BaseService;
 use App\Libraries\CI4Smarty;
 use App\Libraries\Breadcrumb;
 
@@ -18,18 +20,17 @@ use App\Libraries\Breadcrumb;
  * method format you should use for your service methods. For more examples,
  * see the core Services file at system/Config/Services.php.
  */
-class Services extends CoreServices
+class Services extends BaseService
 {
-
-	//    public static function example($getShared = true)
-	//    {
-	//        if ($getShared)
-	//        {
-	//            return static::getSharedInstance('example');
-	//        }
+	// public static function example($getShared = true)
+	// {
+	//     if ($getShared)
+	//     {
+	//         return static::getSharedInstance('example');
+	//     }
 	//
-	//        return new \CodeIgniter\Example();
-	//    }
+	//     return new \CodeIgniter\Example();
+	// }
 
     public static function SmartyEngine($getShared = true) {
         return ($getShared === true ? static::getSharedInstance('SmartyEngine') : new CI4Smarty());

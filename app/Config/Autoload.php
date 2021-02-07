@@ -36,7 +36,7 @@ class Autoload extends AutoloadConfig
 	 *       'App'	       => APPPATH
 	 *   ];
 	 *
-	 * @var array
+	 * @var array<string, string>
 	 */
 	public $psr4 = [
 		APP_NAMESPACE => APPPATH, // For custom app namespace
@@ -62,7 +62,7 @@ class Autoload extends AutoloadConfig
 	 *       'MyClass'   => '/path/to/class/file.php'
 	 *   ];
 	 *
-	 * @var array
+	 * @var array<string, string>
 	 */
 	public $classmap = [];
 }

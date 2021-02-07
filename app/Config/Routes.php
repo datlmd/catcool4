@@ -1,4 +1,6 @@
-<?php namespace Config;
+<?php
+
+namespace Config;
 
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes();
@@ -22,7 +24,7 @@ $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 $routes->setAutoRoute(true);
 
-/**
+/*
  * --------------------------------------------------------------------
  * Route Definitions
  * --------------------------------------------------------------------
@@ -34,13 +36,14 @@ $routes->get('/', 'Home::index');
 
 foreach(glob(APPPATH . 'Modules/*', GLOB_ONLYDIR) as $item_dir)
 {
-    if (file_exists($item_dir . '/Config/Routes.php'))
-    {
-        require_once($item_dir . '/Config/Routes.php');
-    }
+	if (file_exists($item_dir . '/Config/Routes.php'))
+	{
+		require_once($item_dir . '/Config/Routes.php');
+	}
 }
 
-/**
+
+/*
  * --------------------------------------------------------------------
  * Additional Routing
  * --------------------------------------------------------------------
