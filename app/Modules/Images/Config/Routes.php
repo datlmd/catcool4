@@ -13,4 +13,5 @@ $routes->group('image', ['namespace' => 'App\Modules\Images\Controllers'], funct
     $subroutes->add('crop', 'Tool::crop');
     $subroutes->add('alt/(:any)', 'Tool::alt/$1');
     $subroutes->add('editor', 'Tool::editor');
+    $subroutes->add('upload', 'Upload::index');
 });

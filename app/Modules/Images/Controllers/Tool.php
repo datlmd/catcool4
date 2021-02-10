@@ -71,7 +71,7 @@ class Tool extends BaseController
             $image_tool = new \App\Libraries\ImageTool();
             $image_tool->crop($image_crop, $width, $height, $xoffset, $yoffset);
 
-            json_output(['success' => true, 'image' => $this->_image_url . $image_crop . '?' . time()]);
+            json_output(['success' => true, 'image' => $image_crop . '?' . time()]);
         }
         else
         {

@@ -1273,9 +1273,9 @@ if(!function_exists('script_global'))
         return '
             var base_url = "' . base_url() . '";
             var current_url = "' . current_url() . '";
-            var image_url = "' . base_url('images/') . '";
+            var image_url = "' . base_url('img') . '";
             var image_root_url = "' . get_upload_url() . '";
-            var global_username = "' . session('username') . '";
+            var username = "' . session('username') . '";
         ';
     }
 }

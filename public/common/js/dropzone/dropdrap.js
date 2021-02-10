@@ -75,7 +75,7 @@ function uploadData(formdata) {
     $('.loading').fadeIn();
     is_uploading = true;
     $.ajax({
-        url: 'photos/upload/do_upload',
+        url: 'image/upload',
         type: 'POST',
         data: formdata,
         contentType: false,
@@ -166,9 +166,9 @@ function addThumbnail(data) {
         image_class = 'img-fluid';
     }
 
-    var name = data.file.file_name;
-    var size = convertSize(data.file.file_size);
-    var src = image_root_url + data.image;
+    var name = data.file.name;
+    var size = convertSize(data.file.size);
+    var src = image_url + '/' + data.image;
 
     var image_html = '<a href="' + src + '" data-lightbox="photos"><img src="' + src + '" class="' + image_class + '"></a>';
     image_html += '<input type="hidden" name="' + input_name + '" value="' + data.image + '">';

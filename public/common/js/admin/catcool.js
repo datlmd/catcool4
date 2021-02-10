@@ -312,9 +312,8 @@ var Catcool = {
     },
     showDatetime: function () {
         if ($('.show-datetime-picker').length) {
-            $('.show-datetime-picker').datetimepicker({
+            var option = {
                 sideBySide: false,
-                format: $('.show-datetime-picker').attr('data-date-format'),
                 icons: {
                     time: "far fa-clock active",
                     date: "fa fa-calendar-alt",
@@ -322,15 +321,35 @@ var Catcool = {
                     down: "fa fa-arrow-down"
                 },
                 daysOfWeekDisabled: [0, 6]
-            });
+            };
+            if ($('.show-datetime-picker').attr('data-date-locale') == 'vi') {
+                option = {
+                    sideBySide: false,
+                    icons: {
+                        time: "far fa-clock active",
+                        date: "fa fa-calendar-alt",
+                        up: "fa fa-arrow-up",
+                        down: "fa fa-arrow-down"
+                    },
+                    daysOfWeekDisabled: [0, 6],
+                    locale: 'vi',
+                };
+            }
+            $('.show-datetime-picker').datetimepicker(option);
         }
     },
     showDate: function () {
         if ($('.show-date-picker').length) {
-            $('.show-date-picker').datetimepicker({
+            var option = {
                 sideBySide: false,
-                format: $('.show-date-picker').attr('data-date-format'),
-            });
+            };
+            if ($('.show-date-picker').attr('data-date-locale') == 'vi') {
+                 option = {
+                    sideBySide: false,
+                    locale: 'vi',
+                };
+            }
+            $('.show-date-picker').datetimepicker(option);
         }
     },
     showTime: function () {
@@ -556,10 +575,14 @@ $(function () {
         });
     }
 
-    if ($('.selectpicker').length) {
-        $('.selectpicker').selectpicker();
+    if ($('.multiselect').length) {
+        $('.multiselect').multiselect({
+            //enableFiltering: true,
+            buttonClass: 'btn btn-sm border text-start',
+            buttonWidth: '100%',
+        });
         if ($('#category_review').length) {
-            $('.selectpicker').change(function () {
+            $('.multiselect').change(function () {
                 var selected_text = $(this).find('option:selected').map(function () {
                     return $(this).text();
                 }).get().join(',');

@@ -931,7 +931,7 @@ class Themes
 		{
 			foreach(self::$themeVars[self::CSS_THEME] as $css)
 			{
-				$css_file = FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config['css_path'] . '/' . validate_ext($css, '.css');
+				$css_file = FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config['css_path'] . '/' . remove_extension($css, '.css').'.css';
 
 				if (is_file($css_file))
 				{
@@ -955,8 +955,8 @@ class Themes
             foreach(self::$themeVars[self::CSS_THEME] as $css)
             {
                 $paths = [
-                    FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config['css_path'] . '/' . validate_ext($css, '.css'),
-                    FCPATH . validate_ext($css, '.css'),
+                    FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config['css_path'] . '/' . remove_extension($css, '.css').'.css',
+                    FCPATH . remove_extension($css, '.css').'.css',
                 ];
 
                 foreach ($paths as $path) {
@@ -991,7 +991,7 @@ class Themes
 		{
 			foreach(self::$themeVars[self::JS_THEME] as $js)
 			{
-				$js_file = FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[JS_PATH] . '/' . validate_ext($js, '.js');
+				$js_file = FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[JS_PATH] . '/' . remove_extension($js, '.js').'.js';
 
 				if (is_file($js_file))
 				{
@@ -1028,8 +1028,8 @@ class Themes
         if (array_key_exists(self::JS_THEME, self::$themeVars)) {
             foreach (self::$themeVars[self::JS_THEME] as $js) {
                 $paths = [
-                    FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[JS_PATH] . '/' . validate_ext($js, '.js'),
-                    FCPATH . validate_ext($js, '.js'),
+                    FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[JS_PATH] . '/' . remove_extension($js, '.js').'.js',
+                    FCPATH . remove_extension($js, '.js').'.js',
                 ];
 
                 foreach ($paths as $path) {

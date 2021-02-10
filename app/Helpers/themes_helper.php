@@ -35,6 +35,27 @@ if (! function_exists('validate_ext'))
 // @codeCoverageIgnoreStart
 }
 
+if (! function_exists('remove_extension'))
+{
+    function remove_extension($file, $ext = '.css')
+    {
+        // In case of multiple items
+        if (is_array($file))
+        {
+            $file = array_map(function($f) use ($ext) {
+                $f = preg_replace('/'.$ext.'$/', '', $f);
+                return $f;
+            }, $file);
+        }
+        // In case of a single element
+        else
+        {
+            $file = preg_replace('/'.$ext.'$/', '', $file);
+        }
+        return $file;
+    }
+}
+
 if (! function_exists('theme_url'))
 {
 // @codeCoverageIgnoreEnd

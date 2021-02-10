@@ -95,8 +95,8 @@
                     if ($("#filemanager").length) {
                         $('#filemanager #button_refresh').trigger('click');
                     } else if ($(".image-crop-target").length) {
-                        $(".image-crop-target a").attr("href", json['image']);
-                        $(".image-crop-target img").attr("src", json['image']);
+                        $(".image-crop-target a").attr("href", image_url + '/' + json['image']);
+                        $(".image-crop-target img").attr("src", image_url + '/' + json['image']);
                     }
                     $("#modal_image_crop").modal("hide");
                 }
