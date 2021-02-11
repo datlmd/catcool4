@@ -42,14 +42,14 @@ class Img extends BaseController
                 }
             }
 
-            //$width  = ($agent->isMobile()) ? config_item('image_width_mobile') : config_item('image_width_pc');
-            //$height = ($agent->isMobile()) ? config_item('image_height_mobile') : config_item('image_height_pc');
-
-            if (!empty($width) && !empty($height)) {
-                $image_url = $this->_image_tool->resize($image_url, $width, $height);
+            if (empty($width) || empty($height)) {
+                $width = ($agent->isMobile()) ? config_item('image_width_mobile') : config_item('image_width_pc');
+                $height = ($agent->isMobile()) ? config_item('image_height_mobile') : config_item('image_height_pc');
             }
 
-            $computedImage = $this->_image_path . $image_url;//image_thumb_url($image_url, $width, $height);
+            $image_url = $this->_image_tool->resize($image_url, $width, $height);
+
+            $computedImage = $this->_image_path . $image_url;
             $computedImage = str_replace('//', '/', $computedImage);
 
             $file = new \CodeIgniter\Files\File($computedImage);

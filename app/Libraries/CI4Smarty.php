@@ -19,7 +19,7 @@ class CI4Smarty extends SmartyBC
         parent::setDebugging(FALSE);
 
         parent::setTemplateDir(FCPATH.'/themes');
-        parent::setCompileDir(WRITEPATH . 'smarty/templates_c/')->setCacheDir(WRITEPATH . 'smarty/cache/');
+        parent::setCompileDir(WRITEPATH . 'cache/smarty/templates_c/')->setCacheDir(WRITEPATH . 'cache/smarty/cache/');
 
         // Disable Smarty security policy
         parent::disableSecurity();

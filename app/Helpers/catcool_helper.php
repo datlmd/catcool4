@@ -576,7 +576,7 @@ if(!function_exists('get_image_resize_info'))
         if (empty($width) || empty($height)) {
             return [0,0];
         }
-        $resize_width = !empty(config('Config')->image_thumbnail_large_width) ? config('Config')->image_thumbnail_large_width : RESIZE_IMAGE_DEFAULT_WIDTH;
+        $resize_width = !empty(config_item('image_thumbnail_large_width')) ? config_item('image_thumbnail_large_width') : RESIZE_IMAGE_DEFAULT_WIDTH;
         if ($width >= $resize_width) {
             $width = $resize_width;
         } else if ($width >= 1792 && $width < $resize_width) {
@@ -591,7 +591,7 @@ if(!function_exists('get_image_resize_info'))
             $width = 768;
         }
 
-        $resize_height = !empty(config('Config')->image_thumbnail_large_height) ? config('Config')->image_thumbnail_large_height : RESIZE_IMAGE_DEFAULT_HEIGHT;
+        $resize_height = !empty(config_item('image_thumbnail_large_height')) ? config_item('image_thumbnail_large_height') : RESIZE_IMAGE_DEFAULT_HEIGHT;
         if ($height >= $resize_height) {
             $height = $resize_height;
         } else if ($height >= 1800 && $height < $resize_height) {
@@ -774,114 +774,6 @@ if ( ! function_exists('save_image_from_url'))
     }
 }
 
-/**
- * Upload file
- *
- * @param string $field_name
- * @param string $upload_uri example images/avatar
- * @param string $type jpg|png
- * @param int max_size
- * @param int max_width
- * @param int max_height
- * @param boolean $is_make_ymd_folder
- * @return array 'error' 1|0, 'message' error, 'file' file info, 'sort_link' yyyymm
- */
-if(!function_exists('upload_file'))
-{
-    function upload_file($field_name, $upload_uri, $is_make_ymd_folder = false)
-    {
-        $CI = & get_instance();
-
-        $dir_upload = get_folder_upload($upload_uri, $is_make_ymd_folder);
-
-        $config = [
-            'upload_path'   => $dir_upload['dir'],
-            'allowed_types' => !empty(config('Config')->file_ext_allowed) ?config('Config')->file_ext_allowed : 'jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF|bmp|BMP',
-            'max_size'      => !empty(config('Config')->file_max_size) ? config('Config')->file_max_size : 0,
-            'max_width'     => !empty(config('Config')->file_max_width) ? config('Config')->file_max_width : 0,
-            'max_height'    => !empty(config('Config')->file_max_height) ? config('Config')->file_max_height : 0,
-            'encrypt_name'  => !empty(config('Config')->file_encrypt_name) ? config('Config')->file_encrypt_name : FALSE,
-        ];
-
-        $CI->load->library('upload', $config);
-
-        if(!$CI->upload->do_upload($field_name))
-        {
-            $file = $CI->upload->data();
-
-            return [
-                'status' => 'ng',
-                'file'   => (!empty($file['file_name'])) ? $file['file_name'] : '',
-                'msg'    => $CI->upload->display_errors()
-            ];
-        }
-        else
-        {
-            $file = $CI->upload->data();
-
-            upload_resize($file);
-
-            return [
-                'status' => 'ok',
-                'file'   => $file,
-                'image'  => $dir_upload['sub_dir'] . '/' . $file['file_name']
-            ];
-        }
-    }
-}
-
-if(!function_exists('upload_resize'))
-{
-    /**
-     * Resize image when upload done
-     *
-     * @param $file
-     * @return bool
-     */
-    function upload_resize($file)
-    {
-        if (empty($file) || empty(config('Config')->enable_resize_image)) {
-            return false;
-        }
-
-        $CI = & get_instance();
-
-        $extension = pathinfo($file['full_path'], PATHINFO_EXTENSION);
-        if (!in_array($extension, ['jpg','JPG','jpeg','JPEG','png','PNG','gif','GIF','bmp','BMP'])) {
-            return false;
-        }
-
-        list($resize_width, $resize_height) = get_image_resize_info($file['image_width'], $file['image_height']);
-        $resize_width = !empty(config('Config')->image_thumbnail_large_width) ? config('Config')->image_thumbnail_large_width : RESIZE_IMAGE_DEFAULT_WIDTH;
-        $resize_height = !empty(config('Config')->image_thumbnail_large_height) ? config('Config')->image_thumbnail_large_height : RESIZE_IMAGE_DEFAULT_HEIGHT;
-
-        if ($resize_width > $file['image_width'] && $resize_height > $file['image_height']) {
-            return false;
-        }
-
-        $CI->load->library('image_lib');
-        $config_resize = [
-            'image_library'  => 'gd2',
-            'source_image'   => $file['full_path'],
-            'new_image'      => $file['full_path'],
-            'create_thumb'   => FALSE,
-            'maintain_ratio' => TRUE,
-            'quality'        => !empty(config('Config')->image_quality) ? config('Config')->image_quality : 100,
-            'width'          => $resize_width,
-            'height'         => $resize_height,
-        ];
-
-        $CI->image_lib->clear();
-        $CI->image_lib->initialize($config_resize);
-
-        if (!$CI->image_lib->resize()) {
-            error_log($CI->image_lib->display_errors());
-        }
-
-        return true;
-    }
-}
-
 if(!function_exists('move_file_tmp'))
 {
     /**
@@ -921,6 +813,27 @@ if(!function_exists('move_file_tmp'))
         return FALSE;
     }
 }
+
+if(!function_exists('delete_cache'))
+{
+    function delete_cache()
+    {
+        //delete file old
+        helper('filesystem');
+
+        //delete cache html
+        delete_files(WRITEPATH . 'cache/html/');
+
+        //delete cache smarty
+        delete_files(WRITEPATH . 'cache/smarty/cache/');
+
+        //clear file upload
+        delete_files(get_upload_path('cache'), TRUE);
+
+        return true;
+    }
+}
+
 
 if(!function_exists('delete_file_upload_tmp'))
 {
@@ -1235,29 +1148,6 @@ if(!function_exists('filter_bad_word_comment_content'))
         $content = str_replace($filter, '***', $content);
 
         return $content;
-    }
-}
-
-/**
- * write custom cache
- */
-if(!function_exists('write_html_cache'))
-{
-    function write_html_cache($key, $output_cache)
-    {
-        helper('file');
-        write_file(ROOTPATH . config('Config')->cache_path . "cache__html__$key.html", $output_cache);
-    }
-}
-
-/**
- * get custom cache
- */
-if(!function_exists('get_html_cache'))
-{
-    function get_html_cache($key)
-    {
-        @include ROOTPATH . config('Config')->cache_path .  "cache__html__$key.html";
     }
 }
 

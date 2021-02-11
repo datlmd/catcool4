@@ -46,7 +46,7 @@ class ImageTool
         }
 
         $image_old_info = getimagesize($this->dir_image_path . $image_old);
-        if (isset($image_old_info[0]) && isset($image_old_info[1]) && $width > $image_old_info[0] && $height > $image_old_info[0]) {
+        if (isset($image_old_info[0]) && isset($image_old_info[1]) && $width > $image_old_info[0] && $height > $image_old_info[1]) {
             write_file($this->dir_image_path . $image_new, file_get_contents($this->dir_image_path . $image_old));
             return $image_new;
         }
@@ -79,6 +79,38 @@ class ImageTool
         }
 
         return $image_new;
+    }
+
+    function resizeUpload($file)
+    {
+        if (empty($file) || empty(config_item('enable_resize_image'))) {
+            return false;
+        }
+
+        $extension = pathinfo($this->dir_image_path.$file, PATHINFO_EXTENSION);
+        if (!in_array($extension, ['jpg','JPG','jpeg','JPEG','png','PNG','gif','GIF','bmp','BMP'])) {
+            return false;
+        }
+
+        $image_info = getimagesize($this->dir_image_path.$file);
+        if (!isset($image_info[0]) || !isset($image_info[1])) {
+            return false;
+        }
+
+        list($resize_width, $resize_height) = get_image_resize_info($image_info[0], $image_info[1]);
+
+        $quality = !empty(config_item('image_quality')) ? config_item('image_quality') : 100;
+        $master_dimm = !empty(config_item('image_master_dimm')) ? config_item('image_master_dimm') : 'width';
+
+        try {
+            \Config\Services::image('imagick')->withFile($this->dir_image_path . $file)
+                ->resize($resize_width, $resize_height, true, $master_dimm)
+                ->save($this->dir_image_path . $file, $quality);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return $file;
     }
 
     public function rotation($file_name, $angle = '90')

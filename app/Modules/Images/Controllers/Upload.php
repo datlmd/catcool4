@@ -33,11 +33,11 @@ class Upload extends BaseController
                 mkdir($this->_image_path . self::UPLOAD_TMP, 0777, true);
             }
 
-            $file_name = 'file';
+            $file_name     = 'file';
             $allowed_types = !empty(config_item('file_ext_allowed')) ?config_item('file_ext_allowed') : 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP';
-            $max_size = !empty(config_item('file_max_size')) ? config_item('file_max_size') : null;
-            $max_width = !empty(config_item('file_max_width')) ? config_item('file_max_width') : null;
-            $max_height = !empty(config_item('file_max_height')) ? config_item('file_max_height') : null;
+            $max_size      = !empty(config_item('file_max_size')) ? config_item('file_max_size') : null;
+            $max_width     = !empty(config_item('file_max_width')) ? config_item('file_max_width') : null;
+            $max_height    = !empty(config_item('file_max_height')) ? config_item('file_max_height') : null;
 
             // Validation
             $validation = \Config\Services::validation();
@@ -72,6 +72,11 @@ class Upload extends BaseController
 
                 // File path to display preview
                 $filepath = self::UPLOAD_TMP . $newName;
+
+                //resize image
+                $image_tool = new \App\Libraries\ImageTool();
+                $image_tool->resizeUpload($filepath);
+
                 $file_info = get_file_info($this->_image_path . self::UPLOAD_TMP.$newName);
 
                 $json = [
