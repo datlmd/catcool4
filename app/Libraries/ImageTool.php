@@ -87,12 +87,21 @@ class ImageTool
             return false;
         }
 
-        $extension = pathinfo($this->dir_image_path.$file, PATHINFO_EXTENSION);
+        if (!is_file($this->dir_image_path . $file) && !is_file($file)) {
+            return false;
+        }
+
+        $file_path = $this->dir_image_path . $file;
+        if (!is_file($file_path)) {
+            $file_path = $file;
+        }
+
+        $extension = pathinfo($file_path, PATHINFO_EXTENSION);
         if (!in_array($extension, ['jpg','JPG','jpeg','JPEG','png','PNG','gif','GIF','bmp','BMP'])) {
             return false;
         }
 
-        $image_info = getimagesize($this->dir_image_path.$file);
+        $image_info = getimagesize($file_path);
         if (!isset($image_info[0]) || !isset($image_info[1])) {
             return false;
         }
@@ -103,9 +112,9 @@ class ImageTool
         $master_dimm = !empty(config_item('image_master_dimm')) ? config_item('image_master_dimm') : 'width';
 
         try {
-            \Config\Services::image('imagick')->withFile($this->dir_image_path . $file)
+            \Config\Services::image('imagick')->withFile($file_path)
                 ->resize($resize_width, $resize_height, true, $master_dimm)
-                ->save($this->dir_image_path . $file, $quality);
+                ->save($file_path, $quality);
         } catch (\Exception $e) {
             return false;
         }

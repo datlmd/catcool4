@@ -160,14 +160,19 @@ class Manage extends AdminController
 
     private function _getForm($id = null)
     {
-        $this->themes->addCSS('common/plugin/datepicker/tempusdominus-bootstrap-4');
+        $this->themes->addCSS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
         $this->themes->addCSS('common/js/dropzone/dropdrap');
-        $this->themes->addCSS('common/plugin/bootstrap-select/css/bootstrap-select');
+        $this->themes->addCSS('common/plugin/multi-select/css/bootstrap-multiselect.min');
 
-        $this->themes->addJS('common/plugin/datepicker/moment');
-        $this->themes->addJS('common/plugin/datepicker/tempusdominus-bootstrap-4');
-        $this->themes->addJS('common/js/dropzone/dropzone');
-        $this->themes->addJS('common/plugin/bootstrap-select/js/bootstrap-select');
+
+        $this->themes->addJS('common/plugin/datepicker/moment.min');
+        $this->themes->addJS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
+        if (get_lang() == 'vi') {
+            $this->themes->addJS('common/plugin/datepicker/locale/vi');
+        }
+
+        $this->themes->addJS('common/js/dropzone/dropdrap');
+        $this->themes->addJS('common/plugin/multi-select/js/bootstrap-multiselect.min');
 
         $data['list_lang'] = get_list_lang();
 

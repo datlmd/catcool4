@@ -69,7 +69,7 @@
                             </div>
                         </div>
                     {/if}
-                    <div class="form-group row">
+                    <div class="form-group row border-top mt-2 pt-3">
                         <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
                             {lang('Admin.text_full_name')}
                         </label>
@@ -127,11 +127,9 @@
                             {else}
                                 {assign var="dob" value=""}
                             {/if}
-                            <div class="input-group date show-date-picker" id="show-date-picker" data-target-input="nearest" data-date-format="DD/MM/YYYY">
-                                <input type="text" name="dob" id="dob" class="form-control datetimepicker-input" {if old('dob', $dob)}value="{old('dob', $dob)|date_format:'d/m/Y'}"{/if} placeholder="dd/mm/yyyy" data-target="#show-datet-picker" />
-                                <div class="input-group-append" data-target="#show-date-picker" data-bs-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
-                                </div>
+                            <div class="input-group date show-date-picker" id="show-date-picker" data-target-input="nearest" data-date-format="DD/MM/YYYY" data-date-locale="{get_lang()}">
+                                <input type="text" name="dob" id="dob" class="form-control datetimepicker-input" {if old('dob', $dob)}value="{old('dob', $dob)|date_format:'d/m/Y'}"{/if} placeholder="dd/mm/yyyy" data-target="#show-date-picker" />
+                                <div class="input-group-text" data-target="#show-date-picker" data-toggle="datetimepicker"><i class="fa fa-calendar-alt"></i></div>
                             </div>
                         </div>
                     </div>
@@ -180,7 +178,7 @@
                 <h5 class="card-header"><i class="fas fa-lock-open me-2"></i>{lang('UserAdmin.text_permission_select')}</h5>
                 <div class="card-body">
                     {if !empty($permissions)}
-                        <div class="form-check border-bottom pb-2">
+                        <div class="form-check border-bottom pb-2 mb-3">
                             <input type="checkbox" name="cb_permission_all" id="cb_permission_all" value="all" {if !empty($user_permissions) && count($user_permissions) == count($permissions)}checked{/if} class="form-check-input">
                             <label class="form-check-label" for="cb_permission_all">{lang('Admin.text_select_all')}</label>
                         </div>
@@ -203,7 +201,7 @@
                 <h5 class="card-header">{lang('Admin.text_manage_more')}</h5>
                 <div class="card-body">
                     <div class="form-group">
-                        <label class="form-label">{lang('UserAdmin.text_avatar')}</label>
+                        {lang('UserAdmin.text_avatar')}
                         {if isset($edit_data.image)}
                             {assign var="image" value="`$edit_data.image`"}
                         {else}
@@ -231,7 +229,7 @@
                         {else}
                             {assign var="active" value="1"}
                         {/if}
-                        <label class="form-check form-check-inline mt-2">
+                        <label class="form-check form-check-inline ms-2 mt-2">
                             <input type="radio" name="active" value="{STATUS_ON}" {if old('active', $active) eq STATUS_ON}checked="checked"{/if} id="active_on" class="form-check-input">
                             <label class="form-check-label" for="active_on">ON</label>
                         </label>
@@ -248,7 +246,7 @@
                             {else}
                                 {assign var="super_admin" value="1"}
                             {/if}
-                            <label class="form-check form-check-inline mt-2">
+                            <label class="form-check form-check-inline ms-2 mt-2">
                                 <input type="radio" name="super_admin" value="{STATUS_ON}" {if old('super_admin', $super_admin) eq STATUS_ON}checked="checked"{/if} id="super_admin_on" class="form-check-input">
                                 <label class="form-check-label" for="super_admin_on">ON</label>
                             </label>
@@ -259,9 +257,9 @@
                         </div>
                     {/if}
                     <div class="form-group">
-                        <label class="form-label">{lang('Admin.text_group')}</label>
+                        <label class="form-label">{lang('Admin.text_group')}</label><br/>
                         {if !empty($groups)}
-                            <select name="groups[]" id="groups[]" class="selectpicker form-control form-control-sm" data-style="btn-outline-light" data-size="8" title="{lang('text_select')}" multiple data-actions-box="false" data-live-search="true" data-selected-text-format="count > 2">
+                            <select name="groups[]" id="groups[]" class="form-control form-control-sm multiselect" multiple="multiple" title="{lang('text_select')}">
                                 {foreach $groups as $key => $group}
                                     <option value="{$key}" {if !empty($user_groups) && in_array($key, array_column($user_groups, 'group_id'))}selected{/if}>{$group.name}</option>
                                 {/foreach}

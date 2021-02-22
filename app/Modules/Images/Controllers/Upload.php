@@ -60,7 +60,7 @@ class Upload extends BaseController
             ]);
 
             if ($validation->withRequest($this->request)->run() == FALSE){
-                json_output(['status' => 'ng', 'msg' => $validation->getErrors($file_name)]);
+                json_output(['status' => 'ng', 'msg' => $validation->getError($file_name)]);
             }
 
             if($file = $this->request->getFile($file_name))

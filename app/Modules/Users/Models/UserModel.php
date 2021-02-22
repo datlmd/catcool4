@@ -35,7 +35,7 @@ class UserModel extends MyModel
         'mtime'
     ];
 
-    protected $with = ['user_groups', 'user_permissions'];
+    //protected $with = ['user_groups', 'user_permissions'];
 
     protected $auth_model;
 

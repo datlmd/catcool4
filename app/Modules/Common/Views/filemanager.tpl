@@ -64,9 +64,9 @@
 {/capture}
 <div id="filemanager" class="modal-dialog modal-xl px-4" style="max-width: 100% !important;">
     <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="photoModalLabel">{$heading_title}{if !empty($directory)} ({$directory|urldecode}){/if}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-header bg-dark">
+            <h5 class="modal-title text-white" id="photoModalLabel">{$heading_title}{if !empty($directory)} ({$directory|urldecode}){/if}</h5>
+            <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body p-4">
             {$smarty.capture.content_filemanager}
@@ -621,11 +621,11 @@
                             return xhr;
                         },
                         beforeSend: function () {
-                            $('#button-upload i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
+                            $('#button-upload i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
                             $('#button-upload').prop('disabled', true);
                         },
                         complete: function () {
-                            $('#button-upload i').replaceWith('<i class="fas fa-upload"></i>');
+                            $('#button-upload i').replaceWith('<i class="fas fa-upload me-1"></i>');
                             $('#button-upload').prop('disabled', false);
                         },
                         success: function (json) {

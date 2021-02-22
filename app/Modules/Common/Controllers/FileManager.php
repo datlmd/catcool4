@@ -34,8 +34,8 @@ class FileManager extends AdminController
         $this->dir_image_path = get_upload_path();
 
         $this->upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP';
-        if (!empty(config_item('file_ext_allowed')) && (empty($this->request->getGet('thumb')) || $this->request->getGet('thumb') == 'undefined')) {
-            $this->upload_type = config_item('file_ext_allowed');
+        if (!empty(config_item('file_ext_allowed'))) {
+            $this->upload_type = str_replace('|', ',', config_item('file_ext_allowed'));
         }
         $this->image_thumb_width = !empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH;
         $this->image_thumb_height = !empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT;
@@ -80,12 +80,7 @@ class FileManager extends AdminController
                 $directories = [];
             }
 
-            // Get files
-            $file_type = "jpg,jpeg,png,gif,JPG,JPEG,PNG,GIF,bmp,BMP";
-            if (!empty(config_item('file_ext_allowed')) && (empty($this->request->getGet('thumb')) || $this->request->getGet('thumb') == 'undefined')) {
-                $file_type = str_replace('|', ',', config_item('file_ext_allowed'));
-            }
-            $files = glob($directory . '/*' . $filter_name . '*.{' . $file_type . '}', GLOB_BRACE);
+            $files = glob($directory . '/*' . $filter_name . '*.{' . $this->upload_type . '}', GLOB_BRACE);
 
             if (!$files) {
                 $files = [];
@@ -408,19 +403,29 @@ class FileManager extends AdminController
             $max_height = !empty(config_item('file_max_height')) ? config_item('file_max_height') : null;
 
             // Validation
-            $input = $this->validate([
-                $file_name => [
-                    sprintf('uploaded[%s]', $file_name),
-                    sprintf('max_size[%s,%s]', $file_name, $max_size),
-                    sprintf('ext_in[%s]', $this->upload_type),
-                    sprintf('max_dims[%s,%d,%d]', $file_name, $max_width, $max_height),
-                ],
+            $validation = \Config\Services::validation();
+cc_debug($this->upload_type);
+            $valids = [
+                sprintf('uploaded[%s]', $file_name),
+                sprintf('ext_in[%s,%s]', $file_name, $this->upload_type),
+            ];
+
+
+            if (!empty($max_size)) {
+                $valids[] =  sprintf('max_size[%s,%s]', $file_name, $max_size);
+            }
+
+            if (!empty($max_width) && !empty($max_height)) {
+                $valids[] =  sprintf('max_dims[%s,%d,%d]', $file_name, $max_width, $max_height);
+            }
+
+            $validation->setRules([
+                $file_name => $valids
             ]);
 
-//            if (!$input) { // Not valid
-//                //$this->validator->getErrors();
-//                json_output(['error' => $this->validator->getErrors()]);
-//            }
+            if ($validation->withRequest($this->request)->run() == FALSE) {
+                json_output(['error' => $validation->getError($file_name)]);
+            }
 
             if ($this->request->getFileMultiple($file_name)) {
                 //if ($file->isValid() && !$file->hasMoved()) {
@@ -436,10 +441,9 @@ class FileManager extends AdminController
 
                     $json['success'] = lang('FileManager.text_uploaded');
 
-//                if (!empty(config_item('enable_resize_image'))) {
-//                    $data_upload = $this->upload->data();
-//                    upload_resize($data_upload);
-//                }
+                    if (!empty(config_item('enable_resize_image'))) {
+                        $this->image_tool->resizeUpload($filepath);
+                    }
                 }
             } else {
                 $json['error'] = lang('FileManager.error_upload');
@@ -449,7 +453,6 @@ class FileManager extends AdminController
             $json['error'] = $e->getMessage();
         }
 
-// //$this->response->setJSON
         json_output($json);
     }
 
