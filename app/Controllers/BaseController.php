@@ -74,13 +74,13 @@ class BaseController extends Controller
         {
             force_https();
         }
+
+        \Config\Services::language()->setLocale(get_lang());
 	}
 
     public function __construct()
     {
         $this->loadHelpers();
-
-        \Config\Services::language()->setLocale(get_lang());
 
         //set time zone
         if (!empty(config_item('timezone'))) {
