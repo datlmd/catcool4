@@ -45,6 +45,17 @@ class ImageTool
             }
         }
 
+        //create folder
+        $path = '';
+        $directories = explode('/', dirname($image_new));
+        foreach ($directories as $directory) {
+            $path = $path . '/' . $directory;
+
+            if (!is_dir($this->dir_image_path . $path)) {
+                mkdir($this->dir_image_path . $path, 0777);
+            }
+        }
+
         $image_old_info = getimagesize($this->dir_image_path . $image_old);
         if (isset($image_old_info[0]) && isset($image_old_info[1]) && $width > $image_old_info[0] && $height > $image_old_info[1]) {
             write_file($this->dir_image_path . $image_new, file_get_contents($this->dir_image_path . $image_old));
@@ -52,17 +63,6 @@ class ImageTool
         }
 
         if (!is_file($this->dir_image_path . $image_new)) {
-            $path = '';
-
-            $directories = explode('/', dirname($image_new));
-
-            foreach ($directories as $directory) {
-                $path = $path . '/' . $directory;
-
-                if (!is_dir($this->dir_image_path . $path)) {
-                    @mkdir($this->dir_image_path . $path, 0777);
-                }
-            }
 
             $quality = !empty(config_item('image_quality')) ? config_item('image_quality') : 100;
             $master_dimm = !empty(config_item('image_master_dimm')) ? config_item('image_master_dimm') : 'width';

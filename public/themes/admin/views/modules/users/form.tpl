@@ -8,7 +8,7 @@
         </div>
         <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
             <button type="submit" class="btn btn-sm btn-space btn-primary mb-0" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
-            <a href="{base_url($manage_url)}{http_get_query()}" class="btn btn-sm btn-space btn-secondary mb-0" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_cancel')}</a>
+            <a href="{base_url($manage_url)}{http_get_query()}" class="btn btn-sm btn-secondary mb-0" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_cancel')}</a>
         </div>
     </div>
     {if !empty($edit_data.id)}
@@ -174,27 +174,6 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <h5 class="card-header"><i class="fas fa-lock-open me-2"></i>{lang('UserAdmin.text_permission_select')}</h5>
-                <div class="card-body">
-                    {if !empty($permissions)}
-                        <div class="form-check border-bottom pb-2 mb-3">
-                            <input type="checkbox" name="cb_permission_all" id="cb_permission_all" value="all" {if !empty($user_permissions) && count($user_permissions) == count($permissions)}checked{/if} class="form-check-input">
-                            <label class="form-check-label" for="cb_permission_all">{lang('Admin.text_select_all')}</label>
-                        </div>
-                        <div id="list_permission" class="row">
-                            {foreach $permissions as $permission}
-                                <div class="col-sm-6 col-12">
-                                    <div class="form-check">
-                                        <input type="checkbox" name="permissions[]" id="permission_{$permission.id}" value="{$permission.id}" {if !empty($user_permissions) && in_array($permission.id, array_column($user_permissions, 'permission_id'))}checked{/if} class="form-check-input">
-                                        <label class="form-check-label" for="permission_{$permission.id}">{$permission.description} <b>[{$permission.name}]</b></label>
-                                    </div>
-                                </div>
-                            {/foreach}
-                        </div>
-                    {/if}
-                </div>
-            </div>
         </div>
         <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
             <div class="card">
@@ -212,7 +191,7 @@
                             <div id="image_avatar_thumb" class="image-crop-target text-center">
                                 {if !empty(old('avatar', $image))}
                                     <a href="{image_url(old('avatar', $image))}" data-lightbox="users"><img src="{image_url(old('avatar', $image))}" class="rounded-circle img-w-200 img-h-200"></a>
-                                    <input type="hidden" name="avatar_root" value="{old('avatar', $image)}">
+                                    <input type="hidden" name="avatar" value="{old('avatar', $image)}">
                                 {/if}
                             </div>
                             <input type="file" name="file" id="file" size="20" />
@@ -280,6 +259,31 @@
             {if !empty($edit_data.id)}
                 {include file=get_theme_path('views/inc/status_form.inc.tpl') status = $edit_data.active}
             {/if}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <h5 class="card-header"><i class="fas fa-lock-open me-2"></i>{lang('UserAdmin.text_permission_select')}</h5>
+                <div class="card-body">
+                    {if !empty($permissions)}
+                        <div class="form-check border-bottom pb-2 mb-3">
+                            <input type="checkbox" name="cb_permission_all" id="cb_permission_all" value="all" {if !empty($user_permissions) && count($user_permissions) == count($permissions)}checked{/if} class="form-check-input">
+                            <label class="form-check-label" for="cb_permission_all">{lang('Admin.text_select_all')}</label>
+                        </div>
+                        <div id="list_permission" class="row">
+                            {foreach $permissions as $permission}
+                                <div class="col-sm-6 col-12">
+                                    <div class="form-check">
+                                        <input type="checkbox" name="permissions[]" id="permission_{$permission.id}" value="{$permission.id}" {if !empty($user_permissions) && in_array($permission.id, array_column($user_permissions, 'permission_id'))}checked{/if} class="form-check-input">
+                                        <label class="form-check-label" for="permission_{$permission.id}">{$permission.description} <b>[{$permission.name}]</b></label>
+                                    </div>
+                                </div>
+                            {/foreach}
+                        </div>
+                    {/if}
+                </div>
+            </div>
         </div>
     </div>
     {form_close()}

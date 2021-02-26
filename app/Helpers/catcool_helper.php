@@ -802,10 +802,21 @@ if(!function_exists('move_file_tmp'))
         $folder_new = str_replace('tmp/', '', $file_info['dirname']);
 
         if (!is_dir($folder_new)) {
-            mkdir($folder_new, 0775, true);
+            mkdir($folder_new, 0777, true);
         }
 
-        if (write_file($upload_path . $file_new, read_file($upload_path . $field_name_tmp))) {
+        //create folder
+        $path = '';
+        $directories = explode('/', dirname($name_file_new));
+        foreach ($directories as $directory) {
+            $path = $path . '/' . $directory;
+
+            if (!is_dir($upload_path . $path)) {
+                mkdir($upload_path . $path, 0777);
+            }
+        }
+
+        if (write_file($upload_path . $file_new, file_get_contents($upload_path . $field_name_tmp))) {
             delete_files(unlink($upload_path . $field_name_tmp));
             return $file_new;
         }

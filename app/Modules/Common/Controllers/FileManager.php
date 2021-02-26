@@ -404,12 +404,11 @@ class FileManager extends AdminController
 
             // Validation
             $validation = \Config\Services::validation();
-cc_debug($this->upload_type);
+
             $valids = [
                 sprintf('uploaded[%s]', $file_name),
                 sprintf('ext_in[%s,%s]', $file_name, $this->upload_type),
             ];
-
 
             if (!empty($max_size)) {
                 $valids[] =  sprintf('max_size[%s,%s]', $file_name, $max_size);

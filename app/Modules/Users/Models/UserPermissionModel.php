@@ -4,7 +4,7 @@ use App\Models\MyModel;
 
 class UserPermissionModel extends MyModel
 {
-    protected $table      = 'user_permission';
+    protected $table      = 'user_permissions';
     protected $primaryKey = 'user_id';
 
     protected $allowedFields = [

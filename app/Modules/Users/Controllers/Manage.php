@@ -213,13 +213,13 @@ class Manage extends AdminController
 
     private function _validateForm($id = null)
     {
-        $this->validator->setRule('first_name', lang('UserAdmin.text_full_name'), 'required');
-        $this->validator->setRule('email', lang('UserAdmin.text_email'), 'required');
+        $this->validator->setRule('first_name', lang('Admin.text_full_name'), 'required');
+        $this->validator->setRule('email', lang('Admin.text_email'), 'required');
 
         if (empty($id)) {
-            $this->validator->setRule('username', lang('UserAdmin.text_username'), 'required|is_unique[user.username]');
-            $this->validator->setRule('password', lang('UserAdmin.text_password'), 'required|min_length[' . config_item('min_password_length') . ']|matches[password_confirm]');
-            $this->validator->setRule('password_confirm', lang('UserAdmin.text_password_confirm'), 'required');
+            $this->validator->setRule('username', lang('Admin.text_username'), 'required|is_unique[user.username]');
+            $this->validator->setRule('password', lang('Admin.text_password'), 'required|min_length[' . config_item('minPasswordLength') . ']|matches[password_confirm]');
+            $this->validator->setRule('password_confirm', lang('Admin.text_confirm_password'), 'required');
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
@@ -362,7 +362,7 @@ class Manage extends AdminController
 
         $this->form_validation->set_rules('id', lang('text_username'), 'trim|required');
         $this->form_validation->set_rules('password_old', lang('text_password_old'), 'trim|required');
-        $this->form_validation->set_rules('password_new', lang('text_password_new'), 'trim|required|min_length[' . config_item('min_password_length') . ']|matches[password_confirm_new]');
+        $this->form_validation->set_rules('password_new', lang('text_password_new'), 'trim|required|min_length[' . config_item('minPasswordLength') . ']|matches[password_confirm_new]');
         $this->form_validation->set_rules('password_confirm_new', lang('text_confirm_password_new'), 'required');
 
         if (isset($_POST) && !empty($_POST) && $this->form_validation->run() === TRUE) {
@@ -682,7 +682,7 @@ class Manage extends AdminController
             redirect(self::MANAGE_URL . "/forgot_password");
         }
 
-        $this->form_validation->set_rules('new_password', lang('text_reset_password'), 'required|min_length[' . config_item('min_password_length') . ']|matches[new_password_confirm]');
+        $this->form_validation->set_rules('new_password', lang('text_reset_password'), 'required|min_length[' . config_item('minPasswordLength') . ']|matches[new_password_confirm]');
         $this->form_validation->set_rules('new_password_confirm', lang('text_reset_password_confirm'), 'required');
 
         if (isset($_POST) && !empty($_POST) && $this->form_validation->run() === TRUE) {
@@ -719,7 +719,7 @@ class Manage extends AdminController
         // set the flash data error message if there is one
         $data['errors'] = ($this->form_validation->error_array()) ? $this->form_validation->error_array() : $this->session->flashdata('errors');
 
-        $data['min_password_length'] = config_item('min_password_length');
+        $data['min_password_length'] = config_item('minPasswordLength');
         $data['user'] = $user;
         $data['csrf'] = create_token();
         $data['code'] = $code;

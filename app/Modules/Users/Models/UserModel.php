@@ -317,9 +317,9 @@ class UserModel extends MyModel
 //            return false;
 //        }
 //
-//        if (config_item('forgot_password_expiration') > 0) {
+//        if (config_item('forgotPasswordExpiration') > 0) {
 //            //Make sure it isn't expired
-//            $expiration = config_item('forgot_password_expiration');
+//            $expiration = config_item('forgotPasswordExpiration');
 //            if (time() - $user['forgotten_password_time'] > $expiration) {
 //                //it has expired, clear_forgotten_password_code
 //                $this->clear_forgotten_password_code($user['username']);
