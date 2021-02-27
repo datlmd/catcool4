@@ -9,7 +9,7 @@
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
 			<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
 			<a href="{site_url($manage_url)}/add{http_get_query()}" class="btn btn-sm btn-primary btn-space" title="{lang('Admin.button_add')}"><i class="fas fa-plus me-1"></i>{lang('Admin.button_add')}</a>
-			<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter me-1"></i>{lang('Admin.filter_header')}</button>
+			<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space me-0" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter me-1"></i>{lang('Admin.filter_header')}</button>
 		</div>
 	</div>
 	<div class="row collapse {if !empty($filter.active)}show{/if}" id="filter_manage">

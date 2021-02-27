@@ -7,8 +7,8 @@
             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('MenuAdmin.heading_title')}
 		</div>
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-			<button type="button" id="btn_category_sort" onclick="submitSort();" style="display: none;" class="btn btn-sm btn-secondary"><i class="fas fa-save me-1"></i>{lang('Admin.button_save_sort')}</button>
-			<a href="{site_url($manage_url)}/add{http_get_query()}" class="btn btn-sm btn-primary" title="{lang('Admin.button_add')}"><i class="fas fa-plus me-1"></i>{lang('Admin.button_add')}</a>
+			<button type="button" id="btn_category_sort" onclick="submitSort();" style="display: none;" class="btn btn-sm btn-space btn-secondary"><i class="fas fa-save me-1"></i>{lang('Admin.button_save_sort')}</button>
+			<a href="{site_url($manage_url)}/add{http_get_query()}" class="btn btn-sm btn-primary btn-space me-0" title="{lang('Admin.button_add')}"><i class="fas fa-plus me-1"></i>{lang('Admin.button_add')}</a>
 		</div>
 	</div>
 	<div class="row">
