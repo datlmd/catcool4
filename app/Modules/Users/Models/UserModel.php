@@ -173,12 +173,12 @@ class UserModel extends MyModel
 
         $remember_cookie = $this->auth_model->getCookie();
         $token           = $this->auth_model->retrieveSelectorValidatorCouple($remember_cookie);
-        cc_debug($token);
+
         if ($token === FALSE) {
             $this->errors[] = lang('Admin.text_login_unsuccessful');
             return FALSE;
         }
-cc_debug($token);
+
         $user_token = $user_token_model->where(['remember_selector' => $token['selector']])->first();
         if (empty($user_token)) {
             $this->errors[] = lang('Admin.text_login_unsuccessful');
@@ -215,34 +215,34 @@ cc_debug($token);
         return TRUE;
     }
 
-//    public function logout()
-//    {
-//        $user_id = $this->Auth->get_user_id();
-//        if (empty($user_id)) {
-//            return FALSE;
-//        }
-//
-//        $remember_cookie = $this->Auth->get_cookie();
-//        $token           = $this->Auth->retrieve_selector_validator_couple($remember_cookie);
-//
-//        $this->load->model("users/User_token", 'User_token');
-//        $this->User_token->delete_token($token);
-//
-//        $this->Auth->clear_session();
-//        $this->Auth->delete_cookie();
-//
-//        // Clear all codes
-//        $data_logout = [
-//            'forgotten_password_selector' => NULL,
-//            'forgotten_password_code'     => NULL,
-//            'forgotten_password_time'     => NULL,
-//        ];
-//
-//        $this->update($data_logout, $user_id);
-//
-//        return TRUE;
-//    }
-//
+    public function logout()
+    {
+        $user_id = $this->auth_model->getUserId();
+        if (empty($user_id)) {
+            return FALSE;
+        }
+
+        $remember_cookie = $this->auth_model->getCookie();
+        $token           = $this->auth_model->retrieveSelectorValidatorCouple($remember_cookie);
+
+        $user_token_model = new UserTokenModel();
+        $user_token_model->deleteToken($token);
+
+        $this->auth_model->clearSession();
+        $this->auth_model->deleteCookie();
+
+        // Clear all codes
+        $data_logout = [
+            'forgotten_password_selector' => NULL,
+            'forgotten_password_code'     => NULL,
+            'forgotten_password_time'     => NULL,
+        ];
+
+        $this->update($user_id, $data_logout);
+
+        return TRUE;
+    }
+
     public function getErrors()
     {
         return $this->errors;

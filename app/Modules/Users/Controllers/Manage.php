@@ -577,27 +577,22 @@ class Manage extends AdminController
     public function login()
     {
         add_meta(['title' => lang("UserAdmin.login_heading")], $this->themes);
+
         $data = [];
 
-        $sdagdg = [
-            'selector' => '2e04b4d6e3c3888dd441e428ed9c479841650a41',
-            'validator_hashed' => '$2y$12$V/FjXWbr02nGGFWggNkUKO7sdt7AfE87uUHFo0PM6hqzEQf2.yDt6',
-            'user_code' => '2e04b4d6e3c3888dd441e428ed9c479841650a41.652e5bd60a2f6f84352a09c4d1e370a152c2fc421695b650c807db537c6164dc99e33882241712f82d3cd122c6f59ca6b36ca407397b1ba1548f01063044ef9b',
-        ];
-
-
-        $back_to = $this->request->getget('back');
+        $back_to = $this->request->getGet('back');
         if (empty($back_to)) {
-            $back_to = base_url(CATCOOL_DASHBOARD);
+            $back_to = CATCOOL_DASHBOARD;
         }
+        $back_to = site_url($back_to);
 
         if (!empty(session('user_id'))) {
-            redirect()->to($back_to);
+            return redirect()->to($back_to);
         } else {
             //neu da logout thi check auto login
             $recheck = $this->model->loginRememberedUser();
             if ($recheck) {
-                redirect()->to($back_to);
+                return redirect()->to($back_to);
             }
         }
 
@@ -612,7 +607,7 @@ class Manage extends AdminController
 //            } else {
                 $remember = (bool)$this->request->getPost('remember');
                 if ($this->model->login($this->request->getPost('username'), $this->request->getPost('password'), $remember, true)) {
-                    set_alert(lang('Admin.text_login_successful'), ALERT_SUCCESS);
+                    set_alert(lang('Admin.text_login_successful'), ALERT_SUCCESS, ALERT_POPUP);
                     return redirect()->to($back_to);
                 }
 
@@ -632,14 +627,15 @@ class Manage extends AdminController
 
     public function logout()
     {
-        $this->theme->title('Logout');
+        add_meta(['title' => 'Logout'], $this->themes);
+
 
         // log the user out
-        $this->User->logout();
+        $this->model->logout();
 
         // redirect them to the login page
-        set_alert(lang('text_logout_successful'), ALERT_SUCCESS);
-        redirect(self::MANAGE_URL . '/login');
+        set_alert(lang('Admin.text_logout_successful'), ALERT_SUCCESS, ALERT_POPUP);
+        return redirect()->to(site_url(self::MANAGE_URL . '/login'));
     }
 
     public function forgot_password()

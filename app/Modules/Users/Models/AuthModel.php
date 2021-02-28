@@ -145,17 +145,20 @@ class AuthModel extends MyModel
             return false;
         }
 
+        $expire = empty(config_item('user_expire')) ? self::MAX_COOKIE_LIFETIME : config_item('user_expire');
         $cookie_config = [
-            'name' => config_item('remember_cookie_name'),
-            'value' => $token['user_code'],
-            'expire' => (config_item('user_expire') === 0) ? self::MAX_COOKIE_LIFETIME : config_item('user_expire'),
+            'name'   => config_item('remember_cookie_name'),
+            'value'  => $token['user_code'],
+            'expire' => $expire,
             'domain' => '',
-            'path' => '/',
+            'path'   => '/',
             'prefix' => '',
-            'secure' => FALSE
+            'secure' => false
         ];
 
-        set_cookie($cookie_config);
+        $response = \Config\Services::response();
+        $response->setCookie($cookie_config)->send();
+        //set_cookie(config_item('remember_cookie_name'), $token['user_code'], $expire, site_url(), '/');
     }
 
     public function getCookie()
@@ -166,6 +169,8 @@ class AuthModel extends MyModel
     public function deleteCookie()
     {
         // delete the remember me cookies if they exist
-        delete_cookie(config_item('remember_cookie_name'));
+        $response = \Config\Services::response();
+        $response->deleteCookie(config_item('remember_cookie_name'))->send();
+        //delete_cookie(config_item('remember_cookie_name'));
     }
 }
