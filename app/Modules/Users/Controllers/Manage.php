@@ -246,7 +246,7 @@ class Manage extends AdminController
     public function edit($id = null)
     {
         if (!$this->isSuperAdmin()) {
-            set_alert(lang('UserAdmin.error_permission_super_admin'), ALERT_ERROR, ALERT_POPUP);
+            set_alert(lang('Admin.error_permission_super_admin'), ALERT_ERROR, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -576,44 +576,58 @@ class Manage extends AdminController
 
     public function login()
     {
-        $this->theme->title(lang('login_heading'));
+        add_meta(['title' => lang("UserAdmin.login_heading")], $this->themes);
+        $data = [];
 
-        if (!empty($this->session->userdata('user_id'))) {
-            redirect(get_last_url(CATCOOL_DASHBOARD));
+        $sdagdg = [
+            'selector' => '2e04b4d6e3c3888dd441e428ed9c479841650a41',
+            'validator_hashed' => '$2y$12$V/FjXWbr02nGGFWggNkUKO7sdt7AfE87uUHFo0PM6hqzEQf2.yDt6',
+            'user_code' => '2e04b4d6e3c3888dd441e428ed9c479841650a41.652e5bd60a2f6f84352a09c4d1e370a152c2fc421695b650c807db537c6164dc99e33882241712f82d3cd122c6f59ca6b36ca407397b1ba1548f01063044ef9b',
+        ];
+
+
+        $back_to = $this->request->getget('back');
+        if (empty($back_to)) {
+            $back_to = base_url(CATCOOL_DASHBOARD);
+        }
+
+        if (!empty(session('user_id'))) {
+            redirect()->to($back_to);
         } else {
             //neu da logout thi check auto login
-            $recheck = $this->User->login_remembered_user();
-            if ($recheck !== FALSE) {
-                redirect(get_last_url(CATCOOL_DASHBOARD), 'refresh');
+            $recheck = $this->model->loginRememberedUser();
+            if ($recheck) {
+                redirect()->to($back_to);
             }
         }
 
         // validate form input
-        $this->form_validation->set_rules('username', str_replace(':', '', lang('text_username')), 'required');
-        $this->form_validation->set_rules('password', str_replace(':', '', lang('text_password')), 'required');
-        $this->form_validation->set_rules('captcha', str_replace(':', '', lang('text_captcha')), 'required');
+        $this->validator->setRule('username', str_replace(':', '', lang('Admin.text_username')), 'required');
+        $this->validator->setRule('password', str_replace(':', '', lang('Admin.text_password')), 'required');
+        //$this->validator->setRule('captcha', str_replace(':', '', lang('Admin.text_captcha')), 'required');
 
-        if (isset($_POST) && !empty($_POST) && $this->form_validation->run() === TRUE)
-        {
-            if(!check_captcha($this->request->getPost('captcha'))) {
-                $data['errors'] = lang('error_captcha');
-            } else {
+        if (!empty($this->request->getPost()) && $this->validator->withRequest($this->request)->run()) {
+//            if(!check_captcha($this->request->getPost('captcha'))) {
+//                $data['errors'] = lang('Admin.error_captcha');
+//            } else {
                 $remember = (bool)$this->request->getPost('remember');
-                if ($this->User->login($this->request->getPost('username'), $this->request->getPost('password'), $remember, true)) {
-                    set_alert(lang('text_login_successful'), ALERT_SUCCESS);
-                    redirect(self::MANAGE_URL);
+                if ($this->model->login($this->request->getPost('username'), $this->request->getPost('password'), $remember, true)) {
+                    set_alert(lang('Admin.text_login_successful'), ALERT_SUCCESS);
+                    return redirect()->to($back_to);
                 }
 
-                $data['errors'] = empty($this->User->errors()) ? lang('text_login_unsuccessful') : $this->User->errors();
-            }
+                $data['errors'] = empty($this->model->getErrors()) ? lang('Admin.text_login_unsuccessful') : $this->model->getErrors();
+            //}
         }
 
-        if ($this->form_validation->error_array()) {
-            $data['errors'] = $this->form_validation->error_array();
+        $data['username'] = $this->request->getPost('username');
+        $data['remember'] = $this->request->getPost('remember');
+
+        if (!empty($this->validator->getErrors())) {
+            $data['errors'] = $this->validator->getErrors();
         }
 
-        $data['image_captcha'] = print_captcha();
-        $this->theme->layout('empty')->load('login', $data);
+        $this->themes->setLayout('empty')::load('login', $data);
     }
 
     public function logout()

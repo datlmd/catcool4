@@ -41,7 +41,7 @@ class Themes extends BaseConfig
 	/**
 	 * Image path inside theme path
 	 */
-    public $image_path = 'images';
+    public $image_path = 'assets/images';
     
 	/**
 	 * Header template name

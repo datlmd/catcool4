@@ -39,7 +39,7 @@ class UserModel extends MyModel
 
     protected $auth_model;
 
-    //protected $errors;
+    protected $errors;
 
     function __construct()
     {
@@ -89,7 +89,7 @@ class UserModel extends MyModel
 //        if ($is_trash == true) {
 //            $return = $this->delete($id);
 //        } else {
-//            $return = $this->update(['is_delete' => STATUS_ON], $id);
+//            $return = $this->update(['is_deleted' => STATUS_ON], $id);
 //        }
 //
 //        if (empty($return)) {
@@ -113,107 +113,108 @@ class UserModel extends MyModel
 //        return $return;
 //    }
 //
-//    public function login($username, $password, $remember = FALSE)
-//    {
-//        $this->errors = [];
-//
-//        if (empty($username) || empty($password)) {
-//            $this->errors[] = lang('text_login_unsuccessful');
-//            return FALSE;
-//        }
-//
-//        $user_info = $this->get([['username',$username], ['is_delete', 0]]);
-//        if (empty($user_info)) {
-//            $this->errors[] = lang('text_login_unsuccessful');
-//
-//            return FALSE;
-//        }
-//
-//        if (empty($user_info['active'])) {
-//            $this->errors[] = lang('text_login_unsuccessful_not_active');
-//            return FALSE;
-//        }
-//
-//        if ($this->Auth->check_password($password, $user_info['password']) === FALSE) {
-//            $this->errors[] = lang('text_login_unsuccessful');
-//            return FALSE;
-//        }
-//
-//        $this->Auth->set_session($user_info, true);
-//
-//        $data_login = [];
-//        //check remember login
-//        if ($remember) {
-//            // Generate random tokens
-//            $token = $this->Auth->generate_selector_validator_couple();
-//            if (!empty($token['validator_hashed'])) {
-//                $this->Auth->set_cookie($token);
-//
-//                $this->load->model("users/User_token", 'User_token');
-//                $this->User_token->add_token($user_info['id'], $token);
-//            }
-//        }
-//
-//        //xoa forgotten pass neu login thanh cong
-//        $data_login['forgotten_password_selector'] = NULL;
-//        $data_login['forgotten_password_code']     = NULL;
-//        $data_login['forgotten_password_time']     = NULL;
-//        $data_login['last_login']                  = time(); // last login
-//
-//        $this->update($data_login, $user_info['id']);
-//
-//        return TRUE;
-//    }
-//
-//    public function login_remembered_user()
-//    {
-//        $this->errors = [];
-//
-//        $this->load->model("users/User_token", 'User_token');
-//
-//        $remember_cookie = $this->Auth->get_cookie();
-//        $token           = $this->Auth->retrieve_selector_validator_couple($remember_cookie);
-//        if ($token === FALSE) {
-//            $this->errors[] = lang('text_login_unsuccessful');
-//            return FALSE;
-//        }
-//
-//        $user_token = $this->User_token->get(['remember_selector' => $token['selector']]);
-//        if (empty($user_token)) {
-//            $this->errors[] = lang('text_login_unsuccessful');
-//            return FALSE;
-//        }
-//
-//        $user_info = $this->get([['id', $user_token['user_id']], ['is_delete', 0]]);
-//        if (empty($user_info)) {
-//            $this->errors[] = lang('text_login_unsuccessful');
-//            return FALSE;
-//        }
-//
-//        if (empty($user_info['active'])) {
-//            $this->errors[] = lang('text_login_unsuccessful_not_active');
-//            return FALSE;
-//        }
-//
-//        if ($this->Auth->check_password($token['validator'], $user_token['remember_code']) === FALSE) {
-//            $this->errors[] = lang('text_login_unsuccessful');
-//            return FALSE;
-//        }
-//
-//        $this->Auth->set_session($user_info, true);
-//
-//        //xoa forgotten pass neu login thanh cong
-//        $data_login = [
-//            'forgotten_password_selector' => NULL,
-//            'forgotten_password_code'     => NULL,
-//            'forgotten_password_time'     => NULL,
-//            'last_login'                  => time(), // last login
-//        ];
-//        $this->update($data_login, $user_info['id']);
-//
-//        return TRUE;
-//    }
-//
+    public function login($username, $password, $remember = FALSE)
+    {
+        $this->errors = [];
+
+        if (empty($username) || empty($password)) {
+            $this->errors[] = lang('Admin.text_login_unsuccessful');
+            return FALSE;
+        }
+
+        $user_info = $this->where(['username' => $username, 'is_deleted' => STATUS_OFF])->first();
+        if (empty($user_info)) {
+            $this->errors[] = lang('Admin.text_login_unsuccessful');
+
+            return FALSE;
+        }
+
+        if (empty($user_info['active'])) {
+            $this->errors[] = lang('Admin.text_login_unsuccessful_not_active');
+            return FALSE;
+        }
+
+        if ($this->auth_model->checkPassword($password, $user_info['password']) === FALSE) {
+            $this->errors[] = lang('Admin.text_login_unsuccessful');
+            return FALSE;
+        }
+
+        $this->auth_model->setSession($user_info, true);
+
+        $data_login = [];
+        //check remember login
+        if ($remember) {
+            // Generate random tokens
+            $token = $this->auth_model->generateSelectorValidatorCouple();
+            if (!empty($token['validator_hashed'])) {
+                $this->auth_model->setCookie($token);
+
+                $user_token_model = new UserTokenModel();
+                $user_token_model->addToken($user_info['id'], $token);
+            }
+        }
+
+        //xoa forgotten pass neu login thanh cong
+        $data_login['forgotten_password_selector'] = NULL;
+        $data_login['forgotten_password_code']     = NULL;
+        $data_login['forgotten_password_time']     = NULL;
+        $data_login['last_login']                  = time(); // last login
+
+        $this->update($user_info['id'], $data_login);
+
+        return TRUE;
+    }
+
+    public function loginRememberedUser()
+    {
+        $this->errors = [];
+
+        $user_token_model = new UserTokenModel();
+
+        $remember_cookie = $this->auth_model->getCookie();
+        $token           = $this->auth_model->retrieveSelectorValidatorCouple($remember_cookie);
+        cc_debug($token);
+        if ($token === FALSE) {
+            $this->errors[] = lang('Admin.text_login_unsuccessful');
+            return FALSE;
+        }
+cc_debug($token);
+        $user_token = $user_token_model->where(['remember_selector' => $token['selector']])->first();
+        if (empty($user_token)) {
+            $this->errors[] = lang('Admin.text_login_unsuccessful');
+            return FALSE;
+        }
+
+        $user_info = $this->where(['id' => $user_token['user_id'], 'is_deleted' => STATUS_OFF])->first();
+        if (empty($user_info)) {
+            $this->errors[] = lang('Admin.text_login_unsuccessful');
+            return FALSE;
+        }
+
+        if (empty($user_info['active'])) {
+            $this->errors[] = lang('Admin.text_login_unsuccessful_not_active');
+            return FALSE;
+        }
+
+        if ($this->auth_model->checkPassword($token['validator'], $user_token['remember_code']) === FALSE) {
+            $this->errors[] = lang('Admin.text_login_unsuccessful');
+            return FALSE;
+        }
+
+        $this->auth_model->setSession($user_info, true);
+
+        //xoa forgotten pass neu login thanh cong
+        $data_login = [
+            'forgotten_password_selector' => NULL,
+            'forgotten_password_code'     => NULL,
+            'forgotten_password_time'     => NULL,
+            'last_login'                  => time(), // last login
+        ];
+        $this->update($user_info['id'], $data_login);
+
+        return TRUE;
+    }
+
 //    public function logout()
 //    {
 //        $user_id = $this->Auth->get_user_id();
@@ -242,10 +243,10 @@ class UserModel extends MyModel
 //        return TRUE;
 //    }
 //
-//    public function errors()
-//    {
-//        return $this->errors;
-//    }
+    public function getErrors()
+    {
+        return $this->errors;
+    }
 //
 //    public function forgot_password($email)
 //    {
@@ -256,7 +257,7 @@ class UserModel extends MyModel
 //        $this->errors = [];
 //
 //        $user_info = $this->where([['email', $email], ['username', '=', $email, true]] )->get();
-//        if (empty($user_info) || !empty($user_info['is_delete'])) {
+//        if (empty($user_info) || !empty($user_info['is_deleted'])) {
 //            $this->errors[] = lang('text_email_not_found');
 //            return false;
 //        }
