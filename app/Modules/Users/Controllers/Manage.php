@@ -578,21 +578,16 @@ class Manage extends AdminController
     {
         add_meta(['title' => lang("UserAdmin.login_heading")], $this->themes);
 
-        $data = [];
-
-        $back_to = $this->request->getGet('back');
-        if (empty($back_to)) {
-            $back_to = CATCOOL_DASHBOARD;
-        }
-        $back_to = site_url($back_to);
+        $data     = [];
+        $redirect = empty($this->request->getGetPost('redirect')) ? site_url(CATCOOL_DASHBOARD) : $this->request->getGetPost('redirect');
 
         if (!empty(session('user_id'))) {
-            return redirect()->to($back_to);
+            return redirect()->to($redirect);
         } else {
             //neu da logout thi check auto login
             $recheck = $this->model->loginRememberedUser();
             if ($recheck) {
-                return redirect()->to($back_to);
+                return redirect()->to($redirect);
             }
         }
 
@@ -608,7 +603,7 @@ class Manage extends AdminController
                 $remember = (bool)$this->request->getPost('remember');
                 if ($this->model->login($this->request->getPost('username'), $this->request->getPost('password'), $remember, true)) {
                     set_alert(lang('Admin.text_login_successful'), ALERT_SUCCESS, ALERT_POPUP);
-                    return redirect()->to($back_to);
+                    return redirect()->to($redirect);
                 }
 
                 $data['errors'] = empty($this->model->getErrors()) ? lang('Admin.text_login_unsuccessful') : $this->model->getErrors();
@@ -617,6 +612,7 @@ class Manage extends AdminController
 
         $data['username'] = $this->request->getPost('username');
         $data['remember'] = $this->request->getPost('remember');
+        $data['redirect'] = $redirect;
 
         if (!empty($this->validator->getErrors())) {
             $data['errors'] = $this->validator->getErrors();

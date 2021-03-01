@@ -40,6 +40,7 @@
                     <label class="form-check-label" for="remember"> {lang('Admin.text_login_remember')}</label>
                 </div>
                 <div class="form-group text-center">
+                    <input type="hidden" name="redirect" value="{old('redirect', $redirect)}">
                     <button type="submit" class="btn btn-primary btn-lg mt-2">{lang('Admin.button_login')}</button>
                 </div>
             {form_close()}
