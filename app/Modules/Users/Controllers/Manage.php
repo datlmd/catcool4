@@ -589,6 +589,7 @@ class Manage extends AdminController
 
         $data     = [];
         $redirect = empty($this->request->getGetPost('redirect')) ? site_url(CATCOOL_DASHBOARD) : $this->request->getGetPost('redirect');
+        $redirect = urldecode($redirect);
 
         if (!empty(session('user_id'))) {
             return redirect()->to($redirect);

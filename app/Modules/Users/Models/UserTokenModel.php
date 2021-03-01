@@ -67,12 +67,12 @@ class UserTokenModel extends MyModel
             return false;
         }
 
-        $user_token = $this->where(['remember_selector' => $token['selector']])->first();
+        $user_token = $this->where(['remember_selector' => $token['selector']])->findAll();
         if (empty($user_token)) {
             return false;
         }
 
-        $this->delete($user_token);
+        $this->where(['remember_selector' => $token['selector']])->delete();
         return true;
     }
 }
