@@ -24,7 +24,7 @@
                 {include file=get_theme_path('views/inc/alert.tpl') message=$errors type='danger'}
             </div>
         {/if}
-        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+        <div class="col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12">
             <div class="card">
                 <h5 class="card-header"><i class="fas {if !empty($edit_data.id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                 <div class="card-body">
@@ -175,27 +175,29 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+        <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12">
             <div class="card">
                 <h5 class="card-header">{lang('Admin.text_manage_more')}</h5>
                 <div class="card-body">
                     <div class="form-group">
                         {lang('UserAdmin.text_avatar')}
-                        {if isset($edit_data.image)}
-                            {assign var="image" value="`$edit_data.image`"}
-                        {else}
-                            {assign var="image" value=""}
-                        {/if}
                         <!-- Drag and Drop container-->
                         <div class="drop-drap-file" data-module="users" data-image-id="image_avatar_thumb" data-input-name="avatar" data-image-class="rounded-circle img-w-200 img-h-200">
                             <div id="image_avatar_thumb" class="image-crop-target text-center">
-                                {if !empty(old('avatar', $image))}
-                                    <a href="{image_url(old('avatar', $image))}" data-lightbox="users"><img src="{image_url(old('avatar', $image))}" class="rounded-circle img-w-200 img-h-200"></a>
-                                    <input type="hidden" name="avatar" value="{old('avatar', $image)}">
+                                {if !empty(old('avatar'))}
+                                    <a href="{image_url(old('avatar'))}" data-lightbox="users"><img src="{image_url(old('avatar'))}" class="rounded-circle img-w-200 img-h-200"></a>
+                                    <input type="hidden" name="avatar" value="{old('avatar')}">
+                                {elseif !empty($edit_data.image)}
+                                    <a href="{image_url($edit_data.image)}" data-lightbox="users"><img src="{image_url($edit_data.image)}" class="rounded-circle img-w-200 img-h-200"></a>
+                                {/if}
+                                {if isset($edit_data.image)}
+                                    <input type="hidden" name="avatar_root" value="{$edit_data.image}">
                                 {/if}
                             </div>
                             <input type="file" name="file" id="file" size="20" />
-                            <button type="button" id="button-image-crop" class="btn btn-xs btn-primary w-100 mt-2" {if !empty(old('avatar', $image))}onclick="Catcool.cropImage('{old('avatar', $image)}', 1);"{else}style="display: none;"{/if}><i class="fas fa-crop me-1"></i>{lang('Admin.text_photo_crop')}</button>
+                            <button type="button" id="button-image-crop" class="btn btn-xs btn-primary w-100 mt-2" {if !empty(old('avatar'))}onclick="Catcool.cropImage('{old('avatar')}', 1);"{elseif !empty($edit_data.image)}onclick="Catcool.cropImage('{$edit_data.image}', 1);"{else}style="display: none;"{/if}>
+                                <i class="fas fa-crop me-1"></i>{lang('Admin.text_photo_crop')}
+                            </button>
                             <div class="upload-area dropzone dz-clickable " id="uploadfile">
                                 <h5 class="dz-message py-3"><i class="fas fa-plus me-1"></i><i class="fas fa-image"></i></h5>
                             </div>
@@ -219,7 +221,7 @@
                     </div>
                     {if $is_super_admin}
                         <div class="form-group">
-                            <label class="form-label">{lang('UserAdmin.text_super_admin')}</label>
+                            <label class="form-label">{lang('Admin.text_super_admin')}</label>
                             {if isset($edit_data.super_admin)}
                                 {assign var="super_admin" value="`$edit_data.super_admin`"}
                             {else}

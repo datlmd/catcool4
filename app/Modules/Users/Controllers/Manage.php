@@ -21,6 +21,8 @@ class Manage extends AdminController
     protected $user_permission_model;
     protected $auth_model;
 
+    const DOB_DEFAULT = '1900-01-01';
+
     public function __construct()
     {
         parent::__construct();
@@ -80,10 +82,10 @@ class Manage extends AdminController
 
     public function add()
     {
-//        if (!$this->isSuperAdmin()) {
-//            set_alert(lang('Admin.error_permission_super_admin'), ALERT_ERROR, ALERT_POPUP);
-//            return redirect()->to(site_url(self::MANAGE_URL));
-//        }
+        if (!$this->isSuperAdmin()) {
+            set_alert(lang('Admin.error_permission_super_admin'), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->to(site_url(self::MANAGE_URL));
+        }
 
         if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
@@ -95,11 +97,13 @@ class Manage extends AdminController
             if (!empty($dob)) {
                 $dob = standar_date($dob);
             } else {
-                $dob = '1990-01-01';
+                $dob = self::DOB_DEFAULT;
             }
 
             $username = strtolower($this->request->getPost('username'));
-            $avatar   = $this->request->getPost('avatar');
+
+            //avatar la hinh sau khi chon input file, avatar_root la hinh goc da luu
+            $avatar = $this->request->getPost('avatar');
             if (!empty($avatar)) {
                 $avatar_name = 'users/' . $username . '_ad.jpg'; //pathinfo($avatar, PATHINFO_EXTENSION);
                 $avatar      = move_file_tmp($avatar, $avatar_name);
@@ -186,14 +190,14 @@ class Manage extends AdminController
         if (!empty($id) && is_numeric($id)) {
             $data['text_form']   = lang('UserAdmin.text_edit');
 
-            $data_form = $this->model->where(['is_delete' => STATUS_OFF])->find($id);
+            $data_form = $this->model->where(['is_deleted' => STATUS_OFF])->find($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
-            $data['user_groups']      = $this->user_group_model->find($id);
-            $data['user_permissions'] = $this->user_permission_model->find($id);
+            $data['user_groups']      = $this->user_group_model->where('user_id', $id)->findAll();
+            $data['user_permissions'] = $this->user_permission_model->where('user_id', $id)->findAll();
             
             $data['edit_data'] = $data_form;
         } else {
@@ -224,6 +228,10 @@ class Manage extends AdminController
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();
+
+        if (!empty($this->request->getPost('avatar'))) {
+            old('avatar', $this->request->getPost('avatar'));
+        }
 
         if (!empty($this->request->getPost('email'))) {
             if (!empty($this->request->getPost('id'))) {
@@ -256,14 +264,14 @@ class Manage extends AdminController
         }
 
         if (!empty($this->request->getPost()) && $id == $this->request->getPost('id')) {
-            if (!$this->_validateForm()) {
+            if (!$this->_validateForm($id)) {
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
 
-            $item_edit = $this->model->where(['is_delete' => STATUS_OFF])->find($id);
+            $item_edit = $this->model->where(['is_deleted' => STATUS_OFF])->find($id);
             if (empty($item_edit)) {
-                set_alert(lang('error_empty'), ALERT_ERROR, ALERT_POPUP);
+                set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
@@ -271,9 +279,10 @@ class Manage extends AdminController
             if (!empty($dob)) {
                 $dob = standar_date($dob);
             } else {
-                $dob = '1990-01-01';
+                $dob = self::DOB_DEFAULT;
             }
 
+            //avatar la hinh sau khi chon input file, avatar_root la hinh goc da luu
             $avatar = $this->request->getPost('avatar');
             if (!empty($avatar)) {
                 $avatar_name = 'users/' . $item_edit['username'] . '_ad.jpg';
@@ -303,13 +312,13 @@ class Manage extends AdminController
             }
 
             if (!$this->model->update($id, $edit_data)) {
-                set_alert(lang('error'), ALERT_ERROR);
+                set_alert(lang('Admin.error'), ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
 
             $this->user_group_model->delete(['user_id' => $id]);
 
-            $group_ids  = $this->request->getPost('groups');
+            $group_ids = $this->request->getPost('groups');
             if (!empty($group_ids)) {
                 $list_group = $this->group_model->find($group_ids);
                 if (!empty($list_group)) {
@@ -321,9 +330,9 @@ class Manage extends AdminController
 
             $this->user_permission_model->delete(['user_id' => $id]);
 
-            $permission_ids  = $this->request->getPost('permissions');
+            $permission_ids = $this->request->getPost('permissions');
             if (!empty($permission_ids)) {
-                $list_permission = $this->permission_model->where([['id', $permission_ids], ['published', STATUS_ON]])->findAll();
+                $list_permission = $this->permission_model->whereIn('id', $permission_ids)->where(['published' => STATUS_ON])->findAll();
                 if (!empty($list_permission)) {
                     foreach ($list_permission as $permission) {
                         $this->user_permission_model->insert(['user_id' => $id, 'permission_id' => $permission['id']]);
@@ -351,7 +360,7 @@ class Manage extends AdminController
             redirect(self::MANAGE_URL);
         }
 
-        $data_form = $this->User->where(['is_delete' => STATUS_OFF])->get($id);
+        $data_form = $this->User->where(['is_deleted' => STATUS_OFF])->get($id);
         if (empty($data_form)) {
             set_alert(lang('error_empty'), ALERT_ERROR);
             redirect(self::MANAGE_URL);
@@ -412,7 +421,7 @@ class Manage extends AdminController
             redirect(self::MANAGE_URL);
         }
 
-        $item_edit = $this->User->where(['is_delete' => STATUS_OFF])->get($id);
+        $item_edit = $this->User->where(['is_deleted' => STATUS_OFF])->get($id);
         if (empty($item_edit)) {
             set_alert(lang('error_empty'), ALERT_ERROR);
             redirect(self::MANAGE_URL);
@@ -472,7 +481,7 @@ class Manage extends AdminController
         }
 
         //delete
-        if (isset($_POST['is_delete']) && isset($_POST['ids']) && !empty($_POST['ids'])) {
+        if (isset($_POST['is_deleted']) && isset($_POST['ids']) && !empty($_POST['ids'])) {
             if (valid_token() == FALSE) {
                 set_alert(lang('error_token'), ALERT_ERROR);
                 json_output(['status' => 'ng', 'msg' => lang('error_token')]);
@@ -491,7 +500,7 @@ class Manage extends AdminController
                     if ((!empty($value['super_admin']) && empty($this->is_super_admin())) || $value['id'] == $this->get_user_id()) {
                         continue;
                     }
-                    $this->User->update(['is_delete' => STATUS_ON], $value['id']);
+                    $this->User->update(['is_deleted' => STATUS_ON], $value['id']);
                 }
 
                 set_alert(lang('text_delete_success'), ALERT_SUCCESS);
@@ -606,7 +615,7 @@ class Manage extends AdminController
                     return redirect()->to($redirect);
                 }
 
-                $data['errors'] = empty($this->model->getErrors()) ? lang('Admin.text_login_unsuccessful') : $this->model->getErrors();
+                $data['errors'] = (empty($this->model->getErrors())) ? lang('Admin.text_login_unsuccessful') : $this->model->getErrors();
             //}
         }
 
