@@ -16,10 +16,10 @@ class Filters extends BaseConfig
 	 * @var array
 	 */
 	public $aliases = [
-		'csrf'     => CSRF::class,
-		'toolbar'  => DebugToolbar::class,
-		'honeypot' => Honeypot::class,
-        'auth_admin'     => \App\Filters\AuthAdmin::class,
+		'csrf'       => CSRF::class,
+		'toolbar'    => DebugToolbar::class,
+		'honeypot'   => Honeypot::class,
+        'auth_admin' => \App\Filters\AuthAdminFilter::class,
 	];
 
 	/**
@@ -31,8 +31,8 @@ class Filters extends BaseConfig
 	public $globals = [
 		'before' => [
 			// 'honeypot',
-			'csrf' => ['except' => ['users/auth/recaptcha', '*/manage/index', 'img/*', 'image/*', 'common/filemanager/*']],
-
+			'csrf'       => ['except' => ['users/auth/recaptcha', '*/manage/index', 'img/*', 'image/*', 'common/filemanager/*']],
+            'auth_admin' => ['except' => ['*/login', '*/logout', 'img/*', 'image/*']],
 		],
 		'after'  => [
 			'toolbar',

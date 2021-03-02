@@ -7,7 +7,7 @@ use App\Modules\Users\Models\UserModel;
 use App\Modules\Permissions\Models\PermissionModel;
 use App\Modules\Users\Models\UserPermissionModel;
 
-class AuthAdmin implements FilterInterface
+class AuthAdminFilter implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
@@ -18,13 +18,14 @@ class AuthAdmin implements FilterInterface
             $user_model = new UserModel();
             if (!$user_model->loginRememberedUser())
             {
-                $query_string = (strpos(site_url(), '?') === FALSE) ? '?' : '&amp;';
+                $query_string = '';
                 if ( !empty(\Config\Services::request()->getGet()))
                 {
+                    $query_string = (strpos(site_url(), '?') === FALSE) ? '?' : '&amp;';
                     $query_string =  $query_string.http_build_query(\Config\Services::request()->getGet());
                 }
-
                 $redirect = 'users/manage/login?redirect='.urlencode(current_url().$query_string);
+
                 return redirect()->to(site_url($redirect));
             }
         }
@@ -47,7 +48,8 @@ class AuthAdmin implements FilterInterface
             $permissions = $permission_model->getListPublished();
             foreach($permissions as $key => $val)
             {
-                if ($name_permission == $val['name']) {
+                if ($name_permission == $val['name'])
+                {
                     $id_permission = $val['id'];
                     break;
                 }
