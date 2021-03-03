@@ -83,6 +83,9 @@ class Manage extends AdminController
                 return redirect()->back()->withInput();
             }
 
+            //reset cache
+            $this->model->deleteCache();
+
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
@@ -109,12 +112,14 @@ class Manage extends AdminController
                 'published'   => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
-            if ($this->model->update($id, $edit_data)) {
-                set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
-            } else {
+            if (!$this->model->update($id, $edit_data)) {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
             }
 
+            //reset cache
+            $this->model->deleteCache();
+
+            set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->back();
         }
 
@@ -140,6 +145,9 @@ class Manage extends AdminController
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
             $this->model->delete($ids);
+
+            //reset cache
+            $this->model->deleteCache();
 
             set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
             json_output(['token' => $token, 'status' => 'redirect', 'url' => site_url(self::MANAGE_URL)]);
@@ -234,6 +242,9 @@ class Manage extends AdminController
         if (!$this->model->update($id, $item_edit)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
+
+        //reset cache
+        $this->model->deleteCache();
 
         json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')]);
     }

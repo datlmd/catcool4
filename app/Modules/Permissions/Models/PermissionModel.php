@@ -14,6 +14,9 @@ class PermissionModel extends MyModel
         'published',
     ];
 
+    const PERMISSION_CACHE_NAME   = 'permission_list';
+    const PERMISSION_CACHE_EXPIRE = YEAR;
+
     function __construct()
     {
         parent::__construct();
@@ -43,13 +46,24 @@ class PermissionModel extends MyModel
         return $this;
     }
 
-    public function getListPublished()
+    public function getListPublished($is_cache = true)
     {
-        $result = $this->where('published =' . STATUS_ON)->findAll();
+        $result = $is_cache ? cache()->get(self::PERMISSION_CACHE_NAME) : null;
         if (empty($result)) {
-            return null;
+            $result = $this->where(['published' => STATUS_ON])->findAll();
+            if (empty($result)) {
+                return null;
+            }
+            // Save into the cache for $expire_time 1 year
+            cache()->save(self::PERMISSION_CACHE_NAME, $result, self::PERMISSION_CACHE_EXPIRE);
         }
 
         return $result;
+    }
+
+    public function deleteCache()
+    {
+        cache()->delete(self::PERMISSION_CACHE_NAME);
+        return true;
     }
 }

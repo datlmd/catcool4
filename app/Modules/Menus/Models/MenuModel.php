@@ -113,7 +113,7 @@ class MenuModel extends MyModel
         return $result;
     }
 
-    public function getMenuActive($filter = null, $expire_time = 3600, $is_cache = true)
+    public function getMenuActive($filter = null, $expire_time = MONTH, $is_cache = true)
     {
         $cache = cache();
         $cache_name = SET_CACHE_NAME_MENU;
@@ -143,7 +143,7 @@ class MenuModel extends MyModel
                 }
             }
 
-            // Save into the cache for $expire_time 1hour
+            // Save into the cache for $expire_time 1 month
             $cache->save($cache_name, $result, $expire_time);
         }
 
