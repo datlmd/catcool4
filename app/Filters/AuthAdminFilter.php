@@ -48,17 +48,20 @@ class AuthAdminFilter implements FilterInterface
             $permissions = $permission_model->getListPublished();
             foreach($permissions as $key => $val)
             {
-                if ($name_permission == $val['name'])
+                if (strpos($name_permission, $val['name']) !== false)
                 {
                     $id_permission = $val['id'];
                     break;
                 }
             }
 
-            $relationship = $user_permission_model->where(['user_id' => $user_id, 'permission_id' => $id_permission])->findAll();
-            if (empty($relationship))
+            $relationships = $user_permission_model->getListPermissionByUserId($user_id);
+            if (empty($relationships))
             {
-                set_alert(lang('Admin.error_permission_edit'), ALERT_ERROR,);
+                set_alert(lang('Admin.error_permission_edit'), ALERT_ERROR, ALERT_POPUP);
+                return redirect()->to(site_url('permissions/not_allowed'));
+            }
+            if (!in_array($id_permission, array_column($relationships, 'permission_id'))) {
                 return redirect()->to(site_url('permissions/not_allowed'));
             }
         }

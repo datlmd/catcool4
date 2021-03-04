@@ -12,7 +12,7 @@ class UserPermissionModel extends MyModel
         'permission_id',
     ];
 
-    const USER_PERMISSION_CACHE_NAME   = 'user_permission_%';
+    const USER_PERMISSION_CACHE_NAME   = 'user_permission_%d';
     const USER_PERMISSION_CACHE_EXPIRE = HOUR;
 
     function __construct()
@@ -26,7 +26,7 @@ class UserPermissionModel extends MyModel
             return false;
         }
 
-        $cache_name = printf(self::PERMISSION_CACHE_NAME, $user_id);
+        $cache_name = sprintf(self::USER_PERMISSION_CACHE_NAME, $user_id);
 
         $result = $is_cache ? cache()->get($cache_name) : null;
         if (empty($result)) {
@@ -35,7 +35,7 @@ class UserPermissionModel extends MyModel
                 return null;
             }
             // Save into the cache for $expire_time 1 year
-            cache()->save($cache_name, $result, self::PERMISSION_CACHE_EXPIRE);
+            cache()->save($cache_name, $result, self::USER_PERMISSION_CACHE_EXPIRE);
         }
 
         return $result;
@@ -46,7 +46,7 @@ class UserPermissionModel extends MyModel
         if (empty($user_id)) {
             return false;
         }
-        $cache_name = printf(self::PERMISSION_CACHE_NAME, $user_id);
+        $cache_name = sprintf(self::USER_PERMISSION_CACHE_NAME, $user_id);
         cache()->delete($cache_name);
         return true;
     }

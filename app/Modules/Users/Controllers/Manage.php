@@ -338,6 +338,9 @@ class Manage extends AdminController
                         $this->user_permission_model->insert(['user_id' => $id, 'permission_id' => $permission['id']]);
                     }
                 }
+
+                //reset cache
+                $this->model->deleteCache($id);
             }
 
             set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
