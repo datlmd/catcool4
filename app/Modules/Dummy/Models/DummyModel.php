@@ -41,7 +41,7 @@ class DummyModel extends MyModel
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
 
-        $where = "dummy_lang.language_id=" . get_lang_id();
+        $where = "dummy_lang.language_id=" . get_lang_id(true);
 
         if (!empty($filter["id"])) {
             $where .= " AND dummy.dummy_id IN(" . (is_array($filter["id"]) ? implode(',', $filter["id"]) : $filter["id"]) . ")";

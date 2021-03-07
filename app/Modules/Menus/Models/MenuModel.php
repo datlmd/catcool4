@@ -46,7 +46,7 @@ class MenuModel extends MyModel
         $sort  = in_array($sort, $sort_data) ? $sort : 'menu_id';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $where = "menu_lang.language_id=" . get_lang_id();
+        $where = "menu_lang.language_id=" . get_lang_id(true);
 
         if (!empty($filter["id"])) {
             $where .= " AND menu.menu_id IN(" . (is_array($filter["id"]) ? implode(',', $filter["id"]) : $filter["id"]) . ")";
@@ -122,10 +122,11 @@ class MenuModel extends MyModel
         $filter['is_admin']  = isset($filter['is_admin']) ? $filter['is_admin'] : STATUS_OFF;
 
         if (!empty($filter['is_admin'])) {
-            $cache_name = $cache_name . '_admin';
+            $cache_name = $cache_name . '_admin' . '_lang_' . get_lang_id(true);
         } else {
             $cache_name = $cache_name . '_frontend';
             $cache_name = (!empty($filter['context'])) ?  $cache_name . '_' . $filter['context'] : $cache_name;
+            $cache_name = $cache_name . '_lang_' . get_lang_id();
         }
 
         $result = $is_cache ? $cache->get($cache_name) : null;
@@ -135,7 +136,7 @@ class MenuModel extends MyModel
                 return false;
             }
 
-            $language_id = get_lang_id();
+            $language_id = get_lang_id(true);
             foreach ($result as $key => $value) {
                 $result[$key] = format_data_lang_id($value, 'menu_lang');
                 if (!empty($result[$key]['menu_lang'][$language_id])) {
@@ -160,13 +161,13 @@ class MenuModel extends MyModel
 
         //clear cache all
         $list_name = [
-            SET_CACHE_NAME_MENU . '_admin',
+            SET_CACHE_NAME_MENU . '_admin' . '_lang_' . get_lang_id(true),
             SET_CACHE_NAME_MENU . '_frontend',
-            SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_MAIN,
-            SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_FOOTER,
-            SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_TOP,
-            SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_BOTTOM,
-            SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_OTHER,
+            SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_MAIN . '_lang_' . get_lang_id(),
+            SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_FOOTER . '_lang_' . get_lang_id(),
+            SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_TOP . '_lang_' . get_lang_id(),
+            SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_BOTTOM . '_lang_' . get_lang_id(),
+            SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_OTHER . '_lang_' . get_lang_id(),
         ];
 
         foreach ($list_name as $name) {

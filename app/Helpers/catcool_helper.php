@@ -92,7 +92,9 @@ if (!function_exists('set_lang'))
             'prefix' => '',
             'secure' => FALSE
         ];
-        set_cookie($cookie_config);
+
+        $response = \Config\Services::response();
+        $response->setCookie($cookie_config)->send();
 
         session()->set(get_name_session_lang($is_admin), $lang);
 
@@ -164,15 +166,16 @@ if (!function_exists('get_list_lang'))
 if (!function_exists('get_lang_id'))
 {
     /**
-     * @return int
+     * @param bool $is_admin
+     * @return int|mixed
      */
-    function get_lang_id()
+    function get_lang_id($is_admin = false)
     {
         $language_id = 1;
         //list lang
         $list_language = json_decode(config('Config')->list_language_cache, 1);
         foreach ($list_language as $key => $value) {
-            if ($value['code'] == get_lang()) {
+            if ($value['code'] == get_lang($is_admin)) {
                 $language_id = $value['id'];
                 break;
             }
