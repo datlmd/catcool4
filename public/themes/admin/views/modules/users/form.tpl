@@ -269,17 +269,20 @@
                 <h5 class="card-header"><i class="fas fa-lock-open me-2"></i>{lang('UserAdmin.text_permission_select')}</h5>
                 <div class="card-body">
                     {if !empty($permissions)}
-                        <div class="form-check border-bottom pb-2 mb-3">
+                        <div class="form-check border-bottom pb-2">
                             <input type="checkbox" name="cb_permission_all" id="cb_permission_all" value="all" {if !empty($user_permissions) && count($user_permissions) == count($permissions)}checked{/if} class="form-check-input">
                             <label class="form-check-label" for="cb_permission_all">{lang('Admin.text_select_all')}</label>
                         </div>
                         <div id="list_permission" class="row">
-                            {foreach $permissions as $permission}
-                                <div class="col-sm-6 col-12">
-                                    <div class="form-check">
-                                        <input type="checkbox" name="permissions[]" id="permission_{$permission.id}" value="{$permission.id}" {if !empty($user_permissions) && in_array($permission.id, array_column($user_permissions, 'permission_id'))}checked{/if} class="form-check-input">
-                                        <label class="form-check-label" for="permission_{$permission.id}">{$permission.description} <b>[{$permission.name}]</b></label>
-                                    </div>
+                            {foreach $permissions as $key => $item}
+                                <div class="col-sm-6 col-12 mt-3">
+                                    <h4 class="text-capitalize text-dark">{$key}</h4>
+                                    {foreach $item as $value}
+                                        <div class="form-check">
+                                            <input type="checkbox" name="permissions[]" id="permission_{$value.id}" value="{$value.id}" {if !empty($user_permissions) && in_array($value.id, array_column($user_permissions, 'permission_id'))}checked{/if} class="form-check-input">
+                                            <label class="form-check-label" for="permission_{$value.id}">{$value.description} <b>[{$value.name}]</b></label>
+                                        </div>
+                                    {/foreach}
                                 </div>
                             {/foreach}
                         </div>

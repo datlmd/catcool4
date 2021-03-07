@@ -144,4 +144,22 @@ class PermissionModel extends MyModel
 
         return true;
     }
+
+    public function formatListPublished($permissions)
+    {
+        if (empty($permissions)) {
+            return $permissions;
+        }
+
+        $list = [];
+        foreach ($permissions as $value) {
+            $action = explode('/', $value['name']);
+            if (empty($action)) {
+                continue;
+            }
+            $list[$action[0]][] = $value;
+        }
+
+        return $list;
+    }
 }

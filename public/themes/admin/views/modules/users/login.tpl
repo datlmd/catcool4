@@ -41,7 +41,7 @@
                 </div>
                 <div class="form-group text-center">
                     <input type="hidden" name="redirect" value="{old('redirect', $redirect)}">
-                    <button type="submit" class="btn btn-primary btn-lg mt-2">{lang('Admin.button_login')}</button>
+                    <button type="submit" class="btn btn-primary btn-lg mt-2 w-100">{lang('Admin.button_login')}</button>
                 </div>
             {form_close()}
         </div>

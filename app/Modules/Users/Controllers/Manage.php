@@ -181,7 +181,9 @@ class Manage extends AdminController
         $data['list_lang'] = get_list_lang();
 
         $group_list      = $this->group_model->findAll();
-        $permission_list = $this->permission_model->findAll();
+        $permission_list = $this->permission_model->getListPublished();
+        $permission_list = $this->permission_model->formatListPublished($permission_list);
+
 
         $data['groups']      = array_column($group_list, null, 'id');
         $data['permissions'] = $permission_list;
