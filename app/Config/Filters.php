@@ -32,7 +32,7 @@ class Filters extends BaseConfig
 		'before' => [
 			// 'honeypot',
 			'csrf'       => ['except' => ['users/auth/recaptcha', '*/manage/index', 'img/*', 'image/*', 'common/filemanager/*']],
-            'auth_admin' => ['except' => ['*/login', '*/logout', 'img/*', 'image/*']],
+            'auth_admin' => ['except' => ['*/login', '*/logout', 'permissions/manage/not_allowed']],
 		],
 		'after'  => [
 			'toolbar',

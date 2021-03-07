@@ -248,4 +248,16 @@ class Manage extends AdminController
 
         json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')]);
     }
+
+    public function notAllowed()
+    {
+        add_meta(['title' => lang("PermissionAdmin.heading_title")], $this->themes);
+
+        $data = [
+            'action' => $this->request->getGet('p'),
+            'permission_text' => $this->model->getTextPermission($this->request->getGet('p'))
+        ];
+
+        $this->themes::load('not_allowed', $data);
+    }
 }

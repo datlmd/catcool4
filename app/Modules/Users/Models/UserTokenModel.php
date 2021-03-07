@@ -48,7 +48,7 @@ class UserTokenModel extends MyModel
                 'location'          => sprintf("%s, %s, %s", $getloc->city, $getloc->region, $getloc->country) ,
             ];
 
-            $user_token = $this->where(['user_id' => $user_id, 'agent' => $agent->getAgentString()])->first();
+            $user_token = $this->where(['user_id' => $user_id, 'remember_selector' => $token['selector']])->first();
             if (empty($user_token)) {
                 $data_token['ctime'] = get_date();
                 $this->insert($data_token);

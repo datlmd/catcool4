@@ -1,69 +1,53 @@
 <?php namespace App\Filters;
 
+use App\Modules\Users\Models\UserModel;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
-use App\Modules\Users\Models\UserModel;
 use App\Modules\Permissions\Models\PermissionModel;
-use App\Modules\Users\Models\UserPermissionModel;
 
 class AuthAdminFilter implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
+        $name_permission = uri_string();
+        if (!strpos($name_permission, 'manage')) {
+            return null;
+        }
+
+        //check login
         $user_id = session('user_id');
-        if(empty($user_id))
-        {
-            helper(['cookie','catcool']);
+        if (empty($user_id)) {
+            helper(['cookie', 'catcool']);
             $user_model = new UserModel();
-            if (!$user_model->loginRememberedUser())
-            {
+            if (!$user_model->loginRememberedUser()) {
                 $query_string = '';
-                if ( !empty(\Config\Services::request()->getGet()))
-                {
+                if (!empty(\Config\Services::request()->getGet())) {
                     $query_string = (strpos(site_url(), '?') === FALSE) ? '?' : '&amp;';
-                    $query_string =  $query_string.http_build_query(\Config\Services::request()->getGet());
+                    $query_string = $query_string . http_build_query(\Config\Services::request()->getGet());
                 }
-                $redirect = 'users/manage/login?redirect='.urlencode(current_url().$query_string);
+                $redirect = 'users/manage/login?redirect=' . urlencode(current_url() . $query_string);
 
                 return redirect()->to(site_url($redirect));
             }
         }
 
-        if(empty(session('is_admin')) || session('is_admin') == false)
-        {
+        if (empty(session('is_admin'))) {
             //chuyen sang trang frontend
             return redirect()->to(site_url());
         }
 
-        $is_super_admin = session('super_admin');
-        if (empty($is_super_admin) || !$is_super_admin)
-        {
-            $permission_model      = new PermissionModel();
-            $user_permission_model = new UserPermissionModel();
-
-            $name_permission = uri_string();
-            $id_permission   = 0;
-
-            $permissions = $permission_model->getListPublished();
-            foreach($permissions as $key => $val)
-            {
-                if (strpos($name_permission, $val['name']) !== false)
-                {
-                    $id_permission = $val['id'];
-                    break;
-                }
+        $permission_model = new PermissionModel();
+        if (!$permission_model->checkPermission()) {
+            $permission_text = $permission_model->getTextPermission($name_permission);
+            if (\Config\Services::request()->isAJAX()) {
+                header('content-type: application/json; charset=utf8');
+                echo json_encode(['token' => csrf_hash(), 'status' => 'ng', 'msg' => $permission_text]);
+                exit();
             }
 
-            $relationships = $user_permission_model->getListPermissionByUserId($user_id);
-            if (empty($relationships))
-            {
-                set_alert(lang('Admin.error_permission_edit'), ALERT_ERROR, ALERT_POPUP);
-                return redirect()->to(site_url('permissions/not_allowed'));
-            }
-            if (!in_array($id_permission, array_column($relationships, 'permission_id'))) {
-                return redirect()->to(site_url('permissions/not_allowed'));
-            }
+            $redirect_url = sprintf('permissions/manage/not_allowed?p=%s', $name_permission);
+            return redirect()->to(site_url($redirect_url));
         }
     }
 

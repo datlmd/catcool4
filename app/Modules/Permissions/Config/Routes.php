@@ -11,4 +11,5 @@ $routes->group('permissions', ['namespace' => 'App\Modules\Permissions\Controlle
     $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
     $subroutes->add('manage/delete', 'Manage::delete');
     $subroutes->add('manage/publish', 'Manage::publish');
+    $subroutes->add('manage/not_allowed', 'Manage::notAllowed');
 });

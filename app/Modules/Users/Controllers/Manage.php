@@ -340,7 +340,7 @@ class Manage extends AdminController
                 }
 
                 //reset cache
-                $this->model->deleteCache($id);
+                $this->user_permission_model->deleteCache($id);
             }
 
             set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);

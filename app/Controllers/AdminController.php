@@ -7,6 +7,14 @@ class AdminController extends UserController
 {
     protected $validator;
 
+    public function initController(\CodeIgniter\HTTP\RequestInterface $request, \CodeIgniter\HTTP\ResponseInterface $response, \Psr\Log\LoggerInterface $logger)
+    {
+        // Do Not Edit This Line
+        parent::initController($request, $response, $logger);
+
+        \Config\Services::language()->setLocale(get_lang(true));
+    }
+
     public function __construct()
     {
         parent::__construct();
