@@ -546,38 +546,35 @@ class Manage extends AdminController
 
     public function publish()
     {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        //phai full quyen hoac duoc cap nhat
-        if (!$this->acl->check_acl()) {
-            json_output(['status' => 'ng', 'msg' => lang('error_permission_edit')]);
-        }
+        $token = csrf_hash();
 
-        if (empty($_POST)) {
-            json_output(['status' => 'ng', 'msg' => lang('error_json')]);
+        if (empty($this->request->getPost())) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
         $id = $this->request->getPost('id');
-        if ($id == $this->get_user_id()) {
-            json_output(['status' => 'ng', 'msg' => lang('error_permission_owner')]);
+        if ($id == $this->getUserId()) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('UserAdmin.error_permission_owner')]);
         }
 
-        $item_edit = $this->User->get($id);
+        $item_edit = $this->model->find($id);
         if (empty($item_edit)) {
-            json_output(['status' => 'ng', 'msg' => lang('error_empty')]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $item_edit['active'] = !empty($_POST['published']) ? STATUS_ON : STATUS_OFF;
-        if (!$this->User->update($item_edit, $id)) {
-            json_output(['status' => 'ng', 'msg' => lang('error_json')]);
+        if (!$this->model->update($id, $item_edit)) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
         if (!empty($_POST['published'])) {
-            $data = ['status' => 'ok', 'msg' => lang('activate_successful')];
+            $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('UserAdmin.activate_successful')];
         } else {
-            $data = ['status' => 'ok', 'msg' => lang('deactivate_successful')];
+            $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('UserAdmin.deactivate_successful')];
         }
 
         json_output($data);
