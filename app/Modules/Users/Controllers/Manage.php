@@ -412,8 +412,6 @@ class Manage extends AdminController
 
     public function permission($id = null)
     {
-        add_meta(['title' => lang('UserAdmin.text_permission_select')], $this->themes);
-
         if (empty($id)) {
             set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
@@ -460,88 +458,81 @@ class Manage extends AdminController
         $this->breadcrumb->add(lang('UserAdmin.text_permission_select'), base_url(self::MANAGE_URL));
         $data['breadcrumb'] = $this->breadcrumb->render();
 
+        add_meta(['title' => lang('UserAdmin.text_permission_select')], $this->themes);
+
         $this->themes::load('permission', $data);
     }
 
     public function delete($id = null)
     {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        if (!$this->is_super_admin()) {
-            set_alert(lang('error_permission_super_admin'), ALERT_ERROR);
-            redirect(self::MANAGE_URL);
-        }
+        $token = csrf_hash();
 
-        //phai full quyen hoac duowc xoa
-        if (!$this->acl->check_acl()) {
-            set_alert(lang('error_permission_delete'), ALERT_ERROR);
-            json_output(['status' => 'redirect', 'url' => 'permissions/not_allowed']);
+        if (!$this->isSuperAdmin()) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_permission_super_admin')]);
         }
 
         //delete
-        if (isset($_POST['is_deleted']) && isset($_POST['ids']) && !empty($_POST['ids'])) {
-            if (valid_token() == FALSE) {
-                set_alert(lang('error_token'), ALERT_ERROR);
-                json_output(['status' => 'ng', 'msg' => lang('error_token')]);
-            }
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
 
-            $ids = $this->request->getPost('ids', true);
+            $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
-            $list_delete = $this->User->where('id', $ids)->get_all();
+            $list_delete = $this->model->whereIn('id', $ids)->findAll();
             if (empty($list_delete)) {
-                json_output(['status' => 'ng', 'msg' => lang('error_empty')]);
+                json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
 
             try {
                 foreach($list_delete as $value) {
-                    if ((!empty($value['super_admin']) && empty($this->is_super_admin())) || $value['id'] == $this->get_user_id()) {
+                    if ((!empty($value['super_admin']) && empty($this->isSuperAdmin())) || $value['id'] == $this->getUserId()) {
                         continue;
                     }
-                    $this->User->update(['is_deleted' => STATUS_ON], $value['id']);
+                    $this->model->update($value['id'], ['is_deleted' => STATUS_ON]);
                 }
 
-                set_alert(lang('text_delete_success'), ALERT_SUCCESS);
+                set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
             } catch (Exception $e) {
-                set_alert($e->getMessage(), ALERT_ERROR);
+                set_alert($e->getMessage(), ALERT_ERROR, ALERT_POPUP);
             }
 
-            json_output(['status' => 'redirect', 'url' => self::MANAGE_URL]);
+            json_output(['status' => 'redirect', 'url' => site_url(self::MANAGE_URL)]);
         }
 
         $delete_ids = $id;
 
         //truong hop chon xoa nhieu muc
-        if (isset($_POST['delete_ids']) && !empty($_POST['delete_ids'])) {
-            $delete_ids = $this->request->getPost('delete_ids', true);
+        if (!empty($this->request->getPost('delete_ids'))) {
+            $delete_ids = $this->request->getPost('delete_ids');
         }
 
         if (empty($delete_ids)) {
-            json_output(['status' => 'ng', 'msg' => lang('error_empty')]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->User->where('id', $delete_ids)->get_all();
+        $list_delete = $this->model->whereIn('id', $delete_ids)->findAll();
+
         if (empty($list_delete)) {
-            json_output(['status' => 'ng', 'msg' => lang('error_empty')]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $list_undelete = [];
         foreach ($list_delete as $key => $value) {
-            if ((!empty($value['super_admin']) && empty($this->is_super_admin())) || $value['id'] == $this->get_user_id()) {
+            if ((!empty($value['super_admin']) && empty($this->isSuperAdmin())) || $value['id'] == $this->getUserId()) {
                 $list_undelete[] = $value;
                 unset($list_delete[$key]);
             }
         }
 
-        $data['csrf']          = create_token();
         $data['list_delete']   = $list_delete;
         $data['list_undelete'] = $list_undelete;
         $data['ids']           = $delete_ids;
 
-        json_output(['data' => theme_view('delete', $data, true)]);
+        json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }
 
     public function publish()

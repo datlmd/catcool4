@@ -3,14 +3,14 @@
 {csrf_field('cc_token')}
 <div class="container-fluid  dashboard-content">
 	<div class="row">
-		<div class="col-sm-7 col-12">
+		<div class="col-sm-6 col-12">
             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('UserAdmin.heading_title')}
 		</div>
-		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
+		<div class="col-sm-6 col-12 mb-2 mb-sm-0 text-end">
 			<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
 			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary btn-space" title="{lang('UserAdmin.button_add')}"><i class="fas fa-plus me-1"></i>{lang('UserAdmin.button_add')}</a>
 			<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter me-1"></i>{lang('Admin.filter_header')}</button>
-			<a href="{site_url("users/groups_manage")}" class="btn btn-sm btn-primary btn-space"><i class="fas fa-list me-1"></i> {lang('Admin.module_group')}</a>
+			<a href="{site_url("users/groups_manage")}" class="btn btn-sm btn-primary btn-space me-0"><i class="fas fa-list me-1"></i> {lang('Admin.module_group')}</a>
 		</div>
 	</div>
 	<div class="row collapse {if !empty($filter.active)}show{/if}" id="filter_manage">
