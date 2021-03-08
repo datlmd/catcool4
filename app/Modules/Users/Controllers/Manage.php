@@ -412,60 +412,55 @@ class Manage extends AdminController
 
     public function permission($id = null)
     {
-        $this->theme->title(lang('text_permission_select'));
-        $this->breadcrumb->add(lang('text_permission_select'), base_url(self::MANAGE_URL));
-
-        //phai full quyen hoac duoc cap nhat
-        if (!$this->acl->check_acl()) {
-            set_alert(lang('error_permission_edit'), ALERT_ERROR);
-            redirect('permissions/not_allowed');
-        }
+        add_meta(['title' => lang('UserAdmin.text_permission_select')], $this->themes);
 
         if (empty($id)) {
-            set_alert(lang('error_empty'), ALERT_ERROR);
-            redirect(self::MANAGE_URL);
+            set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        $item_edit = $this->User->where(['is_deleted' => STATUS_OFF])->get($id);
+        $item_edit = $data_form = $this->model->where(['is_deleted' => STATUS_OFF])->find($id);
         if (empty($item_edit)) {
-            set_alert(lang('error_empty'), ALERT_ERROR);
-            redirect(self::MANAGE_URL);
+            set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!$this->is_super_admin()) {
-            set_alert(lang('error_permission_super_admin'), ALERT_ERROR);
-            redirect(self::MANAGE_URL);
+        if (!$this->isSuperAdmin()) {
+            set_alert(lang('Admin.error_permission_super_admin'), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (isset($_POST) && !empty($_POST)) {
-            // do we have a valid request?
-            if (valid_token() === FALSE || $id != $this->request->getPost('id')) {
-                set_alert(lang('error_token'), ALERT_ERROR);
-                redirect(self::MANAGE_URL);
-            }
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('id')) {
+            $this->user_permission_model->delete(['user_id' => $id]);
 
-            $this->User_permission_relationship->force_delete(['user_id' => $id]);
-
-            $permission_ids = $this->request->getPost('permissions', true);
+            $permission_ids = $this->request->getPost('permissions');
             if (!empty($permission_ids)) {
-                $list_permission = $this->Permission->where([['id', $permission_ids], ['published', STATUS_ON]])->get_all();
+                $list_permission = $this->permission_model->whereIn('id', $permission_ids)->where(['published' => STATUS_ON])->findAll();
                 if (!empty($list_permission)) {
                     foreach ($list_permission as $permission) {
-                        $this->User_permission_relationship->insert(['user_id' => $id, 'permission_id' => $permission['id']]);
+                        $this->user_permission_model->insert(['user_id' => $id, 'permission_id' => $permission['id']]);
                     }
                 }
+
+                //reset cache
+                $this->user_permission_model->deleteCache($id);
             }
 
-            set_alert(lang('update_permission_successful'), ALERT_SUCCESS);
-            redirect(self::MANAGE_URL . '/permission/' . $id);
+            set_alert(lang('UserAdmin.update_permission_successful'), ALERT_SUCCESS, ALERT_POPUP);
+            return redirect()->back();
         }
 
-        $data['csrf']             = create_token();
-        $data['item_edit']        = $item_edit;
-        $data['permissions']      = $this->Permission->get_list_published();
-        $data['user_permissions'] = $this->User_permission_relationship->get_all($id);
+        $permission_list = $this->permission_model->getListPublished();
+        $permission_list = $this->permission_model->formatListPublished($permission_list);
 
-        theme_load('permission', $data);
+        $data['item_edit']        = $item_edit;
+        $data['permissions']      = $permission_list;
+        $data['user_permissions'] = $this->user_permission_model->where('user_id', $id)->findAll();
+
+        $this->breadcrumb->add(lang('UserAdmin.text_permission_select'), base_url(self::MANAGE_URL));
+        $data['breadcrumb'] = $this->breadcrumb->render();
+
+        $this->themes::load('permission', $data);
     }
 
     public function delete($id = null)
