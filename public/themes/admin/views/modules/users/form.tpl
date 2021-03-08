@@ -275,7 +275,7 @@
                         </div>
                         <div id="list_permission" class="row">
                             {foreach $permissions as $key => $item}
-                                <div class="col-sm-6 col-12 mt-3">
+                                <div class="col-lg-4 col-sm-6 col-12 mt-3">
                                     <h4 class="text-capitalize text-dark">{$key}</h4>
                                     {foreach $item as $value}
                                         <div class="form-check">
