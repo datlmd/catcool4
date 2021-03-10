@@ -2,7 +2,9 @@
 
 namespace App\Libraries;
 
-class ReCaptcha extends \App\Cells\ReCaptcha
+require_once APPPATH . 'ThirdParty/ReCaptcha/autoload.php';
+
+class ReCaptcha extends \ReCaptcha\ReCaptcha
 {
 
     public function verify($response, $remoteIp = null)

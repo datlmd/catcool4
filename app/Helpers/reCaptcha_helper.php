@@ -1,7 +1,7 @@
 <?php
 
-use Denis303\ReCaptcha\Config\ReCaptcha2;
-use Denis303\ReCaptcha\Config\ReCaptcha3;
+use Config\ReCaptcha2;
+use Config\ReCaptcha3;
 
 if (!function_exists('reCaptcha2'))
 {
