@@ -573,7 +573,7 @@ class Manage extends AdminController
 
     public function login()
     {
-        add_meta(['title' => lang("UserAdmin.login_heading")], $this->themes);
+        helper('reCaptcha');
 
         $data     = [];
         $redirect = empty($this->request->getGetPost('redirect')) ? site_url(CATCOOL_DASHBOARD) : $this->request->getGetPost('redirect');
@@ -590,22 +590,21 @@ class Manage extends AdminController
         }
 
         // validate form input
-        $this->validator->setRule('username', str_replace(':', '', lang('Admin.text_username')), 'required');
-        $this->validator->setRule('password', str_replace(':', '', lang('Admin.text_password')), 'required');
-        //$this->validator->setRule('captcha', str_replace(':', '', lang('Admin.text_captcha')), 'required');
+        $this->validator->setRules([
+            'username' => ['label' => str_replace(':', '', lang('Admin.text_username')), 'rules' => 'required'],
+            'password' => ['label' => str_replace(':', '', lang('Admin.text_password')), 'rules' => 'required'],
+            'captcha' => 'required|reCaptcha3[loginRootForm,0.9]'
+        ]);
 
         if (!empty($this->request->getPost()) && $this->validator->withRequest($this->request)->run()) {
-//            if(!check_captcha($this->request->getPost('captcha'))) {
-//                $data['errors'] = lang('Admin.error_captcha');
-//            } else {
-                $remember = (bool)$this->request->getPost('remember');
-                if ($this->model->login($this->request->getPost('username'), $this->request->getPost('password'), $remember, true)) {
-                    set_alert(lang('Admin.text_login_successful'), ALERT_SUCCESS, ALERT_POPUP);
-                    return redirect()->to($redirect);
-                }
 
-                $data['errors'] = (empty($this->model->getErrors())) ? lang('Admin.text_login_unsuccessful') : $this->model->getErrors();
-            //}
+            $remember = (bool)$this->request->getPost('remember');
+            if ($this->model->login($this->request->getPost('username'), $this->request->getPost('password'), $remember, true)) {
+                set_alert(lang('Admin.text_login_successful'), ALERT_SUCCESS, ALERT_POPUP);
+                return redirect()->to($redirect);
+            }
+
+            $data['errors'] = (empty($this->model->getErrors())) ? lang('Admin.text_login_unsuccessful') : $this->model->getErrors();
         }
 
         $data['username'] = $this->request->getPost('username');
@@ -615,6 +614,8 @@ class Manage extends AdminController
         if (!empty($this->validator->getErrors())) {
             $data['errors'] = $this->validator->getErrors();
         }
+
+        add_meta(['title' => lang("UserAdmin.login_heading")], $this->themes);
 
         $this->themes->setLayout('empty')::load('login', $data);
     }

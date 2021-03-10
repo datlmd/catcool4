@@ -22,14 +22,8 @@
                     <span class="input-group-text" id="input_group_password"><i class="fas fa-key"></i></span>
                     <input type="password" name="password" value="" id="password" placeholder="{lang('Admin.text_password')}" describedby="input_group_password" class="form-control form-control-lg">
                 </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="input_group_captcha"><i class="fas fa-shield-alt"></i></span>
-                    </div>
-                    <input type="number" name="captcha" value="" id="captcha" placeholder="{lang('text_captcha')}" describedby="input_group_captcha" class="form-control form-control-lg" autocomplete="off">
-                </div>
                 <div class="form-group text-center">
-
+                    {reCaptcha3('captcha', ['id' => 'recaptcha_v3'], ['action' => 'loginRootForm'])}
                 </div>
                 <div class="form-group form-check mt-3">
                     {if !empty(old('remember', $remember))}
