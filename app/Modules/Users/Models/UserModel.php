@@ -247,6 +247,15 @@ class UserModel extends MyModel
     {
         return $this->errors;
     }
+
+    public function getUserInfo($user_id, $is_deleted = STATUS_OFF)
+    {
+        if (empty($user_id)) {
+            return null;
+        }
+
+        return $this->where(['is_deleted' => $is_deleted])->find($user_id);
+    }
 //
 //    public function forgot_password($email)
 //    {

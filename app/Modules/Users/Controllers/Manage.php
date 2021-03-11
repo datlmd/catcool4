@@ -192,7 +192,7 @@ class Manage extends AdminController
         if (!empty($id) && is_numeric($id)) {
             $data['text_form']   = lang('UserAdmin.text_edit');
 
-            $data_form = $this->model->where(['is_deleted' => STATUS_OFF])->find($id);
+            $data_form = $this->model->getUserInfo($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->to(site_url(self::MANAGE_URL));
@@ -271,7 +271,7 @@ class Manage extends AdminController
                 return redirect()->back()->withInput();
             }
 
-            $item_edit = $this->model->where(['is_deleted' => STATUS_OFF])->find($id);
+            $item_edit = $this->model->getUserInfo($id);
             if (empty($item_edit)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->to(site_url(self::MANAGE_URL));
@@ -352,62 +352,54 @@ class Manage extends AdminController
         $this->_getForm($id);
     }
 
-    public function change_password($id = null)
+    public function changePassword($id = null)
     {
-        //phai full quyen hoac duoc cap nhat
-        if (!$this->acl->check_acl()) {
-            set_alert(lang('error_permission_edit'), ALERT_ERROR);
-            redirect('permissions/not_allowed');
-        }
-
         if (empty($id)) {
-            set_alert(lang('error_empty'), ALERT_ERROR);
-            redirect(self::MANAGE_URL);
+            set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        $data_form = $this->User->where(['is_deleted' => STATUS_OFF])->get($id);
+        $data_form = $this->model->getUserInfo($id);
         if (empty($data_form)) {
-            set_alert(lang('error_empty'), ALERT_ERROR);
-            redirect(self::MANAGE_URL);
+            set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        $this->breadcrumb->add(lang('text_change_password'), base_url(self::MANAGE_URL));
-        $this->theme->title(lang('text_change_password'));
+        $this->validator->setRules([
+            'id' => ['label' => lang('Admin.text_username'), 'rules' => 'required'],
+            'password_old' => ['label' => lang('UserAdmin.text_password_old'), 'rules' => 'required'],
+            'password_new' => ['label' => lang('UserAdmin.text_password_new'), 'rules' => 'required|min_length[' . config_item('minPasswordLength') . ']|matches[password_confirm_new]'],
+            'password_confirm_new' => ['label' => lang('UserAdmin.text_confirm_password_new'), 'rules' => 'required'],
+        ]);
 
-        $this->form_validation->set_rules('id', lang('text_username'), 'trim|required');
-        $this->form_validation->set_rules('password_old', lang('text_password_old'), 'trim|required');
-        $this->form_validation->set_rules('password_new', lang('text_password_new'), 'trim|required|min_length[' . config_item('minPasswordLength') . ']|matches[password_confirm_new]');
-        $this->form_validation->set_rules('password_confirm_new', lang('text_confirm_password_new'), 'required');
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('id') && $this->validator->withRequest($this->request)->run()) {
 
-        if (isset($_POST) && !empty($_POST) && $this->form_validation->run() === TRUE) {
-            // do we have a valid request?
-            if (valid_token() === FALSE || $id != $this->request->getPost('id')) {
-                set_alert(lang('error_token'), ALERT_ERROR);
-                redirect(self::MANAGE_URL);
-            }
-
-            if ($this->Auth->check_password($this->request->getPost('password_old'), $data_form['password']) === FALSE) {
-                set_alert(lang('error_password_old'), ALERT_ERROR);
-                redirect(self::MANAGE_URL . '/change_password/' . $id);
+            if ($this->auth_model->checkPassword($this->request->getPost('password_old'), $data_form['password']) === FALSE) {
+                set_alert(lang('UserAdmin.error_password_old'), ALERT_ERROR);
+                return redirect()->back()->withInput();
             }
 
             $edit_data = [
-                'password' => $this->Auth->hash_password($this->request->getPost('password_new')),
+                'password' => $this->auth_model->hashPassword($this->request->getPost('password_new')),
                 'mtime'    => get_date(),
             ];
-            if ($this->User->update($edit_data, $id) === FALSE) {
-                set_alert(lang('error_password_change_unsuccessful'), ALERT_ERROR);
-                redirect(self::MANAGE_URL . '/change_password/' . $id);
+            if (!$this->model->update($id, $edit_data)) {
+                set_alert(lang('UserAdmin.error_password_change_unsuccessful'), ALERT_ERROR);
+                return redirect()->back()->withInput();
             }
 
-            set_alert(lang('password_change_successful'), ALERT_SUCCESS);
-            redirect(self::MANAGE_URL . '/change_password/' . $id);
+            set_alert(lang('UserAdmin.password_change_successful'), ALERT_SUCCESS);
+            return redirect()->back();
         }
 
-        $data['csrf']      = create_token();
         $data['edit_data'] = $data_form;
 
-        theme_load('change_password', $data);
+        $this->breadcrumb->add(lang('UserAdmin.text_change_password'), base_url(self::MANAGE_URL));
+        $data['breadcrumb'] = $this->breadcrumb->render();
+
+        add_meta(['title' => lang('UserAdmin.text_change_password')], $this->themes);
+
+        $this->themes::load('change_password', $data);
     }
 
     public function permission($id = null)
@@ -417,7 +409,7 @@ class Manage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        $item_edit = $data_form = $this->model->where(['is_deleted' => STATUS_OFF])->find($id);
+        $item_edit = $this->model->getUserInfo($id);
         if (empty($item_edit)) {
             set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
@@ -552,7 +544,7 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('UserAdmin.error_permission_owner')]);
         }
 
-        $item_edit = $this->model->find($id);
+        $item_edit = $this->model->getUserInfo($id);
         if (empty($item_edit)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
