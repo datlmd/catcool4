@@ -52,7 +52,7 @@ class Tool extends BaseController
     public function crop()
     {
         if (!$this->request->isAJAX()) {
-            show_404();
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
         if (!empty($this->request->getPost()))

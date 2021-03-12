@@ -1205,43 +1205,48 @@ if(!function_exists('send_email'))
         //Gửi mail
         try
         {
-            $CI = & get_instance();
+            $email = \Config\Services::email();
+
             if (empty($config))
             {
+                //$config = config('Email');
                 $config['protocol'] = config('Config')->email_engine;//'smtp';
-                $config ['smtp_timeout'] = config('Config')->email_smtp_timeout;
-                $config ['mailtype'] = 'html';
-                $config['charset'] = 'utf-8';
+                $config['SMTPTimeout'] = config('Config')->email_smtp_timeout;
+                $config['mailType'] = 'html';
+                //$config['charset'] = 'utf-8';
                 $config['newline'] = "\r\n";
-                $config['validation'] = TRUE;
-                $config['smtp_host'] = config('Config')->email_host; //'10.30.46.99
-                $config['smtp_port'] = config('Config')->email_port; //25
+                $config['validate'] = TRUE;
+                $config['SMTPHost'] = config('Config')->email_host; //'10.30.46.99
+                $config['SMTPPort'] = config('Config')->email_port; //25
 
                 if (!empty(config('Config')->email_smtp_user)) {
-                    $config['smtp_user'] = config('Config')->email_smtp_user;
+                    $config['SMTPUser'] = config('Config')->email_smtp_user;
                 }
                 if (!empty(config('Config')->email_smtp_pass)) {
-                    $config['smtp_pass'] = config('Config')->email_smtp_pass;
+                    $config['SMTPPass'] = config('Config')->email_smtp_pass;
                 }
             }
 
-            $CI->load->library('email', $config);
+            $email->initialize($config);
 
-            $CI->email->from($email_from, $subject_title);
-            $CI->email->to($email_to);
-            $CI->email->subject($subject);
-            $CI->email->message($content);
-            $CI->email->bcc($bcc);
-            $CI->email->reply_to($reply_to);
+            $email->setFrom($email_from, $subject_title);
+            $email->setTo($email_to);
+            $email->setSubject($subject);
+            $email->setMessage($content);
 
-            if($CI->email->send()) {
+            if (!empty($bcc)) {
+                $email->setBCC($bcc);
+            }
+            if (!empty($reply_to)) {
+                $email->setReplyTo($reply_to);
+            }
+
+            if($email->send()) {
                 return true;
             } else {
-                show_error($CI->email->print_debugger());
+                die($email->printDebugger());
             }
-        }
-        catch(Exception $ex)
-        {
+        } catch (\Exception $e) {
             return false;
         }
     }
