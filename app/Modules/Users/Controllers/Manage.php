@@ -7,6 +7,7 @@ use App\Modules\Users\Models\GroupModel;
 use App\Modules\Users\Models\UserGroupModel;
 use App\Modules\Users\Models\UserModel;
 use App\Modules\Users\Models\UserPermissionModel;
+use App\Modules\Users\Models\UserTokenModel;
 
 class Manage extends AdminController
 {
@@ -392,6 +393,10 @@ class Manage extends AdminController
             return redirect()->back();
         }
 
+        if (!empty($this->validator->getErrors())) {
+            $data['errors'] = $this->validator->getErrors();
+        }
+
         $data['edit_data'] = $data_form;
 
         $this->breadcrumb->add(lang('UserAdmin.text_change_password'), base_url(self::MANAGE_URL));
@@ -625,102 +630,107 @@ class Manage extends AdminController
         return redirect()->to(site_url(self::MANAGE_URL . '/login'));
     }
 
-    public function forgot_password()
+    public function forgotPassword()
     {
-        $this->theme->title(lang('forgot_password_heading'));
-
         $data = [];
 
-        $this->form_validation->set_rules('email', lang('text_forgot_password_input'), 'required');
-        if (isset($_POST) && !empty($_POST) && $this->form_validation->run() === TRUE) {
+        $this->validator->setRules([
+            'email' => ['label' => str_replace(':', '', lang('UserAdmin.text_forgot_password_input')), 'rules' => 'required'],
+        ]);
+
+        if (!empty($this->request->getPost()) && $this->validator->withRequest($this->request)->run()) {
             // Generate code
-            $user_info = $this->User->forgot_password($this->request->getPost('email'));
+            $user_info = $this->model->forgotPassword($this->request->getPost('email'));
             if (!empty($user_info)) {
                 $data = [
                     'username' => $user_info['username'],
                     'forgotten_password_code' => $user_info['user_code']
                 ];
 
-                $message       = theme_view('email/forgot_password', $data, TRUE);
+                $message       = $this->themes::view('email/forgot_password', $data);
                 $subject_title = config_item('email_subject_title');
-                $subject       = lang('email_forgotten_password_subject');
+                $subject       = lang('UserAdmin.email_forgotten_password_subject');
 
                 $send_email = send_email($user_info['email'], config_item('email_from'), $subject_title, $subject, $message);
                 if (!$send_email) {
-                    $data['errors'] = lang('forgot_password_unsuccessful');
+                    $data['errors'] = lang('UserAdmin.error_forgot_password_unsuccessful');
                 } else {
-                    $data['success'] = lang('forgot_password_successful');
+                    $data['success'] = lang('UserAdmin.forgot_password_successful');
                 }
             } else {
-                $data['errors'] = empty($this->User->errors()) ? lang('forgot_password_unsuccessful') : $this->User->errors();
+                $data['errors'] = empty($this->model->getErrors()) ? lang('UserAdmin.error_forgot_password_unsuccessful') : $this->model->getErrors();
             }
+
         }
 
-        if ($this->form_validation->error_array()) {
-            $data['errors'] = $this->form_validation->error_array();
-        } elseif ($this->session->flashdata('errors')) {
-            $data['errors'] = $this->session->flashdata('errors');
+        if (!empty($this->validator->getErrors())) {
+            $data['errors'] = $this->validator->getErrors();
         }
 
-        $this->theme->layout('empty')->load('forgot_password', $data);
+        add_meta(['title' => lang('UserAdmin.forgot_password_heading')], $this->themes);
+
+        $this->themes->setLayout('empty')::load('forgot_password', $data);
     }
 
-    public function reset_password($code = NULL)
+    public function resetPassword($code = NULL)
     {
         if (!$code) {
-            show_404();
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        $this->theme->title(lang('reset_password_heading'));
-
-        $user = $this->User->forgotten_password_check($code);
+        $user = $this->model->checkForgottenPassword($code);
         if (empty($user)) {
-            $this->session->set_flashdata('errors', $this->User->errors());
-            redirect(self::MANAGE_URL . "/forgot_password");
+            set_alert($this->model->getErrors(), ALERT_ERROR);
+            return redirect()->to(site_url(self::MANAGE_URL . "/forgot_password"));
         }
 
-        $this->form_validation->set_rules('new_password', lang('text_reset_password'), 'required|min_length[' . config_item('minPasswordLength') . ']|matches[new_password_confirm]');
-        $this->form_validation->set_rules('new_password_confirm', lang('text_reset_password_confirm'), 'required');
+        $this->validator->setRules([
+            'new_password' => ['label' => lang('UserAdmin.text_reset_password'), 'rules' => 'required|min_length[' . config_item('minPasswordLength') . ']|matches[new_password_confirm]'],
+            'new_password_confirm' => ['label' => lang('UserAdmin.text_reset_password_confirm'), 'rules' => 'required'],
+        ]);
 
-        if (isset($_POST) && !empty($_POST) && $this->form_validation->run() === TRUE) {
+        if (!empty($this->request->getPost()) && $this->validator->withRequest($this->request)->run()) {
             // do we have a valid request?
-            if (valid_token() === FALSE || $user['id'] != $this->request->getPost('id')) {
+            if ($user['id'] != $this->request->getPost('id')) {
                 // something fishy might be up
-                $this->User->clear_forgotten_password_code($user['username']);
-                $this->session->set_flashdata('errors', lang('error_token'));
+                $this->model->clearForgottenPasswordCode($user['id']);
+                set_alert(lang('Admin.error_token'), ALERT_ERROR);
             } else {
                 // finally change the password
                 // When setting a new password, invalidate any other token
                 $data = [
-                    'password'                    => $this->Auth->hash_password($this->request->getPost('new_password')),
+                    'password'                    => $this->auth_model->hashPassword($this->request->getPost('new_password')),
                     'forgotten_password_selector' => NULL,
                     'forgotten_password_code'     => NULL,
                     'forgotten_password_time'     => NULL
                 ];
 
-                $change = $this->User->update($data, $user['id']);
+                $change = $this->model->update($user['id'], $data);
                 if (!$change) {
-                    $this->session->set_flashdata('errors', lang('error_password_change_unsuccessful'));
-                    redirect(self::MANAGE_URL . '/reset_password' . $code);
+                    set_alert(lang('UserAdmin.error_password_change_unsuccessful'), ALERT_ERROR);
+                    return redirect()->to( site_url(self::MANAGE_URL . '/reset_password' . $code));
                 }
 
-                $this->load->model("users/User_token", 'User_token');
-                $this->User_token->delete(['user_id' => $user['id']]);
+                $user_token_model = new UserTokenModel();
+                $user_token_model->delete(['user_id' => $user['id']]);
 
                 // if the password was successfully changed
-                set_alert(lang('password_change_successful'), ALERT_SUCCESS);
-                redirect(self::MANAGE_URL . "/login");
+                set_alert(lang('UserAdmin.password_change_successful'), ALERT_SUCCESS);
+                return redirect()->to(site_url(self::MANAGE_URL . "/login"));
             }
         }
 
         // set the flash data error message if there is one
-        $data['errors'] = ($this->form_validation->error_array()) ? $this->form_validation->error_array() : $this->session->flashdata('errors');
+        if (!empty($this->validator->getErrors())) {
+            $data['errors'] = $this->validator->getErrors();
+        }
 
         $data['min_password_length'] = config_item('minPasswordLength');
         $data['user'] = $user;
-        $data['csrf'] = create_token();
         $data['code'] = $code;
 
-        $this->theme->layout('empty')->load('reset_password', $data);
+        add_meta(['title' => lang('UserAdmin.reset_password_heading')], $this->themes);
+
+        $this->themes->setLayout('empty')::load('reset_password', $data);
     }
 }

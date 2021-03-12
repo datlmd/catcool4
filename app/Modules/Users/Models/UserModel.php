@@ -256,105 +256,105 @@ class UserModel extends MyModel
 
         return $this->where(['is_deleted' => $is_deleted])->find($user_id);
     }
-//
-//    public function forgot_password($email)
-//    {
-//        if (empty($email)) {
-//            return FALSE;
-//        }
-//
-//        $this->errors = [];
-//
-//        $user_info = $this->where([['email', $email], ['username', '=', $email, true]] )->get();
-//        if (empty($user_info) || !empty($user_info['is_deleted'])) {
-//            $this->errors[] = lang('text_email_not_found');
-//            return false;
-//        }
-//
-//        if (empty($user_info['active'])) {
-//            $this->errors[] = lang('text_login_unsuccessful_not_active');
-//            return false;
-//        }
-//
-//        // Generate random token: smaller size because it will be in the URL
-//        $token = $this->Auth->generate_selector_validator_couple(20, 80);
-//        if (empty($token)) {
-//            $this->errors[] = lang('error_generate_code');
-//            return false;
-//        }
-//
-//        $update = [
-//            'forgotten_password_selector' => $token['selector'],
-//            'forgotten_password_code'     => $token['validator_hashed'],
-//            'forgotten_password_time'     => time()
-//        ];
-//        $id = $this->update($update, $user_info['id']);
-//        if (empty($id)) {
-//            return false;
-//        }
-//
-//        $user_info['user_code'] = $token['user_code'];
-//
-//        return $user_info;
-//    }
-//
-//    public function forgotten_password_check($code)
-//    {
-//        $this->errors = [];
-//
-//        if (empty($code)) {
-//            $this->errors[] = '[001] ' . lang('error_password_change_unsuccessful');
-//            return false;
-//        }
-//
-//        // Retrieve the token object from the code
-//        $token = $this->Auth->retrieve_selector_validator_couple($code);
-//        if (empty($token)) {
-//            $this->errors[] = '[002] ' . lang('error_password_code');
-//            return false;
-//        }
-//
-//        // Retrieve the user according to this selector
-//        $user = $this->where('forgotten_password_selector', $token['selector'])->get();
-//        if (empty($user)) {
-//            $this->errors[] = '[003] ' . lang('error_password_code');
-//            return FALSE;
-//        }
-//
-//        // Check the hash against the validator
-//        if (!$this->Auth->check_password($token['validator'], $user['forgotten_password_code'])) {
-//            $this->errors[] = '[004] ' . lang('error_password_change_unsuccessful');
-//            return false;
-//        }
-//
-//        if (config_item('forgotPasswordExpiration') > 0) {
-//            //Make sure it isn't expired
-//            $expiration = config_item('forgotPasswordExpiration');
-//            if (time() - $user['forgotten_password_time'] > $expiration) {
-//                //it has expired, clear_forgotten_password_code
-//                $this->clear_forgotten_password_code($user['username']);
-//                $this->errors[] = '[005] ' . lang('error_password_code');
-//                return FALSE;
-//            }
-//        }
-//
-//        return $user;
-//    }
-//
-//    public function clear_forgotten_password_code($username)
-//    {
-//        if (empty($username)) {
-//            return FALSE;
-//        }
-//
-//        $data = [
-//            'forgotten_password_selector' => NULL,
-//            'forgotten_password_code' => NULL,
-//            'forgotten_password_time' => NULL
-//        ];
-//
-//        $this->update($data, ['username' => $username]);
-//
-//        return TRUE;
-//    }
+
+    public function forgotPassword($email)
+    {
+        if (empty($email)) {
+            return false;
+        }
+
+        $this->errors = [];
+
+        $user_info = $this->where('email', $email)->orWhere('username', $email)->first();
+        if (empty($user_info) || !empty($user_info['is_deleted'])) {
+            $this->errors[] = lang('UserAdmin.text_email_not_found');
+            return false;
+        }
+
+        if (empty($user_info['active'])) {
+            $this->errors[] = lang('Admin.text_login_unsuccessful_not_active');
+            return false;
+        }
+
+        // Generate random token: smaller size because it will be in the URL
+        $token = $this->auth_model->generateSelectorValidatorCouple(20, 80);
+        if (empty($token)) {
+            $this->errors[] = lang('UserAdmin.error_generate_code');
+            return false;
+        }
+
+        $update = [
+            'forgotten_password_selector' => $token['selector'],
+            'forgotten_password_code'     => $token['validator_hashed'],
+            'forgotten_password_time'     => time()
+        ];
+        $id = $this->update($user_info['id'], $update);
+        if (empty($id)) {
+            return false;
+        }
+
+        $user_info['user_code'] = $token['user_code'];
+
+        return $user_info;
+    }
+
+    public function checkForgottenPassword($code)
+    {
+        $this->errors = [];
+
+        if (empty($code)) {
+            $this->errors[] = '[001] ' . lang('UserAdmin.error_password_change_unsuccessful');
+            return false;
+        }
+
+        // Retrieve the token object from the code
+        $token = $this->auth_model->retrieveSelectorValidatorCouple($code);
+        if (empty($token)) {
+            $this->errors[] = '[002] ' . lang('UserAdmin.error_password_code');
+            return false;
+        }
+
+        // Retrieve the user according to this selector
+        $user = $this->where('forgotten_password_selector', $token['selector'])->first();
+        if (empty($user)) {
+            $this->errors[] = '[003] ' . lang('UserAdmin.error_password_code');
+            return FALSE;
+        }
+
+        // Check the hash against the validator
+        if (!$this->auth_model->checkPassword($token['validator'], $user['forgotten_password_code'])) {
+            $this->errors[] = '[004] ' . lang('UserAdmin.error_password_change_unsuccessful');
+            return false;
+        }
+
+        if (config_item('forgotPasswordExpiration') > 0) {
+            //Make sure it isn't expired
+            $expiration = config_item('forgotPasswordExpiration');
+            if (time() - $user['forgotten_password_time'] > $expiration) {
+                //it has expired, clear_forgotten_password_code
+                $this->clearForgottenPasswordCode($user['id']);
+                $this->errors[] = '[005] ' . lang('error_password_code');
+                return FALSE;
+            }
+        }
+
+        return $user;
+    }
+
+    public function clearForgottenPasswordCode($user_id)
+    {
+        if (empty($user_id)) {
+            return FALSE;
+        }
+
+        $data = [
+            'forgotten_password_selector' => NULL,
+            'forgotten_password_code' => NULL,
+            'forgotten_password_time' => NULL
+        ];
+
+        $this->update($user_id, $data);
+
+        return TRUE;
+    }
 }
