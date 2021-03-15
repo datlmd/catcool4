@@ -27,6 +27,7 @@ class GroupsManage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
+        $this->breadcrumb->add(lang('Admin.module_user'), site_url('users/manage'));
         $this->breadcrumb->add(lang('UserGroupAdmin.heading_title'), base_url(self::MANAGE_URL));
     }
 

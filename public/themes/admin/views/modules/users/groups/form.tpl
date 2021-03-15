@@ -1,3 +1,4 @@
+{strip}
 {form_hidden('manage_url', $manage_url)}
 <div class="container-fluid  dashboard-content">
     {form_open(uri_string(), ['id' => 'validationform'])}
@@ -60,3 +61,4 @@
         </div>
     {form_close()}
 </div>
+{/strip}
