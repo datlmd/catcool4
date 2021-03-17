@@ -21,10 +21,10 @@
             </div>
             <div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12">
                 {if !empty(print_flash_alert())}
-                    <div class="col-12">{print_flash_alert()}</div>
+                    <div class="col-12 px-0">{print_flash_alert()}</div>
                 {/if}
                 {if !empty($errors)}
-                    <div class="col-12">
+                    <div class="col-12 px-0">
                         {include file=get_theme_path('views/inc/alert.tpl') message=$errors type='danger'}
                     </div>
                 {/if}

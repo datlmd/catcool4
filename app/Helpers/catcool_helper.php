@@ -5,9 +5,9 @@ if (!function_exists('get_config_lang'))
     function get_config_lang($is_admin = false)
     {
         if (!empty($is_admin)) {
-            return config('Config')->language_admin;
+            return config_item('language_admin');
         }
-        return config('Config')->language;
+        return config_item('language');
     }
 }
 
@@ -107,7 +107,7 @@ if (!function_exists('is_multi_lang'))
     function is_multi_lang()
     {
 
-        $list_language = json_decode(config('Config')->list_language_cache, 1);
+        $list_language = json_decode(config_item('list_language_cache'), 1);
         if (count($list_language) >= 2) {
             return true;
         }
@@ -124,7 +124,7 @@ if (!function_exists('is_show_select_language'))
             return false;
         }
 
-        if (empty(config('Config')->is_show_select_language)) {
+        if (empty(config_item('is_show_select_language'))) {
             return false;
         }
 
@@ -142,7 +142,7 @@ if (!function_exists('get_list_lang'))
     function get_list_lang()
     {
         //list lang
-        $list_language = json_decode(config('Config')->list_language_cache, 1);
+        $list_language = json_decode(config_item('list_language_cache'), 1);
         if (empty($list_language)) {
             return false;
         }
@@ -173,7 +173,7 @@ if (!function_exists('get_lang_id'))
     {
         $language_id = 1;
         //list lang
-        $list_language = json_decode(config('Config')->list_language_cache, 1);
+        $list_language = json_decode(config_item('list_language_cache'), 1);
         foreach ($list_language as $key => $value) {
             if ($value['code'] == get_lang($is_admin)) {
                 $language_id = $value['id'];
@@ -552,8 +552,8 @@ if(!function_exists('image_domain'))
 {
     function image_domain($path = null)
     {
-        if (!empty(config('Config')->image_domain)) {
-            return config('Config')->image_domain . $path;
+        if (!empty(config_item('image_domain'))) {
+            return config_item('image_domain') . $path;
         }
 
         return base_url($path);
@@ -565,7 +565,7 @@ if(!function_exists('image_default_url'))
     function image_default_url() {
         $upload_path = get_upload_url();
         if (!empty(config_item('image_none')) && is_file( ROOTPATH . $upload_path . config_item('image_none'))) {
-            return image_domain($upload_path . config('Config')->image_none);
+            return image_domain($upload_path . config_item('image_none'));
         }
 
         return base_url('common/'.UPLOAD_IMAGE_DEFAULT);
@@ -639,8 +639,8 @@ if(!function_exists('image_thumb_url'))
 {
     function image_thumb_url($image = null, $width = null, $height = null, $is_watermark = false)
     {
-        $width = !empty($width) ? $width : (!empty(config('Config')->image_thumbnail_small_width) ? config('Config')->image_thumbnail_small_width : RESIZE_IMAGE_THUMB_WIDTH);
-        $height = !empty($height) ? $height : (!empty(config('Config')->image_thumbnail_small_height) ? config('Config')->image_thumbnail_small_height : RESIZE_IMAGE_THUMB_HEIGHT);
+        $width = !empty($width) ? $width : (!empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH);
+        $height = !empty($height) ? $height : (!empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT);
         $upload_path = get_upload_url();
         if (! is_file( ROOTPATH . $upload_path . $image)) {
             return image_default_url();
@@ -1210,20 +1210,20 @@ if(!function_exists('send_email'))
             if (empty($config))
             {
                 //$config = config('Email');
-                $config['protocol'] = config('Config')->email_engine;//'smtp';
-                $config['SMTPTimeout'] = config('Config')->email_smtp_timeout;
+                $config['protocol'] = config_item('email_engine');//'smtp';
+                $config['SMTPTimeout'] = config_item('email_smtp_timeout');
                 $config['mailType'] = 'html';
                 //$config['charset'] = 'utf-8';
                 $config['newline'] = "\r\n";
                 $config['validate'] = TRUE;
-                $config['SMTPHost'] = config('Config')->email_host; //'10.30.46.99
-                $config['SMTPPort'] = config('Config')->email_port; //25
+                $config['SMTPHost'] = config_item('email_host'); //'10.30.46.99
+                $config['SMTPPort'] = config_item('email_port'); //25
 
-                if (!empty(config('Config')->email_smtp_user)) {
-                    $config['SMTPUser'] = config('Config')->email_smtp_user;
+                if (!empty(config_item('email_smtp_user'))) {
+                    $config['SMTPUser'] = config_item('email_smtp_user');
                 }
-                if (!empty(config('Config')->email_smtp_pass)) {
-                    $config['SMTPPass'] = config('Config')->email_smtp_pass;
+                if (!empty(config_item('email_smtp_pass'))) {
+                    $config['SMTPPass'] = config_item('email_smtp_pass');
                 }
             }
 
@@ -1264,7 +1264,7 @@ if(!function_exists('get_avatar'))
         $upload_path = get_upload_url();
         $avatar      = empty($avatar) ? 'users/' . session('username') . $image_ext : $avatar;
         if (!is_file( WRITEPATH . $upload_path . $avatar)) {
-            return (session('user_gender') == GENDER_MALE) ? base_url('common/'.config('Config')->avatar_default_male) : base_url('common/'.config('Config')->avatar_default_female);
+            return (session('user_gender') == GENDER_MALE) ? base_url('common/'.config_item('avatar_default_male')) : base_url('common/'.config_item('avatar_default_female'));
         }
 
         return image_url($avatar);
@@ -1334,7 +1334,7 @@ if(!function_exists('file_get_contents_ssl'))
             ],
         ];
 
-        if (empty(config('Config')->enable_ssl)) {
+        if (empty(config_item('enable_ssl'))) {
             return file_get_contents($url);
         }
 
@@ -1348,15 +1348,15 @@ if(!function_exists('get_pagination_limit'))
     {
         if (empty($is_admin)) {
 
-            if (!empty(config('Config')->pagination_limit) && config('Config')->pagination_limit > 0) {
-                return config('Config')->pagination_limit;
+            if (!empty(config_item('pagination_limit')) && config_item('pagination_limit') > 0) {
+                return config_item('pagination_limit');
             }
 
             return PAGINATION_DEFAULF_LIMIT;
         }
 
-        if (!empty(config('Config')->pagination_limit_admin) && config('Config')->pagination_limit_admin > 0) {
-            return config('Config')->pagination_limit_admin;
+        if (!empty(config_item('pagination_limit_admin')) && config_item('pagination_limit_admin') > 0) {
+            return config_item('pagination_limit_admin');
         }
 
         return PAGINATION_MANAGE_DEFAULF_LIMIT;
@@ -1393,11 +1393,11 @@ if(!function_exists('add_meta'))
     {
         try
         {
-            $title = !empty($data['title']) ? $data['title'] : config('Config')->site_name;
-            $description = !empty($data['description']) ? $data['description'] : config('Config')->site_description;
-            $keywords = !empty($data['keywords']) ? $data['keywords'] : config('Config')->site_keywords;
-            $url = !empty($data['url']) ? $data['url'] : config('Config')->site_url;
-            $image = !empty($data['image']) ? $data['image'] : config('Config')->site_image;
+            $title = !empty($data['title']) ? $data['title'] : config_item('site_name');
+            $description = !empty($data['description']) ? $data['description'] : config_item('site_description');
+            $keywords = !empty($data['keywords']) ? $data['keywords'] : config_item('site_keywords');
+            $url = !empty($data['url']) ? $data['url'] : config_item('site_url');
+            $image = !empty($data['image']) ? $data['image'] : config_item('site_image');
 
             //$theme = \App\Libraries\Themes::init();
 
@@ -1420,11 +1420,11 @@ if(!function_exists('add_meta'))
 
             // Let's add some extra tags.
 
-            if (!empty(config('Config')->fb_app_id)) {
-                $theme->addMeta('og:fb:app_id', config('Config')->fb_app_id, 'meta', ['property' => 'fb:app_id']);
+            if (!empty(config_item('fb_app_id'))) {
+                $theme->addMeta('og:fb:app_id', config_item('fb_app_id'), 'meta', ['property' => 'fb:app_id']);
             }
-            if (!empty(config('Config')->fb_pages)) {
-                $theme->addMeta('og:fb:pages', config('Config')->fb_pages, 'meta', ['property' => 'fb:pages']);
+            if (!empty(config_item('fb_pages'))) {
+                $theme->addMeta('og:fb:pages', config_item('fb_pages'), 'meta', ['property' => 'fb:pages']);
             }
             $theme->addMeta('og:type', 'article');
             $theme->addMeta('og:url', $url);
@@ -1452,12 +1452,12 @@ if(!function_exists('add_meta'))
             $theme->addMeta('resource-type', 'Document');
             $theme->addMeta('distribution', 'Global');
 
-            if (!empty(config('Config')->google_site_verification)) {
-                $theme->addMeta('google-site-verification', config('Config')->google_site_verification);
+            if (!empty(config_item('google_site_verification'))) {
+                $theme->addMeta('google-site-verification', config_item('google_site_verification'));
             }
 
-            if (!empty(config('Config')->alexa_verify_id)) {
-                $theme->addMeta('alexaVerifyID', config('Config')->alexa_verify_id);
+            if (!empty(config_item('alexa_verify_id'))) {
+                $theme->addMeta('alexaVerifyID', config_item('alexa_verify_id'));
             }
         }
         catch (\Exception $e)
@@ -1549,6 +1549,7 @@ if(!function_exists('config_item'))
 {
     function config_item($key)
     {
+        $key = camelize($key);
         if (empty($key) || empty(config('Config')->$key)) {
             return null;
         }

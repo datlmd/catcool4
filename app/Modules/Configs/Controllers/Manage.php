@@ -56,23 +56,13 @@ class Manage extends AdminController
 
     public function write()
     {
-        //phai full quyen
-        if (!$this->acl->check_acl()) {
-            set_alert(lang('error_permission_execute'), ALERT_ERROR);
-            redirect('permissions/not_allowed');
+        if ($this->model->writeFile()) {
+            set_alert(lang('ConfigAdmin.created_setting_success'), ALERT_SUCCESS, ALERT_POPUP);
+        } else {
+            set_alert(lang('Admin.error'), ALERT_ERROR,ALERT_POPUP);
         }
 
-        // lib
-        $this->load->helper('file');
-
-        try {
-            $this->Config->write_file();
-            set_alert(lang('created_setting_success'), ALERT_SUCCESS);
-        } catch (Exception $e) {
-            set_alert(lang('error'), ALERT_ERROR);
-        }
-
-        redirect(self::MANAGE_URL);
+        return redirect()->to(site_url(self::MANAGE_URL));
     }
 
     public function settings($tab_type = null)
@@ -392,11 +382,11 @@ class Manage extends AdminController
         $this->errors  = $this->validator->getErrors();
 
         //check slug
-        if (!empty($this->request->getPath('config_key'))) {
-            if (!empty($this->request->getPath('id'))) {
-                $key_list = $this->model->where('config_key', $this->request->getPath('config_key'))->whereNotIn('id', $this->request->getPath('id'))->findAll();
+        if (!empty($this->request->getPost('config_key'))) {
+            if (!empty($this->request->getPost('id'))) {
+                $key_list = $this->model->where('config_key', $this->request->getPost('config_key'))->whereNotIn('id', (array)$this->request->getPost('id'))->findAll();
             } else {
-                $key_list = $this->model->where('config_key', $this->request->getPath('config_key'))->findAll();
+                $key_list = $this->model->where('config_key', $this->request->getPost('config_key'))->findAll();
             }
 
             if (!empty($key_list)) {

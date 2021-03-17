@@ -1,6 +1,8 @@
 <?php namespace App\Modules\Configs\Models;
 
 use App\Models\MyModel;
+use App\Modules\Languages\Controllers\Manage;
+use App\Modules\Languages\Models\LanguageModel;
 
 class ConfigModel extends MyModel
 {
@@ -71,14 +73,15 @@ class ConfigModel extends MyModel
         return $result;
     }
 
-    public function write_file()
+    public function writeFile()
     {
         try {
+            helper('filesystem');
 
-            $this->load->model("languages/Language", 'Language');
+            $language_model = new LanguageModel();
 
             $list_language_config = [];
-            $list_language = $this->Language->get_list_by_publish();
+            $list_language = $language_model->getListPublished();
             foreach ($list_language as $key => $value) {
                 unset($value['ctime']);
                 unset($value['mtime']);
@@ -86,10 +89,11 @@ class ConfigModel extends MyModel
 
             }
 
-            $settings = $this->get_list_by_publish();
+            $settings = $this->getListPublished();
 
             // file content
-            $file_content = "<?php \n\n";
+            $file_content = "<?php namespace Config;\n\nuse CodeIgniter\Config\BaseConfig;\n\nclass CustomConfig extends BaseConfig \n{\n";
+
             if (!empty($settings)) {
                 foreach ($settings as $setting) {
                     $config_value = $setting['config_value'];
@@ -108,15 +112,16 @@ class ConfigModel extends MyModel
                     }
 
                     if (!empty($setting['description'])) {
-                        $file_content .= "//" . $setting['description'] . "\n";
+                        $file_content .= "\t/**\n\t * " . $setting['description'] . "\n\t */\n";
                     }
 
-                    $file_content .= "\$config['" . $setting['config_key'] . "'] = " . $config_value . ";\n\n";
+                    $file_content .= "\tpublic \$" . camelize($setting['config_key']) . " = " . $config_value . ";\n\n";
                 }
             }
+            $file_content .= "}\n";
 
-            write_file(CATCOOLPATH . 'media/config/config.php', $file_content);
-        } catch (Exception $e) {
+            write_file(ROOTPATH . 'media/config/Config.php', $file_content);
+        } catch (\Exception $ex) {
             return false;
         }
 
