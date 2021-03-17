@@ -55,8 +55,11 @@ class PermissionModel extends MyModel
             if (empty($result)) {
                 return null;
             }
-            // Save into the cache for $expire_time 1 year
-            cache()->save(self::PERMISSION_CACHE_NAME, $result, self::PERMISSION_CACHE_EXPIRE);
+
+            if ($is_cache) {
+                // Save into the cache for $expire_time 1 year
+                cache()->save(self::PERMISSION_CACHE_NAME, $result, self::PERMISSION_CACHE_EXPIRE);
+            }
         }
 
         return $result;

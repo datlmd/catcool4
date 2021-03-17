@@ -144,14 +144,16 @@ class MenuModel extends MyModel
                 }
             }
 
-            // Save into the cache for $expire_time 1 month
-            $cache->save($cache_name, $result, $expire_time);
+            if ($is_cache) {
+                // Save into the cache for $expire_time 1 month
+                $cache->save($cache_name, $result, $expire_time);
+            }
         }
 
         return $result;
     }
 
-    public function deleteCache($cache_name = null)
+    public function deleteCache($is_admin = false, $cache_name = null)
     {
         $cache = cache();
         if (!empty($cache_name) && !empty($this->cache->get($cache_name))) {
@@ -159,16 +161,22 @@ class MenuModel extends MyModel
             return true;
         }
 
-        //clear cache all
-        $list_name = [
-            SET_CACHE_NAME_MENU . '_admin' . '_lang_' . get_lang_id(true),
-            SET_CACHE_NAME_MENU . '_frontend',
-            SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_MAIN . '_lang_' . get_lang_id(),
-            SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_FOOTER . '_lang_' . get_lang_id(),
-            SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_TOP . '_lang_' . get_lang_id(),
-            SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_BOTTOM . '_lang_' . get_lang_id(),
-            SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_OTHER . '_lang_' . get_lang_id(),
-        ];
+        if ($is_admin) {
+            //clear cache all
+            $list_name = [
+                SET_CACHE_NAME_MENU . '_admin' . '_lang_' . get_lang_id(true),
+            ];
+        } else {
+            //clear cache all
+            $list_name = [
+                SET_CACHE_NAME_MENU . '_frontend',
+                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_MAIN . '_lang_' . get_lang_id(),
+                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_FOOTER . '_lang_' . get_lang_id(),
+                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_TOP . '_lang_' . get_lang_id(),
+                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_BOTTOM . '_lang_' . get_lang_id(),
+                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_OTHER . '_lang_' . get_lang_id(),
+            ];
+        }
 
         foreach ($list_name as $name) {
             $cache->delete($name);
