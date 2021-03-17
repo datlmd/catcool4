@@ -1,68 +1,57 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php namespace App\Modules\Configs\Controllers;
 
-class Manage extends Admin_Controller
+use App\Controllers\AdminController;
+use App\Modules\Configs\Models\ConfigModel;
+use App\Modules\Configs\Models\GroupModel;
+
+class Manage extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT       = 'configs/manage';
-    CONST MANAGE_URL        = 'configs/manage';
-    CONST MANAGE_PAGE_LIMIT = 0;
+    CONST MANAGE_ROOT = 'configs/manage';
+    CONST MANAGE_URL  = 'configs/manage';
+
+    protected $model;
+    protected $group_model;
 
     public function __construct()
     {
         parent::__construct();
 
-        //set theme
-        $this->theme->theme(config_item('theme_admin'))
-            ->add_partial('header')
-            ->add_partial('footer')
-            ->add_partial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'))
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar');
 
-        $this->lang->load('configs_manage', $this->_site_lang);
-
-        //load model manage
-        $this->load->model("configs/Config", 'Config');
-        $this->load->model("configs/Config_group", 'Group');
+        $this->model = new ConfigModel();
+        $this->group_model = new GroupModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
         $this->smarty->assign('manage_root', self::MANAGE_ROOT);
 
         //add breadcrumb
-        $this->breadcrumb->add(lang('catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('heading_title'), base_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang('Admin.catcool_dashboard'), site_url(CATCOOL_DASHBOARD));
+        $this->breadcrumb->add(lang('ConfigAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
     public function index()
     {
-        //phai full quyen hoac chi duoc doc
-        if (!$this->acl->check_acl()) {
-            set_alert(lang('error_permission_read'), ALERT_ERROR);
-            redirect('permissions/not_allowed');
-        }
+        $sort  = $this->request->getGet('sort');
+        $order = $this->request->getGet('order');
 
-        $this->theme->title(lang("heading_title"));
+        $data = [
+            'breadcrumb'      => $this->breadcrumb->render(),
+            'list'            => $this->model->getAllByFilter(null, $sort, $order),
+            'sort'            => empty($sort) ? 'id' : $sort,
+            'order'           => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url'             => $this->getUrlFilter(),
+            'groups'          => $this->group_model->findAll(),
+            'config_group_id' => session('tab_group_id'),
+        ];
 
-        $filter = $this->input->get('filter');
-        if (!empty($filter)) {
-            $data['filter_active'] = true;
-        }
-
-        $limit              = empty($this->input->get('filter_limit', true)) ? self::MANAGE_PAGE_LIMIT : $this->input->get('filter_limit', true);
-        $start_index        = (isset($_GET['page']) && is_numeric($_GET['page'])) ? ($_GET['page'] - 1) * $limit : 0;
-        list($list, $total) = $this->Config->get_all_by_filter($filter, $limit, $start_index);
-
-        $data['list']   = $list;
-        $data['paging'] = $this->get_paging_admin(base_url(self::MANAGE_URL), $total, $limit, $this->input->get('page'));
-
-        list($list_group) = $this->Group->get_all_by_filter();
-        $data['groups']   = $list_group;
-
-        $data['ses_config_group_id'] = $this->session->tab_group_id;
-
-        set_last_url();
-
-        theme_load('list', $data);
+        add_meta(['title' => lang("ConfigAdmin.heading_title")], $this->themes);
+        $this->themes::load('list', $data);
     }
 
     public function write()
@@ -248,201 +237,170 @@ class Manage extends Admin_Controller
 
     public function add()
     {
-        //phai full quyen hoac duoc them moi
-        if (!$this->acl->check_acl()) {
-            set_alert(lang('error_permission_add'), ALERT_ERROR);
-            redirect('permissions/not_allowed');
-        }
-
-        if (isset($_POST) && !empty($_POST) && $this->validate_form() !== FALSE) {
-
-            $additional_data['description']  = $this->input->post('description', true);
-            $additional_data['config_key']   = $this->input->post('config_key', true);
-            $additional_data['config_value'] = $this->input->post('config_value', true);
-            $additional_data['user_id']      = $this->get_user_id();
-            $additional_data['group_id']     = $this->input->post('group_id', true);
-            $additional_data['published']    = (isset($_POST['published'])) ? STATUS_ON : STATUS_OFF;
-            $additional_data['ctime']        = get_date();
-
-            $id = $this->Config->insert($additional_data);
-            if ($id !== FALSE) {
-                set_alert(lang('text_add_success'), ALERT_SUCCESS);
-                redirect(self::MANAGE_URL);
-            } else {
-                set_alert(lang('error'), ALERT_ERROR);
-                redirect(self::MANAGE_URL . '/add');
+        if (!empty($this->request->getPost())) {
+            if (!$this->_validateForm()) {
+                set_alert($this->errors, ALERT_ERROR);
+                return redirect()->back()->withInput();
             }
+
+            $add_data = [
+                'config_key'   => $this->request->getPost('config_key'),
+                'config_value' => $this->request->getPost('config_value'),
+                'description'  => $this->request->getPost('description'),
+                'user_id'      => $this->getUserId(),
+                'group_id'     => $this->request->getPost('group_id'),
+                'published'    => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'ctime'        => get_date(),
+            ];
+
+            if (!$this->model->insert($add_data)) {
+                set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
+                return redirect()->back()->withInput();
+            }
+
+            set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
+            return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        $this->get_form();
+        $this->_getForm();
     }
 
     public function edit($id = null)
     {
-        //phai full quyen hoac duoc cap nhat
-        if (!$this->acl->check_acl()) {
-            set_alert(lang('error_permission_edit'), ALERT_ERROR);
-            redirect('permissions/not_allowed');
+        if (is_null($id)) {
+            set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (empty($id)) {
-            set_alert(lang('error_empty'), ALERT_ERROR);
-            redirect(self::MANAGE_URL);
-        }
-
-        if (isset($_POST) && !empty($_POST) && $this->validate_form() !== FALSE) {
-            // do we have a valid request?
-            if (valid_token() === FALSE || $id != $this->input->post('id')) {
-                set_alert(lang('error_token'), ALERT_ERROR);
-                redirect(self::MANAGE_URL);
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('id')) {
+            if (!$this->_validateForm()) {
+                set_alert($this->errors, ALERT_ERROR);
+                return redirect()->back()->withInput();
             }
 
-            if ($this->form_validation->run() === TRUE) {
-                $edit_data['description']  = $this->input->post('description', true);
-                $edit_data['config_key']   = $this->input->post('config_key', true);
-                $edit_data['config_value'] = $this->input->post('config_value', true);
-                $edit_data['user_id']      = $this->get_user_id();
-                $edit_data['group_id']     = $this->input->post('group_id', true);
-                $edit_data['published']    = (isset($_POST['published'])) ? STATUS_ON : STATUS_OFF;
+            $edit_data = [
+                'config_key'   => $this->request->getPost('config_key'),
+                'config_value' => $this->request->getPost('config_value'),
+                'description'  => $this->request->getPost('description'),
+                'user_id'      => $this->getUserId(),
+                'group_id'     => $this->request->getPost('group_id'),
+                'published'    => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+            ];
 
-                if ($this->Config->update($edit_data, $id) !== FALSE) {
-                    set_alert(lang('text_edit_success'), ALERT_SUCCESS);
-                } else {
-                    set_alert(lang('error'), ALERT_ERROR);
-                }
-
-                $this->session->set_userdata('tab_group_id', $this->input->post('group_id'));
-
-                redirect(self::MANAGE_URL . '/edit/' . $id);
+            if (!$this->model->update($id, $edit_data)) {
+                set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
+            } else {
+                set_alert(lang('error'), ALERT_ERROR);
             }
+
+            set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
+            return redirect()->back();
+
         }
 
-        $this->get_form($id);
+        $this->_getForm($id);
     }
 
     public function delete($id = null)
     {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        //phai full quyen hoac duowc xoa
-        if (!$this->acl->check_acl()) {
-            set_alert(lang('error_permission_delete'), ALERT_ERROR);
-            json_output(['status' => 'redirect', 'url' => 'permissions/not_allowed']);
-        }
+        $token = csrf_hash();
 
         //delete
-        if (isset($_POST['is_delete']) && isset($_POST['ids']) && !empty($_POST['ids'])) {
-            if (valid_token() == FALSE) {
-                json_output(['status' => 'ng', 'msg' => lang('error_token')]);
-            }
-
-            $ids = $this->input->post('ids', true);
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
+        {
+            $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
-            $list_delete = $this->Config->where('id', $ids)->get_all();
+            $list_delete = $this->model->find($ids);
             if (empty($list_delete)) {
-                json_output(['status' => 'ng', 'msg' => lang('error_empty')]);
+                json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
+            $this->model->delete($ids);
 
-            try {
-                foreach($list_delete as $value) {
-                    $this->Config->delete($value['id']);
-                }
-
-                set_alert(lang('text_delete_success'), ALERT_SUCCESS);
-            } catch (Exception $e) {
-                set_alert($e->getMessage(), ALERT_ERROR);
-            }
-
-            json_output(['status' => 'redirect', 'url' => self::MANAGE_URL]);
+            set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
+            json_output(['token' => $token, 'status' => 'redirect', 'url' => site_url(self::MANAGE_URL)]);
         }
 
         $delete_ids = $id;
 
         //truong hop chon xoa nhieu muc
-        if (isset($_POST['delete_ids']) && !empty($_POST['delete_ids'])) {
-            $delete_ids = $this->input->post('delete_ids', true);
+        if (!empty($this->request->getPost('delete_ids'))) {
+            $delete_ids = $this->request->getPost('delete_ids');
         }
 
         if (empty($delete_ids)) {
-            json_output(['status' => 'ng', 'msg' => lang('error_empty')]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->Config->where('id', $delete_ids)->get_all();
+        $list_delete = $this->model->find($delete_ids);
         if (empty($list_delete)) {
-            json_output(['status' => 'ng', 'msg' => lang('error_empty')]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $data['csrf']        = create_token();
         $data['list_delete'] = $list_delete;
         $data['ids']         = $delete_ids;
 
-        json_output(['data' => theme_view('delete', $data, true)]);
+        json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }
 
-    protected function get_form($id = null)
+    private function _getForm($id = null)
     {
-        list($list_group) = $this->Group->get_all_by_filter();
-        $data['groups']   = format_dropdown($list_group);
+        $group_list     = $this->group_model->findAll();
+        $data['groups'] = format_dropdown($group_list);
         //edit
         if (!empty($id) && is_numeric($id)) {
-            $data['text_form']   = lang('text_edit');
-            $data['text_submit'] = lang('button_save');
+            $data['text_form']   = lang('ConfigAdmin.text_edit');
 
-            $data_form = $this->Config->get($id);
+            $data_form = $this->model->find($id);
             if (empty($data_form)) {
-                set_alert(lang('error_empty'), ALERT_ERROR);
-                redirect(self::MANAGE_URL);
+                set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+                return redirect()->to(site_url(self::MANAGE_URL));
             }
 
             // display the edit user form
-            $data['csrf']      = create_token();
             $data['edit_data'] = $data_form;
         } else {
-            $data['text_form']   = lang('text_add');
-            $data['text_submit'] = lang('button_add');
+            $data['text_form']   = lang('ConfigAdmin.text_add');
         }
 
-        $data['text_cancel']   = lang('text_cancel');
-        $data['button_cancel'] = base_url(self::MANAGE_URL.http_get_query());
+        $data['errors'] = $this->errors;
 
-        if (!empty($this->errors)) {
-            $data['errors'] = $this->errors;
-        }
-
-        $this->theme->title($data['text_form']);
         $this->breadcrumb->add($data['text_form'], base_url(self::MANAGE_URL));
+        $data['breadcrumb'] = $this->breadcrumb->render();
 
-        if (isset($_GET['tab_group_id'])) {
-            $this->session->set_userdata('tab_group_id', $_GET['tab_group_id']);
-        } elseif (empty($this->session->tab_group_id)) {
-            $this->session->set_userdata('tab_group_id', 0);
+        if (!empty($this->request->getGet('tab_group_id'))) {
+            session()->set('tab_group_id', $this->request->getGet('tab_group_id'));
+        } elseif (empty(session('tab_group_id'))) {
+            session()->set('tab_group_id', 0);
         }
 
-        theme_load('form', $data);
+        add_meta(['title' => $data['text_form']], $this->themes);
+
+        $this->themes::load('form', $data);
     }
 
-    protected function validate_form()
+    private function _validateForm()
     {
-        $this->form_validation->set_rules('config_key', lang('text_config_key'), 'trim|required');
-        //$this->form_validation->set_rules('config_value', lang('text_config_value'), 'trim|required');
+        $this->validator->setRule('config_key', lang('ConfigAdmin.text_config_key'), 'required');
 
-        $is_validation = $this->form_validation->run();
-        $this->errors  = $this->form_validation->error_array();
+        $is_validation = $this->validator->withRequest($this->request)->run();
+        $this->errors  = $this->validator->getErrors();
 
         //check slug
-        if (!empty($this->input->post('config_key'))) {
-            if (!empty($this->input->post('id'))) {
-                $slug = $this->Config->where(['config_key' => $this->input->post('config_key'), 'id !=' => $this->input->post('id')])->get_all();
+        if (!empty($this->request->getPath('config_key'))) {
+            if (!empty($this->request->getPath('id'))) {
+                $key_list = $this->model->where('config_key', $this->request->getPath('config_key'))->whereNotIn('id', $this->request->getPath('id'))->findAll();
             } else {
-                $slug = $this->Config->where('config_key', $this->input->post('config_key'))->get_all();
+                $key_list = $this->model->where('config_key', $this->request->getPath('config_key'))->findAll();
             }
 
-            if (!empty($slug)) {
-                $this->errors['config_key'] = lang('error_config_key_exists');
+            if (!empty($key_list)) {
+                $this->errors['config_key'] = lang('ConfigAdmin.error_config_key_exists');
             }
         }
 
@@ -455,32 +413,27 @@ class Manage extends Admin_Controller
 
     public function publish()
     {
-        if (!$this->input->is_ajax_request()) {
-            show_404();
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        //phai full quyen hoac duoc cap nhat
-        if (!$this->acl->check_acl()) {
-            json_output(['status' => 'ng', 'msg' => lang('error_permission_edit')]);
+        $token = csrf_hash();
+
+        if (empty($this->request->getPost())) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        if (empty($_POST)) {
-            json_output(['status' => 'ng', 'msg' => lang('error_json')]);
-        }
-
-        $id        = $this->input->post('id');
-        $item_edit = $this->Config->get($id);
+        $id        = $this->request->getPost('id');
+        $item_edit = $this->model->find($id);
         if (empty($item_edit)) {
-            json_output(['status' => 'ng', 'msg' => lang('error_empty')]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $item_edit['published'] = !empty($_POST['published']) ? STATUS_ON : STATUS_OFF;
-        if (!$this->Config->update($item_edit, $id)) {
-            $data = ['status' => 'ng', 'msg' => lang('error_json')];
-        } else {
-            $data = ['status' => 'ok', 'msg' => lang('text_published_success')];
+        $item_edit['published'] = !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF;
+        if (!$this->model->update($id, $item_edit)) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        json_output($data);
+        json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')]);
     }
 }

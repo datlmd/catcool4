@@ -1,22 +1,26 @@
-<?php namespace App\Modules\Permissions\Models;
+<?php namespace App\Modules\Configs\Models;
 
 use App\Models\MyModel;
-use App\Modules\Users\Models\UserPermissionModel;
 
 class ConfigModel extends MyModel
 {
-    protected $table      = 'permission';
+    protected $table      = 'config';
     protected $primaryKey = 'id';
 
     protected $allowedFields = [
         'id',
-        'name',
+        'config_key',
+        'config_value',
         'description',
+        'user_id',
+        'group_id',
         'published',
+        'ctime',
+        'mtime',
     ];
 
-    const PERMISSION_CACHE_NAME   = 'permission_list';
-    const PERMISSION_CACHE_EXPIRE = YEAR;
+    const CONFIG_CACHE_NAME   = 'config_list';
+    const CONFIG_CACHE_EXPIRE = YEAR;
 
     function __construct()
     {
@@ -30,26 +34,28 @@ class ConfigModel extends MyModel
         $where = null;
 
         if (!empty($filter["id"])) {
-            $where .= "id IN(" . (is_array($filter["id"]) ? implode(',', $filter["id"]) : $filter["id"]) . ")";
+            $filter["id"] = (!is_array($filter["id"])) ? explode(',', $filter["id"]) : $filter["id"];
+            $this->whereIn($filter["id"]);
         }
 
-        if (!empty($filter["name"])) {
-            $where .= empty($where) ? "" : " AND ";
-            $where .= "(name LIKE '%" . $filter["name"] . "%' OR description LIKE '%" . $filter["name"] . "%')";
+        if (!empty($filter["config_key"])) {
+            $this->like('config_key', $filter["config_key"]);
+        }
+
+        if (!empty($filter["config_value"])) {
+            $this->like('config_value', $filter["config_value"]);
         }
 
         if (!empty($where)) {
             $this->where($where);
         }
 
-        $this->orderBy($sort, $order);
-
-        return $this;
+        return $this->orderBy($sort, $order)->findAll();
     }
 
-    public function getListPublished($is_cache = true)
+    public function getListPublished($is_cache = false)
     {
-        $result = $is_cache ? cache()->get(self::PERMISSION_CACHE_NAME) : null;
+        $result = $is_cache ? cache()->get(self::CONFIG_CACHE_NAME) : null;
         if (empty($result)) {
             $result = $this->where(['published' => STATUS_ON])->findAll();
             if (empty($result)) {
@@ -58,111 +64,62 @@ class ConfigModel extends MyModel
 
             if ($is_cache) {
                 // Save into the cache for $expire_time 1 year
-                cache()->save(self::PERMISSION_CACHE_NAME, $result, self::PERMISSION_CACHE_EXPIRE);
+                cache()->save(self::CONFIG_CACHE_NAME, $result, self::CONFIG_CACHE_EXPIRE);
             }
         }
 
         return $result;
     }
 
-    public function deleteCache()
+    public function write_file()
     {
-        cache()->delete(self::PERMISSION_CACHE_NAME);
-        return true;
-    }
+        try {
 
-    public function getTextPermission($permission = null)
-    {
-        helper(['cookie', 'catcool']);
-        \Config\Services::language()->setLocale(get_lang(true));
+            $this->load->model("languages/Language", 'Language');
 
-        $text_permission = lang('PermissionAdmin.not_permission');
-        $permission      = (!empty($permission)) ? $permission : uri_string();
+            $list_language_config = [];
+            $list_language = $this->Language->get_list_by_publish();
+            foreach ($list_language as $key => $value) {
+                unset($value['ctime']);
+                unset($value['mtime']);
+                $list_language_config[$value['id']] = $value;
 
-        if (strpos($permission, 'add') !== false) {
-            $text_permission = lang('Admin.error_permission_add');
-        } elseif (strpos($permission, 'edit') !== false || strpos($permission, 'publish') !== false) {
-            $text_permission = lang('Admin.error_permission_edit');
-        } elseif (strpos($permission, 'delete') !== false) {
-            $text_permission = lang('Admin.error_permission_delete');
-        } elseif (strpos($permission, 'execute') !== false || strpos($permission, 'write') !== false) {
-            $text_permission = lang('Admin.error_permission_execute');
-        } elseif (strpos($permission, 'super') !== false) {
-            $text_permission = lang('Admin.error_permission_super_admin');
-        } elseif (strpos($permission, 'index') !== false) {
-            $text_permission = lang('Admin.error_permission_read');
-        } elseif (!empty($permission)) {
-            $permission = explode('/', $permission);
-            if (!empty($permission[1]) && $permission[1] == 'manage') {
-                $text_permission = lang('Admin.error_permission_read');
             }
-        }
 
-        return $text_permission;
-    }
+            $settings = $this->get_list_by_publish();
 
-    public function checkPermission($permission_name = null)
-    {
-        if (empty(session('is_admin')) || empty(session('user_id'))) {
-            return false;
-        }
+            // file content
+            $file_content = "<?php \n\n";
+            if (!empty($settings)) {
+                foreach ($settings as $setting) {
+                    $config_value = $setting['config_value'];
+                    if (is_numeric($config_value) || is_bool($config_value) || in_array($config_value, ['true', 'false', 'TRUE', 'FALSE']) || strpos($config_value, '[') !== false) {
+                        $config_value = $config_value;
+                    } else if ($setting['config_key'] == 'file_mime_allowed') {
+                        $config_value = str_replace("'", '"', $config_value);
+                        $config_value = sprintf("'%s'", $config_value);
+                    } else {
+                        $config_value = str_replace('"', "'", $config_value);
+                        $config_value = sprintf('"%s"', $config_value);
+                    }
 
-        $is_super_admin = session('super_admin');
-        if (!empty($is_super_admin) && $is_super_admin === TRUE) {
-            return true;
-        }
+                    if (!empty($list_language_config) && $setting['config_key'] == 'list_language_cache') {
+                        $config_value = "'" . json_encode($list_language_config) . "'";
+                    }
 
-        $user_permission_model = new UserPermissionModel();
-        $user_id               = session('user_id');
-        $permission            = [];
-        $permission_name       = (!empty($permission_name)) ? $permission_name : uri_string();
-        $permission_name       = explode('/', $permission_name);
+                    if (!empty($setting['description'])) {
+                        $file_content .= "//" . $setting['description'] . "\n";
+                    }
 
-        $permission_tmp = [];
-        foreach ($permission_name as $val) {
-            if (is_numeric($val)) {
-                continue;
+                    $file_content .= "\$config['" . $setting['config_key'] . "'] = " . $config_value . ";\n\n";
+                }
             }
-            $permission_tmp[] = $val;
-        }
-        $permission_name = implode('/', $permission_tmp);
 
-        $permissions = $this->getListPublished();
-        if (empty($permissions)) {
-            return false;
-        }
-
-        foreach ($permissions as $value) {
-            if (!empty($value['name']) && $permission_name == $value['name']) {
-                $permission = $value;
-                break;
-            }
-        }
-
-        $relationships = $user_permission_model->getListPermissionByUserId($user_id);
-        if (empty($permission) || empty($relationships)
-            || !in_array($permission['id'], array_column($relationships, 'permission_id'))) {
+            write_file(CATCOOLPATH . 'media/config/config.php', $file_content);
+        } catch (Exception $e) {
             return false;
         }
 
         return true;
-    }
-
-    public function formatListPublished($permissions)
-    {
-        if (empty($permissions)) {
-            return $permissions;
-        }
-
-        $list = [];
-        foreach ($permissions as $value) {
-            $action = explode('/', $value['name']);
-            if (empty($action)) {
-                continue;
-            }
-            $list[$action[0]][] = $value;
-        }
-
-        return $list;
     }
 }
