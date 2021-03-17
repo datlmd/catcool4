@@ -29,7 +29,7 @@
                     <h5 class="card-header"><i class="fas {if !empty($edit_data.id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                     <div class="card-body">
                         <div class="form-group row">
-                            <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                            <label class="col-12 col-sm-3 text-sm-end required-label col-form-label">
                                 {lang('LanguageAdmin.text_name')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                            <label class="col-12 col-sm-3 text-sm-end required-label col-form-label">
                                 {lang('LanguageAdmin.text_code')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
