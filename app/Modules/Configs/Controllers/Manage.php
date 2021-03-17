@@ -216,8 +216,8 @@ class Manage extends AdminController
             $timezone_list[$timezone] = $timezone . $hour;
         }
 
-        if (!empty(config_item('timezone'))) {
-            date_default_timezone_set(config_item('timezone'));//'Asia/Saigon'
+        if (!empty(config_item('app_timezone'))) {
+            date_default_timezone_set(config_item('app_timezone'));//'Asia/Saigon'
         } else {
             date_default_timezone_set('Asia/Saigon');
         }

@@ -59,7 +59,7 @@ class ConfigModel extends MyModel
     {
         $result = $is_cache ? cache()->get(self::CONFIG_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->where(['published' => STATUS_ON])->findAll();
+            $result = $this->orderBy('config_key', 'ASC')->where(['published' => STATUS_ON])->findAll();
             if (empty($result)) {
                 return null;
             }

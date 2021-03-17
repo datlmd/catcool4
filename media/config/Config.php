@@ -5,69 +5,62 @@ use CodeIgniter\Config\BaseConfig;
 class CustomConfig extends BaseConfig 
 {
 	/**
-	 * Ngôn ngữ mặc định
+	 * tên nhóm admin, để check nhứng user nào có quyền admin
 	 */
-	public $language = "vn";
+	public $adminGroup = "admin";
 
 	/**
-	 * Danh sách ngôn ngữ lấy từ db langluages
+	 * alexaVerifyID
 	 */
-	public $listLanguageCache = '{"1":{"id":"1","name":"Vietnames","code":"vn","icon":null,"user_id":"1","published":"1"},"2":{"id":"2","name":"English","code":"english","icon":"flag-icon flag-icon-gb","user_id":"1","published":"1"}}';
+	public $alexaVerifyId = "";
+
+	public $appTimezone = "Asia/Ho_Chi_Minh";
 
 	/**
-	 * Hiển thị Selectbox ngôn ngữ?
+	 * Avatar mặc định cho nữ
 	 */
-	public $isShowSelectLanguage = true;
+	public $avatarDefaultFemale = "images/female.png";
 
 	/**
-	 * Set theme frontend default/kenhtraitim
+	 * Avatar mặc định cho nam
 	 */
-	public $themeFrontend = "kenhtraitim";
+	public $avatarDefaultMale = "images/male.png";
 
 	/**
-	 * Set theme cho admin
+	 * Khai báo html cho breadcrumb close
 	 */
-	public $themeAdmin = "admin";
+	public $breadcrumbClose = "</ul>";
 
 	/**
-	 * SEO site name mặc định
+	 * Khai báo html đóng cho breadcrumb_item_close
 	 */
-	public $siteName = "Cat Cool CMS";
+	public $breadcrumbItemClose = "</li>";
 
 	/**
-	 * SEO keywords mặc định
+	 * Khai báo html cho breadcrumb_item_open
 	 */
-	public $siteKeywords = "thiet ke web, website, chuyen nghiep";
+	public $breadcrumbItemOpen = "<li class='active'>";
 
 	/**
-	 * SEO description
+	 * Khai báo html cho breadcrumb open
 	 */
-	public $siteDescription = "thiết kế website chuyên nghiệp";
+	public $breadcrumbOpen = "<ul class='breadcrumb breadcrumb-light d-block text-center appear-animation' data-appear-animation='fadeIn' data-appear-animation-delay='300'>";
 
 	/**
 	 * key hash
 	 */
 	public $catcoolHash = "pass!@#$%";
 
-	/**
-	 * tên nhóm admin, để check nhứng user nào có quyền admin
-	 */
-	public $adminGroup = "admin";
+	public $compression = "";
+
+	public $country = 237;
+
+	public $countryProvince = 79;
 
 	/**
-	 * Thời gian expire cookie của user khi login
+	 * Thời gian expire của csrf
 	 */
-	public $userExpire = 0;
-
-	/**
-	 * Tên cookie login cho user
-	 */
-	public $rememberCookieName = "remember_cookie_catcool";
-
-	/**
-	 * Có cần check csrf trong admin hay không?
-	 */
-	public $isCheckCsrfAdmin = TRUE;
+	public $csrfCookieExpire = 3600;
 
 	/**
 	 * Set tên input khi sử dụng giá trị cho csrf key
@@ -79,17 +72,133 @@ class CustomConfig extends BaseConfig
 	 */
 	public $csrfNameValue = "t_cc_value";
 
-	/**
-	 * Thời gian expire của csrf
-	 */
-	public $csrfCookieExpire = 3600;
+	public $currency = "VND";
 
-	public $siteUrl = "http://192.168.64.2/dev/catcool";
+	/**
+	 * Khai báo định dạng ngày tháng
+	 */
+	public $dateFormat = "d/m/Y H:i:s";
+
+	/**
+	 * Ngôn ngữ mặc định
+	 */
+	public $defaultLocale = "vi";
+
+	public $defaultLocaleAdmin = "en";
+
+	public $emailEngine = "smtp";
+
+	/**
+	 * Email from
+	 */
+	public $emailFrom = "lmd.dat@gmail.com";
+
+	/**
+	 * Setting email host
+	 */
+	public $emailHost = "ssl://smtp.googlemail.com";
+
+	public $emailParameter = "";
+
+	/**
+	 * Port email
+	 */
+	public $emailPort = 465;
+
+	/**
+	 * email smtp pass
+	 */
+	public $emailSmtpPass = "tovyyqgibmnruaes";
+
+	public $emailSmtpTimeout = 6;
+
+	/**
+	 * Tài khoảng email smtp
+	 */
+	public $emailSmtpUser = "lmd.dat@gmail.com";
+
+	/**
+	 * Email Subject title
+	 */
+	public $emailSubjectTitle = "CatCool FW";
+
+	/**
+	 * Chế độ tối
+	 */
+	public $enableDarkMode = true;
+
+	/**
+	 * true sử dụng menu bằng icon, false sẽ sử dụng menu kiểu text
+	 */
+	public $enableIconMenuAdmin = true;
 
 	/**
 	 * Bật chế độ resize hình
 	 */
 	public $enableResizeImage = true;
+
+	/**
+	 * Hiển thị thanh menu, false sẽ ẩn menu gọn lại
+	 */
+	public $enableScrollMenuAdmin = true;
+
+	public $encryptionKey = "";
+
+	public $fbAppId = "";
+
+	public $fbPages = "";
+
+	public $fileEncryptName = false;
+
+	public $fileExtAllowed = "zip|txt|png|PNG|jpe|JPE|jpeg|JPEG|jpg|JPG|gif|GIF|bmp|BMP|ico|tiff|tif|svg|svgz|zip|rar|msi|cab|mp3|qt|mov|pdf|psd|ai|eps|ps|doc|mp4";
+
+	public $fileMaxHeight = 0;
+
+	/**
+	 * Kich thuoc file toi da
+	 */
+	public $fileMaxSize = 300000;
+
+	public $fileMaxWidth = 0;
+
+	public $fileMimeAllowed = 'text/plain|image/png|image/jpeg|image/gif|image/bmp|image/tiff|image/svg+xml|application/zip|"application/zip"|application/x-zip|"application/x-zip"|application/x-zip-compressed|"application/x-zip-compressed"|application/rar|"application/rar"|application/x-rar|"application/x-rar"|application/x-rar-compressed|"application/x-rar-compressed"|application/octet-stream|"application/octet-stream"|audio/mpeg|video/quicktime|application/pdf';
+
+	/**
+	 * https://fixer.io/quickstart
+	 */
+	public $fixerIoAccessKey = "3fabec301ee1683b95fd8240bb5aba97";
+
+	/**
+	 * Bật SSL
+	 */
+	public $forceGlobalSecureRequests = true;
+
+	public $gaEnabled = true;
+
+	/**
+	 * GA ID
+	 */
+	public $gaSiteid = "";
+
+	/**
+	 * google-site-verification
+	 */
+	public $googleSiteVerification = "";
+
+	/**
+	 * Chiều cao tối đa của hình trên mobile
+	 */
+	public $imageHeightMobile = 800;
+
+	/**
+	 * Chiều cao tối đa của hình trên pc
+	 */
+	public $imageHeightPc = 1024;
+
+	/**
+	 * Icon website
+	 */
+	public $imageIconUrl = "root/cropped-logo_cv6080-32x32.png";
 
 	/**
 	 * Hình logo
@@ -101,15 +210,49 @@ class CustomConfig extends BaseConfig
 	 */
 	public $imageNone = "root/logo-hoatuoi24h-21.png";
 
-	/**
-	 * Chiều rộng hình tối đa trên pc
-	 */
-	public $imageWidthPc = 1280;
+	public $imageQuality = 60;
 
 	/**
-	 * Chiều cao tối đa của hình trên pc
+	 * RESIZE_IMAGE_DEFAULT_HEIGHT
 	 */
-	public $imageHeightPc = 1024;
+	public $imageThumbnailLargeHeight = 2048;
+
+	/**
+	 * RESIZE_IMAGE_DEFAULT_WIDTH
+	 */
+	public $imageThumbnailLargeWidth = 2048;
+
+	/**
+	 * RESIZE_IMAGE_THUMB_HEIGHT
+	 */
+	public $imageThumbnailSmallHeight = 800;
+
+	/**
+	 * RESIZE_IMAGE_THUMB_WIDTH
+	 */
+	public $imageThumbnailSmallWidth = 800;
+
+	public $imageWatermark = "top_right";
+
+	public $imageWatermarkFontColor = "#15b07f";
+
+	public $imageWatermarkFontPath = "./system/fonts/Lemonada.ttf";
+
+	public $imageWatermarkFontSize = 46;
+
+	public $imageWatermarkHorOffset = -20;
+
+	public $imageWatermarkOpacity = 50;
+
+	public $imageWatermarkPath = "";
+
+	public $imageWatermarkShadowColor = "";
+
+	public $imageWatermarkShadowDistance = "";
+
+	public $imageWatermarkText = "Cat Cool Lê";
+
+	public $imageWatermarkVrtOffset = 20;
 
 	/**
 	 * Chiều rộng tối đa của hình trên mobile (pixel)
@@ -117,99 +260,33 @@ class CustomConfig extends BaseConfig
 	public $imageWidthMobile = 800;
 
 	/**
-	 * Chiều cao tối đa của hình trên mobile
+	 * Chiều rộng hình tối đa trên pc
 	 */
-	public $imageHeightMobile = 800;
+	public $imageWidthPc = 1280;
 
 	/**
-	 * Hiển thị thanh menu, false sẽ ẩn menu gọn lại
+	 * $indexPage = index.php
 	 */
-	public $enableScrollMenuAdmin = true;
+	public $indexPage = "";
 
 	/**
-	 * true sử dụng menu bằng icon, false sẽ sử dụng menu kiểu text
+	 * Có cần check csrf trong admin hay không?
 	 */
-	public $enableIconMenuAdmin = true;
+	public $isCheckCsrfAdmin = TRUE;
 
 	/**
-	 * Avatar mặc định cho nam
+	 * Hiển thị Selectbox ngôn ngữ?
 	 */
-	public $avatarDefaultMale = "images/male.png";
+	public $isShowSelectLanguage = true;
+
+	public $lengthClass = 1;
 
 	/**
-	 * Avatar mặc định cho nữ
+	 * Danh sách ngôn ngữ lấy từ db langluages
 	 */
-	public $avatarDefaultFemale = "images/female.png";
+	public $listLanguageCache = '{"1":{"id":"1","name":"Vietnames","code":"vn","icon":null,"user_id":"1","published":"1"},"2":{"id":"2","name":"English","code":"english","icon":"flag-icon flag-icon-gb","user_id":"1","published":"1"}}';
 
-	/**
-	 * Setting email host
-	 */
-	public $emailHost = "ssl://smtp.googlemail.com";
-
-	/**
-	 * Port email
-	 */
-	public $emailPort = 465;
-
-	/**
-	 * Tài khoảng email smtp
-	 */
-	public $emailSmtpUser = "lmd.dat@gmail.com";
-
-	/**
-	 * email smtp pass
-	 */
-	public $emailSmtpPass = "tovyyqgibmnruaes";
-
-	/**
-	 * Email from
-	 */
-	public $emailFrom = "lmd.dat@gmail.com";
-
-	/**
-	 * Email Subject title
-	 */
-	public $emailSubjectTitle = "CatCool FW";
-
-	/**
-	 * Bật SSL
-	 */
-	public $enableSsl = TRUE;
-
-	/**
-	 * Khai báo html cho breadcrumb open
-	 */
-	public $breadcrumbOpen = "<ul class='breadcrumb breadcrumb-light d-block text-center appear-animation' data-appear-animation='fadeIn' data-appear-animation-delay='300'>";
-
-	/**
-	 * Khai báo html cho breadcrumb close
-	 */
-	public $breadcrumbClose = "</ul>";
-
-	/**
-	 * Khai báo html cho breadcrumb_item_open
-	 */
-	public $breadcrumbItemOpen = "<li class='active'>";
-
-	/**
-	 * Khai báo html đóng cho breadcrumb_item_close
-	 */
-	public $breadcrumbItemClose = "</li>";
-
-	/**
-	 * Khai báo định dạng ngày tháng
-	 */
-	public $dateFormat = "d/m/Y H:i:s";
-
-	/**
-	 * Icon website
-	 */
-	public $imageIconUrl = "root/cropped-logo_cv6080-32x32.png";
-
-	/**
-	 * Chế độ tối
-	 */
-	public $enableDarkMode = true;
+	public $maintenance = "";
 
 	/**
 	 * So luong trang
@@ -222,120 +299,48 @@ class CustomConfig extends BaseConfig
 	public $paginationLimitAdmin = 20;
 
 	/**
-	 * Kich thuoc file toi da
+	 * Tên cookie login cho user
 	 */
-	public $fileMaxSize = 300000;
-
-	public $fileExtAllowed = "zip|txt|png|PNG|jpe|JPE|jpeg|JPEG|jpg|JPG|gif|GIF|bmp|BMP|ico|tiff|tif|svg|svgz|zip|rar|msi|cab|mp3|qt|mov|pdf|psd|ai|eps|ps|doc|mp4";
-
-	public $fileMimeAllowed = 'text/plain|image/png|image/jpeg|image/gif|image/bmp|image/tiff|image/svg+xml|application/zip|"application/zip"|application/x-zip|"application/x-zip"|application/x-zip-compressed|"application/x-zip-compressed"|application/rar|"application/rar"|application/x-rar|"application/x-rar"|application/x-rar-compressed|"application/x-rar-compressed"|application/octet-stream|"application/octet-stream"|audio/mpeg|video/quicktime|application/pdf';
-
-	public $fileMaxWidth = 0;
-
-	public $fileMaxHeight = 0;
-
-	public $fileEncryptName = false;
-
-	/**
-	 * RESIZE_IMAGE_DEFAULT_WIDTH
-	 */
-	public $imageThumbnailLargeWidth = 2048;
-
-	/**
-	 * RESIZE_IMAGE_DEFAULT_HEIGHT
-	 */
-	public $imageThumbnailLargeHeight = 2048;
-
-	/**
-	 * RESIZE_IMAGE_THUMB_WIDTH
-	 */
-	public $imageThumbnailSmallWidth = 800;
-
-	/**
-	 * RESIZE_IMAGE_THUMB_HEIGHT
-	 */
-	public $imageThumbnailSmallHeight = 800;
-
-	public $imageQuality = 60;
-
-	public $imageWatermark = "top_right";
-
-	public $imageWatermarkText = "Cat Cool Lê";
-
-	public $imageWatermarkPath = "";
-
-	public $imageWatermarkHorOffset = -20;
-
-	public $imageWatermarkVrtOffset = 20;
-
-	public $imageWatermarkFontPath = "./system/fonts/Lemonada.ttf";
-
-	public $imageWatermarkFontSize = 46;
-
-	public $imageWatermarkFontColor = "#15b07f";
-
-	public $imageWatermarkShadowColor = "";
-
-	public $imageWatermarkShadowDistance = "";
-
-	public $imageWatermarkOpacity = 50;
-
-	public $languageAdmin = "english";
-
-	public $lengthClass = 1;
-
-	public $weightClass = 1;
-
-	public $timezone = "Asia/Ho_Chi_Minh";
-
-	public $country = 237;
-
-	public $countryProvince = 79;
-
-	public $currency = "VND";
-
-	/**
-	 * https://fixer.io/quickstart
-	 */
-	public $fixerIoAccessKey = "3fabec301ee1683b95fd8240bb5aba97";
-
-	public $emailEngine = "smtp";
-
-	public $emailParameter = "";
-
-	public $emailSmtpTimeout = 6;
-
-	public $encryptionKey = "";
-
-	public $maintenance = "";
-
-	public $seoUrl = "";
+	public $rememberCookieName = "remember_cookie_catcool";
 
 	public $robots = "";
 
-	public $compression = "";
-
-	public $gaEnabled = true;
+	public $seoUrl = "";
 
 	/**
-	 * GA ID
+	 * SEO description
 	 */
-	public $gaSiteid = "";
-
-	public $fbAppId = "";
-
-	public $fbPages = "";
-
-	/**
-	 * google-site-verification
-	 */
-	public $googleSiteVerification = "";
-
-	/**
-	 * alexaVerifyID
-	 */
-	public $alexaVerifyId = "";
+	public $siteDescription = "thiết kế website chuyên nghiệp";
 
 	public $siteImage = "";
+
+	/**
+	 * SEO keywords mặc định
+	 */
+	public $siteKeywords = "thiet ke web, website, chuyen nghiep";
+
+	/**
+	 * SEO site name mặc định
+	 */
+	public $siteName = "Cat Cool CMS";
+
+	public $siteUrl = "http://192.168.64.2/dev/catcool";
+
+	/**
+	 * Set theme cho admin
+	 */
+	public $themeAdmin = "admin";
+
+	/**
+	 * Set theme frontend default/kenhtraitim
+	 */
+	public $themeFrontend = "kenhtraitim";
+
+	/**
+	 * Thời gian expire cookie của user khi login
+	 */
+	public $userExpire = 0;
+
+	public $weightClass = 1;
 
 }

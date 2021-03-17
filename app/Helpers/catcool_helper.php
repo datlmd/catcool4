@@ -5,9 +5,9 @@ if (!function_exists('get_config_lang'))
     function get_config_lang($is_admin = false)
     {
         if (!empty($is_admin)) {
-            return config_item('language_admin');
+            return config_item('default_locale_admin');
         }
-        return config_item('language');
+        return config_item('default_locale');
     }
 }
 
@@ -1334,7 +1334,7 @@ if(!function_exists('file_get_contents_ssl'))
             ],
         ];
 
-        if (empty(config_item('enable_ssl'))) {
+        if (empty(config_item('force_global_secure_requests'))) {
             return file_get_contents($url);
         }
 
