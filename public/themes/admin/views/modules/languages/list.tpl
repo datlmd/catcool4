@@ -1,30 +1,46 @@
+{strip}
 {form_hidden('manage_url', $manage_url)}
+{csrf_field('cc_token')}
 <div class="container-fluid  dashboard-content">
 	<div class="row">
 		<div class="col-sm-7 col-12">
-            {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
+            {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('LanguageAdmin.heading_title')}
 		</div>
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
-			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></a>
+			<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
+			<a href="{site_url($manage_url)}/add{http_get_query()}" class="btn btn-sm btn-primary btn-space me-0" title="{lang('LanguageAdmin.text_add')}"><i class="fas fa-plus me-1"></i>{lang('LanguageAdmin.text_add')}</a>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="card">
-				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('text_list')}</h5>
+				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('LanguageAdmin.text_list')}</h5>
 				<div class="card-body">
 					{if !empty($list)}
 						<div class="table-responsive">
 							<table class="table table-striped table-hover table-bordered second">
 								<thead>
 									<tr class="text-center">
-										<th width="50">{lang('column_id')}</th>
-										<th>{lang('column_name')}</th>
-										<th>{lang('column_code')}</th>
-										<th>{lang('column_icon')}</th>
-										<th>{lang('column_published')}</th>
-										<th width="160">{lang('column_function')}</th>
+										<th width="50">
+											<a href="{site_url($manage_url)}?sort=id&order={$order}{$url}" class="text-dark">
+												{lang('Admin.column_id')}
+												{if $sort eq 'id'}
+													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+												{/if}
+											</a>
+										</th>
+										<th>
+											<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
+												{lang('LanguageAdmin.column_name')}
+												{if $sort eq 'name'}
+													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+												{/if}
+											</a>
+										</th>
+										<th>{lang('LanguageAdmin.column_code')}</th>
+										<th>{lang('LanguageAdmin.column_icon')}</th>
+										<th>{lang('Admin.column_published')}</th>
+										<th width="160">{lang('Admin.column_function')}</th>
 										<th width="50">{form_checkbox('manage_check_all')}</th>
 									</tr>
 								</thead>
@@ -43,8 +59,8 @@
 										</td>
 										<td class="text-center">
 											<div class="btn-group ms-auto">
-												<a href="{$manage_url}/edit/{$item.id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
-												<button type="button" data-id="{$item.id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
+												<a href="{$manage_url}/edit/{$item.id}" class="btn btn-sm btn-outline-light" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
+												<button type="button" data-id="{$item.id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
 											</div>
 										</td>
 										<td class="text-center">{form_checkbox('manage_ids[]', $item.id)}</td>
@@ -53,12 +69,12 @@
 								</tbody>
 							</table>
 						</div>
-						{include file=get_theme_path('views/inc/paging.inc.tpl')}
 					{else}
-						{lang('text_no_results')}
+						{lang('Admin.text_no_results')}
 					{/if}
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+{/strip}

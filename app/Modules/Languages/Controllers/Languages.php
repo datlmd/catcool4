@@ -1,6 +1,8 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php namespace App\Modules\Languages\Controllers;
 
-class Languages extends My_Controller
+use App\Controllers\BaseController;
+
+class Languages extends BaseController
 {
     public $config_form = [];
     public $data        = [];
@@ -12,13 +14,13 @@ class Languages extends My_Controller
         //set theme
     }
 
-    public function switch_lang($code)
+    public function switch($code)
     {
         set_lang($code);
 
-//        $this->load->model("menus/Menu", 'Menu');
-//        $this->Menu->delete_cache();
+        $menu_model = new  \App\Modules\Menus\Models\MenuModel();
+        $menu_model->deleteCache();
 
-        redirect(previous_url());
+        return redirect()->back();
     }
 }
