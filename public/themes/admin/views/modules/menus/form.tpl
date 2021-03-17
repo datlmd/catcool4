@@ -142,7 +142,7 @@
                                 {/if}
                                 <div class="input-group">
                                     <input type="text" name="icon" value="{old('icon', $icon)}" id="icon" class="form-control icon-picker-class-input">
-                                    <span class="input-group-text icon-picker-demo" id="input_icon_picker"><i class="{$icon}"></i></span>
+                                    <span class="input-group-text icon-picker-demo" id="input_icon_picker"><i class="{old('icon', $icon)}"></i></span>
                                 </div>
                             </div>
                         </div>
