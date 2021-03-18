@@ -1,13 +1,15 @@
+{strip}
 {form_hidden('manage_url', $manage_url)}
+{csrf_field('cc_token')}
 <div class="container-fluid  dashboard-content">
 	<div class="row">
 		<div class="col-sm-7 col-12">
-            {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
+            {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('ModuleAdmin.heading_title')}
 		</div>
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
-			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></a>
-			<button type="button" id="btn_search" class="btn btn-sm btn-brand" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
+			<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
+			<a href="{site_url($manage_url)}/add{http_get_query()}" class="btn btn-sm btn-primary btn-space" title="{lang('ModuleAdmin.text_add')}"><i class="fas fa-plus me-1"></i>{lang('ModuleAdmin.text_add')}</a>
+			<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space me-0" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter me-1"></i>{lang('Admin.filter_header')}</button>
 		</div>
 	</div>
 	<div class="row">
@@ -15,32 +17,32 @@
 			{include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active=modules}
 		</div>
 		<div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12">
-			<div class="collapse {if $filter_active}show{/if}" id="filter_manage">
+			<div class="collapse {if !empty($filter.active)}show{/if}" id="filter_manage">
 				<div class="card">
 					{form_open(uri_string(), ['id' => 'filter_validationform', 'method' => 'get'])}
 					<div class="card-header">
 						<div class="row">
 							<div class="col-6">
-								<h5 class="mb-0 mt-1 ms-2"><i class="fas fa-filter me-2"></i>{lang('filter_header')}</h5>
+								<h5 class="mb-0 mt-1 ms-2"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
 							</div>
 							<div class="col-6 text-end">
-								<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('filter_submit')}</button>
+								<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('Admin.filter_submit')}</button>
 							</div>
 						</div>
 					</div>
 					<div class="card-body">
 						<div class="row">
 							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
-								{lang('text_module')}
-								{form_input('filter[module]', $this->input->get('filter[module]'), ['class' => 'form-control form-control-sm', 'placeholder' => lang('text_module')])}
+								{lang('ModuleAdmin.text_module')}
+								{form_input('filter_module', set_value('filter_module', $filter.module), ['class' => 'form-control form-control-sm', 'placeholder' => lang('ModuleAdmin.text_module')])}
 							</div>
 							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
-								{lang('text_sub_module')}
-								{form_input('filter[sub_module]', $this->input->get('filter[sub_module]'), ['class' => 'form-control form-control-sm', 'placeholder' => lang('text_sub_module')])}
+								{lang('ModuleAdmin.text_sub_module')}
+								{form_input('filter_sub_module', set_value('filter_sub_module', $filter.sub_module), ['class' => 'form-control form-control-sm', 'placeholder' => lang('ModuleAdmin.text_sub_module')])}
 							</div>
 							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
-								{lang('text_limit')}
-								{form_dropdown('filter_limit', get_list_limit(), $this->input->get('filter_limit'), ['class' => 'form-control form-control-sm'])}
+								{lang('Admin.text_limit')}
+								{form_dropdown('filter_limit', get_list_limit(), set_value('filter_limit', $filter.limit), ['class' => 'form-control form-control-sm'])}
 							</div>
 						</div>
 					</div>
@@ -48,19 +50,40 @@
 				</div>
 			</div>
 			<div class="card">
-				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('text_list')}</h5>
+				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('ModuleAdmin.text_list')}</h5>
 				<div class="card-body">
 					{if !empty($list)}
 						<div class="table-responsive">
 							<table class="table table-striped table-hover table-bordered second">
 								<thead>
 									<tr class="text-center">
-										<th width="50">{lang('column_id')}</th>
-										<th>{lang('text_module')}</th>
-										<th>{lang('text_sub_module')}</th>
-										<th>{lang('column_published')}</th>
+										<th width="50">
+											<a href="{site_url($manage_url)}?sort=id&order={$order}{$url}" class="text-dark">
+												{lang('Admin.column_id')}
+												{if $sort eq 'id'}
+													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+												{/if}
+											</a>
+										</th>
+										<th>
+											<a href="{site_url($manage_url)}?sort=module&order={$order}{$url}" class="text-dark">
+												{lang('ModuleAdmin.text_module')}
+												{if $sort eq 'module'}
+													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+												{/if}
+											</a>
+										</th>
+										<th>
+											<a href="{site_url($manage_url)}?sort=sub_module&order={$order}{$url}" class="text-dark">
+												{lang('ModuleAdmin.text_sub_module')}
+												{if $sort eq 'sub_module'}
+													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+												{/if}
+											</a>
+										</th>
+										<th>{lang('Admin.column_published')}</th>
 										<th>Language</th>
-										<th width="160">{lang('column_function')}</th>
+										<th width="160">{lang('Admin.column_function')}</th>
 										<th width="50">{form_checkbox('manage_check_all')}</th>
 									</tr>
 								</thead>
@@ -84,8 +107,8 @@
 										<td class="text-center">{anchor("translations/manage?module_id=`$item.id`", 'Translation')}</td>
 										<td class="text-center">
 											<div class="btn-group ms-auto">
-												<a href="{$manage_url}/edit/{$item.id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
-												<button type="button" data-id="{$item.id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
+												<a href="{site_url($manage_url)}/edit/{$item.id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_edit')}"{/if}><i class="fas fa-edit"></i></a>
+												<button type="button" data-id="{$item.id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 											</div>
 										</td>
 										<td class="text-center">{form_checkbox('manage_ids[]', $item.id)}</td>
@@ -94,12 +117,13 @@
 								</tbody>
 							</table>
 						</div>
-						{include file=get_theme_path('views/inc/paging.inc.tpl')}
+						{$pager->links('modules', 'admin')}
 					{else}
-						{lang('text_no_results')}
+						{lang('Admin.text_no_results')}
 					{/if}
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+{/strip}
