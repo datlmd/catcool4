@@ -4,6 +4,8 @@ use CodeIgniter\Config\BaseConfig;
 
 class CustomConfig extends BaseConfig 
 {
+	public $supportedLocales = ['vi','en'];
+
 	/**
 	 * tên nhóm admin, để check nhứng user nào có quyền admin
 	 */
@@ -56,21 +58,6 @@ class CustomConfig extends BaseConfig
 	public $country = 237;
 
 	public $countryProvince = 79;
-
-	/**
-	 * Thời gian expire của csrf
-	 */
-	public $csrfCookieExpire = 3600;
-
-	/**
-	 * Set tên input khi sử dụng giá trị cho csrf key
-	 */
-	public $csrfNameKey = "t_cc_key";
-
-	/**
-	 * Set tên input khi sử dụng csrf value
-	 */
-	public $csrfNameValue = "t_cc_value";
 
 	public $currency = "VND";
 
@@ -270,11 +257,6 @@ class CustomConfig extends BaseConfig
 	public $indexPage = "";
 
 	/**
-	 * Có cần check csrf trong admin hay không?
-	 */
-	public $isCheckCsrfAdmin = TRUE;
-
-	/**
 	 * Hiển thị Selectbox ngôn ngữ?
 	 */
 	public $isShowSelectLanguage = true;
@@ -284,9 +266,17 @@ class CustomConfig extends BaseConfig
 	/**
 	 * Danh sách ngôn ngữ lấy từ db langluages
 	 */
-	public $listLanguageCache = '{"1":{"id":"1","name":"Vietnames","code":"vn","icon":null,"user_id":"1","published":"1"},"2":{"id":"2","name":"English","code":"english","icon":"flag-icon flag-icon-gb","user_id":"1","published":"1"}}';
+	public $listLanguageCache = '{"1":{"id":"1","name":"Vietnames","code":"vi","icon":"","user_id":"1","published":"1"},"2":{"id":"2","name":"English","code":"en","icon":"flag-icon flag-icon-gb","user_id":"1","published":"1"}}';
 
 	public $maintenance = "";
+
+	/**
+	 * If true, the current Request object will automatically determine the
+language to use based on the value of the Accept-Language header.
+
+If false, no automatic detection will be performed.
+	 */
+	public $negotiateLocale = false;
 
 	/**
 	 * So luong trang
@@ -325,6 +315,8 @@ class CustomConfig extends BaseConfig
 	public $siteName = "Cat Cool CMS";
 
 	public $siteUrl = "http://192.168.64.2/dev/catcool";
+
+	public $baseURL = "http://192.168.64.2/dev/catcool";
 
 	/**
 	 * Set theme cho admin

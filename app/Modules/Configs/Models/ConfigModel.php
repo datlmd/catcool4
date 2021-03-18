@@ -31,8 +31,8 @@ class ConfigModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = empty($sort) ? 'id' : $sort;
-        $order = empty($order) ? 'DESC' : $order;
+        $sort  = empty($sort) ? 'config_key' : $sort;
+        $order = empty($order) ? 'ASC' : $order;
         $where = null;
 
         if (!empty($filter["id"])) {
@@ -80,19 +80,23 @@ class ConfigModel extends MyModel
 
             $language_model = new LanguageModel();
 
+            $supported_locales = [];
             $list_language_config = [];
             $list_language = $language_model->getListPublished();
             foreach ($list_language as $key => $value) {
                 unset($value['ctime']);
                 unset($value['mtime']);
                 $list_language_config[$value['id']] = $value;
-
+                $supported_locales[] = $value['code'];
             }
 
             $settings = $this->getListPublished();
 
             // file content
             $file_content = "<?php namespace Config;\n\nuse CodeIgniter\Config\BaseConfig;\n\nclass CustomConfig extends BaseConfig \n{\n";
+
+            // add $supported_locales
+            $file_content .= "\tpublic \$supportedLocales = ['" . implode("','", $supported_locales) . "'];\n\n";
 
             if (!empty($settings)) {
                 foreach ($settings as $setting) {
@@ -116,8 +120,14 @@ class ConfigModel extends MyModel
                     }
 
                     $file_content .= "\tpublic \$" . camelize($setting['config_key']) . " = " . $config_value . ";\n\n";
+
+                    //add more site_url
+                    if ($setting['config_key'] == 'site_url') {
+                        $file_content .= "\tpublic \$baseURL = " . $config_value . ";\n\n";
+                    }
                 }
             }
+
             $file_content .= "}\n";
 
             write_file(ROOTPATH . 'media/config/Config.php', $file_content);

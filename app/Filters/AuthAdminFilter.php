@@ -18,7 +18,7 @@ class AuthAdminFilter implements FilterInterface
         //check login
         $user_id = session('user_id');
         if (empty($user_id)) {
-            helper(['cookie', 'catcool']);
+            helper(['cookie', 'catcool', 'inflector']);
             $user_model = new UserModel();
             if (!$user_model->loginRememberedUser()) {
                 $query_string = '';
