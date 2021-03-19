@@ -32,17 +32,17 @@ class Manage extends AdminController
 
     public function index()
     {
-        $filter_module    = $this->request->getGet('filter_module');
-        $filter_sub_module  = $this->request->getGet('filter_sub_module');
-        $filter_limit = $this->request->getGet('filter_limit');
-        $sort         = $this->request->getGet('sort');
-        $order        = $this->request->getGet('order');
+        $filter_module     = $this->request->getGet('module');
+        $filter_sub_module = $this->request->getGet('sub_module');
+        $filter_limit      = $this->request->getGet('limit');
+        $sort              = $this->request->getGet('sort');
+        $order             = $this->request->getGet('order');
 
         $filter = [
-            'active'     => count(array_filter($this->request->getGet(['filter_module', 'filter_sub_module', 'filter_limit']))) > 0,
-            'module'     => (string)$filter_module,
-            'sub_module' => (string)$filter_sub_module,
-            'limit'      => (string)$filter_limit,
+            'active'     => count(array_filter($this->request->getGet(['module', 'sub_module', 'limit']))) > 0,
+            'module'     => $filter_module ?? "",
+            'sub_module' => $filter_sub_module ?? "",
+            'limit'      => $filter_limit,
         ];
 
         $list = $this->model->getAllByFilter($filter, $sort, $order);

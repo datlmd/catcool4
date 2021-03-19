@@ -34,15 +34,15 @@
 						<div class="row">
 							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 								{lang('ModuleAdmin.text_module')}
-								{form_input('filter_module', set_value('filter_module', $filter.module), ['class' => 'form-control form-control-sm', 'placeholder' => lang('ModuleAdmin.text_module')])}
+								{form_input('module', old('module', $filter.module), ['class' => 'form-control form-control-sm', 'placeholder' => lang('ModuleAdmin.text_module')])}
 							</div>
 							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 								{lang('ModuleAdmin.text_sub_module')}
-								{form_input('filter_sub_module', set_value('filter_sub_module', $filter.sub_module), ['class' => 'form-control form-control-sm', 'placeholder' => lang('ModuleAdmin.text_sub_module')])}
+								{form_input('sub_module', old('sub_module', $filter.sub_module), ['class' => 'form-control form-control-sm', 'placeholder' => lang('ModuleAdmin.text_sub_module')])}
 							</div>
 							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 								{lang('Admin.text_limit')}
-								{form_dropdown('filter_limit', get_list_limit(), set_value('filter_limit', $filter.limit), ['class' => 'form-control form-control-sm'])}
+								{form_dropdown('limit', get_list_limit(), old('limit', $filter.limit), ['class' => 'form-control form-control-sm'])}
 							</div>
 						</div>
 					</div>

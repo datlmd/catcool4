@@ -41,17 +41,17 @@ class Manage extends AdminController
         $module_model = new ModuleModel();
         $language_model = new LanguageModel();
 
-        $filter_module_id = (!empty($this->request->getGet('filter_module_id'))) ? $this->request->getGet('filter_module_id') : self::FILTER_DEFAULT_FRONTEND;
-        $filter_key       = $this->request->getGet('filter_key');
-        $filter_value     = $this->request->getGet('filter_value');
+        $filter_module_id = $this->request->getGet('module_id') ?? self::FILTER_DEFAULT_FRONTEND;
+        $filter_key       = $this->request->getGet('key');
+        $filter_value     = $this->request->getGet('value');
         $sort             = $this->request->getGet('sort');
         $order            = $this->request->getGet('order');
 
         $filter = [
-            'active'    => count(array_filter($this->request->getGet(['filter_module_id', 'filter_name', 'filter_limit']))) > 0,
-            'module_id' => (string)$filter_module_id,
-            'key'       => (string)$filter_key,
-            'value'     => (string)$filter_value,
+            'active'    => count(array_filter($this->request->getGet(['module_id', 'key', 'value']))) > 0,
+            'module_id' => $filter_module_id,
+            'key'       => $filter_key ?? "",
+            'value'     => $filter_value ?? "",
         ];
 
         $list          = $this->model->getAllByFilter($filter, $sort, $order);

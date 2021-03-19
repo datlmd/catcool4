@@ -29,18 +29,18 @@
                         <div class="row">
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 mb-2">
                                 <label class="form-label">{lang('TranslationAdmin.text_key')}</label>
-                                {form_input('filter_key', set_value('filter_key', $filter.key), ['class' => 'form-control form-control-sm', 'placeholder' => 'Enter key'])}
+                                {form_input('key', old('key', $filter.key), ['class' => 'form-control form-control-sm', 'placeholder' => 'Enter key'])}
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 mb-2">
                                 <label class="form-label">{lang('TranslationAdmin.text_value')}</label>
-                                {form_input('filter_value', set_value('filter_value', $filter.value), ['class' => 'form-control form-control-sm', 'placeholder' => 'Enter value'])}
+                                {form_input('value', old('value', $filter.value), ['class' => 'form-control form-control-sm', 'placeholder' => 'Enter value'])}
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 mb-2">
                                 <label class="form-label">{lang('TranslationAdmin.text_modules')}</label>
                                 {if !empty($module_list)}
-                                    <select name="filter_module_id" class="form-control form-control-sm">
+                                    <select name="module_id" class="form-control form-control-sm">
                                         {foreach $module_list as $value}
-                                            <option value="{$value.id}" {if set_value('filter_module_id', $filter.module_id) eq $value.id}selected="selected"{/if}>{$value.module}{if !empty($value.sub_module)} - Sub: {$value.sub_module}{/if}</option>
+                                            <option value="{$value.id}" {if old('module_id', $filter.module_id) eq $value.id}selected="selected"{/if}>{$value.module}{if !empty($value.sub_module)} - Sub: {$value.sub_module}{/if}</option>
                                         {/foreach}
                                     </select>
                                 {/if}
