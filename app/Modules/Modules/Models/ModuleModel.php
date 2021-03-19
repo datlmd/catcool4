@@ -1,6 +1,7 @@
 <?php namespace App\Modules\Modules\Models;
 
 use App\Models\MyModel;
+use CodeIgniter\Email\Email;
 
 class ModuleModel extends MyModel
 {
@@ -18,7 +19,7 @@ class ModuleModel extends MyModel
     ];
 
     const MODULE_CACHE_NAME   = 'module_list';
-    const MODULE_CACHE_EXPIRE = YEAR;
+    const MODULE_CACHE_EXPIRE = 30*MINUTE;
 
     function __construct()
     {
@@ -48,11 +49,11 @@ class ModuleModel extends MyModel
         return $this;
     }
 
-    public function getListPublished($is_cache = true)
+    public function getListPublished($is_cache = false)
     {
         $result = $is_cache ? cache()->get(self::MODULE_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->where(['published' => STATUS_ON])->findAll();
+            $result = $this->orderBy('module', 'ASC')->where(['published' => STATUS_ON])->findAll();
             if (empty($result)) {
                 return null;
             }
@@ -63,6 +64,17 @@ class ModuleModel extends MyModel
             }
         }
 
-        return $result;
+        $list = [];
+        foreach ($result as $value) {
+            $list[$value['id']] = $value;
+        }
+
+        return $list;
+    }
+
+    public function deleteCache()
+    {
+        cache()->delete(self::MODULE_CACHE_NAME);
+        return true;
     }
 }
