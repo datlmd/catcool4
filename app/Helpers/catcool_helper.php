@@ -1180,6 +1180,7 @@ if(!function_exists('script_global'))
             var image_url = "' . base_url('img') . '";
             var image_root_url = "' . get_upload_url() . '";
             var username = "' . session('username') . '";
+            var csrf_token = "' . csrf_token() . '";
         ';
     }
 }
@@ -1396,7 +1397,7 @@ if(!function_exists('add_meta'))
             $title = !empty($data['title']) ? $data['title'] : config_item('site_name');
             $description = !empty($data['description']) ? $data['description'] : config_item('site_description');
             $keywords = !empty($data['keywords']) ? $data['keywords'] : config_item('site_keywords');
-            $url = !empty($data['url']) ? $data['url'] : config_item('site_url');
+            $url = !empty($data['url']) ? $data['url'] : base_url();
             $image = !empty($data['image']) ? $data['image'] : config_item('site_image');
 
             //$theme = \App\Libraries\Themes::init();

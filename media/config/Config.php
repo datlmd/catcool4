@@ -314,10 +314,6 @@ If false, no automatic detection will be performed.
 	 */
 	public $siteName = "Cat Cool CMS";
 
-	public $siteUrl = "http://192.168.64.2/dev/catcool";
-
-	public $baseURL = "http://192.168.64.2/dev/catcool";
-
 	/**
 	 * Set theme cho admin
 	 */

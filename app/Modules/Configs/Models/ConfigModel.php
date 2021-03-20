@@ -120,11 +120,6 @@ class ConfigModel extends MyModel
                     }
 
                     $file_content .= "\tpublic \$" . camelize($setting['config_key']) . " = " . $config_value . ";\n\n";
-
-                    //add more site_url
-                    if ($setting['config_key'] == 'site_url') {
-                        $file_content .= "\tpublic \$baseURL = " . $config_value . ";\n\n";
-                    }
                 }
             }
 
