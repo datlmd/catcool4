@@ -125,14 +125,14 @@ var Catcool = {
             is_check = 1;
         }
 
-        // CSRF Hash
-        var csrfName = $('#cc_token').attr('name'); // CSRF Token name
-        var csrfHash = $('#cc_token').val(); // CSRF hash
-
         is_processing = true;
         $.ajax({
             url: url_api,
-            data: {'id' : id, 'published': is_check, [csrfName]: csrfHash},
+            data: {
+                'id' : id,
+                'published': is_check,
+                [$("input[name*='" + csrf_token + "']").attr('name')] : $("input[name*='" + csrf_token + "']").val()
+            },
             type:'POST',
             success: function (data) {
                 is_processing = false;
@@ -142,7 +142,7 @@ var Catcool = {
 
                 if (response.token) {
                     // Update CSRF hash
-                    $('#cc_token').val(response.token);
+                    $("input[name*='" + csrf_token + "']").val(response.token);
                 }
 
                 if (response.status == 'ng') {
@@ -220,13 +220,13 @@ var Catcool = {
 
         var manage = $('input[name="manage_url"]').val();
         var url    = manage + '/delete';
-        // CSRF Hash
-        var csrfName = $('#cc_token').attr('name'); // CSRF Token name
-        var csrfHash = $('#cc_token').val(); // CSRF hash
 
         $.ajax({
             url: url,
-            data: {delete_ids: delete_data, [csrfName]: csrfHash},
+            data: {
+                delete_ids: delete_data,
+                [$("input[name*='" + csrf_token + "']").attr('name')] : $("input[name*='" + csrf_token + "']").val()
+            },
             type: 'POST',
             beforeSend: function () {
                 if (is_single) {
@@ -250,7 +250,7 @@ var Catcool = {
 
                 if (response.token) {
                     // Update CSRF hash
-                    $('#cc_token').val(response.token);
+                    $("input[name*='" + csrf_token + "']").val(response.token);
                 }
 
                 if (response.status == 'ng') {

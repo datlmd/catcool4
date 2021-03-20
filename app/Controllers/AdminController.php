@@ -37,22 +37,4 @@ class AdminController extends UserController
             set_alert(lang('Admin.error_token'), ALERT_ERROR,ALERT_POPUP);
         }
     }
-
-    protected function getUrlFilter()
-    {
-        $url = "";
-        if (!empty($filter_id)) {
-            $url .= '&filter_id=' . $filter_id;
-        }
-
-        if (!empty($filter_name)) {
-            $url .= '&filter_name=' . urlencode(html_entity_decode($filter_name, ENT_QUOTES, 'UTF-8'));
-        }
-
-        if (!empty($filter_limit)) {
-            $url .= '&filter_limit=' . $filter_limit;
-        }
-
-        return $url;
-    }
 }
