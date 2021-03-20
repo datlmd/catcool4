@@ -3,6 +3,7 @@
 return [
 	"heading_title" => "Translations",
 	"text_add" => "Add Translation",
+	"text_edit" => "Edit Translation",
 	"text_key" => "Key",
 	"text_list" => "Translation List",
 	"text_module" => "Module",

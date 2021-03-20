@@ -41,23 +41,23 @@ class Manage extends AdminController
         $module_model = new ModuleModel();
         $language_model = new LanguageModel();
 
-        $filter_module_id = $this->request->getGet('module_id') ?? self::FILTER_DEFAULT_FRONTEND;
-        $filter_key       = $this->request->getGet('key');
-        $filter_value     = $this->request->getGet('value');
-        $sort             = $this->request->getGet('sort');
-        $order            = $this->request->getGet('order');
+        $module_id = $this->request->getGet('module_id') ?? self::FILTER_DEFAULT_FRONTEND;
+        $key       = $this->request->getGet('key');
+        $value     = $this->request->getGet('value');
+        $sort      = $this->request->getGet('sort');
+        $order     = $this->request->getGet('order');
 
         $filter = [
             'active'    => count(array_filter($this->request->getGet(['module_id', 'key', 'value']))) > 0,
-            'module_id' => $filter_module_id,
-            'key'       => $filter_key ?? "",
-            'value'     => $filter_value ?? "",
+            'module_id' => $module_id,
+            'key'       => $key ?? "",
+            'value'     => $value ?? "",
         ];
 
         $list          = $this->model->getAllByFilter($filter, $sort, $order);
         $module_list   = $module_model->getListPublished();
         $language_list = $language_model->getListPublished();
-        $module        = (!empty($module_list[$filter_module_id])) ? $module_list[$filter_module_id] : null;
+        $module        = (!empty($module_list[$module_id])) ? $module_list[$module_id] : null;
 
         //check permissions
         $file_list = [];
@@ -70,13 +70,26 @@ class Manage extends AdminController
             }
         }
 
+        $url = "";
+        if (!empty($module_id)) {
+            $url .= '&module_id=' . $module_id;
+        }
+
+        if (!empty($key)) {
+            $url .= '&key=' . urlencode(html_entity_decode($key, ENT_QUOTES, 'UTF-8'));
+        }
+
+        if (!empty($value)) {
+            $url .= '&value=' . $value;
+        }
+
         $data = [
             'breadcrumb'    => $this->breadcrumb->render(),
             'list'          => $list,
             'filter'        => $filter,
             'sort'          => empty($sort) ? 'id' : $sort,
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'           => $this->getUrlFilter(),
+            'url'           => $url,
             'language_list' => $language_list,
             'module_list'   => $module_list,
             'module'        => $module,
@@ -104,10 +117,10 @@ class Manage extends AdminController
         $values    = $this->request->getPost('add_value');
         $module_id = $this->request->getPost('module_id');
         if (empty($key)) {
-            json_output(['token' => $token, 'status' => 'ng', 'msg' => sprintf(lang('Admin.text_manage_validation'), lang('TranslationAmin.text_key'))]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => sprintf(lang('Admin.text_manage_validation'), lang('TranslationAdmin.text_key'))]);
         }
         if (empty($module_id)) {
-            json_output(['token' => $token, 'status' => 'ng', 'msg' => sprintf(lang('Admin.text_manage_validation'), lang('TranslationAmin.text_module'))]);
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => sprintf(lang('Admin.text_manage_validation'), lang('TranslationAdmin.text_module'))]);
         }
 
         $translates = $this->model->where(['module_id' => $module_id, 'lang_key' => $key])->findAll();
@@ -140,6 +153,72 @@ class Manage extends AdminController
     }
 
     public function edit()
+    {
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $language_model = new LanguageModel();
+        $token          = csrf_hash();
+
+        if (!isset($_POST) || empty($_POST)) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
+        }
+
+        $key       = $this->request->getPost('edit_key');
+        $values    = $this->request->getPost('edit_value');
+        $module_id = $this->request->getPost('module_id');
+        $module_id_old = $this->request->getPost('module_id_old');
+
+        if (empty($key)) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => sprintf(lang('Admin.text_manage_validation'), lang('TranslationAdmin.text_key'))]);
+        }
+        if (empty($module_id)) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => sprintf(lang('Admin.text_manage_validation'), lang('TranslationAdmin.text_module'))]);
+        }
+
+        $translates = $this->model->getAllByFilter(['module_id' => $module_id_old, 'lang_key' => $key]);
+        if (empty($translates)) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+        }
+
+        //list lang
+        $language_list = $language_model->getListPublished();
+        foreach ($language_list as $lang) {
+            if (empty($values[$lang['id']])) {
+                json_output(['token' => $token, 'status' => 'ng', 'msg' => sprintf(lang('Admin.text_manage_validation'), $lang['name'])]);
+            }
+        }
+
+        foreach ($language_list as $lang) {
+            if (empty($translates[$key][$lang['id']])) {
+                $data_add = [
+                    'lang_key'   => $key,
+                    'lang_value' => str_replace('"', "'", $values[$lang['id']]),
+                    'lang_id'    => $lang['id'],
+                    'module_id'  => $module_id,
+                    'user_id'    => $this->getUserId(),
+                    'ctime'      => get_date(),
+                ];
+
+                //add
+                $this->model->insert($data_add);
+            } else {
+                $data_edit               = $translates[$key][$lang['id']];
+                $data_edit['lang_value'] = str_replace('"', "'", $values[$lang['id']]);
+                $data_edit['module_id']  = $module_id;
+                $data_edit['user_id']    = $this->getUserId();
+
+                //update
+                $this->model->update($data_edit['id'], $data_edit);
+            }
+        }
+
+        set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
+        json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_edit_success')]);
+    }
+
+    public function save()
     {
         if (!$this->request->isAJAX()) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();

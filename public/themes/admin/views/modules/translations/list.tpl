@@ -1,6 +1,6 @@
 {strip}
 {form_hidden('manage_url', $manage_url)}
-{csrf_field('cc_token')}
+{csrf_field()}
 <div class="container-fluid  dashboard-content">
     <div class="row">
         <div class="col-sm-7 col-12">
@@ -57,9 +57,9 @@
                             <h5 class="mb-0 mt-1"><i class="fas fa-list me-2"></i>{lang('TranslationAdmin.text_list')}</h5>
                         </div>
                         <div class="col-7 text-end">
-                            <button type="button" class="btn btn-sm btn-space btn-primary" data-bs-toggle="modal" data-bs-target="#add_lang"><i class="fas fa-plus me-1"></i>{lang('TranslationAdmin.text_add')}</button>
-                            <button type="button" id="btn_save_translate" onclick="save_translate()" class="btn btn-sm btn-space btn-secondary"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
-                            <button type="button" id="btn_write_translate" onclick="write_translate({$module.id})" class="btn btn-sm btn-space btn-success"><i class="fas fa-sync me-1"></i>{lang('Admin.button_write')}</button>
+                            <button type="button" class="btn btn-sm btn-primary me-1" data-bs-toggle="modal" data-bs-target="#add_lang"><i class="fas fa-plus me-1"></i>{lang('TranslationAdmin.text_add')}</button>
+                            <button type="button" id="btn_save_translate" onclick="saveTranslate()" class="btn btn-sm btn-secondary me-1"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
+                            <button type="button" id="btn_write_translate" onclick="writeTranslate({$module.id})" class="btn btn-sm btn-success"><i class="fas fa-sync me-1"></i>{lang('Admin.button_write')}</button>
                         </div>
                     </div>
                 </div>
@@ -76,12 +76,13 @@
                     </ul>
 					{if !empty($list) && !empty($module)}
                         <strong>{lang("TranslationAdmin.text_total")}: {count($list)}</strong><br/><br/>
-                        {form_open('translations/manage/edit', ['id' => 'save_validationform'])}
+                        {form_open('translations/manage/save', ['id' => 'save_validationform'])}
                             {form_hidden('module_id', $module.id)}
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-bordered second">
                                     <thead>
                                         <tr class="text-center">
+                                            <th>No</th>
                                             <th>
                                                 <a href="{site_url($manage_url)}?sort=lang_key&order={$order}{$url}" class="text-dark">
                                                     {lang('TranslationAdmin.text_key')}
@@ -97,21 +98,24 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    {assign var=key_no value=1}
                                     {foreach $list as $key => $item}
                                         <tr id="{$key}">
+                                            <td align="center" width="40">{$key_no}{$key_no=$key_no+1}</td>
                                             <td>{$key}</td>
                                             {foreach $language_list as $lang}
                                                 <td>
                                                     {if isset($item[$lang.id])}
-                                                        <textarea id="{$key}_{$lang.id}" name="translate[{$key}][{$lang.id}]" class="form-control" rows="1">{$item[$lang.id].lang_value}</textarea>
+                                                        <textarea id="{$key}_{$lang.id}" name="translate[{$key}][{$lang.id}]" data-edit-modal="edit_value_{$lang.id}" class="form-control" rows="1">{$item[$lang.id].lang_value}</textarea>
                                                     {else}
-                                                        <textarea id="{$key}_{$lang.id}" name="translate[{$key}][{$lang.id}]" class="form-control" rows="1"></textarea>
+                                                        <textarea id="{$key}_{$lang.id}" name="translate[{$key}][{$lang.id}]" data-edit-modal="edit_value_{$lang.id}" class="form-control" rows="1"></textarea>
                                                     {/if}
                                                 </td>
                                             {/foreach}
                                             <td class="text-center">
                                                 <div class="btn-group ms-auto">
-                                                    <button type="button" class="btn btn-sm btn-outline-light text-danger" data-module="{$module.id}" data-key="{$key}" onclick="delete_translate(this)" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
+                                                    <button type="button" class="btn btn-sm btn-light" onclick="editTranslate('{$key}')" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></button>
+                                                    <button type="button" class="btn btn-sm btn-light text-danger" data-module="{$module.id}" data-key="{$key}" onclick="deleteTranslate(this)" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -162,7 +166,7 @@
 							<div class="col-12 col-sm-3"></div>
 							<div class="col-12 col-sm-8 col-lg-6">
 								<input type="hidden" name="module_id" value="{$module.id}">
-								<button type="button" onclick="add_translate()" class="btn btn-sm btn-space btn-primary btn-add-translate"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
+								<button type="button" onclick="addTranslate()" class="btn btn-sm btn-space btn-primary btn-add-translate"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
                                 <a href="#" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</span>
                                 </a>
@@ -178,19 +182,75 @@
 		</div>
 	</div>
 </div>
+
+    <div class="modal fade" id="edit_language" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">{lang('TranslationAdmin.text_edit')}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="edit_validation_error" class="text-danger"></div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {form_open('translations/manage/edit', ['id' => 'edit_lang_form'])}
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
+                                    {lang('TranslationAdmin.text_modules')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if !empty($module_list)}
+                                        <select name="module_id" class="form-control form-control-sm">
+                                            {foreach $module_list as $value}
+                                                <option value="{$value.id}" {if old('module_id', $module.id) eq $value.id}selected="selected"{/if}>{$value.module}{if !empty($value.sub_module)} - Sub: {$value.sub_module}{/if}</option>
+                                            {/foreach}
+                                        </select>
+                                    {/if}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
+                                    {lang('TranslationAdmin.text_key')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input type="text" id="edit_key" name="edit_key" value="" class="form-control">
+                                </div>
+                            </div>
+                            {foreach $language_list as $lang}
+                                <div class="form-group row">
+                                    <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
+                                        {$lang.name|capitalize}
+                                    </label>
+                                    <div class="col-12 col-sm-8 col-lg-6">
+                                        <textarea id="edit_value_{$lang.id}" name="edit_value[{$lang.id}]" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            {/foreach}
+                            <div class="form-group row text-center">
+                                <div class="col-12 col-sm-3"></div>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input type="hidden" name="module_id_old" value="{$module.id}">
+                                    <button type="button" onclick="submitEditTranslate()" class="btn btn-sm btn-space btn-primary btn-edit-translate"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
+                                    <a href="#" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        {form_close()}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {/strip}
 <script>
-    function add_translate() {
+    function addTranslate() {
         $('#add_validation_error').html('');
 
         $.ajax({
             url: $("#add_lang_form").attr('action'),
             type: 'POST',
-            data: $.extend(
-                $("#add_lang_form"),
-                {
-                    [$('#cc_token').attr('name')]: $('#cc_token').val()
-                }).serialize(),
+            data: $("#add_lang_form").serialize(),
             beforeSend: function () {
                 $('.btn-add-translate').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
             },
@@ -203,7 +263,7 @@
 
                 if (response.token) {
                     // Update CSRF hash
-                    $('#cc_token').val(response.token);
+                    $("input[name*='" + csrf_token + "']").val(response.token);
                 }
 
                 if (response.status == 'ng') {
@@ -217,15 +277,59 @@
             }
         });
     }
-    function save_translate() {
+
+    function editTranslate(key) {
+        $('#edit_validation_error').html('');
+
+        $('#edit_language #edit_key').val(key);
+        $('#edit_language textarea').val();
+
+        $('#' + key + ' textarea').each(function() {
+            $('#edit_language #' + $(this).attr('data-edit-modal')).val($(this).val());
+        });
+
+        $('#edit_language').modal('show');
+    }
+
+    function submitEditTranslate() {
+        $('#edit_validation_error').html('');
+
+        $.ajax({
+            url: $("#edit_lang_form").attr('action'),
+            type: 'POST',
+            data: $("#edit_lang_form").serialize(),
+            beforeSend: function () {
+                $('.btn-edit-translate').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
+            },
+            complete: function () {
+                $('.btn-edit-translate').find('i').replaceWith('<i class="fas fa-save me-1"></i>');
+            },
+            success: function (data) {
+                var response = JSON.stringify(data);
+                response     = JSON.parse(response);
+
+                if (response.token) {
+                    // Update CSRF hash
+                    $("input[name*='" + csrf_token + "']").val(response.token);
+                }
+
+                if (response.status == 'ng') {
+                    $('#edit_validation_error').html(response.msg);
+                    return false;
+                }
+
+                location.reload();
+            },
+            error: function (xhr, errorType, error) {
+            }
+        });
+    }
+
+    function saveTranslate() {
         $.ajax({
             url: $("#save_validationform").attr('action'),
             type: 'POST',
-            data: $.extend(
-                $("#save_validationform"),
-                {
-                    [$('#cc_token').attr('name')]: $('#cc_token').val()
-                }).serialize(),
+            data: $("#save_validationform").serialize(),
             beforeSend: function () {
                 $('#btn_save_translate').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
             },
@@ -238,7 +342,7 @@
 
                 if (response.token) {
                     // Update CSRF hash
-                    $('#cc_token').val(response.token);
+                    $("input[name*='" + csrf_token + "']").val(response.token);
                 }
 
                 if (response.status == 'ng') {
@@ -252,7 +356,7 @@
             }
         });
     }
-    function delete_translate(obj) {
+    function deleteTranslate(obj) {
         $.confirm({
             title: '{{lang("Admin.text_confirm_title")}}',
             content: '{{lang("Admin.text_confirm_delete")}}',
@@ -275,7 +379,7 @@
                             data: {
 								module_id: $(obj).attr("data-module"),
 								key: key,
-                                [$('#cc_token').attr('name')]: $('#cc_token').val()
+                                [$("input[name*='" + csrf_token + "']").attr('name')] : $("input[name*='" + csrf_token + "']").val()
                             },
                             beforeSend: function () {
                                 $(obj).find('i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
@@ -289,7 +393,7 @@
 
                                 if (response.token) {
                                     // Update CSRF hash
-                                    $('#cc_token').val(response.token);
+                                    $("input[name*='" + csrf_token + "']").val(response.token);
                                 }
 
                                 if (response.status == 'ng') {
@@ -314,7 +418,7 @@
             }
         });
     }
-    function write_translate(module_id) {
+    function writeTranslate(module_id) {
         $.confirm({
             title: '{{lang("Admin.text_confirm_title")}}',
             content: '{{lang("Admin.text_confirm_write")}}',
@@ -335,7 +439,7 @@
                             type: 'POST',
                             data: {
                                 module_id: module_id,
-                                [$('#cc_token').attr('name')]: $('#cc_token').val()
+                                [$("input[name*='" + csrf_token + "']").attr('name')] : $("input[name*='" + csrf_token + "']").val()
                             },
                             beforeSend: function () {
                                 $('#btn_write_translate').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
@@ -350,7 +454,7 @@
 
                                 if (response.token) {
                                     // Update CSRF hash
-                                    $('#cc_token').val(response.token);
+                                    $("input[name*='" + csrf_token + "']").val(response.token);
                                 }
                             },
                             error: function (xhr, errorType, error) {

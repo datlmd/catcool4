@@ -9,6 +9,7 @@ $routes->group('translations', ['namespace' => 'App\Modules\Translations\Control
     $subroutes->add('manage', 'Manage::index');
     $subroutes->add('manage/add', 'Manage::add');
     $subroutes->add('manage/edit', 'Manage::edit');
+    $subroutes->add('manage/save', 'Manage::save');
     $subroutes->add('manage/delete', 'Manage::delete');
     $subroutes->add('manage/publish', 'Manage::publish');
     $subroutes->add('manage/write', 'Manage::write');
