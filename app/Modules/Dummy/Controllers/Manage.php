@@ -38,29 +38,40 @@ class Manage extends AdminController
 	{
         add_meta(['title' => lang("Dummy.heading_title")], $this->themes);
 
-        $filter_id    = $this->request->getGet('filter_id');
-        $filter_name  = $this->request->getGet('filter_name');
-        $filter_limit = $this->request->getGet('filter_limit');
-        $sort         = $this->request->getGet('sort');
-        $order        = $this->request->getGet('order');
+        $id    = $this->request->getGet('id');
+        $name  = $this->request->getGet('name');
+        $limit = $this->request->getGet('limit');
+        $sort  = $this->request->getGet('sort');
+        $order = $this->request->getGet('order');
 
         $filter = [
-            'active' => count(array_filter($this->request->getGet(['filter_id', 'filter_name', 'filter_limit']))) > 0,
-            'id'     => (string)$filter_id,
-            'name'   => (string)$filter_name,
-            'limit'  => (string)$filter_limit,
+            'active' => count(array_filter($this->request->getGet(['id', 'name', 'limit']))) > 0,
+            'id'     => $id ?? "",
+            'name'   => $name ?? "",
+            'limit'  => $limit,
         ];
 
         $list = $this->model->getAllByFilter($filter, $sort, $this->request->getGet('order'));
 
+        $url = "";
+        if (!empty($id)) {
+            $url .= '&id=' . $id;
+        }
+        if (!empty($name)) {
+            $url .= '&name=' . urlencode(html_entity_decode($name, ENT_QUOTES, 'UTF-8'));
+        }
+        if (!empty($limit)) {
+            $url .= '&limit=' . $limit;
+        }
+
 	    $data = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($filter_limit, 'dummy'),
+            'list'       => $list->paginate($limit, 'dummy'),
             'pager'      => $list->pager,
             'filter'     => $filter,
             'sort'       => empty($sort) ? 'dummy_id' : $sort,
             'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'        => $this->getUrlFilter(),
+            'url'        => $url,
         ];
 
         $this->themes::load('manage/list', $data);

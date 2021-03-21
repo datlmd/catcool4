@@ -30,31 +30,22 @@ class DummyModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort_data = [
-            'dummy_id',
-            'name',
-            'description',
-            'sort_order',
-        ];
-
-        $sort  = in_array($sort, $sort_data) ? $sort : 'dummy_id';
+        $sort  = in_array($sort, $this->allowedFields) ? $sort : 'dummy_id';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
 
-        $where = "dummy_lang.language_id=" . get_lang_id(true);
-
+        $this->where('dummy_lang.language_id', get_lang_id(true));
         if (!empty($filter["id"])) {
-            $where .= " AND dummy.dummy_id IN(" . (is_array($filter["id"]) ? implode(',', $filter["id"]) : $filter["id"]) . ")";
+            $this->whereIn('dummy.dummy_id', (!is_array($filter["id"]) ? explode(',', $filter["id"]) : $filter["id"]));
         }
 
         if (!empty($filter["name"])) {
-            $where .= " AND dummy.name LIKE '%" . $filter["name"] . "%'";
+            $this->like('dummy_lang.name', $filter["name"]);
         }
 
         $this->select('dummy.*, dummy_lang.name AS name, dummy_lang.description AS description')
             ->with(false)
             ->join('dummy_lang', 'dummy_lang.dummy_id = dummy.dummy_id')
-            ->where($where)
             ->orderBy($sort, $order);
 
         return $this;
