@@ -64,10 +64,12 @@ class UserModel extends MyModel
         }
 
         if (!empty($filter["name"])) {
+            $this->groupStart();
             $this->orLike('username', $filter["name"]);
             $this->orLike('first_name', $filter["name"]);
             $this->orLike('email', $filter["name"]);
             $this->orLike('phone', $filter["name"]);
+            $this->groupEnd();
         }
 
         if (!empty($where)) {
