@@ -90,8 +90,9 @@ class Upload extends BaseController
                 json_output(['status' => 'ng', 'msg' => lang('FileManager.error_upload')]);
             }
 
-        } catch (\Exception $e) {
-            json_output(['status' => 'ng', 'msg' => $e->getMessage()]);
+        } catch (\Exception $ex) {
+            log_message('Error', $ex->getMessage());
+            json_output(['status' => 'ng', 'msg' => $ex->getMessage()]);
         }
 
         json_output($json);

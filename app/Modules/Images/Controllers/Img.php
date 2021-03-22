@@ -60,7 +60,8 @@ class Img extends BaseController
                 ->setBody(file_get_contents($computedImage))
                 ->send();
         } catch (\Exception $e) {
-            die($e->getMessage());
+            log_message('Error', $e->getMessage());
+            //die($e->getMessage());
         }
     }
 }

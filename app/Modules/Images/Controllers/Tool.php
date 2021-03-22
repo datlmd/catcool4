@@ -91,13 +91,4 @@ class Tool extends BaseController
             return $this->themes::view('crop', $data);
         }
     }
-
-    public function editor()
-    {
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::view('editor');
-    }
 }
