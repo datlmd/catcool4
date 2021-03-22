@@ -41,7 +41,7 @@ class Manage extends AdminController
         $this->themes->addJS('common/plugin/shortable-nestable/jquery.nestable.js');
         $this->themes->addJS('common/js/admin/category.js');
 
-        if (!empty($this->request->getGet('is_admin'))) {
+        if (!is_null($this->request->getGet('is_admin'))) {
             session()->set('is_menu_admin', $_GET['is_admin']);
         } elseif (!session()->has('is_menu_admin')) {
             session()->set('is_menu_admin', 0);

@@ -8,14 +8,13 @@ function submitSort () {
     $('[data-toggle=\'tooltip\']').tooltip();
     is_processing = true;
 
-    // CSRF Hash
-    var csrfName = $('#cc_token').attr('name'); // CSRF Token name
-    var csrfHash = $('#cc_token').val(); // CSRF hash
-
     $.ajax({
         url: current_url + '/update_sort',
         type: 'POST',
-        data: {ids: JSON.stringify($('.dd').nestable('serialize')), [csrfName]: csrfHash},
+        data: {
+            ids: JSON.stringify($('.dd').nestable('serialize')),
+            [$("input[name*='" + csrf_token + "']").attr('name')] : $("input[name*='" + csrf_token + "']").val()
+        },
         beforeSend: function () {
             $('#btn_category_sort').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
         },
@@ -30,7 +29,7 @@ function submitSort () {
 
             if (response.token) {
                 // Update CSRF hash
-                $('#cc_token').val(response.token);
+                $("input[name*='" + csrf_token + "']").val(response.token);
             }
 
             if (response.status == 'redirect') {
