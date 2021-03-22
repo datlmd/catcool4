@@ -1,6 +1,6 @@
 {strip}
 {form_hidden('manage_url', $manage_url)}
-{csrf_field('cc_token')}
+{csrf_field()}
 <div class="container-fluid  dashboard-content">
 	<div class="row">
 		<div class="col-sm-7 col-12">
@@ -40,7 +40,7 @@
 											<thead>
 											<tr class="text-center">
 												<th width="50">
-													<a href="{site_url($manage_url)}?sort=id&order={$order}{$url}" class="text-dark">
+													<a href="{site_url($manage_url)}?sort=id&order={$order}" class="text-dark">
 														{lang('Admin.column_id')}
 														{if $sort eq 'id'}
 															<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
@@ -48,7 +48,7 @@
 													</a>
 												</th>
 												<th>
-													<a href="{site_url($manage_url)}?sort=config_key&order={$order}{$url}" class="text-dark">
+													<a href="{site_url($manage_url)}?sort=config_key&order={$order}" class="text-dark">
 														{lang('ConfigAdmin.column_config_key')}
 														{if $sort eq 'config_key'}
 															<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
@@ -56,7 +56,7 @@
 													</a>
 												</th>
 												<th>
-													<a href="{site_url($manage_url)}?sort=config_value&order={$order}{$url}" class="text-dark">
+													<a href="{site_url($manage_url)}?sort=config_value&order={$order}" class="text-dark">
 														{lang('ConfigAdmin.column_config_value')}
 														{if $sort eq 'config_value'}
 															<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
@@ -106,7 +106,7 @@
 												<thead>
 												<tr class="text-center">
 													<th width="50">
-														<a href="{site_url($manage_url)}?sort=id&order={$order}{$url}" class="text-dark">
+														<a href="{site_url($manage_url)}?sort=id&order={$order}" class="text-dark">
 															{lang('Admin.column_id')}
 															{if $sort eq 'id'}
 																<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
@@ -114,7 +114,7 @@
 														</a>
 													</th>
 													<th>
-														<a href="{site_url($manage_url)}?sort=config_key&order={$order}{$url}" class="text-dark">
+														<a href="{site_url($manage_url)}?sort=config_key&order={$order}" class="text-dark">
 															{lang('ConfigAdmin.column_config_key')}
 															{if $sort eq 'config_key'}
 																<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
@@ -122,7 +122,7 @@
 														</a>
 													</th>
 													<th>
-														<a href="{site_url($manage_url)}?sort=config_value&order={$order}{$url}" class="text-dark">
+														<a href="{site_url($manage_url)}?sort=config_value&order={$order}" class="text-dark">
 															{lang('ConfigAdmin.column_config_value')}
 															{if $sort eq 'config_value'}
 																<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>

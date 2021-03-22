@@ -45,7 +45,6 @@ class Manage extends AdminController
             'list'            => $this->model->getAllByFilter(null, $sort, $order),
             'sort'            => empty($sort) ? 'id' : $sort,
             'order'           => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'             => $this->getUrlFilter(),
             'groups'          => $this->group_model->findAll(),
             'config_group_id' => session('tab_group_id'),
         ];

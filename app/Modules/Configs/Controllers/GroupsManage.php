@@ -35,8 +35,8 @@ class GroupsManage extends AdminController
     {
         add_meta(['title' => lang("ConfigGroupAdmin.heading_title")], $this->themes);
 
-        $sort         = $this->request->getGet('sort');
-        $order        = $this->request->getGet('order');
+        $sort  = $this->request->getGet('sort');
+        $order = $this->request->getGet('order');
 
         $filter = [];
 
@@ -47,7 +47,6 @@ class GroupsManage extends AdminController
             'list'       => $list,
             'sort'       => empty($sort) ? 'id' : $sort,
             'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'        => $this->getUrlFilter(),
         ];
 
         $this->themes::load('groups/list', $data);
