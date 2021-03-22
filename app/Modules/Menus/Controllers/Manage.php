@@ -41,7 +41,7 @@ class Manage extends AdminController
         $this->themes->addJS('common/plugin/shortable-nestable/jquery.nestable.js');
         $this->themes->addJS('common/js/admin/category.js');
 
-        if (isset($_GET['is_admin'])) {
+        if (!empty($this->request->getGet('is_admin'))) {
             session()->set('is_menu_admin', $_GET['is_admin']);
         } elseif (!session()->has('is_menu_admin')) {
             session()->set('is_menu_admin', 0);
@@ -73,7 +73,7 @@ class Manage extends AdminController
                 'label'      => $this->request->getPost('label'),
                 'attributes' => $this->request->getPost('attributes'),
                 'selected'   => $this->request->getPost('selected'),
-                'user_id'    => $this->get_user_id(),
+                'user_id'    => $this->getUserId(),
                 'parent_id'  => $this->request->getPost('parent_id'),
                 'sort_order' => $this->request->getPost('sort_order'),
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
@@ -138,7 +138,7 @@ class Manage extends AdminController
                 'label'      => $this->request->getPost('label'),
                 'attributes' => $this->request->getPost('attributes'),
                 'selected'   => $this->request->getPost('selected'),
-                'user_id'    => $this->get_user_id(),
+                'user_id'    => $this->getUserId(),
                 'parent_id'  => $this->request->getPost('parent_id'),
                 'sort_order' => $this->request->getPost('sort_order'),
                 'is_admin'   => !empty(session('is_menu_admin')) ? STATUS_ON : STATUS_OFF,

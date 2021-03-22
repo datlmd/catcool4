@@ -14,7 +14,6 @@
         {if !empty($edit_data.menu_id)}
             {form_hidden('menu_id', $edit_data.menu_id)}
             {form_hidden('is_admin', session('is_menu_admin'))}
-            {csrf_field('cc_token')}
 
             {assign var="menu_id" value="`$edit_data.menu_id`"}
         {else}
