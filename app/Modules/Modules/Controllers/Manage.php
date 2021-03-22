@@ -32,29 +32,40 @@ class Manage extends AdminController
 
     public function index()
     {
-        $filter_module     = $this->request->getGet('module');
-        $filter_sub_module = $this->request->getGet('sub_module');
-        $filter_limit      = $this->request->getGet('limit');
-        $sort              = $this->request->getGet('sort');
-        $order             = $this->request->getGet('order');
+        $module     = $this->request->getGet('module');
+        $sub_module = $this->request->getGet('sub_module');
+        $limit      = $this->request->getGet('limit');
+        $sort       = $this->request->getGet('sort');
+        $order      = $this->request->getGet('order');
 
         $filter = [
             'active'     => count(array_filter($this->request->getGet(['module', 'sub_module', 'limit']))) > 0,
-            'module'     => $filter_module ?? "",
-            'sub_module' => $filter_sub_module ?? "",
-            'limit'      => $filter_limit,
+            'module'     => $module ?? "",
+            'sub_module' => $sub_module ?? "",
+            'limit'      => $limit,
         ];
 
         $list = $this->model->getAllByFilter($filter, $sort, $order);
 
+        $url = "";
+        if (!empty($module)) {
+            $url .= '&module=' . $module;
+        }
+        if (!empty($sub_module)) {
+            $url .= '&sub_module=' . $sub_module;
+        }
+        if (!empty($limit)) {
+            $url .= '&limit=' . $limit;
+        }
+
         $data = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($filter_limit, 'modules'),
+            'list'       => $list->paginate($limit, 'modules'),
             'pager'      => $list->pager,
             'filter'     => $filter,
             'sort'       => empty($sort) ? 'id' : $sort,
             'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'        => $this->getUrlFilter(),
+            'url'        => $url,
         ];
 
         add_meta(['title' => lang("ModuleAdmin.heading_title")], $this->themes);

@@ -1,6 +1,6 @@
 {strip}
 {form_hidden('manage_url', $manage_url)}
-{csrf_field('cc_token')}
+{csrf_field()}
 <div class="container-fluid  dashboard-content">
 	<div class="row">
 		<div class="col-sm-7 col-12">
