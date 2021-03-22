@@ -44,7 +44,6 @@ class Manage extends AdminController
             'list'       => $list,
             'sort'       => empty($sort) ? 'id' : $sort,
             'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'        => $this->getUrlFilter(),
         ];
 
         add_meta(['title' => lang("LanguageAdmin.heading_title")], $this->themes);

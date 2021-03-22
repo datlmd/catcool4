@@ -13,7 +13,6 @@
         </div>
         {if !empty($edit_data.id)}
             {form_hidden('id', $edit_data.id)}
-            {csrf_field('cc_token')}
         {/if}
         <div class="row">
             {if !empty(print_flash_alert())}
