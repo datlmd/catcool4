@@ -53,22 +53,21 @@ class UserModel extends MyModel
         $sort  = empty($sort) ? 'id' : $sort;
         $order = empty($order) ? 'DESC' : $order;
 
-        $where = "is_deleted=" . STATUS_OFF;
         if (!empty($filter["is_deleted"])) {
-            $where = "is_deleted=" . $filter["is_deleted"];
+            $this->where('is_deleted', $filter["is_deleted"]);
+        } else {
+            $this->where('is_deleted', STATUS_OFF);
         }
 
         if (!empty($filter["id"])) {
-            $where .= " AND id IN(" . (is_array($filter["id"]) ? implode(',', $filter["id"]) : $filter["id"]) . ")";
+            $this->whereIn('id', (!is_array($filter["id"]) ? explode(',', $filter["id"]) : $filter["id"]));
         }
 
         if (!empty($filter["name"])) {
-            $where .= "AND (";
-            $where .= "username LIKE '%" . $filter["name"] . "%'";
-            $where .= " OR first_name LIKE '%" . $filter["name"] . "%'";
-            $where .= " OR email LIKE '%" . $filter["name"] . "%'";
-            $where .= " OR phone LIKE '%" . $filter["name"] . "%'";
-            $where .= ")";
+            $this->orLike('username', $filter["name"]);
+            $this->orLike('first_name', $filter["name"]);
+            $this->orLike('email', $filter["name"]);
+            $this->orLike('phone', $filter["name"]);
         }
 
         if (!empty($where)) {

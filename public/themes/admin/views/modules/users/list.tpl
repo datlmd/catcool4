@@ -1,6 +1,6 @@
 {strip}
 {form_hidden('manage_url', $manage_url)}
-{csrf_field('cc_token')}
+{csrf_field()}
 <div class="container-fluid  dashboard-content">
 	<div class="row">
 		<div class="col-sm-6 col-12">
@@ -31,15 +31,15 @@
 					<div class="row">
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 							<label class="form-label">{lang('UserAdmin.filter_search_user')}</label>
-							{form_input('filter_name', set_value('filter_name', $filter.name), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_name')])}
+							{form_input('name', set_value('name', $filter.name), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_name')])}
 						</div>
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 							<label class="form-label">{lang('Admin.filter_id')}</label>
-							{form_input('filter_id', set_value('filter_id', $filter.id), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
+							{form_input('id', set_value('id', $filter.id), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
 						</div>
 						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 							<label class="form-label">{lang('Admin.text_limit')}</label>
-							{form_dropdown('filter_limit', get_list_limit(), set_value('filter_limit', $filter.limit), ['class' => 'form-control form-control-sm'])}
+							{form_dropdown('limit', get_list_limit(), set_value('limit', $filter.limit), ['class' => 'form-control form-control-sm'])}
 						</div>
 					</div>
 				</div>

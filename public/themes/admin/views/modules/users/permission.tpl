@@ -3,7 +3,6 @@
 <div class="container-fluid  dashboard-content">
     {form_open(uri_string(), ['id' => 'user_validationform'])}
         {form_hidden('id', $item_edit.id)}
-        {csrf_field('cc_token')}
         <div class="row">
             <div class="col-sm-7 col-12">
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('UserAdmin.text_permission_select')}
