@@ -121,10 +121,10 @@
 										</td>
 										<td class="text-center">
 											<div class="btn-group ms-auto">
-												<a href="{$manage_url}/edit/{$item.id}" class="btn btn-sm btn-outline-light" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
-												<a href="{$manage_url}/change_password/{$item.id}" class="btn btn-sm btn-outline-light" title="{lang('UserAdmin.text_change_password')}"><i class="fas fa-key"></i></a>
-												<a href="{$manage_url}/permission/{$item.id}" class="btn btn-sm btn-outline-light text-brand" title="{lang('UserAdmin.text_permission_select')}"><i class="fas fa-lock-open"></i></a>
-												<button type="button" data-id="{$item.id}" class="btn btn-sm btn-outline-light btn_delete_single text-danger" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
+												<a href="{$manage_url}/edit/{$item.id}" class="btn btn-sm btn-light" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
+												<a href="{$manage_url}/change_password/{$item.id}" class="btn btn-sm btn-light" title="{lang('UserAdmin.text_change_password')}"><i class="fas fa-key"></i></a>
+												<a href="{$manage_url}/permission/{$item.id}" class="btn btn-sm btn-light text-brand" title="{lang('UserAdmin.text_permission_select')}"><i class="fas fa-lock-open"></i></a>
+												<button type="button" data-id="{$item.id}" class="btn btn-sm btn-light btn_delete_single text-danger" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
 											</div>
 										</td>
 										<td class="text-center">{form_checkbox('manage_ids[]', $item.id)}</td>

@@ -107,8 +107,8 @@
 										<td class="text-center">{anchor("translations/manage?module_id=`$item.id`", 'Translation')}</td>
 										<td class="text-center">
 											<div class="btn-group ms-auto">
-												<a href="{site_url($manage_url)}/edit/{$item.id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_edit')}"{/if}><i class="fas fa-edit"></i></a>
-												<button type="button" data-id="{$item.id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
+												<a href="{site_url($manage_url)}/edit/{$item.id}" class="btn btn-sm btn-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_edit')}"{/if}><i class="fas fa-edit"></i></a>
+												<button type="button" data-id="{$item.id}" class="btn btn-sm btn-light text-danger btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 											</div>
 										</td>
 										<td class="text-center">{form_checkbox('manage_ids[]', $item.id)}</td>
