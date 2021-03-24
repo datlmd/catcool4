@@ -60,3 +60,11 @@ if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php'))
 {
 	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }
+
+/*
+ * Additional Routing More - Database
+ */
+if (file_exists(ROOTPATH . 'media/config/Routes.php'))
+{
+    require ROOTPATH . 'media/config/Routes.php';
+}
