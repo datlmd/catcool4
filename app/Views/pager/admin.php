@@ -9,7 +9,7 @@ $pager->setSurroundCount(2);
 <div class="row mt-2">
     <div class="col-12">
         <nav aria-label="<?= lang('Pager.pageNavigation') ?>" class="table-responsive">
-            <ul class="pagination justify-content-end my-2">
+            <ul class="pagination justify-content-center my-2">
                 <?php if ($pager->hasPrevious()) : ?>
                     <li class="page-item">
                         <a href="<?= $pager->getFirst() ?>" aria-label="<?= lang('Pager.first') ?>" class="page-link">
