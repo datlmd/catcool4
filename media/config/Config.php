@@ -266,7 +266,7 @@ class CustomConfig extends BaseConfig
 	/**
 	 * Danh sách ngôn ngữ lấy từ db langluages
 	 */
-	public $listLanguageCache = '{"1":{"id":"1","name":"Vietnames","code":"vi","icon":"","user_id":"1","published":"1"},"2":{"id":"2","name":"English","code":"en","icon":"flag-icon flag-icon-gb","user_id":"1","published":"1"}}';
+	public $listLanguageCache = '{"1":{"id":"1","name":"Vietnames","code":"vi","icon":"flag-icon flag-icon-vn","user_id":"1","published":"1"},"2":{"id":"2","name":"English","code":"en","icon":"flag-icon flag-icon-gb","user_id":"1","published":"1"}}';
 
 	public $maintenance = "";
 

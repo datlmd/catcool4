@@ -24,7 +24,7 @@
 	{lang('text_language', 'text_language', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
 	<div class="col-12 col-sm-8 col-lg-6">
 		<select name="language" class="form-control form-control-sm">
-			{foreach get_list_lang() as $key => $value}
+			{foreach get_list_lang(true) as $key => $value}
 				<option value={$value.code}  {if $value.code == set_value('language', $settings.language)}selected="selected"{/if}>
 					{lang($value.code)}
 				</option>
@@ -36,7 +36,7 @@
 	{lang('text_language_admin', 'text_language_admin', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
 	<div class="col-12 col-sm-8 col-lg-6">
 		<select name="language_admin" class="form-control form-control-sm">
-			{foreach get_list_lang() as $key => $value}
+			{foreach get_list_lang(true) as $key => $value}
 				<option value={$value.code}  {if $value.code == set_value('language_admin', $settings.language_admin)}selected="selected"{/if}>
 					{lang($value.code)}
 				</option>

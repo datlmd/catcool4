@@ -118,7 +118,7 @@ class RouteModel extends MyModel
         }
 
         $routes = [];
-        foreach(get_list_lang() as $key => $value) {
+        foreach(get_list_lang(true) as $key => $value) {
             if(empty($urls[$key]['route'])) {
                 continue;
             }
@@ -166,7 +166,7 @@ class RouteModel extends MyModel
             return false;
         }
 
-        foreach (get_list_lang() as $key => $value) {
+        foreach (get_list_lang(true) as $key => $value) {
             if (empty($urls[$key]['route'])) {
                 continue;
             }

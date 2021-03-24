@@ -126,7 +126,7 @@
                             {else}
                                 {assign var="dob" value=""}
                             {/if}
-                            <div class="input-group date show-date-picker" id="show-date-picker" data-target-input="nearest" data-date-format="DD/MM/YYYY" data-date-locale="{get_lang()}">
+                            <div class="input-group date show-date-picker" id="show-date-picker" data-target-input="nearest" data-date-format="DD/MM/YYYY" data-date-locale="{get_lang(true)}">
                                 <input type="text" name="dob" id="dob" class="form-control datetimepicker-input" {if old('dob', $dob)}value="{old('dob', $dob)|date_format:'d/m/Y'}"{/if} placeholder="dd/mm/yyyy" data-target="#show-date-picker" />
                                 <div class="input-group-text" data-target="#show-date-picker" data-toggle="datetimepicker"><i class="fa fa-calendar-alt"></i></div>
                             </div>

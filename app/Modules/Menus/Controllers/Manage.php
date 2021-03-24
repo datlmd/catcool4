@@ -89,7 +89,7 @@ class Manage extends AdminController
             }
 
             $add_data_lang = format_lang_form($this->request->getPost());
-            foreach (get_list_lang() as $key => $value) {
+            foreach (get_list_lang(true) as $key => $value) {
                 $add_data_lang[$key]['language_id'] = $key;
                 $add_data_lang[$key]['menu_id']     = $id;
                 $this->model_lang->insert($add_data_lang[$key]);
@@ -119,7 +119,7 @@ class Manage extends AdminController
             }
 
             $edit_data_lang = format_lang_form($this->request->getPost());
-            foreach (get_list_lang() as $key => $value) {
+            foreach (get_list_lang(true) as $key => $value) {
                 $edit_data_lang[$key]['language_id'] = $key;
                 $edit_data_lang[$key]['menu_id']     = $id;
 
@@ -217,7 +217,7 @@ class Manage extends AdminController
         $this->themes->addJS('common/js/iconpicker/iconpicker');
         $this->themes->addJS('common/js/admin/filemanager');
 
-        $data['list_lang'] = get_list_lang();
+        $data['list_lang'] = get_list_lang(true);
 
         $list_all = $this->model->getAllByFilter(['is_admin' => session('is_menu_admin')]);
         $data['list_patent'] = format_tree(['data' => $list_all, 'key_id' => 'menu_id']);
@@ -251,7 +251,7 @@ class Manage extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        foreach(get_list_lang() as $key => $value) {
+        foreach(get_list_lang(true) as $key => $value) {
             $this->validator->setRule(sprintf('lang_%s_name', $key), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
         }
 

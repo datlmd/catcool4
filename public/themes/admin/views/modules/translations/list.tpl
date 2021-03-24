@@ -214,6 +214,7 @@
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     <input type="text" id="edit_key" name="edit_key" value="" class="form-control">
+                                    <input type="hidden" id="edit_key_old" name="edit_key_old" value="">
                                 </div>
                             </div>
                             {foreach $language_list as $lang}
@@ -282,6 +283,7 @@
         $('#edit_validation_error').html('');
 
         $('#edit_language #edit_key').val(key);
+        $('#edit_language #edit_key_old').val(key);
         $('#edit_language textarea').val();
 
         $('#' + key + ' textarea').each(function() {

@@ -165,19 +165,20 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        $key       = $this->request->getPost('edit_key');
-        $values    = $this->request->getPost('edit_value');
-        $module_id = $this->request->getPost('module_id');
+        $key_new       = $this->request->getPost('edit_key');
+        $key_old       = $this->request->getPost('edit_key_old');
+        $values        = $this->request->getPost('edit_value');
+        $module_id     = $this->request->getPost('module_id');
         $module_id_old = $this->request->getPost('module_id_old');
 
-        if (empty($key)) {
+        if (empty($key_new)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => sprintf(lang('Admin.text_manage_validation'), lang('TranslationAdmin.text_key'))]);
         }
         if (empty($module_id)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => sprintf(lang('Admin.text_manage_validation'), lang('TranslationAdmin.text_module'))]);
         }
 
-        $translates = $this->model->getAllByFilter(['module_id' => $module_id_old, 'lang_key' => $key]);
+        $translates = $this->model->getAllByFilter(['module_id' => $module_id_old, 'lang_key' => $key_old]);
         if (empty($translates)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
@@ -191,9 +192,9 @@ class Manage extends AdminController
         }
 
         foreach ($language_list as $lang) {
-            if (empty($translates[$key][$lang['id']])) {
+            if (empty($translates[$key_old][$lang['id']])) {
                 $data_add = [
-                    'lang_key'   => $key,
+                    'lang_key'   => $key_new,
                     'lang_value' => str_replace('"', "'", $values[$lang['id']]),
                     'lang_id'    => $lang['id'],
                     'module_id'  => $module_id,
@@ -204,8 +205,9 @@ class Manage extends AdminController
                 //add
                 $this->model->insert($data_add);
             } else {
-                $data_edit               = $translates[$key][$lang['id']];
+                $data_edit               = $translates[$key_old][$lang['id']];
                 $data_edit['lang_value'] = str_replace('"', "'", $values[$lang['id']]);
+                $data_edit['lang_key']   = $key_new;
                 $data_edit['module_id']  = $module_id;
                 $data_edit['user_id']    = $this->getUserId();
 

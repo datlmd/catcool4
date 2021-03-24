@@ -182,14 +182,14 @@ class Manage extends AdminController
 
         $this->themes->addJS('common/plugin/datepicker/moment.min');
         $this->themes->addJS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
-        if (get_lang() == 'vi') {
+        if (get_lang(true) == 'vi') {
             $this->themes->addJS('common/plugin/datepicker/locale/vi');
         }
 
         $this->themes->addJS('common/js/dropzone/dropdrap');
         $this->themes->addJS('common/plugin/multi-select/js/bootstrap-multiselect.min');
 
-        $data['list_lang'] = get_list_lang();
+        $data['list_lang'] = get_list_lang(true);
 
         $group_list      = $this->group_model->findAll();
         $permission_list = $this->permission_model->getListPublished();

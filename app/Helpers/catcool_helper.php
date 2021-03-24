@@ -73,7 +73,7 @@ if (!function_exists('set_lang'))
         }
 
         $is_lang        = false;
-        $multi_language = get_list_lang();
+        $multi_language = get_list_lang($is_admin);
         foreach($multi_language as $value) {
             if ($value['code'] == $lang) {
                 $is_lang = true;
@@ -137,29 +137,38 @@ if (!function_exists('get_list_lang'))
     /**
      * Get list language
      *
-     * @return bool|mixed
+     * @param bool $is_admin
+     * @return array|bool
      */
-    function get_list_lang()
+    function get_list_lang($is_admin = false)
     {
         //list lang
-        $list_language = json_decode(config_item('list_language_cache'), 1);
-        if (empty($list_language)) {
+        $language_list = json_decode(config_item('list_language_cache'), 1);
+        if (empty($language_list)) {
             return false;
         }
 
-        foreach ($list_language as $key => $value) {
-            $list_language[$key]['active'] = false;
-            if ($value['code'] == get_lang()) {
-                $list_language[$key]['active'] = true;
-            }
+        $language_active = [];
+        foreach ($language_list as $key => $value) {
             if (empty($value['icon'])) {
-                $list_language[$key]['icon'] = '<i class="flag-icon flag-icon-' . (($value['code'] == 'vi') ? 'vn' : $value['code']) . ' me-2"></i>';
+                $language_list[$key]['icon'] = '<i class="flag-icon flag-icon-' . (($value['code'] == 'vi') ? 'vn' : $value['code']) . ' me-2"></i>';
             } else {
-                $list_language[$key]['icon'] = '<i class="' . $value['icon'] . ' me-2"></i>';
+                $language_list[$key]['icon'] = '<i class="' . $value['icon'] . ' me-2"></i>';
             }
+
+            $language_list[$key]['active'] = false;
+            if ($value['code'] == get_lang($is_admin)) {
+                $language_list[$key]['active'] = true;
+                $language_active[] = $language_list[$key];
+                unset($language_list[$key]);
+            }
+
         }
 
-        return $list_language;
+        $language_list = array_merge($language_active, $language_list);
+
+
+        return $language_list;
     }
 }
 
@@ -207,16 +216,17 @@ if (!function_exists('format_lang_form'))
 {
     /**
      * @param $data
+     * @param bool $is_admin
      * @return array
      */
-    function format_lang_form($data)
+    function format_lang_form($data, $is_admin = true)
     {
         if (empty($data)) {
             return $data;
         }
 
         $input_list = [];
-        foreach (get_list_lang() as $lang) {
+        foreach (get_list_lang($is_admin) as $lang) {
             foreach ($data as $key => $value) {
                 if (strrpos($key, $lang['id']) !== FALSE) {
                     $lang_tmp = explode('_', $key);

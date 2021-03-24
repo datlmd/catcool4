@@ -80,7 +80,7 @@
                                         {assign var="language_id" value=""}
                                     {/if}
                                     <select name="language_id" id="language_id" class="form-control">
-                                        {foreach get_list_lang() as $language}
+                                        {foreach get_list_lang(true) as $language}
                                             <option value="{$language.id}" {if $language_id eq $language.id}selected="selected"{/if}>{$language.name}</option>
                                         {/foreach}
                                     </select>

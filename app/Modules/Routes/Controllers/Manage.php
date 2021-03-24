@@ -68,7 +68,7 @@ class Manage extends AdminController
             'sort'       => empty($sort) ? 'id' : $sort,
             'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'        => $url,
-            'languages'  => format_dropdown(get_list_lang()),
+            'languages'  => format_dropdown(get_list_lang(true)),
         ];
 
         $this->themes::load('list', $data);
