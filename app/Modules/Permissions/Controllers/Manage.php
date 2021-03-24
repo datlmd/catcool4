@@ -44,7 +44,7 @@ class Manage extends AdminController
             'active' => count(array_filter($this->request->getGet(['id', 'name', 'limit']))) > 0,
             'id'     => $id ?? "",
             'name'   => $name ?? "",
-            'limit'  => $name,
+            'limit'  => $limit,
         ];
 
         $list = $this->model->getAllByFilter($filter, $sort, $order);
