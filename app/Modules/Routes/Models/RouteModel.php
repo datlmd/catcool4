@@ -151,7 +151,7 @@ class RouteModel extends MyModel
                 }
             }
 
-            write_file(ROOTPATH . 'media/config/Routes.php', $file_content);
+            write_file(WRITEPATH . 'config/Routes.php', $file_content);
         } catch (\Exception $ex) {
             log_message('error', $ex->getMessage());
             return false;

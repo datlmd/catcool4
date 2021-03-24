@@ -64,7 +64,7 @@ if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php'))
 /*
  * Additional Routing More - Database
  */
-if (file_exists(ROOTPATH . 'media/config/Routes.php'))
+if (file_exists(WRITEPATH . 'config/Routes.php'))
 {
-    require ROOTPATH . 'media/config/Routes.php';
+    require WRITEPATH . 'config/Routes.php';
 }
