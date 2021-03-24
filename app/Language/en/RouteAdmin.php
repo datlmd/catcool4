@@ -1,6 +1,7 @@
 <?php
 
 return [
+	"created_routes_success" => "The file has been successfully recorded!",
 	"heading_title" => "Routes",
 	"text_add" => "Add Route",
 	"text_edit" => "Edit Route",

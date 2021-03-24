@@ -1,6 +1,7 @@
 <?php
 
 return [
+	"created_routes_success" => "Đã ghi file thành công!",
 	"heading_title" => "Định tuyến",
 	"text_add" => "Thêm mới định tuyến",
 	"text_edit" => "Cập nhật định tuyến",
