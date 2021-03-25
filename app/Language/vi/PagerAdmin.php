@@ -6,8 +6,9 @@ return [
 	"invalidTemplate" => "{0} không phải là mẫu Pager hợp lệ.",
 	"last" => "Cuối",
 	"newer" => "Newer",
-	"next" => "<i class='fas fa-angle-right'></i>",
+	"next" => "»",
 	"older" => "Older",
 	"pageNavigation" => "Phân trang",
-	"previous" => "<i class='fas fa-angle-left'></i>",
+	"previous" => "«",
+	"text_pagination" => "Tổng: {2} ({0}-{1})",
 ];

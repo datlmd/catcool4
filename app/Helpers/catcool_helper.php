@@ -1568,3 +1568,20 @@ if(!function_exists('config_item'))
         return config('Config')->$key;
     }
 }
+
+if(!function_exists('pager_string'))
+{
+    function pager_string($total, $limit, $offset)
+    {
+        if (empty($total) || empty($limit)) {
+            return null;
+        }
+
+        $offset    = empty($offset) ? 0 : $offset - 1;
+        $page_from = ($offset * $limit) + 1;
+        $page_to   = $page_from - 1 + $limit;
+        $page_to   = ($page_to >= $total) ? $total : $page_to; //reset total
+
+        return lang('PagerAdmin.text_pagination', [$page_from, $page_to, $total]);
+    }
+}

@@ -6,8 +6,9 @@ return [
 	"invalidTemplate" => "{0} is not a valid Pager template.",
 	"last" => "Last",
 	"newer" => "Newer",
-	"next" => "<i class='fas fa-angle-right'></i>",
+	"next" => "»",
 	"older" => "Older",
 	"pageNavigation" => "Page navigation",
-	"previous" => "<i class='fas fa-angle-left'></i>",
+	"previous" => "«",
+	"text_pagination" => "Total: {2} ({0}-{1})",
 ];

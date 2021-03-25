@@ -1,0 +1,25 @@
+<?php
+
+return [
+	"heading_title" => "Countries",
+	"text_add" => "Add Country",
+	"text_capital" => "Capital",
+	"text_country" => "Country",
+	"text_country_code" => "Iso code",
+	"text_country_code3" => "Iso code 3",
+	"text_country_number" => "Country number",
+	"text_country_sub_type" => "Subtype",
+	"text_country_type" => "Type",
+	"text_currency_code" => "Currency code",
+	"text_currency_name" => "Currency name",
+	"text_district" => "Districts",
+	"text_edit" => "Edit Country",
+	"text_flags" => "Flags",
+	"text_formal_name" => "Name Format",
+	"text_internet_country_code" => "Internet code",
+	"text_list" => "Country List",
+	"text_province" => "Provinces",
+	"text_sovereignty" => "Sovereignty",
+	"text_telephone_code" => "Telephone code",
+	"text_ward" => "Wards",
+];

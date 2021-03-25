@@ -6,19 +6,19 @@
 
 $pager->setSurroundCount(2);
 ?>
-<div class="row">
+<div class="row mt-2">
     <div class="col-12">
-        <nav aria-label="<?= lang('PagerAdmin.pageNavigation') ?>" class="table-responsive">
-            <ul class="pagination justify-content-end my-2">
+        <nav aria-label="<?= lang('Pager.pageNavigation') ?>" class="table-responsive">
+            <ul class="pagination justify-content-center my-2">
                 <?php if ($pager->hasPrevious()) : ?>
                     <li class="page-item">
-                        <a href="<?= $pager->getFirst() ?>" aria-label="<?= lang('PagerAdmin.first') ?>" class="page-link">
-                            <span aria-hidden="true"><?= lang('PagerAdmin.first') ?></span>
+                        <a href="<?= $pager->getFirst() ?>" aria-label="<?= lang('Pager.first') ?>" class="page-link">
+                            <span aria-hidden="true"><?= lang('Pager.first') ?></span>
                         </a>
                     </li>
                     <li class="page-item">
-                        <a href="<?= $pager->getPrevious() ?>" aria-label="<?= lang('PagerAdmin.previous') ?>" class="page-link">
-                            <span aria-hidden="true"><?= lang('PagerAdmin.previous') ?></span>
+                        <a href="<?= $pager->getPrevious() ?>" aria-label="<?= lang('Pager.previous') ?>" class="page-link">
+                            <span aria-hidden="true"><?= lang('Pager.previous') ?></span>
                         </a>
                     </li>
                 <?php endif ?>
@@ -33,13 +33,13 @@ $pager->setSurroundCount(2);
 
                 <?php if ($pager->hasNext()) : ?>
                     <li class="page-item">
-                        <a href="<?= $pager->getNext() ?>" aria-label="<?= lang('PagerAdmin.next') ?>" class="page-link">
-                            <span aria-hidden="true"><?= lang('PagerAdmin.next') ?></span>
+                        <a href="<?= $pager->getNext() ?>" aria-label="<?= lang('Pager.next') ?>" class="page-link">
+                            <span aria-hidden="true"><?= lang('Pager.next') ?></span>
                         </a>
                     </li>
                     <li class="page-item">
-                        <a href="<?= $pager->getLast() ?>" aria-label="<?= lang('PagerAdmin.last') ?>" class="page-link">
-                            <span aria-hidden="true"><?= lang('PagerAdmin.last') ?></span>
+                        <a href="<?= $pager->getLast() ?>" aria-label="<?= lang('Pager.last') ?>" class="page-link">
+                            <span aria-hidden="true"><?= lang('Pager.last') ?></span>
                         </a>
                     </li>
                 <?php endif ?>

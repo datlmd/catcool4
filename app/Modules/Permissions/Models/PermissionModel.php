@@ -25,7 +25,7 @@ class PermissionModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = empty($sort) ? 'id' : $sort;
+        $sort  = in_array($sort, $this->allowedFields) ? $sort : 'id';
         $order = empty($order) ? 'DESC' : $order;
 
         if (!empty($filter["id"])) {
