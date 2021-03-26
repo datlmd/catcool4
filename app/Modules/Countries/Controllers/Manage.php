@@ -124,7 +124,7 @@ class Manage extends AdminController
 
         if (!empty($this->request->getPost()) && $id == $this->request->getPost('country_id')) {
             if (!$this->_validateForm()) {
-                set_alert($this->errors, ALERT_ERROR);
+                set_alert($this->errors, ALERT_ERROR, ALERT_POPUP);
                 return redirect()->back()->withInput();
             }
 
@@ -243,7 +243,7 @@ class Manage extends AdminController
 
     private function _validateForm()
     {
-        $this->validator->setRule('name', lang('CountryAdmin.text_name'), 'required');
+        $this->validator->setRule('name', lang('Admin.text_name'), 'required');
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();

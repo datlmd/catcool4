@@ -34,11 +34,11 @@
 								</div>
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									<label class="form-label">{lang('CountryAdmin.text_country')}</label>
-									{form_input('filter.name', set_value('name', $filter.name), ['class' => 'form-control form-control-sm', 'placeholder' => lang('CountryAdmin.text_country')])}
+									{form_input('name', set_value('name', $filter.name), ['class' => 'form-control form-control-sm', 'placeholder' => lang('CountryAdmin.text_country')])}
 								</div>
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									<label class="form-label">{lang('Admin.text_limit')}</label>
-									{form_dropdown('filter_limit', get_list_limit(), set_value('limit', $filter.limit), ['class' => 'form-control form-control-sm'])}
+									{form_dropdown('limit', get_list_limit(), set_value('limit', $filter.limit), ['class' => 'form-control form-control-sm'])}
 								</div>
 							</div>
 						</div>
