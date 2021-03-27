@@ -9,7 +9,7 @@
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
 			<a href="{site_url($manage_url)}/refresh" class="btn btn-sm btn-success btn-space" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('CurrencyAdmin.button_refresh')}"><i class="fas fa-sync me-1"></i>{lang('CurrencyAdmin.button_refresh')}</a>
 			<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
-			<a href="{site_url($manage_url)}/add{http_get_query()}" class="btn btn-sm btn-primary btn-space me-0" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_add')}"><i class="fas fa-plus me-1"></i>{lang('CurrencyAdmin.text_add')}</a>
+			<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space me-0" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_add')}"><i class="fas fa-plus me-1"></i>{lang('CurrencyAdmin.text_add')}</a>
 		</div>
 	</div>
 	<div class="row">
