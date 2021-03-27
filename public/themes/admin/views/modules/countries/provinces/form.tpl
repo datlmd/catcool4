@@ -1,92 +1,148 @@
-{assign var="class_colum_label" value="col-12 col-sm-3 col-form-label required-label text-sm-end"}
-{assign var="class_colum_input" value="col-12 col-sm-8 col-lg-6"}
-{form_hidden('manage_url', $manage_url)}
-<div class="container-fluid  dashboard-content">
-    {form_open(uri_string(), ['id' => 'validationform'])}
-        <div class="row">
-            <div class="col-sm-7 col-12">
-                {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
+{strip}
+    {form_hidden('manage_url', site_url($manage_url))}
+    <div class="container-fluid  dashboard-content">
+        {form_open(uri_string(), ['id' => 'validationform'])}
+            <div class="row">
+                <div class="col-sm-7 col-12">
+                    {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('CountryProvinceAdmin.heading_title')}
+                </div>
+                <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
+                    <button type="submit" class="btn btn-sm btn-space btn-primary mb-0" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
+                    <a href="{site_url($manage_url)}{http_get_query()}" class="btn btn-sm btn-space btn-secondary mb-0 me-0" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_cancel')}</a>
+                </div>
             </div>
-            <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
-                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
-            </div>
-        </div>
-        {if !empty($edit_data.province_id)}
-            {form_hidden('id', $edit_data.province_id)}
-            {create_input_token($csrf)}
-        {/if}
-        <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            {if !empty($edit_data.province_id)}
+                {form_hidden('province_id', $edit_data.province_id)}
+            {/if}
+            <div class="row">
+                {if !empty(print_flash_alert())}
+                    <div class="col-12">{print_flash_alert()}</div>
+                {/if}
                 {if !empty($errors)}
                     <div class="col-12">
                         {include file=get_theme_path('views/inc/alert.tpl') message=$errors type='danger'}
                     </div>
                 {/if}
-                <div class="card">
-                    <h5 class="card-header"><i class="fas {if !empty($edit_data.province_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
-                    <div class="card-body">
-                        <div class="form-group row">
-                            {lang('text_name', 'text_name', ['class' => 'col-12 col-sm-3 col-form-label required-label text-sm-end'])}
-                            <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="name" value="{set_value('name', $edit_data.name)}" id="name" class="form-control {if !empty($errors["name"])}is-invalid{/if}">
-                                {if !empty($errors["name"])}
-                                    <div class="invalid-feedback">{$errors["name"]}</div>
-                                {/if}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            {lang('text_type', 'text_type', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-                            <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="type" value="{set_value('type', $edit_data.type)}" id="type" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            {lang('text_telephone_code', 'text_telephone_code', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-                            <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="telephone_code" value="{set_value('telephone_code', $edit_data.telephone_code)}" id="telephone_code" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            {lang('text_code', 'text_code', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-                            <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="zip_code" value="{set_value('zip_code', $edit_data.zip_code)}" id="zip_code" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            {lang('text_country_code', 'text_country_code', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-                            <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="country_code" value="{set_value('country_code', $edit_data.country_code)}" id="country_code" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            {lang('text_sort_order', 'text_sort_order', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-                            <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="sort_order" value="{set_value('sort_order', $edit_data.sort_order)}" id="sort_order" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            {lang('text_country', 'text_country', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-                            <div class="col-12 col-sm-8 col-lg-6">
-                                {form_dropdown('country_id', $country_list, set_value('country_id', $edit_data.country_id), ['class' => 'form-control'])}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            {lang('text_published', 'text_published', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-                            <div class="col-12 col-sm-8 col-lg-6">
-                                <div class="switch-button switch-button-xs mt-2">
-                                    {if isset($edit_data.published)}
-                                        <input type="checkbox" name="published" value="{STATUS_ON}" {set_checkbox('published', STATUS_ON, ($edit_data.published == STATUS_ON))} id="published">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header"><i class="fas {if !empty($edit_data.province_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('CountryProvinceAdmin.text_country')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if isset($edit_data.country_id)}
+                                        {assign var="country_id" value="`$edit_data.country_id`"}
                                     {else}
-                                        <input type="checkbox" name="published" value="{STATUS_ON}" {set_checkbox('published', STATUS_ON, true)} id="published">
+                                        {assign var="country_id" value=""}
                                     {/if}
-                                    <span><label for="published"></label></span>
+                                    {form_dropdown('country_id', $country_list, old('country_id', $country_id), ['class' => 'form-control'])}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end required-label col-form-label">
+                                    {lang('Admin.text_name')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if isset($edit_data.name)}
+                                        {assign var="name" value="`$edit_data.name`"}
+                                    {else}
+                                        {assign var="name" value=""}
+                                    {/if}
+                                    <input type="text" name="name" value="{old('name', $name)}" id="name" class="form-control {if $validator->hasError('name')}is-invalid{/if}">
+                                    <div class="invalid-feedback">{$validator->getError("name")}</div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('CountryProvinceAdmin.text_type')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if isset($edit_data.type)}
+                                        {assign var="type" value="`$edit_data.type`"}
+                                    {else}
+                                        {assign var="type" value=""}
+                                    {/if}
+                                    <input type="text" name="type" value="{old('type', $type)}" id="type" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('CountryProvinceAdmin.text_telephone_code')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if isset($edit_data.telephone_code)}
+                                        {assign var="telephone_code" value="`$edit_data.telephone_code`"}
+                                    {else}
+                                        {assign var="telephone_code" value=""}
+                                    {/if}
+                                    <input type="text" name="telephone_code" value="{old('telephone_code', $telephone_code)}" id="telephone_code" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('CountryProvinceAdmin.text_code')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if isset($edit_data.zip_code)}
+                                        {assign var="zip_code" value="`$edit_data.zip_code`"}
+                                    {else}
+                                        {assign var="zip_code" value=""}
+                                    {/if}
+                                    <input type="text" name="zip_code" value="{old('zip_code', $zip_code)}" id="zip_code" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('CountryProvinceAdmin.text_country_code')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if isset($edit_data.country_code)}
+                                        {assign var="country_code" value="`$edit_data.country_code`"}
+                                    {else}
+                                        {assign var="country_code" value=""}
+                                    {/if}
+                                    <input type="text" name="country_code" value="{old('country_code', $country_code)}" id="country_code" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('Admin.text_sort_order')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if isset($edit_data.sort_order)}
+                                        {assign var="sort_order" value="`$edit_data.sort_order`"}
+                                    {else}
+                                        {assign var="sort_order" value="0"}
+                                    {/if}
+                                    <input type="number" name="sort_order" value="{old('sort_order', $sort_order)}" id="sort_order" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('Admin.text_published')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if isset($edit_data.published)}
+                                        {assign var="published" value="`$edit_data.published`"}
+                                    {else}
+                                        {assign var="published" value="1"}
+                                    {/if}
+                                    <label class="form-check form-check-inline ms-2 mt-2">
+                                        <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $published) eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
+                                        <label class="form-check-label" for="published_on">ON</label>
+                                    </label>
+                                    <label class="form-check form-check-inline me-2 mt-2">
+                                        <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $published) eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
+                                        <label class="form-check-label" for="published_off">OFF</label>
+                                    </label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    {form_close()}
-</div>
+        {form_close()}
+    </div>
+{/strip}

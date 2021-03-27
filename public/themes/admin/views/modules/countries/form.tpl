@@ -220,7 +220,7 @@
                                     {else}
                                         {assign var="sort_order" value="0"}
                                     {/if}
-                                    <input type="text" name="sort_order" value="{old('sort_order', $sort_order)}" id="sort_order" class="form-control">
+                                    <input type="number" name="sort_order" value="{old('sort_order', $sort_order)}" id="sort_order" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">

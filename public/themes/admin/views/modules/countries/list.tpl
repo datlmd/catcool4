@@ -1,5 +1,5 @@
 {strip}
-	{form_hidden('manage_url', $manage_url)}
+	{form_hidden('manage_url', site_url($manage_url))}
 	{csrf_field()}
 	<div class="container-fluid  dashboard-content">
 		<div class="row">
@@ -51,16 +51,16 @@
 				<div class="card">
 					<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('CountryAdmin.text_list')}</h5>
 					<div class="card-body">
-						{include file=get_theme_path('views/modules/countries/inc/link_list.tpl')}
+						{include file=get_theme_path('views/modules/countries/inc/link_list.tpl') active='countries'}
 						{if !empty($list)}
 							<div class="table-responsive">
 								<table class="table table-striped table-hover table-bordered second">
 									<thead>
 									<tr class="text-center">
 										<th width="50">
-											<a href="{site_url($manage_url)}?sort=id&order={$order}{$url}" class="text-dark">
+											<a href="{site_url($manage_url)}?sort=country_id&order={$order}{$url}" class="text-dark">
 												{lang('Admin.column_id')}
-												{if $sort eq 'id'}
+												{if $sort eq 'country_id'}
 													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 												{/if}
 											</a>
