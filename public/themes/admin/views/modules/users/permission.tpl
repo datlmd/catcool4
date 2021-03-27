@@ -1,5 +1,5 @@
 {strip}
-{form_hidden('manage_url', $manage_url)}
+{form_hidden('manage_url', site_url($manage_url))}
 <div class="container-fluid  dashboard-content">
     {form_open(uri_string(), ['id' => 'user_validationform'])}
         {form_hidden('id', $item_edit.id)}

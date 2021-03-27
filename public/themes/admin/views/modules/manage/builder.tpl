@@ -1,4 +1,4 @@
-{form_hidden('manage_url', $manage_url)}
+{form_hidden('manage_url', site_url($manage_url))}
 <div class="container-fluid  dashboard-content">
 	{include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
 	<div class="row">

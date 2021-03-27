@@ -1,4 +1,4 @@
-{form_hidden('manage_url', $manage_url)}
+{form_hidden('manage_url', site_url($manage_url))}
 <div class="container-fluid  dashboard-content">
 	<div class="row">
 		<div class="col-12">

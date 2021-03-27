@@ -1,5 +1,5 @@
 {if !$is_ajax}<div id="view_photos" data-parameter="{http_get_query()}">{/if}
-	{form_hidden('manage_url', $manage_url)}
+	{form_hidden('manage_url', site_url($manage_url))}
 	<div class="container-fluid  dashboard-content">
 		<div class="row">
 			<div class="col-sm-7 col-12">

@@ -1,6 +1,6 @@
 {assign var="class_colum_label" value="col-12 col-sm-3 col-form-label required-label text-sm-end"}
 {assign var="class_colum_input" value="col-12 col-sm-8 col-lg-6"}
-{form_hidden('manage_url', $manage_url)}
+{form_hidden('manage_url', site_url($manage_url))}
 <div class="container-fluid  dashboard-content">
     {form_open(uri_string(), ['id' => 'validationform'])}
         <div class="row">

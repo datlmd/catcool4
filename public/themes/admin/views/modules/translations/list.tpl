@@ -1,5 +1,5 @@
 {strip}
-{form_hidden('manage_url', $manage_url)}
+{form_hidden('manage_url', site_url($manage_url))}
 {csrf_field()}
 <div class="container-fluid  dashboard-content">
     <div class="row">
