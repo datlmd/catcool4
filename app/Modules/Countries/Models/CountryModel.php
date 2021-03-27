@@ -7,8 +7,10 @@ class CountryModel extends MyModel
     protected $table      = 'country';
     protected $primaryKey = 'country_id';
 
+    protected $useAutoIncrement = true;
+
     protected $useSoftDeletes = true;
-    protected $deletedField   = 'is_deleted';
+    protected $deletedField   = 'deleted';
 
     protected $allowedFields = [
         'country_id',
@@ -28,7 +30,7 @@ class CountryModel extends MyModel
         'sort_order',
         'published',
         'flags',
-        'is_deleted',
+        'deleted',
     ];
 
     const COUNTRY_CACHE_NAME   = 'country_list';
