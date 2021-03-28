@@ -17,4 +17,10 @@ $routes->group('countries', ['namespace' => 'App\Modules\Countries\Controllers']
     $subroutes->add('provinces_manage/edit/(:num)', 'ProvincesManage::edit/$1');
     $subroutes->add('provinces_manage/delete', 'ProvincesManage::delete');
     $subroutes->add('provinces_manage/publish', 'ProvincesManage::publish');
+
+    $subroutes->add('districts_manage', 'DistrictsManage::index');
+    $subroutes->add('districts_manage/add', 'DistrictsManage::add');
+    $subroutes->add('districts_manage/edit/(:num)', 'DistrictsManage::edit/$1');
+    $subroutes->add('districts_manage/delete', 'DistrictsManage::delete');
+    $subroutes->add('districts_manage/publish', 'DistrictsManage::publish');
 });
