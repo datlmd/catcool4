@@ -73,7 +73,7 @@ class DistrictsManage extends AdminController
         ];
 
         $province_model = new ProvinceModel();
-        $data['province_list'] = format_dropdown($province_model->getListPublished(), 'province_id');
+        $data['province_list'] = $province_model->getListDisplay();
 
         add_meta(['title' => lang("CountryDistrictAdmin.heading_title")], $this->themes);
         $this->themes::load('districts/list', $data);
@@ -199,12 +199,12 @@ class DistrictsManage extends AdminController
 
     private function _getForm($id = null)
     {
-        $country_model = new CountryModel();
-        $data['country_list'] = format_dropdown($country_model->getListPublished(), 'country_id');
+        $this->themes->addJS('common/js/country/load');
 
+        $country_model  = new CountryModel();
         $province_model = new ProvinceModel();
-        $data['province_list'] = format_dropdown($province_model->getListPublished(), 'province_id');
 
+        $province_list = [];
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form']   = lang('CountryDistrictAdmin.text_edit');
@@ -216,12 +216,21 @@ class DistrictsManage extends AdminController
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
+            $province_data = $province_model->where('province_id', $data_form['province_id'])->first();
+            if (!empty($province_data)) {
+                $province_list           = $province_model->getListDisplay($province_data['country_id']);
+                $data_form['country_id'] = $province_data['country_id'];
+            }
+
             // display the edit user form
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form']   = lang('CountryDistrictAdmin.text_add');
             $data['text_submit'] = lang('CountryDistrictAdmin.button_add');
         }
+
+        $data['country_list']  = $country_model->getListDisplay();
+        $data['province_list'] = $province_list;
 
         $data['errors'] = $this->errors;
 

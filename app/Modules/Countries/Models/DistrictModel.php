@@ -51,7 +51,7 @@ class  DistrictModel extends MyModel
     {
         $result = $is_cache ? cache()->get(self::COUNTRY_DISTRICT_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->where(['published' => STATUS_ON])->findAll();
+            $result = $this->orderBy('sort_order', 'ASC')->where(['published' => STATUS_ON])->findAll();
             if (empty($result)) {
                 return null;
             }
@@ -69,5 +69,23 @@ class  DistrictModel extends MyModel
     {
         cache()->delete(self::COUNTRY_DISTRICT_CACHE_NAME);
         return true;
+    }
+
+    public function getListDisplay($province_id = null)
+    {
+        $return = $this->getListPublished();
+        if (empty($return)) {
+            return false;
+        }
+
+        $district_list[0] = lang('Country.text_select');
+        foreach ($return as $key => $value) {
+            if (!empty($province_id) && $value['province_id'] != $province_id) {
+                continue;
+            }
+            $district_list[$value['district_id']] = $value['type'] . ' ' . $value['name'];
+        }
+
+        return $district_list;
     }
 }

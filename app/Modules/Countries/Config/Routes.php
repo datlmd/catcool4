@@ -6,6 +6,10 @@ if(!isset($routes))
 }
 
 $routes->group('countries', ['namespace' => 'App\Modules\Countries\Controllers'], function($subroutes){
+    $subroutes->add('provinces', 'Countries::provinces');
+    $subroutes->add('districts', 'Countries::districts');
+    $subroutes->add('wards', 'Countries::wards');
+
     $subroutes->add('manage', 'Manage::index');
     $subroutes->add('manage/add', 'Manage::add');
     $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');

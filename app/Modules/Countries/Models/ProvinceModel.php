@@ -57,7 +57,7 @@ class  ProvinceModel extends MyModel
     {
         $result = $is_cache ? cache()->get(self::COUNTRY_PROVINCE_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->where(['published' => STATUS_ON])->findAll();
+            $result = $this->orderBy('sort_order', 'ASC')->where(['published' => STATUS_ON])->findAll();
             if (empty($result)) {
                 return null;
             }
@@ -75,5 +75,23 @@ class  ProvinceModel extends MyModel
     {
         cache()->delete(self::COUNTRY_PROVINCE_CACHE_NAME);
         return true;
+    }
+
+    public function getListDisplay($country_id = null)
+    {
+        $return = $this->getListPublished();
+        if (empty($return)) {
+            return false;
+        }
+
+        $province_list[0] = lang('Country.text_select');
+        foreach ($return as $key => $value) {
+            if (!empty($country_id) && $value['country_id'] != $country_id) {
+                continue;
+            }
+            $province_list[$value['province_id']] = $value['type'] . ' ' . $value['name'];
+        }
+
+        return $province_list;
     }
 }
