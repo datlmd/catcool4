@@ -518,7 +518,10 @@ var Catcool = {
 /* action - event */
 $(function () {
 
-    $('.loading').fadeOut();
+    $(window).on('load', function () {
+        $('.loading').fadeOut();
+        $('#page_loading').fadeOut();
+    });
 
     if ($('.make_slug').length) {
         $(".make_slug").on("keyup", function () {
@@ -670,4 +673,3 @@ $(function () {
     }
 
 });
-
