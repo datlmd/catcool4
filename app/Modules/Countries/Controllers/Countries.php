@@ -25,6 +25,7 @@ class Countries extends BaseController
         $province_model = new ProvinceModel();
         $country_id    = $this->request->getPost('country_id');
         $province_list = $province_model->getListDisplay($country_id);
+
         if (empty($province_list)) {
             json_output(['status' => 'ng', 'none' => lang('Country.text_none')]);
         }

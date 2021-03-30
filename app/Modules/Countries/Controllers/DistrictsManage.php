@@ -118,7 +118,7 @@ class DistrictsManage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()) && $id == $this->request->getPost('province_id')) {
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('district_id')) {
             if (!$this->_validateForm()) {
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
@@ -246,7 +246,7 @@ class DistrictsManage extends AdminController
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         $this->validator->setRule('name', lang('Admin.text_name'), 'required');
-        $this->validator->setRule('province_id', lang('CountryDistrictAdmin.text_province'), 'required');
+        $this->validator->setRule('province_id', lang('CountryDistrictAdmin.text_province'), 'required|is_natural_no_zero');
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();

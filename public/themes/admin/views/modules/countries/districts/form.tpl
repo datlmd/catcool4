@@ -12,7 +12,7 @@
                 </div>
             </div>
             {if !empty($edit_data.district_id)}
-                {form_hidden('id', $edit_data.district_id)}
+                {form_hidden('district_id', $edit_data.district_id)}
             {/if}
             <div class="row">
                 {if !empty(print_flash_alert())}
@@ -86,11 +86,11 @@
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     {if isset($edit_data.country_id)}
-                                        {assign var="country_id" value="`$edit_data.country_id`"}
+                                        {assign var="country_id" value="{old('country_id', $edit_data.country_id)}"}
                                     {else}
                                         {assign var="country_id" value=""}
                                     {/if}
-                                    {form_dropdown('country_id', $country_list, old('country_id', $country_id), ['class' => 'form-control country-changed'])}
+                                    {form_dropdown('country_id', $country_list, $country_id, ['class' => 'form-control country-changed'])}
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -99,11 +99,11 @@
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     {if isset($edit_data.province_id)}
-                                        {assign var="province_id" value="`$edit_data.province_id`"}
+                                        {assign var="province_id" value="{old('province_id', $edit_data.province_id)}"}
                                     {else}
                                         {assign var="province_id" value=""}
                                     {/if}
-                                    {form_dropdown('province_id', $province_list, old('province_id', $province_id), ['class' => 'form-control province-changed'])}
+                                    {form_dropdown('province_id', $province_list, $province_id, ['class' => 'form-control province-changed'])}
                                 </div>
                             </div>
                             <div class="form-group row">

@@ -108,7 +108,7 @@
 									{foreach $list as $item}
 										<tr>
 											<td class="text-center">{$item.district_id}</td>
-											<td>{$item.description} {anchor("$manage_url/edit/`$item.district_id`", htmlspecialchars($item.name, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}</td>
+											<td>{anchor("$manage_url/edit/`$item.district_id`", htmlspecialchars($item.name, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}</td>
 											<td class="text-center">{$item.type}</td>
 											<td class="text-center">{$item.lati_long_tude}</td>
 											<td class="text-center">{$item.sort_order}</td>

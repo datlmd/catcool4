@@ -85,11 +85,12 @@ class  ProvinceModel extends MyModel
         }
 
         $province_list[0] = lang('Country.text_select');
-        foreach ($return as $key => $value) {
+        foreach ($return as $value) {
             if (!empty($country_id) && $value['country_id'] != $country_id) {
                 continue;
             }
-            $province_list[$value['province_id']] = $value['type'] . ' ' . $value['name'];
+            $key = sprintf('"%s"', $value['province_id']);
+            $province_list[$key] = $value['type'] . ' ' . $value['name'];
         }
 
         return $province_list;

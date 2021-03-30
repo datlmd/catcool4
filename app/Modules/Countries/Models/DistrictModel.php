@@ -79,11 +79,12 @@ class  DistrictModel extends MyModel
         }
 
         $district_list[0] = lang('Country.text_select');
-        foreach ($return as $key => $value) {
-            if (!empty($province_id) && $value['province_id'] != $province_id) {
+        foreach ($return as $value) {
+            if (!empty($province_id) && $value['province_id'] != (int)$province_id) {
                 continue;
             }
-            $district_list[$value['district_id']] = $value['type'] . ' ' . $value['name'];
+            $key = sprintf('"%s"', $value['district_id']);
+            $district_list[$key] = $value['type'] . ' ' . $value['name'];
         }
 
         return $district_list;

@@ -94,8 +94,9 @@ class CountryModel extends MyModel
         }
 
         $province_list[0] = lang('Country.text_select');
-        foreach ($return as $key => $value) {
-            $province_list[$value['country_id']] = $value['name'];
+        foreach ($return as $value) {
+            $key = sprintf("'%s'", $value['country_id']);
+            $province_list[$key] = $value['name'];
         }
 
         return $province_list;
