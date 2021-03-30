@@ -98,10 +98,10 @@ class Manage extends AdminController
             }
 
             $add_data_lang = format_lang_form($this->request->getPost());
-            foreach (get_list_lang(true) as $key => $value) {
-                $add_data_lang[$key]['language_id'] = $key;
-                $add_data_lang[$key]['dummy_id']    = $id;
-                $this->model_lang->insert($add_data_lang[$key]);
+            foreach (get_list_lang(true) as $value) {
+                $add_data_lang[$value['id']]['language_id'] = $value['id'];
+                $add_data_lang[$value['id']]['dummy_id']    = $id;
+                $this->model_lang->insert($add_data_lang[$value['id']]);
             }
 
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
@@ -125,14 +125,14 @@ class Manage extends AdminController
             }
 
             $edit_data_lang = format_lang_form($this->request->getPost());
-            foreach (get_list_lang(true) as $key => $value) {
-                $edit_data_lang[$key]['language_id'] = $key;
-                $edit_data_lang[$key]['dummy_id']    = $id;
+            foreach (get_list_lang(true) as $value) {
+                $edit_data_lang[$value['id']]['language_id'] = $value['id'];
+                $edit_data_lang[$value['id']]['dummy_id']    = $id;
 
-                if (!empty($this->model_lang->where(['dummy_id' => $id, 'language_id' => $key])->find())) {
-                    $this->model_lang->where('language_id', $key)->update($id,$edit_data_lang[$key]);
+                if (!empty($this->model_lang->where(['dummy_id' => $id, 'language_id' => $value['id']])->find())) {
+                    $this->model_lang->where('language_id', $value['id'])->update($id,$edit_data_lang[$value['id']]);
                 } else {
-                    $this->model_lang->insert($edit_data_lang[$key]);
+                    $this->model_lang->insert($edit_data_lang[$value['id']]);
                 }
             }
 
@@ -186,8 +186,8 @@ class Manage extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        foreach(get_list_lang(true) as $key => $value) {
-            $this->validator->setRule(sprintf('lang_%s_name', $key), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
+        foreach(get_list_lang(true) as $value) {
+            $this->validator->setRule(sprintf('lang_%s_name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
