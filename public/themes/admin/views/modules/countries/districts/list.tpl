@@ -131,14 +131,7 @@
 									</tbody>
 								</table>
 							</div>
-							<div class="row mt-2">
-								<div class="col-sm-4 col-12 my-auto">
-									{pager_string($pager->getTotal('districts'), $pager->getPerPage('districts'), $pager->getCurrentPage('districts'))}
-								</div>
-								<div class="col-sm-8 col-12">
-									{$pager->links('districts', 'admin')}
-								</div>
-							</div>
+							{include file=get_theme_path('views/inc/paging.tpl') pager_name='districts'}
 						{else}
 							{lang('Admin.text_no_results')}
 						{/if}

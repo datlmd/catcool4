@@ -118,14 +118,7 @@
 								</tbody>
 							</table>
 						</div>
-						<div class="row mt-2">
-							<div class="col-sm-4 col-12 my-auto">
-								{pager_string($pager->getTotal('dummy'), $pager->getPerPage('dummy'), $pager->getCurrentPage('dummy'))}
-							</div>
-							<div class="col-sm-8 col-12">
-								{$pager->links('dummy', 'admin')}
-							</div>
-						</div>
+						{include file=get_theme_path('views/inc/paging.tpl') pager_name='dummy'}
 					{else}
 						{lang('Admin.text_no_results')}
 					{/if}

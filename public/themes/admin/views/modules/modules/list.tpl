@@ -117,7 +117,7 @@
 								</tbody>
 							</table>
 						</div>
-						{$pager->links('modules', 'admin')}
+						{include file=get_theme_path('views/inc/paging.tpl') pager_name='modules'}
 					{else}
 						{lang('Admin.text_no_results')}
 					{/if}

@@ -133,7 +133,7 @@
 								</tbody>
 							</table>
 						</div>
-						{$pager->links('users', 'admin')}
+						{include file=get_theme_path('views/inc/paging.tpl') pager_name='users'}
 					{else}
 						{lang('Admin.text_no_results')}
 					{/if}

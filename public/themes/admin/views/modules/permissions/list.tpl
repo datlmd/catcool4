@@ -100,7 +100,7 @@
 								</tbody>
 							</table>
 						</div>
-						{$pager->links('permissions', 'admin')}
+						{include file=get_theme_path('views/inc/paging.tpl') pager_name='permissions'}
 					{else}
 						{lang('Admin.text_no_results')}
 					{/if}

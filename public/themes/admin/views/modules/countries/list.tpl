@@ -220,14 +220,7 @@
 									</tbody>
 								</table>
 							</div>
-							<div class="row mt-2">
-								<div class="col-sm-4 col-12 my-auto">
-									{pager_string($pager->getTotal('countries'), $pager->getPerPage('countries'), $pager->getCurrentPage('countries'))}
-								</div>
-								<div class="col-sm-8 col-12">
-									{$pager->links('countries', 'admin')}
-								</div>
-							</div>
+							{include file=get_theme_path('views/inc/paging.tpl') pager_name='countries'}
 						{else}
 							<label class="form-label">{lang('Admin.text_no_results')}</label>
 						{/if}

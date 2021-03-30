@@ -105,7 +105,7 @@
 								</tbody>
 							</table>
 						</div>
-						{$pager->links('relationships', 'admin')}
+						{include file=get_theme_path('views/inc/paging.tpl') pager_name='relationships'}
 					{else}
 						{lang('Admin.text_no_results')}
 					{/if}
