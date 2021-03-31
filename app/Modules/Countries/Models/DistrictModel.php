@@ -78,6 +78,8 @@ class  DistrictModel extends MyModel
             return false;
         }
 
+        $province_id = (int) str_ireplace('"', "", $province_id);
+
         $district_list[0] = lang('Country.text_select');
         foreach ($return as $value) {
             if (!empty($province_id) && $value['province_id'] != (int)$province_id) {
