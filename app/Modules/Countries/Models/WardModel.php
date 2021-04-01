@@ -78,14 +78,14 @@ class  WardModel extends MyModel
             return false;
         }
 
-        $district_list[0] = lang('Country.text_select');
+        $ward_list[0] = lang('Country.text_select');
         foreach ($return as $value) {
             if (!empty($district_id) && $value['district_id'] != $district_id) {
                 continue;
             }
-            $district_list[$value['ward_id']] = $value['type'] . ' ' . $value['name'];
+            $ward_list[$value['ward_id']] = $value['type'] . ' ' . $value['name'];
         }
 
-        return $district_list;
+        return $ward_list;
     }
 }

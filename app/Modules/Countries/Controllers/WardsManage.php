@@ -76,6 +76,9 @@ class WardsManage extends AdminController
         $province_model = new ProvinceModel();
         $data['province_list'] = $province_model->getListDisplay();
 
+        $district_model = new DistrictModel();
+        $data['district_list'] = $district_model->getListDisplay();
+
         add_meta(['title' => lang("CountryWardAdmin.heading_title")], $this->themes);
         $this->themes::load('wards/list', $data);
     }
@@ -207,6 +210,8 @@ class WardsManage extends AdminController
         $district_model = new DistrictModel();
 
         $province_list = [];
+        $district_list = [];
+
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form']   = lang('CountryWardAdmin.text_edit');
@@ -220,7 +225,7 @@ class WardsManage extends AdminController
 
             $district_data = $district_model->where('district_id', $data_form['district_id'])->first();
             if (!empty($district_data)) {
-                $data['district_list']    = $district_model->getListDisplay($district_data['province_id']);
+                $district_list    = $district_model->getListDisplay($district_data['province_id']);
                 $data_form['province_id'] = $district_data['province_id'];
             }
 
@@ -239,6 +244,7 @@ class WardsManage extends AdminController
 
         $data['country_list']  = $country_model->getListDisplay();
         $data['province_list'] = $province_list;
+        $data['district_list'] = $district_list;
 
         $data['errors'] = $this->errors;
 

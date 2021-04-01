@@ -1,7 +1,7 @@
 <?php namespace App\Modules\Countries\Controllers;
 
 use App\Controllers\BaseController;
-use App\Modules\Countries\Models\CountryModel;
+use App\Modules\Countries\Models\DistrictModel;
 use App\Modules\Countries\Models\ProvinceModel;
 
 class Countries extends BaseController

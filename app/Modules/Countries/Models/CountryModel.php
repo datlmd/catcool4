@@ -93,11 +93,11 @@ class CountryModel extends MyModel
             return false;
         }
 
-        $province_list[0] = lang('Country.text_select');
+        $country_list[0] = lang('Country.text_select');
         foreach ($return as $value) {
-            $province_list[$value['country_id']] = $value['name'];
+            $country_list[$value['country_id']] = $value['name'];
         }
 
-        return $province_list;
+        return $country_list;
     }
 }

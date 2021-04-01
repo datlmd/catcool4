@@ -27,4 +27,10 @@ $routes->group('countries', ['namespace' => 'App\Modules\Countries\Controllers']
     $subroutes->add('districts_manage/edit/(:num)', 'DistrictsManage::edit/$1');
     $subroutes->add('districts_manage/delete', 'DistrictsManage::delete');
     $subroutes->add('districts_manage/publish', 'DistrictsManage::publish');
+
+    $subroutes->add('wards_manage', 'WardsManage::index');
+    $subroutes->add('wards_manage/add', 'WardsManage::add');
+    $subroutes->add('wards_manage/edit/(:num)', 'WardsManage::edit/$1');
+    $subroutes->add('wards_manage/delete', 'WardsManage::delete');
+    $subroutes->add('wards_manage/publish', 'WardsManage::publish');
 });

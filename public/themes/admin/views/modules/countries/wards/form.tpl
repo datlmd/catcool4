@@ -1,92 +1,148 @@
-{assign var="class_colum_label" value="col-12 col-sm-3 col-form-label required-label text-sm-end"}
-{assign var="class_colum_input" value="col-12 col-sm-8 col-lg-6"}
-{form_hidden('manage_url', site_url($manage_url))}
-<div class="container-fluid  dashboard-content">
-    {form_open(uri_string(), ['id' => 'validationform'])}
-        <div class="row">
-            <div class="col-sm-7 col-12">
-                {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
+{strip}
+    {form_hidden('manage_url', site_url($manage_url))}
+    <div class="container-fluid  dashboard-content">
+        {form_open(uri_string(), ['id' => 'validationform'])}
+            <div class="row">
+                <div class="col-sm-7 col-12">
+                    {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('CountryWardAdmin.heading_title')}
+                </div>
+                <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
+                    <button type="submit" class="btn btn-sm btn-space btn-primary mb-0" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
+                    <a href="{if previous_url() eq current_url()}{site_url($manage_url)}{else}{previous_url()}{/if}" class="btn btn-sm btn-space btn-secondary mb-0 me-0" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_cancel')}</a>
+                </div>
             </div>
-            <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_submit}"><i class="fas fa-save"></i></button>
-                <a href="{$button_cancel}" class="btn btn-sm btn-space btn-secondary mb-0"  data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{$text_cancel}"><i class="fas fa-reply"></i></a>
-            </div>
-        </div>
-        {if !empty($edit_data.ward_id)}
-            {form_hidden('id', $edit_data.ward_id)}
-            {create_input_token($csrf)}
-        {/if}
-        <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            {if !empty($edit_data.ward_id)}
+                {form_hidden('ward_id', $edit_data.ward_id)}
+            {/if}
+            <div class="row">
+                {if !empty(print_flash_alert())}
+                    <div class="col-12">{print_flash_alert()}</div>
+                {/if}
                 {if !empty($errors)}
                     <div class="col-12">
                         {include file=get_theme_path('views/inc/alert.tpl') message=$errors type='danger'}
                     </div>
                 {/if}
-                <div class="card">
-                    <h5 class="card-header"><i class="fas {if !empty($edit_data.ward_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
-                    <div class="card-body">
-                        <div class="form-group row">
-                            {lang('text_name', 'text_name', ['class' => 'col-12 col-sm-3 col-form-label required-label text-sm-end'])}
-                            <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="name" value="{set_value('name', $edit_data.name)}" id="name" class="form-control {if !empty($errors["name"])}is-invalid{/if}">
-                                {if !empty($errors["name"])}
-                                    <div class="invalid-feedback">{$errors["name"]}</div>
-                                {/if}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            {lang('text_type', 'text_type', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-                            <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="type" value="{set_value('type', $edit_data.type)}" id="type" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            {lang('text_lati_long_tude', 'text_lati_long_tude', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-                            <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="lati_long_tude" value="{set_value('lati_long_tude', $edit_data.lati_long_tude)}" id="lati_long_tude" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            {lang('text_sort_order', 'text_sort_order', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-                            <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="sort_order" value="{set_value('sort_order', $edit_data.sort_order)}" id="sort_order" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            {lang('text_country', 'text_country', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-                            <div class="col-12 col-sm-8 col-lg-6">
-                                {form_dropdown('country_id', $country_list, set_value('country_id', $edit_data.country_id), ['class' => 'form-control country-changed'])}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            {lang('text_province', 'text_province', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-                            <div class="col-12 col-sm-8 col-lg-6">
-                                {form_dropdown('province_id', $province_list, set_value('province_id', $edit_data.province_id), ['class' => 'form-control province-changed'])}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            {lang('text_district', 'text_district', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-                            <div class="col-12 col-sm-8 col-lg-6">
-                                {form_dropdown('district_id', $district_list, set_value('district_id', $edit_data.district_id), ['class' => 'form-control district-changed'])}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            {lang('text_published', 'text_published', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-                            <div class="col-12 col-sm-8 col-lg-6">
-                                <div class="switch-button switch-button-xs mt-2">
-                                    {if isset($edit_data.published)}
-                                        <input type="checkbox" name="published" value="{STATUS_ON}" {set_checkbox('published', STATUS_ON, ($edit_data.published == STATUS_ON))} id="published">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header"><i class="fas {if !empty($edit_data.ward_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end required-label col-form-label">
+                                    {lang('Admin.text_name')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if isset($edit_data.name)}
+                                        {assign var="name" value="`$edit_data.name`"}
                                     {else}
-                                        <input type="checkbox" name="published" value="{STATUS_ON}" {set_checkbox('published', STATUS_ON, true)} id="published">
+                                        {assign var="name" value=""}
                                     {/if}
-                                    <span><label for="published"></label></span>
+                                    <input type="text" name="name" value="{old('name', $name)}" id="name" class="form-control {if $validator->hasError('name')}is-invalid{/if}">
+                                    <div class="invalid-feedback">{$validator->getError("name")}</div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('CountryWardAdmin.text_type')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if isset($edit_data.type)}
+                                        {assign var="type" value="`$edit_data.type`"}
+                                    {else}
+                                        {assign var="type" value=""}
+                                    {/if}
+                                    <input type="text" name="type" value="{old('type', $type)}" id="type" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('CountryWardAdmin.text_lati_long_tude')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if isset($edit_data.lati_long_tude)}
+                                        {assign var="lati_long_tude" value="`$edit_data.lati_long_tude`"}
+                                    {else}
+                                        {assign var="lati_long_tude" value=""}
+                                    {/if}
+                                    <input type="text" name="lati_long_tude" value="{old('lati_long_tude', $lati_long_tude)}" id="lati_long_tude" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('Admin.text_sort_order')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if isset($edit_data.sort_order)}
+                                        {assign var="sort_order" value="`$edit_data.sort_order`"}
+                                    {else}
+                                        {assign var="sort_order" value="0"}
+                                    {/if}
+                                    <input type="text" name="sort_order" value="{old('sort_order', $sort_order)}" id="sort_order" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('CountryWardAdmin.text_country')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if isset($edit_data.country_id)}
+                                        {assign var="country_id" value="{old('country_id', $edit_data.country_id)}"}
+                                    {else}
+                                        {assign var="country_id" value=""}
+                                    {/if}
+                                    {form_dropdown('country_id', $country_list, $country_id, ['class' => 'form-control country-changed'])}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('CountryWardAdmin.text_province')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if isset($edit_data.province_id)}
+                                        {assign var="province_id" value="{old('province_id', $edit_data.province_id)}"}
+                                    {else}
+                                        {assign var="province_id" value=""}
+                                    {/if}
+                                    {form_dropdown('province_id', $province_list, $province_id, ['class' => 'form-control province-changed'])}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('CountryWardAdmin.text_district')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if isset($edit_data.district_id)}
+                                        {assign var="district_id" value="{old('district_id', $edit_data.district_id)}"}
+                                    {else}
+                                        {assign var="district_id" value=""}
+                                    {/if}
+                                    {form_dropdown('district_id', $district_list, $district_id, ['class' => 'form-control district-changed'])}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('Admin.text_published')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {if isset($edit_data.published)}
+                                        {assign var="published" value="`$edit_data.published`"}
+                                    {else}
+                                        {assign var="published" value="1"}
+                                    {/if}
+                                    <label class="form-check form-check-inline ms-2 mt-2">
+                                        <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $published) eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
+                                        <label class="form-check-label" for="published_on">ON</label>
+                                    </label>
+                                    <label class="form-check form-check-inline me-2 mt-2">
+                                        <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $published) eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
+                                        <label class="form-check-label" for="published_off">OFF</label>
+                                    </label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    {form_close()}
-</div>
+        {form_close()}
+    </div>
+{/strip}
