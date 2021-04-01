@@ -112,7 +112,7 @@
 											<td class="text-center">{$item.type}</td>
 											<td class="text-center">{$item.lati_long_tude}</td>
 											<td class="text-center">{$item.sort_order}</td>
-											<td class="text-center">{$province_list[$item.province_id]}</td>
+											<td class="text-center">{if !empty($province_list[$item.province_id])}{$province_list[$item.province_id]}{/if}</td>
 											<td>
 												<div class="switch-button switch-button-xs catcool-center">
 													{form_checkbox("published_`$item.district_id`", ($item.published eq STATUS_ON) ? true : false, ($item.published eq STATUS_ON) ? true : false, ['id' => 'published_'|cat:$item.district_id, 'data-id' => $item.district_id, 'data-published' => $item.published, 'class' => 'change_publish'])}

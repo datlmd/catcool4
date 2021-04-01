@@ -84,15 +84,12 @@ class  ProvinceModel extends MyModel
             return false;
         }
 
-        $country_id = (int) str_ireplace('"', "", $country_id);
-
         $province_list[0] = lang('Country.text_select');
         foreach ($return as $value) {
             if (!empty($country_id) && $value['country_id'] != $country_id) {
                 continue;
             }
-            $key = sprintf('"%s"', $value['province_id']);
-            $province_list[$key] = $value['type'] . ' ' . $value['name'];
+            $province_list[$value['province_id']] = $value['type'] . ' ' . $value['name'];
         }
 
         return $province_list;
