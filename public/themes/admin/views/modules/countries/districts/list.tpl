@@ -19,18 +19,18 @@
 						<div class="card-header">
 							<div class="row">
 								<div class="col-6">
-									<h5 class="mb-0 mt-1 ms-2"><i class="fas fa-filter me-2"></i>{lang('CountryDistrictAdmin.filter_header')}</h5>
+									<h5 class="mb-0 mt-1 ms-2"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
 								</div>
 								<div class="col-6 text-end">
-									<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('CountryDistrictAdmin.filter_submit')}</button>
+									<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('Admin.filter_submit')}</button>
 								</div>
 							</div>
 						</div>
 						<div class="card-body">
 							<div class="row">
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
-									{lang('CountryDistrictAdmin.text_name')}
-									{form_input('name', old('name', $filter.name), ['class' => 'form-control form-control-sm', 'placeholder' => lang('CountryDistrictAdmin.text_name')])}
+									{lang('Admin.text_name')}
+									{form_input('name', old('name', $filter.name), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.text_name')])}
 								</div>
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('CountryDistrictAdmin.text_province')}
@@ -68,7 +68,7 @@
 										</th>
 										<th>
 											<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
-												{lang('CountryDistrictAdmin.text_name')}
+												{lang('Admin.text_name')}
 												{if $sort eq 'name'}
 													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 												{/if}
@@ -82,7 +82,14 @@
 												{/if}
 											</a>
 										</th>
-										<th>{lang('CountryDistrictAdmin.text_lati_long_tude')}</th>
+										<th>
+											<a href="{site_url($manage_url)}?sort=lati_long_tude&order={$order}{$url}" class="text-dark">
+												{lang('CountryDistrictAdmin.text_lati_long_tude')}
+												{if $sort eq 'lati_long_tude'}
+													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+												{/if}
+											</a>
+										</th>
 										<th>
 											<a href="{site_url($manage_url)}?sort=sort_order&order={$order}{$url}" class="text-dark">
 												{lang('Admin.text_sort_order')}
