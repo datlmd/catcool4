@@ -35,7 +35,7 @@ $(function () {
                     }
                     if (response.provinces != null) {
                         $.each(response.provinces, function(index, value) {
-                            $('.province-changed').append('<option value="' + index + '">' + value + '</option>');
+                            $('.province-changed').append('<option value="' + index.replace("_", "") + '">' + value + '</option>');
                         });
                     }
                 },
@@ -74,7 +74,7 @@ $(function () {
                     }
                     if (response.districts != null) {
                         $.each(response.districts, function(index, value) {
-                            $('.district-changed').append('<option value="' + index + '">' + value + '</option>');
+                            $('.district-changed').append('<option value="' + index.replace("_", "") + '">' + value + '</option>');
                         });
                     }
                 },
@@ -107,7 +107,7 @@ $(function () {
                     }
                     if (response.wards != null) {
                         $.each(response.wards, function(index, value) {
-                            $('.ward-changed').append('<option value="' + index + '">' + value + '</option>');
+                            $('.ward-changed').append('<option value="' + index.replace("_", "") + '">' + value + '</option>');
                         });
                     }
                 },
