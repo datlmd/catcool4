@@ -22,4 +22,6 @@ return [
 	"text_sovereignty" => "Sovereignty",
 	"text_telephone_code" => "Telephone code",
 	"text_ward" => "Wards",
+	"translate_admin_id" => "59",
+	"translate_frontend_id" => "62",
 ];

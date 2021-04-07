@@ -10,7 +10,8 @@
 			<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
 			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary btn-space" title="{lang('UserAdmin.button_add')}"><i class="fas fa-plus me-1"></i>{lang('UserAdmin.button_add')}</a>
 			<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter me-1"></i>{lang('Admin.filter_header')}</button>
-			<a href="{site_url("users/groups_manage")}" class="btn btn-sm btn-primary btn-space me-0"><i class="fas fa-list me-1"></i> {lang('Admin.module_group')}</a>
+			<a href="{site_url("users/groups_manage")}" class="btn btn-sm btn-primary btn-space"><i class="fas fa-list me-1"></i> {lang('Admin.module_group')}</a>
+			{include file=get_theme_path('views/inc/button_translate.tpl') translate_frontend=lang('UserAdmin.translate_frontend_id') translate_admin=lang('UserAdmin.translate_admin_id')}
 		</div>
 	</div>
 	<div class="row collapse {if !empty($filter.active)}show{/if}" id="filter_manage">

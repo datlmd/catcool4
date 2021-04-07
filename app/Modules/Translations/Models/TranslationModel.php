@@ -100,7 +100,7 @@ class TranslationModel extends MyModel
         }
 
         $language_name = pascalize(implode('_', $module));
-        $language_name = str_ireplace("Manage", "Admin", $language_name);
+        $language_name = str_ireplace(["Manage", "Menus"], ["Admin", "Menu"], $language_name);
 
         return $language_name;
     }

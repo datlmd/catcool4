@@ -13,4 +13,5 @@ return [
 	"text_telephone_code" => "Telephone code",
 	"text_type" => "Type",
 	"text_ward" => "Wards",
+	"translate_admin_id" => "60",
 ];

@@ -10,7 +10,8 @@
 				<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
 				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" title="{lang('RouteAdmin.text_add')}"><i class="fas fa-plus me-1"></i>{lang('RouteAdmin.text_add')}</a>
 				<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter me-1"></i>{lang('Admin.filter_header')}</button>
-				<a href="{site_url($manage_url)}/write" class="btn btn-sm btn-secondary btn-space me-0"><i class="fas fa-save me-1"></i>{lang('Admin.button_write')}</a>
+				<a href="{site_url($manage_url)}/write" class="btn btn-sm btn-secondary btn-space"><i class="fas fa-save me-1"></i>{lang('Admin.button_write')}</a>
+				{include file=get_theme_path('views/inc/button_translate.tpl') translate_frontend=lang('RouteAdmin.translate_frontend_id') translate_admin=lang('RouteAdmin.translate_admin_id')}
 			</div>
 		</div>
 		<div class="row collapse {if !empty($filter.active)}show{/if}" id="filter_manage">

@@ -7,7 +7,10 @@
             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('TranslationAdmin.heading_title')}
         </div>
         <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-            <button type="button" id="btn_search" class="btn btn-sm btn-brand" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
+            <button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space me-0" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter me-1"></i>{lang('Admin.filter_header')}</button>
+            {if strpos(previous_url(), 'translations') === false}
+                <a href="{previous_url()}" class="btn btn-sm btn-space btn-secondary ms-1 me-0" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_back')}</a>
+            {/if}
         </div>
     </div>
 	<div class="row">

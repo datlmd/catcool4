@@ -9,7 +9,15 @@
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
 			<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
 			<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" title="{lang('ConfigGroupAdmin.text_add')}"><i class="fas fa-plus me-1"></i>{lang('ConfigGroupAdmin.text_add')}</a>
-			<a href="{site_url("configs/manage")}" class="btn btn-sm btn-primary btn-space me-0"><i class="fas fa-list me-1"></i>{lang('ConfigGroupAdmin.module_configs')}</a>
+
+			<button id="btn_group_drop_setting" type="button" class="btn btn-sm btn-light btn-space me-0" data-bs-toggle="dropdown" aria-expanded="false">
+				<i class="fas fa-cog"></i>
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="btn_group_drop_setting">
+				<li><a class="dropdown-item" href="{site_url("configs/manage")}">{lang('ConfigGroupAdmin.module_configs')}</a></li>
+				<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('ConfigGroupAdmin.translate_frontend_id')}">{lang("Admin.text_translate")}</a></li>
+				<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('ConfigGroupAdmin.translate_admin_id')}">{lang("Admin.text_translate_admin")}</a></li>
+			</ul>
 		</div>
 	</div>
 	<div class="row">

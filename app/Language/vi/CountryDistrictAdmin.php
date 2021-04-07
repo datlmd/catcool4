@@ -11,4 +11,5 @@ return [
 	"text_province" => "Tỉnh / Thành",
 	"text_type" => "Loại",
 	"text_ward" => "Phường / Xã",
+	"translate_admin_id" => "61",
 ];

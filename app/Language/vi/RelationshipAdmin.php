@@ -10,4 +10,6 @@ return [
 	"text_foreign_key" => "Foreign Key",
 	"text_foreign_table" => "Foreign Table",
 	"text_list" => "Relationship List",
+	"translate_admin_id" => "12",
+	"translate_frontend_id" => "11",
 ];

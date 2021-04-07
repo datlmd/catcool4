@@ -11,4 +11,5 @@ return [
 	"text_province" => "Province",
 	"text_type" => "Type",
 	"text_ward" => "Wards",
+	"translate_admin_id" => "63",
 ];

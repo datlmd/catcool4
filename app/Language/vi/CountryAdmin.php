@@ -22,4 +22,6 @@ return [
 	"text_sovereignty" => "Chủ quyền",
 	"text_telephone_code" => "Mã điện thoại",
 	"text_ward" => "Phường / Xã",
+	"translate_admin_id" => "59",
+	"translate_frontend_id" => "62",
 ];

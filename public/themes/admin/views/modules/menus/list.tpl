@@ -8,7 +8,8 @@
 		</div>
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
 			<button type="button" id="btn_category_sort" onclick="submitSort();" style="display: none;" class="btn btn-sm btn-space btn-secondary"><i class="fas fa-save me-1"></i>{lang('Admin.button_save_sort')}</button>
-			<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space me-0" title="{lang('Admin.button_add')}"><i class="fas fa-plus me-1"></i>{lang('Admin.button_add')}</a>
+			<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" title="{lang('Admin.button_add')}"><i class="fas fa-plus me-1"></i>{lang('Admin.button_add')}</a>
+			{include file=get_theme_path('views/inc/button_translate.tpl') translate_frontend=lang('MenuAdmin.translate_frontend_id') translate_admin=lang('MenuAdmin.translate_admin_id')}
 		</div>
 	</div>
 	<div class="row">

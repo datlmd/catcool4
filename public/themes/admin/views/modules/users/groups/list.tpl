@@ -9,7 +9,8 @@
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
 			<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
 			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary btn-space" title="{lang('UserGroupAdmin.text_add')}"><i class="fas fa-plus me-1"></i>{lang('UserGroupAdmin.text_add')}</a>
-			<a href="{site_url("users/manage")}" class="btn btn-sm btn-primary btn-space me-0"><i class="fas fa-list me-1"></i>{lang('Admin.module_user')}</a>
+			<a href="{site_url("users/manage")}" class="btn btn-sm btn-primary btn-space"><i class="fas fa-list me-1"></i>{lang('Admin.module_user')}</a>
+			{include file=get_theme_path('views/inc/button_translate.tpl') translate_frontend=lang('UserGroupAdmin.translate_frontend_id') translate_admin=lang('UserGroupAdmin.translate_admin_id')}
 		</div>
 	</div>
 	<div class="row">
