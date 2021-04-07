@@ -154,7 +154,13 @@ var Catcool = {
             },
             error: function (xhr, errorType, error) {
                 is_processing = false;
-                $.notify(error, {'type': 'danger'});
+                $.notify({
+                        message: xhr.responseJSON.message + " Please reload the page!!!",
+                        url: window.location.href,
+                        target: "_self",
+                    }, 
+                    {'type': 'danger'},
+                );
             }
         });
     },
@@ -268,7 +274,13 @@ var Catcool = {
             },
             error: function (xhr, errorType, error) {
                 is_processing = false;
-                $.notify(error, {'type': 'danger'});
+                $.notify({
+                        message: xhr.responseJSON.message + " Please reload the page!!!",
+                        url: window.location.href,
+                        target: "_self",
+                    }, 
+                    {'type': 'danger'},
+                );
             }
         });
     },
@@ -309,7 +321,13 @@ var Catcool = {
             },
             error: function (xhr, errorType, error) {
                 is_processing = false;
-                $.notify(error, {'type': 'danger'});
+                $.notify({
+                        message: xhr.responseJSON.message + " Please reload the page!!!",
+                        url: window.location.href,
+                        target: "_self",
+                    }, 
+                    {'type': 'danger'},
+                );
             }
         });
     },
@@ -475,7 +493,13 @@ var Catcool = {
             error: function (xhr, errorType, error) {
                 is_processing = false;
                 $('.loading').remove().fadeOut();
-                $.notify(error, {'type': 'danger'});
+                $.notify({
+                        message: xhr.responseJSON.message + " Please reload the page!!!",
+                        url: window.location.href,
+                        target: "_self",
+                    }, 
+                    {'type': 'danger'},
+                );
             }
         });
         return false;
@@ -513,7 +537,13 @@ var Catcool = {
             error: function (xhr, errorType, error) {
                 is_processing = false;
                 $('.loading').remove().fadeOut();
-                $.notify(error, {'type': 'danger'});
+                $.notify({
+                        message: xhr.responseJSON.message + " Please reload the page!!!",
+                        url: window.location.href,
+                        target: "_self",
+                    }, 
+                    {'type': 'danger'},
+                );
             }
         });
         return false;

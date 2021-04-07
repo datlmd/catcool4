@@ -152,11 +152,11 @@ label {
 .dashboard-content .alert {
     z-index: 100 !important;
 }
-.alert p {padding: 0; margin: 5px;}
+/*.alert p {padding: 0; margin: 5px;}*/
 
-.alert-dismissible .close {
-    line-height: 16px;
-}
+/*.alert-dismissible .close {*/
+/*    line-height: 16px;*/
+/*}*/
 
 .catcool-center {
     margin: 0 auto;
@@ -679,9 +679,6 @@ a[data-bs-toggle="image"] {
     .nav-left-sidebar-content-scrolled { margin-left: 0; }
     .navbar-full-text { width: auto; }
     .navbar-full-text-content { margin-left: 0; }
-    .alert-catcool, .alert {
-        max-width: 90%;
-    }
 }
 
 /* Extra small devices (portrait phones, less than 576px)*/
@@ -691,7 +688,4 @@ a[data-bs-toggle="image"] {
     .nav-left-sidebar-content-scrolled { margin-left: 0; }
     .navbar-full-text { width: auto; }
     .navbar-full-text-content { margin-left: 0; }
-    .alert-catcool, .alert {
-        max-width: 95%;
-    }
 }
