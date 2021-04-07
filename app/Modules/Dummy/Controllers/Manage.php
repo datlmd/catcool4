@@ -38,24 +38,24 @@ class Manage extends AdminController
 	{
         add_meta(['title' => lang("Dummy.heading_title")], $this->themes);
 
-        $id    = $this->request->getGet('id');
-        $name  = $this->request->getGet('name');
-        $limit = $this->request->getGet('limit');
-        $sort  = $this->request->getGet('sort');
-        $order = $this->request->getGet('order');
+        $dummy_id = $this->request->getGet('dummy_id');
+        $name     = $this->request->getGet('name');
+        $limit    = $this->request->getGet('limit');
+        $sort     = $this->request->getGet('sort');
+        $order    = $this->request->getGet('order');
 
         $filter = [
-            'active' => count(array_filter($this->request->getGet(['id', 'name', 'limit']))) > 0,
-            'id'     => $id ?? "",
-            'name'   => $name ?? "",
-            'limit'  => $limit,
+            'active'   => count(array_filter($this->request->getGet(['dummy_id', 'name', 'limit']))) > 0,
+            'dummy_id' => $dummy_id ?? "",
+            'name'     => $name ?? "",
+            'limit'    => $limit,
         ];
 
         $list = $this->model->getAllByFilter($filter, $sort, $this->request->getGet('order'));
 
         $url = "";
-        if (!empty($id)) {
-            $url .= '&id=' . $id;
+        if (!empty($dummy_id)) {
+            $url .= '&dummy_id=' . $dummy_id;
         }
         if (!empty($name)) {
             $url .= '&name=' . urlencode(html_entity_decode($name, ENT_QUOTES, 'UTF-8'));
