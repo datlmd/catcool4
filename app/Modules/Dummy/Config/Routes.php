@@ -12,4 +12,8 @@ $routes->group('dummy', ['namespace' => 'App\Modules\Dummy\Controllers'], functi
     $subroutes->add('manage/delete', 'Manage::delete');
     $subroutes->add('manage/publish', 'Manage::publish');
 
+    $subroutes->add('groups_manage', 'GroupsManage::index');
+    $subroutes->add('groups_manage/add', 'GroupsManage::add');
+    $subroutes->add('groups_manage/edit/(:num)', 'GroupsManage::edit/$1');
+    $subroutes->add('groups_manage/delete', 'GroupsManage::delete');
 });

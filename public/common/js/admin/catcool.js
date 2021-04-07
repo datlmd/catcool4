@@ -217,7 +217,7 @@ var Catcool = {
         });
     },
     getModalDelete: function (obj, delete_data, is_single) {
-        if (!$('input[name="manage_url"]').length || !delete_data.length) {
+        if (!$('input[name="manage_url"]').length) {
             return false;
         }
         if (is_processing) {
