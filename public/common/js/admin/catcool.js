@@ -558,6 +558,9 @@ $(function () {
         $('#page_loading').fadeOut();
     });
 
+    //time out 7s
+    setTimeout(function(){ $('#page_loading').fadeOut(); }, 7000);
+
     if ($('.make_slug').length) {
         $(".make_slug").on("keyup", function () {
             Catcool.makeSlug(this);

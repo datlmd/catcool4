@@ -1,8 +1,8 @@
 <?php namespace App\Modules\Manage\Controllers;
 
-use App\Controllers\BaseController;
+use App\Controllers\AdminController;
 
-class Builder extends BaseController
+class Builder extends AdminController
 {
     CONST MANAGE_ROOT = 'manage/builder';
     CONST MANAGE_URL  = 'manage/builder';
@@ -28,53 +28,38 @@ class Builder extends BaseController
         $this->breadcrumb->add(lang('Builder.heading_title'), base_url(self::MANAGE_URL));
     }
 
-    public function index($code)
+    public function index()
     {
+        helper('filesystem');
         $data = [];
 
         $error_created = [];
-        //set rule form
-        $config_form = [
-            'module_name' => [
-                'field' => 'module_name',
-                'label' => lang('module_name'),
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => sprintf(lang('text_manage_validation'), lang('module_name')),
-                ],
-            ],
-            'controller_name' => [
-                'field' => 'controller_name',
-                'label' => lang('controller_name'),
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => sprintf(lang('text_manage_validation'), lang('controller_name')),
-                ],
-            ],
-            'model_name' => [
-                'field' => 'model_name',
-                'label' => lang('model_name'),
-                'rules' => 'trim|required',
-                'errors' => [
-                    'required' => sprintf(lang('text_manage_validation'), lang('model_name')),
-                ],
-            ],
-            'table_name' => [
-                'field' => 'table_name',
-                'label' => lang('table_name'),
-                'rules' => 'trim',
-            ],
-        ];
-        $this->form_validation->set_rules($config_form);
 
-        if (isset($_POST) && !empty($_POST) && $this->form_validation->run() === TRUE) {
-            if (isset($_POST['is_language'])) {
+        $this->validator->setRule('module_name', sprintf(lang('Admin.text_manage_validation'), lang('Builder.module_name')), 'required');
+        $this->validator->setRule('controller_name', sprintf(lang('Admin.text_manage_validation'), lang('Builder.controller_name')), 'required');
+        $this->validator->setRule('model_name', sprintf(lang('Admin.text_manage_validation'), lang('Builder.model_name')), 'required');
+
+        if (!empty($this->request->getPost()) && $this->validator->withRequest($this->request)->run()) {
+            if (!empty($this->request->getPost('is_language'))) {
                 $data = $this->_addFormLanguage();
             } else {
                 $data = $this->_addFormSingle();
             }
 
         }
+
+        //check permissions
+        $file_list = [];
+        $folder_list= [
+            'Module',
+            'Language/vi',
+            'Language/en',
+        ];
+//        foreach ($folder_listc as $foler) {
+//            $file_list[$foler] = octal_permissions(APPPATH . $foler);
+//        }
+
+        $data['file_list'] = $file_list;
 
         add_meta(['title' => lang("Builder.heading_title")], $this->themes);
         $this->themes::load('builder', $data);
@@ -381,45 +366,36 @@ class Builder extends BaseController
         if ($controller_name == "manage") {
             $controller_name = $module_name;
         }
+        $module_name_class     = ucfirst($module_name);
         $controller_name_class = ucfirst($controller_name);
         $model_name_class      = ucfirst($model_name);
 
         // create module
-        if (!is_dir(APPPATH . "Modules/" . $module_name)) {
-            mkdir(APPPATH . 'Modules/'. $module_name, 0777, true);
-            mkdir(APPPATH . 'Modules/'. $module_name . '/Controllers', 0777, true);
-            mkdir(APPPATH . 'Modules/'. $module_name . '/Models', 0777, true);
-            mkdir(APPPATH . 'Modules/'. $module_name . '/Views', 0777, true);
-            mkdir(APPPATH . 'Modules/'. $module_name . '/Language/vn', 0777, true);
-            mkdir(APPPATH . 'Modules/'. $module_name . '/Language/english', 0777, true);
+        if (!is_dir(APPPATH . "Modules/" . $module_name_class)) {
+            mkdir(APPPATH . 'Modules/'. $module_name_class, 0777, true);
+            mkdir(APPPATH . 'Modules/'. $module_name_class . '/Config', 0777, true);
+            mkdir(APPPATH . 'Modules/'. $module_name_class . '/Controllers', 0777, true);
+            mkdir(APPPATH . 'Modules/'. $module_name_class . '/Models', 0777, true);
+            mkdir(APPPATH . 'Modules/'. $module_name_class . '/Views', 0777, true);
         }
 
         //write language
-        $string_language_vn = file_get_contents(APPPATH . 'Modules/dummy/language/vn/dummy_lang.php');
-        $string_language_en = file_get_contents(APPPATH . 'Modules/dummy/language/english/dummy_lang.php');
+        $string_language_vn = file_get_contents(APPPATH . 'Language/vi/Dummy.php');
+        $string_language_en = file_get_contents(APPPATH . 'Language/en/Dummy.php');
 
         $string_language_vn = str_replace('Dummy', $controller_name_class, $string_language_vn);
         $string_language_en = str_replace('Dummy', $controller_name_class, $string_language_en);
 
-        if (!is_file(APPPATH . 'Modules/' . $module_name . '/language/vn/' . $controller_name . '_manage_lang.php')) {
-            write_file(APPPATH . 'Modules/' . $module_name . '/language/vn/' . $controller_name . '_manage_lang.php', $string_language_vn);
+        if (!is_file(APPPATH . 'Language/vi/' . singular($controller_name_class) . 'Admin.php')) {
+            write_file(APPPATH . 'Language/vi/' . singular($controller_name_class) . 'Admin.php', $string_language_vn);
         } else {
-            $error_created[] = sprintf(lang('file_created'), 'vn/' . $controller_name . '_manage_lang.php');
+            $error_created[] = sprintf(lang('Builder.file_created'), 'vi/' . singular($controller_name_class) . 'Admin.php');
         }
 
-        if (!is_file(APPPATH . 'Modules/' . $module_name . '/language/english/' . $controller_name . '_manage_lang.php')) {
-            write_file(APPPATH . 'Modules/' . $module_name . '/language/english/' . $controller_name . '_manage_lang.php', $string_language_en);
+        if (!is_file(APPPATH . 'Language/en/' . singular($controller_name_class) . 'Admin.php')) {
+            write_file(APPPATH . 'Language/en/' . singular($controller_name_class) . 'Admin.php', $string_language_en);
         } else {
-            $error_created[] = sprintf(lang('file_created'), 'english' .  $controller_name . '_manage_lang.php');
-        }
-
-        $string_sql = file_get_contents(APPPATH . 'Modules/dummy/sql/dummy_table.sql');
-        $string_sql = str_replace('dummy', $model_name, $string_sql);
-
-        if (!is_file(APPPATH . 'Modules/' . $module_name . '/sql/' . $model_name . '_table.sql')) {
-            write_file(APPPATH . 'Modules/' . $module_name . '/sql/' . $model_name . '_table.sql', $string_sql);
-        } else {
-            $error_created[] = sprintf(lang('file_created'), $model_name . '_table.sql');
+            $error_created[] = sprintf(lang('Builder.file_created'), 'en/' .  singular($controller_name_class) . 'Admin.php');
         }
 
         $manage_path = '';
@@ -428,27 +404,28 @@ class Builder extends BaseController
         if ($module_name != $controller_name) {
             $manage_path = $controller_name . '/';
             $manage_name_controller = $module_name . '/' . $controller_name . '_';
-
-            if (!is_dir(APPPATH . 'Modules/'. $module_name . '/Views/' . $controller_name)) {
-                mkdir(APPPATH . 'Modules/'. $module_name . '/Views/' . $controller_name, 0777, true);
-            } else {
-                $error_created[] = sprintf(lang('folder_created'), $controller_name );
-            }
         }
 
         //template su dung cho tpl add va edit
         $template_field_root = "
                 <div class=\"form-group row\">
-                    {lang('text_%s', 'text_%s', ['class' => 'col-12 col-sm-3 col-form-label required-label text-sm-right'])}
+                    <label class=\"col-12 col-sm-3 text-sm-end col-form-label\">
+                        {lang('%sAdmin.text_%s')}
+                    </label>
                     <div class=\"col-12 col-sm-8 col-lg-6\">
-                        <input type=\"text\" name=\"%s\" value=\"{set_value('%s', \$edit_data.%s)}\" id=\"%s\" class=\"form-control\">
+                        {if isset(\$edit_data.%s)}
+                            {assign var=\"%s\" value=\"`\$edit_data.%s`\"}
+                        {else}
+                            {assign var=\"%s\" value=\"\"}
+                        {/if}
+                        <input type=\"text\" name=\"%s\" value=\"{old('%s', \$%s)}\" id=\"%s\" class=\"form-control\">
                     </div>
                 </div>";
 
 
         //template khi post data khi add va edit
         $template_add_post_root = "
-                '%s' => \$this->request->getPost('%s', true),";
+                '%s' => \$this->request->getPost('%s'),";
 
         $template_replace_root        = ""; // : {*TPL_DUMMY_ROOT*}
         $template_add_post_replace_root = ""; // : //ADD_DUMMY_ROOT
@@ -469,117 +446,172 @@ class Builder extends BaseController
                     $field_root .= '"' . $field->name . '",' . PHP_EOL;
 
                     //them field cho tpl add va edit
-                    $template_replace_root .= sprintf($template_field_root, $field->name, $field->name, $field->name, $field->name, $field->name, $field->name);
+                    $template_replace_root .= sprintf(
+                        $template_field_root,
+                        singular($controller_name_class),
+                        $field->name,
+                        $field->name,
+                        $field->name,
+                        $field->name,
+                        $field->name,
+                        $field->name,
+                        $field->name,
+                        $field->name,
+                        $field->name,
+                    );
                     //them field khi submit trong manage
-                    $template_add_post_replace_root .= sprintf($template_add_post_root, $field->name, $field->name);
+                    $template_add_post_replace_root .= sprintf(
+                        $template_add_post_root,
+                        $field->name,
+                        $field->name,
+                    );
                 }
             }
         }
 
         //write class controller
-        $string_controller = file_get_contents(APPPATH . 'Modules/dummy/Controllers/Dummy_group_manage.php');
+        $string_controller = file_get_contents(APPPATH . 'Modules/Dummy/Controllers/GroupsManage.php');
 
         $string_controller_from = [
-            "class Dummy_group_manage extends",
-            "dummy/dummy_group_manage", //MANAGE_ROOT & MANAGE_URL
-            "load('dummy", //$this->lang->load('dummy', $this->_site_lang);
-            'dummy/Dummy_group", "Dummy_group"', // $this->load->model("dummy/Dummy", "Dummy");
+            "App\Modules\Dummy\Controllers",
+            "App\Modules\Dummy\Models\GroupModel",
+            "class GroupsManage extends",
+            "dummy/groups_manage", //MANAGE_ROOT & MANAGE_URL
+            "new GroupModel()", // $this->model = new GroupModel();
+            "lang('Dummy.", //language
+            "'dummy'", //paging
             "group/list",
             "group/form",
             "group/delete",
             "dummy_id",
             "//ADD_DUMMY_ROOT",
-            "Dummy_group->",
         ];
 
-        $controller_name_class_tpm =  ($module_name != $controller_name) ? "class " . $controller_name_class . "_manage extends" : "class Manage extends";
+        $controller_name_class_tpm =  ($module_name != $controller_name) ? "class " . $controller_name_class . "Manage extends" : "class Manage extends";
 
         $string_controller_to = [
+            "App\Modules\\" . $module_name_class . "\Controllers",
+            "App\Modules\\" . $module_name_class . "\Models\\" . $model_name_class . "Model",
             $controller_name_class_tpm,
             $manage_name_controller . "manage",
-            "load('" . $controller_name . '_manage',
-            sprintf('%s/%s", "%s"',$module_name, $model_name_class, $model_name_class),
+            "new " . $model_name_class . "Model()",
+            "lang('" . singular($controller_name_class) . "Admin.",
+            "'" . $module_name . "'",
             $manage_path . "list",
             $manage_path . "form",
             $manage_path . "delete",
             $table_name . "_id",
             $template_add_post_replace_root,
-            sprintf("%s->", $model_name_class),
         ];
         $string_controller = str_replace($string_controller_from, $string_controller_to, $string_controller);
 
         if (empty($manage_path)) {
-            if (!is_file(APPPATH . 'Modules/' . $module_name . '/Controllers/Manage.php')) {
-                write_file(APPPATH . 'Modules/' . $module_name . '/Controllers/Manage.php', $string_controller);
+            if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Controllers/Manage.php')) {
+                write_file(APPPATH . 'Modules/' . $module_name_class . '/Controllers/Manage.php', $string_controller);
             } else {
-                $error_created[] = sprintf(lang('file_created'), '/Controllers/Manage.php');
+                $error_created[] = sprintf(lang('Builder.file_created'), '/Controllers/Manage.php');
             }
         } else {
-            if (!is_file(APPPATH . 'Modules/' . $module_name . '/Controllers/' . $controller_name_class . '_manage.php')) {
-                write_file(APPPATH . 'Modules/' . $module_name . '/Controllers/' . $controller_name_class . '_manage.php', $string_controller);
+            if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Controllers/' . $controller_name_class . 'Manage.php')) {
+                write_file(APPPATH . 'Modules/' . $module_name_class . '/Controllers/' . $controller_name_class . 'Manage.php', $string_controller);
             } else {
-                $error_created[] = sprintf(lang('file_created'), $controller_name_class . '_manage.php');
+                $error_created[] = sprintf(lang('Builder.file_created'), $controller_name_class . 'Manage.php');
             }
         }
 
-        $string_list_tpl   = file_get_contents(APPPATH . 'Modules/Dummy/Views/group/list.tpl');
-        $string_form_tpl   = file_get_contents(APPPATH . 'Modules/Dummy/Views/group/form.tpl');
-        $string_delete_tpl = file_get_contents(APPPATH . 'Modules/Dummy/Views/group/delete.tpl');
+        $string_list_tpl   = file_get_contents(APPPATH . 'Modules/Dummy/Views/groups/list.tpl');
+        $string_form_tpl   = file_get_contents(APPPATH . 'Modules/Dummy/Views/groups/form.tpl');
+        $string_delete_tpl = file_get_contents(APPPATH . 'Modules/Dummy/Views/groups/delete.tpl');
 
-        $string_list_tpl   = str_replace("dummy_id", $table_name . "_id", $string_list_tpl);
-        $string_form_tpl   = str_replace(["dummy_id", "{*TPL_DUMMY_ROOT*}"], [$table_name . "_id", $template_replace_root], $string_form_tpl);
-        $string_delete_tpl = str_replace("dummy_id", $table_name . "_id", $string_delete_tpl);
+        $string_list_tpl = str_replace(
+            ["dummy_id", "lang('Dummy.", "'dummy'"],
+            [$table_name . "_id", "lang('" . singular($controller_name_class) . "Admin.", "'" . $module_name . "'"],
+            $string_list_tpl
+        );
+
+        $string_form_tpl = str_replace(
+            ["dummy_id", "{*TPL_DUMMY_ROOT*}", "lang('Dummy."],
+            [$table_name . "_id", $template_replace_root, "lang('" . singular($controller_name_class) . "Admin."],
+            $string_form_tpl
+        );
+
+        $string_delete_tpl = str_replace(
+            "dummy_id",
+            $table_name . "_id",
+            $string_delete_tpl
+        );
 
         if (empty($manage_path)) {
-            if (!is_file(APPPATH . 'Modules/' . $module_name . '/Views/list.tpl')) {
-                write_file(APPPATH . 'Modules/' . $module_name . '/Views/list.tpl', $string_list_tpl);
+            if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/list.tpl')) {
+                write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/list.tpl', $string_list_tpl);
             } else {
-                $error_created[] = sprintf(lang('file_created'), '/list.tpl');
+                $error_created[] = sprintf(lang('Builder.file_created'), '/list.tpl');
             }
-            if (!is_file(APPPATH . 'Modules/' . $module_name . '/Views/form.tpl')) {
-                write_file(APPPATH . 'Modules/' . $module_name . '/Views/form.tpl', $string_form_tpl);
+            if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/form.tpl')) {
+                write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/form.tpl', $string_form_tpl);
             } else {
-                $error_created[] = sprintf(lang('file_created'), '/form.tpl');
+                $error_created[] = sprintf(lang('Builder.file_created'), '/form.tpl');
             }
-            if (!is_file(APPPATH . 'Modules/' . $module_name . '/Views/delete.tpl')) {
-                write_file(APPPATH . 'Modules/' . $module_name . '/Views/delete.tpl', $string_delete_tpl);
+            if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/delete.tpl')) {
+                write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/delete.tpl', $string_delete_tpl);
             } else {
-                $error_created[] = sprintf(lang('file_created'), '/delete.tpl');
+                $error_created[] = sprintf(lang('Builder.file_created'), '/delete.tpl');
             }
         } else {
-            if (!is_file(APPPATH . 'Modules/' . $module_name . '/Views/' . $controller_name . '/list.tpl')) {
-                write_file(APPPATH . 'Modules/' . $module_name . '/Views/' . $controller_name . '/list.tpl', $string_list_tpl);
+            if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/list.tpl')) {
+                write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/list.tpl', $string_list_tpl);
             } else {
-                $error_created[] = sprintf(lang('file_created'), $controller_name . '/list.tpl');
+                $error_created[] = sprintf(lang('Builder.file_created'), $controller_name . '/list.tpl');
             }
-            if (!is_file(APPPATH . 'Modules/' . $module_name . '/Views/' . $controller_name . '/form.tpl')) {
-                write_file(APPPATH . 'Modules/' . $module_name . '/Views/' . $controller_name . '/form.tpl', $string_form_tpl);
+            if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/form.tpl')) {
+                write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/form.tpl', $string_form_tpl);
             } else {
-                $error_created[] = sprintf(lang('file_created'), $controller_name . '/form.tpl');
+                $error_created[] = sprintf(lang('Builder.file_created'), $controller_name . '/form.tpl');
             }
-            if (!is_file(APPPATH . 'Modules/' . $module_name . '/Views/' . $controller_name . '/delete.tpl')) {
-                write_file(APPPATH . 'Modules/' . $module_name . '/Views/' . $controller_name . '/delete.tpl', $string_delete_tpl);
+            if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/delete.tpl')) {
+                write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/delete.tpl', $string_delete_tpl);
             } else {
-                $error_created[] = sprintf(lang('file_created'), $controller_name . '/delete.tpl');
+                $error_created[] = sprintf(lang('Builder.file_created'), $controller_name . '/delete.tpl');
             }
         }
 
-        $string_model_manager             = file_get_contents(APPPATH . 'Modules/dummy/Models/Dummy_group.php');
+        $string_model_manager = file_get_contents(APPPATH . 'Modules/Dummy/Models/GroupModel.php');
 
         $string_model_manager = str_replace(
-            ["Dummy_group extends", 'dummy_group";', "dummy_id", "//FIELD_ROOT"],
-            [$model_name_class . " extends",  $table_name . '";', $table_name . "_id", $field_root],
+            ["App\Modules\Dummy\Models", "GroupModel extends", "dummy_group';", "dummy_id", "//FIELD_ROOT"],
+            ["App\Modules\\" . $module_name_class . "\Models", $model_name_class . "Model extends",  $table_name . "';", $table_name . "_id", $field_root],
             $string_model_manager
         );
 
-        if (!is_file(APPPATH . 'Modules/' . $module_name . '/Models/' . $model_name_class . '.php')) {
-            write_file(APPPATH . 'Modules/' . $module_name . '/Models/' . $model_name_class . '.php', $string_model_manager);
+        if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Models/' . $model_name_class . 'Model.php')) {
+            write_file(APPPATH . 'Modules/' . $module_name_class . '/Models/' . $model_name_class . 'Model.php', $string_model_manager);
         } else {
-            $error_created[] = sprintf(lang('file_created'), '/Models/' . $model_name_class . '.php');
+            $error_created[] = sprintf(lang('Builder.file_created'), '/Models/' . $model_name_class . 'Model.php');
+        }
+
+        $string_config_manager = file_get_contents(APPPATH . 'Modules/Dummy/Config/Routes.php');
+        $string_config_manager = str_replace(
+            ["dummy", "App\Modules\Dummy\Controllers"],
+            [$module_name, "App\Modules\\" . $module_name_class . "\Controllers"],
+            $string_config_manager
+        );
+
+        if (!empty($manage_path)) {
+            $string_config_manager = str_replace(
+                ["groups_manage", "GroupsManage"],
+                [$module_name . "_manage", $module_name_class . "Manage"],
+                $string_config_manager
+            );
+        }
+
+        if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Config/Routes.php')) {
+            write_file(APPPATH . 'Modules/' . $module_name_class . '/Config/Routes.php', $string_config_manager);
+        } else {
+            $error_created[] = sprintf(lang('Builder.file_created'), '/Config/Routes.php');
         }
 
         if (empty($error_created)) {
-            $data['success'] = lang('created_success');
+            $data['success'] = lang('Builder.created_success');
             $data['tool_manage'] = base_url($manage_name_controller . "manage");
         } else {
             $data['error_created'] = $error_created;
