@@ -21,6 +21,8 @@
 						{ul($error_created, ['class' => 'text-danger'])}
 					{elseif !empty($success)}
 						{include file=get_theme_path('views/inc/alert.tpl') message=$success type='success'}
+					{/if}
+					{if !empty($tool_manage)}
 						<a href="{$tool_manage}" target="_blank" class="badge badge-info py-2 px-4 mb-3"><i class="fas fa-link me-2"></i>Tool: {$tool_manage}</a>
 					{/if}
                     {form_open(uri_string(), ['id' => 'add_validationform'])}
@@ -66,7 +68,7 @@
 							</label>
 							<div class="col-12 col-sm-8 col-lg-6">
 								<div class="switch-button switch-button-xs mt-2">
-									<input type="checkbox" name="is_language" value="{STATUS_ON}" {set_checkbox('is_language', STATUS_ON, true)} id="is_language">
+									<input type="checkbox" name="is_language" value="{STATUS_ON}" {set_checkbox('is_language', STATUS_ON, false)} id="is_language">
 									<span><label for="is_language"></label></span>
 								</div>
 							</div>
