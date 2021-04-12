@@ -32,7 +32,7 @@ class GroupsManage extends AdminController
 
     public function index()
     {
-        add_meta(['title' => lang("Dummy.heading_title")], $this->themes);
+        add_meta(['title' => lang('Dummy.heading_title')], $this->themes);
 
         $dummy_id = $this->request->getGet('dummy_id');
         $name     = $this->request->getGet('name');

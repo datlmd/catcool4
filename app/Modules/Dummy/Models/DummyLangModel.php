@@ -13,7 +13,8 @@ class DummyLangModel extends MyModel
         'dummy_id',
         'language_id',
         'name',
-        'description'
+        'description',
+        //FIELD_DESCRIPTION
     ];
 
     protected $with = ['dummy'];

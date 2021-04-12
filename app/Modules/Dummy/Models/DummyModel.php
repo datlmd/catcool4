@@ -14,7 +14,8 @@ class DummyModel extends MyModel
         'sort_order',
         'published',
         'ctime',
-        'mtime'
+        'mtime',
+        //FIELD_ROOT
     ];
 
     protected $validationRules    = [];
