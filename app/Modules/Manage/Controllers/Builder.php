@@ -51,13 +51,13 @@ class Builder extends AdminController
         //check permissions
         $file_list = [];
         $folder_list= [
-            'Module',
+            'Modules',
             'Language/vi',
             'Language/en',
         ];
-//        foreach ($folder_listc as $foler) {
-//            $file_list[$foler] = octal_permissions(APPPATH . $foler);
-//        }
+        foreach ($folder_list as $foler) {
+            $file_list[$foler] = is_writable(APPPATH . $foler) ? "Writable" : "Not writable";
+        }
 
         $data['file_list'] = $file_list;
 
@@ -433,13 +433,18 @@ class Builder extends AdminController
         $field_root = ""; // : //FIELD_ROOT
         $field_description = ""; // : //FIELD_DESCRIPTION
 
+        $primary_key = "";
 
         // get data field root
         if ($this->db->tableExists($table_name) ) {
             $fields = $this->db->getFieldData($table_name);
+
             if (!empty($fields)) {
                 $list_not_add = [$table_name . '_id', 'name', 'description'];
                 foreach ($fields as $field) {
+                    if (!empty($field->primary_key)) {
+                        $primary_key = $field->name;
+                    }
                     if (in_array($field->name, $list_not_add)) {
                         continue;
                     }
@@ -500,7 +505,7 @@ class Builder extends AdminController
             $manage_path . "list",
             $manage_path . "form",
             $manage_path . "delete",
-            $table_name . "_id",
+            $primary_key,
             $template_add_post_replace_root,
         ];
         $string_controller = str_replace($string_controller_from, $string_controller_to, $string_controller);
@@ -525,19 +530,19 @@ class Builder extends AdminController
 
         $string_list_tpl = str_replace(
             ["dummy_id", "lang('Dummy.", "'dummy'"],
-            [$table_name . "_id", "lang('" . singular($controller_name_class) . "Admin.", "'" . $module_name . "'"],
+            [$primary_key, "lang('" . singular($controller_name_class) . "Admin.", "'" . $module_name . "'"],
             $string_list_tpl
         );
 
         $string_form_tpl = str_replace(
             ["dummy_id", "{*TPL_DUMMY_ROOT*}", "lang('Dummy."],
-            [$table_name . "_id", $template_replace_root, "lang('" . singular($controller_name_class) . "Admin."],
+            [$primary_key . "_id", $template_replace_root, "lang('" . singular($controller_name_class) . "Admin."],
             $string_form_tpl
         );
 
         $string_delete_tpl = str_replace(
             "dummy_id",
-            $table_name . "_id",
+            $primary_key,
             $string_delete_tpl
         );
 
@@ -579,7 +584,7 @@ class Builder extends AdminController
 
         $string_model_manager = str_replace(
             ["App\Modules\Dummy\Models", "GroupModel extends", "dummy_group';", "dummy_id", "//FIELD_ROOT"],
-            ["App\Modules\\" . $module_name_class . "\Models", $model_name_class . "Model extends",  $table_name . "';", $table_name . "_id", $field_root],
+            ["App\Modules\\" . $module_name_class . "\Models", $model_name_class . "Model extends",  $table_name . "';", $primary_key, $field_root],
             $string_model_manager
         );
 
