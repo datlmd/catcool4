@@ -117,15 +117,15 @@ class Builder extends AdminController
         $string_language_vn = str_replace('Dummy', $controller_name_class, $string_language_vn);
         $string_language_en = str_replace('Dummy', $controller_name_class, $string_language_en);
 
-        if (!is_file(APPPATH . 'Modules' . $module_name_class . '/Language/vi/' . singular($controller_name_class) . 'Admin.php')) {
-            write_file(APPPATH . 'Modules' . $module_name_class . '/Language/vi/' . singular($controller_name_class) . 'Admin.php', $string_language_vn);
+        if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Language/vi/' . singular($controller_name_class) . 'Admin.php')) {
+            write_file(APPPATH . 'Modules/' . $module_name_class . '/Language/vi/' . singular($controller_name_class) . 'Admin.php', $string_language_vn);
         } else {
             $error_created[] = sprintf(lang('Builder.file_created'), 'vi/' . singular($controller_name_class) . 'Admin.php');
 
         }
 
-        if (!is_file(APPPATH . 'Modules' . $module_name_class . '/Language/en/' . singular($controller_name_class) . 'Admin.php')) {
-            write_file(APPPATH . 'Modules' . $module_name_class . '/Language/en/' . singular($controller_name_class) . 'Admin.php', $string_language_en);
+        if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Language/en/' . singular($controller_name_class) . 'Admin.php')) {
+            write_file(APPPATH . 'Modules/' . $module_name_class . '/Language/en/' . singular($controller_name_class) . 'Admin.php', $string_language_en);
         } else {
             $error_created[] = sprintf(lang('Builder.file_created'), 'en/' .  singular($controller_name_class) . 'Admin.php');
         }
