@@ -66,11 +66,15 @@
 							<label class="col-12 col-sm-3 col-form-label text-sm-end">
 								Is Language?
 							</label>
-							<div class="col-12 col-sm-8 col-lg-6">
-								<div class="switch-button switch-button-xs mt-2">
-									<input type="checkbox" name="is_language" value="{STATUS_ON}" {set_checkbox('is_language', STATUS_ON, false)} id="is_language">
-									<span><label for="is_language"></label></span>
-								</div>
+							<div class="col-12 col-sm-8 col-lg-6 pt-2">
+								<label class="form-check form-check-inline ms-2">
+									<input type="radio" name="is_language" value="{STATUS_ON}" id="language_yes" class="form-check-input">
+									<label class="form-check-label" for="language_yes">YES</label>
+								</label>
+								<label class="form-check form-check-inline me-2">
+									<input type="radio" name="is_language" value="{STATUS_OFF}" id="language_no" class="form-check-input">
+									<label class="form-check-label" for="language_no">NO</label>
+								</label>
 							</div>
 						</div>
 						<div class="form-group row">

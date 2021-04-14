@@ -38,6 +38,7 @@ class Builder extends AdminController
         $this->validator->setRule('module_name', sprintf(lang('Admin.text_manage_validation'), lang('Builder.module_name')), 'required');
         $this->validator->setRule('controller_name', sprintf(lang('Admin.text_manage_validation'), lang('Builder.controller_name')), 'required');
         $this->validator->setRule('model_name', sprintf(lang('Admin.text_manage_validation'), lang('Builder.model_name')), 'required');
+        $this->validator->setRule('is_language', sprintf(lang('Admin.text_manage_validation'), "Language"), 'required');
 
         if (!empty($this->request->getPost()) && $this->validator->withRequest($this->request)->run()) {
             if (!empty($this->request->getPost('is_language'))) {
@@ -98,16 +99,23 @@ class Builder extends AdminController
         $module_name_class     = ucfirst($module_name);
         $controller_name_class = ucfirst($controller_name);
         $model_name_class      = ucfirst($model_name);
+        $language_name_class   = ($module_name != $controller_name)? singular(ucfirst($module_name)) . singular(ucfirst($controller_name)) : singular(ucfirst($controller_name));
 
         // create module
         if (!is_dir(APPPATH . "Modules/" . $module_name_class)) {
-            mkdir(APPPATH . 'Modules/'. $module_name_class, 0777, true);
+            mkdir(APPPATH . 'Modules/' . $module_name_class, 0777, true);
+        }
+        if (!is_dir(APPPATH . "Modules/" . $module_name_class . '/Config')) {
             mkdir(APPPATH . 'Modules/'. $module_name_class . '/Config', 0777, true);
+        }
+        if (!is_dir(APPPATH . "Modules/" . $module_name_class . '/Controllers')) {
             mkdir(APPPATH . 'Modules/'. $module_name_class . '/Controllers', 0777, true);
+        }
+        if (!is_dir(APPPATH . "Modules/" . $module_name_class . '/Models')) {
             mkdir(APPPATH . 'Modules/'. $module_name_class . '/Models', 0777, true);
+        }
+        if (!is_dir(APPPATH . "Modules/" . $module_name_class . '/Views')) {
             mkdir(APPPATH . 'Modules/'. $module_name_class . '/Views', 0777, true);
-            mkdir(APPPATH . 'Modules/'. $module_name_class . '/Language/vi', 0777, true);
-            mkdir(APPPATH . 'Modules/'. $module_name_class . '/Language/en', 0777, true);
         }
 
         //write language
@@ -117,17 +125,19 @@ class Builder extends AdminController
         $string_language_vn = str_replace('Dummy', $controller_name_class, $string_language_vn);
         $string_language_en = str_replace('Dummy', $controller_name_class, $string_language_en);
 
-        if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Language/vi/' . singular($controller_name_class) . 'Admin.php')) {
-            write_file(APPPATH . 'Modules/' . $module_name_class . '/Language/vi/' . singular($controller_name_class) . 'Admin.php', $string_language_vn);
+        if (!is_file(APPPATH . 'Language/vi/' . $language_name_class . 'Admin.php')) {
+            write_file(APPPATH . 'Language/vi/' . $language_name_class . 'Admin.php', $string_language_vn);
+            chmod(APPPATH . 'Language/vi/' . $language_name_class . 'Admin.php', 0777);
         } else {
-            $error_created[] = sprintf(lang('Builder.file_created'), 'vi/' . singular($controller_name_class) . 'Admin.php');
+            $error_created[] = sprintf(lang('Builder.file_created'), 'vi/' . $language_name_class . 'Admin.php');
 
         }
 
-        if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Language/en/' . singular($controller_name_class) . 'Admin.php')) {
-            write_file(APPPATH . 'Modules/' . $module_name_class . '/Language/en/' . singular($controller_name_class) . 'Admin.php', $string_language_en);
+        if (!is_file(APPPATH . 'Language/en/' . $language_name_class . 'Admin.php')) {
+            write_file(APPPATH . 'Language/en/' . $language_name_class . 'Admin.php', $string_language_en);
+            chmod(APPPATH . 'Language/en/' . $language_name_class . 'Admin.php', 0777);
         } else {
-            $error_created[] = sprintf(lang('Builder.file_created'), 'en/' .  singular($controller_name_class) . 'Admin.php');
+            $error_created[] = sprintf(lang('Builder.file_created'), 'en/' .  $language_name_class . 'Admin.php');
         }
 
         $manage_path = '';
@@ -191,6 +201,7 @@ class Builder extends AdminController
                 foreach ($fields as $field) {
                     if (!empty($field->primary_key)) {
                         $primary_key = $field->name;
+                        continue;
                     }
                     if (in_array($field->name, $list_not_add)) {
                         continue;
@@ -200,7 +211,7 @@ class Builder extends AdminController
                     //them field cho tpl add va edit
                     $template_replace_root .= sprintf(
                         $template_field_root,
-                        singular($controller_name_class),
+                        $language_name_class,
                         $field->name,
                         $field->name,
                         $field->name,
@@ -235,7 +246,7 @@ class Builder extends AdminController
                     //them field cho tpl add va edit
                     $template_replace_description .= sprintf(
                         $template_field_description,
-                        singular($controller_name_class),
+                        $language_name_class,
                         $field->name,
                         $table_name_language,
                         $field->name,
@@ -282,7 +293,7 @@ class Builder extends AdminController
             $manage_name_controller . "manage",
             "new " . $model_name_class . "Model()",
             "new " . $model_name_class . "LangModel()",
-            "lang('" . singular($controller_name_class) . "Admin.",
+            "lang('" . $language_name_class . "Admin.",
             "'" . $module_name . "'",
             $manage_path . "list",
             $manage_path . "form",
@@ -295,12 +306,14 @@ class Builder extends AdminController
         if (empty($manage_path)) {
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Controllers/Manage.php')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Controllers/Manage.php', $string_controller);
+                chmod(APPPATH . 'Modules/' . $module_name_class . '/Controllers/Manage.php', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), '/Controllers/Manage.php');
             }
         } else {
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Controllers/' . $controller_name_class . 'Manage.php')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Controllers/' . $controller_name_class . 'Manage.php', $string_controller);
+                chmod(APPPATH . 'Modules/' . $module_name_class . '/Controllers/' . $controller_name_class . 'Manage.php', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), $controller_name_class . 'Manage.php');
             }
@@ -312,13 +325,13 @@ class Builder extends AdminController
 
         $string_list_tpl   = str_replace(
             ["dummy_id", "lang('Dummy.", "'dummy'"],
-            [$primary_key, "lang('" . singular($controller_name_class) . "Admin.", "'" . $module_name . "'"],
+            [$primary_key, "lang('" . $language_name_class . "Admin.", "'" . $module_name . "'"],
             $string_list_tpl
         );
 
         $string_form_tpl   = str_replace(
             ["dummy_id", "{*TPL_DUMMY_ROOT*}", "{*TPL_DUMMY_DESCRIPTION*}", "lang('Dummy.", "dummy_lang"],
-            [$primary_key, $template_replace_root, $template_replace_description, "lang('" . singular($controller_name_class) . "Admin.", $table_name_language],
+            [$primary_key, $template_replace_root, $template_replace_description, "lang('" . $language_name_class . "Admin.", $table_name_language],
             $string_form_tpl
         );
 
@@ -331,32 +344,38 @@ class Builder extends AdminController
         if (empty($manage_path)) {
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/list.tpl')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/list.tpl', $string_list_tpl);
+                chmod(APPPATH . 'Modules/' . $module_name_class . '/Views/list.tpl', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), '/list.tpl');
             }
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/form.tpl')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/form.tpl', $string_form_tpl);
+                chmod(APPPATH . 'Modules/' . $module_name_class . '/Views/form.tpl', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), '/form.tpl');
             }
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/delete.tpl')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/delete.tpl', $string_delete_tpl);
+                chmod(APPPATH . 'Modules/' . $module_name_class . '/Views/delete.tpl', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), '/delete.tpl');
             }
         } else {
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/list.tpl')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/list.tpl', $string_list_tpl);
+                chmod(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/list.tpl', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), $controller_name . '/list.tpl');
             }
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/form.tpl')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/form.tpl', $string_form_tpl);
+                chmod(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/form.tpl', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), $controller_name . '/form.tpl');
             }
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/delete.tpl')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/delete.tpl', $string_delete_tpl);
+                chmode(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/delete.tpl', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), $controller_name . '/delete.tpl');
             }
@@ -389,6 +408,7 @@ class Builder extends AdminController
 
         if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Models/' . $model_name_class . 'Model.php')) {
             write_file(APPPATH . 'Modules/' . $module_name_class . '/Models/' . $model_name_class . 'Model.php', $string_model_manager);
+            chmod(APPPATH . 'Modules/' . $module_name_class . '/Models/' . $model_name_class . 'Model.php', 0777);
         } else {
             $error_created[] = sprintf(lang('Builder.file_created'), '/Models/' . $model_name_class . 'Model.php');
         }
@@ -415,6 +435,7 @@ class Builder extends AdminController
 
         if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Models/' . $model_name_class . 'LangModel.php')) {
             write_file(APPPATH . 'Modules/' . $module_name_class . '/Models/' . $model_name_class . 'LangModel.php', $string_model_description_manager);
+            chmod(APPPATH . 'Modules/' . $module_name_class . '/Models/' . $model_name_class . 'LangModel.php', 0777);
         } else {
             $error_created[] = sprintf(lang('Builder.file_created'), '/Models/' . $model_name_class . 'LangModel.php');
         }
@@ -436,6 +457,7 @@ class Builder extends AdminController
 
         if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Config/Routes.php')) {
             write_file(APPPATH . 'Modules/' . $module_name_class . '/Config/Routes.php', $string_config_manager);
+            chmod(APPPATH . 'Modules/' . $module_name_class . '/Config/Routes.php', 0777);
         } else {
             $error_created[] = sprintf(lang('Builder.file_created'), '/Config/Routes.php');
         }
@@ -480,16 +502,23 @@ class Builder extends AdminController
         $module_name_class     = ucfirst($module_name);
         $controller_name_class = ucfirst($controller_name);
         $model_name_class      = ucfirst($model_name);
+        $language_name_class   = ($module_name != $controller_name)? singular(ucfirst($module_name)) . singular(ucfirst($controller_name)) : singular(ucfirst($controller_name));
 
         // create module
         if (!is_dir(APPPATH . "Modules/" . $module_name_class)) {
-            mkdir(APPPATH . 'Modules/'. $module_name_class, 0777, true);
+            mkdir(APPPATH . 'Modules/' . $module_name_class, 0777, true);
+        }
+        if (!is_dir(APPPATH . "Modules/" . $module_name_class . '/Config')) {
             mkdir(APPPATH . 'Modules/'. $module_name_class . '/Config', 0777, true);
+        }
+        if (!is_dir(APPPATH . "Modules/" . $module_name_class . '/Controllers')) {
             mkdir(APPPATH . 'Modules/'. $module_name_class . '/Controllers', 0777, true);
+        }
+        if (!is_dir(APPPATH . "Modules/" . $module_name_class . '/Models')) {
             mkdir(APPPATH . 'Modules/'. $module_name_class . '/Models', 0777, true);
+        }
+        if (!is_dir(APPPATH . "Modules/" . $module_name_class . '/Views')) {
             mkdir(APPPATH . 'Modules/'. $module_name_class . '/Views', 0777, true);
-            mkdir(APPPATH . 'Modules/'. $module_name_class . '/Language/vi', 0777, true);
-            mkdir(APPPATH . 'Modules/'. $module_name_class . '/Language/en', 0777, true);
         }
 
         //write language
@@ -499,16 +528,18 @@ class Builder extends AdminController
         $string_language_vn = str_replace('Dummy', $controller_name_class, $string_language_vn);
         $string_language_en = str_replace('Dummy', $controller_name_class, $string_language_en);
 
-        if (!is_file(APPPATH . 'Modules/'. $module_name_class . '/Language/vi/' . singular($controller_name_class) . 'Admin.php')) {
-            write_file(APPPATH . 'Modules/'. $module_name_class . '/Language/vi/' . singular($controller_name_class) . 'Admin.php', $string_language_vn);
+        if (!is_file(APPPATH . 'Language/vi/' . $language_name_class . 'Admin.php')) {
+            write_file(APPPATH . 'Language/vi/' . $language_name_class . 'Admin.php', $string_language_vn);
+            chmod(APPPATH . 'Language/vi/' . $language_name_class . 'Admin.php', 0777);
         } else {
-            $error_created[] = sprintf(lang('Builder.file_created'), 'vi/' . singular($controller_name_class) . 'Admin.php');
+            $error_created[] = sprintf(lang('Builder.file_created'), 'vi/' . $language_name_class . 'Admin.php');
         }
 
-        if (!is_file(APPPATH . 'Modules/'. $module_name_class . '/Language/en/' . singular($controller_name_class) . 'Admin.php')) {
-            write_file(APPPATH . 'Modules/'. $module_name_class . '/Language/en/' . singular($controller_name_class) . 'Admin.php', $string_language_en);
+        if (!is_file(APPPATH . 'Language/en/' . $language_name_class . 'Admin.php')) {
+            write_file(APPPATH . 'Language/en/' . $language_name_class . 'Admin.php', $string_language_en);
+            chmod(APPPATH . 'Language/en/' . $language_name_class . 'Admin.php', 0777);
         } else {
-            $error_created[] = sprintf(lang('Builder.file_created'), 'en/' .  singular($controller_name_class) . 'Admin.php');
+            $error_created[] = sprintf(lang('Builder.file_created'), 'en/' .  $language_name_class . 'Admin.php');
         }
 
         $manage_path = '';
@@ -563,6 +594,7 @@ class Builder extends AdminController
                 foreach ($fields as $field) {
                     if (!empty($field->primary_key)) {
                         $primary_key = $field->name;
+                        continue;
                     }
                     if (in_array($field->name, $list_not_add)) {
                         continue;
@@ -572,7 +604,7 @@ class Builder extends AdminController
                     //them field cho tpl add va edit
                     $template_replace_root .= sprintf(
                         $template_field_root,
-                        singular($controller_name_class),
+                        $language_name_class,
                         $field->name,
                         $field->name,
                         $field->name,
@@ -619,7 +651,7 @@ class Builder extends AdminController
             $controller_name_class_tpm,
             $manage_name_controller . "manage",
             "new " . $model_name_class . "Model()",
-            "lang('" . singular($controller_name_class) . "Admin.",
+            "lang('" . $language_name_class . "Admin.",
             "'" . $module_name . "'",
             $manage_path . "list",
             $manage_path . "form",
@@ -632,12 +664,14 @@ class Builder extends AdminController
         if (empty($manage_path)) {
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Controllers/Manage.php')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Controllers/Manage.php', $string_controller);
+                chmod(APPPATH . 'Modules/' . $module_name_class . '/Controllers/Manage.php', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), '/Controllers/Manage.php');
             }
         } else {
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Controllers/' . $controller_name_class . 'Manage.php')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Controllers/' . $controller_name_class . 'Manage.php', $string_controller);
+                chmod(APPPATH . 'Modules/' . $module_name_class . '/Controllers/' . $controller_name_class . 'Manage.php', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), $controller_name_class . 'Manage.php');
             }
@@ -649,13 +683,13 @@ class Builder extends AdminController
 
         $string_list_tpl = str_replace(
             ["dummy_id", "lang('Dummy.", "'dummy'"],
-            [$primary_key, "lang('" . singular($controller_name_class) . "Admin.", "'" . $module_name . "'"],
+            [$primary_key, "lang('" . $language_name_class . "Admin.", "'" . $module_name . "'"],
             $string_list_tpl
         );
 
         $string_form_tpl = str_replace(
             ["dummy_id", "{*TPL_DUMMY_ROOT*}", "lang('Dummy."],
-            [$primary_key . "_id", $template_replace_root, "lang('" . singular($controller_name_class) . "Admin."],
+            [$primary_key . "_id", $template_replace_root, "lang('" . $language_name_class . "Admin."],
             $string_form_tpl
         );
 
@@ -668,32 +702,38 @@ class Builder extends AdminController
         if (empty($manage_path)) {
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/list.tpl')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/list.tpl', $string_list_tpl);
+                chmod(APPPATH . 'Modules/' . $module_name_class . '/Views/list.tpl', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), '/list.tpl');
             }
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/form.tpl')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/form.tpl', $string_form_tpl);
+                chmod(APPPATH . 'Modules/' . $module_name_class . '/Views/form.tpl', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), '/form.tpl');
             }
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/delete.tpl')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/delete.tpl', $string_delete_tpl);
+                chmod(APPPATH . 'Modules/' . $module_name_class . '/Views/delete.tpl', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), '/delete.tpl');
             }
         } else {
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/list.tpl')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/list.tpl', $string_list_tpl);
+                chmod(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/list.tpl', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), $controller_name . '/list.tpl');
             }
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/form.tpl')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/form.tpl', $string_form_tpl);
+                chmod(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/form.tpl', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), $controller_name . '/form.tpl');
             }
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/delete.tpl')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/delete.tpl', $string_delete_tpl);
+                chmod(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/delete.tpl', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), $controller_name . '/delete.tpl');
             }
@@ -709,6 +749,7 @@ class Builder extends AdminController
 
         if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Models/' . $model_name_class . 'Model.php')) {
             write_file(APPPATH . 'Modules/' . $module_name_class . '/Models/' . $model_name_class . 'Model.php', $string_model_manager);
+            chmod(APPPATH . 'Modules/' . $module_name_class . '/Models/' . $model_name_class . 'Model.php', 0777);
         } else {
             $error_created[] = sprintf(lang('Builder.file_created'), '/Models/' . $model_name_class . 'Model.php');
         }
@@ -730,6 +771,7 @@ class Builder extends AdminController
 
         if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Config/Routes.php')) {
             write_file(APPPATH . 'Modules/' . $module_name_class . '/Config/Routes.php', $string_config_manager);
+            chmod(APPPATH . 'Modules/' . $module_name_class . '/Config/Routes.php', 0777);
         } else {
             $error_created[] = sprintf(lang('Builder.file_created'), '/Config/Routes.php');
         }
