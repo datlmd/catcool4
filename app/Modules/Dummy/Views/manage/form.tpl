@@ -81,11 +81,11 @@
                                     {assign var="published" value="1"}
                                 {/if}
                                 <label class="form-check form-check-inline ms-2">
-                                    <input type="radio" name="published" value="{STATUS_ON}" {if set_value('published', $published) eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
+                                    <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $published) eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
                                     <label class="form-check-label" for="published_on">ON</label>
                                 </label>
                                 <label class="form-check form-check-inline me-2">
-                                    <input type="radio" name="published" value="{STATUS_OFF}" {if set_value('published', $published) eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
+                                    <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $published) eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
                                     <label class="form-check-label" for="published_off">OFF</label>
                                 </label>
                             </div>
@@ -97,7 +97,7 @@
                                 {else}
                                     {assign var="sort_order" value="0"}
                                 {/if}
-                                <input type="number" name="sort_order" value="{set_value('sort_order', $sort_order)}" id="sort_order" min="0" class="form-control">
+                                <input type="number" name="sort_order" value="{old('sort_order', $sort_order)}" id="sort_order" min="0" class="form-control">
                             </div>
                         </div>
                     </div>
