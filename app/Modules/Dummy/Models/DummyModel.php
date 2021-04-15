@@ -22,6 +22,7 @@ class DummyModel extends MyModel
     protected $validationMessages = [];
     protected $skipValidation     = false;
 
+    protected $table_lang = 'dummy_lang';
     protected $with = ['dummy_lang'];
 
     public function __construct()
@@ -31,22 +32,23 @@ class DummyModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? $sort : 'dummy_id';
+        $sort  = in_array($sort, $this->allowedFields) ? "$this->table.$sort" : (in_array($sort, ['name']) ? "$this->table_lang.$sort" : "");
+        $sort  = !empty($sort) ? $sort : "$this->table.dummy_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
 
-        $this->where('dummy_lang.language_id', get_lang_id(true));
-        if (!empty($filter["id"])) {
-            $this->whereIn('dummy.dummy_id', (!is_array($filter["id"]) ? explode(',', $filter["id"]) : $filter["id"]));
+        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        if (!empty($filter["dummy_id"])) {
+            $this->whereIn("$this->table.dummy_id", (!is_array($filter["dummy_id"]) ? explode(',', $filter["dummy_id"]) : $filter["dummy_id"]));
         }
 
         if (!empty($filter["name"])) {
-            $this->like('dummy_lang.name', $filter["name"]);
+            $this->like("$this->table_lang.name", $filter["name"]);
         }
 
-        $this->select('dummy.*, dummy_lang.name AS name, dummy_lang.description AS description')
+        $this->select("$this->table.*, $this->table_lang.*")
             ->with(false)
-            ->join('dummy_lang', 'dummy_lang.dummy_id = dummy.dummy_id')
+            ->join($this->table_lang, "$this->table_lang.dummy_id = $this->table.dummy_id")
             ->orderBy($sort, $order);
 
         return $this;
@@ -63,9 +65,9 @@ class DummyModel extends MyModel
             return null;
         }
 
-        $result = format_data_lang_id($result, 'dummy_lang');
-        if (!empty($language_id) && !empty($result['dummy_lang'][$language_id])) {
-            $result['dummy_lang'] = $result['dummy_lang'][$language_id];
+        $result = format_data_lang_id($result, $this->table_lang);
+        if (!empty($language_id) && !empty($result[$this->table_lang][$language_id])) {
+            $result[$this->table_lang] = $result[$this->table_lang][$language_id];
         }
 
         return $result;
@@ -83,9 +85,9 @@ class DummyModel extends MyModel
         }
 
         foreach ($result as $key => $value) {
-            $result[$key] = format_data_lang_id($value, 'dummy_lang');
-            if (!empty($language_id) && !empty($result[$key]['dummy_lang'][$language_id])) {
-                $result[$key]['dummy_lang'] = $result[$key]['dummy_lang'][$language_id];
+            $result[$key] = format_data_lang_id($value, $this->table_lang);
+            if (!empty($language_id) && !empty($result[$key][$this->table_lang][$language_id])) {
+                $result[$key][$this->table_lang] = $result[$key][$this->table_lang][$language_id];
             }
         }
 
