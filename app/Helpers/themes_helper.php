@@ -202,3 +202,20 @@ if ( ! function_exists('print_flash_alert'))
         return null;
     }
 }
+if ( ! function_exists('theme_load'))
+{
+    /**
+     * @param null $viewPath
+     * @param array $data
+     * @return void|null
+     */
+    function theme_load($viewPath = null, $data = [])
+    {
+        if (empty($viewPath))
+        {
+            return null;
+        }
+
+        return App\Libraries\Themes::load($viewPath, $data);
+    }
+}

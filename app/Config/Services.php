@@ -7,7 +7,7 @@ use App\Libraries\CI4Smarty;
 use App\Libraries\Breadcrumb;
 use Exception;
 use App\Libraries\ReCaptcha;
-
+use App\Libraries\Fba;
 
 /**
  * Services Configuration file.
@@ -34,11 +34,13 @@ class Services extends BaseService
 	//     return new \CodeIgniter\Example();
 	// }
 
-    public static function SmartyEngine($getShared = true) {
+    public static function SmartyEngine($getShared = true)
+    {
         return ($getShared === true ? static::getSharedInstance('SmartyEngine') : new CI4Smarty());
     }
 
-    public static function Breadcrumb($getShared = true) {
+    public static function Breadcrumb($getShared = true)
+    {
         return ($getShared === true ? static::getSharedInstance('Breadcrumb') : new Breadcrumb());
     }
 
@@ -113,5 +115,9 @@ class Services extends BaseService
         }
 
         return $return;
+    }
+
+    public static function fba($getShared = true) {
+        return ($getShared === true ? static::getSharedInstance('Fba') : new Fba());
     }
 }

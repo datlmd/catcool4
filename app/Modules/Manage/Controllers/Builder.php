@@ -65,6 +65,8 @@ class Builder extends AdminController
             $this->_rrmdir(APPPATH . "Modules/" . ucfirst($this->request->getGet('module')));
         }
 
+        $data['breadcrumb'] = $this->breadcrumb->render();
+
         add_meta(['title' => lang("Builder.heading_title")], $this->themes);
         $this->themes::load('builder', $data);
     }

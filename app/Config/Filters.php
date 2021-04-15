@@ -41,6 +41,7 @@ class Filters extends BaseConfig
                     'countries/provinces',
                     'countries/districts',
                     'countries/wards',
+                    'utilities/manage/load_fba',
                 ]
             ],
             'auth_admin' => ['except' => ['*/login', '*/logout', 'permissions/manage/not_allowed']],

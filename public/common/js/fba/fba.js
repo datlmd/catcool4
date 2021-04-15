@@ -1,14 +1,14 @@
 /*********************************************************************
-* #### jQuery File Browser Awesome v0.2.0 ####
-* Coded by Ican Bachors 2014.
+* #### jQuery File Browser Awesome ####
 * http://ibacor.com/labs/jquery-file-browser-awesome/
 * Updates will be posted to this site.
 *********************************************************************/
 
 var fba = function(g) {
     if (g.host != undefined && g.api != undefined && g.route != undefined && g.host != '' && g.api != '' && g.route != '') {
-        var j = '<div class="fba_direktori"></div>' + '<div class="fba_read_file"><i class="fas fa-code text-primary me-1"></i> <span id="rf"></span> <span id="perms"></span><button type="button" id="w_file" class="btn btn-xs btn-warning float-right" style="margin-top: -3px;">Save</button> </div>' + '<textarea id="fba_text"></textarea>',
+        var j = '<div class="fba_direktori"></div>' + '<div class="fba_read_file"><i class="fas fa-code text-primary me-1"></i> <span id="rf"></span> <span id="perms"></span><button type="button" id="w_file" class="btn btn-xs btn-warning float-end" style="margin-top: -3px;">Save</button> </div>' + '<textarea id="fba_text"></textarea>',
             k = getParameterByName('path');
+
         $("#fba").html(j);
         if (k != '') {
             if (k.indexOf('.') === -1) {
@@ -37,9 +37,12 @@ var fba = function(g) {
             type: "POST",
             url: g.host + g.api,
             data: 'path=' + e,
-            crossDomain: true,
-            dataType: "json"
+            //crossDomain: true,
+            type: "POST"
         }).done(function(c) {
+            var response = JSON.stringify(c);
+            c = JSON.parse(response);
+
             if (c.status == 'success') {
                 var r = "";
                 r += '<div class="fba_header"><div class="name">Name</div><div class="size pe-3">Size</div><div class="modif pe-3">Last Modified</div></div>';
@@ -141,8 +144,10 @@ var fba = function(g) {
             url: g.host + g.api,
             data: 'file=' + c,
             //crossDomain: true,
-            dataType: "json"
+            type: "POST"
         }).done(function(a) {
+            var response = JSON.stringify(a);
+            a = JSON.parse(response);
             if (a.status == 'success') {
                 $("#rf").html(c);
                 $("#perms").html(" [" + a.perms + "]");
@@ -162,7 +167,7 @@ var fba = function(g) {
             type: "POST",
             url: g.host + g.api,
             data: 'wfile=' + wfile + '&content=' + content,
-            dataType: "json",
+            type: "POST",
             beforeSend: function () {
                 $("#w_file").html('Save ' + '<i class="fas fa-spinner fa-spin"></i>');
             },
@@ -172,6 +177,8 @@ var fba = function(g) {
                 }, 800);
             },
         }).done(function(a) {
+            var response = JSON.stringify(a);
+            a = JSON.parse(response);
             if (a.status == 'error') {
                 $.notify(a.msg, {'type': 'danger'});
             }
@@ -189,6 +196,7 @@ var fba = function(g) {
 
     function getParameterByName(a) {
         a = a.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+
         var b = new RegExp("[\\?&]" + a + "=([^&#]*)"),
             results = b.exec(location.search);
         return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "))
@@ -198,9 +206,9 @@ var fba = function(g) {
 $(function () {
     if ($("#fba").length) {
         fba({
-            host: $("#fba").attr('data-host'), // your host / domain
-            api: $("#fba").attr('data-api'), // controllers name fba api
-            route: $("#fba").attr('data-route') // controllers name fba api
+            host: $("#fba").data('host'), // your host / domain
+            api: $("#fba").data('api'), // controllers name fba api
+            route: $("#fba").data('route') // controllers name fba api
         });
     }
 });
