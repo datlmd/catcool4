@@ -3,12 +3,12 @@
 	<td>
 		<a href="{$manage_url}/edit/{$category.category_id}" class="text-primary">
 			{if !empty($parent_name)}{$parent_name} > {/if}
-			{$category.detail.name}
+			{$category.name}
 		</a>
     </td>
 	<td>
-		{$category.detail.slug}<br />
-		<em>{$category.detail.description}</em>
+		{$category.slug}<br />
+		<em>{$category.description}</em>
 	</td>
 	<td class="text-center">{$category.sort_order}</td>
 	<td>
@@ -19,17 +19,18 @@
 	</td>
 	<td class="text-center">
 		<div class="btn-group ms-auto">
-			<a href="{$manage_url}/edit/{$category.category_id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
-			<button type="button" data-id="{$category.category_id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
+		<div class="btn-group ms-auto">
+			<a href="{site_url($manage_url)}/edit/{$category.category_id}" class="btn btn-sm btn-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
+			<button type="button" data-id="{$category.category_id}" class="btn btn-sm btn-light text-danger btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 		</div>
 	</td>
 	<td class="text-center">{form_checkbox('manage_ids[]', $category.category_id)}</td>
 </tr>
 {if !empty($category.subs)}
 	{if !empty($parent_name)}
-		{assign var="parent_name" value="`$parent_name` > `$category.detail.name`"}
+		{assign var="parent_name" value="`$parent_name` > `$category.name`"}
 	{else}
-		{assign var="parent_name" value="`$category.detail.name`"}
+		{assign var="parent_name" value="`$category.name`"}
 	{/if}
 
 	{foreach $category.subs as $sub}
