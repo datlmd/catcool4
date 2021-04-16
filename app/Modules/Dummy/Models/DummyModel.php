@@ -65,10 +65,7 @@ class DummyModel extends MyModel
             return null;
         }
 
-        $result = format_data_lang_id($result, $this->table_lang);
-        if (!empty($language_id) && !empty($result[$this->table_lang][$language_id])) {
-            $result[$this->table_lang] = $result[$this->table_lang][$language_id];
-        }
+        $result = format_data_lang_id($result, $this->table_lang, $language_id);
 
         return $result;
     }
@@ -85,10 +82,7 @@ class DummyModel extends MyModel
         }
 
         foreach ($result as $key => $value) {
-            $result[$key] = format_data_lang_id($value, $this->table_lang);
-            if (!empty($language_id) && !empty($result[$key][$this->table_lang][$language_id])) {
-                $result[$key][$this->table_lang] = $result[$key][$this->table_lang][$language_id];
-            }
+            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
 
         return $result;
