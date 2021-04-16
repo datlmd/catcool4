@@ -124,13 +124,13 @@ class RouteModel extends MyModel
             }
 
             if (!empty($urls[$key]['id'])) {
-                $route = $this->where('route', $urls[$key]['route'])->whereNotIn('id', $urls[$key]['id'])->findAll();
+                $route = $this->where(['route' => $urls[$key]['route'], 'id !=', $urls[$key]['id']])->findAll();
             } else {
                 $route = $this->where('route', $urls[$key]['route'])->findAll();
             }
 
             if (!empty($route)) {
-                $routes[] = $route;
+                $routes = array_merge($routes, $route);
             }
         }
 

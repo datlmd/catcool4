@@ -10,9 +10,13 @@ class Manage extends AdminController
     protected $errors = [];
 
     protected $model_lang;
+    protected $model_route;
 
     CONST MANAGE_ROOT = 'categories/manage';
     CONST MANAGE_URL  = 'categories/manage';
+
+    CONST SEO_URL_MODULE   = 'categories';
+    CONST SEO_URL_RESOURCE = 'detail/%s';
 
     public function __construct()
     {
@@ -25,6 +29,7 @@ class Manage extends AdminController
 
         $this->model = new CategoryModel();
         $this->model_lang = new CategoryLangModel();
+        $this->model_route = new RouteModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -57,7 +62,7 @@ class Manage extends AdminController
         if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
                 set_alert($this->errors, ALERT_ERROR);
-                return redirect()->back()->withInput();
+                return redirect()->back()->withInput()->with("errors", $this->errors);
             }
 
             $add_data = [
@@ -75,10 +80,16 @@ class Manage extends AdminController
                 return redirect()->back()->withInput();
             }
 
-            $add_data_lang = format_lang_form($this->request->getPost());
+            //save route url
+            $seo_urls = $this->request->getPost('seo_urls');
+            $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
+
+            $add_data_lang = $this->request->getPost('lang');
             foreach (get_list_lang(true) as $value) {
                 $add_data_lang[$value['id']]['language_id'] = $value['id'];
-                $add_data_lang[$value['id']]['category_id']     = $id;
+                $add_data_lang[$value['id']]['category_id'] = $id;
+                $add_data_lang[$value['id']]['slug']        = !empty($seo_urls[$value['id']]['route']) ? $seo_urls[$value['id']]['route'] : '';
+
                 $this->model_lang->insert($add_data_lang[$value['id']]);
             }
 
@@ -105,10 +116,15 @@ class Manage extends AdminController
                 return redirect()->back()->withInput();
             }
 
-            $edit_data_lang = format_lang_form($this->request->getPost());
+            //save route url
+            $seo_urls = $this->request->getPost('seo_urls');
+            $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
+
+            $edit_data_lang = $this->request->getPost('lang');
             foreach (get_list_lang(true) as $value) {
                 $edit_data_lang[$value['id']]['language_id'] = $value['id'];
-                $edit_data_lang[$value['id']]['category_id']     = $id;
+                $edit_data_lang[$value['id']]['category_id'] = $id;
+                $edit_data_lang[$value['id']]['slug']        = !empty($seo_urls[$value['id']]['route']) ? $seo_urls[$value['id']]['route'] : '';
 
                 if (!empty($this->model_lang->where(['category_id' => $id, 'language_id' => $value['id']])->find())) {
                     $this->model_lang->where('language_id', $value['id'])->update($id, $edit_data_lang[$value['id']]);
@@ -160,6 +176,11 @@ class Manage extends AdminController
 
             $this->model->delete($ids);
 
+            //xoa slug ra khoi route
+            foreach($list_delete as $value) {
+                $this->model_route->deleteByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $value['category_id']));
+            }
+
             //reset cache
             $this->model->deleteCache();
 
@@ -209,6 +230,9 @@ class Manage extends AdminController
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
+            //lay danh sach seo url tu route
+            $data['seo_urls'] = $this->model_route->getListByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
+
             // display the edit user form
             $data['edit_data'] = $data_form;
         } else {
@@ -229,7 +253,7 @@ class Manage extends AdminController
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         foreach(get_list_lang(true) as $value) {
-            $this->validator->setRule(sprintf('lang_%s_name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
+            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name'] . ')', 'required');
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
@@ -237,8 +261,7 @@ class Manage extends AdminController
 
         //check slug
         $seo_urls = $this->request->getPost('seo_urls');
-        $route_model = new RouteModel();
-        $seo_data = $route_model->getListAvailable($seo_urls);
+        $seo_data = $this->model_route->getListAvailable($seo_urls);
         if (!empty($seo_data)) {
             foreach ($seo_data as $val) {
                 foreach ($seo_urls as $key => $value) {

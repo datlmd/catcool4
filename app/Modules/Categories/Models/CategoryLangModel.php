@@ -6,7 +6,7 @@ class CategoryLangModel extends MyModel
 {
     protected $table      = 'category_lang';
     protected $primaryKey = 'category_id';
-    protected $with       = ['category'];
+    //protected $with       = ['category'];
 
     protected $allowedFields = [
         'category_id',

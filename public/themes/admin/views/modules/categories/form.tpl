@@ -40,14 +40,14 @@
                                                     {lang('Admin.text_name')}
                                                 </label>
                                                 <div class="col-12 col-sm-8 col-lg-8">
-                                                    {if !empty($edit_data.category_lang[$language.id].name)}
-                                                        {assign var="name" value="`$edit_data.category_lang[$language.id].name`"}
+                                                    {if !empty($edit_data.lang[$language.id].name)}
+                                                        {assign var="name" value="`$edit_data.lang[$language.id].name`"}
                                                     {else}
                                                         {assign var="name" value=""}
                                                     {/if}
-                                                    <input type="text" name="lang_{$language.id}_name" value='{old("lang_`$language.id`_name", $name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang_`$language.id`_name")}is-invalid{/if}">
+                                                    <input type="text" name="lang[{$language.id}][name]" value='{old("lang.{$language.id}.name", $name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang[{$language.id}][name]")}is-invalid{/if}">
                                                     <div class="invalid-feedback">
-                                                        {$validator->getError("lang_`$language.id`_name")}
+                                                        {$validator->getError("lang[{$language.id}][name]")}
                                                     </div>
                                                 </div>
                                             </div>
@@ -56,12 +56,12 @@
                                                     {lang('Admin.text_description')}
                                                 </label>
                                                 <div class="col-12 col-sm-8 col-lg-8">
-                                                    {if !empty($edit_data.category_lang[$language.id].description)}
-                                                        {assign var="description" value="`$edit_data.category_lang[$language.id].description`"}
+                                                    {if !empty($edit_data.lang[$language.id].description)}
+                                                        {assign var="description" value="`$edit_data.lang[$language.id].description`"}
                                                     {else}
                                                         {assign var="description" value=""}
                                                     {/if}
-                                                    <textarea name="lang_{$language.id}_description" cols="40" rows="2" id="input_description_{$language.id}" type="textarea" class="form-control">{old("lang_`$language.id`_description", $description)}</textarea>
+                                                    <textarea name="lang[{$language.id}][description]" cols="40" rows="2" id="input_description_{$language.id}" type="textarea" class="form-control">{old("lang.{$language.id}.description", $description)}</textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -69,7 +69,7 @@
                                                     {lang('Admin.tab_seo')}
                                                 </label>
                                                 <div class="col-12 col-sm-8 col-lg-8 mt-2">
-                                                    {include file=get_theme_path('views/inc/seo_form.tpl') data_seo=$edit_data.category_lang}
+                                                    {include file=get_theme_path('views/inc/seo_form.tpl')}
                                                 </div>
                                             </div>
                                         </div>
@@ -120,7 +120,7 @@
                                 {if !empty($edit_data.context)}
                                     {assign var="context" value="`$edit_data.context`"}
                                 {else}
-                                    {assign var="context" value="0"}
+                                    {assign var="context" value=""}
                                 {/if}
                                 <input type="text" name="context" value="{old('context', $context)}" id="context" class="form-control">
                             </div>

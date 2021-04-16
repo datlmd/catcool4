@@ -70,11 +70,7 @@ class CategoryModel extends MyModel
         if (empty($result)) {
             return null;
         }
-
-        $result = format_data_lang_id($result, $this->table_lang);
-        if (!empty($language_id) && !empty($result[$this->table_lang][$language_id])) {
-            $result[$this->table_lang] = $result[$this->table_lang][$language_id];
-        }
+        $result = format_data_lang_id($result, $this->table_lang, $language_id);
 
         return $result;
     }
@@ -91,10 +87,7 @@ class CategoryModel extends MyModel
         }
 
         foreach ($result as $key => $value) {
-            $result[$key] = format_data_lang_id($value, $this->table_lang);
-            if (!empty($language_id) && !empty($result[$key][$this->table_lang][$language_id])) {
-                $result[$key][$this->table_lang] = $result[$key][$this->table_lang][$language_id];
-            }
+            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
 
         return $result;
@@ -111,10 +104,7 @@ class CategoryModel extends MyModel
 
             $language_id = get_lang_id(true);
             foreach ($result as $key => $value) {
-                $result[$key] = format_data_lang_id($value, $this->table_lang);
-                if (!empty($result[$key][$this->table_lang][$language_id])) {
-                    $result[$key][$this->table_lang] = $result[$key][$this->table_lang][$language_id];
-                }
+                $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
             }
 
             if ($is_cache) {

@@ -167,8 +167,12 @@ if (!function_exists('get_list_lang'))
 
         $language_list = array_merge($language_active, $language_list);
 
+        $result = [];
+        foreach ($language_list as $item) {
+            $result[$item['id']] = $item;
+        }
 
-        return $language_list;
+        return $result;
     }
 }
 
@@ -201,12 +205,21 @@ if (!function_exists('format_data_lang_id'))
      * @param $key_sort
      * @return array
      */
-    function format_data_lang_id($data, $key_sort)
+    function format_data_lang_id($data, $key_sort, $language_id = null)
     {
         if (empty($data[$key_sort])) {
             return $data;
         }
+
         $data[$key_sort] = array_column($data[$key_sort], null, 'language_id');
+        if (!empty($language_id) && !empty($data[$key_sort][$language_id])) {
+            if (!empty($language_id) && !empty($data[$key_sort][$language_id])) {
+                $data= array_merge($data, $data[$key_sort][$language_id]);
+            }
+        }
+
+        $data['lang'] = $data[$key_sort];
+        unset($data[$key_sort]);
 
         return $data;
     }
@@ -233,8 +246,11 @@ if (!function_exists('format_lang_form'))
                     if (empty($lang_tmp) || count($lang_tmp) < 3) {
                         continue;
                     }
+                    $lang_id = $lang_tmp[1];
+                    unset($lang_tmp[0],$lang_tmp[1]);
+
                     //lang_{$language.id}_description
-                    $input_list[$lang_tmp[1]][$lang_tmp[2]] = $value;
+                    $input_list[$lang_id][implode('_', $lang_tmp)] = $value;
                 }
             }
         }
