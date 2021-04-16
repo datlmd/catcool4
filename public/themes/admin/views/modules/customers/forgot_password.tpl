@@ -20,7 +20,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="input_group_username"><i class="fas fa-inbox"></i></span>
                     </div>
-                    <input type="text" name="email" value="{set_value('email')}" id="email" placeholder="{lang('text_forgot_password_input')}" class="form-control form-control-lg" describedby="input_group_username">
+                    <input type="text" name="email" value="{set_value('email')}" id="email" placeholder="{lang('text_forgot_password_input')}" class="form-control form-control-lg" aria-describedby="input_group_username">
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg btn-block mt-2">{lang('button_reset_password')}</button>
             {form_close()}

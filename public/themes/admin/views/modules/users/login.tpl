@@ -16,11 +16,11 @@
             {form_open(uri_string())}
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="input_group_username"><i class="fas fa-user"></i></span>
-                    <input type="text" name="username" value="{old('username', $username)}" id="username" placeholder="{lang('Admin.text_username')}" class="form-control form-control-lg" describedby="input_group_username" autocomplete="off">
+                    <input type="text" name="username" value="{old('username', $username)}" id="username" placeholder="{lang('Admin.text_username')}" class="form-control form-control-lg" aria-describedby="input_group_username" autocomplete="off">
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="input_group_password"><i class="fas fa-key"></i></span>
-                    <input type="password" name="password" value="" id="password" placeholder="{lang('Admin.text_password')}" describedby="input_group_password" class="form-control form-control-lg">
+                    <input type="password" name="password" value="" id="password" placeholder="{lang('Admin.text_password')}" aria-describedby="input_group_password" class="form-control form-control-lg">
                 </div>
                 <div class="form-group text-center">
                     {reCaptcha3('captcha', ['id' => 'recaptcha_v3'], ['action' => 'loginRootForm'])}

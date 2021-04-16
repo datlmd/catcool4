@@ -22,7 +22,7 @@
                 <p class="mb-2">{lang('UserAdmin.text_forgot_password_note')}</p>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="input_group_username"><i class="fas fa-inbox"></i></span>
-                    <input type="text" name="email" value="{set_value('email')}" id="email" placeholder="{lang('UserAdmin.text_forgot_password_input')}" class="form-control form-control-lg" describedby="input_group_username">
+                    <input type="text" name="email" value="{set_value('email')}" id="email" placeholder="{lang('UserAdmin.text_forgot_password_input')}" class="form-control form-control-lg" aria-describedby="input_group_username">
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg btn-block mt-2 w-100">{lang('UserAdmin.button_reset_password')}</button>
             {form_close()}
