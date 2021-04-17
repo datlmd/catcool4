@@ -17,8 +17,6 @@ class DummyLangModel extends MyModel
         //FIELD_DESCRIPTION
     ];
 
-    //protected $with = ['dummy'];
-
     public function __construct()
     {
         parent::__construct();

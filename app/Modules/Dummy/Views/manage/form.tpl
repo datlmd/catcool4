@@ -28,23 +28,23 @@
                         <h5 class="card-header"><i class="fas {if !empty($edit_data.dummy_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                         <div class="card-body p-0 pt-3 bg-light">
                             <div class="tab-regular">
-                                {include file=get_theme_path('views/inc/tab_language.inc.tpl') languages=$list_lang}
+                                {include file=get_theme_path('views/inc/tab_language.inc.tpl') languages=$language_list}
                                 <div class="tab-content border-0 p-3" id="dummy_tab_content">
-                                    {foreach $list_lang as $language}
+                                    {foreach $language_list as $language}
                                         <div class="tab-pane fade {if !empty($language.active)}show active{/if}" role="tabpanel" id="lanuage_content_{$language.id}"  aria-labelledby="language_tab_{$language.id}">
                                             <div class="form-group row required has-error">
                                                 <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
                                                     {lang('Admin.text_name')}
                                                 </label>
                                                 <div class="col-12 col-sm-8 col-lg-7">
-                                                    {if !empty($edit_data.dummy_lang[$language.id].name)}
-                                                        {assign var="name" value="`$edit_data.dummy_lang[$language.id].name`"}
+                                                    {if !empty($edit_data.lang[$language.id].name)}
+                                                        {assign var="name" value="`$edit_data.lang[$language.id].name`"}
                                                     {else}
                                                         {assign var="name" value=""}
                                                     {/if}
-                                                    <input type="text" name="lang_{$language.id}_name" value='{old("lang_`$language.id`_name", $name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang_`$language.id`_name")}is-invalid{/if}">
+                                                    <input type="text" name="lang[{$language.id}][name]" value='{old("lang.{$language.id}.name", $name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang.{$language.id}.name")}is-invalid{/if}">
                                                     <div class="invalid-feedback">
-                                                        {$validator->getError("lang_`$language.id`_name")}
+                                                        {$validator->getError("lang.{$language.id}.name")}
                                                     </div>
                                                 </div>
                                             </div>
@@ -53,12 +53,12 @@
                                                     {lang('Admin.text_description')}
                                                 </label>
                                                 <div class="col-12 col-sm-8 col-lg-7">
-                                                    {if !empty($edit_data.dummy_lang[$language.id].description)}
-                                                        {assign var="description" value="`$edit_data.dummy_lang[$language.id].description`"}
+                                                    {if !empty($edit_data.lang[$language.id].description)}
+                                                        {assign var="description" value="`$edit_data.lang[$language.id].description`"}
                                                     {else}
                                                         {assign var="description" value=""}
                                                     {/if}
-                                                    <textarea name="lang_{$language.id}_description" cols="40" rows="2" id="input_description_{$language.id}" type="textarea" class="form-control">{old("lang_`$language.id`_description", $description)}</textarea>
+                                                    <textarea name="lang[{$language.id}][description]" cols="40" rows="2" id="input_description_{$language.id}" type="textarea" class="form-control">{old("lang.{$language.id}.description", $description)}</textarea>
                                                 </div>
                                             </div>
                                             {*TPL_DUMMY_DESCRIPTION*}
