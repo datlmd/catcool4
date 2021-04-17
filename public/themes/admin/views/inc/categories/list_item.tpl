@@ -5,7 +5,7 @@
 			{$category.name} (ID = {$category.category_id})
 		</div>
 		<div class="dd-nodrag btn-group ms-auto">
-			<div class="switch-button switch-button-xs catcool-center mt-1 me-3">
+			<div class="switch-button switch-button-xs catcool-center my-auto me-3">
 				{form_checkbox("published_`$category.category_id`", ($category.published eq STATUS_ON) ? true : false, ($category.published eq STATUS_ON) ? true : false, ['id' => 'published_'|cat:$category.category_id, 'data-id' => $category.category_id, 'data-published' => $category.published, 'class' => 'change_publish'])}
 				<span><label for="published_{$category.category_id}"></label></span>
 			</div>

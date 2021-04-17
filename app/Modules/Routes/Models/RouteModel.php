@@ -111,30 +111,19 @@ class RouteModel extends MyModel
         return true;
     }
 
-    public function getListAvailable($urls)
+    public function getListAvailable($url, $id = null)
     {
-        if (empty($urls)) {
+        if (empty($url)) {
             return false;
         }
 
-        $routes = [];
-        foreach(get_list_lang(true) as $key => $value) {
-            if(empty($urls[$key]['route'])) {
-                continue;
-            }
-
-            if (!empty($urls[$key]['id'])) {
-                $route = $this->where(['route' => $urls[$key]['route'], 'id !=', $urls[$key]['id']])->findAll();
-            } else {
-                $route = $this->where('route', $urls[$key]['route'])->findAll();
-            }
-
-            if (!empty($route)) {
-                $routes = array_merge($routes, $route);
-            }
+        if (!empty($id)) {
+            $route = $this->where(['route' => $url, 'id !=', $id])->findAll();
+        } else {
+            $route = $this->where('route', $url)->findAll();
         }
 
-        return $routes;
+        return $route;
     }
 
     public function writeFile()

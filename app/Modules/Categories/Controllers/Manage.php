@@ -215,6 +215,10 @@ class Manage extends AdminController
     {
         $this->themes->addJS('common/js/admin/filemanager');
 
+        //add tags
+        $this->themes->addCSS('common/js/tags/tagsinput');
+        $this->themes->addJS('common/js/tags/tagsinput');
+
         $data['language_list'] = get_list_lang(true);
 
         $list_all = $this->model->getAllByFilter();
@@ -254,24 +258,11 @@ class Manage extends AdminController
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         foreach(get_list_lang(true) as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name'] . ')', 'required');
+            $this->validator->setRule(sprintf('seo_urls.%s.route', $value['id']), lang('Admin.text_slug'), 'checkRoute[' . ($this->request->getPost('seo_urls[' . $value['id'] . '][id]') ?? "") . ']');
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();
-
-        //check slug
-        $seo_urls = $this->request->getPost('seo_urls');
-        $seo_data = $this->model_route->getListAvailable($seo_urls);
-        if (!empty($seo_data)) {
-            foreach ($seo_data as $val) {
-                foreach ($seo_urls as $key => $value) {
-                    if ($val['route'] == $value['route']) {
-                        $this->errors['seo_url_' . $key] = lang('Admin.error_slug_exists');
-                    }
-                }
-            }
-            return false;
-        }
 
         return $is_validation;
     }

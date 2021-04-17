@@ -31,7 +31,10 @@
 		<div id="collapse_seo" class="collapse show mt-2">
 			<div class="preview-meta-seo badge badge-light w-100 text-start my-2 p-3" {if empty($meta_title) && empty($seo_url_route) && empty($meta_description)}style="display: none;"{/if}>
 				<p class="meta-seo-title" id="seo_meta_title_{$language.id}">{old("lang.{$language.id}.meta_title", $meta_title)}</p>
-				<p class="meta-seo-url" id="seo_meta_url_{$language.id}">{old("seo_urls.{$language.id}.route", $seo_url_route)}</p>
+				<p class="meta-seo-url" id="seo_meta_url_{$language.id}">
+					{if !empty($name_seo_url)}{site_url($name_seo_url)}{else}{site_url()}{/if}
+					{old("seo_urls.{$language.id}.route", $seo_url_route)}
+				</p>
 				<p class="meta-seo-description" id="seo_meta_description_{$language.id}">{old("lang.{$language.id}.meta_description", $meta_description)}</p>
 			</div>
 			<div class="form-group row">
@@ -42,9 +45,9 @@
 							{lang("Admin.text_seo_lenght_input")} <span id="seo_meta_title_{$language.id}_length" data-target="input_meta_title_{$language.id}" class="seo-meta-length"></span>/70
 						</div>
 					</div>
-					<input type="text" name="lang[{$language.id}][meta_title]" data-seo-id="seo_meta_title_{$language.id}" onkeyup="Catcool.setContentSeo(this);" value='{old("lang.{$language.id}.meta_title", $meta_title)}' placeholder="{$meta_title}" id="input_meta_title_{$language.id}" class="form-control {if $validator->hasError("lang[{$language.id}][meta_title]")}is-invalid{/if}">
+					<input type="text" name="lang[{$language.id}][meta_title]" data-seo-id="seo_meta_title_{$language.id}" onkeyup="Catcool.setContentSeo(this);" value='{old("lang.{$language.id}.meta_title", $meta_title)}' placeholder="{$meta_title}" id="input_meta_title_{$language.id}" class="form-control {if $validator->hasError("lang.{$language.id}.meta_title")}is-invalid{/if}">
 					<div class="invalid-feedback">
-						{$validator->getError("lang[{$language.id}][meta_title]")}
+						{$validator->getError("lang.{$language.id}.meta_title")}
 					</div>
 				</div>
 			</div>
@@ -54,10 +57,10 @@
 					<div class="input-group">
 						<span class="input-group-text bg-linght pe-1" id="input_group_slug">{if !empty($name_seo_url)}{site_url($name_seo_url)}{else}{site_url()}{/if}</span>
 						<input type="hidden" name="seo_urls[{$language.id}][id]" value="{$seo_url_id}">
-						<input type="text" name="seo_urls[{$language.id}][route]" data-is-slug="true" data-seo-id="seo_meta_url_{$language.id}" onkeyup="Catcool.setContentSeo(this);"  value='{old("seo_urls.{$language.id}.route", $seo_url_route)}' placeholder="{$seo_url_route}" id="input_slug_{$language.id}" aria-describedby="input_group_slug" class="form-control {if !empty($errors["seo_url_{$language.id}"])}is-invalid{/if}">
-						{if !empty($errors["seo_url_{$language.id}"])}
-							<div class="invalid-feedback">{$errors["seo_url_{$language.id}"]}</div>
-						{/if}
+						<input type="text" name="seo_urls[{$language.id}][route]" data-is-slug="true" data-seo-id="seo_meta_url_{$language.id}" onkeyup="Catcool.setContentSeo(this);"  value='{old("seo_urls.{$language.id}.route", $seo_url_route)}' placeholder="{$seo_url_route}" id="input_slug_{$language.id}" aria-describedby="input_group_slug" class="form-control {if $validator->hasError("seo_urls.{$language.id}.route")}is-invalid{/if}">
+						<div class="invalid-feedback">
+							{$validator->getError("seo_urls.{$language.id}.route")}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -75,7 +78,7 @@
 			<div class="form-group row">
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 					{lang("Admin.text_seo_keyword")}
-					<input type="text" name="lang[{$language.id}][meta_keyword]" value='{old("lang.{$language.id}.meta_keyword", $meta_keyword)}' id="input_meta_keyword_{$language.id}" class="form-control">
+					<input type="text" name="lang[{$language.id}][meta_keyword]" value='{old("lang.{$language.id}.meta_keyword", $meta_keyword)}' id="input_meta_keyword_{$language.id}" class="form-control" data-role="tagsinput">
 				</div>
 			</div>
 		</div>

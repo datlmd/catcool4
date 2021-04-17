@@ -33,7 +33,7 @@ class CategoryModel extends MyModel
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
         $sort  = in_array($sort, $this->allowedFields) ? "$this->table.$sort" : (in_array($sort, ['name']) ? "$this->table_lang.$sort" : "");
-        $sort  = !empty($sort) ? $sort : "$this->table.category_id";
+        $sort  = !empty($sort) ? $sort : "$this->table.sort_order";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
         $where = "$this->table_lang.language_id=" . get_lang_id(true);

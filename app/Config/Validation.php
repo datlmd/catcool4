@@ -25,6 +25,7 @@ class Validation
 		FileRules::class,
 		CreditCardRules::class,
         \App\Validation\ReCaptchaRules::class,
+        \App\Validation\CustomRules::class,
 	];
 
 	/**

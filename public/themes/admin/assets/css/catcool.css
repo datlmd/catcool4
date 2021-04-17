@@ -467,8 +467,8 @@ a[data-bs-toggle="image"] {
     padding: 5px 10px;
 }
 .dd .dd-item>button {
-    margin: 11px 0;
-    color: red;
+    margin: 11px 9px 11px 0;
+    color: #303944;
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
 }
