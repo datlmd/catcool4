@@ -36,8 +36,6 @@ class CategoryModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.sort_order";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $where = "$this->table_lang.language_id=" . get_lang_id(true);
-
         $this->where("$this->table_lang.language_id", get_lang_id(true));
         if (!empty($filter["category_id"])) {
             $this->whereIn("$this->table.category_id", (!is_array($filter["category_id"]) ? explode(',', $filter["category_id"]) : $filter["category_id"]));
@@ -50,7 +48,6 @@ class CategoryModel extends MyModel
         $result = $this->select("$this->table.*, $this->table_lang.*")
             ->with(false)
             ->join($this->table_lang, "$this->table_lang.category_id = $this->table.category_id")
-            ->where($where)
             ->orderBy($sort, $order)->findAll();
 
         if (empty($result)) {

@@ -36,7 +36,6 @@ class DummyModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.dummy_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-
         $this->where("$this->table_lang.language_id", get_lang_id(true));
         if (!empty($filter["dummy_id"])) {
             $this->whereIn("$this->table.dummy_id", (!is_array($filter["dummy_id"]) ? explode(',', $filter["dummy_id"]) : $filter["dummy_id"]));
