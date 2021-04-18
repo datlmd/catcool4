@@ -173,12 +173,12 @@ class Builder extends AdminController
                         {lang('%sAdmin.text_%s')}
                     </label>
                     <div class=\"col-12 col-sm-8 col-lg-7\">
-                        {if !empty(\$edit_data.%s[\$language.id].%s)}
-                            {assign var=\"%s\" value=\"`\$edit_data.%s[\$language.id].%s`\"}
+                        {if !empty(\$edit_data.lang[\$language.id].%s)}
+                            {assign var=\"%s\" value=\"`\$edit_data.lang[\$language.id].%s`\"}
                         {else}
                             {assign var=\"%s\" value=\"\"}
                         {/if}
-                        <input type=\"text\" name=\"lang_{\$language.id}_%s\" value=\'{old(\"lang_`\$language.id`_%s\", \$%s)}\' id=\"input_%s_{\$language.id}\" class=\"form-control\">
+                        <input type=\"text\" name=\"lang[{\$language.id}][%s]\" value=\"{old('lang.{\$language.id}.%s', $%s)}\" id=\"input_%s_{\$language.id}\" class=\"form-control\">
                     </div>
                 </div>";
 
@@ -250,10 +250,8 @@ class Builder extends AdminController
                         $template_field_description,
                         $language_name_class,
                         $field->name,
-                        $table_name_language,
                         $field->name,
                         $field->name,
-                        $table_name_language,
                         $field->name,
                         $field->name,
                         $field->name,
