@@ -88,11 +88,11 @@ class Manage extends AdminController
                 return redirect()->back()->withInput();
             }
 
-            $add_data_lang = format_lang_form($this->request->getPost());
-            foreach (get_list_lang(true) as $value) {
-                $add_data_lang[$value['id']]['language_id'] = $value['id'];
-                $add_data_lang[$value['id']]['menu_id']     = $id;
-                $this->model_lang->insert($add_data_lang[$value['id']]);
+            $add_data_lang = $this->request->getPost('lang');
+            foreach (get_list_lang(true) as $language) {
+                $add_data_lang[$language['id']]['language_id'] = $language['id'];
+                $add_data_lang[$language['id']]['menu_id']     = $id;
+                $this->model_lang->insert($add_data_lang[$language['id']]);
             }
 
             //reset cache
@@ -118,15 +118,15 @@ class Manage extends AdminController
                 return redirect()->back()->withInput();
             }
 
-            $edit_data_lang = format_lang_form($this->request->getPost());
-            foreach (get_list_lang(true) as $value) {
-                $edit_data_lang[$value['id']]['language_id'] = $value['id'];
-                $edit_data_lang[$value['id']]['menu_id']     = $id;
+            $edit_data_lang = $this->request->getPost('lang');
+            foreach (get_list_lang(true) as $language) {
+                $edit_data_lang[$language['id']]['language_id'] = $language['id'];
+                $edit_data_lang[$language['id']]['menu_id']     = $id;
 
-                if (!empty($this->model_lang->where(['menu_id' => $id, 'language_id' => $value['id']])->find())) {
-                    $this->model_lang->where('language_id', $value['id'])->update($id, $edit_data_lang[$value['id']]);
+                if (!empty($this->model_lang->where(['menu_id' => $id, 'language_id' => $language['id']])->find())) {
+                    $this->model_lang->where('language_id', $language['id'])->update($id, $edit_data_lang[$language['id']]);
                 } else {
-                    $this->model_lang->insert($edit_data_lang[$value['id']]);
+                    $this->model_lang->insert($edit_data_lang[$language['id']]);
                 }
             }
 
@@ -217,10 +217,10 @@ class Manage extends AdminController
         $this->themes->addJS('common/js/iconpicker/iconpicker');
         $this->themes->addJS('common/js/admin/filemanager');
 
-        $data['list_lang'] = get_list_lang(true);
+        $data['language_list'] = get_list_lang(true);
 
         $list_all = $this->model->getAllByFilter(['is_admin' => session('is_menu_admin')]);
-        $data['list_patent'] = format_tree(['data' => $list_all, 'key_id' => 'menu_id']);
+        $data['patent_list'] = format_tree(['data' => $list_all, 'key_id' => 'menu_id']);
 
         //edit
         if (!empty($id) && is_numeric($id)) {
@@ -252,7 +252,7 @@ class Manage extends AdminController
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         foreach(get_list_lang(true) as $value) {
-            $this->validator->setRule(sprintf('lang_%s_name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
+            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();

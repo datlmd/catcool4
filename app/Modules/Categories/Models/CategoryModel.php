@@ -27,7 +27,6 @@ class CategoryModel extends MyModel
     function __construct()
     {
         parent::__construct();
-
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)

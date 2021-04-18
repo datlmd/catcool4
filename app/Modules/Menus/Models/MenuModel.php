@@ -6,6 +6,8 @@ class MenuModel extends MyModel
 {
     protected $table      = 'menu';
     protected $primaryKey = 'menu_id';
+
+    protected $table_lang = 'menu_lang';
     protected $with       = ['menu_lang'];
 
     protected $allowedFields = [
@@ -31,7 +33,6 @@ class MenuModel extends MyModel
     function __construct()
     {
         parent::__construct();
-
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
@@ -43,27 +44,26 @@ class MenuModel extends MyModel
             'sort_order',
         ];
 
-        $sort  = in_array($sort, $sort_data) ? $sort : 'menu_id';
+        $sort  = in_array($sort, $sort_data) ? $sort : 'sort_order';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $where = "menu_lang.language_id=" . get_lang_id(true);
+        $this->where("$this->table_lang.language_id", get_lang_id(true));
 
         if (!empty($filter["id"])) {
-            $where .= " AND menu.menu_id IN(" . (is_array($filter["id"]) ? implode(',', $filter["id"]) : $filter["id"]) . ")";
+            $this->whereIn("$this->table.menu_id", (!is_array($filter["menu_id"]) ? explode(',', $filter["menu_id"]) : $filter["menu_id"]));
         }
 
         if (isset($filter["is_admin"])) {
-            $where .= " AND menu.is_admin=" . $filter["is_admin"];
+            $this->where("$this->table.is_admin", $filter["is_admin"]);
         }
 
         if (!empty($filter["name"])) {
-            $where .= " AND menu.name LIKE '%" . $filter["name"] . "%'";
+            $this->like("$this->table_lang.name", $filter["name"]);
         }
 
-        $result = $this->select('menu.*, menu_lang.name AS name, menu_lang.description AS description, menu_lang.slug AS slug')
+        $result = $this->select("$this->table.*, $this->table_lang.*")
             ->with(false)
-            ->join('menu_lang', 'menu_lang.menu_id = menu.menu_id')
-            ->where($where)
+            ->join($this->table_lang, "$this->table_lang.menu_id = $this->table.menu_id")
             ->orderBy($sort, $order)->findAll();
 
         if (empty($result)) {
@@ -84,10 +84,7 @@ class MenuModel extends MyModel
             return null;
         }
 
-        $result = format_data_lang_id($result, 'menu_lang');
-        if (!empty($language_id) && !empty($result['menu_lang'][$language_id])) {
-            $result['menu_lang'] = $result['menu_lang'][$language_id];
-        }
+        $result = format_data_lang_id($result, $this->table_lang, $language_id);
 
         return $result;
     }
@@ -104,10 +101,7 @@ class MenuModel extends MyModel
         }
 
         foreach ($result as $key => $value) {
-            $result[$key] = format_data_lang_id($value, 'menu_lang');
-            if (!empty($language_id) && !empty($result[$key]['menu_lang'][$language_id])) {
-                $result[$key]['menu_lang'] = $result[$key]['menu_lang'][$language_id];
-            }
+            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
 
         return $result;
@@ -138,10 +132,7 @@ class MenuModel extends MyModel
 
             $language_id = get_lang_id(true);
             foreach ($result as $key => $value) {
-                $result[$key] = format_data_lang_id($value, 'menu_lang');
-                if (!empty($result[$key]['menu_lang'][$language_id])) {
-                    $result[$key]['menu_lang'] = $result[$key]['menu_lang'][$language_id];
-                }
+                $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
             }
 
             if ($is_cache) {
