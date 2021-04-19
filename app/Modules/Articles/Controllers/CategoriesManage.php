@@ -69,10 +69,12 @@ class CategoriesManage extends AdminController
                 'sort_order' => $this->request->getPost('sort_order'),
                 'image'      => $this->request->getPost('image'),
                 'context'    => $this->request->getPost('context'),
-                'parent_id'  => $this->request->getPost('parent_id'),
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-                'ctime'      => get_date(),
             ];
+
+            if (!empty($this->request->getPost('parent_id'))) {
+                $add_data['parent_id'] = $this->request->getPost('parent_id');
+            }
 
             $id = $this->model->insert($add_data);
             if ($id === FALSE) {
@@ -136,9 +138,12 @@ class CategoriesManage extends AdminController
             $edit_data = [
                 'sort_order' => $this->request->getPost('sort_order'),
                 'image'      => $this->request->getPost('image'),
-                'parent_id'  => $this->request->getPost('parent_id'),
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
+
+            if (!empty($this->request->getPost('parent_id'))) {
+                $edit_data['parent_id'] = $this->request->getPost('parent_id');
+            }
 
             if (!$this->model->update($id, $edit_data)) {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);

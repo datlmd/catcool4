@@ -369,14 +369,18 @@ if(!function_exists('draw_tree_output'))
             return null;
         }
 
-        if (is_array($list_data) && !empty($list_data['data']) && !empty($list_data['key_id'])) {
+        if (is_array($list_data)) {
             $list_tree = $list_data['data'];
             $key_id    = $list_data['key_id'];
-            $id_root   = !empty($list_data['id_root']) ? $list_data['id_root'] : null;
+            $id_root   = !empty($list_data['id_root']) ? $list_data['id_root'] : -1;
         } else {
             $list_tree = $list_data;
             $key_id    = 'id';
-            $id_root   = null;
+            $id_root   = -1;
+        }
+
+        if (empty($list_tree)) {
+            return  null;
         }
 
         $input_html = !empty($input_html) ? $input_html : '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>';
@@ -449,14 +453,18 @@ if(!function_exists('draw_tree_output_name'))
             return null;
         }
 
-        if (is_array($list_data) && isset($list_data['data']) && isset($list_data['key_id'])) {
-            $list_tree = $list_data['data'];
-            $key_id    = $list_data['key_id'];
-            $id_root   = !empty($list_data['id_root']) ? $list_data['id_root'] : null;
+        if (is_array($list_data)) {
+            $list_tree = $list_data['data'] ?? [];
+            $key_id    = $list_data['key_id'] ?? "id";
+            $id_root   = !empty($list_data['id_root']) ? $list_data['id_root'] : -1;
         } else {
             $list_tree = $list_data;
             $key_id    = 'id';
-            $id_root   = null;
+            $id_root   = -1;
+        }
+
+        if (empty($list_tree)) {
+            return null;
         }
 
         $input_html = !empty($input_html) ? $input_html : '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>';
