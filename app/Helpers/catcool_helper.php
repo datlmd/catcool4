@@ -449,7 +449,7 @@ if(!function_exists('draw_tree_output_name'))
             return null;
         }
 
-        if (is_array($list_data) && !empty($list_data['data']) && !empty($list_data['key_id'])) {
+        if (is_array($list_data) && isset($list_data['data']) && isset($list_data['key_id'])) {
             $list_tree = $list_data['data'];
             $key_id    = $list_data['key_id'];
             $id_root   = !empty($list_data['id_root']) ? $list_data['id_root'] : null;

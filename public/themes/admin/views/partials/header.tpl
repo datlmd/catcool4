@@ -98,12 +98,12 @@
 						<div class="dropdown-menu dropdown-menu-end nav-user-dropdown navbar-dropdown-menu-top" aria-labelledby="navbar_dropdown_menu_all">
 							{*hien thi menu all*}
 							{foreach $menu_admin as $key => $item}
-								<a class="dropdown-item" href="{$item.menu_lang.slug}" {$item.attributes}>
-									{if !empty($item.icon)}<i class="{$item.icon} me-2"></i>{/if}{$item.menu_lang.name}
+								<a class="dropdown-item" href="{$item.slug}" {$item.attributes}>
+									{if !empty($item.icon)}<i class="{$item.icon} me-2"></i>{/if}{$item.name}
 								</a>
 								{if !empty($item.subs)}
 									{foreach $item.subs as $sub}
-										<a class="dropdown-item py-2" href="{site_url($sub.menu_lang.slug)}" {$sub.attributes}><i class="fas fa-angle-double-right ms-3 me-2"></i>{$sub.menu_lang.name}</a>
+										<a class="dropdown-item py-2" href="{site_url($sub.slug)}" {$sub.attributes}><i class="fas fa-angle-double-right ms-3 me-2"></i>{$sub.name}</a>
 									{/foreach}
 								{/if}
 							{/foreach}

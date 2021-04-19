@@ -29,15 +29,15 @@
 					</li>
 					{foreach $menu_admin as $key => $item}
 						<li class="nav-item">
-							<a class="nav-link {if $item.selected|strstr:$menu_current}collapsed active show{/if}" href="{$item.menu_lang.slug}" {$item.attributes} {if !empty($item.subs)}data-bs-toggle="collapse" aria-expanded="true"{/if} data-target="#submenu-{$key}" aria-controls="submenu-{$key}">
-								{if !empty($item.icon)}<i class="{$item.icon}"></i>{/if}{$item.menu_lang.name}
+							<a class="nav-link {if $item.selected|strstr:$menu_current}collapsed active show{/if}" href="{$item.slug}" {$item.attributes} {if !empty($item.subs)}data-bs-toggle="collapse" aria-expanded="true"{/if} data-target="#submenu-{$key}" aria-controls="submenu-{$key}">
+								{if !empty($item.icon)}<i class="{$item.icon}"></i>{/if}{$item.name}
 							</a>
 							{if !empty($item.subs)}
 								<div id="submenu-{$key}" class="collapse submenu pb-2 {if $item.selected|strstr:$menu_current}show{/if}" style="">
 									<ul class="nav flex-column">
 										{foreach $item.subs as $sub}
 											<li class="nav-item">
-												<a class="nav-link {if $sub.selected eq $menu_current}active{/if}" href="{site_url($sub.menu_lang.slug)}" {$sub.attributes}><i class="fas fa-angle-double-right me-2"></i>{$sub.menu_lang.name}</a>
+												<a class="nav-link {if $sub.selected eq $menu_current}active{/if}" href="{site_url($sub.slug)}" {$sub.attributes}><i class="fas fa-angle-double-right me-2"></i>{$sub.name}</a>
 											</li>
 										{/foreach}
 									</ul>
@@ -56,10 +56,10 @@
 		{if config_item('enable_icon_menu_admin')}
 			<div class="d-xl-block d-lg-block d-none">
 				{foreach $menu_admin as $key => $item}
-					<a href="{$item.menu_lang.slug}" {$item.attributes} {if !empty($item.subs)}data-bs-toggle="modal" data-bs-target="#popup_menu_left_{$key}"{/if}>
+					<a href="{$item.slug}" {$item.attributes} {if !empty($item.subs)}data-bs-toggle="modal" data-bs-target="#popup_menu_left_{$key}"{/if}>
 						<div class="menu-left-icon {if strpos($item.selected, $menu_current) !== false}active{/if}">
 							<i class="{if !empty($item.icon)}{$item.icon}{else}fas fa-angle-double-right{/if}"></i>
-							<div class="tooltiptext">{$item.menu_lang.name}</div>
+							<div class="tooltiptext">{$item.name}</div>
 						</div>
 					</a>
 				{/foreach}
@@ -75,17 +75,17 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h4 class="modal-title" id="modal_label_{$key}"><i class="me-2 {if !empty($item.icon)}{$item.icon}{else}fas fa-angle-double-right{/if}"></i>{$item.menu_lang.name}</h4>
+							<h4 class="modal-title" id="modal_label_{$key}"><i class="me-2 {if !empty($item.icon)}{$item.icon}{else}fas fa-angle-double-right{/if}"></i>{$item.name}</h4>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
 							<div class="row">
 							{foreach $item.subs as $sub}
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 text-center mt-2 mb-4">
-									<a href="{site_url($sub.menu_lang.slug)}" class="menu-sub-left-icon {if $sub.selected eq $menu_current}active{/if}" {$sub.attributes}>
+									<a href="{site_url($sub.slug)}" class="menu-sub-left-icon {if $sub.selected eq $menu_current}active{/if}" {$sub.attributes}>
 										<i class="{if !empty($sub.icon)}{$sub.icon}{else}fas fa-angle-double-right{/if}"></i>
 									</a>
-									<p class="text-dark mt-2">{$sub.menu_lang.name}</p>
+									<p class="text-dark mt-2">{$sub.name}</p>
 								</div>
 							{/foreach}
 							</div>
