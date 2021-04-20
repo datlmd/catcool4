@@ -52,38 +52,4 @@ class DummyModel extends MyModel
 
         return $this;
     }
-
-    public function getDetail($id, $language_id = null)
-    {
-        if (empty($id) || !is_numeric($id)) {
-            return null;
-        }
-
-        $result = $this->find($id);
-        if (empty($result)) {
-            return null;
-        }
-
-        $result = format_data_lang_id($result, $this->table_lang, $language_id);
-
-        return $result;
-    }
-
-    public function getListDetail($ids, $language_id = null)
-    {
-        if (empty($ids)) {
-            return null;
-        }
-
-        $result = $this->find($ids);
-        if (empty($result)) {
-            return null;
-        }
-
-        foreach ($result as $key => $value) {
-            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
-        }
-
-        return $result;
-    }
 }
