@@ -6,7 +6,7 @@ var Tiny_content = {
         }
 
         tinymce.init({
-            selector: '[data-toggle=\'tinymce\']',
+            selector: '[data-bs-toggle=\'tinymce\']',
             //skin: 'oxide-dark',
             //themes: "silver",
             //plugins: 'print preview fullpage powerpaste casechange importcss tinydrive searchreplace autolink autosave save directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists checklist wordcount tinymcespellchecker a11ychecker imagetools textpattern noneditable help formatpainter permanentpen pageembed charmap tinycomments mentions quickbars linkchecker emoticons',

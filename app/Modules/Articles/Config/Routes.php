@@ -6,6 +6,12 @@ if(!isset($routes))
 }
 
 $routes->group('articles', ['namespace' => 'App\Modules\Articles\Controllers'], function($subroutes){
+    $subroutes->add('manage', 'Manage::index');
+    $subroutes->add('manage/add', 'Manage::add');
+    $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
+    $subroutes->add('manage/delete', 'Manage::delete');
+    $subroutes->add('manage/publish', 'Manage::publish');
+
     $subroutes->add('categories_manage', 'CategoriesManage::index');
     $subroutes->add('categories_manage/add', 'CategoriesManage::add');
     $subroutes->add('categories_manage/edit/(:num)', 'CategoriesManage::edit/$1');
