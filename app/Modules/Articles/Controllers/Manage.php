@@ -116,7 +116,7 @@ class Manage extends AdminController
             if (empty($publish_date)) {
                 $publish_date = get_date();
             } else {
-                $publish_date_hour = $publish_date = $this->request->getPost('publish_date_hour');
+                $publish_date_hour = $this->request->getPost('publish_date_hour');
                 $publish_date_hour = empty($publish_date_hour) ? get_date('H:i') : $publish_date_hour;
                 $publish_date      = $publish_date . ' ' . $publish_date_hour;
                 $publish_date      = date('Y-m-d H:i:00', strtotime(str_replace('/', '-', $publish_date)));
@@ -125,7 +125,7 @@ class Manage extends AdminController
             $add_data = [
                 'publish_date' => $publish_date,
                 'sort_order'   => $this->request->getPost('sort_order'),
-                'images'       => $this->request->getPost('image'),
+                'images'       => $this->request->getPost('images'),
                 'tags'         => $this->request->getPost('tags'),
                 'author'       => $this->request->getPost('author'),
                 'source'       => $this->request->getPost('source'),
@@ -185,76 +185,81 @@ class Manage extends AdminController
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
-            $category_ids = $this->request->getPost('category_ids');
-            if (!empty($category_ids)) {
-                $categorie_list = $this->model_category->getListDetail($category_ids);
-                if (!empty($category_ids) && empty($categorie_list)) {
-                    set_alert(lang('Admin.error_empty'), ALERT_ERROR);
+            try {
+                $category_ids = $this->request->getPost('category_ids');
+                if (!empty($category_ids)) {
+                    $categorie_list = $this->model_category->getListDetail($category_ids);
+                    if (!empty($category_ids) && empty($categorie_list)) {
+                        set_alert(lang('Admin.error_empty'), ALERT_ERROR);
+                        return redirect()->back()->withInput();
+                    }
+                }
+
+                $publish_date = $this->request->getPost('publish_date');
+                if (empty($publish_date)) {
+                    $publish_date = get_date();
+                } else {
+                    $publish_date_hour = $this->request->getPost('publish_date_hour');
+                    $publish_date_hour = empty($publish_date_hour) ? get_date('H:i') : $publish_date_hour;
+                    $publish_date = $publish_date . ' ' . $publish_date_hour;
+                    $publish_date = date('Y-m-d H:i:00', strtotime(str_replace('/', '-', $publish_date)));
+                }
+
+                //save route url
+                $seo_urls = $this->request->getPost('seo_urls');
+                $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
+
+                $edit_data_lang = $this->request->getPost('lang');
+                foreach (get_list_lang(true) as $value) {
+                    $edit_data_lang[$value['id']]['language_id'] = $value['id'];
+                    $edit_data_lang[$value['id']]['article_id'] = $id;
+                    $edit_data_lang[$value['id']]['slug'] = !empty($seo_urls[$value['id']]['route']) ? $seo_urls[$value['id']]['route'] : '';
+                    $edit_data_lang[$value['id']]['content'] = trim($_POST['lang'][$value['id']]['content']);
+
+                    if (!empty($this->model_lang->where(['article_id' => $id, 'language_id' => $value['id']])->find())) {
+                        $this->model_lang->where('language_id', $value['id'])->update($id, $edit_data_lang[$value['id']]);
+                    } else {
+                        $this->model_lang->insert($edit_data_lang[$value['id']]);
+                    }
+                }
+
+                if (!empty($categorie_list)) {
+                    $this->model_categories->delete($id);
+
+                    $relationship_add = [];
+                    foreach ($categorie_list as $val) {
+                        $relationship_add[] = ['article_id' => $id, 'category_id' => $val['category_id']];
+                    }
+                    $this->model_categories->insert($relationship_add);
+                }
+
+                $edit_data = [
+                    'publish_date' => $publish_date,
+                    'sort_order' => $this->request->getPost('sort_order'),
+                    'images' => $this->request->getPost('images'),
+                    'tags' => $this->request->getPost('tags'),
+                    'author' => $this->request->getPost('author'),
+                    'source' => $this->request->getPost('source'),
+                    'user_ip' => $this->request->getIPAddress(),
+                    'user_id' => $this->getUserId(),
+                    'is_comment' => $this->request->getPost('is_comment'),
+                    'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                ];
+
+                if (!$this->model->update($id, $edit_data)) {
+                    set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
                     return redirect()->back()->withInput();
                 }
-            }
 
-            $publish_date = $this->request->getPost('publish_date');
-            if (empty($publish_date)) {
-                $publish_date = get_date();
-            } else {
-                $publish_date_hour = $publish_date = $this->request->getPost('publish_date_hour');
-                $publish_date_hour = empty($publish_date_hour) ? get_date('H:i') : $publish_date_hour;
-                $publish_date      = $publish_date . ' ' . $publish_date_hour;
-                $publish_date      = date('Y-m-d H:i:00', strtotime(str_replace('/', '-', $publish_date)));
-            }
+                //reset cache
+                $this->model->deleteCache();
 
-            //save route url
-            $seo_urls = $this->request->getPost('seo_urls');
-            $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
-
-            $edit_data_lang = $this->request->getPost('lang');
-            foreach (get_list_lang(true) as $value) {
-                $edit_data_lang[$value['id']]['language_id'] = $value['id'];
-                $edit_data_lang[$value['id']]['article_id']  = $id;
-                $edit_data_lang[$value['id']]['slug']        = !empty($seo_urls[$value['id']]['route']) ? $seo_urls[$value['id']]['route'] : '';
-                $edit_data_lang[$value['id']]['content']     = trim($_POST['lang'][$value['id']]['content']);
-
-                if (!empty($this->model_lang->where(['article_id' => $id, 'language_id' => $value['id']])->find())) {
-                    $this->model_lang->where('language_id', $value['id'])->update($id, $edit_data_lang[$value['id']]);
-                } else {
-                    $this->model_lang->insert($edit_data_lang[$value['id']]);
-                }
-            }
-
-            if (!empty($categorie_list)) {
-                $this->model_categories->delete($id);
-
-                $relationship_add = [];
-                foreach ($categorie_list as $val) {
-                    $relationship_add[] = ['article_id' => $id, 'category_id' => $val['category_id']];
-                }
-                $this->model_categories->insert($relationship_add);
-            }
-
-            $edit_data = [
-                'publish_date' => $publish_date,
-                'sort_order'   => $this->request->getPost('sort_order'),
-                'images'       => $this->request->getPost('image'),
-                'tags'         => $this->request->getPost('tags'),
-                'author'       => $this->request->getPost('author'),
-                'source'       => $this->request->getPost('source'),
-                'user_ip'      => $this->request->getIPAddress(),
-                'user_id'      => $this->getUserId(),
-                'is_comment'   => $this->request->getPost('is_comment'),
-                'published'    => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-            ];
-
-            if (!$this->model->update($id, $edit_data)) {
-                set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
+                set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
+                return redirect()->back();
+            } catch (\Exception $ex) {
+                set_alert($ex->getMessage(), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->back()->withInput();
             }
-
-            //reset cache
-            $this->model->deleteCache();
-
-            set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
-            return redirect()->back();
         }
 
         $this->_getForm($id);

@@ -8,7 +8,7 @@
 			</div>
 			<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
 				<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
-				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" title="{lang('ArticleAdmin.button_add')}"><i class="fas fa-plus me-1"></i>{lang('ArticleAdmin.button_add')}</a>
+				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" title="{lang('ArticleAdmin.text_add')}"><i class="fas fa-plus me-1"></i>{lang('ArticleAdmin.text_add')}</a>
 				<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter me-1"></i>{lang('Admin.filter_header')}</button>
 				{include file=get_theme_path('views/inc/button_translate.tpl') translate_frontend=lang('ArticleAdmin.translate_frontend_id') translate_admin=lang('ArticleAdmin.translate_admin_id')}
 			</div>
@@ -66,9 +66,23 @@
 								<table class="table table-striped table-hover table-bordered second">
 									<thead>
 										<tr class="text-center">
-											<th width="50">{lang('Admin.column_id')}</th>
-											<th>Thumb</th>
-											<th>{lang('Admin.column_name')}</th>
+											<th width="50">
+												<a href="{site_url($manage_url)}?sort=article_id&order={$order}{$url}" class="text-dark">
+													{lang('Admin.column_id')}
+													{if $sort eq 'article_id'}
+														<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+													{/if}
+												</a>
+											</th>
+											<th>{lang('Admin.text_image')}</th>
+											<th>
+												<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
+													{lang('ArticleAdmin.text_name')}
+													{if $sort eq 'name'}
+														<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+													{/if}
+												</a>
+											</th>
 											<th>{lang('Admin.column_published')}</th>
 											<th width="160">{lang('Admin.column_function')}</th>
 											<th width="50">{form_checkbox('manage_check_all')}</th>

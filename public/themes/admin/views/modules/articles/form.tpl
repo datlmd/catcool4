@@ -103,41 +103,45 @@
                                     <label class="form-check-label" for="published_off">OFF</label>
                                 </label>
                             </div>
-                            <div class="form-group border-bottom">
-                                {lang('text_is_comment')}<br />
+                            <div class="form-group border-bottom pb-2 mb-2">
+                                <label class="form-label">{lang('Admin.text_is_comment')}</label><br />
                                 {if isset($edit_data.is_comment)}
                                     {assign var="is_comment" value="`$edit_data.is_comment`"}
                                 {else}
                                     {assign var="is_comment" value=""}
                                 {/if}
-                                <label class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" name="is_comment" class="custom-control-input" value="{COMMENT_STATUS_OFF}" {set_radio('is_comment', COMMENT_STATUS_OFF, ($is_comment == COMMENT_STATUS_OFF))}><span class="custom-control-label">{lang('text_comment_status_off')}</span>
-                                </label><br/>
-                                <label class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" name="is_comment" class="custom-control-input" value="{COMMENT_STATUS_CONFIRM}" {set_radio('is_comment', COMMENT_STATUS_CONFIRM, ($is_comment == COMMENT_STATUS_CONFIRM))}><span class="custom-control-label">{lang('text_comment_status_confirm')}</span>
-                                </label><br/>
-                                <label class="custom-control custom-radio custom-control-inline">
+                                <label class="form-check ms-2">
+                                    <input type="radio" name="is_comment" id="is_comment_off" class="form-check-input" value="{COMMENT_STATUS_OFF}" {set_radio('is_comment', COMMENT_STATUS_OFF, ($is_comment == COMMENT_STATUS_OFF))}>
+                                    <label class="form-check-label" for="is_comment_off">{lang('Admin.text_comment_status_off')}</label>
+                                </label>
+                                <label class="form-check ms-2">
+                                    <input type="radio" name="is_comment" id="is_comment_confirm" class="form-check-input" value="{COMMENT_STATUS_CONFIRM}" {set_radio('is_comment', COMMENT_STATUS_CONFIRM, ($is_comment == COMMENT_STATUS_CONFIRM))}>
+                                    <label class="form-check-label" for="is_comment_confirm">{lang('Admin.text_comment_status_confirm')}</label>
+                                </label>
+                                <label class="form-check ms-2">
                                     {if isset($edit_data.is_comment)}
-                                        <input type="radio" name="is_comment" class="custom-control-input" value="{COMMENT_STATUS_ON}" {set_radio('is_comment', COMMENT_STATUS_ON, ($is_comment == COMMENT_STATUS_ON))}><span class="custom-control-label">{lang('text_comment_status_on')}</span>
+                                        <input type="radio" name="is_comment" id="is_comment_on" class="form-check-input" value="{COMMENT_STATUS_ON}" {set_radio('is_comment', COMMENT_STATUS_ON, ($is_comment == COMMENT_STATUS_ON))}>
                                     {else}
-                                        <input type="radio" name="is_comment" class="custom-control-input" value="{COMMENT_STATUS_ON}" {set_radio('is_comment', COMMENT_STATUS_ON, true)}><span class="custom-control-label">{lang('text_comment_status_on')}</span>
+                                        <input type="radio" name="is_comment" id="is_comment_on" class="form-check-input" value="{COMMENT_STATUS_ON}" {set_radio('is_comment', COMMENT_STATUS_ON, true)}>
                                     {/if}
+                                    <span class="form-check-label" for="is_comment_on">{lang('Admin.text_comment_status_on')}</span>
                                 </label>
                             </div>
                             <div class="form-group">
-                                {lang('text_publish_date')}
                                 {if isset($edit_data.publish_date)}
                                     {assign var="publish_date" value="`$edit_data.publish_date`"}
                                 {else}
-                                    {assign var="publish_date" value=""}
+                                    {assign var="publish_date" value="{get_date()}"}
                                 {/if}
+                                <label class="form-label">{lang('ArticleAdmin.text_publish_date')}</label>
                                 <div class="input-group date show-date-picker" id="show-date-picker" data-target-input="nearest" data-date-format="DD/MM/YYYY" data-date-locale="{get_lang(true)}">
-                                    <input type="text" name="publish_date" id="publish_date" class="form-control datetimepicker-input" {if old('publish_date', $publish_date)}value="{old('publish_date', $publish_date)|date_format:'d/m/Y'}"{/if} placeholder="dd/mm/yyyy" data-target="#publish_date" autocomplete="off" />
+                                    <input type="text" name="publish_date" id="publish_date" class="form-control datetimepicker-input" {if old('publish_date', $publish_date)}value="{old('publish_date', $publish_date)|date_format:'d/m/Y'}"{/if} placeholder="dd/mm/yyyy" data-target="#show-date-picker" />
                                     <div class="input-group-text" data-target="#show-date-picker" data-toggle="datetimepicker"><i class="fa fa-calendar-alt"></i></div>
                                 </div>
-                                <div class="input-group">
-                                    <input type="text" name="publish_date" id="publish_date" class="form-control show-date-picker" data-date-format="DD/MM/YYYY" data-target="#publish_date" data-bs-toggle="datetimepicker" value="{old('publish_date', $publish_date)|date_format:'d/m/Y'}" autocomplete="off"  />
-                                    <input type="text" name="publish_date_hour" id="publish_date_hour" class="form-control show-time-picker" data-date-format="LT" data-target="#publish_date_hour" data-bs-toggle="datetimepicker" value="{old('publish_date_hour', $publish_date)|date_format:'H:i'}" autocomplete="off">
+                                <label class="form-label">{lang('ArticleAdmin.text_publish_date')}</label>
+                                <div class="input-group date show-time-picker" id="show-time-picker" data-target-input="nearest" data-date-format="hh:mm">
+                                    <input type="text" name="publish_date_hour" id="publish_date_hour" class="form-control datetimepicker-input" {if old('publish_date_hour', $publish_date)}value="{old('publish_date_hour', $publish_date)|date_format:'h:i'}"{/if} placeholder="H:i" data-target="#show-time-picker" />
+                                    <div class="input-group-text" data-target="#show-time-picker" data-toggle="datetimepicker"><i class="fa fa-clock"></i></div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -156,14 +160,14 @@
                                 <input type="hidden" name="images" value="{old('images', $images)}" id="input-image-path" />
                             </div>
                             <div class="form-group">
-                                {lang('text_category')}
+                                <label class="form-label"><a href="{site_url('articles/categories_manage')}" target="_blank" class="link-primary">{lang('Admin.text_category')}</a></label>
                                 {if isset($edit_data.categories)}
                                     {assign var="categories" value="`$edit_data.categories`"}
                                 {else}
                                     {assign var="categories" value=""}
                                 {/if}
                                 {$output_html = '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>'}
-                                <select name="category_ids[]" id="category_ids[]" class="selectpicker form-control form-control-sm" data-style="btn-outline-light" data-size="8" title="{lang('text_select')}" multiple data-actions-box="false" data-live-search="true" data-selected-text-format="count > 2">
+                                <select name="category_ids[]" id="category_ids[]" class="form-control form-control-sm multiselect" multiple="multiple" title="{lang('Admin.text_select')}">
                                     {draw_tree_output_name(['data' => $categories_tree, 'key_id' => 'category_id'], $output_html, 0, old('category_ids', $categories))}
                                 </select>
                                 <div id="category_review" class="w-100 p-3 bg-light">
@@ -177,7 +181,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                {lang('text_tags')}
+                                <label class="form-label">{lang('Admin.text_tags')}</label>
                                 {if isset($edit_data.tags)}
                                     {assign var="tags" value="`$edit_data.tags`"}
                                 {else}
@@ -186,7 +190,7 @@
                                 <input type="text" name="tags" value="{old('tags', $tags)}" id="tags" class="form-control" data-role="tagsinput">
                             </div>
                             <div class="form-group">
-                                {lang('text_author')}
+                                <label class="form-label">{lang('ArticleAdmin.text_author')}</label>
                                 {if isset($edit_data.author)}
                                     {assign var="author" value="`$edit_data.author`"}
                                 {else}
@@ -195,7 +199,7 @@
                                 <input type="text" name="author" value="{old('author', $author)}" id="author" class="form-control">
                             </div>
                             <div class="form-group">
-                                {lang('text_source')}
+                                <label class="form-label">{lang('ArticleAdmin.text_source')}</label>
                                 {if isset($edit_data.source)}
                                     {assign var="source" value="`$edit_data.source`"}
                                 {else}
@@ -204,7 +208,7 @@
                                 <input type="text" name="source" value="{old('source', $source)}" id="source" class="form-control">
                             </div>
                             <div class="form-group">
-                                {lang('Admin.text_sort_order')}
+                                <label class="form-label">{lang('Admin.text_sort_order')}</label>
                                 {if isset($edit_data.sort_order)}
                                     {assign var="sort_order" value="`$edit_data.sort_order`"}
                                 {else}
