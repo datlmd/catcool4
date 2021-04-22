@@ -28,7 +28,7 @@ class ImageTool
         $height = !empty($height) ? $height : (!empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT);
 
         if (!is_file($this->dir_image_path . $file_name) || substr(str_replace('\\', '/', realpath($this->dir_image_path . $file_name)), 0, strlen($this->dir_image_path)) != $this->dir_image_path) {
-            return;
+            return false;
         }
 
         $extension = pathinfo($file_name, PATHINFO_EXTENSION);

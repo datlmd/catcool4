@@ -1,7 +1,6 @@
 <?php namespace App\Modules\Images\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\Images\Exceptions\ImageException;
 
 class Img extends BaseController
 {
@@ -48,9 +47,12 @@ class Img extends BaseController
             }
 
             $image_url = $this->_image_tool->resize($image_url, $width, $height);
-
-            $computedImage = $this->_image_path . $image_url;
-            $computedImage = str_replace('//', '/', $computedImage);
+            if (!empty($image_url)) {
+                $computedImage = $this->_image_path . $image_url;
+                $computedImage = str_replace('//', '/', $computedImage);
+            } else {
+                $computedImage = image_default_path();
+            }
 
             $file = new \CodeIgniter\Files\File($computedImage);
 
@@ -60,7 +62,7 @@ class Img extends BaseController
                 ->setBody(file_get_contents($computedImage))
                 ->send();
         } catch (\Exception $e) {
-            log_message('Error', $e->getMessage());
+            log_message('error', $e->getMessage());
             //die($e->getMessage());
         }
     }

@@ -91,7 +91,7 @@ class Upload extends BaseController
             }
 
         } catch (\Exception $ex) {
-            log_message('Error', $ex->getMessage());
+            log_message('error', $ex->getMessage());
             json_output(['status' => 'ng', 'msg' => $ex->getMessage()]);
         }
 

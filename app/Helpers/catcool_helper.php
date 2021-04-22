@@ -606,6 +606,18 @@ if(!function_exists('image_default_url'))
     }
 }
 
+if(!function_exists('image_default_path'))
+{
+    function image_default_path() {
+        $upload_path = get_upload_url();
+        if (!empty(config_item('image_none')) && is_file( ROOTPATH . $upload_path . config_item('image_none'))) {
+            return ROOTPATH . $upload_path . config_item('image_none');
+        }
+
+        return ROOTPATH . 'public/common/' . UPLOAD_IMAGE_DEFAULT;
+    }
+}
+
 if(!function_exists('get_image_resize_info'))
 {
     function get_image_resize_info($width, $height)
@@ -655,7 +667,7 @@ if(!function_exists('image_url'))
             return $image;
         }
 
-
+        $image = $image ?? "none.png";
         if (!is_null($width) && is_numeric($width) && !is_null($height) && is_numeric($height)) {
             $image = sprintf('%dx%d/%s', $width, $height, $image);
         }
