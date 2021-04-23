@@ -33,10 +33,17 @@ class FileManager extends AdminController
         $this->dir_image      = get_upload_url();
         $this->dir_image_path = get_upload_path();
 
-        $this->upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP';
-        if (!empty(config_item('file_ext_allowed'))) {
+        $this->upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ';
+        if (!empty($this->request->getGet('type')) && in_array($this->request->getGet('type'), ["image", "media"])) {
+            if ($this->request->getGet('type') == "image") {
+                $this->upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
+            } else {
+                $this->upload_type = 'webm,WEBM,mpg,MPG,mp2,MP2,mpeg,MPEG,mpe,MPE,mpv,MPV,ogg,OGG,mp4,MP4,m4p,M4P,m4v,M4V,avi,AVI,wmv,WMV,mov,MOV,qt,QT,flv,FLV,swf,SWF,avchd,AVCHD';
+            }
+        } elseif (!empty(config_item('file_ext_allowed'))) {
             $this->upload_type = str_replace('|', ',', config_item('file_ext_allowed'));
         }
+
         $this->image_thumb_width = !empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH;
         $this->image_thumb_height = !empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT;
     }
@@ -255,34 +262,18 @@ class FileManager extends AdminController
             $data['directory'] = '';
         }
 
-        $filter_name = $this->request->getGet('filter_name');
-        if (!empty($filter_name)) {
-            $data['filter_name'] = $filter_name;
-        } else {
-            $data['filter_name'] = '';
-        }
 
-        // Return the target ID for the file manager to set the value
-        $target = $this->request->getGet('target');
-        if (isset($target)) {
-            $data['target'] = $target;
-        } else {
-            $data['target'] = '';
-        }
-
-        // Return the thumbnail for the file manager to show a thumbnail
-        $thumb = $this->request->getGet('thumb');
-        if (isset($thumb)) {
-            $data['thumb'] = $thumb;
-        } else {
-            $data['thumb'] = '';
-        }
+        $data['directory']   = !empty($this->request->getGet('directory')) ? urlencode($this->request->getGet('directory')) : "";
+        $data['filter_name'] = $this->request->getGet('filter_name') ?? "";
+        $data['target']      = $this->request->getGet('target') ?? ""; // Return the target ID for the file manager to set the value
+        $data['thumb']       = $this->request->getGet('thumb') ?? ""; // Return the thumbnail for the file manager to show a thumbnail
+        $data['file_type']   = $this->request->getGet('type') ?? "";
 
         // Parent
         $url = '';
 
         $directory = $this->request->getGet('directory');
-        if (isset($directory)) {
+        if (!empty($directory)) {
             $pos = strrpos($directory, '/');
 
             if ($pos) {
@@ -291,19 +282,24 @@ class FileManager extends AdminController
         }
 
         $target = $this->request->getGet('target');
-        if (isset($target)) {
+        if (!empty($target)) {
             $url .= '&target=' . $target;
         }
 
         $thumb = $this->request->getGet('thumb');
-        if (isset($thumb)) {
+        if (!empty($thumb)) {
             $url .= '&thumb=' . $thumb;
         }
 
         $is_show_lightbox = $this->request->getGet('is_show_lightbox');
-        if (isset($is_show_lightbox)) {
+        if (!empty($is_show_lightbox)) {
             $data['is_show_lightbox'] = 1;
             $url .= '&is_show_lightbox=1';
+        }
+
+        $file_type = $this->request->getGet('type');
+        if (!empty($file_type)) {
+            $url .= '&type=' . $file_type;
         }
 
         $data['parent'] = site_url('common/filemanager').'?'. $url;
@@ -324,6 +320,11 @@ class FileManager extends AdminController
         $thumb = $this->request->getGet('thumb');
         if (isset($thumb)) {
             $url .= '&thumb=' . $thumb;
+        }
+
+        $file_type = $this->request->getGet('type');
+        if (!empty($file_type)) {
+            $url .= '&type=' . $file_type;
         }
 
         $is_show_lightbox = $this->request->getGet('is_show_lightbox');
@@ -356,6 +357,11 @@ class FileManager extends AdminController
         $is_show_lightbox = $this->request->getGet('is_show_lightbox');
         if (isset($is_show_lightbox)) {
             $url .= '&is_show_lightbox=1';
+        }
+
+        $file_type = $this->request->getGet('type');
+        if (!empty($file_type)) {
+            $url .= '&type=' . $file_type;
         }
 
         $config['base_url']   = site_url('common/filemanager');
