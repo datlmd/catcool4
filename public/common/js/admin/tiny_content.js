@@ -1,8 +1,12 @@
-var is_processing = false;
+var is_tiny_processing = false;
 var Tiny_content = {
     loadTiny: function(max_height) {
         if (typeof max_height === 'undefined') {
             max_height = 350;
+        }
+        var lang_code = "en";
+        if ($("html").get(0).hasAttribute("lang") && $("html").attr("lang") == "vi") {
+            lang_code = $("html").attr("lang");
         }
 
         tinymce.init({
@@ -12,10 +16,12 @@ var Tiny_content = {
             //plugins: 'print preview fullpage powerpaste casechange importcss tinydrive searchreplace autolink autosave save directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists checklist wordcount tinymcespellchecker a11ychecker imagetools textpattern noneditable help formatpainter permanentpen pageembed charmap tinycomments mentions quickbars linkchecker emoticons',
             plugins: 'print preview paste searchreplace autolink autosave save directionality visualblocks visualchars fullscreen image imagetools responsivefilemanager link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern noneditable help charmap quickbars emoticons code',
             //imagetools_cors_hosts: ['picsum.photos'],
+            language: lang_code,
+            language_url: base_url + '/common/js/tinymce/langs/' + lang_code + '.js',
             remove_script_host:false,
             relative_urls: false,
             menubar: false,
-            toolbar: 'undo redo | formatselect bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | link myFileManager media | numlist bullist checklist | table | fontselect fontsizeselect | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak codesample | fullscreen preview code | help', /* charmap emoticons a11ycheck ltr rtl */
+            toolbar: 'undo redo | formatselect bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | link myFileManager media pageembed | numlist bullist checklist | table | fontselect fontsizeselect | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak codesample | fullscreen preview code | print emoticons help', /* charmap emoticons a11ycheck ltr rtl */
             fontsize_formats: "8px 9px 10px 11px 12px 14px 16px 18px 20px 24px 30px 36px 48px 64px 72px",
             image_caption: true,
             image_advtab: true,
@@ -33,18 +39,18 @@ var Tiny_content = {
                     icon: 'image',
                     tooltip: 'File Manager',
                     onAction: () => {
-                        if (is_processing) {
+                        if (is_tiny_processing) {
                             return;
                         }
                         if ($('#modal-image').length) {
                             $('#modal-image').remove();
                         }
-                        is_processing = true;
+                        is_tiny_processing = true;
                         $.ajax({
                             url: 'common/filemanager',
                             dataType: 'html',
                             success: function(html) {
-                                is_processing = false;
+                                is_tiny_processing = false;
                                 $('body').append('<div id="modal-image" class="modal" data-keyboard="false" data-backdrop="static">' + html + '</div>');
 
                                 $('#modal-image').modal('show');
@@ -56,7 +62,7 @@ var Tiny_content = {
                                 });
                             },
                             error: function (xhr, errorType, error) {
-                                is_processing = false;
+                                is_tiny_processing = false;
                             }
                         });
                     }
@@ -65,6 +71,44 @@ var Tiny_content = {
                     editor.save();
                 });
             },//end setup
+            file_picker_types: 'image media',
+            file_picker_callback: function (cb, value, meta) {
+
+                if (is_tiny_processing) {
+                    return;
+                }
+                if ($('#modal-image').length) {
+                    $('#modal-image').remove();
+                }
+
+                is_tiny_processing = true;
+
+                var type = "";
+                if (meta.filetype != 'undefined') {
+                    type = meta.filetype;
+                }
+
+                $.ajax({
+                    url: 'common/filemanager?type=' + type,
+                    dataType: 'html',
+                    success: function(html) {
+                        is_tiny_processing = false;
+                        $('body').append('<div id="modal-image" class="modal" data-keyboard="false" data-backdrop="static">' + html + '</div>');
+
+                        $('#modal-image').modal('show');
+                        $('#modal-image').delegate('a.thumbnail', 'click', function(e) {
+                            e.preventDefault();
+                            var img_url = base_url + '/img/' + $(this).parent().find('input').val();
+                            cb(img_url); //{ title: img_url }
+
+                            $('#modal-image').modal('hide');
+                        });
+                    },
+                    error: function (xhr, errorType, error) {
+                        is_tiny_processing = false;
+                    }
+                });
+            },
         });
 
         return true;
