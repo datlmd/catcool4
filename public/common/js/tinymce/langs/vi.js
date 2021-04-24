@@ -216,7 +216,7 @@ tinymce.addI18n('vi',{
 "Height": "\u0110\u1ed9 Cao",
 "Cell spacing": "Kho\u1ea3ng c\u00e1ch \u00f4",
 "Cell padding": "Kho\u1ea3ng c\u00e1ch trong \u00f4",
-"Caption": "Ti\u00eau \u0111\u1ec1",
+"Caption": "Caption",
 "Left": "Tr\u00e1i",
 "Center": "Gi\u1eefa",
 "Right": "Ph\u1ea3i",

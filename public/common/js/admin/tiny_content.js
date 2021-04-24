@@ -24,6 +24,7 @@ var Tiny_content = {
             toolbar: 'undo redo | formatselect bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | link myFileManager media pageembed | numlist bullist checklist | table | fontselect fontsizeselect | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak codesample | fullscreen preview code | print emoticons help', /* charmap emoticons a11ycheck ltr rtl */
             fontsize_formats: "8px 9px 10px 11px 12px 14px 16px 18px 20px 24px 30px 36px 48px 64px 72px",
             image_caption: true,
+            image_title: true,
             image_advtab: true,
             imagetools_toolbar: "alignleft aligncenter alignright image",//"rotateleft rotateright | flipv fliph | editimage imageoptions",
             //importcss_append: true,
@@ -42,8 +43,8 @@ var Tiny_content = {
                         if (is_tiny_processing) {
                             return;
                         }
-                        if ($('#modal-image').length) {
-                            $('#modal-image').remove();
+                        if ($('#modal_image').length) {
+                            $('#modal_image').remove();
                         }
                         is_tiny_processing = true;
                         $.ajax({
@@ -51,14 +52,14 @@ var Tiny_content = {
                             dataType: 'html',
                             success: function(html) {
                                 is_tiny_processing = false;
-                                $('body').append('<div id="modal-image" class="modal" data-keyboard="false" data-backdrop="static">' + html + '</div>');
+                                $('body').append('<div id="modal_image" class="modal" data-keyboard="false" data-backdrop="static">' + html + '</div>');
 
-                                $('#modal-image').modal('show');
-                                $('#modal-image').delegate('a.thumbnail', 'click', function(e) {
+                                $('#modal_image').modal('show');
+                                $('#modal_image').delegate('a.thumbnail', 'click', function(e) {
                                     e.preventDefault();
                                     editor.insertContent('<figure class="image"><img src="' + base_url + '/img/' + $(this).parent().find('input').val() + '" style="width:100%; max-width: 700px;" data-mce-src="' + base_url + '/img/' + $(this).parent().find('input').val() + '"><figcaption>Caption</figcaption></figure><br/>');
 
-                                    $('#modal-image').modal('hide');
+                                    $('#modal_image').modal('hide');
                                 });
                             },
                             error: function (xhr, errorType, error) {
@@ -77,8 +78,8 @@ var Tiny_content = {
                 if (is_tiny_processing) {
                     return;
                 }
-                if ($('#modal-image').length) {
-                    $('#modal-image').remove();
+                if ($('#modal_image').length) {
+                    $('#modal_image').remove();
                 }
 
                 is_tiny_processing = true;
@@ -93,15 +94,19 @@ var Tiny_content = {
                     dataType: 'html',
                     success: function(html) {
                         is_tiny_processing = false;
-                        $('body').append('<div id="modal-image" class="modal" data-keyboard="false" data-backdrop="static">' + html + '</div>');
+                        $('body').append('<div id="modal_image" class="modal" data-keyboard="false" data-backdrop="static">' + html + '</div>');
 
-                        $('#modal-image').modal('show');
-                        $('#modal-image').delegate('a.thumbnail', 'click', function(e) {
+                        $('#modal_image').modal('show');
+                        $('#modal_image').delegate('a.thumbnail', 'click', function(e) {
                             e.preventDefault();
                             var img_url = base_url + '/img/' + $(this).parent().find('input').val();
-                            cb(img_url); //{ title: img_url }
+                            if (type != 'undefined' && type == "image") {
+                                cb(img_url, { width: '100%', height: '' }); //{ title: img_url }
+                            } else {
+                                cb(img_url);
+                            }
 
-                            $('#modal-image').modal('hide');
+                            $('#modal_image').modal('hide');
                         });
                     },
                     error: function (xhr, errorType, error) {

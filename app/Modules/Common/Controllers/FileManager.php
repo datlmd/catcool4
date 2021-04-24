@@ -33,7 +33,7 @@ class FileManager extends AdminController
         $this->dir_image      = get_upload_url();
         $this->dir_image_path = get_upload_path();
 
-        $this->upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ';
+        $this->upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
         if (!empty($this->request->getGet('type')) && in_array($this->request->getGet('type'), ["image", "media"])) {
             if ($this->request->getGet('type') == "image") {
                 $this->upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
@@ -153,6 +153,16 @@ class FileManager extends AdminController
                     case "PNG":
                     case "bmp":
                     case "BMP":
+                    case "webp":
+                    case "WEBP":
+                    case "tiff":
+                    case "TIFF":
+                    case "raw":
+                    case "RAW":
+                    case "indd":
+                    case "INDD":
+                    case "heif":
+                    case "HEIF":
                         $data['images'][] = [
                             'thumb' => image_url(substr($image, strlen($this->dir_image_path))) . '?' . time(),
                             'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',
@@ -163,6 +173,8 @@ class FileManager extends AdminController
                         break;
                     case "svg":
                     case "SVG":
+                    case "svgz":
+                    case "SVGZ":
                         $data['images'][] = [
                             'thumb' => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)). '?' . time(),
                             'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',
@@ -211,7 +223,36 @@ class FileManager extends AdminController
                             'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)),
                         ];
                         break;
+                    case "webm":
+                    case "WEBM":
+                    case "mpg":
+                    case "MPG":
+                    case "mp2":
+                    case "MP2":
+                    case "mpeg":
+                    case "MPEG":
+                    case "mpe":
+                    case "MPE":
+                    case "mpv":
+                    case "MPV":
+                    case "ogg":
+                    case "OGG":
                     case "mp4":
+                    case "MP4":
+                    case "m4p":
+                    case "M4P":
+                    case "m4v":
+                    case "M4V":
+                    case "avi":
+                    case "AVI":
+                    case "wmv":
+                    case "WMV":
+                    case "mov":
+                    case "MOV":
+                    case "qt":
+                    case "QT":
+                    case "flv":
+                    case "FLV":
                         $data['images'][] = [
                             'thumb' => '',
                             'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',

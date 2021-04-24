@@ -7,7 +7,7 @@
             <button type="button" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary btn-space"><i class="fas fa-upload me-1"></i>{$button_upload}</button>
             <button type="button" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success btn-space"><i class="fas fa-folder me-1"></i>{$button_folder}</button>
             <button type="button" title="{$button_delete}" id="button_delete" class="btn btn-sm btn-danger btn-space"><i class="fas fa-trash me-1"></i>{$button_delete}</button>
-            <a href="{base_url('image/editor')}" title="Photo Editor" class="btn btn-sm btn-warning btn-space"><i class="fas fa-pencil-alt me-1"></i>Photo Editor</a>
+            <a href="{base_url('image/editor')}" title="Photo Editor" target="_blank" class="btn btn-sm btn-warning btn-space"><i class="fas fa-pencil-alt me-1"></i>Photo Editor</a>
         </div>
         <div class="col-sm-4 col-12 mb-1">
             <div class="input-group">
@@ -24,16 +24,16 @@
                 {if $image.type == 'directory'}
                     <div class="text-center"><a href="{$image.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a></div>
                     <p class="mt-1">
-                        <input type="checkbox" name="path[]" value="{$image.path}" />
-                        {$image.name}
+                        <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
+                        <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
                     </p>
                 {elseif $image.type == 'image'}
                     <a href="{$image.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail">
                         <img src="{$image.thumb}" style="background-image: url('{$image.thumb}');" alt="{$image.name}" title="{$image.name}" class="img-thumbnail img-fluid img-photo-list" />
                     </a>
                     <p class="mt-1">
-                        <input type="checkbox" name="path[]" value="{$image.path}" />
-                        {$image.name}
+                        <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
+                        <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
                     </p>
                     <button type="button" class="btn btn-xs btn-primary image-setting shadow-sm" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
                 {elseif $image.type == 'video'}
@@ -48,14 +48,14 @@
                         </video>
                     </div>
                     <p class="mt-1">
-                        <input type="checkbox" name="path[]" value="{$image.path}" />
-                        {$image.name}
+                        <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
+                        <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
                     </p>
                 {else}
                     <a href="{$image.href}" target="_blank" class="thumbnail" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
                     <p class="mt-1">
-                        <input type="checkbox" name="path[]" value="{$image.path}" />
-                        {$image.name}
+                        <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
+                        <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
                     </p>
                 {/if}
             </div>
@@ -80,6 +80,8 @@
 
 {if $thumb}{form_hidden('file_thumb', $thumb)}{/if}
 {if $target}{form_hidden('file_target', $target)}{/if}
+{if $file_type}{form_hidden('file_type', $file_type)}{/if}
+
 <script type="text/javascript">
     var is_processing = false;
     var is_disposing = false;
@@ -99,16 +101,19 @@
         filemanager_dispose_all();
         e.preventDefault();
         $('#modal_image').load($(this).attr('href'));
+        return false;
     });
     $('.pagination a').on('click', function(e) {
         filemanager_dispose_all();
         e.preventDefault();
         $('#modal_image').load($(this).attr('href'));
+        return false;
     });
     $('#button_parent').on('click', function(e) {
         filemanager_dispose_all();
         e.preventDefault();
         $('#modal_image').load($(this).attr('href'));
+        return false;
     });
     $('#button_refresh').on('click', function(e) {
         if (is_processing) {
@@ -118,6 +123,7 @@
         filemanager_dispose_all();
         e.preventDefault();
         $('#modal_image').load($(this).attr('href'));
+        return false;
     });
     $('input[name=\'search\']').on('keydown', function(e) {
         if (e.which == 13) {
@@ -143,6 +149,9 @@
         }
         if ($('input[name=\'file_target\']').length) {
             url += '&target=' + $('input[name=\'file_target\']').val();
+        }
+        if ($('input[name=\'file_type\']').length) {
+            url += '&type=' + $('input[name=\'file_type\']').val();
         }
 
         $('#modal_image').load(url);
@@ -302,6 +311,7 @@
     });
 
     $('#modal_image #button_delete').on('click', function(e) {
+
         if ( ! $('input[name^=\'path\']:checked').length) {
             $.notify('{{$error_file_null}}', {
                 'type':'danger'
@@ -547,7 +557,7 @@
         $(document).on('click', '#filemanager', function(e) {
             if ($(e.target).closest('.popover').length != 0 || $(e.target).closest('.image-setting').length != 0 || $(e.target).closest('#button_folder').length != 0
                 || $(e.target).closest('a.thumbnail').length != 0 || $(e.target).closest('input[type=\'checkbox\']').length != 0 || $(e.target).closest('button').length != 0
-                || $(e.target).closest('a').length != 0) {
+                || $(e.target).closest('a').length != 0 || $(e.target).closest('.file-label-cb').length != 0) {
                 return true;
             }
 
