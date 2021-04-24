@@ -14,18 +14,28 @@ var Tiny_content = {
             //skin: 'oxide-dark',
             //themes: "silver",
             //plugins: 'print preview fullpage powerpaste casechange importcss tinydrive searchreplace autolink autosave save directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists checklist wordcount tinymcespellchecker a11ychecker imagetools textpattern noneditable help formatpainter permanentpen pageembed charmap tinycomments mentions quickbars linkchecker emoticons',
-            plugins: 'print preview paste searchreplace autolink autosave save directionality visualblocks visualchars fullscreen image imagetools responsivefilemanager link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern noneditable help charmap quickbars emoticons code',
+            plugins: 'print preview paste searchreplace autolink autosave save hr directionality visualblocks visualchars fullscreen image imagetools responsivefilemanager link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern noneditable help charmap quickbars emoticons code',
             //imagetools_cors_hosts: ['picsum.photos'],
             language: lang_code,
             language_url: base_url + '/common/js/tinymce/langs/' + lang_code + '.js',
             remove_script_host:false,
             relative_urls: false,
             menubar: false,
-            toolbar: 'undo redo | formatselect bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | link myFileManager media pageembed | numlist bullist checklist | table | fontselect fontsizeselect | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak codesample | fullscreen preview code | print emoticons help', /* charmap emoticons a11ycheck ltr rtl */
+            toolbar: 'undo redo | formatselect bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | link myFileManager media pageembed | numlist bullist checklist | table | fontselect fontsizeselect | forecolor backcolor casechange permanentpen formatpainter removeformat | hr pagebreak codesample | fullscreen preview code | print emoticons help', /* charmap emoticons a11ycheck ltr rtl */
             fontsize_formats: "8px 9px 10px 11px 12px 14px 16px 18px 20px 24px 30px 36px 48px 64px 72px",
             image_caption: true,
             image_title: true,
             image_advtab: true,
+            image_class_list: [
+                { title: 'None', value: '' },
+                { title: 'Fluid', value: 'img-fluid' },
+                { title: 'Rounded', value: 'rounded' },
+                { title: 'Rounded Top', value: 'rounded-top' },
+                { title: 'Rounded Bottom', value: 'rounded-bottom' },
+                { title: 'Rounded Left', value: 'rounded-start' },
+                { title: 'Rounded Circle', value: 'rounded-circle' },
+                { title: 'Rounded Pill', value: 'rounded-pill' },
+            ],
             imagetools_toolbar: "alignleft aligncenter alignright image",//"rotateleft rotateright | flipv fliph | editimage imageoptions",
             //importcss_append: true,
             template_cdate_format: '[Date Created (CDATE): %d/%m/%Y : %H:%M:%S]',
@@ -57,7 +67,7 @@ var Tiny_content = {
                                 $('#modal_image').modal('show');
                                 $('#modal_image').delegate('a.thumbnail', 'click', function(e) {
                                     e.preventDefault();
-                                    editor.insertContent('<figure class="image"><img src="' + base_url + '/img/' + $(this).parent().find('input').val() + '" style="width:100%; max-width: 700px;" data-mce-src="' + base_url + '/img/' + $(this).parent().find('input').val() + '"><figcaption>Caption</figcaption></figure><br/>');
+                                    editor.insertContent('<figure class="image figure"><img src="' + base_url + '/img/' + $(this).parent().find('input').val() + '" style="width:100%; max-width: 700px;" data-mce-src="' + base_url + '/img/' + $(this).parent().find('input').val() + '"><figcaption class="figure-caption text-end">Caption</figcaption></figure><br/>');
 
                                     $('#modal_image').modal('hide');
                                 });

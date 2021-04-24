@@ -158,7 +158,6 @@ class Manage extends AdminController
                 $add_data_lang[$value['id']]['language_id'] = $value['id'];
                 $add_data_lang[$value['id']]['article_id']  = $id;
                 $add_data_lang[$value['id']]['slug']        = !empty($seo_urls[$value['id']]['route']) ? $seo_urls[$value['id']]['route'] : '';
-                $add_data_lang[$value['id']]['content']     = trim($_POST['lang'][$value['id']]['content']);
 
                 $this->model_lang->insert($add_data_lang[$value['id']]);
             }
@@ -214,7 +213,6 @@ class Manage extends AdminController
                     $edit_data_lang[$value['id']]['language_id'] = $value['id'];
                     $edit_data_lang[$value['id']]['article_id'] = $id;
                     $edit_data_lang[$value['id']]['slug'] = !empty($seo_urls[$value['id']]['route']) ? $seo_urls[$value['id']]['route'] : '';
-                    $edit_data_lang[$value['id']]['content'] = trim($_POST['lang'][$value['id']]['content']);
 
                     if (!empty($this->model_lang->where(['article_id' => $id, 'language_id' => $value['id']])->find())) {
                         $this->model_lang->where('language_id', $value['id'])->update($id, $edit_data_lang[$value['id']]);
