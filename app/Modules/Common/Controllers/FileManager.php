@@ -131,6 +131,10 @@ class FileManager extends AdminController
                     $data['is_show_lightbox'] = 1;
                     $url .= '&is_show_lightbox=1';
                 }
+                $file_type = $this->request->getGet('type');
+                if (!empty($file_type)) {
+                    $url .= '&type=' . $file_type;
+                }
 
                 $data['images'][] = [
                     'thumb' => '',
