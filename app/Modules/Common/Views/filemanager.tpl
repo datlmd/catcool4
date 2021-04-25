@@ -3,63 +3,125 @@
     <div class="row">
         <div class="col-sm-8 col-12 mb-1">
             <a href="{$parent}" title="{$button_parent}" id="button_parent" class="btn btn-sm btn-light btn-space"><i class="fas fa-level-up-alt"></i></a>
+            <a href="{$display_url}&d={DISPLAY_GRID}" title="{lang("Admin.text_list")}" id="button_display_grid" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-th"></i></a>
+            <a href="{$display_url}&d={DISPLAY_LIST}" title="{lang("Admin.text_grid")}" id="button_display_list" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-list"></i></a>
             <a href="{$refresh}" title="{$button_refresh}" id="button_refresh" class="btn btn-sm btn-secondary btn-space"><i class="fas fa-sync me-1"></i>{$button_refresh}</a>
             <button type="button" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary btn-space"><i class="fas fa-upload me-1"></i>{$button_upload}</button>
             <button type="button" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success btn-space"><i class="fas fa-folder me-1"></i>{$button_folder}</button>
             <button type="button" title="{$button_delete}" id="button_delete" class="btn btn-sm btn-danger btn-space"><i class="fas fa-trash me-1"></i>{$button_delete}</button>
-            <a href="{base_url('image/editor')}" title="Photo Editor" target="_blank" class="btn btn-sm btn-warning btn-space"><i class="fas fa-pencil-alt me-1"></i>Photo Editor</a>
         </div>
         <div class="col-sm-4 col-12 mb-1">
             <div class="input-group">
-                <input type="text" name="search" value="{$filter_name}" placeholder="{$entry_search}" class="form-control">
-                <button type="button" title="{$button_search}" id="button_search" class="btn btn-sm btn-primary">{$button_search}</button>
+                <input type="text" name="search" value="{$filter_name}" placeholder="{$entry_search}" class="form-control btn-space me-0">
+                <button type="button" title="{$button_search}" id="button_search" class="btn btn-sm btn-primary btn-space">{$button_search}</button>
+                <a href="{base_url('image/editor')}" title="Photo Editor" target="_blank" class="btn btn-sm btn-warning btn-space me-0"><i class="fas fa-pencil-alt me-1"></i>Photo Editor</a>
             </div>
         </div>
     </div>
     <hr />
     <div id="msg" class="text-secondary"></div>
     <div class="row" id="filemanager_list">
-        {foreach $images as $key => $image}
-            <div class="col-xl-1 col-lg-2 col-md-2 col-sm-3 col-4 mb-2 text-center position-relative">
-                {if $image.type == 'directory'}
-                    <div class="text-center"><a href="{$image.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a></div>
-                    <p class="mt-1">
-                        <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
-                        <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
-                    </p>
-                {elseif $image.type == 'image'}
-                    <a href="{$image.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail">
-                        <img src="{$image.thumb}" style="background-image: url('{$image.thumb}');" alt="{$image.name}" title="{$image.name}" class="img-thumbnail img-fluid img-photo-list" />
-                    </a>
-                    <p class="mt-1">
-                        <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
-                        <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
-                    </p>
-                    <button type="button" class="btn btn-xs btn-primary image-setting shadow-sm" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
-                {elseif $image.type == 'video'}
-                    <div class="text-center">
-                        <video controls height="60" width="90" >
-                            <source src="{$image.href}" type="video/mp4">
-                            <source src="{$image.href}" type="video/webm">
-                            <source src="{$image.href}" type="video/avi">
-                            <source src="{$image.href}" type="video/ogg">
-                            <p>Your browser doesn't support HTML5 video. Here is
-                                a <a href="{$image.href}">link to the video</a> instead.</p>
-                        </video>
-                    </div>
-                    <p class="mt-1">
-                        <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
-                        <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
-                    </p>
-                {else}
-                    <a href="{$image.href}" target="_blank" class="thumbnail" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
-                    <p class="mt-1">
-                        <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
-                        <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
-                    </p>
-                {/if}
+        {if $display == DISPLAY_LIST}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered second">
+                    <thead>
+                    <tr class="text-center">
+                        <th width="40"></th>
+                        <th width="100"></th>
+                        <th>{lang('Admin.text_name')}</th>
+                        <th width="110">
+                            {lang('FileManager.text_size')}
+                        </th>
+                        <th width="170">{lang('FileManager.text_date')}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $images as $key => $image}
+                        <tr>
+                            <td class="text-center">
+                                <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
+                            </td>
+                            <td class="text-center">
+                                {if $image.type == 'directory'}
+                                    <a href="{$image.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a>
+                                {elseif $image.type == 'image'}
+                                    <div class="position-relative">
+                                        <a href="{$image.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail">
+                                            <img src="{$image.thumb}" style="background-image: url('{$image.thumb}');" alt="{$image.name}" style="width: 85px;" title="{$image.name}" class="img-thumbnail img-fluid img-photo-list" />
+                                        </a>
+                                        <input type="hidden" name="path_tmp[]" value="{$image.path}" />
+                                        <button type="button" class="btn btn-xs btn-outline-light image-setting shadow-sm" style="right: 0; top: 0;" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
+                                    </div>
+                                {elseif $image.type == 'video'}
+                                    <video controls height="60" width="90" >
+                                        <source src="{$image.href}" type="video/mp4">
+                                        <source src="{$image.href}" type="video/webm">
+                                        <source src="{$image.href}" type="video/avi">
+                                        <source src="{$image.href}" type="video/ogg">
+                                        <p>Your browser doesn't support HTML5 video. Here is
+                                            a <a href="{$image.href}">link to the video</a> instead.</p>
+                                    </video>
+                                {else}
+                                    <a href="{$image.href}" target="_blank" class="thumbnail" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
+                                {/if}
+                            </td>
+                            <td>
+                                {$image.name}
+                            </td>
+                            <td class="text-center">
+                                {if !empty($image.size)}{$image.size}{/if}
+                            </td>
+                            <td class="text-center">
+                                {if !empty($image.date)}{$image.date}{/if}
+                            </td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
             </div>
-        {/foreach}
+        {else}
+            {foreach $images as $key => $image}
+                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-4 mb-2 text-center position-relative">
+                    {if $image.type == 'directory'}
+                        <div class="text-center"><a href="{$image.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a></div>
+                        <p class="mt-1">
+                            <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
+                            <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
+                        </p>
+                    {elseif $image.type == 'image'}
+                        <a href="{$image.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail">
+                            <img src="{$image.thumb}" style="background-image: url('{$image.thumb}');" alt="{$image.name}" title="{$image.name}" class="img-thumbnail img-fluid img-photo-list" />
+                        </a>
+                        <p class="mt-1">
+                            <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
+                            <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
+                        </p>
+                        <button type="button" class="btn btn-xs btn-outline-light image-setting shadow-sm" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
+                    {elseif $image.type == 'video'}
+                        <div class="text-center">
+                            <video controls height="60" width="90" >
+                                <source src="{$image.href}" type="video/mp4">
+                                <source src="{$image.href}" type="video/webm">
+                                <source src="{$image.href}" type="video/avi">
+                                <source src="{$image.href}" type="video/ogg">
+                                <p>Your browser doesn't support HTML5 video. Here is
+                                    a <a href="{$image.href}">link to the video</a> instead.</p>
+                            </video>
+                        </div>
+                        <p class="mt-1">
+                            <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
+                            <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
+                        </p>
+                    {else}
+                        <a href="{$image.href}" target="_blank" class="thumbnail" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
+                        <p class="mt-1">
+                            <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
+                            <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
+                        </p>
+                    {/if}
+                </div>
+            {/foreach}
+        {/if}
     </div>
 {/capture}
 <div id="filemanager" class="modal-dialog modal-xl px-4" style="max-width: 100% !important;">
@@ -98,19 +160,46 @@
     }
 
     $('a.directory').on('click', function(e) {
-        filemanager_dispose_all();
+        $('.image-setting').popover('dispose');
+        $('#button_folder').popover('dispose');
+        is_disposing = false;
+
         e.preventDefault();
         $('#modal_image').load($(this).attr('href'));
         return false;
     });
     $('.pagination a').on('click', function(e) {
-        filemanager_dispose_all();
+        $('.image-setting').popover('dispose');
+        $('#button_folder').popover('dispose');
+        is_disposing = false;
+
         e.preventDefault();
         $('#modal_image').load($(this).attr('href'));
         return false;
     });
     $('#button_parent').on('click', function(e) {
-        filemanager_dispose_all();
+        $('.image-setting').popover('dispose');
+        $('#button_folder').popover('dispose');
+        is_disposing = false;
+
+        e.preventDefault();
+        $('#modal_image').load($(this).attr('href'));
+        return false;
+    });
+    $('#button_display_grid').on('click', function(e) {
+        $('.image-setting').popover('dispose');
+        $('#button_folder').popover('dispose');
+        is_disposing = false;
+
+        e.preventDefault();
+        $('#modal_image').load($(this).attr('href'));
+        return false;
+    });
+    $('#button_display_list').on('click', function(e) {
+        $('.image-setting').popover('dispose');
+        $('#button_folder').popover('dispose');
+        is_disposing = false;
+
         e.preventDefault();
         $('#modal_image').load($(this).attr('href'));
         return false;
@@ -120,7 +209,11 @@
             return false;
         }
         is_processing = true;
-        filemanager_dispose_all();
+
+        $('.image-setting').popover('dispose');
+        $('#button_folder').popover('dispose');
+        is_disposing = false;
+
         e.preventDefault();
         $('#modal_image').load($(this).attr('href'));
         return false;
@@ -132,8 +225,11 @@
     });
 
     $('#button_search').on('click', function(e) {
-        filemanager_dispose_all();
-        var url = base_url + '/common/filemanager?directory={{$directory}}';
+        $('.image-setting').popover('dispose');
+        $('#button_folder').popover('dispose');
+        is_disposing = false;
+
+        var url = base_url + '/common/filemanager?directory={{$directory}}&d={{$display}}';
         var filter_name = $('input[name=\'search\']').val();
         if (filter_name) {
             url += '&filter_name=' + encodeURIComponent(filter_name);
@@ -555,16 +651,20 @@
 
     function filemanager_dispose_all() {
         $(document).on('click', '#filemanager', function(e) {
-            if ($(e.target).closest('.popover').length != 0 || $(e.target).closest('.image-setting').length != 0 || $(e.target).closest('#button_folder').length != 0
-                || $(e.target).closest('a.thumbnail').length != 0 || $(e.target).closest('input[type=\'checkbox\']').length != 0 || $(e.target).closest('button').length != 0
-                || $(e.target).closest('a').length != 0 || $(e.target).closest('.file-label-cb').length != 0) {
+            // if ($(e.target).closest('.popover').length != 0 || $(e.target).closest('.image-setting').length != 0 || $(e.target).closest('#button_folder').length != 0
+            //     || $(e.target).closest('a.thumbnail').length != 0 || $(e.target).closest('input[type=\'checkbox\']').length != 0 || $(e.target).closest('button').length != 0
+            //     || $(e.target).closest('a').length != 0 || $(e.target).closest('.file-label-cb').length != 0) {
+            //     return true;
+            // }
+
+            if ($(e.target).closest('.popover').length != 0 || $(e.target).closest('.image-setting').length != 0 || $(e.target).closest('#button_folder').length != 0) {
                 return true;
             }
 
             $('.image-setting').popover('dispose');
             $('#button_folder').popover('dispose');
             is_disposing = false;
-            return false;
+            return;
         });
     }
 

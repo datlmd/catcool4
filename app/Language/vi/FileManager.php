@@ -21,4 +21,6 @@ return [
     "text_directory" => "Thư mục đã được tạo!",
     "text_rotation" => "Đã xoay thành công!",
     "text_uploaded" => "Tập tin của bạn đã được tải lên!",
+    "text_size" => "Kích thước",
+    "text_date" => "Last modified",
 ];

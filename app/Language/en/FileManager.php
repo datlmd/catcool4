@@ -21,4 +21,6 @@ return [
     "text_directory" => "Directory created!",
     "text_rotation" => "Image rotated!",
     "text_uploaded" => "Your file has been uploaded!",
+    "text_size" => "Size",
+    "text_date" => "Last modified",
 ];

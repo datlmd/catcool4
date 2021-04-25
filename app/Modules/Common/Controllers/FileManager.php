@@ -12,7 +12,7 @@ class FileManager extends AdminController
     protected $dir_image_path = '';
 
     CONST PATH_SUB_NAME   = 'root';
-    CONST FILE_PAGE_LIMIT = 20;//PAGINATION_MANAGE_DEFAULF_LIMIT;
+    CONST FILE_PAGE_LIMIT = 30;//PAGINATION_MANAGE_DEFAULF_LIMIT;
 
     protected $upload_type = '';
 
@@ -98,7 +98,8 @@ class FileManager extends AdminController
         $file_tmp = [];
         foreach ($files as $key => $file) {
             $file_info = get_file_info($file);
-            $file_size[$file] = !empty($file_info['size']) ? $file_info['size'] : 0;
+            $file_size[$file]['size'] = !empty($file_info['size']) ? $file_info['size'] : 0;
+            $file_size[$file]['date'] = !empty($file_info['date']) ? date("Y-m-d H:i:s", $file_info['date']) : null;
             $file_tmp[$file_info['date']] = $file;
         }
         krsort($file_tmp);
@@ -135,6 +136,10 @@ class FileManager extends AdminController
                 if (!empty($file_type)) {
                     $url .= '&type=' . $file_type;
                 }
+                $display = $this->request->getGet('d');
+                if (!empty($display)) {
+                    $url .= '&d=' . $display;
+                }
 
                 $data['images'][] = [
                     'thumb' => '',
@@ -169,7 +174,9 @@ class FileManager extends AdminController
                     case "HEIF":
                         $data['images'][] = [
                             'thumb' => image_url(substr($image, strlen($this->dir_image_path))) . '?' . time(),
-                            'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',
+                            'name'  => implode(' ', $name),
+                            'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
+                            'date'  => $file_size[$image]['date'],
                             'type'  => 'image',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)) . '?' . time(),
@@ -181,7 +188,9 @@ class FileManager extends AdminController
                     case "SVGZ":
                         $data['images'][] = [
                             'thumb' => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)). '?' . time(),
-                            'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',
+                            'name'  => implode(' ', $name),
+                            'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
+                            'date'  => $file_size[$image]['date'],
                             'type'  => 'image',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)) . '?' . time(),
@@ -190,7 +199,9 @@ class FileManager extends AdminController
                     case "pdf":
                         $data['images'][] = [
                             'thumb' => '',
-                            'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',
+                            'name'  => implode(' ', $name),
+                            'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
+                            'date'  => $file_size[$image]['date'],
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'class' => 'far fa-file-pdf text-danger fa-5x',
@@ -210,7 +221,9 @@ class FileManager extends AdminController
                     case "py":
                         $data['images'][] = [
                             'thumb' => '',
-                            'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',
+                            'name'  => implode(' ', $name),
+                            'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
+                            'date'  => $file_size[$image]['date'],
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'class' => 'far fa-file text-dark fa-4x',
@@ -220,7 +233,9 @@ class FileManager extends AdminController
                     case "apk":
                         $data['images'][] = [
                             'thumb' => '',
-                            'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',
+                            'name'  => implode(' ', $name),
+                            'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
+                            'date'  => $file_size[$image]['date'],
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'class' => 'fab fa-android text-warning fa-4x',
@@ -259,7 +274,9 @@ class FileManager extends AdminController
                     case "FLV":
                         $data['images'][] = [
                             'thumb' => '',
-                            'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',
+                            'name'  => implode(' ', $name),
+                            'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
+                            'date'  => $file_size[$image]['date'],
                             'type'  => 'video',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)),
@@ -268,7 +285,9 @@ class FileManager extends AdminController
                     default:
                         $data['images'][] = [
                             'thumb' => '',
-                            'name'  => implode(' ', $name) . ' (' . $this->_convertFileSize($file_size[$image], 0) . ')',
+                            'name'  => implode(' ', $name),
+                            'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
+                            'date'  => $file_size[$image]['date'],
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'class' => 'fas fa-download text-secondary fa-4x',
@@ -313,6 +332,7 @@ class FileManager extends AdminController
         $data['target']      = $this->request->getGet('target') ?? ""; // Return the target ID for the file manager to set the value
         $data['thumb']       = $this->request->getGet('thumb') ?? ""; // Return the thumbnail for the file manager to show a thumbnail
         $data['file_type']   = $this->request->getGet('type') ?? "";
+        $data['display']     = empty($this->request->getGet("d")) ? DISPLAY_GRID : $this->request->getGet("d");
 
         // Parent
         $url = '';
@@ -325,26 +345,26 @@ class FileManager extends AdminController
                 $url .= '&directory=' . urlencode(substr($directory, 0, $pos));
             }
         }
-
         $target = $this->request->getGet('target');
         if (!empty($target)) {
             $url .= '&target=' . $target;
         }
-
         $thumb = $this->request->getGet('thumb');
         if (!empty($thumb)) {
             $url .= '&thumb=' . $thumb;
         }
-
         $is_show_lightbox = $this->request->getGet('is_show_lightbox');
         if (!empty($is_show_lightbox)) {
             $data['is_show_lightbox'] = 1;
             $url .= '&is_show_lightbox=1';
         }
-
         $file_type = $this->request->getGet('type');
         if (!empty($file_type)) {
             $url .= '&type=' . $file_type;
+        }
+        $display = $this->request->getGet('d');
+        if (!empty($display)) {
+            $url .= '&d=' . $display;
         }
 
         $data['parent'] = site_url('common/filemanager').'?'. $url;
@@ -356,36 +376,60 @@ class FileManager extends AdminController
         if (isset($directory)) {
             $url .= '&directory=' . urlencode($directory);
         }
-
         $target = $this->request->getGet('target');
         if (isset($target)) {
             $url .= '&target=' . $target;
         }
-
         $thumb = $this->request->getGet('thumb');
         if (isset($thumb)) {
             $url .= '&thumb=' . $thumb;
         }
-
         $file_type = $this->request->getGet('type');
         if (!empty($file_type)) {
             $url .= '&type=' . $file_type;
         }
-
         $is_show_lightbox = $this->request->getGet('is_show_lightbox');
         if (isset($is_show_lightbox)) {
             $url .= '&is_show_lightbox=1';
         }
+        $display = $this->request->getGet('d');
+        if (!empty($display)) {
+            $url .= '&d=' . $display;
+        }
 
-        $data['refresh'] = site_url('common/filemanager').'?'.$url;
+        $data['refresh'] = site_url('common/filemanager').'?' . $url;
 
+        // Display
+        $url = '';
+        $directory = $this->request->getGet('directory');
+        if (isset($directory)) {
+            $url .= '&directory=' . urlencode($directory);
+        }
+        $target = $this->request->getGet('target');
+        if (isset($target)) {
+            $url .= '&target=' . $target;
+        }
+        $thumb = $this->request->getGet('thumb');
+        if (isset($thumb)) {
+            $url .= '&thumb=' . $thumb;
+        }
+        $file_type = $this->request->getGet('type');
+        if (!empty($file_type)) {
+            $url .= '&type=' . $file_type;
+        }
+        $is_show_lightbox = $this->request->getGet('is_show_lightbox');
+        if (isset($is_show_lightbox)) {
+            $url .= '&is_show_lightbox=1';
+        }
+        $data['display_url'] = site_url('common/filemanager').'?' . $url;
+
+        //
         $url = '';
 
         $directory = $this->request->getGet('directory');
         if (isset($directory)) {
             $url .= '&directory=' . urlencode(html_entity_decode($directory, ENT_QUOTES, 'UTF-8'));
         }
-
         $filter_name = $this->request->getGet('filter_name');
         if (isset($_GET['filter_name'])) {
             $url .= '&filter_name=' . urlencode(html_entity_decode($filter_name, ENT_QUOTES, 'UTF-8'));
@@ -398,15 +442,17 @@ class FileManager extends AdminController
         if (isset($thumb)) {
             $url .= '&thumb=' . $thumb;
         }
-
         $is_show_lightbox = $this->request->getGet('is_show_lightbox');
         if (isset($is_show_lightbox)) {
             $url .= '&is_show_lightbox=1';
         }
-
         $file_type = $this->request->getGet('type');
         if (!empty($file_type)) {
             $url .= '&type=' . $file_type;
+        }
+        $display = $this->request->getGet('d');
+        if (!empty($display)) {
+            $url .= '&d=' . $display;
         }
 
         $config['base_url']   = site_url('common/filemanager');
@@ -658,12 +704,17 @@ class FileManager extends AdminController
         $per_page = $data['per_page'];
         $page     = $data['page'];
         $url      = $data['url'];
-        $pages    = intval($total/$per_page); if($total%$per_page != 0){$pages++;}
-        $p        = "";
+        $pages    = intval($total / $per_page);
 
+        if ($total % $per_page != 0) {
+            $pages++;
+        }
+
+        $p        = "";
         if ($pages > 1) {
-            for($i=1; $i<= $pages; $i++){
-                $p .= '<li class="page-item numlink"><a class="page-link directory" href="' . $base_url . '?page=' . $i . $url . '" >' . $i . '</a></li>';
+            for ($i=1; $i<= $pages; $i++) {
+                $p .= ($page == $i) ? '<li class="page-item numlink active">' : '<li class="page-item numlink">';
+                $p .= '<a class="page-link directory" href="' . $base_url . '?page=' . $i . $url . '" >' . $i . '</a></li>';
             }
         }
 
