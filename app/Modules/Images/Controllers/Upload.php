@@ -66,7 +66,7 @@ class Upload extends BaseController
             if($file = $this->request->getFile($file_name))
             {
                 // Get random file name
-                $newName = $file->getRandomName();
+                $newName = trim($file->getRandomName());
 
                 $file->move($this->_image_path . self::UPLOAD_TMP, $newName);
 

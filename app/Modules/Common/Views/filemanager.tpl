@@ -54,10 +54,7 @@
                                     </div>
                                 {elseif $image.type == 'video'}
                                     <video controls height="60" width="90" >
-                                        <source src="{$image.href}" type="video/mp4">
-                                        <source src="{$image.href}" type="video/webm">
-                                        <source src="{$image.href}" type="video/avi">
-                                        <source src="{$image.href}" type="video/ogg">
+                                        <source src="{$image.href}" type="{$image.ext}">
                                         <p>Your browser doesn't support HTML5 video. Here is
                                             a <a href="{$image.href}">link to the video</a> instead.</p>
                                     </video>
@@ -99,11 +96,15 @@
                         <button type="button" class="btn btn-xs btn-outline-light image-setting shadow-sm" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
                     {elseif $image.type == 'video'}
                         <div class="text-center">
+{*                            <object width="90" height="60">*}
+{*                                <param name="src" value="{$image.href}">*}
+{*                                <param name="autoplay" value="false">*}
+{*                                <param name="controller" value="true">*}
+{*                                <param name="bgcolor" value="#333333">*}
+{*                                <embed type="{$image.ext}" src="{$image.href}" autostart="false" loop="false" width="90" height="60" controller="true" bgcolor="#333333"></embed>*}
+{*                            </object>*}
                             <video controls height="60" width="90" >
-                                <source src="{$image.href}" type="video/mp4">
-                                <source src="{$image.href}" type="video/webm">
-                                <source src="{$image.href}" type="video/avi">
-                                <source src="{$image.href}" type="video/ogg">
+                                <source src="{$image.href}" type="{$image.ext}">
                                 <p>Your browser doesn't support HTML5 video. Here is
                                     a <a href="{$image.href}">link to the video</a> instead.</p>
                             </video>

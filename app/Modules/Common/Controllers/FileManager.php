@@ -272,11 +272,13 @@ class FileManager extends AdminController
                     case "QT":
                     case "flv":
                     case "FLV":
+                        $file_video = new \CodeIgniter\Files\File($image);
                         $data['images'][] = [
                             'thumb' => '',
                             'name'  => implode(' ', $name),
                             'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
                             'date'  => $file_size[$image]['date'],
+                            'ext'   => $file_video->getMimeType(),
                             'type'  => 'video',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)),
@@ -528,7 +530,7 @@ class FileManager extends AdminController
                 foreach($this->request->getFileMultiple($file_name) as $file)
                 {
                     // Get random file name
-                    $newName = $file->getRandomName();
+                    $newName = trim($file->getRandomName());
                     // Store file in public/uploads/ folder
                     $file->move($directory, $newName);
 
