@@ -109,10 +109,12 @@ var Tiny_content = {
                         $('#modal_image').modal('show');
                         $('#modal_image').delegate('a.thumbnail', 'click', function(e) {
                             e.preventDefault();
+
                             var img_url = base_url + '/img/' + $(this).parent().find('input').val();
                             if (type != 'undefined' && type == "image") {
                                 cb(img_url, { width: '100%', height: '' }); //{ title: img_url }
                             } else {
+                                img_url = base_url + '/file/' + $(this).parent().find('input').val();
                                 cb(img_url);
                             }
 

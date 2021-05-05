@@ -53,11 +53,25 @@
                                         <button type="button" class="btn btn-xs btn-outline-light image-setting shadow-sm" style="right: 0; top: 0;" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
                                     </div>
                                 {elseif $image.type == 'video'}
-                                    <video controls height="60" width="90" >
-                                        <source src="{$image.href}" type="{$image.ext}">
-                                        <p>Your browser doesn't support HTML5 video. Here is
-                                            a <a href="{$image.href}">link to the video</a> instead.</p>
-                                    </video>
+                                    <a href="{$image.href}" target="_blank" class="thumbnail" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
+                                    <button type="button" class="btn btn-xs btn-outline-light video-play shadow-sm" data-bs-toggle="modal" data-bs-target="#play_video_{$key}"><i class="fas fa-play"></i></button>
+                                    <div class="modal fade video-model" id="play_video_{$key}" tabindex="-1" role="dialog" aria-labelledby="play_video_label_{$key}" >
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="play_video_label_{$key}">{$image.name}</h5>
+                                                    <button type="button" class="btn-close close-video" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <video controls height="100%" width="100%" autoplay >
+                                                        <source src="{$image.href}" type="{$image.ext}">
+                                                        <p>Your browser doesn't support HTML5 video. Here is
+                                                            a <a href="{$image.href}">link to the video</a> instead.</p>
+                                                    </video>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 {else}
                                     <a href="{$image.href}" target="_blank" class="thumbnail" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
                                 {/if}
@@ -95,7 +109,7 @@
                         </p>
                         <button type="button" class="btn btn-xs btn-outline-light image-setting shadow-sm" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
                     {elseif $image.type == 'video'}
-                        <div class="text-center">
+                        <a href="{$image.href}" target="_blank" class="thumbnail" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
 {*                            <object width="90" height="60">*}
 {*                                <param name="src" value="{$image.href}">*}
 {*                                <param name="autoplay" value="false">*}
@@ -103,16 +117,29 @@
 {*                                <param name="bgcolor" value="#333333">*}
 {*                                <embed type="{$image.ext}" src="{$image.href}" autostart="false" loop="false" width="90" height="60" controller="true" bgcolor="#333333"></embed>*}
 {*                            </object>*}
-                            <video controls height="60" width="90" >
-                                <source src="{$image.href}" type="{$image.ext}">
-                                <p>Your browser doesn't support HTML5 video. Here is
-                                    a <a href="{$image.href}">link to the video</a> instead.</p>
-                            </video>
+                        <!-- Modal -->
+                        <div class="modal fade video-model" id="play_video_{$key}" tabindex="-1" role="dialog" aria-labelledby="play_video_label_{$key}" >
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="play_video_label_{$key}">{$image.name}</h5>
+                                        <button type="button" class="btn-close close-video" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <video controls height="100%" width="100%" autoplay >
+                                            <source src="{$image.href}" type="{$image.ext}">
+                                            <p>Your browser doesn't support HTML5 video. Here is
+                                                a <a href="{$image.href}">link to the video</a> instead.</p>
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <p class="mt-1">
                             <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
                             <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
                         </p>
+                        <button type="button" class="btn btn-xs btn-outline-light video-play shadow-sm" data-bs-toggle="modal" data-bs-target="#play_video_{$key}"><i class="fas fa-play"></i></button>
                     {else}
                         <a href="{$image.href}" target="_blank" class="thumbnail" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
                         <p class="mt-1">
@@ -671,6 +698,11 @@
 
     $(function () {
         filemanager_dispose_all();
+
+        $(document).on("click", "button.close-video", function (e) {
+            $('.video-model').modal('hide');
+            $('.video-model video').get(0).pause();
+        });
 
         $("html").on("dragover", function (e) {
             e.preventDefault();

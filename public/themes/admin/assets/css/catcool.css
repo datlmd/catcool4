@@ -291,7 +291,7 @@ ul.list-album-photos {
 .list-photos-grid .photo-item.hover:hover .btn, .list-album-photos .photo-item:hover .btn {
     visibility: visible;
 }
-#filemanager .image-setting {
+#filemanager .image-setting, #filemanager .video-play {
     position: absolute;
     top: 5px;
     right: 15px;

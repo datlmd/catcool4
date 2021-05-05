@@ -10,6 +10,7 @@ class FileManager extends AdminController
     protected $image_tool;
     protected $dir_image      = '';
     protected $dir_image_path = '';
+    protected $file_url       = 'file/';
 
     CONST PATH_SUB_NAME   = 'root';
     CONST FILE_PAGE_LIMIT = 30;//PAGINATION_MANAGE_DEFAULF_LIMIT;
@@ -205,7 +206,7 @@ class FileManager extends AdminController
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'class' => 'far fa-file-pdf text-danger fa-5x',
-                            'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)),
+                            'href'  => $server . $this->file_url . $this->dir_image . substr($image, strlen($this->dir_image_path)),
                         ];
                         break;
                     case "html":
@@ -227,7 +228,7 @@ class FileManager extends AdminController
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'class' => 'far fa-file text-dark fa-4x',
-                            'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)),
+                            'href'  => $server . $this->file_url . $this->dir_image . substr($image, strlen($this->dir_image_path)),
                         ];
                         break;
                     case "apk":
@@ -239,7 +240,7 @@ class FileManager extends AdminController
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'class' => 'fab fa-android text-warning fa-4x',
-                            'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)),
+                            'href'  => $server . $this->file_url . $this->dir_image . substr($image, strlen($this->dir_image_path)),
                         ];
                         break;
                     case "webm":
@@ -281,7 +282,8 @@ class FileManager extends AdminController
                             'ext'   => $file_video->getMimeType(),
                             'type'  => 'video',
                             'path'  => substr($image, strlen($this->dir_image_path)),
-                            'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)),
+                            'class' => 'fas fa-film text-dark fa-4x',
+                            'href'  => $server . $this->file_url . $this->dir_image . substr($image, strlen($this->dir_image_path)),
                         ];
                         break;
                     default:
@@ -293,7 +295,7 @@ class FileManager extends AdminController
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->dir_image_path)),
                             'class' => 'fas fa-download text-secondary fa-4x',
-                            'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)),
+                            'href'  => $server . $this->file_url . $this->dir_image . substr($image, strlen($this->dir_image_path)),
                         ];
                         break;
                 }
