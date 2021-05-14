@@ -1,171 +1,186 @@
 {strip}
-{capture name="content_filemanager"}
-    <div class="row">
-        <div class="col-sm-8 col-12 mb-1">
-            <a href="{$parent}" title="{$button_parent}" id="button_parent" class="btn btn-sm btn-light btn-space"><i class="fas fa-level-up-alt"></i></a>
-            <a href="{$display_url}&d={DISPLAY_GRID}" title="{lang("Admin.text_list")}" id="button_display_grid" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-th"></i></a>
-            <a href="{$display_url}&d={DISPLAY_LIST}" title="{lang("Admin.text_grid")}" id="button_display_list" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-list"></i></a>
-            <a href="{$refresh}" title="{$button_refresh}" id="button_refresh" class="btn btn-sm btn-secondary btn-space"><i class="fas fa-sync me-1"></i>{$button_refresh}</a>
-            <button type="button" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary btn-space"><i class="fas fa-upload me-1"></i>{$button_upload}</button>
-            <button type="button" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success btn-space"><i class="fas fa-folder me-1"></i>{$button_folder}</button>
-            <button type="button" title="{$button_delete}" id="button_delete" class="btn btn-sm btn-danger btn-space"><i class="fas fa-trash me-1"></i>{$button_delete}</button>
-        </div>
-        <div class="col-sm-4 col-12 mb-1">
-            <div class="input-group">
-                <input type="text" name="search" value="{$filter_name}" placeholder="{$entry_search}" class="form-control btn-space me-0">
-                <button type="button" title="{$button_search}" id="button_search" class="btn btn-sm btn-primary btn-space">{$button_search}</button>
-                <a href="{base_url('image/editor')}" title="Photo Editor" target="_blank" class="btn btn-sm btn-warning btn-space me-0"><i class="fas fa-pencil-alt me-1"></i>Photo Editor</a>
+    {capture name="content_filemanager"}
+        <div class="row">
+            <div class="col-sm-8 col-12 mb-1">
+                <a href="{$parent}" title="{$button_parent}" id="button_parent" class="btn btn-sm btn-light btn-space"><i class="fas fa-level-up-alt"></i></a>
+                <a href="{$display_url}&d={DISPLAY_GRID}" title="{lang("Admin.text_list")}" id="button_display_grid" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-th"></i></a>
+                <a href="{$display_url}&d={DISPLAY_LIST}" title="{lang("Admin.text_grid")}" id="button_display_list" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-list"></i></a>
+                <a href="{$refresh}" title="{$button_refresh}" id="button_refresh" class="btn btn-sm btn-secondary btn-space"><i class="fas fa-sync me-1"></i>{$button_refresh}</a>
+                <button type="button" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary btn-space"><i class="fas fa-upload me-1"></i>{$button_upload}</button>
+                <button type="button" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success btn-space"><i class="fas fa-folder me-1"></i>{$button_folder}</button>
+                <button type="button" title="{$button_delete}" id="button_delete" class="btn btn-sm btn-danger btn-space"><i class="fas fa-trash me-1"></i>{$button_delete}</button>
+            </div>
+            <div class="col-sm-4 col-12 mb-1">
+                <div class="input-group">
+                    <input type="text" name="search" value="{$filter_name}" placeholder="{$entry_search}" class="form-control btn-space me-0">
+                    <button type="button" title="{$button_search}" id="button_search" class="btn btn-sm btn-primary btn-space">{$button_search}</button>
+                    <a href="{base_url('image/editor')}" title="Photo Editor" target="_blank" class="btn btn-sm btn-warning btn-space me-0"><i class="fas fa-pencil-alt me-1"></i>Photo Editor</a>
+                </div>
             </div>
         </div>
-    </div>
-    <hr />
-    <div id="msg" class="text-secondary"></div>
-    <div class="row" id="filemanager_list">
-        {if $display == DISPLAY_LIST}
-            <div class="table-responsive">
-                <table class="table table-striped table-hover table-bordered second">
-                    <thead>
-                    <tr class="text-center">
-                        <th width="40"></th>
-                        <th width="100"></th>
-                        <th>{lang('Admin.text_name')}</th>
-                        <th width="110">
-                            {lang('FileManager.text_size')}
-                        </th>
-                        <th width="170">{lang('FileManager.text_date')}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {foreach $images as $key => $image}
-                        <tr>
-                            <td class="text-center">
-                                <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
-                            </td>
-                            <td class="text-center">
-                                {if $image.type == 'directory'}
-                                    <a href="{$image.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a>
-                                {elseif $image.type == 'image'}
-                                    <div class="position-relative">
-                                        <a href="{$image.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail">
-                                            <img src="{$image.thumb}" style="background-image: url('{$image.thumb}');" alt="{$image.name}" style="width: 85px;" title="{$image.name}" class="img-thumbnail img-fluid img-photo-list" />
-                                        </a>
-                                        <input type="hidden" name="path_tmp[]" value="{$image.path}" />
-                                        <button type="button" class="btn btn-xs btn-outline-light image-setting shadow-sm" style="right: 0; top: 0;" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
-                                    </div>
-                                {elseif $image.type == 'video'}
-                                    <a href="{$image.href}" target="_blank" class="thumbnail" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
-                                    <button type="button" class="btn btn-xs btn-outline-light video-play shadow-sm" data-bs-toggle="modal" data-bs-target="#play_video_{$key}"><i class="fas fa-play"></i></button>
-                                    <div class="modal fade video-model" id="play_video_{$key}" tabindex="-1" role="dialog" aria-labelledby="play_video_label_{$key}" >
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="play_video_label_{$key}">{$image.name}</h5>
-                                                    <button type="button" class="btn-close close-video" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <video controls height="100%" width="100%" autoplay >
-                                                        <source src="{$image.href}" type="{$image.ext}">
-                                                        <p>Your browser doesn't support HTML5 video. Here is
-                                                            a <a href="{$image.href}">link to the video</a> instead.</p>
-                                                    </video>
+        <hr />
+        <div id="msg" class="text-secondary"></div>
+        <div class="row" id="filemanager_list">
+            {if $display == DISPLAY_LIST}
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-bordered second">
+                        <thead>
+                        <tr class="text-center">
+                            <th width="40"></th>
+                            <th width="100"></th>
+                            <th>{lang('Admin.text_name')}</th>
+                            <th width="110">
+                                {lang('FileManager.text_size')}
+                            </th>
+                            <th width="170">{lang('FileManager.text_date')}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach $images as $key => $image}
+                            <tr>
+                                <td class="text-center">
+                                    <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
+                                </td>
+                                <td class="text-center">
+                                    {if $image.type == 'directory'}
+                                        <a href="{$image.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a>
+                                    {elseif $image.type == 'image'}
+                                        <div class="position-relative">
+                                            <a href="{$image.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
+                                                <img src="{$image.thumb}" style="background-image: url('{$image.thumb}');" alt="{$image.name}" style="width: 85px;" title="{$image.name}" class="img-thumbnail img-fluid img-photo-list" />
+                                            </a>
+                                            <button type="button" class="btn btn-xs btn-outline-light image-setting shadow-sm" style="right: 0; top: 0;" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
+                                        </div>
+                                    {elseif $image.type == 'video'}
+                                        <div class="position-relative">
+                                            <a href="{$image.href}" target="_blank" class="thumbnail" data-file-target="#cb_{$key}" style="vertical-align: middle;">
+                                                <video muted="muted" loop="loop" style="width: 100%; max-width: 120px; height: 100%;">
+                                                    <source src="{$image.href}" type="{$image.ext}">
+                                                    <p>Your browser doesn't support HTML5 video. Here is
+                                                        a link to the video instead.</p>
+                                                </video>
+                                            </a>
+                                            <button type="button" class="btn btn-xs btn-light video-play shadow-sm" style="right: 0; top: 0;" data-bs-toggle="modal" data-bs-target="#play_video_{$key}"><i class="fas fa-play"></i></button>
+                                            <div class="modal fade video-model" id="play_video_{$key}" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="play_video_label_{$key}" >
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content shadow-lg">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="play_video_label_{$key}">{$image.name}</h5>
+                                                            <button type="button" class="btn-close close-video" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <video controls height="100%" width="100%">
+                                                                <source src="{$image.href}" type="{$image.ext}">
+                                                                <p>Your browser doesn't support HTML5 video. Here is
+                                                                    a <a href="{$image.href}">link to the video</a> instead.</p>
+                                                            </video>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                {else}
-                                    <a href="{$image.href}" target="_blank" class="thumbnail" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
-                                {/if}
-                            </td>
-                            <td>
-                                {$image.name}
-                            </td>
-                            <td class="text-center">
-                                {if !empty($image.size)}{$image.size}{/if}
-                            </td>
-                            <td class="text-center">
-                                {if !empty($image.date)}{$image.date}{/if}
-                            </td>
-                        </tr>
-                    {/foreach}
-                    </tbody>
-                </table>
-            </div>
-        {else}
-            {foreach $images as $key => $image}
-                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-4 mb-2 text-center position-relative">
-                    {if $image.type == 'directory'}
-                        <div class="text-center"><a href="{$image.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a></div>
-                        <p class="mt-1">
-                            <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
-                            <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
-                        </p>
-                    {elseif $image.type == 'image'}
-                        <a href="{$image.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail">
-                            <img src="{$image.thumb}" style="background-image: url('{$image.thumb}');" alt="{$image.name}" title="{$image.name}" class="img-thumbnail img-fluid img-photo-list" />
-                        </a>
-                        <p class="mt-1">
-                            <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
-                            <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
-                        </p>
-                        <button type="button" class="btn btn-xs btn-outline-light image-setting shadow-sm" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
-                    {elseif $image.type == 'video'}
-                        <a href="{$image.href}" target="_blank" class="thumbnail" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
-{*                            <object width="90" height="60">*}
-{*                                <param name="src" value="{$image.href}">*}
-{*                                <param name="autoplay" value="false">*}
-{*                                <param name="controller" value="true">*}
-{*                                <param name="bgcolor" value="#333333">*}
-{*                                <embed type="{$image.ext}" src="{$image.href}" autostart="false" loop="false" width="90" height="60" controller="true" bgcolor="#333333"></embed>*}
-{*                            </object>*}
-                        <!-- Modal -->
-                        <div class="modal fade video-model" id="play_video_{$key}" tabindex="-1" role="dialog" aria-labelledby="play_video_label_{$key}" >
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="play_video_label_{$key}">{$image.name}</h5>
-                                        <button type="button" class="btn-close close-video" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <video controls height="100%" width="100%" autoplay >
-                                            <source src="{$image.href}" type="{$image.ext}">
-                                            <p>Your browser doesn't support HTML5 video. Here is
-                                                a <a href="{$image.href}">link to the video</a> instead.</p>
-                                        </video>
+                                    {else}
+                                        <a href="{$image.href}" target="_blank" class="thumbnail" data-file-target="#cb_{$key}" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
+                                    {/if}
+                                    <input type="hidden" name="path_tmp[]" id="cb_{$key}" value="{$image.path}" />
+                                </td>
+                                <td>
+                                    {$image.name}
+                                </td>
+                                <td class="text-center">
+                                    {if !empty($image.size)}{$image.size}{/if}
+                                </td>
+                                <td class="text-center">
+                                    {if !empty($image.date)}{$image.date}{/if}
+                                </td>
+                            </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            {else}
+                {foreach $images as $key => $image}
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-4 mb-2 text-center position-relative">
+                        {if $image.type == 'directory'}
+                            <div class="text-center"><a href="{$image.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a></div>
+                            <p class="mt-1">
+                                <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
+                                <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
+                            </p>
+                        {elseif $image.type == 'image'}
+                            <a href="{$image.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
+                                <img src="{$image.thumb}" style="background-image: url('{$image.thumb}');" alt="{$image.name}" title="{$image.name}" class="img-thumbnail img-fluid img-photo-list" />
+                            </a>
+                            <p class="mt-1">
+                                <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
+                                <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
+                            </p>
+                            <button type="button" class="btn btn-xs btn-outline-light image-setting shadow-sm" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
+                        {elseif $image.type == 'video'}
+                            <a href="{$image.href}" target="_blank" class="thumbnail" data-file-target="#cb_{$key}" style="vertical-align: middle;">
+    {*                            <i class="{$image.class}"></i>*}
+                                <video style="width: 100%; max-width: 200px; height: auto;" muted="muted" loop="loop">
+                                    <source src="{$image.href}" type="{$image.ext}">
+                                    <p>Your browser doesn't support HTML5 video. Here is
+                                        a link to the video instead.</p>
+                                </video>
+                            </a>
+    {*                            <object width="90" height="60">*}
+    {*                                <param name="src" value="{$image.href}">*}
+    {*                                <param name="autoplay" value="false">*}
+    {*                                <param name="controller" value="true">*}
+    {*                                <param name="bgcolor" value="#333333">*}
+    {*                                <embed type="{$image.ext}" src="{$image.href}" autostart="false" loop="false" width="90" height="60" controller="true" bgcolor="#333333"></embed>*}
+    {*                            </object>*}
+                            <!-- Modal -->
+                            <div class="modal fade video-model" id="play_video_{$key}" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="play_video_label_{$key}" >
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content shadow-lg">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="play_video_label_{$key}">{$image.name}</h5>
+                                            <button type="button" class="btn-close close-video" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <video controls height="100%" width="100%" >
+                                                <source src="{$image.href}" type="{$image.ext}">
+                                                <p>Your browser doesn't support HTML5 video. Here is
+                                                    a <a href="{$image.href}">link to the video</a> instead.</p>
+                                            </video>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <p class="mt-1">
-                            <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
-                            <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
-                        </p>
-                        <button type="button" class="btn btn-xs btn-outline-light video-play shadow-sm" data-bs-toggle="modal" data-bs-target="#play_video_{$key}"><i class="fas fa-play"></i></button>
-                    {else}
-                        <a href="{$image.href}" target="_blank" class="thumbnail" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
-                        <p class="mt-1">
-                            <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
-                            <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
-                        </p>
-                    {/if}
-                </div>
-            {/foreach}
-        {/if}
+                            <p class="mt-1">
+                                <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
+                                <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
+                            </p>
+                            <button type="button" class="btn btn-xs btn-light video-play shadow-sm" data-bs-toggle="modal" data-bs-target="#play_video_{$key}"><i class="fas fa-play"></i></button>
+                        {else}
+                            <a href="{$image.href}" target="_blank" class="thumbnail" data-file-target="#cb_{$key}" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
+                            <p class="mt-1">
+                                <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
+                                <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
+                            </p>
+                        {/if}
+                    </div>
+                {/foreach}
+            {/if}
+        </div>
+    {/capture}
+    <div id="filemanager" class="modal-dialog modal-xl px-4" style="max-width: 100% !important;">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white" id="photoModalLabel">{$heading_title}{if !empty($directory)} ({$directory|urldecode}){/if}</h5>
+                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4" style="min-height: 600px;">
+                {$smarty.capture.content_filemanager}
+            </div>
+            <div class="modal-footer">
+                <nav aria-label="Page navigation" class="table-responsive text-center"><ul class="pagination p-0 m-0">{$pagination}</ul></nav>
+            </div>
+        </div>
     </div>
-{/capture}
-<div id="filemanager" class="modal-dialog modal-xl px-4" style="max-width: 100% !important;">
-    <div class="modal-content">
-        <div class="modal-header bg-dark">
-            <h5 class="modal-title text-white" id="photoModalLabel">{$heading_title}{if !empty($directory)} ({$directory|urldecode}){/if}</h5>
-            <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body p-4">
-            {$smarty.capture.content_filemanager}
-        </div>
-        <div class="modal-footer">
-            <nav aria-label="Page navigation" class="table-responsive text-center"><ul class="pagination p-0 m-0">{$pagination}</ul></nav>
-        </div>
-    </div>
-</div>
 {/strip}
 
 {if $thumb}{form_hidden('file_thumb', $thumb)}{/if}
@@ -182,7 +197,7 @@
             if ($('input[name=\'file_thumb\']').length) {
                 $('#' + $('input[name=\'file_thumb\']').val()).attr('src', $(this).find('img').attr('src'));
             }
-            $('#' + $('input[name=\'file_target\']').val()).val($(this).parent().find('input').val());
+            $('#' + $('input[name=\'file_target\']').val()).val($($(this).data('file-target')).val());
             $('#modal_image').modal('hide');
         });
     }
@@ -702,6 +717,15 @@
         $(document).on("click", "button.close-video", function (e) {
             $('.video-model').modal('hide');
             $('.video-model video').get(0).pause();
+            $('body').addClass('modal-open');
+        });
+        $(document).on('hidden.bs.modal', '.video-model', function (e) {
+            $('.video-model').modal('hide');
+            $(this).find('video').get(0).pause();
+            $('body').addClass('modal-open');
+        });
+        $(document).on("click", ".video-play", function (e) {
+            $($(this).data("bs-target")).find('video').get(0).play();
         });
 
         $("html").on("dragover", function (e) {

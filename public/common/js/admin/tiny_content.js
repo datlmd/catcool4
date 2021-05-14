@@ -58,7 +58,7 @@ var Tiny_content = {
                         }
                         is_tiny_processing = true;
                         $.ajax({
-                            url: 'common/filemanager',
+                            url: 'common/filemanager?type=image',
                             dataType: 'html',
                             success: function(html) {
                                 is_tiny_processing = false;
@@ -67,7 +67,7 @@ var Tiny_content = {
                                 $('#modal_image').modal('show');
                                 $('#modal_image').delegate('a.thumbnail', 'click', function(e) {
                                     e.preventDefault();
-                                    editor.insertContent('<figure class="image figure"><img src="' + base_url + '/img/' + $(this).parent().find('input').val() + '" style="width:100%; max-width: 700px;" data-mce-src="' + base_url + '/img/' + $(this).parent().find('input').val() + '"><figcaption class="figure-caption text-end">Caption</figcaption></figure><br/>');
+                                    editor.insertContent('<figure class="image figure"><img src="' + base_url + '/img/' + $($(this).data('file-target')).val() + '" style="width:100%; max-width: 700px;" data-mce-src="' + base_url + '/img/' + $($(this).data('file-target')).val() + '"><figcaption class="figure-caption text-end">Caption</figcaption></figure><br/>');
 
                                     $('#modal_image').modal('hide');
                                 });
@@ -110,11 +110,11 @@ var Tiny_content = {
                         $('#modal_image').delegate('a.thumbnail', 'click', function(e) {
                             e.preventDefault();
 
-                            var img_url = base_url + '/img/' + $(this).parent().find('input').val();
+                            var img_url = base_url + '/img/' + $($(this).data('file-target')).val();
                             if (type != 'undefined' && type == "image") {
                                 cb(img_url, { width: '100%', height: '' }); //{ title: img_url }
                             } else {
-                                img_url = base_url + '/file/' + $(this).parent().find('input').val();
+                                img_url = base_url + '/file/' + $($(this).data('file-target')).val();
                                 cb(img_url);
                             }
 
