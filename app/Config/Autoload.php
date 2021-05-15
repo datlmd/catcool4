@@ -44,6 +44,7 @@ class Autoload extends AutoloadConfig
         'App\Modules' => APPPATH . 'Modules',
         'Tatter\Schemas' => APPPATH . "ThirdParty/Models",
         'Tatter\Relations' => APPPATH . "ThirdParty/Models",
+        'Intervention\Image' => APPPATH . "ThirdParty/Intervention/Image",
 	];
 
 	/**
