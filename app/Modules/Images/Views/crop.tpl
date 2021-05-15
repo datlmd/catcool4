@@ -1,29 +1,29 @@
 {strip}
-<div id="modal_image_crop" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
-    <div id="crop_manager" class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="photoModalLabel">{lang('Image.text_crop_image')}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body px-3 py-4 text-center">
-                <div id="custom-preview-wrapper"></div>
-                <div class="image-wrapper" id="image-cropper-wrapper">
-                    <img id="image_cropper" src="{base_url()}/file/{$image_url}?{time()}" class="w-100" style="display: none;">
+    <div id="modal_image_crop" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div id="crop_manager" class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="photoModalLabel">{lang('Image.text_crop_image')}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body px-3 py-4 text-center">
+                    <div id="custom-preview-wrapper"></div>
+                    <div class="image-wrapper" id="image-cropper-wrapper">
+                        <img id="image_cropper" src="{base_url()}/file/{$image_url}?{time()}" class="w-100" style="display: none;">
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" id="btn_submit_crop" class="btn btn-sm btn-brand btn-space" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Image.text_crop_image')}" data-target="#filter_manage"><i class="fas fa-crop"></i> {lang('Image.text_crop_image')}</button>
+                    <a href="javascript:void(0);" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fas fa-reply"></i> {lang('Admin.text_close')}</span>
+                    </a>
                 </div>
             </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" id="btn_submit_crop" class="btn btn-sm btn-brand btn-space" data-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Image.text_crop_image')}" data-target="#filter_manage"><i class="fas fa-crop"></i> {lang('Image.text_crop_image')}</button>
-                <a href="javascript:void(0);" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><i class="fas fa-reply"></i> {lang('Admin.text_close')}</span>
-                </a>
-            </div>
+            <input type="hidden" name="image_crop_url" id="image_crop_url" value="{$image_url}">
+            <input type="hidden" name="aspect_ratio" id="aspect_ratio" value="{$aspect_ratio}">
+            <input type="hidden" name="image_mime" id="image_mime" value="{$mime}">
         </div>
-        <input type="hidden" name="image_crop_url" id="image_crop_url" value="{$image_url}">
-        <input type="hidden" name="aspect_ratio" id="aspect_ratio" value="{$aspect_ratio}">
-        <input type="hidden" name="image_mime" id="image_mime" value="{$mime}">
     </div>
-</div>
 {literal}
 <style>
     .image-wrapper { max-width: 600px; min-width: 200px; min-height: 150px; margin: 0 auto; }
@@ -46,17 +46,21 @@
 
     $(function() {
         'use strict';
+
+        var options = {
+            minSize: [100,100],
+            grid: true,
+            preserveAspectRatio: {{$aspect_ratio}},
+            preview: {
+                display: false,
+                size: [100,100],
+                wrapper: '#custom-preview-wrapper',
+            }
+        };
+
         setTimeout(function(){
             $('#image_cropper').show();
-            $('#image_cropper').rcrop({
-                minSize : [100,100],
-                preserveAspectRatio : {{$aspect_ratio}},
-                preview : {
-                    display: false,
-                    size : [100,100],
-                    wrapper : '#custom-preview-wrapper',
-                }
-            });
+            $('#image_cropper').rcrop(options);
         },400);
     });
 
@@ -93,7 +97,9 @@
                 }
                 if (json['success']) {
                     if ($("#filemanager").length) {
-                        $('#filemanager #button_refresh').trigger('click');
+                        setTimeout(function(){
+                            $('#filemanager #button_refresh').trigger('click');
+                        },200);
                     } else if ($(".image-crop-target").length) {
                         $(".image-crop-target a").attr("href", image_url + '/' + json['image']);
                         $(".image-crop-target img").attr("src", image_url + '/' + json['image']);

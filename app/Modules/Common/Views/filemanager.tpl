@@ -700,12 +700,18 @@
             //     return true;
             // }
 
-            if ($(e.target).closest('.popover').length != 0 || $(e.target).closest('.image-setting').length != 0 || $(e.target).closest('#button_folder').length != 0) {
+            if ($(e.target).closest('.popover').length != 0 || $(e.target).closest('.image-setting').length != 0 || $(e.target).closest('#button_folder').length != 0
+                || $(e.target).closest('.btn-close').length != 0
+            ) {
                 return true;
             }
 
-            $('.image-setting').popover('dispose');
+            if ($('.image-setting').data('bs-toggle') == 'popover') {
+                $('.image-setting').popover('dispose');
+            }
+
             $('#button_folder').popover('dispose');
+
             is_disposing = false;
             return;
         });
