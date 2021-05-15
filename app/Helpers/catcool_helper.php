@@ -677,7 +677,7 @@ if(!function_exists('image_url'))
             return image_domain($image) . '?' . time();
         }
 
-        return image_domain( $image);
+        return image_domain($image);
     }
 }
 

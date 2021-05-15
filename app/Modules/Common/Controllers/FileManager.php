@@ -518,6 +518,7 @@ class FileManager extends AdminController
                     if (!empty(config_item('enable_resize_image'))) {
                         $this->image_tool->resizeUpload($filepath);
                     }
+                    usleep(500);
                 }
             } else {
                 $json['error'] = lang('FileManager.error_upload');

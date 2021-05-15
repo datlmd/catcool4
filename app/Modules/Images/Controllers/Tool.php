@@ -55,8 +55,7 @@ class Tool extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        if (!empty($this->request->getPost()))
-        {
+        if (!empty($this->request->getPost())) {
             $image_crop = $this->request->getPost("path");
             if (!is_file($this->_image_path . $image_crop) || empty($image_crop)) {
                 json_output(['error' => 'File not found']);
@@ -73,22 +72,20 @@ class Tool extends BaseController
 
             json_output(['success' => true, 'image' => $image_crop . '?' . time()]);
         }
-        else
-        {
-            $image_url = $this->request->getGet('image_url');
-            if (!is_file($this->_image_path . $image_url) || empty($image_url)) {
-                json_output(['error' => 'File not found']);
-            }
-            $image_info = getimagesize($this->_image_path . $image_url);
 
-            $aspect_ratio = '16/9';
-
-            $data['image_url']    = $image_url;
-            $data['aspect_ratio'] = empty($this->request->getGet('preserve_aspect_ratio')) ? 'false' : 'true';
-            $data['mime']         = $image_info['mime'];
-
-
-            return $this->themes::view('crop', $data);
+        $image_url = $this->request->getGet('image_url');
+        if (!is_file($this->_image_path . $image_url) || empty($image_url)) {
+            json_output(['error' => 'File not found']);
         }
+        $image_info = getimagesize($this->_image_path . $image_url);
+
+        $aspect_ratio = '16/9';
+
+        $data['image_url']    = $image_url;
+        $data['aspect_ratio'] = empty($this->request->getGet('preserve_aspect_ratio')) ? 'false' : 'true';
+        $data['mime']         = $image_info['mime'];
+
+
+        return $this->themes::view('crop', $data);
     }
 }

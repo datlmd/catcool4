@@ -1,9 +1,13 @@
 <?php namespace App\Libraries;
 
+use Intervention\Image\ImageManager;
+
 class ImageTool
 {
     protected $image;
     protected $dir_image_path;
+
+    protected $upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
 
     public function __construct()
     {
@@ -71,9 +75,8 @@ class ImageTool
                 \Config\Services::image('imagick')->withFile($this->dir_image_path . $image_old)
                     ->resize($width, $height, true, $master_dimm)
                     ->save($this->dir_image_path . $image_new, $quality);
-            }
-            catch (\Exception $e)
-            {
+            } catch (\Exception $e) {
+                log_message('error', $e->getMessage());
                 return false;
             }
         }
@@ -97,7 +100,7 @@ class ImageTool
         }
 
         $extension = pathinfo($file_path, PATHINFO_EXTENSION);
-        if (!in_array($extension, ['jpg','JPG','jpeg','JPEG','png','PNG','gif','GIF','bmp','BMP'])) {
+        if (!in_array($extension, explode(',', $this->upload_type))) {
             return false;
         }
 
@@ -116,6 +119,7 @@ class ImageTool
                 ->resize($resize_width, $resize_height, true, $master_dimm)
                 ->save($file_path, $quality);
         } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
             return false;
         }
 
@@ -148,9 +152,8 @@ class ImageTool
                     ->rotate($angle)
                     ->save($this->dir_image_path . $file_name, $quality);
             }
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
             return false;
         }
 
@@ -167,9 +170,8 @@ class ImageTool
             $info = \Config\Services::image('imagick')->withFile($this->dir_image_path . $file_name)
                 ->getFile()
                 ->getProperties(true);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
             return false;
         }
 
@@ -197,6 +199,7 @@ class ImageTool
         }
         catch (\Exception $e)
         {
+            log_message('error', $e->getMessage());
             return false;
         }
 
@@ -209,13 +212,16 @@ class ImageTool
         }
 
         try {
-            \Config\Services::image('imagick')
-                ->withFile($this->dir_image_path . $file_name)
+            // create an image manager instance with favored driver
+            $manager = new ImageManager(['driver' => 'gd']);//imagick
+
+            // to finally create image instances
+            $manager->make($this->dir_image_path . $file_name)
                 ->crop($width, $height, $xOffset, $yOffset)
                 ->save($this->dir_image_path . $file_name);
-        }
-        catch (\Exception $e)
-        {
+
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
             return false;
         }
 
@@ -232,9 +238,8 @@ class ImageTool
             \Config\Services::image('imagick')->withFile($file_name)
                 ->convert($image_type)
                 ->save($file_new);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
             return false;
         }
 

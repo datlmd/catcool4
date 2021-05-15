@@ -9,7 +9,7 @@
             <div class="modal-body px-3 py-4 text-center">
                 <div id="custom-preview-wrapper"></div>
                 <div class="image-wrapper" id="image-cropper-wrapper">
-                    <img id="image_cropper" src="{image_url($image_url)}?{time()}" class="w-100" style="display: none;">
+                    <img id="image_cropper" src="{base_url()}/file/{$image_url}?{time()}" class="w-100" style="display: none;">
                 </div>
             </div>
             <div class="modal-footer justify-content-center">
