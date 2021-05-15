@@ -322,7 +322,7 @@
                 }
 
                 $.ajax({
-                    url: base_url + '/common/filemanager/upload?directory={{$directory}}',
+                    url: base_url + '/common/filemanager/upload?directory={{$directory}}&type={{$file_type}}',
                     type: 'post',
                     dataType: 'json',
                     data: form_data,
@@ -768,7 +768,7 @@
                 timer = setInterval(function() {
                     clearInterval(timer);
                     $.ajax({
-                        url: '{{site_url("common/filemanager")}}/upload?directory={{$directory}}',
+                        url: '{{site_url("common/filemanager")}}/upload?directory={{$directory}}&type={{$file_type}}',
                         type: 'post',
                         dataType: 'json',
                         data: formdata,
