@@ -14,7 +14,7 @@ $(function () {
             $('#modal_image').remove();//target=$element.parent().find('input').attr('id')
             var element = $(this);
             $.ajax({
-                url: 'common/filemanager?target=' + encodeURIComponent(element.parent().attr('data-target')) + '&thumb=' + encodeURIComponent(element.parent().attr('data-thumb')),
+                url: 'common/filemanager?target=' + encodeURIComponent(element.parent().data('target')) + '&thumb=' + encodeURIComponent(element.parent().data('thumb')) + '&type=' + encodeURIComponent(element.parent().data('type')),
                 dataType: 'html',
                 beforeSend: function () {
                     element.find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');

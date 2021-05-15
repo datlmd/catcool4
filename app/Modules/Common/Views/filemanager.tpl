@@ -36,26 +36,26 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {foreach $images as $key => $image}
+                        {foreach $file_list as $key => $file}
                             <tr>
                                 <td class="text-center">
-                                    <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
+                                    <input type="checkbox" name="path[]" value="{$file.path}" id="cb_{$key}" class="me-1" />
                                 </td>
                                 <td class="text-center">
-                                    {if $image.type == 'directory'}
-                                        <a href="{$image.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a>
-                                    {elseif $image.type == 'image'}
+                                    {if $file.type == 'directory'}
+                                        <a href="{$file.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a>
+                                    {elseif $file.type == 'image'}
                                         <div class="position-relative">
-                                            <a href="{$image.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
-                                                <img src="{$image.thumb}" style="background-image: url('{$image.thumb}');" alt="{$image.name}" style="width: 85px;" title="{$image.name}" class="img-thumbnail img-fluid img-photo-list" />
+                                            <a href="{$file.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
+                                                <img src="{$file.thumb}" style="background-image: url('{$file.thumb}');" alt="{$file.name}" style="width: 85px;" title="{$file.name}" class="img-thumbnail img-fluid img-photo-list" />
                                             </a>
                                             <button type="button" class="btn btn-xs btn-outline-light image-setting shadow-sm" style="right: 0; top: 0;" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
                                         </div>
-                                    {elseif $image.type == 'video'}
+                                    {elseif $file.type == 'video'}
                                         <div class="position-relative">
-                                            <a href="{$image.href}" target="_blank" class="thumbnail" data-file-target="#cb_{$key}" style="vertical-align: middle;">
+                                            <a href="{$file.href}" target="_blank" class="thumbnail" data-file-target="#cb_{$key}" style="vertical-align: middle;">
                                                 <video muted="muted" loop="loop" style="width: 100%; max-width: 120px; height: 100%;">
-                                                    <source src="{$image.href}" type="{$image.ext}">
+                                                    <source src="{$file.href}" type="{$file.ext}">
                                                     <p>Your browser doesn't support HTML5 video. Here is
                                                         a link to the video instead.</p>
                                                 </video>
@@ -65,14 +65,14 @@
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content shadow-lg">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="play_video_label_{$key}">{$image.name}</h5>
+                                                            <h5 class="modal-title" id="play_video_label_{$key}">{$file.name}</h5>
                                                             <button type="button" class="btn-close close-video" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <video controls height="100%" width="100%">
-                                                                <source src="{$image.href}" type="{$image.ext}">
+                                                                <source src="{$file.href}" type="{$file.ext}">
                                                                 <p>Your browser doesn't support HTML5 video. Here is
-                                                                    a <a href="{$image.href}">link to the video</a> instead.</p>
+                                                                    a <a href="{$file.href}">link to the video</a> instead.</p>
                                                             </video>
                                                         </div>
                                                     </div>
@@ -80,18 +80,18 @@
                                             </div>
                                         </div>
                                     {else}
-                                        <a href="{$image.href}" target="_blank" class="thumbnail" data-file-target="#cb_{$key}" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
+                                        <a href="{$file.href}" target="_blank" class="thumbnail" data-file-target="#cb_{$key}" style="vertical-align: middle;"><i class="{$file.class}"></i></a>
                                     {/if}
-                                    <input type="hidden" name="path_tmp[]" id="cb_{$key}" value="{$image.path}" />
+                                    <input type="hidden" name="path_tmp[]" id="cb_{$key}" value="{$file.path}" />
                                 </td>
                                 <td>
-                                    {$image.name}
+                                    <a href="{$file.href}" target="_blank" style="vertical-align: middle;">{$file.name}</a>
                                 </td>
                                 <td class="text-center">
-                                    {if !empty($image.size)}{$image.size}{/if}
+                                    {if !empty($file.size)}{$file.size}{/if}
                                 </td>
                                 <td class="text-center">
-                                    {if !empty($image.date)}{$image.date}{/if}
+                                    {if !empty($file.date)}{$file.date}{/if}
                                 </td>
                             </tr>
                         {/foreach}
@@ -99,67 +99,67 @@
                     </table>
                 </div>
             {else}
-                {foreach $images as $key => $image}
+                {foreach $file_list as $key => $file}
                     <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-4 mb-2 text-center position-relative">
-                        {if $image.type == 'directory'}
-                            <div class="text-center"><a href="{$image.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a></div>
+                        {if $file.type == 'directory'}
+                            <div class="text-center"><a href="{$file.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a></div>
                             <p class="mt-1">
-                                <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
-                                <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
+                                <input type="checkbox" name="path[]" value="{$file.path}" id="cb_{$key}" class="me-1" />
+                                <label class="file-label-cb" for="cb_{$key}">{$file.name}</label>
                             </p>
-                        {elseif $image.type == 'image'}
-                            <a href="{$image.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
-                                <img src="{$image.thumb}" style="background-image: url('{$image.thumb}');" alt="{$image.name}" title="{$image.name}" class="img-thumbnail img-fluid img-photo-list" />
+                        {elseif $file.type == 'image'}
+                            <a href="{$file.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
+                                <img src="{$file.thumb}" style="background-image: url('{$file.thumb}');" alt="{$file.name}" title="{$file.name}" class="img-thumbnail img-fluid img-photo-list" />
                             </a>
                             <p class="mt-1">
-                                <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
-                                <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
+                                <input type="checkbox" name="path[]" value="{$file.path}" id="cb_{$key}" class="me-1" />
+                                <label class="file-label-cb" for="cb_{$key}">{$file.name}</label>
                             </p>
                             <button type="button" class="btn btn-xs btn-outline-light image-setting shadow-sm" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
-                        {elseif $image.type == 'video'}
-                            <a href="{$image.href}" target="_blank" class="thumbnail" data-file-target="#cb_{$key}" style="vertical-align: middle;">
-    {*                            <i class="{$image.class}"></i>*}
+                        {elseif $file.type == 'video'}
+                            <a href="{$file.href}" target="_blank" class="thumbnail" data-file-target="#cb_{$key}" style="vertical-align: middle;">
+    {*                            <i class="{$file.class}"></i>*}
                                 <video style="width: 100%; max-width: 200px; height: auto;" muted="muted" loop="loop">
-                                    <source src="{$image.href}" type="{$image.ext}">
+                                    <source src="{$file.href}" type="{$file.ext}">
                                     <p>Your browser doesn't support HTML5 video. Here is
                                         a link to the video instead.</p>
                                 </video>
                             </a>
     {*                            <object width="90" height="60">*}
-    {*                                <param name="src" value="{$image.href}">*}
+    {*                                <param name="src" value="{$file.href}">*}
     {*                                <param name="autoplay" value="false">*}
     {*                                <param name="controller" value="true">*}
     {*                                <param name="bgcolor" value="#333333">*}
-    {*                                <embed type="{$image.ext}" src="{$image.href}" autostart="false" loop="false" width="90" height="60" controller="true" bgcolor="#333333"></embed>*}
+    {*                                <embed type="{$file.ext}" src="{$file.href}" autostart="false" loop="false" width="90" height="60" controller="true" bgcolor="#333333"></embed>*}
     {*                            </object>*}
                             <!-- Modal -->
                             <div class="modal fade video-model" id="play_video_{$key}" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="play_video_label_{$key}" >
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content shadow-lg">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="play_video_label_{$key}">{$image.name}</h5>
+                                            <h5 class="modal-title" id="play_video_label_{$key}">{$file.name}</h5>
                                             <button type="button" class="btn-close close-video" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <video controls height="100%" width="100%" >
-                                                <source src="{$image.href}" type="{$image.ext}">
+                                                <source src="{$file.href}" type="{$file.ext}">
                                                 <p>Your browser doesn't support HTML5 video. Here is
-                                                    a <a href="{$image.href}">link to the video</a> instead.</p>
+                                                    a <a href="{$file.href}">link to the video</a> instead.</p>
                                             </video>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <p class="mt-1">
-                                <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
-                                <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
+                                <input type="checkbox" name="path[]" value="{$file.path}" id="cb_{$key}" class="me-1" />
+                                <label class="file-label-cb" for="cb_{$key}">{$file.name}</label>
                             </p>
                             <button type="button" class="btn btn-xs btn-light video-play shadow-sm" data-bs-toggle="modal" data-bs-target="#play_video_{$key}"><i class="fas fa-play"></i></button>
                         {else}
-                            <a href="{$image.href}" target="_blank" class="thumbnail" data-file-target="#cb_{$key}" style="vertical-align: middle;"><i class="{$image.class}"></i></a>
+                            <a href="{$file.href}" target="_blank" class="thumbnail" data-file-target="#cb_{$key}" style="vertical-align: middle;"><i class="{$file.class}"></i></a>
                             <p class="mt-1">
-                                <input type="checkbox" name="path[]" value="{$image.path}" id="cb_{$key}" class="me-1" />
-                                <label class="file-label-cb" for="cb_{$key}">{$image.name}</label>
+                                <input type="checkbox" name="path[]" value="{$file.path}" id="cb_{$key}" class="me-1" />
+                                <label class="file-label-cb" for="cb_{$key}">{$file.name}</label>
                             </p>
                         {/if}
                     </div>

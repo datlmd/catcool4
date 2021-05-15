@@ -11,6 +11,7 @@ class FileManager extends AdminController
     protected $dir_image      = '';
     protected $dir_image_path = '';
     protected $file_url       = 'file/';
+    protected $img_url        = 'img/';
 
     CONST PATH_SUB_NAME   = 'root';
     CONST FILE_PAGE_LIMIT = 30;//PAGINATION_MANAGE_DEFAULF_LIMIT;
@@ -78,7 +79,7 @@ class FileManager extends AdminController
         $directories = [];
         $files = [];
 
-        $data['images'] = [];
+        $data['file_list'] = [];
 
         if (substr(str_replace('\\', '/', realpath($directory . '/')), 0, strlen($this->dir_image_path . self::PATH_SUB_NAME)) == $this->dir_image_path . self::PATH_SUB_NAME) {
             // Get directories
@@ -106,15 +107,15 @@ class FileManager extends AdminController
         krsort($file_tmp);
 
         // Merge directories and files
-        $images = array_merge($directories, $file_tmp);
+        $file_list = array_merge($directories, $file_tmp);
 
         // Get total number of files and directories
-        $image_total = count($images);
+        $image_total = count($file_list);
 
         // Split the array based on current page number and max number of items per page of 10
-        $images = array_splice($images, ($page - 1) * self::FILE_PAGE_LIMIT, self::FILE_PAGE_LIMIT);
+        $file_list = array_splice($file_list, ($page - 1) * self::FILE_PAGE_LIMIT, self::FILE_PAGE_LIMIT);
 
-        foreach ($images as $image) {
+        foreach ($file_list as $image) {
             $name = str_split(basename($image), 14);
 
             if (is_dir($image)) {
@@ -142,7 +143,7 @@ class FileManager extends AdminController
                     $url .= '&d=' . $display;
                 }
 
-                $data['images'][] = [
+                $data['file_list'][] = [
                     'thumb' => '',
                     'name'  => implode(' ', $name),
                     'type'  => 'directory',
@@ -151,54 +152,42 @@ class FileManager extends AdminController
                 ];
             } elseif (is_file($image)) {
                 $ext_tmp = explode('.', implode(' ', $name));
-                $extension = end($ext_tmp);
+                $extension = strtolower(end($ext_tmp));
                 switch ($extension) {
                     case "jpg":
-                    case "JPG":
                     case "jpeg":
-                    case "JPEG":
                     case "gif":
-                    case "GIF":
                     case "png":
-                    case "PNG":
                     case "bmp":
-                    case "BMP":
                     case "webp":
-                    case "WEBP":
                     case "tiff":
-                    case "TIFF":
                     case "raw":
-                    case "RAW":
                     case "indd":
-                    case "INDD":
                     case "heif":
-                    case "HEIF":
-                        $data['images'][] = [
-                            'thumb' => image_url(substr($image, strlen($this->dir_image_path))) . '?' . time(),
+                        $data['file_list'][] = [
+                            'thumb' => image_url(substr($image, strlen($this->dir_image_path))),
                             'name'  => implode(' ', $name),
                             'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
                             'date'  => $file_size[$image]['date'],
                             'type'  => 'image',
                             'path'  => substr($image, strlen($this->dir_image_path)),
-                            'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)) . '?' . time(),
+                            'href'  => $server . $this->img_url . $this->dir_image . substr($image, strlen($this->dir_image_path)) . '?' . time(),
                         ];
                         break;
                     case "svg":
-                    case "SVG":
                     case "svgz":
-                    case "SVGZ":
-                        $data['images'][] = [
+                        $data['file_list'][] = [
                             'thumb' => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)). '?' . time(),
                             'name'  => implode(' ', $name),
                             'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
                             'date'  => $file_size[$image]['date'],
                             'type'  => 'image',
                             'path'  => substr($image, strlen($this->dir_image_path)),
-                            'href'  => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)) . '?' . time(),
+                            'href'  => $server . $this->img_url . $this->dir_image . substr($image, strlen($this->dir_image_path)) . '?' . time(),
                         ];
                         break;
                     case "pdf":
-                        $data['images'][] = [
+                        $data['file_list'][] = [
                             'thumb' => '',
                             'name'  => implode(' ', $name),
                             'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
@@ -220,7 +209,7 @@ class FileManager extends AdminController
                     case "aspx":
                     case "jsp":
                     case "py":
-                        $data['images'][] = [
+                        $data['file_list'][] = [
                             'thumb' => '',
                             'name'  => implode(' ', $name),
                             'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
@@ -232,7 +221,7 @@ class FileManager extends AdminController
                         ];
                         break;
                     case "apk":
-                        $data['images'][] = [
+                        $data['file_list'][] = [
                             'thumb' => '',
                             'name'  => implode(' ', $name),
                             'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
@@ -244,37 +233,22 @@ class FileManager extends AdminController
                         ];
                         break;
                     case "webm":
-                    case "WEBM":
                     case "mpg":
-                    case "MPG":
                     case "mp2":
-                    case "MP2":
                     case "mpeg":
-                    case "MPEG":
                     case "mpe":
-                    case "MPE":
                     case "mpv":
-                    case "MPV":
                     case "ogg":
-                    case "OGG":
                     case "mp4":
-                    case "MP4":
                     case "m4p":
-                    case "M4P":
                     case "m4v":
-                    case "M4V":
                     case "avi":
-                    case "AVI":
                     case "wmv":
-                    case "WMV":
                     case "mov":
-                    case "MOV":
                     case "qt":
-                    case "QT":
                     case "flv":
-                    case "FLV":
                         $file_video = new \CodeIgniter\Files\File($image);
-                        $data['images'][] = [
+                        $data['file_list'][] = [
                             'thumb' => '',
                             'name'  => implode(' ', $name),
                             'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
@@ -287,7 +261,7 @@ class FileManager extends AdminController
                         ];
                         break;
                     default:
-                        $data['images'][] = [
+                        $data['file_list'][] = [
                             'thumb' => '',
                             'name'  => implode(' ', $name),
                             'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),

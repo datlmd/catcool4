@@ -28,7 +28,7 @@ class Img extends BaseController
             $width = 0;
             $height = 0;
 
-            $image_url = str_replace(base_url('img/'), '', current_url());
+            $image_url = str_replace([base_url('img/'), UPLOAD_FILE_DIR], ['', ''], current_url());
 
             if (!empty($img_wh)) {
                 $img_wh = strtolower($img_wh);
