@@ -13,6 +13,7 @@ return [
 	"text_list" => "Danh sách Bài viết",
 	"text_name" => "Bài viết",
 	"text_publish_date" => "Ngày hiển thị",
+	"text_publish_time" => "Giờ hiển thị",
 	"text_source" => "Nguồn",
 	"translate_admin_id" => "28",
 	"translate_frontend_id" => "27",

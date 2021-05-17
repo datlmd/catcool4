@@ -5,9 +5,8 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('img', ['namespace' => 'App\Modules\Images\Controllers'], function($subroutes){
-    $subroutes->add('(:any)', 'Img::index/$1');
-});
+$routes->add('img/(:any)', 'Img::Index', ['namespace' => 'App\Modules\Images\Controllers']);
+$routes->add('img', 'Img::Index', ['namespace' => 'App\Modules\Images\Controllers']);
 
 $routes->group('file', ['namespace' => 'App\Modules\Images\Controllers'], function($subroutes){
     $subroutes->add('(:any)', 'File::index');

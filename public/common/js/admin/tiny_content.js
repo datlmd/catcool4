@@ -21,7 +21,7 @@ var Tiny_content = {
             remove_script_host:false,
             relative_urls: false,
             menubar: false,
-            toolbar: 'undo redo | formatselect bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | link myFileManager media pageembed | numlist bullist checklist | table | fontselect fontsizeselect | forecolor backcolor casechange permanentpen formatpainter removeformat | hr pagebreak codesample | fullscreen preview code | print emoticons help', /* charmap emoticons a11ycheck ltr rtl */
+            toolbar: 'undo redo | formatselect bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | link image myFileManager media pageembed | numlist bullist checklist | table | fontselect fontsizeselect | forecolor backcolor casechange permanentpen formatpainter removeformat | hr pagebreak codesample | fullscreen preview code | print emoticons help', /* charmap emoticons a11ycheck ltr rtl */
             fontsize_formats: "8px 9px 10px 11px 12px 14px 16px 18px 20px 24px 30px 36px 48px 64px 72px",
             image_caption: true,
             image_title: true,
@@ -42,9 +42,10 @@ var Tiny_content = {
             template_mdate_format: '[Date Modified (MDATE): %d/%m/%Y : %H:%M:%S]',
             height: max_height,
             quickbars_selection_toolbar: 'bold italic blockquote forecolor removeformat | quicklink | alignleft aligncenter alignright',
-            quickbars_insert_toolbar: 'formatselect blockquote quicktable myFileManager',
+            quickbars_insert_toolbar: 'formatselect blockquote quicktable image myFileManager',
             toolbar_drawer: 'sliding',
             contextmenu: "link image",/*right click*/
+            /*
             setup: (editor) => {
                 editor.ui.registry.addButton('myFileManager', {
                     icon: 'image',
@@ -82,6 +83,8 @@ var Tiny_content = {
                     editor.save();
                 });
             },//end setup
+
+             */
             file_picker_types: 'image media',
             file_picker_callback: function (cb, value, meta) {
 

@@ -6,6 +6,7 @@ var Catcool = {
 
         if ($('#' + $(obj).data("slug-id")).length) {
             $('#' + $(obj).data("slug-id")).attr('placeholder', text_slug);
+            $('#' + $(obj).data("slug-id")).val(text_slug);
         }
 
         if ($('#' + $(obj).data("preview-slug")).length && !$('#' + $(obj).data("slug-id")).val().length) {
@@ -14,6 +15,8 @@ var Catcool = {
 
         if ($('#' + $(obj).data("title-id")).length) {
             $('#' + $(obj).data("title-id")).attr('placeholder', $(obj).val());
+            $('#' + $(obj).data("title-id")).val($(obj).val());
+            $('.preview-meta-seo').show();
         }
 
         if ($('#' + $(obj).data("preview-title")).length && !$('#' + $(obj).data("preview-title")).val().length) {
@@ -561,8 +564,8 @@ $(function () {
     //time out 7s
     setTimeout(function(){ $('#page_loading').fadeOut(); }, 7000);
 
-    if ($('.make_slug').length) {
-        $(".make_slug").on("keyup", function () {
+    if ($('.make-slug').length) {
+        $(".make-slug").on("keyup", function () {
             Catcool.makeSlug(this);
         });
     }

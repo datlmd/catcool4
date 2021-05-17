@@ -34,7 +34,7 @@
                                                 {lang('text_name')}
                                             </label>
                                             <div class="col-12 col-sm-8 col-lg-8">
-                                                <input type="text" name="manager_description[{$language.id}][name]" value='{set_value("manager_description[`$language.id`][name]", $edit_data.details[$language.id].name)}' id="input-name[{$language.id}]" data-slug-id="input-slug-{$language.id}" class="form-control {if !empty(form_error("manager_description[`$language.id`][name]"))}is-invalid{/if} {if empty($edit_data.category_id)}make_slug{/if}">
+                                                <input type="text" name="manager_description[{$language.id}][name]" value='{set_value("manager_description[`$language.id`][name]", $edit_data.details[$language.id].name)}' id="input-name[{$language.id}]" data-slug-id="input-slug-{$language.id}" class="form-control {if !empty(form_error("manager_description[`$language.id`][name]"))}is-invalid{/if} {if empty($edit_data.category_id)}make-slug{/if}">
                                                 {if !empty(form_error("manager_description[`$language.id`][name]"))}
                                                     <div class="invalid-feedback">{form_error("manager_description[`$language.id`][name]")}</div>
                                                 {/if}

@@ -31,9 +31,9 @@
 		<div id="collapse_seo" class="collapse show mt-2">
 			<div class="preview-meta-seo badge badge-light w-100 text-start my-2 p-3" {if empty($meta_title) && empty($seo_url_route) && empty($meta_description)}style="display: none;"{/if}>
 				<p class="meta-seo-title" id="seo_meta_title_{$language.id}">{old("lang.{$language.id}.meta_title", $meta_title)}</p>
-				<p class="meta-seo-url" id="seo_meta_url_{$language.id}">
+				<p class="meta-seo-url" >
 					{if !empty($name_seo_url)}{site_url($name_seo_url)}{else}{site_url()}{/if}
-					{old("seo_urls.{$language.id}.route", $seo_url_route)}
+					<span id="seo_meta_url_{$language.id}">{old("seo_urls.{$language.id}.route", $seo_url_route)}</span>
 				</p>
 				<p class="meta-seo-description" id="seo_meta_description_{$language.id}">{old("lang.{$language.id}.meta_description", $meta_description)}</p>
 			</div>

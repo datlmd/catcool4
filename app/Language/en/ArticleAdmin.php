@@ -13,6 +13,7 @@ return [
 	"text_list" => "Article List",
 	"text_name" => "Article",
 	"text_publish_date" => "Publish Date",
+	"text_publish_time" => "Publish Time",
 	"text_source" => "Source",
 	"translate_admin_id" => "28",
 	"translate_frontend_id" => "27",

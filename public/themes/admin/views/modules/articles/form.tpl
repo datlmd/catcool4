@@ -43,7 +43,7 @@
                                                     {else}
                                                         {assign var="name" value=""}
                                                     {/if}
-                                                    <input type="text" name="lang[{$language.id}][name]" value='{old("lang.{$language.id}.name", $name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang.{$language.id}.name")}is-invalid{/if}">
+                                                    <input type="text" name="lang[{$language.id}][name]" value='{old("lang.{$language.id}.name", $name)}' id="input_name_{$language.id}" data-preview-title="seo_meta_title_{$language.id}" data-title-id="input_meta_title_{$language.id}" data-preview-slug="seo_meta_url_{$language.id}" data-slug-id="input_slug_{$language.id}" class="form-control {if empty($edit_data.article_id)}make-slug{/if} {if $validator->hasError("lang.{$language.id}.name")}is-invalid{/if}">
                                                     <div class="invalid-feedback">
                                                         {$validator->getError("lang.{$language.id}.name")}
                                                     </div>
@@ -127,7 +127,7 @@
                                     <span class="form-check-label" for="is_comment_on">{lang('Admin.text_comment_status_on')}</span>
                                 </label>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group border-bottom pb-3 mb-2">
                                 {if isset($edit_data.publish_date)}
                                     {assign var="publish_date" value="`$edit_data.publish_date`"}
                                 {else}
@@ -138,13 +138,13 @@
                                     <input type="text" name="publish_date" id="publish_date" class="form-control datetimepicker-input" {if old('publish_date', $publish_date)}value="{old('publish_date', $publish_date)|date_format:'d/m/Y'}"{/if} placeholder="dd/mm/yyyy" data-target="#show-date-picker" />
                                     <div class="input-group-text" data-target="#show-date-picker" data-toggle="datetimepicker"><i class="fa fa-calendar-alt"></i></div>
                                 </div>
-                                <label class="form-label">{lang('ArticleAdmin.text_publish_date')}</label>
+                                <label class="form-label mt-2">{lang('ArticleAdmin.text_publish_time')}</label>
                                 <div class="input-group date show-time-picker" id="show-time-picker" data-target-input="nearest" data-date-format="hh:mm">
                                     <input type="text" name="publish_date_hour" id="publish_date_hour" class="form-control datetimepicker-input" {if old('publish_date_hour', $publish_date)}value="{old('publish_date_hour', $publish_date)|date_format:'h:i'}"{/if} placeholder="H:i" data-target="#show-time-picker" />
                                     <div class="input-group-text" data-target="#show-time-picker" data-toggle="datetimepicker"><i class="fa fa-clock"></i></div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group border-bottom pb-2 mb-2">
                                 <label class="form-label">{lang("Admin.text_image")}</label>
                                 {if isset($edit_data.images)}
                                     {assign var="images" value="`$edit_data.images`"}

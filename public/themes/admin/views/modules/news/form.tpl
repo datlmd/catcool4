@@ -27,7 +27,7 @@
                         <div class="form-group row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <span class="required-label">{lang('text_name')}</span>
-                                <input type="text" name="name" value='{set_value("name", $edit_data.name)|unescape:"html"}' id="input-name" data-preview-title="seo_meta_title" data-preview-slug="seo_meta_url" data-title-id="input-meta-title"  data-slug-id="input-slug" class="form-control make_slug {if !empty(form_error("name"))}is-invalid{/if}">
+                                <input type="text" name="name" value='{set_value("name", $edit_data.name)|unescape:"html"}' id="input-name" data-preview-title="seo_meta_title" data-preview-slug="seo_meta_url" data-title-id="input-meta-title"  data-slug-id="input-slug" class="form-control make-slug {if !empty(form_error("name"))}is-invalid{/if}">
                                 {if !empty(form_error("name"))}
                                     <div class="invalid-feedback">{form_error("name")}</div>
                                 {/if}
