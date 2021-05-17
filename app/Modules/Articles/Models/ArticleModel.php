@@ -31,6 +31,9 @@ class ArticleModel extends MyModel
         'mtime',
     ];
 
+    protected $useSoftDeletes = true;
+    protected $deletedField   = 'deleted';
+
     const ARTICLE_CACHE_NAME   = 'article_list';
     const ARTICLE_CACHE_EXPIRE = HOUR;
 

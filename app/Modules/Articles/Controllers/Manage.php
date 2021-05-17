@@ -285,7 +285,7 @@ class Manage extends AdminController
 
             //xoa slug ra khoi route
             foreach($list_delete as $value) {
-                $this->model_route->deleteByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $value['category_id']));
+                $this->model_route->deleteByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $value['article_id']));
             }
 
             //reset cache
