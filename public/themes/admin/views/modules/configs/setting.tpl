@@ -42,7 +42,7 @@
 							</ul>
 							<div class="tab-content border-0 p-3" id="tab_content">
 								<div class="tab-pane fade {if $tab_type eq 'tab_page'}show active{/if}" role="tabpanel" id="tab_content_page"  aria-labelledby="tab_page">
-	{*								{include file=get_theme_path('views/modules/configs/inc/tab_page.tpl')}*}
+									{include file=get_theme_path('views/modules/configs/inc/tab_page.tpl')}
 								</div>
 								<div class="tab-pane fade {if $tab_type eq 'tab_image'}show active{/if}" role="tabpanel" id="tab_content_image"  aria-labelledby="tab_image">
 									{include file=get_theme_path('views/modules/configs/inc/tab_image.tpl')}

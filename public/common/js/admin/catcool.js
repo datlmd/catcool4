@@ -441,13 +441,13 @@ var Catcool = {
             $(".dashboard-wrapper").removeClass('nav-left-sidebar-content-scrolled');
             $(".nav-left-sidebar .btn-scroll").addClass('btn-light');
             $(".nav-left-sidebar .btn-scroll").removeClass('btn-warning');
-            $('.nav-left-sidebar .btn-scroll').find('i').replaceWith('<i class="fas fa-angle-double-left font-22"></i>');
+            $('.nav-left-sidebar .btn-scroll').find('i').replaceWith('<i class="fas fa-angle-double-left font-8"></i>');
         } else {
             $(".nav-left-sidebar").addClass('nav-left-sidebar-scrolled');
             $(".dashboard-wrapper").addClass('nav-left-sidebar-content-scrolled');
             $(".nav-left-sidebar .btn-scroll").removeClass('btn-light');
             $(".nav-left-sidebar .btn-scroll").addClass('btn-warning');
-            $('.nav-left-sidebar .btn-scroll').find('i').replaceWith('<i class="fas fa-angle-double-right font-20 text-dark"></i>');
+            $('.nav-left-sidebar .btn-scroll').find('i').replaceWith('<i class="fas fa-angle-double-right font-14 text-dark"></i>');
         }
     },
     setCookie: function (key, value, days) {

@@ -56,6 +56,8 @@ body {
 
 .nav-left-sidebar .submenu {
     background: rgb(71 85 98);
+    border-bottom: 1px solid rgba(152, 166, 173, .2);
+    border-top: 1px solid rgba(152, 166, 173, .2);
 }
 
 .sidebar-dark .slimScrollDiv {

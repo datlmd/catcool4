@@ -100,12 +100,20 @@ class FileManager extends AdminController
         $file_tmp = [];
         foreach ($files as $key => $file) {
             $file_info = get_file_info($file);
+
             $file_size[$file]['size'] = !empty($file_info['size']) ? $file_info['size'] : 0;
             $file_size[$file]['date'] = !empty($file_info['date']) ? date("Y-m-d H:i:s", $file_info['date']) : null;
-            $file_tmp[$file_info['date']] = $file;
-        }
-        krsort($file_tmp);
 
+            $file_tmp[] = [
+                'date' => $file_info['date'],
+                'file' => $file
+            ];
+        }
+        usort($file_tmp, $this->_sortByDate('date'));
+
+        foreach ($file_tmp as $key => $file) {
+            $file_tmp[$key] = $file['file'];
+        }
         // Merge directories and files
         $file_list = array_merge($directories, $file_tmp);
 
@@ -151,7 +159,7 @@ class FileManager extends AdminController
                     'href'  => site_url('common/filemanager').'?directory=' .substr($image, strlen($this->dir_image_path . self::PATH_SUB_NAME . '/')) . $url,
                 ];
             } elseif (is_file($image)) {
-                $ext_tmp = explode('.', implode(' ', $name));
+                $ext_tmp = explode('.', implode('', $name));
                 $extension = strtolower(end($ext_tmp));
                 switch ($extension) {
                     case "jpg":
@@ -501,10 +509,10 @@ class FileManager extends AdminController
                 json_output(['error' => $validation->getError($file_name)]);
             }
 
+
             if ($this->request->getFileMultiple($file_name)) {
                 //if ($file->isValid() && !$file->hasMoved()) {
-                foreach($this->request->getFileMultiple($file_name) as $file)
-                {
+                foreach($this->request->getFileMultiple($file_name) as $file) {
                     // Get random file name
                     $newName = !empty(config_item('file_encrypt_name')) ? trim($file->getRandomName()) : trim($file->getName());
                     // Store file in public/uploads/ folder
@@ -518,7 +526,7 @@ class FileManager extends AdminController
                     if (!empty(config_item('enable_resize_image'))) {
                         $this->image_tool->resizeUpload($filepath);
                     }
-                    usleep(500);
+                    usleep(1000);
                 }
             } else {
                 $json['error'] = lang('FileManager.error_upload');
@@ -706,5 +714,14 @@ class FileManager extends AdminController
         $factor = floor((strlen($bytes) - 1) / 3);
 
         return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor];
+    }
+
+    private function _sortByDate($key)
+    {
+        return function ($a, $b) use ($key) {
+            $t1 = strtotime($a[$key]);
+            $t2 = strtotime($b[$key]);
+            return $t2-$t1;
+        };
     }
 }

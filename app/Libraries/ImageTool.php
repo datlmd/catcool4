@@ -9,7 +9,7 @@ class ImageTool
 
     protected $upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
 
-    private $_driver = 'gd'; //gd2,imagick
+    private $_driver = 'imagick'; //gd,gd2,imagick
     private $_quality;
 
     public function __construct()
@@ -214,7 +214,7 @@ class ImageTool
 
         try {
             // create an image manager instance with favored driver
-            $manager = new ImageManager(['driver' => $this->_driver]);
+            $manager = new ImageManager();//['driver' => $this->_driver]
 
             // to finally create image instances
             $manager->make($this->dir_image_path . $file_name)
@@ -298,13 +298,18 @@ class ImageTool
             ) {
 
                 if ($position == "top") {
-                    $position = "top_center";
+                    $position = "top-center";
                 } elseif ($position == "bottom") {
-                    $position = "bottom_center";
+                    $position = "bottom-center";
                 } elseif ($position == "center") {
-                    $position = "middle_center";
+                    $position = "middle-center";
+                } elseif ($position == "left") {
+                    $position = "middle-left";
+                } elseif ($position == "right") {
+                    $position = "middle-right";
                 }
-                $position_tmp = explode('_', $position);
+
+                $position_tmp = explode('-', $position);
 
                 $font_path  = !empty(config_item('image_watermark_font_path')) ? ROOTPATH . config_item('image_watermark_font_path') : null;
                 $font_size  = !empty(config_item('image_watermark_font_size')) ? config_item('image_watermark_font_size') : 16;
@@ -351,6 +356,10 @@ class ImageTool
         $watermark = 'cache/tmp/watermark_bg.jpg';
         if (is_file(get_upload_path() . $watermark)) {
             delete_files(unlink(get_upload_path() . $watermark));
+        }
+
+        if (!is_dir($this->dir_image_path . 'cache/tmp')) {
+            mkdir($this->dir_image_path . 'cache/tmp', 0777);
         }
 
         \Config\Services::image($this->_driver)

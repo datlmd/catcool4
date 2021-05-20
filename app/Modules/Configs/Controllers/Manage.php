@@ -68,6 +68,9 @@ class Manage extends AdminController
     {
         switch ($this->request->getPost('tab_type')) {
             case 'tab_page':
+                $this->validator->setRule('site_name', lang('ConfigAdmin.text_site_name'), 'required');
+                $this->validator->setRule('site_description', lang('ConfigAdmin.text_site_description'), 'required');
+                $this->validator->setRule('site_keywords', lang('ConfigAdmin.text_site_keywords'), 'required');
                 $this->validator->setRule('pagination_limit', lang('ConfigAdmin.text_pagination_limit'), 'required|is_natural_no_zero');
                 $this->validator->setRule('pagination_limit_admin', lang('ConfigAdmin.text_pagination_limit_admin'), 'required|is_natural_no_zero');
                 break;
@@ -89,7 +92,11 @@ class Manage extends AdminController
                 break;
         }
 
-        if (!empty($this->request->getPost()) && $this->validator->withRequest($this->request)->run()) {
+        if (!empty($this->request->getPost())) {
+            if (!$this->validator->withRequest($this->request)->run()) {
+                set_alert($this->errors, ALERT_ERROR);
+                return redirect()->back()->withInput();
+            }
 
             $data_settings = $this->request->getPost();
             switch ($this->request->getPost('tab_type')) {
@@ -162,15 +169,15 @@ class Manage extends AdminController
 
         $watermark_list = [
             ""             => lang('Admin.text_none'),
-            'top_left'     => lang('ConfigAdmin.text_top_left'),
+            'top-left'     => lang('ConfigAdmin.text_top_left'),
             'top'          => lang('ConfigAdmin.text_top_center'),
-            'top_right'    => lang('ConfigAdmin.text_top_right'),
+            'top-right'    => lang('ConfigAdmin.text_top_right'),
             'left'         => lang('ConfigAdmin.text_middle_left'),
             'center'       => lang('ConfigAdmin.text_center_center'),
             'right'        => lang('ConfigAdmin.text_middle_right'),
-            'bottom_left'  => lang('ConfigAdmin.text_bottom_left'),
+            'bottom-left'  => lang('ConfigAdmin.text_bottom_left'),
             'bottom'       => lang('ConfigAdmin.text_bottom_center'),
-            'bottom_right' => lang('ConfigAdmin.text_bottom_right'),
+            'bottom-right' => lang('ConfigAdmin.text_bottom_right'),
         ];
         $data['watermark_list'] = $watermark_list;
 

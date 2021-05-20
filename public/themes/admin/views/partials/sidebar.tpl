@@ -1,7 +1,7 @@
 {strip}
 <div class="nav-left-sidebar sidebar-dark {if empty(config_item('enable_scroll_menu_admin'))}nav-left-sidebar-scrolled{/if} {if empty(config_item('enable_icon_menu_admin'))}navbar-full-text{/if}">
 	<div class="menu-list">
-		<button type="button" class="btn btn-xs {if empty(config_item('enable_scroll_menu_admin'))}btn-warning{else}btn-light{/if} border-0 d-xl-block d-lg-block d-none navbar-light btn-scroll" onclick="Catcool.scrollMenu(this);"><i class="{if empty(config_item('enable_scroll_menu_admin'))}fas fa-angle-double-right font-20 text-dark{else}fas fa-angle-double-left font-22{/if}"></i></button>
+		<button type="button" class="btn btn-xs {if empty(config_item('enable_scroll_menu_admin'))}btn-warning{else}btn-light{/if} border-0 d-xl-block d-lg-block d-none navbar-light btn-scroll" onclick="Catcool.scrollMenu(this);"><i class="{if empty(config_item('enable_scroll_menu_admin'))}fas fa-angle-double-right font-14 text-dark{else}fas fa-angle-double-left font-8{/if}"></i></button>
 		{* su dung cho thiet bi di dong *}
 		<nav class="navbar navbar-expand-lg navbar-light {if config_item('enable_icon_menu_admin')}d-xl-none d-lg-none{/if}">
             {if empty(config_item('image_logo_url'))}
@@ -14,7 +14,7 @@
 					<img src="{image_url(config_item('image_logo_url'))}" alt="logo">
 				</a>
             {/if}
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#menu_admin" aria-controls="menu_admin" aria-expanded="false" aria-label="Menu Admin">
+			<button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" href="#menu_admin" aria-controls="menu_admin" aria-expanded="false" aria-label="Menu Admin">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="menu_admin">
@@ -25,11 +25,11 @@
 						</a>
 					</li>
 					<li class="nav-item mt-xl-2 mt-lg-2">
-						<a class="nav-link" href="{site_url(CATCOOL_DASHBOARD)}"><i class="fas fa-home"></i>{lang('catcool_dashboard')}</a>
+						<a class="nav-link" href="{site_url(CATCOOL_DASHBOARD)}"><i class="fas fa-home"></i>{lang('Admin.catcool_dashboard')}</a>
 					</li>
 					{foreach $menu_admin as $key => $item}
 						<li class="nav-item">
-							<a class="nav-link {if $item.selected|strstr:$menu_current}collapsed active show{/if}" href="{$item.slug}" {$item.attributes} {if !empty($item.subs)}data-bs-toggle="collapse" aria-expanded="true"{/if} data-target="#submenu-{$key}" aria-controls="submenu-{$key}">
+							<a class="nav-link {if $item.selected|strstr:$menu_current}collapsed active show{/if}" {$item.attributes} {if !empty($item.subs)}data-bs-toggle="collapse" aria-expanded="true" href="#submenu-{$key}"{else}href="{$item.slug}"{/if}  aria-controls="submenu-{$key}">
 								{if !empty($item.icon)}<i class="{$item.icon}"></i>{/if}{$item.name}
 							</a>
 							{if !empty($item.subs)}
@@ -46,7 +46,7 @@
 						</li>
 					{/foreach}
 					<li class="nav-item d-xl-none d-lg-none">
-						<a class="nav-link" href="{site_url('users/manage/logout')}"><i class="fas fa-power-off"></i>{lang('text_logout')}</a>
+						<a class="nav-link" href="{site_url('users/manage/logout')}"><i class="fas fa-power-off"></i>{lang('Admin.text_logout')}</a>
 					</li>
 				</ul>
 			</div>

@@ -103,8 +103,8 @@
 		{else}
 			{assign var="image_none" value=""}
 		{/if}
-		<a href="javascript:void(0);" id="image_none" data-target="input_image_none" data-thumb="load_image_none" data-bs-toggle="image" class="mx-0 mt-1">
-			<img src="{if !empty(old('image_none', $image_none))}{image_thumb_url(old('image_none', $image_none))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_image_none" data-placeholder="{image_default_url()}"/>
+		<a href="javascript:void(0);" id="image_none" data-target="input_image_none" data-thumb="load_image_none" data-bs-toggle="image" data-type="image" class="mx-0 mt-1">
+			<img src="{if !empty(old('image_none', $image_none))}{image_thumb_url(old('image_none', $image_none))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1" alt="" title="" id="load_image_none" data-placeholder="{image_default_url()}"/>
 			<button type="button" id="button-image-none" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
 			<button type="button" id="button-clear-none" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
 		</a>
@@ -244,8 +244,8 @@
 				<input type="radio" name="image_watermark_type" value="image" {if old('image_watermark_type', $image_watermark_type) eq 'image'}checked="checked"{/if} id="image_watermark_type_image" class="form-check-input">
 				<label class="form-check-label" for="image_watermark_type_image">{lang('ConfigAdmin.text_image_watermark_path')}</label>
 			</label>
-			<a href="javascript:void(0);" id="image_watermark_path" data-target="input_image_watermark_path" data-thumb="load_image_watermark_path" data-bs-toggle="image" class="mx-0 mt-1">
-				<img src="{if !empty(old('image_watermark_path', $image_watermark_path))}{image_thumb_url(old('image_watermark_path', $image_watermark_path))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_image_watermark_path" data-placeholder="{image_default_url()}"/>
+			<a href="javascript:void(0);" id="image_watermark_path" data-target="input_image_watermark_path" data-thumb="load_image_watermark_path" data-bs-toggle="image" data-type="image" class="mx-0 mt-1">
+				<img src="{if !empty(old('image_watermark_path', $image_watermark_path))}{image_thumb_url(old('image_watermark_path', $image_watermark_path))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1" alt="" title="" id="load_image_watermark_path" data-placeholder="{image_default_url()}"/>
 				<button type="button" id="button-image-watemark" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
 				<button type="button" id="button-clear-watemark" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
 			</a>
@@ -342,7 +342,7 @@
 </div>
 <div class="form-group row mt-3">
 	<div class="col-12 col-sm-3 col-form-label text-sm-end"></div>
-	<div class="col-12 col-sm-8 col-lg-6">
+	<div class="col-12 col-sm-8 col-lg-6 ms-0">
 		<button type="submit" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
 	</div>
 </div>

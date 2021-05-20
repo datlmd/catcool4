@@ -1,7 +1,7 @@
 {strip}
 <style>
     body {
-        background: url({img_url('auth-bg.jpg')}) no-repeat center center;
+        background: url({img_url(config_item('background_image_admin_path'))}) no-repeat center center;
     }
 </style>
 <div class="splash-container">

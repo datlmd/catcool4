@@ -28,6 +28,8 @@ class CustomConfig extends BaseConfig
 	 */
 	public $avatarDefaultMale = "images/male.png";
 
+	public $backgroundImageAdminPath = "bg-01.jpg";
+
 	/**
 	 * Khai báo html cho breadcrumb close
 	 */
@@ -112,12 +114,12 @@ class CustomConfig extends BaseConfig
 	/**
 	 * Chế độ tối
 	 */
-	public $enableDarkMode = true;
+	public $enableDarkMode = 1;
 
 	/**
 	 * true sử dụng menu bằng icon, false sẽ sử dụng menu kiểu text
 	 */
-	public $enableIconMenuAdmin = true;
+	public $enableIconMenuAdmin = 0;
 
 	/**
 	 * Bật chế độ resize hình
@@ -127,7 +129,7 @@ class CustomConfig extends BaseConfig
 	/**
 	 * Hiển thị thanh menu, false sẽ ẩn menu gọn lại
 	 */
-	public $enableScrollMenuAdmin = true;
+	public $enableScrollMenuAdmin = 1;
 
 	public $encryptionKey = "";
 
@@ -135,7 +137,7 @@ class CustomConfig extends BaseConfig
 
 	public $fbPages = "";
 
-	public $fileEncryptName = 1;
+	public $fileEncryptName = 0;
 
 	public $fileExtAllowed = "jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF|bmp|BMP|webp|WEBP|tiff|TIFF|svg|SVG|svgz|SVGZ|psd|PSD|raw|RAW|heif|HEIF|indd|INDD|ai|AI|webm|WEBM|mpg|MPG|mp2|MP2|mpeg|MPEG|mpe|MPE|mpv|MPV|ogg|OGG|mp4|MP4|m4p|M4P|m4v|M4V|avi|AVI|wmv|WMV|mov|MOV|qt|QT|flv|FLV|swf|SWF|avchd|AVCHD|zip|ZIP|txt|TXT|rar|RAR|pdf|PDF|doc|DOC|eps|cab";
 
@@ -197,7 +199,7 @@ class CustomConfig extends BaseConfig
 	 */
 	public $imageNone = "root/logo-hoatuoi24h-21.png";
 
-	public $imageQuality = 47;
+	public $imageQuality = 90;
 
 	/**
 	 * RESIZE_IMAGE_DEFAULT_HEIGHT
@@ -219,7 +221,7 @@ class CustomConfig extends BaseConfig
 	 */
 	public $imageThumbnailSmallWidth = 800;
 
-	public $imageWatermark = "center";
+	public $imageWatermark = "bottom-right";
 
 	public $imageWatermarkFontColor = "#ffffff";
 
@@ -234,15 +236,15 @@ class CustomConfig extends BaseConfig
 	 */
 	public $imageWatermarkIsShadow = 1;
 
-	public $imageWatermarkOpacity = 50;
+	public $imageWatermarkOpacity = 90;
 
 	public $imageWatermarkPath = "root/1619235132_fbd08cf573a46e5ecca9.png";
 
-	public $imageWatermarkShadowColor = "#8a8a8a";
+	public $imageWatermarkShadowColor = "#707a00";
 
-	public $imageWatermarkShadowDistance = 3;
+	public $imageWatermarkShadowDistance = 4;
 
-	public $imageWatermarkText = "Cat Cool Lê";
+	public $imageWatermarkText = "Cat Cool";
 
 	public $imageWatermarkType = "text";
 
