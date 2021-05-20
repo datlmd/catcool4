@@ -1,5 +1,4 @@
 {form_open(uri_string(), ['id' => 'form_mail'])}
-{create_input_token($csrf)}
 {form_hidden('tab_type', 'tab_mail')}
 <div class="form-group row">
 	{lang('text_email_engine', 'text_email_engine', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}

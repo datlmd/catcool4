@@ -122,7 +122,7 @@ class CustomConfig extends BaseConfig
 	/**
 	 * Bật chế độ resize hình
 	 */
-	public $enableResizeImage = true;
+	public $enableResizeImage = 0;
 
 	/**
 	 * Hiển thị thanh menu, false sẽ ẩn menu gọn lại
@@ -135,9 +135,9 @@ class CustomConfig extends BaseConfig
 
 	public $fbPages = "";
 
-	public $fileEncryptName = false;
+	public $fileEncryptName = 1;
 
-	public $fileExtAllowed = "zip|txt|png|PNG|jpe|JPE|jpeg|JPEG|jpg|JPG|gif|GIF|bmp|BMP|ico|tiff|tif|svg|svgz|zip|rar|msi|cab|mp3|qt|mov|pdf|psd|ai|eps|ps|doc|mp4";
+	public $fileExtAllowed = "jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF|bmp|BMP|webp|WEBP|tiff|TIFF|svg|SVG|svgz|SVGZ|psd|PSD|raw|RAW|heif|HEIF|indd|INDD|ai|AI|webm|WEBM|mpg|MPG|mp2|MP2|mpeg|MPEG|mpe|MPE|mpv|MPV|ogg|OGG|mp4|MP4|m4p|M4P|m4v|M4V|avi|AVI|wmv|WMV|mov|MOV|qt|QT|flv|FLV|swf|SWF|avchd|AVCHD|zip|ZIP|txt|TXT|rar|RAR|pdf|PDF|doc|DOC|eps|cab";
 
 	public $fileMaxHeight = 0;
 
@@ -197,7 +197,7 @@ class CustomConfig extends BaseConfig
 	 */
 	public $imageNone = "root/logo-hoatuoi24h-21.png";
 
-	public $imageQuality = 60;
+	public $imageQuality = 47;
 
 	/**
 	 * RESIZE_IMAGE_DEFAULT_HEIGHT
@@ -219,27 +219,34 @@ class CustomConfig extends BaseConfig
 	 */
 	public $imageThumbnailSmallWidth = 800;
 
-	public $imageWatermark = "top_right";
+	public $imageWatermark = "center";
 
-	public $imageWatermarkFontColor = "#15b07f";
+	public $imageWatermarkFontColor = "#ffffff";
 
-	public $imageWatermarkFontPath = "./system/fonts/Lemonada.ttf";
+	public $imageWatermarkFontPath = "public/common/fonts/TAHOMA.TTF";
 
-	public $imageWatermarkFontSize = 46;
+	public $imageWatermarkFontSize = 40;
 
-	public $imageWatermarkHorOffset = -20;
+	public $imageWatermarkHorOffset = 0;
+
+	/**
+	 * Watermark text: withShadow Boolean value whether to display a shadow or not.
+	 */
+	public $imageWatermarkIsShadow = 1;
 
 	public $imageWatermarkOpacity = 50;
 
-	public $imageWatermarkPath = "";
+	public $imageWatermarkPath = "root/1619235132_fbd08cf573a46e5ecca9.png";
 
-	public $imageWatermarkShadowColor = "";
+	public $imageWatermarkShadowColor = "#8a8a8a";
 
-	public $imageWatermarkShadowDistance = "";
+	public $imageWatermarkShadowDistance = 3;
 
 	public $imageWatermarkText = "Cat Cool Lê";
 
-	public $imageWatermarkVrtOffset = 20;
+	public $imageWatermarkType = "text";
+
+	public $imageWatermarkVrtOffset = 0;
 
 	/**
 	 * Chiều rộng tối đa của hình trên mobile (pixel)

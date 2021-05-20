@@ -12,6 +12,8 @@ $routes->group('configs', ['namespace' => 'App\Modules\Configs\Controllers'], fu
     $subroutes->add('manage/delete', 'Manage::delete');
     $subroutes->add('manage/publish', 'Manage::publish');
     $subroutes->add('manage/write', 'Manage::write');
+    $subroutes->add('manage/settings/(:any)', 'Manage::settings/$1');
+    $subroutes->add('manage/settings', 'Manage::settings');
 
     $subroutes->add('groups_manage', 'GroupsManage::index');
     $subroutes->add('groups_manage/add', 'GroupsManage::add');

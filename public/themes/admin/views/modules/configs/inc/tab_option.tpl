@@ -1,5 +1,4 @@
 {form_open(uri_string(), ['id' => 'form_option'])}
-{create_input_token($csrf)}
 {form_hidden('tab_type', 'tab_option')}
 <div class="border-bottom mx-3 lead pb-1 my-3">{lang('text_product')}</div>
 <div class="form-group row">

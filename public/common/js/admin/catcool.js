@@ -551,6 +551,12 @@ var Catcool = {
         });
         return false;
     },
+    showRangeValue: function (obj) {
+        if (!$(obj).data("target").length) {
+            return;
+        }
+        $($(obj).data("target")).html($(obj).val());
+    },
 };
 
 /* action - event */
@@ -561,8 +567,8 @@ $(function () {
         $('#page_loading').fadeOut();
     });
 
-    //time out 7s
-    setTimeout(function(){ $('#page_loading').fadeOut(); }, 7000);
+    //time out 4s
+    setTimeout(function(){ $('#page_loading').fadeOut(); }, 4000);
 
     if ($('.make-slug').length) {
         $(".make-slug").on("keyup", function () {

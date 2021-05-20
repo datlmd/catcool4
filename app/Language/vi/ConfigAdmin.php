@@ -128,6 +128,7 @@ return [
 	"text_image_watermark_font_path" => "Font",
 	"text_image_watermark_font_size" => "Size",
 	"text_image_watermark_hor_offset" => "Offset X",
+	"text_image_watermark_is_shadow" => "Hiển thị bóng",
 	"text_image_watermark_opacity" => "Opacity",
 	"text_image_watermark_path" => "Sử dụng hình",
 	"text_image_watermark_shadow_color" => "Shadow Color",

@@ -1,5 +1,4 @@
 {form_open(uri_string(), ['id' => 'form_server'])}
-{create_input_token($csrf)}
 {form_hidden('tab_type', 'tab_server')}
 <div class="border-bottom mx-3 lead pb-1 my-3">{lang(lang('text_general'))}</div>
 <div class="form-group row">

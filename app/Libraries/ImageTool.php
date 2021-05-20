@@ -9,6 +9,9 @@ class ImageTool
 
     protected $upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
 
+    private $_driver = 'gd'; //gd2,imagick
+    private $_quality;
+
     public function __construct()
     {
         helper('filesystem');
@@ -16,6 +19,8 @@ class ImageTool
         $this->image = \Config\Services::image();
 
         $this->dir_image_path = get_upload_path();
+
+        $this->_quality = !empty(config_item('image_quality')) ? config_item('image_quality') : 100;
     }
 
     /**
@@ -68,13 +73,12 @@ class ImageTool
 
         if (!is_file($this->dir_image_path . $image_new)) {
 
-            $quality = !empty(config_item('image_quality')) ? config_item('image_quality') : 100;
             $master_dimm = !empty(config_item('image_master_dimm')) ? config_item('image_master_dimm') : 'width';
 
             try {
-                \Config\Services::image('imagick')->withFile($this->dir_image_path . $image_old)
+                \Config\Services::image($this->_driver)->withFile($this->dir_image_path . $image_old)
                     ->resize($width, $height, true, $master_dimm)
-                    ->save($this->dir_image_path . $image_new, $quality);
+                    ->save($this->dir_image_path . $image_new, $this->_quality);
             } catch (\Exception $e) {
                 log_message('error', $e->getMessage());
                 return false;
@@ -111,13 +115,12 @@ class ImageTool
 
         list($resize_width, $resize_height) = get_image_resize_info($image_info[0], $image_info[1]);
 
-        $quality = !empty(config_item('image_quality')) ? config_item('image_quality') : 100;
         $master_dimm = !empty(config_item('image_master_dimm')) ? config_item('image_master_dimm') : 'width';
 
         try {
-            \Config\Services::image('imagick')->withFile($file_path)
+            \Config\Services::image($this->_driver)->withFile($file_path)
                 ->resize($resize_width, $resize_height, true, $master_dimm)
-                ->save($file_path, $quality);
+                ->save($file_path, $this->_quality);
         } catch (\Exception $e) {
             log_message('error', $e->getMessage());
             return false;
@@ -132,10 +135,8 @@ class ImageTool
             return false;
         }
 
-        $quality = !empty(config_item('image_quality')) ? config_item('image_quality') : 100;
-
         try {
-            $this->image = \Config\Services::image('imagick');
+            $this->image = \Config\Services::image($this->_driver);
 
             if (in_array($angle, ['hor', 'horizontal', 'vrt', 'vertical'])) {
                 if ($angle == 'hor') {
@@ -145,12 +146,12 @@ class ImageTool
                 }
                 $this->image->withFile($this->dir_image_path . $file_name)
                     ->flip($angle)
-                    ->save($this->dir_image_path . $file_name, $quality);
+                    ->save($this->dir_image_path . $file_name, $this->_quality);
             } else {
                 $this->image->withFile($this->dir_image_path . $file_name)
                     ->reorient()
                     ->rotate($angle)
-                    ->save($this->dir_image_path . $file_name, $quality);
+                    ->save($this->dir_image_path . $file_name, $this->_quality);
             }
         } catch (\Exception $e) {
             log_message('error', $e->getMessage());
@@ -167,7 +168,7 @@ class ImageTool
         }
 
         try {
-            $info = \Config\Services::image('imagick')->withFile($this->dir_image_path . $file_name)
+            $info = \Config\Services::image($this->_driver)->withFile($this->dir_image_path . $file_name)
                 ->getFile()
                 ->getProperties(true);
         } catch (\Exception $e) {
@@ -193,9 +194,9 @@ class ImageTool
         }
 
         try {
-            \Config\Services::image('imagick')->withFile($this->dir_image_path . $file_name)
+            \Config\Services::image($this->_driver)->withFile($this->dir_image_path . $file_name)
                 ->fit($width, $height, $position)
-                ->save($this->dir_image_path . $file_new);
+                ->save($this->dir_image_path . $file_new, $this->_quality);
         }
         catch (\Exception $e)
         {
@@ -213,12 +214,12 @@ class ImageTool
 
         try {
             // create an image manager instance with favored driver
-            $manager = new ImageManager(['driver' => 'gd']);//imagick
+            $manager = new ImageManager(['driver' => $this->_driver]);
 
             // to finally create image instances
             $manager->make($this->dir_image_path . $file_name)
                 ->crop($width, $height, $xOffset, $yOffset)
-                ->save($this->dir_image_path . $file_name);
+                ->save($this->dir_image_path . $file_name, $this->_quality);
 
         } catch (\Exception $e) {
             log_message('error', $e->getMessage());
@@ -235,9 +236,9 @@ class ImageTool
         }
 
         try {
-            \Config\Services::image('imagick')->withFile($file_name)
+            \Config\Services::image($this->_driver)->withFile($file_name)
                 ->convert($image_type)
-                ->save($file_new);
+                ->save($file_new, $this->_quality);
         } catch (\Exception $e) {
             log_message('error', $e->getMessage());
             return false;
@@ -269,65 +270,96 @@ class ImageTool
             return $image_root;
         }
 
-        $position_tmp = explode('_', $position);
-        if (!empty($watermark_path)) {
+        try {
+            if (!empty(config_item('image_watermark_type'))
+                && config_item('image_watermark_type') == 'image'
+                && !empty($watermark_path)
+            ) {
+                $image_mgr     = new ImageManager();
+                $watermark_mgr = new ImageManager();
 
-            $config = [
-                'source_image'     => $this->dir_image_path . $file_name,
-                'wm_type'          => 'overlay',
-                'quality'          => !empty(config_item('image_quality')) ? config_item('image_quality') : 100,
-                'dynamic_output'   => FALSE,
-                'wm_padding'       => null,
-                'wm_vrt_alignment' => $position_tmp[0],
-                'wm_hor_alignment' => $position_tmp[1],
-                'wm_overlay_path'  => $this->dir_image_path . $watermark_path,
-                'wm_opacity'       => !empty(config_item('image_watermark_opacity')) ? config_item('image_watermark_opacity') : 50,
-                //'wm_x_transp'      => 4,
-                //'wm_y_transp'      => 4,
-            ];
-        } else {
-            $config = [
-                'source_image' => $this->dir_image_path . $file_name,
-                'wm_type' => 'text',
-                'wm_text' => $watermark_text,
-                'wm_font_path' => !empty(config_item('image_watermark_font_path')) ? config_item('image_watermark_font_path') : './system/fonts/texb.ttf',
-                'wm_font_size' => !empty(config_item('image_watermark_font_size')) ? config_item('image_watermark_font_size') : 16,
-                'wm_font_color' => !empty(config_item('image_watermark_font_color')) ? config_item('image_watermark_font_color') : 'ffffff',
-                'wm_vrt_alignment' => $position_tmp[0],
-                'wm_hor_alignment' => $position_tmp[1],
-                'wm_padding' => 0,
-                'wm_shadow_color'  => !empty(config_item('image_watermark_shadow_color')) ? config_item('image_watermark_shadow_color') : null,
-                'wm_shadow_distance' => !empty(config_item('image_watermark_shadow_distance')) ? config_item('image_watermark_shadow_distance') : 3,
-            ];
-        }
+                $image_new     = $image_mgr->make($this->dir_image_path . $file_name);
+                $watermark_img = $watermark_mgr->make($this->dir_image_path . $watermark_path)
+                    ->opacity(config_item('image_watermark_opacity'));
 
-        if (!empty(config_item('image_watermark_hor_offset'))) {
-            $config['wm_hor_offset'] = config_item('image_watermark_hor_offset');
-        }
-        if (!empty(config_item('image_watermark_vrt_offset'))) {
-            $config['wm_vrt_offset'] = config_item('image_watermark_vrt_offset');
-        }
+                if ($watermark_img->width() > $image_new->width() || $watermark_img->height() > $image_new->height()) {
+                    $watermark_img->resize($image_new->width() , $image_new->height(), function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                }
 
-        $this->image->clear();
-        $this->image->initialize($config);
-        $this->image->watermark();
+                $image_new->insert($watermark_img, $position, config_item('image_watermark_vrt_offset'), config_item('image_watermark_hor_offset'))
+                    ->save($this->dir_image_path . $file_name, $this->_quality);
+
+            } elseif (!empty(config_item('image_watermark_type'))
+                && config_item('image_watermark_type') == 'text'
+                && !empty($watermark_text)
+            ) {
+
+                if ($position == "top") {
+                    $position = "top_center";
+                } elseif ($position == "bottom") {
+                    $position = "bottom_center";
+                } elseif ($position == "center") {
+                    $position = "middle_center";
+                }
+                $position_tmp = explode('_', $position);
+
+                $font_path  = !empty(config_item('image_watermark_font_path')) ? ROOTPATH . config_item('image_watermark_font_path') : null;
+                $font_size  = !empty(config_item('image_watermark_font_size')) ? config_item('image_watermark_font_size') : 16;
+                $font_color = !empty(config_item('image_watermark_font_color')) ? config_item('image_watermark_font_color') : '#ffffff';
+
+                $opacity       = config_item('image_watermark_opacity');
+                $shadow_color  = !empty(config_item('image_watermark_shadow_color')) ? config_item('image_watermark_shadow_color') : '#f9f9f9';
+                $shadow_offset = !empty(config_item('image_watermark_shadow_distance')) ? config_item('image_watermark_shadow_distance') : 3;
+
+                $text_option = [
+                    'color'        => $font_color,
+                    'fontSize'     => $font_size,
+                    'opacity'      => ($opacity == 0) ? 1 : (1 - ($opacity / 100)),
+                    'vAlign'       => $position_tmp[0],
+                    'hAlign'       => $position_tmp[1],
+                    'vOffset'      => config_item('image_watermark_vrt_offset'),
+                    'hOffset'      => config_item('image_watermark_hor_offset'),
+                    'withShadow'   => !empty(config_item('image_watermark_is_shadow')),
+                    'shadowColor'  => $shadow_color,
+                    'shadowOffset' => $shadow_offset,
+                ];
+
+                if (!empty($font_path)) {
+                    $text_option['fontPath'] = $font_path;
+                }
+
+                \Config\Services::image($this->_driver)
+                    ->withFile($this->dir_image_path . $file_name)
+                    ->text($watermark_text, $text_option)
+                    ->save($this->dir_image_path . $file_name, $this->_quality);
+            }
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            return $image_root;
+        }
 
         return $image_root;
     }
 
-    public function watermark_demo($file_name = null)
+    public function watermarkDemo($file_name = null)
     {
-        $file_name = !empty($file_name) ? get_upload_path() . $file_name : FCPATH . 'content/common/images/watermark_bg.jpg';
+        $file_name = !empty($file_name) ? get_upload_path() . $file_name : FCPATH . 'common/images/watermark_bg.jpg';
 
-        $watermark = 'tmp/watermark_bg.jpg';
+        $watermark = 'cache/tmp/watermark_bg.jpg';
         if (is_file(get_upload_path() . $watermark)) {
             delete_files(unlink(get_upload_path() . $watermark));
         }
-        write_file(get_upload_path() . $watermark, read_file($file_name));
+
+        \Config\Services::image($this->_driver)
+            ->withFile($file_name)
+            ->save(get_upload_path() . $watermark);
 
         //$this->resize($watermark, config_item('image_width_pc'), config_item('image_height_pc'));
         $this->watermark($watermark);
 
-        return base_url() . get_upload_url('tmp/watermark_bg.jpg');
+        return site_url() . "img/$watermark";
     }
 }

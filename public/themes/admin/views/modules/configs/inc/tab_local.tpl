@@ -1,5 +1,4 @@
 {form_open(uri_string(), ['id' => 'form_local'])}
-{create_input_token($csrf)}
 {form_hidden('tab_type', 'tab_local')}
 <div class="form-group row">
 	{lang('text_country', 'text_country', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}

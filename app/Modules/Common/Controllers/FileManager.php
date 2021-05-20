@@ -472,9 +472,9 @@ class FileManager extends AdminController
                 $directory = $this->dir_image_path . self::PATH_SUB_NAME;
             }
 
-            $file_name = 'file';
-            $max_size = !empty(config_item('file_max_size')) ? config_item('file_max_size') : null;
-            $max_width = !empty(config_item('file_max_width')) ? config_item('file_max_width') : null;
+            $file_name  = 'file';
+            $max_size   = !empty(config_item('file_max_size')) ? config_item('file_max_size') : null;
+            $max_width  = !empty(config_item('file_max_width')) ? config_item('file_max_width') : null;
             $max_height = !empty(config_item('file_max_height')) ? config_item('file_max_height') : null;
 
             // Validation
@@ -486,11 +486,11 @@ class FileManager extends AdminController
             ];
 
             if (!empty($max_size)) {
-                $valids[] =  sprintf('max_size[%s,%s]', $file_name, $max_size);
+                $valids[] = sprintf('max_size[%s,%s]', $file_name, $max_size);
             }
 
             if (!empty($max_width) && !empty($max_height)) {
-                $valids[] =  sprintf('max_dims[%s,%d,%d]', $file_name, $max_width, $max_height);
+                $valids[] = sprintf('max_dims[%s,%d,%d]', $file_name, $max_width, $max_height);
             }
 
             $validation->setRules([
@@ -506,7 +506,7 @@ class FileManager extends AdminController
                 foreach($this->request->getFileMultiple($file_name) as $file)
                 {
                     // Get random file name
-                    $newName = trim($file->getRandomName());
+                    $newName = !empty(config_item('file_encrypt_name')) ? trim($file->getRandomName()) : trim($file->getName());
                     // Store file in public/uploads/ folder
                     $file->move($directory, $newName);
 

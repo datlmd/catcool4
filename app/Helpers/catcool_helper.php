@@ -692,19 +692,19 @@ if(!function_exists('image_thumb_url'))
             return image_default_url();
         }
 
-        $image_tool = new \App\Modules\Images\Models\Image_tool();
+        $image_tool = new \App\Libraries\ImageTool();
 
         $image_resize = $image_tool->resize($image, $width, $height);
 
         if (!empty($is_watermark)) {
             $image_resize = $image_tool->watermark($image_resize);
         }
-
+        $image_resize = "img/$upload_path/$image_resize";
         if (!empty(session()->get('is_admin'))) {
-            return image_domain($upload_path) . $image_resize . '?' . time();
+            return image_domain($image_resize) . '?' . time();
         }
 
-        return image_domain($upload_path) . $image_resize;
+        return image_domain($image_resize);
     }
 }
 
@@ -1415,19 +1415,19 @@ if(!function_exists('get_fonts'))
     function get_fonts()
     {
         $list = [
-            'Texb' => './system/fonts/texb.ttf',
-            'TAHOMA' => './system/fonts/TAHOMA.TTF',
-            'Oswald' => './system/fonts/Oswald.ttf',
-            'Orbitron' => './system/fonts/Orbitron.ttf',
-            'Bitter' => './system/fonts/Bitter.ttf',
-            'Caveat' => './system/fonts/Caveat.ttf',
-            'Dancing Script' => './system/fonts/DancingScript.ttf',
-            'Gloria Hallelujah' => './system/fonts/GloriaHallelujah.ttf',
-            'Lemonada' => './system/fonts/Lemonada.ttf',
-            'Modak' => './system/fonts/Modak.ttf',
-            'Sacramento' => './system/fonts/Sacramento.ttf',
-            'Sansita Swashed' => './system/fonts/SansitaSwashed.ttf',
-            'Stalinist One' => './system/fonts/StalinistOne.ttf',
+            'Texb' => 'public/common/fonts/texb.ttf',
+            'TAHOMA' => 'public/common/fonts/TAHOMA.TTF',
+            'Oswald' => 'public/common/fonts/Oswald.ttf',
+            'Orbitron' => 'public/common/fonts/Orbitron.ttf',
+            'Bitter' => 'public/common/fonts/Bitter.ttf',
+            'Caveat' => 'public/common/fonts/Caveat.ttf',
+            'Dancing Script' => 'public/common/fonts/DancingScript.ttf',
+            'Gloria Hallelujah' => 'public/common/fonts/GloriaHallelujah.ttf',
+            'Lemonada' => 'public/common/fonts/Lemonada.ttf',
+            'Modak' => 'public/common/fonts/Modak.ttf',
+            'Sacramento' => 'public/common/fonts/Sacramento.ttf',
+            'Sansita Swashed' => 'public/common/fonts/SansitaSwashed.ttf',
+            'Stalinist One' => 'public/common/fonts/StalinistOne.ttf',
         ];
 
         return $list;

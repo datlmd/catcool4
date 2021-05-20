@@ -1,5 +1,4 @@
 {form_open(uri_string(), ['id' => 'form_page'])}
-{create_input_token($csrf)}
 {form_hidden('tab_type', 'tab_page')}
 <div class="form-group row">
 	{lang('text_site_name', 'text_site_name', ['class' => 'col-12 col-sm-3 col-form-label required-label text-sm-end'])}

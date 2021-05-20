@@ -66,141 +66,144 @@ class Manage extends AdminController
 
     public function settings($tab_type = null)
     {
-        prepend_script(js_url('js/country/load', 'common'));
-
-        add_style(css_url('vendor/bootstrap-colorpicker/%40claviska/jquery-minicolors/jquery.minicolors', 'common'));
-        prepend_script(js_url('vendor/bootstrap-colorpicker/%40claviska/jquery-minicolors/jquery.minicolors.min', 'common'));
-
-        //phai full quyen hoac duoc them moi
-        if (!$this->acl->check_acl()) {
-            set_alert(lang('error_permission_add'), ALERT_ERROR);
-            redirect('permissions/not_allowed');
+        switch ($this->request->getPost('tab_type')) {
+            case 'tab_page':
+                $this->validator->setRule('pagination_limit', lang('ConfigAdmin.text_pagination_limit'), 'required|is_natural_no_zero');
+                $this->validator->setRule('pagination_limit_admin', lang('ConfigAdmin.text_pagination_limit_admin'), 'required|is_natural_no_zero');
+                break;
+            case 'tab_image':
+                $this->validator->setRule('file_max_size', lang('ConfigAdmin.text_file_max_size'), 'required|is_natural');
+                $this->validator->setRule('file_ext_allowed', lang('ConfigAdmin.text_file_ext_allowed'), 'required');
+                $this->validator->setRule('file_max_width', lang('ConfigAdmin.text_file_max_width'), 'required|is_natural');
+                $this->validator->setRule('file_max_height', lang('ConfigAdmin.text_file_max_height'), 'required|is_natural');
+                break;
+            case 'tab_local':
+                $this->validator->setRule('language', lang('ConfigAdmin.text_language'), 'required');
+                $this->validator->setRule('language_admin', lang('ConfigAdmin.text_language_admin'), 'required');
+                break;
+            case 'tab_server':
+                $this->validator->setRule('enable_ssl', lang('ConfigAdmin.text_enable_ssl'), 'required');
+                $this->validator->setRule('encryption_key', lang('ConfigAdmin.text_encryption_key'), 'required');
+                break;
+            default:
+                break;
         }
 
-        if (!empty($this->input->post('tab_type')) && $this->input->post('tab_type') == 'tab_page') {
-            $this->form_validation->set_rules('pagination_limit', lang('text_pagination_limit'), 'trim|required|is_natural_no_zero');
-            $this->form_validation->set_rules('pagination_limit_admin', lang('text_pagination_limit_admin'), 'trim|required|is_natural_no_zero');
-        } else if (!empty($this->input->post('tab_type')) && $this->input->post('tab_type') == 'tab_image') {
-            $this->form_validation->set_rules('file_max_size', lang('text_file_max_size'), 'trim|required|is_natural');
-            $this->form_validation->set_rules('file_ext_allowed', lang('text_file_ext_allowed'), 'trim|required');
-            $this->form_validation->set_rules('file_max_width', lang('text_file_max_width'), 'trim|required|is_natural');
-            $this->form_validation->set_rules('file_max_height', lang('text_file_max_height'), 'trim|required|is_natural');
-        } else if (!empty($this->input->post('tab_type')) && $this->input->post('tab_type') == 'tab_local') {
-            $this->form_validation->set_rules('language', lang('text_language'), 'trim|required');
-            $this->form_validation->set_rules('language_admin', lang('text_language_admin'), 'trim|required');
-        } else if (!empty($this->input->post('tab_type')) && $this->input->post('tab_type') == 'tab_server') {
-            $this->form_validation->set_rules('enable_ssl', lang('text_enable_ssl'), 'trim|required');
-            $this->form_validation->set_rules('encryption_key', lang('text_encryption_key'), 'trim|required');
-        }
+        if (!empty($this->request->getPost()) && $this->validator->withRequest($this->request)->run()) {
 
-        if (isset($_POST) && !empty($_POST) && $this->form_validation->run()) {
-            if (valid_token() === FALSE) {
-                set_alert(lang('error_token'), ALERT_ERROR);
-                redirect(self::MANAGE_URL . '/settings/' . $this->input->post('tab_type'));
+            $data_settings = $this->request->getPost();
+            switch ($this->request->getPost('tab_type')) {
+                case 'tab_page':
+                    $data_settings['enable_scroll_menu_admin'] = $this->request->getPost('enable_scroll_menu_admin') ?? false;
+                    $data_settings['enable_icon_menu_admin']   = $this->request->getPost('enable_icon_menu_admin') ?? false;
+                    $data_settings['enable_dark_mode']         = $this->request->getPost('enable_dark_mode') ?? false;
+                    break;
+                case 'tab_image':
+                    $data_settings['file_ext_allowed']    = preg_replace('/\s+/', '|', trim($_POST['file_ext_allowed']));
+                    $data_settings['file_mime_allowed']   = preg_replace('/\s+/', '|', trim($_POST['file_mime_allowed']));
+                    $data_settings['file_encrypt_name']   = $this->request->getPost('file_encrypt_name') ?? false;
+                    $data_settings['enable_resize_image'] = $this->request->getPost('enable_resize_image') ?? false;
+                    break;
+                case 'tab_server':
+                    $data_settings['maintenance'] = $this->request->getPost('maintenance') ?? false;
+                    $data_settings['seo_url']     = $this->request->getPost('seo_url') ?? false;
+                    $data_settings['enable_ssl']  = $this->request->getPost('enable_ssl') ?? false;
+                    $data_settings['robots']      = preg_replace('/\s+/', '|', trim($_POST['robots']));
+                    break;
+                case 'tab_local':
+                default:
+                    break;
             }
 
-            if (!empty($this->input->post('tab_type')) && $this->input->post('tab_type') == 'tab_page') {
-                $_POST['enable_scroll_menu_admin'] = isset($_POST['enable_scroll_menu_admin']) ? 'TRUE' : 'FALSE';
-                $_POST['enable_icon_menu_admin'] = isset($_POST['enable_icon_menu_admin']) ? 'TRUE' : 'FALSE';
-                $_POST['enable_dark_mode'] = isset($_POST['enable_dark_mode']) ? 'TRUE' : 'FALSE';
-            } else if (!empty($this->input->post('tab_type')) && $this->input->post('tab_type') == 'tab_image') {
-
-                $_POST['file_ext_allowed'] = preg_replace('/\s+/', '|', trim($_POST['file_ext_allowed']));
-                $_POST['file_mime_allowed'] = preg_replace('/\s+/', '|', trim($_POST['file_mime_allowed']));
-                $_POST['file_encrypt_name'] = isset($_POST['file_encrypt_name']) ? 'TRUE' : 'FALSE';
-                $_POST['enable_resize_image'] = isset($_POST['enable_resize_image']) ? 'TRUE' : 'FALSE';
-            } else if (!empty($this->input->post('tab_type')) && $this->input->post('tab_type') == 'tab_server') {
-                $_POST['maintenance'] = isset($_POST['maintenance']) ? 'TRUE' : 'FALSE';
-                $_POST['seo_url'] = isset($_POST['seo_url']) ? 'TRUE' : 'FALSE';
-                $_POST['enable_ssl'] = isset($_POST['enable_ssl']) ? 'TRUE' : 'FALSE';
-                $_POST['robots'] = preg_replace('/\s+/', '|', trim($_POST['robots']));
+            $list_config = $this->model->findAll();
+            if (!empty($list_config)) {
+                foreach ($list_config as $key => $value) {
+                    $list_config[$value['config_key']] = $value;
+                    unset($list_config[$key]);
+                }
             }
 
-            foreach($this->input->post() as $key => $val) {
-                $data_setting = $this->Config->get(['config_key' => $key]);
-                if (empty($data_setting)) {
+            $data_edit = [];
+            foreach($data_settings as $key => $val) {
+                if (empty($list_config[$key])) {
                     continue;
                 }
-
-                $data_setting['config_value'] = $val;
-                $data_setting['user_id']   = $this->get_user_id();
-                $this->Config->update($data_setting, $data_setting['id']);
+                $data_edit[] = [
+                    'id'           => $list_config[$key]['id'],
+                    'config_value' => $val,
+                    'user_id'      => $this->getUserId(),
+                ];
             }
-            $this->Config->write_file();
+            $this->model->updateBatch($data_edit, 'id');
 
-            set_alert(lang('text_edit_success'), ALERT_SUCCESS);
-            redirect(self::MANAGE_URL . '/settings/' . $this->input->post('tab_type'));
+            $this->model->writeFile();
+
+            set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
+            return redirect()->to(site_url(self::MANAGE_URL) . '/settings/' . $this->request->getPost('tab_type'));
         }
 
-        $this->theme->add_js(js_url('js/admin/filemanager', 'common'));
+        $this->themes->addJS('common/js/country/load');
+        $this->themes->addCSS('common/plugin/bootstrap-colorpicker/claviska/jquery-minicolors/jquery.minicolors');
+        $this->themes->addJS('common/plugin/bootstrap-colorpicker/claviska/jquery-minicolors/jquery.minicolors.min');
+        $this->themes->addJS('common/js/admin/filemanager');
 
-        list($list_config) = $this->Config->get_all_by_filter();
-
-        $setings = [];
-        foreach ($list_config as $value) {
-            $setings[$value['config_key']] = $value['config_value'];
+        $setings     = [];
+        $list_config = $this->model->findAll();
+        if (!empty($list_config)) {
+            foreach ($list_config as $value) {
+                $setings[$value['config_key']] = $value['config_value'];
+            }
         }
 
-        $tab_type = !empty($tab_type) ? $tab_type : (!empty($this->input->get_post('tab_type')) ? $this->input->get_post('tab_type') : 'tab_page');
+        $tab_type = !empty($tab_type) ? $tab_type : (!empty($this->request->getGetPost('tab_type')) ? $this->request->getGetPost('tab_type') : 'tab_page');
 
-        $data['csrf']     = create_token();
         $data['tab_type'] = $tab_type;
         $data['settings'] = $setings;
 
         $watermark_list = [
-            ""              => lang('text_none'),
-            'top_left'      => lang('text_top_left'),
-            'top_center'    => lang('text_top_center'),
-            'top_right'     => lang('text_top_right'),
-            'middle_left'   => lang('text_middle_left'),
-            'middle_center' => lang('text_center_center'),
-            'middle_right'  => lang('text_middle_right'),
-            'bottom_left'   => lang('text_bottom_left'),
-            'bottom_center' => lang('text_bottom_center'),
-            'bottom_right'  => lang('text_bottom_right'),
+            ""             => lang('Admin.text_none'),
+            'top_left'     => lang('ConfigAdmin.text_top_left'),
+            'top'          => lang('ConfigAdmin.text_top_center'),
+            'top_right'    => lang('ConfigAdmin.text_top_right'),
+            'left'         => lang('ConfigAdmin.text_middle_left'),
+            'center'       => lang('ConfigAdmin.text_center_center'),
+            'right'        => lang('ConfigAdmin.text_middle_right'),
+            'bottom_left'  => lang('ConfigAdmin.text_bottom_left'),
+            'bottom'       => lang('ConfigAdmin.text_bottom_center'),
+            'bottom_right' => lang('ConfigAdmin.text_bottom_right'),
         ];
         $data['watermark_list'] = $watermark_list;
 
-        $image_quality_list = [
-            100 => 100,
-            90 => 90,
-            80 => 80,
-            70 => 70,
-            60 => 60,
-            50 => 50,
-        ];
-        $data['image_quality_list'] = $image_quality_list;
+        $image_tool = new \App\Libraries\ImageTool();
+        $data['watermark_bg'] = $image_tool->watermarkDemo();
 
-        $this->load->model('images/image_tool', 'image_tool');
-        $data['watermark_bg'] = $this->image_tool->watermark_demo();
+        $country_model  = new \App\Modules\Countries\Models\CountryModel();
+        $province_model = new \App\Modules\Countries\Models\ProvinceModel();
+        $currency_model = new \App\Modules\Currencies\Models\CurrencyModel();
 
-        $this->load->model("countries/Country", "Country");
-        $data['country_list'] = $this->Country->get_list_display();
-        $this->load->model("countries/Province", "Province");
-        $data['province_list'] = $this->Province->get_list_display();
+        $data['country_list']  = $country_model->getListDisplay();
+        $data['province_list'] = $province_model->getListDisplay();
 
-        $this->load->model("products/Length_class", "Length_class");
-        $data['length_class_list'] = format_dropdown($this->Length_class->get_list(), 'length_class_id');
+//        $this->load->model("products/Length_class", "Length_class");
+//        $data['length_class_list'] = format_dropdown($this->Length_class->get_list(), 'length_class_id');
+//
+//        $this->load->model("products/Weight_class", "Weight_class");
+//        $data['weight_class_list'] = format_dropdown($this->Weight_class->get_list(), 'weight_class_id');
 
-        $this->load->model("products/Weight_class", "Weight_class");
-        $data['weight_class_list'] = format_dropdown($this->Weight_class->get_list(), 'weight_class_id');
+        $data['timezone_list'] = $this->_getListTimezone();
+        $data['currency_list'] = format_dropdown($currency_model->getListPublished(), 'code');
 
-        $data['timezone_list'] = $this->_get_list_timezone();
-
-        $this->load->model("currencies/Currency", "Currency");
-        $data['currency_list'] = format_dropdown($this->Currency->get_list_by_publish(), 'code');
-
-        $this->theme->title('Settings');
+        add_meta(['title' => lang("Admin.text_settings")], $this->themes);
 
         $this->smarty->assign('manage_url', self::MANAGE_URL . '/settings');
         $this->breadcrumb->reset();
-        $this->breadcrumb->add(lang('catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add('Settings', base_url(CATCOOL_DASHBOARD . '/settings'));
+        $this->breadcrumb->add(lang('Admin.catcool_dashboard'), site_url(CATCOOL_DASHBOARD));
+        $this->breadcrumb->add(lang("Admin.text_settings"), site_url(CATCOOL_DASHBOARD . '/settings'));
 
         theme_load('setting', $data);
     }
 
-    private function _get_list_timezone()
+    private function _getListTimezone()
     {
         $timezone_list = [];
         $timestamp = time();
