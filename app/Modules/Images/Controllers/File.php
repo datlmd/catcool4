@@ -23,24 +23,22 @@ class File extends BaseController
     {
         try {
             $file_url = str_replace([base_url('file/'), UPLOAD_FILE_DIR], ['', ''], current_url());
+            $file_url = urldecode($file_url);
 
             if (!is_file($this->_file_path . $file_url)) {
                 throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             }
 
-            $ext_tmp   = explode('.', $file_url);
-            $extension = end($ext_tmp);
-            if (in_array(strtolower($extension), explode(",", $this->_type_video))) {
-                $this->_rangeVideo($this->_file_path . $file_url);
-            }
-
+            $this->_rangeVideo($this->_file_path . $file_url);
+            /*
             $file_info = new \CodeIgniter\Files\File($this->_file_path . $file_url);
-
             $this->response
                 ->setStatusCode(200)
                 ->setContentType($file_info->getMimeType())
                 ->setBody(file_get_contents($this->_file_path . $file_url))
+                ->download($this->_file_path . $file_url)
                 ->send();
+            */
         } catch (\Exception $e) {
             log_message('error', $e->getMessage());
             //die($e->getMessage());
@@ -50,7 +48,6 @@ class File extends BaseController
     private function _rangeVideo($file)
     {
         $file_info = new \CodeIgniter\Files\File($file);
-        //cc_debug($file_info);
 
         $fp = @fopen($file, 'rb');
 
@@ -94,6 +91,7 @@ class File extends BaseController
 
         header("Content-Range: bytes $start-$end/$size");
         header("Content-Length: ".$length);
+        //helper("Content-Disposition: attachment;");
 
         $buffer = 1024 * 8;
         while(!feof($fp) && ($p = ftell($fp)) <= $end) {
