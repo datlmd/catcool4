@@ -599,7 +599,7 @@ if(!function_exists('image_default_url'))
     function image_default_url() {
         $upload_path = get_upload_url();
         if (!empty(config_item('image_none')) && is_file( ROOTPATH . $upload_path . config_item('image_none'))) {
-            return image_domain($upload_path . config_item('image_none'));
+            return image_domain('img/' . $upload_path . config_item('image_none'));
         }
 
         return base_url('common/'.UPLOAD_IMAGE_DEFAULT);

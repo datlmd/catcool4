@@ -11,6 +11,8 @@ class ImageTool
     protected $upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
     private $_driver       = 'imagick'; //gd,gd2,imagick
 
+    const IMAGE_WATER_MINIMUM_WIDTH  = 600;
+    const IMAGE_WATER_MINIMUM_HEIGHT = 450;
     public function __construct()
     {
         helper('filesystem');
@@ -85,7 +87,8 @@ class ImageTool
                 }
             }
 
-            if (!empty($is_watermark)) {
+            list($width_new, $height_new) = getimagesize($this->dir_image_path . $image_new);
+            if (!empty(config_item('image_watermar_enable')) && $width_new > self::IMAGE_WATER_MINIMUM_WIDTH && $height_new > self::IMAGE_WATER_MINIMUM_HEIGHT) {
                 $image_new = $this->watermark($image_new);
             }
         }
@@ -94,14 +97,15 @@ class ImageTool
     }
 
     /**
-     * tạo hình thumb với hình nằm bên trong
+     * tạo hình thumb với hình sẽ bị cắt theo kích thước và vi trí
      *
      * @param $file_name
      * @param null $width
      * @param null $height
+     * @param null $position
      * @return bool|mixed|string
      */
-    public function resize_fit($file_name, $width = null, $height = null)
+    public function resizeFit($file_name, $width = null, $height = null, $position = null)
     {
         $width  = !empty($width) ? $width : (!empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH);
         $height = !empty($height) ? $height : (!empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT);
@@ -142,12 +146,11 @@ class ImageTool
                 }
             }
 
-            $position = 'center';
-            $image_new = $this->thumb($image_old, $image_new, $width, $height);
-
-            if (!empty($is_watermark)) {
-                $image_new = $this->watermark($image_new);
+            if (!in_array($position, ["top-left", "top", "top-right", "left", "center", "right", "bottom-left", "bottom", "bottom-right"])) {
+                $position = "center";
             }
+
+            $image_new = $this->thumbFit($image_old, $image_new, $width, $height, $position);
         }
 
         return $image_new;
@@ -247,7 +250,7 @@ class ImageTool
      * @param $position: ‘top-left’, ‘top’, ‘top-right’, ‘left’, ‘center’, ‘right’, ‘bottom-left’, ‘bottom’, ‘bottom-right’.
      * @return bool
      */
-    public function thumb($file_name, $file_new, $width, $height, $position = 'center')
+    public function thumbFit($file_name, $file_new, $width, $height, $position = 'center')
     {
         if (!is_file($this->dir_image_path . $file_name)) {
             return false;
@@ -266,6 +269,7 @@ class ImageTool
 
         return $file_new;
     }
+
     public function crop($file_name, $width, $height, $xOffset, $yOffset, $is_new = false)
     {
         if (!is_file($this->dir_image_path . $file_name)) {

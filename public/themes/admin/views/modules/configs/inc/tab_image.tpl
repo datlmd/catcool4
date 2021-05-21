@@ -184,145 +184,160 @@
 </div>
 <div class="form-group row">
 	<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_image_watermark')}</div>
-	<div class="col-12 col-sm-8 col-lg-6 bg-light p-4">
-		{if !empty($settings.image_watermark_text)}
-			{assign var="image_watermark_text" value="`$settings.image_watermark_text`"}
+	<div class="col-12 col-sm-8 col-lg-6">
+		{if !empty($settings.image_watermar_enable)}
+			{assign var="image_watermar_enable" value="`$settings.image_watermar_enable`"}
 		{else}
-			{assign var="image_watermark_text" value=""}
+			{assign var="image_watermar_enable" value=""}
 		{/if}
-		{if !empty($settings.image_watermark_path)}
-			{assign var="image_watermark_path" value="`$settings.image_watermark_path`"}
-		{else}
-			{assign var="image_watermark_path" value=""}
-		{/if}
-		{if !empty(old('image_watermark_text', $image_watermark_text)) || !empty(old('image_watermark_path', $image_watermark_path))}
-			<a href="{$watermark_bg}?{time()}" data-lightbox="photos"><img src="{$watermark_bg}?{time()}" style="width: 150px;"></a>
-		{/if}
-		<div class="form-group mt-2">
-			{if !empty($settings.image_watermark)}
-				{assign var="image_watermark" value="`$settings.image_watermark`"}
+		<label class="form-check form-check-inline mt-2">
+			<input type="radio" name="image_watermar_enable" value="{STATUS_ON}" {if !empty(old('image_watermar_enable', $image_watermar_enable))}checked="checked"{/if} id="image_watermar_enable_on" class="form-check-input">
+			<label class="form-check-label" for="image_watermar_enable_on">ON</label>
+		</label>
+		<label class="form-check form-check-inline me-2 mt-2">
+			<input type="radio" name="image_watermar_enable" value="{STATUS_OFF}" {if empty(old('image_watermar_enable', $image_watermar_enable))}checked="checked"{/if} id="image_watermar_enable_off" class="form-check-input">
+			<label class="form-check-label" for="image_watermar_enable_off">OFF</label>
+		</label>
+		<div class="bg-light mt-2 p-2">
+			{if !empty($settings.image_watermark_text)}
+				{assign var="image_watermark_text" value="`$settings.image_watermark_text`"}
 			{else}
-				{assign var="image_watermark" value=""}
+				{assign var="image_watermark_text" value=""}
 			{/if}
-			{form_dropdown('image_watermark', $watermark_list, old('image_watermark', $image_watermark), ['class' => 'form-control'])}
-		</div>
-		<div class="form-group">
-			{lang('ConfigAdmin.text_image_watermark_hor_offset')}<br/>
-			{if !empty($settings.image_watermark_hor_offset)}
-				{assign var="image_watermark_hor_offset" value="`$settings.image_watermark_hor_offset`"}
+			{if !empty($settings.image_watermark_path)}
+				{assign var="image_watermark_path" value="`$settings.image_watermark_path`"}
 			{else}
-				{assign var="image_watermark_hor_offset" value="0"}
+				{assign var="image_watermark_path" value=""}
 			{/if}
-			<input type="number" name="image_watermark_hor_offset" value="{old('image_watermark_hor_offset', $image_watermark_hor_offset)}" id="image_watermark_hor_offset" class="form-control {if $validator->hasError("image_watermark_hor_offset")}is-invalid{/if}">
-		</div>
-		<div class="form-group">
-			{lang('ConfigAdmin.text_image_watermark_vrt_offset')}<br/>
-			{if !empty($settings.image_watermark_vrt_offset)}
-				{assign var="image_watermark_vrt_offset" value="`$settings.image_watermark_vrt_offset`"}
-			{else}
-				{assign var="image_watermark_vrt_offset" value="0"}
+			{if !empty(old('image_watermark_text', $image_watermark_text)) || !empty(old('image_watermark_path', $image_watermark_path))}
+				<a href="{$watermark_bg}?{time()}" data-lightbox="photos"><img src="{$watermark_bg}?{time()}" style="width: 150px;"></a>
 			{/if}
-			<input type="number" name="image_watermark_vrt_offset" value="{old('image_watermark_vrt_offset', $image_watermark_vrt_offset)}" id="image_watermark_vrt_offset" class="form-control {if $validator->hasError("image_watermark_vrt_offset")}is-invalid{/if}">
-		</div>
-		<div class="form-group">
-			{lang('ConfigAdmin.text_image_watermark_opacity')}
-			{if isset($settings.image_watermark_opacity)}
-				{assign var="image_watermark_opacity" value="`$settings.image_watermark_opacity`"}
-			{else}
-				{assign var="image_watermark_opacity" value="60"}
-			{/if}
-			<span id="image_watermark_opacity_text">{old('image_watermark_opacity', $image_watermark_opacity)}</span>
-			<input type="range" name="image_watermark_opacity" class="form-range" min="0" max="100" value="{old('image_watermark_opacity', $image_watermark_opacity)}" id="image_watermark_opacity" data-target="#image_watermark_opacity_text" onchange="Catcool.showRangeValue(this)">
-		</div>
-		<div class="form-group mt-2 fw-bold">
-			{if !empty($settings.image_watermark_type)}
-				{assign var="image_watermark_type" value="`$settings.image_watermark_type`"}
-			{else}
-				{assign var="image_watermark_type" value="image"}
-			{/if}
-			<label class="form-check form-check-inline">
-				<input type="radio" name="image_watermark_type" value="image" {if old('image_watermark_type', $image_watermark_type) eq 'image'}checked="checked"{/if} id="image_watermark_type_image" class="form-check-input">
-				<label class="form-check-label" for="image_watermark_type_image">{lang('ConfigAdmin.text_image_watermark_path')}</label>
-			</label>
-			<a href="javascript:void(0);" id="image_watermark_path" data-target="input_image_watermark_path" data-thumb="load_image_watermark_path" data-bs-toggle="image" data-type="image" class="mx-0 mt-1">
-				<img src="{if !empty(old('image_watermark_path', $image_watermark_path))}{image_thumb_url(old('image_watermark_path', $image_watermark_path))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1" alt="" title="" id="load_image_watermark_path" data-placeholder="{image_default_url()}"/>
-				<button type="button" id="button-image-watemark" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
-				<button type="button" id="button-clear-watemark" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
-			</a>
-			<input type="hidden" name="image_watermark_path" value="{old('image_watermark_path', $image_watermark_path)}" id="input_image_watermark_path" />
-		</div>
-		<div class="form-group mt-4 fw-bold">
-			<label class="form-check form-check-inline">
-				<input type="radio" name="image_watermark_type" value="text" {if old('image_watermark_type', $image_watermark_type) eq 'text'}checked="checked"{/if} id="image_watermark_type_text" class="form-check-input">
-				<label class="form-check-label" for="image_watermark_type_text">{lang('ConfigAdmin.text_image_watermark_text')}</label>
-			</label>
-			<input type="text" name="image_watermark_text" value="{old('image_watermark_text', $image_watermark_text)}" id="image_watermark_text" class="form-control {if $validator->hasError("image_watermark_text")}is-invalid{/if}">
-		</div>
-		<div class="form-group">
-			{lang('ConfigAdmin.text_image_watermark_font_path')}
-			<select name="image_watermark_font_path" class="form-control">
-				{if !empty($settings.image_watermark_font_path)}
-					{assign var="image_watermark_font_path" value="`$settings.image_watermark_font_path`"}
+			<div class="form-group mt-2">
+				{if !empty($settings.image_watermark)}
+					{assign var="image_watermark" value="`$settings.image_watermark`"}
 				{else}
-					{assign var="image_watermark_font_path" value=""}
+					{assign var="image_watermark" value=""}
 				{/if}
-				<option value="" {if empty(old('image_watermark_font_path', $image_watermark_font_path))}selected="selected"{/if}>{lang('Admin.text_none')}</option>
-				{foreach get_fonts() as $key => $value}
-					<option value="{$value}" {if old('image_watermark_font_path', $image_watermark_font_path) eq $value}selected="selected"{/if}>{$key}</option>
-				{/foreach}
-			</select>
-		</div>
-		<div class="form-group">
-			{lang('ConfigAdmin.text_image_watermark_font_size')}
-			{if !empty($settings.image_watermark_font_size)}
-				{assign var="image_watermark_font_size" value="`$settings.image_watermark_font_size`"}
-			{else}
-				{assign var="image_watermark_font_size" value=""}
-			{/if}
-			<input type="number" name="image_watermark_font_size" value="{old('image_watermark_font_size', $image_watermark_font_size)}" id="image_watermark_font_size" class="form-control">
-		</div>
-		<div class="form-group">
-			{lang('ConfigAdmin.text_image_watermark_font_color')}
-			{if !empty($settings.image_watermark_font_color)}
-				{assign var="image_watermark_font_color" value="`$settings.image_watermark_font_color`"}
-			{else}
-				{assign var="image_watermark_font_color" value=""}
-			{/if}
-			<input type="text" name="image_watermark_font_color" value="{old('image_watermark_font_color', $image_watermark_font_color)}" id="image_watermark_font_color" autocomplete="off" data-control="hue" class="form-control color-picker">
-		</div>
-		<div class="form-group mt-3">
-			{lang('ConfigAdmin.text_image_watermark_is_shadow')}
-			{if !empty($settings.image_watermark_is_shadow)}
-				{assign var="image_watermark_is_shadow" value="`$settings.image_watermark_is_shadow`"}
-			{else}
-				{assign var="image_watermark_is_shadow" value="0"}
-			{/if}
-			<label class="form-check form-check-inline ms-2">
-				<input type="radio" name="image_watermark_is_shadow" value="{STATUS_ON}" {if !empty(old('image_watermark_is_shadow', $image_watermark_is_shadow))}checked="checked"{/if} id="image_watermark_is_shadow_on" class="form-check-input">
-				<label class="form-check-label" for="image_watermark_is_shadow_on">ON</label>
-			</label>
-			<label class="form-check form-check-inline me-2">
-				<input type="radio" name="image_watermark_is_shadow" value="{STATUS_OFF}" {if empty(old('image_watermark_is_shadow', $image_watermark_is_shadow))}checked="checked"{/if} id="image_watermark_is_shadow_off" class="form-check-input">
-				<label class="form-check-label" for="image_watermark_is_shadow_off">OFF</label>
-			</label>
-		</div>
-		<div class="form-group">
-			{lang('ConfigAdmin.text_image_watermark_shadow_color')}
-			{if !empty($settings.image_watermark_shadow_color)}
-				{assign var="image_watermark_shadow_color" value="`$settings.image_watermark_shadow_color`"}
-			{else}
-				{assign var="image_watermark_shadow_color" value=""}
-			{/if}
-			<input type="text" name="image_watermark_shadow_color" value="{old('image_watermark_shadow_color', $image_watermark_shadow_color)}" id="image_watermark_shadow_color" autocomplete="off" class="form-control color-picker">
-		</div>
-		<div class="form-group">
-			{lang('ConfigAdmin.text_image_watermark_shadow_distance')}
-			{if !empty($settings.image_watermark_shadow_distance)}
-				{assign var="image_watermark_shadow_distance" value="`$settings.image_watermark_shadow_distance`"}
-			{else}
-				{assign var="image_watermark_shadow_distance" value=""}
-			{/if}
-			<input type="number" name="image_watermark_shadow_distance" value="{old('image_watermark_shadow_distance', $image_watermark_shadow_distance)}" id="image_watermark_shadow_distance" class="form-control">
+				{form_dropdown('image_watermark', $watermark_list, old('image_watermark', $image_watermark), ['class' => 'form-control'])}
+			</div>
+			<div class="form-group">
+				{lang('ConfigAdmin.text_image_watermark_hor_offset')}<br/>
+				{if !empty($settings.image_watermark_hor_offset)}
+					{assign var="image_watermark_hor_offset" value="`$settings.image_watermark_hor_offset`"}
+				{else}
+					{assign var="image_watermark_hor_offset" value="0"}
+				{/if}
+				<input type="number" name="image_watermark_hor_offset" value="{old('image_watermark_hor_offset', $image_watermark_hor_offset)}" id="image_watermark_hor_offset" class="form-control {if $validator->hasError("image_watermark_hor_offset")}is-invalid{/if}">
+			</div>
+			<div class="form-group">
+				{lang('ConfigAdmin.text_image_watermark_vrt_offset')}<br/>
+				{if !empty($settings.image_watermark_vrt_offset)}
+					{assign var="image_watermark_vrt_offset" value="`$settings.image_watermark_vrt_offset`"}
+				{else}
+					{assign var="image_watermark_vrt_offset" value="0"}
+				{/if}
+				<input type="number" name="image_watermark_vrt_offset" value="{old('image_watermark_vrt_offset', $image_watermark_vrt_offset)}" id="image_watermark_vrt_offset" class="form-control {if $validator->hasError("image_watermark_vrt_offset")}is-invalid{/if}">
+			</div>
+			<div class="form-group">
+				{lang('ConfigAdmin.text_image_watermark_opacity')}
+				{if isset($settings.image_watermark_opacity)}
+					{assign var="image_watermark_opacity" value="`$settings.image_watermark_opacity`"}
+				{else}
+					{assign var="image_watermark_opacity" value="60"}
+				{/if}
+				<span id="image_watermark_opacity_text">{old('image_watermark_opacity', $image_watermark_opacity)}</span>
+				<input type="range" name="image_watermark_opacity" class="form-range" min="0" max="100" value="{old('image_watermark_opacity', $image_watermark_opacity)}" id="image_watermark_opacity" data-target="#image_watermark_opacity_text" onchange="Catcool.showRangeValue(this)">
+			</div>
+			<div class="form-group mt-2 fw-bold">
+				{if !empty($settings.image_watermark_type)}
+					{assign var="image_watermark_type" value="`$settings.image_watermark_type`"}
+				{else}
+					{assign var="image_watermark_type" value="image"}
+				{/if}
+				<label class="form-check form-check-inline">
+					<input type="radio" name="image_watermark_type" value="image" {if old('image_watermark_type', $image_watermark_type) eq 'image'}checked="checked"{/if} id="image_watermark_type_image" class="form-check-input">
+					<label class="form-check-label" for="image_watermark_type_image">{lang('ConfigAdmin.text_image_watermark_path')}</label>
+				</label>
+				<a href="javascript:void(0);" id="image_watermark_path" data-target="input_image_watermark_path" data-thumb="load_image_watermark_path" data-bs-toggle="image" data-type="image" class="mx-0 mt-1">
+					<img src="{if !empty(old('image_watermark_path', $image_watermark_path))}{image_thumb_url(old('image_watermark_path', $image_watermark_path))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1" alt="" title="" id="load_image_watermark_path" data-placeholder="{image_default_url()}"/>
+					<button type="button" id="button-image-watemark" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
+					<button type="button" id="button-clear-watemark" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
+				</a>
+				<input type="hidden" name="image_watermark_path" value="{old('image_watermark_path', $image_watermark_path)}" id="input_image_watermark_path" />
+			</div>
+			<div class="form-group mt-4 fw-bold">
+				<label class="form-check form-check-inline">
+					<input type="radio" name="image_watermark_type" value="text" {if old('image_watermark_type', $image_watermark_type) eq 'text'}checked="checked"{/if} id="image_watermark_type_text" class="form-check-input">
+					<label class="form-check-label" for="image_watermark_type_text">{lang('ConfigAdmin.text_image_watermark_text')}</label>
+				</label>
+				<input type="text" name="image_watermark_text" value="{old('image_watermark_text', $image_watermark_text)}" id="image_watermark_text" class="form-control {if $validator->hasError("image_watermark_text")}is-invalid{/if}">
+			</div>
+			<div class="form-group">
+				{lang('ConfigAdmin.text_image_watermark_font_path')}
+				<select name="image_watermark_font_path" class="form-control">
+					{if !empty($settings.image_watermark_font_path)}
+						{assign var="image_watermark_font_path" value="`$settings.image_watermark_font_path`"}
+					{else}
+						{assign var="image_watermark_font_path" value=""}
+					{/if}
+					<option value="" {if empty(old('image_watermark_font_path', $image_watermark_font_path))}selected="selected"{/if}>{lang('Admin.text_none')}</option>
+					{foreach get_fonts() as $key => $value}
+						<option value="{$value}" {if old('image_watermark_font_path', $image_watermark_font_path) eq $value}selected="selected"{/if}>{$key}</option>
+					{/foreach}
+				</select>
+			</div>
+			<div class="form-group">
+				{lang('ConfigAdmin.text_image_watermark_font_size')}
+				{if !empty($settings.image_watermark_font_size)}
+					{assign var="image_watermark_font_size" value="`$settings.image_watermark_font_size`"}
+				{else}
+					{assign var="image_watermark_font_size" value=""}
+				{/if}
+				<input type="number" name="image_watermark_font_size" value="{old('image_watermark_font_size', $image_watermark_font_size)}" id="image_watermark_font_size" class="form-control">
+			</div>
+			<div class="form-group">
+				{lang('ConfigAdmin.text_image_watermark_font_color')}
+				{if !empty($settings.image_watermark_font_color)}
+					{assign var="image_watermark_font_color" value="`$settings.image_watermark_font_color`"}
+				{else}
+					{assign var="image_watermark_font_color" value=""}
+				{/if}
+				<input type="text" name="image_watermark_font_color" value="{old('image_watermark_font_color', $image_watermark_font_color)}" id="image_watermark_font_color" autocomplete="off" data-control="hue" class="form-control color-picker">
+			</div>
+			<div class="form-group mt-3">
+				{lang('ConfigAdmin.text_image_watermark_is_shadow')}
+				{if !empty($settings.image_watermark_is_shadow)}
+					{assign var="image_watermark_is_shadow" value="`$settings.image_watermark_is_shadow`"}
+				{else}
+					{assign var="image_watermark_is_shadow" value="0"}
+				{/if}
+				<label class="form-check form-check-inline ms-2">
+					<input type="radio" name="image_watermark_is_shadow" value="{STATUS_ON}" {if !empty(old('image_watermark_is_shadow', $image_watermark_is_shadow))}checked="checked"{/if} id="image_watermark_is_shadow_on" class="form-check-input">
+					<label class="form-check-label" for="image_watermark_is_shadow_on">ON</label>
+				</label>
+				<label class="form-check form-check-inline me-2">
+					<input type="radio" name="image_watermark_is_shadow" value="{STATUS_OFF}" {if empty(old('image_watermark_is_shadow', $image_watermark_is_shadow))}checked="checked"{/if} id="image_watermark_is_shadow_off" class="form-check-input">
+					<label class="form-check-label" for="image_watermark_is_shadow_off">OFF</label>
+				</label>
+			</div>
+			<div class="form-group">
+				{lang('ConfigAdmin.text_image_watermark_shadow_color')}
+				{if !empty($settings.image_watermark_shadow_color)}
+					{assign var="image_watermark_shadow_color" value="`$settings.image_watermark_shadow_color`"}
+				{else}
+					{assign var="image_watermark_shadow_color" value=""}
+				{/if}
+				<input type="text" name="image_watermark_shadow_color" value="{old('image_watermark_shadow_color', $image_watermark_shadow_color)}" id="image_watermark_shadow_color" autocomplete="off" class="form-control color-picker">
+			</div>
+			<div class="form-group">
+				{lang('ConfigAdmin.text_image_watermark_shadow_distance')}
+				{if !empty($settings.image_watermark_shadow_distance)}
+					{assign var="image_watermark_shadow_distance" value="`$settings.image_watermark_shadow_distance`"}
+				{else}
+					{assign var="image_watermark_shadow_distance" value=""}
+				{/if}
+				<input type="number" name="image_watermark_shadow_distance" value="{old('image_watermark_shadow_distance', $image_watermark_shadow_distance)}" id="image_watermark_shadow_distance" class="form-control">
+			</div>
 		</div>
 	</div>
 </div>

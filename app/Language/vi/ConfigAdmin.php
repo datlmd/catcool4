@@ -124,7 +124,7 @@ return [
 	"text_image_thumbnail_large_height" => "Cao",
 	"text_image_thumbnail_large_width" => "Rộng",
 	"text_image_thumbnail_small" => "Resize - Nhỏ",
-	"text_image_watermark" => "Watermark",
+	"text_image_watermark" => "Sử dụng Watermark",
 	"text_image_watermark_font_color" => "Color",
 	"text_image_watermark_font_path" => "Font",
 	"text_image_watermark_font_size" => "Size",

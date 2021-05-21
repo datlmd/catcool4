@@ -124,7 +124,7 @@ class CustomConfig extends BaseConfig
 	/**
 	 * Bật chế độ resize hình
 	 */
-	public $enableResizeImage = 0;
+	public $enableResizeImage = 1;
 
 	/**
 	 * Hiển thị thanh menu, false sẽ ẩn menu gọn lại
@@ -197,7 +197,7 @@ class CustomConfig extends BaseConfig
 	/**
 	 * Hình mặc định nêu hình gốc không tồn tại
 	 */
-	public $imageNone = "root/logo-hoatuoi24h-21.png";
+	public $imageNone = "";
 
 	public $imageQuality = 90;
 
@@ -221,7 +221,7 @@ class CustomConfig extends BaseConfig
 	 */
 	public $imageThumbnailSmallWidth = 800;
 
-	public $imageWatermark = "bottom-right";
+	public $imageWatermark = "center";
 
 	public $imageWatermarkFontColor = "#ffffff";
 
@@ -236,9 +236,9 @@ class CustomConfig extends BaseConfig
 	 */
 	public $imageWatermarkIsShadow = 1;
 
-	public $imageWatermarkOpacity = 90;
+	public $imageWatermarkOpacity = 50;
 
-	public $imageWatermarkPath = "root/1619235132_fbd08cf573a46e5ecca9.png";
+	public $imageWatermarkPath = "";
 
 	public $imageWatermarkShadowColor = "#707a00";
 
@@ -249,6 +249,8 @@ class CustomConfig extends BaseConfig
 	public $imageWatermarkType = "text";
 
 	public $imageWatermarkVrtOffset = 0;
+
+	public $imageWatermarEnable = 0;
 
 	/**
 	 * Chiều rộng tối đa của hình trên mobile (pixel)

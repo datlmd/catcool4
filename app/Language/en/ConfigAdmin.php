@@ -124,7 +124,7 @@ return [
 	"text_image_thumbnail_large_height" => "Height",
 	"text_image_thumbnail_large_width" => "Width",
 	"text_image_thumbnail_small" => "Resize - Small",
-	"text_image_watermark" => "Watermark",
+	"text_image_watermark" => "Enable Watermark",
 	"text_image_watermark_font_color" => "Color",
 	"text_image_watermark_font_path" => "Font",
 	"text_image_watermark_font_size" => "Size",
