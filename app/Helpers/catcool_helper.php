@@ -661,7 +661,7 @@ if(!function_exists('get_image_resize_info'))
 
 if(!function_exists('image_url'))
 {
-    function image_url($image = null, $width = null, $height = null, $is_watermark = false)
+    function image_url($image = null, $width = null, $height = null)
     {
         if (stripos($image, "https://") !== false || stripos($image, "http://") !== false) {
             return $image;
@@ -683,22 +683,18 @@ if(!function_exists('image_url'))
 
 if(!function_exists('image_thumb_url'))
 {
-    function image_thumb_url($image = null, $width = null, $height = null, $is_watermark = false)
+    function image_thumb_url($image = null, $width = null, $height = null)
     {
         $width = !empty($width) ? $width : (!empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH);
         $height = !empty($height) ? $height : (!empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT);
         $upload_path = get_upload_url();
-        if (! is_file( ROOTPATH . $upload_path . $image)) {
+        if (!is_file( ROOTPATH . $upload_path . $image)) {
             return image_default_url();
         }
 
-        $image_tool = new \App\Libraries\ImageTool();
-
+        $image_tool   = new \App\Libraries\ImageTool();
         $image_resize = $image_tool->resize($image, $width, $height);
 
-        if (!empty($is_watermark)) {
-            $image_resize = $image_tool->watermark($image_resize);
-        }
         $image_resize = "img/$upload_path/$image_resize";
         if (!empty(session()->get('is_admin'))) {
             return image_domain($image_resize) . '?' . time();
@@ -876,16 +872,18 @@ if(!function_exists('move_file_tmp'))
 
 if(!function_exists('delete_cache'))
 {
-    function delete_cache()
+    function delete_cache($is_all = false)
     {
         //delete file old
         helper('filesystem');
 
-        //delete cache html
-        delete_files(WRITEPATH . 'cache/html/');
+        if ($is_all) {
+            //delete cache html
+            delete_files(WRITEPATH . 'cache/html/');
 
-        //delete cache smarty
-        delete_files(WRITEPATH . 'cache/smarty/cache/');
+            //delete cache smarty
+            delete_files(WRITEPATH . 'cache/smarty/cache/');
+        }
 
         //clear file upload
         delete_files(get_upload_path('cache'), TRUE);

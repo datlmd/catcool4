@@ -100,7 +100,11 @@ class TranslationModel extends MyModel
         }
 
         $language_name = pascalize(implode('_', $module));
-        $language_name = str_ireplace(["Manage", "Menus"], ["Admin", "Menu"], $language_name);
+        if ($language_name == "CommonFilemanager") {
+            $language_name = "FileManager";
+        } else {
+            $language_name = str_ireplace(["Manage", "Menus"], ["Admin", "Menu"], $language_name);
+        }
 
         return $language_name;
     }

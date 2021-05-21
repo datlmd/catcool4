@@ -114,7 +114,7 @@
         });
     });
     $('#modal_image_crop').on('hidden.bs.modal', function() {
-        if ($('#load_view_modal #formPhotoModal').length) {
+        if ($('#load_view_modal #formPhotoModal').length || $("#filemanager").length) {
             $('body').addClass('modal-open');
         }
     });

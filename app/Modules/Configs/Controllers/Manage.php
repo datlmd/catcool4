@@ -100,23 +100,14 @@ class Manage extends AdminController
 
             $data_settings = $this->request->getPost();
             switch ($this->request->getPost('tab_type')) {
-                case 'tab_page':
-                    $data_settings['enable_scroll_menu_admin'] = $this->request->getPost('enable_scroll_menu_admin') ?? false;
-                    $data_settings['enable_icon_menu_admin']   = $this->request->getPost('enable_icon_menu_admin') ?? false;
-                    $data_settings['enable_dark_mode']         = $this->request->getPost('enable_dark_mode') ?? false;
-                    break;
                 case 'tab_image':
-                    $data_settings['file_ext_allowed']    = preg_replace('/\s+/', '|', trim($_POST['file_ext_allowed']));
-                    $data_settings['file_mime_allowed']   = preg_replace('/\s+/', '|', trim($_POST['file_mime_allowed']));
-                    $data_settings['file_encrypt_name']   = $this->request->getPost('file_encrypt_name') ?? false;
-                    $data_settings['enable_resize_image'] = $this->request->getPost('enable_resize_image') ?? false;
+                    $data_settings['file_ext_allowed']  = preg_replace('/\s+/', '|', trim($_POST['file_ext_allowed']));
+                    $data_settings['file_mime_allowed'] = preg_replace('/\s+/', '|', trim($_POST['file_mime_allowed']));
                     break;
                 case 'tab_server':
-                    $data_settings['maintenance'] = $this->request->getPost('maintenance') ?? false;
-                    $data_settings['seo_url']     = $this->request->getPost('seo_url') ?? false;
-                    $data_settings['enable_ssl']  = $this->request->getPost('enable_ssl') ?? false;
-                    $data_settings['robots']      = preg_replace('/\s+/', '|', trim($_POST['robots']));
+                    $data_settings['robots'] = preg_replace('/\s+/', '|', trim($_POST['robots']));
                     break;
+                case 'tab_page':
                 case 'tab_local':
                 default:
                     break;

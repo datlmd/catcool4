@@ -2,8 +2,6 @@
 
 use App\Controllers\AdminController;
 use App\Libraries\Themes;
-use CodeIgniter\Cache\Exceptions\CacheException;
-use CodeIgniter\HTTP\RequestInterface;
 
 class FileManager extends AdminController
 {
@@ -14,7 +12,7 @@ class FileManager extends AdminController
     protected $img_url        = 'img/';
 
     CONST PATH_SUB_NAME   = 'root';
-    CONST FILE_PAGE_LIMIT = 30;//PAGINATION_MANAGE_DEFAULF_LIMIT;
+    CONST FILE_PAGE_LIMIT = 30;
 
     protected $upload_type = '';
 
@@ -684,6 +682,20 @@ class FileManager extends AdminController
         json_output($json);
     }
 
+    public function clearCache()
+    {
+        $json = [];
+
+        try {
+            delete_cache();
+            $json['success'] = lang('FileManager.text_clear_cache_success');
+        } catch (Exception $e) {
+            $json['error'] = lang('Admin.error');
+        }
+
+        json_output($json);
+    }
+
     public function pagination($data)
     {
         $base_url = $data['base_url'];
@@ -719,9 +731,7 @@ class FileManager extends AdminController
     private function _sortByDate($key)
     {
         return function ($a, $b) use ($key) {
-            $t1 = strtotime($a[$key]);
-            $t2 = strtotime($b[$key]);
-            return $t2-$t1;
+            return strtotime($b[$key]) <=> strtotime($a[$key]);
         };
     }
 }

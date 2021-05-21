@@ -109,7 +109,7 @@
                             </p>
                         {elseif $file.type == 'image'}
                             <a href="{$file.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
-                                <img src="{$file.thumb}" style="background-image: url('{$file.thumb}');" alt="{$file.name}" title="{$file.name}" class="img-thumbnail img-fluid img-photo-list" />
+                                <img src="{image_thumb_url($file.path, 120, 120)}" style="background-image: url('{image_thumb_url($file.path, 120, 120)}');" alt="{$file.name}" title="{$file.name}" class="img-thumbnail img-fluid img-photo-list" />
                             </a>
                             <p class="mt-1">
                                 <input type="checkbox" name="path[]" value="{$file.path}" id="cb_{$key}" class="me-1" />
@@ -177,7 +177,12 @@
                 {$smarty.capture.content_filemanager}
             </div>
             <div class="modal-footer">
-                <nav aria-label="Page navigation" class="table-responsive text-center"><ul class="pagination p-0 m-0">{$pagination}</ul></nav>
+                <div class="row w-100">
+                    <div class="col-12 col-sm-9">
+                        <nav aria-label="Page navigation" class="table-responsive text-center"><ul class="pagination p-0 m-0">{$pagination}</ul></nav>
+                    </div>
+                    <div class="col-12 col-sm-3 text-end"><a id="mgr_delete_cache" href="javascript:void(0)">{lang('FileManager.text_clear_cache')}</a></div>
+                </div>
             </div>
         </div>
     </div>
@@ -259,6 +264,33 @@
 
         e.preventDefault();
         $('#modal_image').load($(this).attr('href'));
+        return false;
+    });
+    $('#filemanager #mgr_delete_cache').on('click', function(e) {
+        is_processing = true;
+        e.preventDefault();
+        $.ajax({
+            url: base_url + '/common/filemanager/clear_cache',
+            type: 'POST',
+            dataType: 'json',
+            success: function(json) {
+                is_processing = false;
+                if (json['error']) {
+                    $.notify(json['error'], {
+                        'type':'danger'
+                    });
+                    return false;
+                }
+                if (json['success']) {
+                    $.notify(json['success']);
+                    $('#button_refresh').trigger('click');
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                is_processing = false;
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
         return false;
     });
     $('input[name=\'search\']').on('keydown', function(e) {

@@ -6,25 +6,22 @@ class ImageTool
 {
     protected $image;
     protected $dir_image_path;
+    private $_quality;
 
     protected $upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
-
-    private $_driver = 'imagick'; //gd,gd2,imagick
-    private $_quality;
+    private $_driver       = 'imagick'; //gd,gd2,imagick
 
     public function __construct()
     {
         helper('filesystem');
 
-        $this->image = \Config\Services::image();
-
+        $this->image          = \Config\Services::image();
         $this->dir_image_path = get_upload_path();
-
-        $this->_quality = !empty(config_item('image_quality')) ? config_item('image_quality') : 100;
+        $this->_quality       = !empty(config_item('image_quality')) ? config_item('image_quality') : 100;
     }
 
     /**
-     * resize tao hinh thumbnail, hinh goc van khong anh huong
+     * resize tao hinh thumbnail, hinh root khong anh huong
      *
      * @param $file_name
      * @param $width
@@ -33,7 +30,7 @@ class ImageTool
      */
     public function resize($file_name, $width = null, $height = null)
     {
-        $width = !empty($width) ? $width : (!empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH);
+        $width  = !empty($width) ? $width : (!empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH);
         $height = !empty($height) ? $height : (!empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT);
 
         if (!is_file($this->dir_image_path . $file_name) || substr(str_replace('\\', '/', realpath($this->dir_image_path . $file_name)), 0, strlen($this->dir_image_path)) != $this->dir_image_path) {
@@ -45,6 +42,7 @@ class ImageTool
         $image_old = $file_name;
         $image_new = UPLOAD_FILE_CACHE_DIR . substr($file_name, 0, strrpos($file_name, '.')) . '-' . $width . 'x' . $height . '.' . $extension;
 
+        //kiểm tra file cũ nếu có thay đổi như crop ảnh hoặc edit thì xóa cache
         if (is_file($this->dir_image_path . $image_new)) {
             $file_info_old = get_file_info($this->dir_image_path . $image_old);
             $file_info_new = get_file_info($this->dir_image_path . $image_new);
@@ -54,34 +52,101 @@ class ImageTool
             }
         }
 
-        //create folder
-        $path = '';
-        $directories = explode('/', dirname($image_new));
-        foreach ($directories as $directory) {
-            $path = $path . '/' . $directory;
+        //tạo mới khi file không tồn tại
+        if (!is_file($this->dir_image_path . $image_new)) {
 
-            if (!is_dir($this->dir_image_path . $path)) {
-                mkdir($this->dir_image_path . $path, 0777);
+            //create folder
+            $path = '';
+            $directories = explode('/', dirname($image_new));
+
+            foreach ($directories as $directory) {
+                if ($directory == "cache") {
+                    continue;
+                }
+
+                $path = $path . '/' . $directory;
+                if (!is_dir($this->dir_image_path . UPLOAD_FILE_CACHE_DIR . $path)) {
+                    mkdir($this->dir_image_path . UPLOAD_FILE_CACHE_DIR . $path, 0777);
+                }
+            }
+
+            list($width_orig, $height_orig, $image_type) = getimagesize($this->dir_image_path . $image_old);
+            if ($width > $width_orig && $height > $height_orig) {
+                write_file($this->dir_image_path . $image_new, file_get_contents($this->dir_image_path . $image_old));
+            } else {
+                $master_dimm = !empty(config_item('image_master_dimm')) ? config_item('image_master_dimm') : 'width';
+                try {
+                    \Config\Services::image($this->_driver)->withFile($this->dir_image_path . $image_old)
+                        ->resize($width, $height, true, $master_dimm)
+                        ->save($this->dir_image_path . $image_new, $this->_quality);
+                } catch (\Exception $e) {
+                    log_message('error', $e->getMessage());
+                    return false;
+                }
+            }
+
+            if (!empty($is_watermark)) {
+                $image_new = $this->watermark($image_new);
             }
         }
 
-        $image_old_info = getimagesize($this->dir_image_path . $image_old);
-        if (isset($image_old_info[0]) && isset($image_old_info[1]) && $width > $image_old_info[0] && $height > $image_old_info[1]) {
-            write_file($this->dir_image_path . $image_new, file_get_contents($this->dir_image_path . $image_old));
-            return $image_new;
+        return $image_new;
+    }
+
+    /**
+     * tạo hình thumb với hình nằm bên trong
+     *
+     * @param $file_name
+     * @param null $width
+     * @param null $height
+     * @return bool|mixed|string
+     */
+    public function resize_fit($file_name, $width = null, $height = null)
+    {
+        $width  = !empty($width) ? $width : (!empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH);
+        $height = !empty($height) ? $height : (!empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT);
+
+        if (!is_file($this->dir_image_path . $file_name) || substr(str_replace('\\', '/', realpath($this->dir_image_path . $file_name)), 0, strlen($this->dir_image_path)) != $this->dir_image_path) {
+            return false;
         }
 
+        $extension = pathinfo($file_name, PATHINFO_EXTENSION);
+
+        $image_old = $file_name;
+        $image_new = UPLOAD_FILE_CACHE_DIR . substr($file_name, 0, strrpos($file_name, '.')) . '-' . $width . 'x' . $height . '.' . $extension;
+
+        //kiểm tra file cũ nếu có thay đổi như crop ảnh hoặc edit thì xóa cache
+        if (is_file($this->dir_image_path . $image_new)) {
+            $file_info_old = get_file_info($this->dir_image_path . $image_old);
+            $file_info_new = get_file_info($this->dir_image_path . $image_new);
+
+            if (isset($file_info_old['date']) && isset($file_info_new['date']) && $file_info_old['date'] > $file_info_new['date']) {
+                delete_files(unlink($this->dir_image_path . $image_new));
+            }
+        }
+
+        //tạo mới khi file không tồn tại
         if (!is_file($this->dir_image_path . $image_new)) {
 
-            $master_dimm = !empty(config_item('image_master_dimm')) ? config_item('image_master_dimm') : 'width';
+            //create folder
+            $path = '';
+            $directories = explode('/', dirname($image_new));
+            foreach ($directories as $directory) {
+                if ($directory == "cache") {
+                    continue;
+                }
 
-            try {
-                \Config\Services::image($this->_driver)->withFile($this->dir_image_path . $image_old)
-                    ->resize($width, $height, true, $master_dimm)
-                    ->save($this->dir_image_path . $image_new, $this->_quality);
-            } catch (\Exception $e) {
-                log_message('error', $e->getMessage());
-                return false;
+                $path = $path . '/' . $directory;
+                if (!is_dir($this->dir_image_path . UPLOAD_FILE_CACHE_DIR . $path)) {
+                    mkdir($this->dir_image_path . UPLOAD_FILE_CACHE_DIR . $path, 0777);
+                }
+            }
+
+            $position = 'center';
+            $image_new = $this->thumb($image_old, $image_new, $width, $height);
+
+            if (!empty($is_watermark)) {
+                $image_new = $this->watermark($image_new);
             }
         }
 
@@ -103,17 +168,12 @@ class ImageTool
             $file_path = $file;
         }
 
-        $extension = pathinfo($file_path, PATHINFO_EXTENSION);
-        if (!in_array($extension, explode(',', $this->upload_type))) {
+        list($width_orig, $height_orig, $image_type) = getimagesize($file_path);
+        if (!in_array($image_type, array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF)) || empty($width_orig) || empty($height_orig)) {
             return false;
         }
 
-        $image_info = getimagesize($file_path);
-        if (!isset($image_info[0]) || !isset($image_info[1])) {
-            return false;
-        }
-
-        list($resize_width, $resize_height) = get_image_resize_info($image_info[0], $image_info[1]);
+        list($resize_width, $resize_height) = get_image_resize_info($width_orig, $height_orig);
 
         $master_dimm = !empty(config_item('image_master_dimm')) ? config_item('image_master_dimm') : 'width';
 
@@ -257,10 +317,6 @@ class ImageTool
             return $image_root;
         }
 
-        if (!empty($watermark_path) && !is_file($this->dir_image_path . $watermark_path)) {
-            return $image_root;
-        }
-
         if (!is_file($this->dir_image_path . $file_name)) {
             return $image_root;
         }
@@ -273,7 +329,8 @@ class ImageTool
         try {
             if (!empty(config_item('image_watermark_type'))
                 && config_item('image_watermark_type') == 'image'
-                && !empty($watermark_path)
+                && !empty($watermark_path
+                && is_file($this->dir_image_path . $watermark_path))
             ) {
                 $image_mgr     = new ImageManager();
                 $watermark_mgr = new ImageManager();
@@ -353,7 +410,7 @@ class ImageTool
     {
         $file_name = !empty($file_name) ? get_upload_path() . $file_name : FCPATH . 'common/images/watermark_bg.jpg';
 
-        $watermark = 'cache/tmp/watermark_bg.jpg';
+        $watermark = 'tmp/watermark_bg.jpg';
         if (is_file(get_upload_path() . $watermark)) {
             delete_files(unlink(get_upload_path() . $watermark));
         }
