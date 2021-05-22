@@ -165,25 +165,25 @@
 			{assign var="background_image_admin_path" value="auth-bg.jpg"}
 		{/if}
 		<label class="form-check form-check-inline">
-			<input type="radio" name="background_image_admin_path" value="auth-bg.jpg" {if !empty(old('background_image_admin_path', $background_image_admin_path))}checked="checked"{/if} id="background_image_admin_path_01" class="form-check-input">
+			<input type="radio" name="background_image_admin_path" value="auth-bg.jpg" {if old('background_image_admin_path', $background_image_admin_path) eq 'auth-bg.jpg'}checked="checked"{/if} id="background_image_admin_path_01" class="form-check-input">
 			<label class="form-check-label" for="background_image_admin_path_01">
 				<img src="{img_url('auth-bg.jpg')}" class="img-thumbnail" width="200">
 			</label>
 		</label>
 		<label class="form-check form-check-inline">
-			<input type="radio" name="background_image_admin_path" value="bg-01.jpg" {if !empty(old('background_image_admin_path', $background_image_admin_path))}checked="checked"{/if} id="background_image_admin_path_02" class="form-check-input">
+			<input type="radio" name="background_image_admin_path" value="bg-01.jpg" {if old('background_image_admin_path', $background_image_admin_path) eq 'bg-01.jpg'}checked="checked"{/if} id="background_image_admin_path_02" class="form-check-input">
 			<label class="form-check-label" for="background_image_admin_path_02">
 				<img src="{img_url('bg-01.jpg')}" class="img-thumbnail" width="200">
 			</label>
 		</label>
 		<label class="form-check form-check-inline">
-			<input type="radio" name="background_image_admin_path" value="bg-02.jpg" {if !empty(old('background_image_admin_path', $background_image_admin_path))}checked="checked"{/if} id="background_image_admin_path_03" class="form-check-input">
+			<input type="radio" name="background_image_admin_path" value="bg-02.jpg" {if old('background_image_admin_path', $background_image_admin_path) eq 'bg-02.jpg'}checked="checked"{/if} id="background_image_admin_path_03" class="form-check-input">
 			<label class="form-check-label" for="background_image_admin_path_03">
 				<img src="{img_url('bg-02.jpg')}" class="img-thumbnail" width="200">
 			</label>
 		</label>
 		<label class="form-check form-check-inline">
-			<input type="radio" name="background_image_admin_path" value="bg-03.jpg" {if !empty(old('background_image_admin_path', $background_image_admin_path))}checked="checked"{/if} id="background_image_admin_path_04" class="form-check-input">
+			<input type="radio" name="background_image_admin_path" value="bg-03.jpg" {if old('background_image_admin_path', $background_image_admin_path) eq 'bg-03.jpg'}checked="checked"{/if} id="background_image_admin_path_04" class="form-check-input">
 			<label class="form-check-label" for="background_image_admin_path_04">
 				<img src="{img_url('bg-03.jpg')}" class="img-thumbnail" width="200">
 			</label>

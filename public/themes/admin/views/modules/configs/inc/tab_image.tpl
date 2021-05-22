@@ -2,7 +2,7 @@
 {form_hidden('tab_type', 'tab_image')}
 <div class="border-bottom mx-3 lead pb-1 my-3">Uploads</div>
 <div class="form-group row">
-	<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_file_max_size')}</div>
+	<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_file_max_size')}</div>
 	<div class="col-12 col-sm-8 col-lg-6">
 		{if !empty($settings.file_max_size)}
 			{assign var="file_max_size" value="`$settings.file_max_size`"}
@@ -17,7 +17,7 @@
 	</div>
 </div>
 <div class="form-group row">
-	<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_file_ext_allowed')}</div>
+	<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_file_ext_allowed')}</div>
 	<div class="col-12 col-sm-8 col-lg-6">
 		{if !empty($settings.file_ext_allowed)}
 			{assign var="file_ext_allowed" value="`$settings.file_ext_allowed`"}
@@ -31,7 +31,7 @@
 	</div>
 </div>
 <div class="form-group row d-none">
-	<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_file_mime_allowed')}</div>
+	<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_file_mime_allowed')}</div>
 	<div class="col-12 col-sm-8 col-lg-6">
 		{if !empty($settings.file_mime_allowed)}
 			{assign var="file_mime_allowed" value="`$settings.file_mime_allowed`"}
@@ -45,7 +45,7 @@
 	</div>
 </div>
 <div class="form-group row">
-	<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_file_max_width')}</div>
+	<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_file_max_width')}</div>
 	<div class="col-12 col-sm-8 col-lg-6">
 		{if !empty($settings.file_max_width)}
 			{assign var="file_max_width" value="`$settings.file_max_width`"}
@@ -60,7 +60,7 @@
 	</div>
 </div>
 <div class="form-group row">
-	<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_file_max_height')}</div>
+	<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_file_max_height')}</div>
 	<div class="col-12 col-sm-8 col-lg-6">
 		{if !empty($settings.file_max_height)}
 			{assign var="file_max_height" value="`$settings.file_max_height`"}

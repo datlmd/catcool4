@@ -47,7 +47,7 @@
                                     {elseif $file.type == 'image'}
                                         <div class="position-relative">
                                             <a href="{$file.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
-                                                <img src="{$file.thumb}" style="background-image: url('{$file.thumb}');" alt="{$file.name}" style="width: 85px;" title="{$file.name}" class="img-thumbnail img-fluid img-photo-list" />
+                                                <img src="{image_thumb_url($file.path, 180, 180)}" style="background-image: url('{image_thumb_url($file.path, 180, 180)}');" alt="{$file.name}" style="width: 85px;" title="{$file.name}" class="img-thumbnail img-fluid img-photo-list" />
                                             </a>
                                             <button type="button" class="btn btn-xs btn-outline-light image-setting shadow-sm" style="right: 0; top: 0;" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
                                         </div>
@@ -109,7 +109,7 @@
                             </p>
                         {elseif $file.type == 'image'}
                             <a href="{$file.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
-                                <img src="{image_thumb_url($file.path, 120, 120)}" style="background-image: url('{image_thumb_url($file.path, 120, 120)}');" alt="{$file.name}" title="{$file.name}" class="img-thumbnail img-fluid img-photo-list" />
+                                <img src="{image_thumb_url($file.path, 180, 180)}" style="background-image: url('{image_thumb_url($file.path, 180, 180)}');" alt="{$file.name}" title="{$file.name}" class="img-thumbnail img-fluid img-photo-list" />
                             </a>
                             <p class="mt-1">
                                 <input type="checkbox" name="path[]" value="{$file.path}" id="cb_{$key}" class="me-1" />

@@ -3,6 +3,7 @@
 use App\Controllers\AdminController;
 use App\Modules\Configs\Models\ConfigModel;
 use App\Modules\Configs\Models\GroupModel;
+use PHPMailer\PHPMailer\Exception;
 
 class Manage extends AdminController
 {
@@ -81,18 +82,21 @@ class Manage extends AdminController
                 $this->validator->setRule('file_max_height', lang('ConfigAdmin.text_file_max_height'), 'required|is_natural');
                 break;
             case 'tab_local':
-                $this->validator->setRule('language', lang('ConfigAdmin.text_language'), 'required');
-                $this->validator->setRule('language_admin', lang('ConfigAdmin.text_language_admin'), 'required');
+                $this->validator->setRule('default_locale', lang('Admin.text_language'), 'required');
+                $this->validator->setRule('default_locale_admin', lang('ConfigAdmin.text_language_admin'), 'required');
+                break;
+            case 'tab_mail':
+                $this->validator->setRule('email_engine', lang('ConfigAdmin.text_email_engine'), 'required');
                 break;
             case 'tab_server':
-                $this->validator->setRule('enable_ssl', lang('ConfigAdmin.text_enable_ssl'), 'required');
-                $this->validator->setRule('encryption_key', lang('ConfigAdmin.text_encryption_key'), 'required');
+                $this->validator->setRule('robots', lang('ConfigAdmin.text_robots'), 'required');
                 break;
             default:
                 break;
         }
 
         if (!empty($this->request->getPost())) {
+
             if (!$this->validator->withRequest($this->request)->run()) {
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
@@ -132,9 +136,23 @@ class Manage extends AdminController
                     'user_id'      => $this->getUserId(),
                 ];
             }
-            $this->model->updateBatch($data_edit, 'id');
+
+            try {
+                $this->model->updateBatch($data_edit, 'id');
+            } catch (\Exception $e) {
+                set_alert($e->getMessage(), ALERT_ERROR);
+                return redirect()->back()->withInput();
+            }
 
             $this->model->writeFile();
+
+            //change language admin
+            if (!empty($data_settings['default_locale_admin']) && $data_settings['default_locale_admin'] != get_lang(true)) {
+                set_lang($data_settings['default_locale_admin'], true);
+
+                $menu_model = new \App\Modules\Menus\Models\MenuModel();
+                $menu_model->deleteCache(true);
+            }
 
             set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL) . '/settings/' . $this->request->getPost('tab_type'));
@@ -182,11 +200,11 @@ class Manage extends AdminController
         $data['country_list']  = $country_model->getListDisplay();
         $data['province_list'] = $province_model->getListDisplay();
 
-//        $this->load->model("products/Length_class", "Length_class");
-//        $data['length_class_list'] = format_dropdown($this->Length_class->get_list(), 'length_class_id');
-//
-//        $this->load->model("products/Weight_class", "Weight_class");
-//        $data['weight_class_list'] = format_dropdown($this->Weight_class->get_list(), 'weight_class_id');
+        //$this->load->model("products/Length_class", "Length_class");
+        $data['length_class_list'] = null;//format_dropdown($this->Length_class->get_list(), 'length_class_id');
+
+        //$this->load->model("products/Weight_class", "Weight_class");
+        $data['weight_class_list'] = null;//format_dropdown($this->Weight_class->get_list(), 'weight_class_id');
 
         $data['timezone_list'] = $this->_getListTimezone();
         $data['currency_list'] = format_dropdown($currency_model->getListPublished(), 'code');

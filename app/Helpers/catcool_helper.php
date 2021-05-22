@@ -683,7 +683,15 @@ if(!function_exists('image_url'))
 
 if(!function_exists('image_thumb_url'))
 {
-    function image_thumb_url($image = null, $width = null, $height = null)
+    /**
+     * @param null $image
+     * @param null $width
+     * @param null $height
+     * @param bool $is_fit
+     * @param string $position : "top-left", "top", "top-right", "left", "center", "right", "bottom-left", "bottom", "bottom-right"
+     * @return string
+     */
+    function image_thumb_url($image = null, $width = null, $height = null, $is_fit = false, $position = "center")
     {
         $width = !empty($width) ? $width : (!empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH);
         $height = !empty($height) ? $height : (!empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT);
@@ -693,7 +701,9 @@ if(!function_exists('image_thumb_url'))
         }
 
         $image_tool   = new \App\Libraries\ImageTool();
-        $image_resize = $image_tool->resize($image, $width, $height);
+        $image_resize = $is_fit ?
+            $image_tool->resizeFit($image, $width, $height, $position)
+            : $image_tool->resize($image, $width, $height);
 
         $image_resize = "img/$upload_path/$image_resize";
         if (!empty(session()->get('is_admin'))) {

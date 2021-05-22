@@ -1,67 +1,99 @@
 {form_open(uri_string(), ['id' => 'form_server'])}
 {form_hidden('tab_type', 'tab_server')}
-<div class="border-bottom mx-3 lead pb-1 my-3">{lang(lang('text_general'))}</div>
+<div class="border-bottom mx-3 lead pb-1 my-3">{lang('ConfigAdmin.text_general')}</div>
 <div class="form-group row">
-	{lang('text_maintenance', 'text_maintenance', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-	<div class="col-12 col-sm-8 col-lg-6">
-		<div class="switch-button switch-button-xs mt-2">
-			<input type="checkbox" name="maintenance" value="{STATUS_ON}" {set_checkbox('maintenance', STATUS_ON, ($settings.maintenance|lower eq 'true'))} id="maintenance">
-			<span><label for="maintenance"></label></span>
-		</div><br/>
-		<small>{lang('help_maintenance')}</small>
-	</div>
-</div>
-<div class="form-group row">
-	{lang('text_seo_url', 'text_seo_url', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-	<div class="col-12 col-sm-8 col-lg-6">
-		<div class="switch-button switch-button-xs mt-2">
-			<input type="checkbox" name="seo_url" value="{STATUS_ON}" {set_checkbox('seo_url', STATUS_ON, ($settings.seo_url|lower eq 'true'))} id="seo_url">
-			<span><label for="seo_url"></label></span>
-		</div><br/>
-		<small>{lang('help_seo_url')}</small>
-	</div>
-</div>
-<div class="form-group row">
-	{lang('text_robots', 'text_robots', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-	<div class="col-12 col-sm-8 col-lg-6">
-		<textarea type="textarea" name="robots" id="robots" cols="40" rows="5" class="form-control {if !empty(form_error("robots"))}is-invalid{/if}">{str_replace('|', PHP_EOL, set_value('robots', $settings.robots))}</textarea>
-		<small>{lang('help_robots')}</small>
-		{if !empty(form_error("robots"))}
-			<div class="invalid-feedback">{form_error("robots")}</div>
+	<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_maintenance')}</div>
+	<div class="col-12 col-sm-8 col-lg-6 pt-2">
+		{if !empty($settings.maintenance)}
+			{assign var="maintenance" value="`$settings.maintenance`"}
+		{else}
+			{assign var="maintenance" value=""}
 		{/if}
+		<label class="form-check form-check-inline">
+			<input type="radio" name="maintenance" value="{STATUS_ON}" {if !empty(old('maintenance', $maintenance))}checked="checked"{/if} id="maintenance_on" class="form-check-input">
+			<label class="form-check-label" for="maintenance_on">ON</label>
+		</label>
+		<label class="form-check form-check-inline me-2">
+			<input type="radio" name="maintenance" value="{STATUS_OFF}" {if empty(old('maintenance', $maintenance))}checked="checked"{/if} id="maintenance_off" class="form-check-input">
+			<label class="form-check-label" for="maintenance_off">OFF</label>
+		</label>
+		<br/>
+		<small>{lang('ConfigAdmin.help_maintenance')}</small>
 	</div>
 </div>
 <div class="form-group row">
-	{lang('text_compression', 'text_compression', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
-	<div class="col-12 col-sm-8 col-lg-6">
-		<input type="number" name="compression" value="{set_value('compression', $settings.compression)}" id="compression" class="form-control">
-		<small>{lang('help_compression')}</small>
+	<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_seo_url')}</div>
+	<div class="col-12 col-sm-8 col-lg-6 pt-2">
+		{if !empty($settings.seo_url)}
+			{assign var="seo_url" value="`$settings.seo_url`"}
+		{else}
+			{assign var="seo_url" value=""}
+		{/if}
+		<label class="form-check form-check-inline">
+			<input type="radio" name="seo_url" value="{STATUS_ON}" {if !empty(old('seo_url', $seo_url))}checked="checked"{/if} id="seo_url_on" class="form-check-input">
+			<label class="form-check-label" for="seo_url_on">ON</label>
+		</label>
+		<label class="form-check form-check-inline me-2">
+			<input type="radio" name="seo_url" value="{STATUS_OFF}" {if empty(old('seo_url', $seo_url))}checked="checked"{/if} id="seo_url_off" class="form-check-input">
+			<label class="form-check-label" for="seo_url_off">OFF</label>
+		</label>
+		<br/>
+		<small>{lang('ConfigAdmin.help_seo_url')}</small>
 	</div>
 </div>
-
-<div class="border-bottom mx-3 lead pb-1 my-3">{lang(lang('text_security'))}</div>
 <div class="form-group row">
-	{lang('text_enable_ssl', 'text_enable_ssl', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
+	<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_robots')}</div>
 	<div class="col-12 col-sm-8 col-lg-6">
-		<div class="switch-button switch-button-xs mt-2">
-			<input type="checkbox" name="enable_ssl" value="{STATUS_ON}" {set_checkbox('enable_ssl', STATUS_ON, ($settings.enable_ssl|lower eq 'true'))} id="enable_ssl">
-			<span><label for="enable_ssl"></label></span>
-		</div><br/>
-		<small>{lang('help_enable_ssl')}</small>
+		{if !empty($settings.robots)}
+			{assign var="robots" value="`$settings.robots`"}
+		{else}
+			{assign var="robots" value=""}
+		{/if}
+		<textarea type="textarea" name="robots" id="robots" cols="40" rows="5" class="form-control {if $validator->hasError("robots")}is-invalid{/if}">{str_replace('|', PHP_EOL, old('robots', $robots))}</textarea>
+		<div class="invalid-feedback">
+			{$validator->getError("robots")}
+		</div>
+		<small>{lang('ConfigAdmin.help_robots')}</small>
 	</div>
 </div>
-<div class="form-group row d-none">
-	{lang('text_encryption_key', 'text_encryption_key', ['class' => 'col-12 col-sm-3 col-form-label text-sm-end'])}
+<div class="form-group row">
+	<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_compression')}</div>
 	<div class="col-12 col-sm-8 col-lg-6">
-		<textarea type="textarea" name="encryption_key" id="encryption_key" cols="40" rows="5" class="form-control">{$settings.encryption_key}</textarea>
-		<small>{lang('help_encryption_key')}</small>
+		{if !empty($settings.compression)}
+			{assign var="compression" value="`$settings.compression`"}
+		{else}
+			{assign var="compression" value="0"}
+		{/if}
+		<input type="number" name="compression" value="{old('compression', $compression)}" id="compression" class="form-control">
+		<small>{lang('ConfigAdmin.help_compression')}</small>
 	</div>
 </div>
 
+<div class="border-bottom mx-3 lead pb-1 my-3">{lang(lang('ConfigAdmin.text_security'))}</div>
+<div class="form-group row">
+	<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_enable_ssl')}</div>
+	<div class="col-12 col-sm-8 col-lg-6 pt-2">
+		{if !empty($settings.force_global_secure_requests)}
+			{assign var="force_global_secure_requests" value="`$settings.force_global_secure_requests`"}
+		{else}
+			{assign var="force_global_secure_requests" value=""}
+		{/if}
+		<label class="form-check form-check-inline">
+			<input type="radio" name="force_global_secure_requests" value="{STATUS_ON}" {if !empty(old('force_global_secure_requests', $force_global_secure_requests))}checked="checked"{/if} id="force_global_secure_requests_on" class="form-check-input">
+			<label class="form-check-label" for="force_global_secure_requests_on">ON</label>
+		</label>
+		<label class="form-check form-check-inline me-2">
+			<input type="radio" name="force_global_secure_requests" value="{STATUS_OFF}" {if empty(old('force_global_secure_requests', $force_global_secure_requests))}checked="checked"{/if} id="force_global_secure_requests_off" class="form-check-input">
+			<label class="form-check-label" for="force_global_secure_requests_off">OFF</label>
+		</label>
+		<br/>
+		<small>{lang('ConfigAdmin.help_enable_ssl')}</small>
+	</div>
+</div>
 <div class="form-group row mt-3">
 	<div class="col-12 col-sm-3 col-form-label text-sm-end"></div>
-	<div class="col-12 col-sm-8 col-lg-6">
-		<button type="submit" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_save')}"><i class="fas fa-save me-1"></i>{lang('button_save')}</button>
+	<div class="col-12 col-sm-8 col-lg-6 ms-0">
+		<button type="submit" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
 	</div>
 </div>
 {form_close()}
