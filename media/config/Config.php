@@ -335,7 +335,7 @@ If false, no automatic detection will be performed.
 	/**
 	 * Set theme frontend default/kenhtraitim
 	 */
-	public $themeFrontend = "kenhtraitim";
+	public $themeFrontend = "default";
 
 	/**
 	 * Thời gian expire cookie của user khi login

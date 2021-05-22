@@ -553,7 +553,7 @@
 						</div>
 						<div class="testimonial__details">
 							<h4><a href="#">Mr.Mike Band</a></h4>
-							<p>I¡Çm up to something. Stay focused. The weather is amazing, walk with me through the pathway of more success. </p>
+							<p>Iï¿½ï¿½m up to something. Stay focused. The weather is amazing, walk with me through the pathway of more success. </p>
 						</div>
 					</div>
 				</div>
@@ -566,7 +566,7 @@
 						</div>
 						<div class="testimonial__details">
 							<h4><a href="#">Ms.Lucy Barton</a></h4>
-							<p>I¡Çm up to something. Stay focused. The weather is amazing, walk with me through the pathway of more success. </p>
+							<p>Iï¿½ï¿½m up to something. Stay focused. The weather is amazing, walk with me through the pathway of more success. </p>
 						</div>
 					</div>
 				</div>
@@ -579,7 +579,7 @@
 						</div>
 						<div class="testimonial__details">
 							<h4><a href="#">Ms.Lucy Barton</a></h4>
-							<p>I¡Çm up to something. Stay focused. The weather is amazing, walk with me through the pathway of more success. </p>
+							<p>Iï¿½ï¿½m up to something. Stay focused. The weather is amazing, walk with me through the pathway of more success. </p>
 						</div>
 					</div>
 				</div>
@@ -592,7 +592,7 @@
 						</div>
 						<div class="testimonial__details">
 							<h4><a href="#">Ms.Lucy Barton</a></h4>
-							<p>I¡Çm up to something. Stay focused. The weather is amazing, walk with me through the pathway of more success. </p>
+							<p>Iï¿½ï¿½m up to something. Stay focused. The weather is amazing, walk with me through the pathway of more success. </p>
 						</div>
 					</div>
 				</div>

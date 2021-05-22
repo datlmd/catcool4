@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="{Events::trigger('html_class', 'no-js', 'string')}" lang="{if $lang_abbr}{$lang_abbr}{else}vi{/if}">
+<html class="{if !empty($html_class)}{$html_class}{/if}" dir="{lang('General.direction')}" lang="{lang('General.code')}">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -9,9 +9,8 @@
 	<link rel="shortcut icon" href="{img_url('assets/img/favicon.ico')}" type="image/x-icon" />
 	<link rel="apple-touch-icon" href="{img_url('assets/img/apple-touch-icon.png')}">
 
-	<title>{Events::trigger('the_title', $title, 'string')}</title>
+	<title>{if !empty($page_title)}{$page_title}{/if}</title>
 	{$metadata}
-	<meta name="author" content="CatCoolCMS">
 
 	<!-- Mobile Metas -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
@@ -20,24 +19,27 @@
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7CShadows+Into+Light" rel="stylesheet" type="text/css">
 
 	<!-- StyleSheets -->
-    <link rel="stylesheet" href="{css_url('vendor/bootstrap/css/bootstrap.min', 'common')}" type="text/css">
-    <link rel="stylesheet" href="{css_url('css/catcool', 'common')}" type="text/css">
-	{$css_files}
+    <link rel="stylesheet" href="{base_url('common/plugin/bootstrap/css/bootstrap.min.css')}" type="text/css">
+    <link rel="stylesheet" href="{base_url('common/css/catcool.css')}" type="text/css">
+	{include file=get_theme_path('views/master/common/css.tpl')}
+	{if !empty($css_files)}{$css_files}{/if}
 
 	<!-- Head Libs -->
-	<script src="{js_url('vendor/modernizr/modernizr.min', 'common')}"></script>
+	<script src="{base_url('common/plugin/modernizr/modernizr.min.js')}"></script>
+
+	<script src="{base_url('common/plugin/jquery/jquery.min.js')}" type="text/javascript"></script>
+	<script src="{base_url('common/plugin/bootstrap/js/popper.min.js')}" type="text/javascript"></script>
+	<script src="{base_url('common/plugin/bootstrap/js/bootstrap.min.js')}" type="text/javascript"></script>
 
     <script>{script_global()}</script>
 </head>
-<body class="{Events::trigger('body_class', '', 'string')}">
+<body class="{if !empty($body_class)}{$body_class}{/if}">
 
 	{$layout}
 
-	<script src="{js_url('vendor/jquery/jquery-3.4.1.min', 'common')}" type="text/javascript"></script>
-	<script src="{js_url('vendor/bootstrap/js/popper.min', 'common')}" type="text/javascript"></script>
-	<script src="{js_url('vendor/bootstrap/js/bootstrap.min', 'common')}" type="text/javascript"></script>
 	<!-- JavaScripts -->
-	{$js_files}
+	{include file=get_theme_path('views/master/common/js.tpl')}
+	{if !empty($js_files)}{$js_files}{/if}
 
 	{if (config_item('ga_enabled') && (! empty(config_item('ga_siteid')) && config_item('ga_siteid') != 'UA-XXXXX-Y'))}
 		{literal}

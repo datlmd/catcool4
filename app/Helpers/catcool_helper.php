@@ -1359,22 +1359,15 @@ if(!function_exists('get_menu_by_position'))
 {
     function get_menu_by_position($position = MENU_POSITION_MAIN)
     {
-        $CI = & get_instance();
-        $CI->load->model("menus/Menu", 'Menu');
+        $menu_model = new \App\Modules\Menus\Models\MenuModel();
 
-        $menu = $CI->Menu->get_menu_active(['context' => $position], 3600*30*12);
+        $menu = $menu_model->getMenuActive(['context' => $position], 3600*30*12);
         $menu = format_tree(['data' => $menu, 'key_id' => 'menu_id']);
-
         if (empty($menu)) {
             return false;
         }
+
         return $menu;
-//        sort($menu);
-//        if (empty($menu[0]['subs'])) {
-//            return false;
-//        }
-//
-//        return $menu[0]['subs'];
     }
 }
 

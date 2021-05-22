@@ -1,9 +1,9 @@
-<div class="body {Events::trigger('div_body_class', '', 'string')}">
+<div class="body {if !empty($div_body_class)}{$div_body_class}{/if}">
     {print_flash_alert()}
-    {$header_top}
-    {$header_bottom}
+    {if !empty($header_top)}{$header_top}{/if}
+    {if !empty($header_bottom)}{$header_bottom}{/if}
     <div role="main" class="main">
-        {$breadcumb}
+        {if !empty($breadcumb)}{$breadcumb}{/if}
         <div class="container">
             <div class="row">
                 {if !empty($content_left)}
@@ -13,9 +13,9 @@
                 {/if}
 
                 <div id="content" class="col">
-                    {$content_top}
-                    {$content}
-                    {$content_bottom}
+                    {if !empty($content_top)}{$content_top}{/if}
+                    {if !empty($content)}{$content}{/if}
+                    {if !empty($content_bottom)}{$content_bottom}{/if}
                 </div>
 
                 {if !empty($content_right)}
@@ -26,6 +26,6 @@
             </div>
         </div>
     </div>
-    {$footer_top}
-    {$footer_bottom}
+    {if !empty($footer_top)}{$footer_top}{/if}
+    {if !empty($footer_bottom)}{$footer_bottom}{/if}
 </div>

@@ -96,7 +96,7 @@ class MenuModel extends MyModel
                 return false;
             }
 
-            $language_id = get_lang_id(true);
+            $language_id = !empty($filter['is_admin']) ? get_lang_id(true) : get_lang_id();
             foreach ($result as $key => $value) {
                 $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
             }
