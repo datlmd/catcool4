@@ -52,7 +52,7 @@
 									{include file=get_theme_path('views/modules/configs/inc/tab_local.tpl')}
 								</div>
 								<div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_option'}show active{/if}" role="tabpanel" id="tab_content_option"  aria-labelledby="tab_option">
-	{*								{include file=get_theme_path('views/modules/configs/inc/tab_option.tpl')}*}
+									{include file=get_theme_path('views/modules/configs/inc/tab_option.tpl')}
 								</div>
 								<div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_mail'}show active{/if}" role="tabpanel" id="tab_content_mail"  aria-labelledby="tab_mail">
 									{include file=get_theme_path('views/modules/configs/inc/tab_mail.tpl')}
