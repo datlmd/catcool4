@@ -3,7 +3,6 @@
 use App\Controllers\AdminController;
 use App\Modules\Configs\Models\ConfigModel;
 use App\Modules\Configs\Models\GroupModel;
-use PHPMailer\PHPMailer\Exception;
 
 class Manage extends AdminController
 {

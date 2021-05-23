@@ -55,6 +55,7 @@
                                     {assign var="config_value" value=""}
                                 {/if}
                                 <input type="text" name="config_value" value="{old('config_value', $config_value)}" id="config_value" class="form-control">
+                                <small>Format Array: ['value','value']</small>
                             </div>
                         </div>
                         <div class="form-group row">
