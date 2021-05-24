@@ -135,9 +135,29 @@ class CustomConfig extends BaseConfig
 
 	public $encryptionKey = "";
 
-	public $fbAppId = "";
+	/**
+	 * https://developers.facebook.com/apps/
+	 */
+	public $fbAppId = 155850613176302;
+
+	public $fbAppSecret = "9523c281e4091184e1fe9ef1ab84537b";
+
+	public $fbAuthOnLoad = 1;
+
+	public $fbGraphVersion = "v10.0";
+
+	public $fbLoginRedirectUrl = "https://localhost:84443/dev/catcool4/public/customers/social_login?type=fb";
+
+	public $fbLoginType = "web";
+
+	public $fbLogoutRedirectUrl = "https//localhost:8443/dev/catcool4/public/customers/logout_facebook";
 
 	public $fbPages = "";
+
+	/**
+	 * ['user_friends', 'public_profile', 'user_birthday']
+	 */
+	public $fbPermissions = ['email'];
 
 	public $fileEncryptName = 0;
 

@@ -41,16 +41,15 @@
 	{include file=get_theme_path('views/master/common/js.tpl')}
 	{if !empty($js_files)}{$js_files}{/if}
 
-	{if (config_item('ga_enabled') && (! empty(config_item('ga_siteid')) && config_item('ga_siteid') != 'UA-XXXXX-Y'))}
+	{if !empty(config_item('ga_enabled')) && !empty(config_item('ga_siteid'))}
 		{literal}
 		<!-- Google Analytics-->
 		<script>
 			window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
-			ga('create','{{config_item('ga_siteid')}}','auto');ga('send','pageview')
+			ga('create','{/literal}{config_item('ga_siteid')}{literal}','auto');ga('send','pageview')
 		</script>
 		<script src="https://www.google-analytics.com/analytics.js" async defer></script>
 		{/literal}
 	{/if}
-
 </body>
 </html>

@@ -55,8 +55,6 @@ class Customers extends BaseController
             */
         }
 
-        $this->themes->addJS('common/js/customer/login');
-
         if ($this->validator->getErrors()) {
             $data['errors'] = $this->validator->getErrors();
         }
@@ -73,39 +71,40 @@ class Customers extends BaseController
         $auth_url  = '';
         $user_data = [];
 
-        if (isset($_REQUEST) && !empty($_REQUEST['type'])) {
+        if (!empty($this->request->getPostGet()) && !empty($this->request->getPostGet('type'))) {
 
             switch ($this->request->getPostGet('type')) {
                 case 'fb':
                     // Load facebook oauth library
-//                    $this->load->library('facebook');
-//
-//                    // Authenticate user with facebook
-//                    $access_token = $this->facebook->is_authenticated();
-//                    if (!empty($access_token)) {
-//                        // Get user info from facebook
-//                        $fb_user   = $this->facebook->request('get', '/me?fields=id,name,first_name,last_name,email,link,gender,picture.type(large), birthday');
-//                        $user_data = [
-//                            'id'         => !empty($fb_user['id']) ? $fb_user['id'] : '',
-//                            'first_name' => !empty($fb_user['first_name']) ? $fb_user['first_name'] : '',
-//                            'last_name'  => !empty($fb_user['last_name']) ? $fb_user['last_name'] : '',
-//                            'email'      => !empty($fb_user['email']) ? $fb_user['email'] : '',
-//                            'phone'      => !empty($fb_user['phone']) ? $fb_user['phone'] : '',
-//                            'gender'     => !empty($fb_user['gender']) ? $fb_user['gender'] : '',
-//                            'image'      => !empty($fb_user['picture']['data']['url']) ? $fb_user['picture']['data']['url'] : '',
-//                        ];
-//                    } else {
-//                        $auth_url =  $this->facebook->login_url();
-//                    }
+                    $facebook = service('facebook');
+
+                    // Authenticate user with facebook
+                    $access_token = $this->request->getPost('access_token');//$facebook->isAuthenticated();
+                    if (!empty($access_token)) {
+                        // Get user info from facebook
+                        //$fb_user   = $facebook->getUserInfor($user_id, $access_token);
+                        $fb_user = $facebook->request('get', '/me?fields=id,name,first_name,last_name,email,link,gender,picture.type(large), birthday', $access_token);
+                        $user_data = [
+                            'id'         => !empty($fb_user['id']) ? $fb_user['id'] : '',
+                            'first_name' => !empty($fb_user['first_name']) ? $fb_user['first_name'] : '',
+                            'last_name'  => !empty($fb_user['last_name']) ? $fb_user['last_name'] : '',
+                            'email'      => !empty($fb_user['email']) ? $fb_user['email'] : '',
+                            'phone'      => !empty($fb_user['phone']) ? $fb_user['phone'] : '',
+                            'gender'     => !empty($fb_user['gender']) ? $fb_user['gender'] : '',
+                            'image'      => !empty($fb_user['picture']['data']['url']) ? $fb_user['picture']['data']['url'] : '',
+                        ];
+                    } else {
+                        $auth_url = $facebook->loginUrl();
+                    }
 
                     break;
                 case 'gg':
 
                     // Load zalo oauth library
                     $google = service('google');
-                    if(isset($_GET['code'])) {
+                    if(!empty($this->request->getGet('code'))) {
                         // Authenticate user with google
-                        if($google->getAuthenticate($_GET['code'])) {
+                        if($google->getAuthenticate($this->request->getGet('code'))) {
 
                             // Get user info from google
                             $gg_user = $google->getUserInfo();
@@ -166,7 +165,7 @@ class Customers extends BaseController
         }
 
         //check user $user_data, login thanh cong
-
+cc_debug($user_data);
 
         if ($this->request->isAJAX()) {
             json_output(['status' => 'redirect', 'url' => previous_url()]);

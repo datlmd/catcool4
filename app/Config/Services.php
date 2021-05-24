@@ -9,6 +9,7 @@ use Exception;
 use App\Libraries\ReCaptcha;
 use App\Libraries\Fba;
 use App\Libraries\Google;
+use App\Libraries\Facebook;
 
 /**
  * Services Configuration file.
@@ -126,5 +127,10 @@ class Services extends BaseService
     public static function google($getShared = true)
     {
         return ($getShared === true ? static::getSharedInstance('Google') : new Google());
+    }
+
+    public static function facebook($getShared = true)
+    {
+        return ($getShared === true ? static::getSharedInstance('Facebook') : new Facebook());
     }
 }
