@@ -54,6 +54,8 @@ class BaseController extends Controller
 	 */
 	protected $helpers = ['html', 'url', 'themes', 'catcool', 'form', 'inflector', 'cookie'];
 
+    protected $validator;
+
 	/**
 	 * Constructor.
 	 */
@@ -88,6 +90,8 @@ class BaseController extends Controller
         } else {
             date_default_timezone_set('Asia/Saigon');
         }
+
+        $this->validator = \Config\Services::validation();
 
         $this->site_lang  =  \Config\Services::language()->getLocale();
         $this->themes     = Themes::init();

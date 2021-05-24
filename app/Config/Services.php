@@ -8,6 +8,7 @@ use App\Libraries\Breadcrumb;
 use Exception;
 use App\Libraries\ReCaptcha;
 use App\Libraries\Fba;
+use App\Libraries\Google;
 
 /**
  * Services Configuration file.
@@ -117,7 +118,13 @@ class Services extends BaseService
         return $return;
     }
 
-    public static function fba($getShared = true) {
+    public static function fba($getShared = true)
+    {
         return ($getShared === true ? static::getSharedInstance('Fba') : new Fba());
+    }
+
+    public static function google($getShared = true)
+    {
+        return ($getShared === true ? static::getSharedInstance('Google') : new Google());
     }
 }

@@ -5,8 +5,6 @@ use App\Controllers\UserController;
 
 class AdminController extends UserController
 {
-    protected $validator;
-
     public function initController(\CodeIgniter\HTTP\RequestInterface $request, \CodeIgniter\HTTP\ResponseInterface $response, \Psr\Log\LoggerInterface $logger)
     {
         // Do Not Edit This Line
@@ -29,8 +27,6 @@ class AdminController extends UserController
         $this->smarty->assign('menu_current', service('uri')->getSegment(1));
 
         $this->smarty->assign('validator', \Config\Services::validation());
-
-        $this->validator = \Config\Services::validation();
 
         $error_token = session()->getFlashdata('error_token');
         if (!empty($error_token)) {

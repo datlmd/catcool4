@@ -172,6 +172,38 @@ class CustomConfig extends BaseConfig
 	public $gaSiteid = "";
 
 	/**
+	 * https://console.developers.google.com
+	 */
+	public $googleApiKey = "";
+
+	/**
+	 * Tên app google
+	 */
+	public $googleApplicationName = "Login to Cat Cool CMS";
+
+	/**
+	 * https://console.developers.google.com
+	 */
+	public $googleClientId = "515995961004-h0h0f4t93g6nf2o7kos5rcjoo75q7d6q.apps.googleusercontent.com";
+
+	/**
+	 * Thông tin client secret
+ https://console.developers.google.com
+	 */
+	public $googleClientSecret = "9LVGDYeCGuV7N39MwxoT13yS";
+
+	/**
+	 * google_redirect_uri
+https://console.developers.google.com
+	 */
+	public $googleRedirectUri = "https://localhost:8443/dev/catcool4/public/customers/social_login?type=gg";
+
+	/**
+	 * https://console.developers.google.com
+	 */
+	public $googleScopes = ['email','profile'];
+
+	/**
 	 * google-site-verification
 	 */
 	public $googleSiteVerification = "";
