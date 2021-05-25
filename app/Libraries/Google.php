@@ -1,7 +1,7 @@
 <?php namespace App\Libraries;
 
 // Include the autoloader provided in the SDK
-require_once ROOTPATH .'vendor/autoload.php';
+require_once ROOTPATH . 'vendor/autoload.php';
 
 use \Google_Client;
 use \Google_Service_Oauth2;

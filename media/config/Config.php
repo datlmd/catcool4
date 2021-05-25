@@ -396,4 +396,22 @@ If false, no automatic detection will be performed.
 
 	public $weightClass = 0;
 
+	/**
+	 * https://developers.zalo.me/
+	 */
+	public $zaloAppId = 2782228093246916703;
+
+	public $zaloAppSecret = "UPbqKJLCO2Pw5T2R38MB";
+
+	public $zaloAuthOnLoad = 1;
+
+	/**
+	 * https://localhost:8443/dev/catcool4/public/customers/social_login?type=zalo
+	 */
+	public $zaloLoginRedirectUrl = "https://localhost/dev/catcool/members/manage/login";
+
+	public $zaloLoginType = "web";
+
+	public $zaloLogoutRedirectUrl = "customers/logout_zalo";
+
 }

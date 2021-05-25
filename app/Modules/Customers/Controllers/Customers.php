@@ -38,8 +38,7 @@ class Customers extends BaseController
         $this->validator->setRule('username', lang('Customer.text_username'), 'required');
         $this->validator->setRule('password', lang('Customer.text_password'), 'required');
 
-        if (!empty($this->request->getPost()) && $this->validator->withRequest($this->request)->run())
-        {
+        if (!empty($this->request->getPost()) && $this->validator->withRequest($this->request)->run()) {
             /*
             if(!check_captcha($this->request->post('captcha'))) {
                 $data['errors'] = lang('error_captcha');
@@ -71,9 +70,11 @@ class Customers extends BaseController
         $auth_url  = '';
         $user_data = [];
 
-        if (!empty($this->request->getPostGet()) && !empty($this->request->getPostGet('type'))) {
+        $login_type = $this->request->getPostGet('type');
 
-            switch ($this->request->getPostGet('type')) {
+        if (!empty($this->request->getPostGet()) && !empty($login_type)) {
+
+            switch ($login_type) {
                 case 'fb':
                     // Load facebook oauth library
                     $facebook = service('facebook');
@@ -127,25 +128,25 @@ class Customers extends BaseController
                     break;
                 case 'zalo':
                     // Load zalo oauth library
-//                    $this->load->library('zalo_lib');
-//
-//                    // Authenticate user with zalo
-//                    $access_token = $this->zalo_lib->is_authenticated();
-//                    if (!empty($access_token)) {
-//                        $zalo_user = $this->zalo_lib->get_user($access_token);
-//                        $user_data = [
-//                            'id'         => !empty($zalo_user['id']) ? $zalo_user['id'] : '',
-//                            'first_name' => !empty($zalo_user['name']) ? $zalo_user['name'] : '',
-//                            'last_name'  => !empty($zalo_user['last_name']) ? $zalo_user['last_name'] : '',
-//                            'dob'        => !empty($zalo_user['birthday']) ? $zalo_user['birthday'] : '',
-//                            'email'      => !empty($zalo_user['email']) ? $zalo_user['email'] : '',
-//                            'phone'      => !empty($zalo_user['phone']) ? $zalo_user['phone'] : '',
-//                            'gender'     => !empty($zalo_user['gender']) ? $zalo_user['gender'] : '',
-//                            'image'      => !empty($zalo_user['picture']['data']['url']) ? $zalo_user['picture']['data']['url'] : '',
-//                        ];
-//                    } else {
-//                        $auth_url =  $this->zalo_lib->login_url();
-//                    }
+                    $zalo = service('zaloApi');
+
+                    // Authenticate user with zalo
+                    $access_token = $zalo->isAuthenticated();
+                    if (!empty($access_token)) {
+                        $zalo_user = $zalo->getUser($access_token);
+                        $user_data = [
+                            'id'         => !empty($zalo_user['id']) ? $zalo_user['id'] : '',
+                            'first_name' => !empty($zalo_user['name']) ? $zalo_user['name'] : '',
+                            'last_name'  => !empty($zalo_user['last_name']) ? $zalo_user['last_name'] : '',
+                            'dob'        => !empty($zalo_user['birthday']) ? $zalo_user['birthday'] : '',
+                            'email'      => !empty($zalo_user['email']) ? $zalo_user['email'] : '',
+                            'phone'      => !empty($zalo_user['phone']) ? $zalo_user['phone'] : '',
+                            'gender'     => !empty($zalo_user['gender']) ? $zalo_user['gender'] : '',
+                            'image'      => !empty($zalo_user['picture']['data']['url']) ? $zalo_user['picture']['data']['url'] : '',
+                        ];
+                    } else {
+                        $auth_url =  $zalo->loginUrl();
+                    }
 
                     break;
                 case 'tt':
@@ -165,7 +166,7 @@ class Customers extends BaseController
         }
 
         //check user $user_data, login thanh cong
-cc_debug($user_data);
+
 
         if ($this->request->isAJAX()) {
             json_output(['status' => 'redirect', 'url' => previous_url()]);

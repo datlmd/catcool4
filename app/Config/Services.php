@@ -10,6 +10,7 @@ use App\Libraries\ReCaptcha;
 use App\Libraries\Fba;
 use App\Libraries\Google;
 use App\Libraries\Facebook;
+use App\Libraries\ZaloApi;
 
 /**
  * Services Configuration file.
@@ -132,5 +133,10 @@ class Services extends BaseService
     public static function facebook($getShared = true)
     {
         return ($getShared === true ? static::getSharedInstance('Facebook') : new Facebook());
+    }
+
+    public static function zaloApi($getShared = true)
+    {
+        return ($getShared === true ? static::getSharedInstance('ZaloApi') : new ZaloApi());
     }
 }
