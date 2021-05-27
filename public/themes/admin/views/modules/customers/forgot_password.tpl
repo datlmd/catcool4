@@ -27,7 +27,7 @@
         </div>
         <div class="card-footer bg-white text-center p-0">
             <div class="card-footer-item card-footer-item-bordered">
-                {anchor("users/manage/login", lang('text_login_back'), 'class="footer-link"')}
+                {anchor("users_login/manage/login", lang('text_login_back'), 'class="footer-link"')}
             </div>
         </div>
     </div>
