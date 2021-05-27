@@ -106,7 +106,7 @@
                                     {else}
                                         {assign var="selected" value=""}
                                     {/if}
-                                    <input type="text" name="selected" value="{old('selected', $selected)}" id="selected" class="form-control">
+                                    <textarea name="selected" cols="40" rows="2" id="selected" type="textarea" class="form-control">{old("selected", $selected)}</textarea>
                                 </div>
                             </div>
                             <div class="form-group row">

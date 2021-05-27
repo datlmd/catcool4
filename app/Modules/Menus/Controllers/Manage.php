@@ -74,13 +74,16 @@ class Manage extends AdminController
                 'attributes' => $this->request->getPost('attributes'),
                 'selected'   => $this->request->getPost('selected'),
                 'user_id'    => $this->getUserId(),
-                'parent_id'  => $this->request->getPost('parent_id'),
                 'sort_order' => $this->request->getPost('sort_order'),
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
                 'is_admin'   => !empty(session('is_menu_admin')) ? STATUS_ON : STATUS_OFF,
                 'hidden'     => !empty($this->request->getPost('hidden')) ? STATUS_ON : STATUS_OFF,
                 'ctime'      => get_date(),
             ];
+
+            if (!empty($this->request->getPost('parent_id'))) {
+                $add_data['parent_id'] = $this->request->getPost('parent_id');
+            }
 
             $id = $this->model->insert($add_data);
             if ($id === FALSE) {
@@ -96,7 +99,7 @@ class Manage extends AdminController
             }
 
             //reset cache
-            $this->model->deleteCache();
+            $this->model->deleteCache(session('is_menu_admin'));
 
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
@@ -139,12 +142,15 @@ class Manage extends AdminController
                 'attributes' => $this->request->getPost('attributes'),
                 'selected'   => $this->request->getPost('selected'),
                 'user_id'    => $this->getUserId(),
-                'parent_id'  => $this->request->getPost('parent_id'),
                 'sort_order' => $this->request->getPost('sort_order'),
                 'is_admin'   => !empty(session('is_menu_admin')) ? STATUS_ON : STATUS_OFF,
                 'hidden'     => !empty($this->request->getPost('hidden')) ? STATUS_ON : STATUS_OFF,
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
+
+            if (!empty($this->request->getPost('parent_id'))) {
+                $edit_data['parent_id'] = $this->request->getPost('parent_id');
+            }
 
             if (!$this->model->update($id, $edit_data)) {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
@@ -152,7 +158,7 @@ class Manage extends AdminController
             }
 
             //reset cache
-            $this->model->deleteCache();
+            $this->model->deleteCache(session('is_menu_admin'));
 
             set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->back();
@@ -182,7 +188,7 @@ class Manage extends AdminController
             $this->model->delete($ids);
 
             //reset cache
-            $this->model->deleteCache();
+            $this->model->deleteCache(session('is_menu_admin'));
 
             set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
             json_output(['status' => 'redirect', 'url' => site_url(self::MANAGE_URL)]);
@@ -284,7 +290,7 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        $this->model->deleteCache();
+        $this->model->deleteCache(session('is_menu_admin'));
         $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')];
 
         json_output($data);
@@ -308,7 +314,7 @@ class Manage extends AdminController
         }
 
         //reset cache
-        $this->model->deleteCache();
+        $this->model->deleteCache(session('is_menu_admin'));
 
         json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_sort_success')]);
     }
