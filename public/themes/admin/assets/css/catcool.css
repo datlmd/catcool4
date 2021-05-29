@@ -209,6 +209,9 @@ label {
     overflow-y: scroll;
     margin-bottom: 10px;
 }
+.tox-tinymce {
+    border-radius: .25rem !important;
+}
 #list_category {
 
 }
@@ -239,11 +242,7 @@ label {
     width: 95% !important;
     max-width: 95% !important;
 }
-#modal_image_crop #crop_manager {
-    /*width: 98% !important;*/
-    /*max-width: 98% !important;*/
-    /*min-height: 95% !important;*/
-}
+#modal_image_crop #crop_manager {  }
 .tox-statusbar__branding {
     display: none !important;
 }
