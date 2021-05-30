@@ -278,6 +278,15 @@
                 location.reload();
             },
             error: function (xhr, errorType, error) {
+                $.notify({
+                        message: xhr.responseJSON.message + " Please reload the page!!!",
+                        url: window.location.href,
+                        target: "_self",
+                    },
+                    {
+                        'type': 'danger'
+                    },
+                );
             }
         });
     }
@@ -326,6 +335,15 @@
                 location.reload();
             },
             error: function (xhr, errorType, error) {
+                $.notify({
+                        message: xhr.responseJSON.message + " Please reload the page!!!",
+                        url: window.location.href,
+                        target: "_self",
+                    },
+                    {
+                        'type': 'danger'
+                    },
+                );
             }
         });
     }
@@ -358,6 +376,15 @@
                 location.reload();
             },
             error: function (xhr, errorType, error) {
+                $.notify({
+                        message: xhr.responseJSON.message + " Please reload the page!!!",
+                        url: window.location.href,
+                        target: "_self",
+                    },
+                    {
+                        'type': 'danger'
+                    },
+                );
             }
         });
     }
@@ -412,6 +439,15 @@
                                 $.notify(response.msg)
                             },
                             error: function (xhr, errorType, error) {
+                                $.notify({
+                                        message: xhr.responseJSON.message + " Please reload the page!!!",
+                                        url: window.location.href,
+                                        target: "_self",
+                                    },
+                                    {
+                                        'type': 'danger'
+                                    },
+                                );
                             }
                         });
                     }
@@ -463,6 +499,15 @@
                                 }
                             },
                             error: function (xhr, errorType, error) {
+                                $.notify({
+                                        message: xhr.responseJSON.message + " Please reload the page!!!",
+                                        url: window.location.href,
+                                        target: "_self",
+                                    },
+                                    {
+                                        'type': 'danger'
+                                    },
+                                );
                             }
                         });
                     }

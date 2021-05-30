@@ -92,6 +92,14 @@ if ( ! function_exists('get_theme_path'))
     }
 }
 
+if ( ! function_exists('get_module_path'))
+{
+    function get_module_path($path = null)
+    {
+        return APPPATH . 'Modules/' . (is_string($path) ? $path : '');
+    }
+}
+
 if (! function_exists('plugin_url'))
 {
 // @codeCoverageIgnoreEnd

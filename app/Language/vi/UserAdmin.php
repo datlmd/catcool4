@@ -22,6 +22,7 @@ return [
 	"forgot_password_heading" => "Quên mật khẩu",
 	"forgot_password_successful" => "Email khôi phục mật khẩu đã được gửi đến tài khoản của bạn",
 	"heading_title" => "Tài khoản",
+	"login_heading" => "Đăng nhập",
 	"password_change_successful" => "Đã thay đổi mật khẩu thành công",
 	"text_add" => "Tạo tài khoản",
 	"text_avatar" => "Hình đại diện",

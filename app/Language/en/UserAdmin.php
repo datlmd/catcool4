@@ -22,6 +22,7 @@ return [
 	"forgot_password_heading" => "Forgot password",
 	"forgot_password_successful" => "Password recovery email has been sent to your account",
 	"heading_title" => "Users",
+	"login_heading" => "Login",
 	"password_change_successful" => "Password was successfully changed",
 	"text_add" => "Add User",
 	"text_avatar" => "Avatar",

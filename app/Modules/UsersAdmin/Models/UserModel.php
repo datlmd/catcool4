@@ -53,12 +53,6 @@ class UserModel extends MyModel
         $sort  = empty($sort) ? 'id' : $sort;
         $order = empty($order) ? 'DESC' : $order;
 
-        if (!empty($filter["is_deleted"])) {
-            $this->where('is_deleted', $filter["is_deleted"]);
-        } else {
-            $this->where('is_deleted', STATUS_OFF);
-        }
-
         if (!empty($filter["id"])) {
             $this->whereIn('id', (!is_array($filter["id"]) ? explode(',', $filter["id"]) : $filter["id"]));
         }
@@ -123,7 +117,7 @@ class UserModel extends MyModel
             return FALSE;
         }
 
-        $user_info = $this->where(['username' => $username, 'is_deleted' => STATUS_OFF])->first();
+        $user_info = $this->where(['username' => $username])->first();
         if (empty($user_info)) {
             $this->errors[] = lang('Admin.text_login_unsuccessful');
 
@@ -186,7 +180,7 @@ class UserModel extends MyModel
             return FALSE;
         }
 
-        $user_info = $this->where(['id' => $user_token['user_id'], 'is_deleted' => STATUS_OFF])->first();
+        $user_info = $this->where(['id' => $user_token['user_id']])->first();
         if (empty($user_info)) {
             $this->errors[] = lang('Admin.text_login_unsuccessful');
             return FALSE;
@@ -249,13 +243,13 @@ class UserModel extends MyModel
         return $this->errors;
     }
 
-    public function getUserInfo($user_id, $is_deleted = STATUS_OFF)
+    public function getUserInfo($user_id)
     {
         if (empty($user_id)) {
             return null;
         }
 
-        return $this->where(['is_deleted' => $is_deleted])->find($user_id);
+        return $this->find($user_id);
     }
 
     public function forgotPassword($email)
@@ -267,7 +261,7 @@ class UserModel extends MyModel
         $this->errors = [];
 
         $user_info = $this->where('email', $email)->orWhere('username', $email)->first();
-        if (empty($user_info) || !empty($user_info['is_deleted'])) {
+        if (empty($user_info)) {
             $this->errors[] = lang('UserAdmin.text_email_not_found');
             return false;
         }
