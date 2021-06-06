@@ -1,6 +1,7 @@
 <?php namespace App\Modules\Users\Models;
 
 use App\Models\MyModel;
+use App\Modules\Users\Models\AuthModel;
 
 class UserModel extends MyModel
 {
@@ -15,12 +16,17 @@ class UserModel extends MyModel
         'last_name',
         'company',
         'phone',
-        'address',
+        'fax',
+        'address_id',
         'dob',
         'gender',
         'image',
-        'super_admin',
+        'salt',
+        'cart',
+        'wishlist',
+        'custom_field',
         'status',
+        'safe',
         'activation_selector',
         'activation_code',
         'forgotten_password_selector',
@@ -29,8 +35,10 @@ class UserModel extends MyModel
         'last_login',
         'active',
         'is_deleted',
-        'language',
-        'user_ip',
+        'language_id',
+        'group_id',
+        'store_id',
+        'ip',
         'ctime',
         'mtime'
     ];
@@ -40,6 +48,8 @@ class UserModel extends MyModel
     protected $auth_model;
 
     protected $errors;
+
+    public $activation_code;
 
     function __construct()
     {
@@ -280,7 +290,7 @@ class UserModel extends MyModel
         // Generate random token: smaller size because it will be in the URL
         $token = $this->auth_model->generateSelectorValidatorCouple(20, 80);
         if (empty($token)) {
-            $this->errors[] = lang('UserAdmin.error_generate_code');
+            $this->errors[] = lang('User.error_generate_code');
             return false;
         }
 
@@ -311,14 +321,14 @@ class UserModel extends MyModel
         // Retrieve the token object from the code
         $token = $this->auth_model->retrieveSelectorValidatorCouple($code);
         if (empty($token)) {
-            $this->errors[] = '[002] ' . lang('UserAdmin.error_password_code');
+            $this->errors[] = '[002] ' . lang('User.error_password_code');
             return false;
         }
 
         // Retrieve the user according to this selector
         $user = $this->where('forgotten_password_selector', $token['selector'])->first();
         if (empty($user)) {
-            $this->errors[] = '[003] ' . lang('UserAdmin.error_password_code');
+            $this->errors[] = '[003] ' . lang('User.error_password_code');
             return FALSE;
         }
 
@@ -328,9 +338,9 @@ class UserModel extends MyModel
             return false;
         }
 
-        if (config_item('forgotPasswordExpiration') > 0) {
+        if (config_item('forgot_password_expiration') > 0) {
             //Make sure it isn't expired
-            $expiration = config_item('forgotPasswordExpiration');
+            $expiration = config_item('forgot_password_expiration');
             if (time() - $user['forgotten_password_time'] > $expiration) {
                 //it has expired, clear_forgotten_password_code
                 $this->clearForgottenPasswordCode($user['id']);
@@ -355,6 +365,108 @@ class UserModel extends MyModel
         ];
 
         $this->update($user_id, $data);
+
+        return TRUE;
+    }
+
+    public function register($data)
+    {
+        if (empty($data) || empty($data['password'])) {
+            return false;
+        }
+
+        $this->errors = [];
+
+        $username = $data['username'] ?? null;
+        $email    = $data['email'] ?? null;
+        $phone    = $data['phone'] ?? null;
+
+        $user_info = $this->where('username', $username)->orWhere('email', $email)->orWhere('phone', $phone)->first();
+        if (!empty($user_info['username'])) {
+            $this->errors[] = lang('User.account_creation_duplicate_username');
+            return false;
+        }
+
+        if (!empty($user_info['email'])) {
+            $this->errors[] = lang('User.account_creation_duplicate_email');
+            return false;
+        }
+
+        if (!empty($user_info['phone'])) {
+            $this->errors[] = lang('User.account_creation_duplicate_phone');
+            return false;
+        }
+
+        $add_data = [
+            'username'   => $username,
+            'email'      => strtolower($email),
+            'password'   => $this->auth_model->hashPassword($data['password']),
+            'first_name' => $data['first_name'] ?? null,
+            'last_name'  => $data['last_name'] ?? null,
+            'phone'      => $phone,
+            'address_id' => $data['address'] ?? null,
+            'active'     => config_item('manual_activation'),
+            'ip'         => $data['ip'] ?? null,
+        ];
+
+        $id = $this->insert($add_data);
+
+        $add_data['id'] = $id;
+
+        return (!empty($id)) ? $add_data : false;
+    }
+
+    public function deactivate($user_id)
+    {
+        if (empty($user_id)) {
+            return FALSE;
+        }
+
+        $token = $this->auth_model->generateSelectorValidatorCouple(20, 40);
+        if (empty($token)) {
+            $this->errors[] = lang('User.error_generate_code');
+            return false;
+        }
+
+        $this->activation_code = $token['user_code'];
+
+        $update = [
+            'activation_selector' => $token['selector'],
+            'activation_code'     => $token['validator_hashed'],
+            'active'              => STATUS_OFF
+        ];
+
+        $this->update($user_id, $update);
+
+        return TRUE;
+    }
+
+    public function activate($user_id, $code)
+    {
+        if (empty($user_id) || empty($code)) {
+            return FALSE;
+        }
+
+        $token = $this->auth_model->retrieveSelectorValidatorCouple($code);
+        if (empty($token)) {
+            $this->errors[] = lang('User.error_password_code');
+            return false;
+        }
+
+        $user_info = $this->where('activation_selector', $token['selector'])->first();
+        if (empty($user_info) || $user_info['id'] != $user_id) {
+            $this->errors[] = lang('User.activate_unsuccessful');
+            return false;
+        }
+
+
+        $update = [
+            'activation_selector' => null,
+            'activation_code'     => null,
+            'active'              => STATUS_ON
+        ];
+
+        $this->update($user_id, $update);
 
         return TRUE;
     }

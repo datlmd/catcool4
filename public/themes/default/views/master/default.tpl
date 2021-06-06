@@ -19,7 +19,8 @@
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7CShadows+Into+Light" rel="stylesheet" type="text/css">
 
 	<!-- StyleSheets -->
-    <link rel="stylesheet" href="{base_url('common/plugin/bootstrap/css/bootstrap.min.css')}" type="text/css">
+	<link rel="stylesheet" type="text/css" href="{base_url('common/plugin/bootstrap/css/bootstrap.min.css')}">
+	<link rel="stylesheet" type="text/css" href="{base_url('common/plugin/bootstrap/css/bootstrap-utilities.min.css')}">
     <link rel="stylesheet" href="{base_url('common/css/catcool.css')}" type="text/css">
 	{include file=get_theme_path('views/master/common/css.tpl')}
 	{if !empty($css_files)}{$css_files}{/if}
@@ -27,9 +28,9 @@
 	<!-- Head Libs -->
 	<script src="{base_url('common/plugin/modernizr/modernizr.min.js')}"></script>
 
+	<script src="{base_url('common/plugin/bootstrap/js/bootstrap.bundle.js')}" type="text/javascript"></script>
 	<script src="{base_url('common/plugin/jquery/jquery.min.js')}" type="text/javascript"></script>
 	<script src="{base_url('common/plugin/bootstrap/js/popper.min.js')}" type="text/javascript"></script>
-	<script src="{base_url('common/plugin/bootstrap/js/bootstrap.min.js')}" type="text/javascript"></script>
 
     <script>{script_global()}</script>
 </head>

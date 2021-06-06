@@ -26,11 +26,9 @@ class AdminController extends UserController
         $this->smarty->assign('menu_admin', $menu_admin);
         $this->smarty->assign('menu_current', service('uri')->getSegment(1));
 
-        $this->smarty->assign('validator', \Config\Services::validation());
-
         $error_token = session()->getFlashdata('error_token');
         if (!empty($error_token)) {
-            set_alert(lang('Admin.error_token'), ALERT_ERROR,ALERT_POPUP);
+            set_alert(lang('Admin.error_token'), ALERT_ERROR, ALERT_POPUP);
         }
     }
 }

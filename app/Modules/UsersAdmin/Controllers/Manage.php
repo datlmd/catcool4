@@ -253,7 +253,7 @@ class Manage extends AdminController
                 $email = $this->model->where('email', $this->request->getPost('email'))->findAll();
             }
             if (!empty($email)) {
-                $this->errors['email'] = lang('UserAdmin.account_creation_duplicate_email');
+                $this->errors['email'] = lang('User.account_creation_duplicate_email');
             }
         }
 
@@ -570,9 +570,9 @@ class Manage extends AdminController
         }
 
         if (!empty($_POST['published'])) {
-            $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('UserAdmin.activate_successful')];
+            $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('User.activate_successful')];
         } else {
-            $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('UserAdmin.deactivate_successful')];
+            $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('User.deactivate_successful')];
         }
 
         json_output($data);

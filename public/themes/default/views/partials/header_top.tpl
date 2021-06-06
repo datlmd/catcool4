@@ -11,7 +11,7 @@
                                 <nav class="header-nav-top">
                                     <ul class="nav nav-pills">
                                         <li class="nav-item nav-item-borders py-2">
-                                            <span class="pl-0"><i class="far fa-dot-circle text-4 text-color-primary" style="top: 1px;"></i> 1234 Street Name, City Name</span>
+                                            <span class="ps-0"><i class="far fa-dot-circle text-4 text-color-primary" style="top: 1px;"></i> 1234 Street Name, City Name</span>
                                         </li>
                                         <li class="nav-item nav-item-borders py-2 d-none d-lg-inline-flex">
                                             <a href="tel:123-456-7890"><i class="fab fa-whatsapp text-4 text-color-primary" style="top: 0;"></i> 123-456-7890</a>
@@ -31,12 +31,12 @@
                                         {if !empty($menu_top)}
                                             {foreach $menu_top as $key => $item}
                                                 <li class="nav-item nav-item-anim-icon d-none d-md-block">
-                                                    <a class="nav-link pl-0" href="{site_url({$item.slug})}"><i class="fas fa-angle-right"></i> {$item.name}</a>
+                                                    <a class="nav-link ps-0" href="{site_url({$item.slug})}"><i class="fas fa-angle-right"></i> {$item.name}</a>
                                                 </li>
                                             {/foreach}
                                         {/if}
                                         <li class="nav-item dropdown nav-item-left-border d-none d-sm-block">
-                                            <a class="nav-link" href="#" role="button" id="dropdownLanguage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <a class="nav-link" href="#" role="button" id="dropdownLanguage" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <img src="{img_url('blank.gif')}" class="flag flag-us" alt="English" /> English
                                                 <i class="fas fa-angle-down"></i>
                                             </a>
@@ -66,7 +66,7 @@
                     </div>
                     <div class="header-column justify-content-end">
                         <div class="header-row">
-                            <ul class="header-extra-info d-flex align-items-center mr-3">
+                            <ul class="header-extra-info d-flex align-items-center me-3">
                                 <li class="d-none d-sm-inline-flex">
                                     <div class="header-extra-info-text">
                                         <label>SEND US AN EMAIL</label>
@@ -81,7 +81,7 @@
                                 </li>
                             </ul>
                             <div class="header-nav-features">
-                                <div class="header-nav-feature header-nav-features-cart header-nav-features-cart-big d-inline-flex ml-2" {literal}data-sticky-header-style="{'minResolution': 991}" data-sticky-header-style-active="{'top': '78px'}" data-sticky-header-style-deactive="{'top': '0'}"{/literal}>
+                                <div class="header-nav-feature header-nav-features-cart header-nav-features-cart-big d-inline-flex ms-2" {literal}data-sticky-header-style="{'minResolution': 991}" data-sticky-header-style-active="{'top': '78px'}" data-sticky-header-style-deactive="{'top': '0'}"{/literal}>
                                     <a href="#" class="header-nav-features-toggle">
                                         <img src="{img_url('icons/icon-cart-big.svg')}" height="34" alt="" class="header-nav-top-icon-img">
                                                     <span class="cart-info">
@@ -151,7 +151,7 @@
                                             </ul>
                                         </nav>
                                     </div>
-                                    <button class="btn header-btn-collapse-nav" data-toggle="collapse" data-target=".header-nav-main nav">
+                                    <button class="btn header-btn-collapse-nav" data-bs-toggle="collapse" data-target=".header-nav-main nav">
                                         <i class="fas fa-bars"></i>
                                     </button>
                                 </div>

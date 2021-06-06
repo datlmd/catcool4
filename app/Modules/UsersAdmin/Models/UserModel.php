@@ -274,7 +274,7 @@ class UserModel extends MyModel
         // Generate random token: smaller size because it will be in the URL
         $token = $this->auth_model->generateSelectorValidatorCouple(20, 80);
         if (empty($token)) {
-            $this->errors[] = lang('UserAdmin.error_generate_code');
+            $this->errors[] = lang('User.error_generate_code');
             return false;
         }
 
@@ -305,14 +305,14 @@ class UserModel extends MyModel
         // Retrieve the token object from the code
         $token = $this->auth_model->retrieveSelectorValidatorCouple($code);
         if (empty($token)) {
-            $this->errors[] = '[002] ' . lang('UserAdmin.error_password_code');
+            $this->errors[] = '[002] ' . lang('User.error_password_code');
             return false;
         }
 
         // Retrieve the user according to this selector
         $user = $this->where('forgotten_password_selector', $token['selector'])->first();
         if (empty($user)) {
-            $this->errors[] = '[003] ' . lang('UserAdmin.error_password_code');
+            $this->errors[] = '[003] ' . lang('User.error_password_code');
             return FALSE;
         }
 

@@ -23,4 +23,6 @@ $routes->group('users', ['namespace' => 'App\Modules\Users\Controllers'], functi
     $subroutes->add('groups_manage/edit/(:num)', 'GroupsManage::edit/$1');
     $subroutes->add('groups_manage/delete', 'GroupsManage::delete');
     $subroutes->add('groups_manage/publish', 'GroupsManage::publish');
+
+    $subroutes->add('post_register', 'Users::postRegister');
 });

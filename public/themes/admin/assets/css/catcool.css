@@ -157,7 +157,7 @@ label {
 /*.alert-dismissible .close {*/
 /*    line-height: 16px;*/
 /*}*/
-
+.form-floating>.form-control, .form-floating>.form-select { height: 3.5rem;}
 .catcool-center {
     margin: 0 auto;
     display: block;

@@ -1,21 +1,15 @@
 <?php
 
 return [
-	"account_creation_duplicate_email" => "Địa chỉ email không hợp lệ hoặc đã được sử dụng",
-	"account_creation_successful" => "Đã khởi tạo tài khoản thành công",
-	"activate_successful" => "Tài khoản đã được kích hoạt",
 	"button_add" => "Tạo tài khoản",
 	"button_reset_password" => "Khôi phục mật khẩu",
-	"deactivate_successful" => "Đã khoá tài khoản thành công",
 	"delete_unsuccessful" => "Không thể xoá tài khoản vào lúc này",
 	"email_forgotten_password_subject" => "Xác nhận quên mật khẩu",
 	"email_forgot_password_heading" => "Khôi phục mật khẩu cho %s",
 	"email_forgot_password_link" => "Khôi phục mật khẩu của bạn",
 	"email_forgot_password_subheading" => "Vui lòng click vào link này để %s.",
 	"error_forgot_password_unsuccessful" => "Không thể khôi phục mật khẩu vào lúc này",
-	"error_generate_code" => "Khởi tạo mã thất bại. Vui lòng thử lại",
 	"error_password_change_unsuccessful" => "Không thể thay đổi mật khẩu vào lúc này",
-	"error_password_code" => "Code không hợp lệ hoặc đã hết hạn",
 	"error_password_old" => "Mật khẩu cũ không đúng",
 	"error_permission_owner" => "Không thể thực hiện trên tài khoản chủ",
 	"filter_search_user" => "Tìm tài khoản",

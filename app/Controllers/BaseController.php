@@ -91,11 +91,12 @@ class BaseController extends Controller
             date_default_timezone_set('Asia/Saigon');
         }
 
-        $this->validator = \Config\Services::validation();
-
         $this->site_lang  =  \Config\Services::language()->getLocale();
         $this->themes     = Themes::init();
         $this->breadcrumb = service('Breadcrumb');
         $this->smarty     = service('SmartyEngine');
+
+        $this->validator = \Config\Services::validation();
+        $this->smarty->assign('validator', $this->validator);
     }
 }

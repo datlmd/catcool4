@@ -58,7 +58,7 @@ class Customers extends BaseController
             $data['errors'] = $this->validator->getErrors();
         }
 
-        add_meta(['title' => lang("Customer.heading_title")], $this->themes);
+        add_meta(['title' => lang("Frontend.heading_register")], $this->themes);
 
         theme_load('login', $data);
     }

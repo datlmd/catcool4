@@ -136,3 +136,9 @@ ol {
 .text-center-line:after {
 	right: 0;
 }
+
+.required-label:after {
+	content: ' *';
+	color: #EF4E4E;
+	font-weight: bold;
+}

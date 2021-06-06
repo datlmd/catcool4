@@ -77,6 +77,11 @@ class CustomConfig extends BaseConfig
 
 	public $defaultLocaleAdmin = "vi";
 
+	/**
+	 * Email Activation for registration
+	 */
+	public $emailActivation = 1;
+
 	public $emailEngine = "smtp";
 
 	/**
@@ -183,6 +188,11 @@ class CustomConfig extends BaseConfig
 	 * Bật SSL
 	 */
 	public $forceGlobalSecureRequests = 1;
+
+	/**
+	 * The number of seconds after which a forgot password request will expire. If set to 0, forgot password requests will not expire. 30 minutes to 1 hour are good values (enough for a user to receive the email and reset its password). You should not set a valu
+	 */
+	public $forgotPasswordExpiration = 1800;
 
 	public $gaEnabled = true;
 
@@ -333,7 +343,27 @@ https://console.developers.google.com
 	 */
 	public $listLanguageCache = '{"1":{"id":"1","name":"Vietnames","code":"vi","icon":"flag-icon flag-icon-vn","user_id":"1","published":"1"},"2":{"id":"2","name":"English","code":"en","icon":"flag-icon flag-icon-gb","user_id":"1","published":"1"}}';
 
+	/**
+	 * The number of seconds to lockout an account due to exceeded attempts. You should not use a value below 60 (1 minute)
+	 */
+	public $lockoutTime = 600;
+
 	public $maintenance = 0;
+
+	/**
+	 * Manual Activation for registration
+	 */
+	public $manualActivation = 1;
+
+	/**
+	 * The maximum number of failed login attempts.
+	 */
+	public $maximumLoginAttempts = 2;
+
+	/**
+	 * Minimum Required Length of Password (not enforced by lib - see note above)
+	 */
+	public $minPasswordLength = 8;
 
 	/**
 	 * If true, the current Request object will automatically determine the
@@ -357,6 +387,11 @@ If false, no automatic detection will be performed.
 	 * Tên cookie login cho user
 	 */
 	public $rememberCookieName = "remember_cookie_catcool";
+
+	/**
+	 * Allow users to be remembered and enable auto-login
+	 */
+	public $rememberUsers = 1;
 
 	public $robots = "abot|dbot|ebot|hbot|kbot|lbot|mbot|nbot|obot|pbot|rbot|sbot|tbot|vbot|ybot|zbot|bot.|bot/|_bot|.bot|/bot|-bot|:bot|(bot|crawl|slurp|spider|seek|accoona|acoon|adressendeutschland|ah-ha.com|ahoy|altavista|ananzi|anthill|appie|arachnophilia|arale|araneo|aranha|architext|aretha|arks|asterias|atlocal|atn|atomz|augurfind|backrub|bannana_bot|baypup|bdfetch|big|brother|biglotron|bjaaland|blackwidow|blaiz|blog|blo.|bloodhound|boitho|booch|bradley|butterfly|calif|cassandra|ccubee|cfetch|charlotte|churl|cienciaficcion|cmc|collective|comagent|combine|computingsite|csci|curl|cusco|daumoa|deepindex|delorie|depspid|deweb|die|blinde|kuh|digger|ditto|dmoz|docomo|download|express|dtaagent|dwcp|ebiness|ebingbong|e-collector|ejupiter|emacs-w3|search|engine|esther|evliya|celebi|ezresult|falcon|felix|ide|ferret|fetchrover|fido|findlinks|fireball|fish|search|fouineur|funnelweb|gazz|gcreep|genieknows|getterroboplus|geturl|glx|goforit|golem|grabber|grapnel|gralon|griffon|gromit|grub|gulliver|hamahakki|harvest|havindex|helix|heritrix|hku|www|octopus|homerweb|htdig|html|index|html_analyzer|htmlgobble|hubater|hyper-decontextualizer|ia_archiver|ibm_planetwide|ichiro|iconsurf|iltrovatore|image.kapsi.net|imagelock|incywincy|indexer|infobee|informant|ingrid|inktomisearch.com|inspector|web|intelliagent|internet|shinchakubin|ip3000|iron33|israeli-search|ivia|jack|jakarta|javabee|jetbot|jumpstation|katipo|kdd-explorer|kilroy|knowledge|kototoi|kretrieve|labelgrabber|lachesis|larbin|legs|libwww|linkalarm|link|validator|linkscan|lockon|lwp|lycos|magpie|mantraagent|mapoftheinternet|marvin/|mattie|mediafox|mediapartners|mercator|merzscope|microsoft|url|control|minirank|miva|mj12|mnogosearch|moget|monster|moose|motor|multitext|muncher|muscatferret|mwd.search|myweb|najdi|nameprotect|nationaldirectory|nazilla|ncsa|beta|nec-meshexplorer|nederland.zoek|netcarta|webmap|engine|netmechanic|netresearchserver|netscoop|newscan-online|nhse|nokia6682/|nomad|noyona|nutch|nzexplorer|objectssearch|occam|omni|open|text|openfind|openintelligencedata|orb|search|osis-project|pack|rat|pageboy|pagebull|page_verifier|panscient|parasite|partnersite|patric|pear.|pegasus|peregrinator|pgp|key|agent|phantom|phpdig|picosearch|piltdownman|pimptrain|pinpoint|pioneer|piranha|plumtreewebaccessor|pogodak|poirot|pompos|poppelsdorf|poppi|popular|iconoclast|psycheclone|publisher|python|rambler|raven|search|roach|road|runner|roadhouse|robbie|robofox|robozilla|rules|salty|sbider|scooter|scoutjet|scrubby|search.|searchprocess|semanticdiscovery|senrigan|sg-scout|shai'hulud|shark|shopwiki|sidewinder|sift|silk|simmany|site|searcher|site|valet|sitetech-rover|skymob.com|sleek|smartwit|sna-|snappy|snooper|sohu|speedfind|sphere|sphider|spinner|spyder|steeler/|suke|suntek|supersnooper|surfnomore|sven|sygol|szukacz|tach|black|widow|tarantula|templeton|/teoma|t-h-u-n-d-e-r-s-t-o-n-e|theophrastus|titan|titin|tkwww|toutatis|t-rex|tutorgig|twiceler|twisted|ucsd|udmsearch|url|check|updated|vagabondo|valkyrie|verticrawl|victoria|vision-search|volcano|voyager/|voyager-hc|w3c_validator|w3m2|w3mir|walker|wallpaper|wanderer|wauuu|wavefire|web|core|web|hopper|web|wombat|webbandit|webcatcher|webcopy|webfoot|weblayers|weblinker|weblog|monitor|webmirror|webmonkey|webquest|webreaper|websitepulse|websnarf|webstolperer|webvac|webwalk|webwatch|webwombat|webzinger|whizbang|whowhere|wild|ferret|worldlight|wwwc|wwwster|xenu|xget|xift|xirq|yandex|yanga|yeti|yodao|zao|zippp|zyborg";
 
@@ -390,9 +425,24 @@ If false, no automatic detection will be performed.
 	public $themeFrontend = "default";
 
 	/**
+	 * Track the number of failed login attempts for each user or ip.
+	 */
+	public $trackLoginAttempts = 1;
+
+	/**
+	 * Track login attempts by IP Address, if FALSE will track based on identity. (Default: TRUE)
+	 */
+	public $trackLoginIpAddress = 1;
+
+	/**
 	 * Thời gian expire cookie của user khi login
 	 */
 	public $userExpire = 0;
+
+	/**
+	 *  Extend the users cookies every time they auto-login
+	 */
+	public $userExtendOnLogin = 0;
 
 	public $weightClass = 0;
 
