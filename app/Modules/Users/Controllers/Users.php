@@ -12,8 +12,15 @@ class Users extends UserController
     {
         parent::__construct();
 
+
         $this->model      = new UserModel();
         $this->auth_model = new AuthModel();
+
+        $this->themes->setTheme(config_item('theme_frontend'));
+
+        $this->breadcrumb->openTag(config_item('breadcrumb_open'));
+        $this->breadcrumb->closeTag(config_item('breadcrumb_close'));
+        $this->breadcrumb->add(lang('General.text_home'), base_url());
     }
 
     public function index()
@@ -94,15 +101,6 @@ class Users extends UserController
 
     public function activate($id = null, $activation = null)
     {
-        $this->themes->setTheme(config_item('theme_frontend'))
-            ->addPartial('breadcumb')
-            ->addPartial('header_top')
-            ->addPartial('header_bottom')
-            ->addPartial('content_left')
-            ->addPartial('content_right')
-            ->addPartial('footer_top')
-            ->addPartial('footer_top')
-            ->addPartial('footer_bottom');
 
         $result = $this->model->activate($id, $activation);
 
@@ -111,7 +109,20 @@ class Users extends UserController
             'errors' => $this->model->getErrors(),
         ];
 
+        $this->breadcrumb->add(lang('General.text_account'), base_url('users/profile'));
+
+        $data_breadcrumb['breadcrumb']       = $this->breadcrumb->render();
+        $data_breadcrumb['breadcrumb_title'] = lang("User.heading_activate");
+        $this->themes->addPartial('breadcumb', $data_breadcrumb);
+
         add_meta(['title' => lang("User.heading_activate")], $this->themes);
+
+        $this->themes->addPartial('header_top')
+            ->addPartial('header_bottom')
+            ->addPartial('content_left')
+            ->addPartial('content_right')
+            ->addPartial('footer_top')
+            ->addPartial('footer_bottom');
 
         theme_load('activate', $data);
     }

@@ -213,3 +213,7 @@ select.form-control {
 	border: 1px solid #d2d2e4;
 	min-width: 60px;
 }
+
+.breadcrumb-item+.breadcrumb-item::before, .breadcrumb-item.active {
+	color: #fff !important;
+}
