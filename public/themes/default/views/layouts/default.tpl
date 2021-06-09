@@ -1,5 +1,4 @@
 <div class="body {if !empty($div_body_class)}{$div_body_class}{/if}">
-    {print_flash_alert()}
     {if !empty($header_top)}{$header_top}{/if}
     {if !empty($header_bottom)}{$header_bottom}{/if}
     <div role="main" class="main">

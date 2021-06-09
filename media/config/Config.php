@@ -85,33 +85,39 @@ class CustomConfig extends BaseConfig
 	public $emailEngine = "smtp";
 
 	/**
-	 * Email from
+	 * Email from hoanglehiep85@gmail.com
+pass: dat@!@#$%
 	 */
-	public $emailFrom = "lmd.dat@gmail.com";
+	public $emailFrom = "hoanglehiep85@gmail.com";
 
 	/**
-	 * Setting email host
+	 * Setting email host: smtp.gmail.com
 	 */
-	public $emailHost = "ssl://smtp.googlemail.com";
+	public $emailHost = "smtp.gmail.com";
 
 	public $emailParameter = "";
 
 	/**
-	 * Port email
+	 * Port sl: 465 - tls: 587
 	 */
 	public $emailPort = 465;
 
 	/**
+	 * ssl: 465 - tls: 587
+	 */
+	public $emailSmtpCrypto = "ssl";
+
+	/**
 	 * email smtp pass
 	 */
-	public $emailSmtpPass = "tovyyqgibmnruaes";
+	public $emailSmtpPass = "etjnheypuwkxvweo";
 
 	public $emailSmtpTimeout = 6;
 
 	/**
 	 * Tài khoảng email smtp
 	 */
-	public $emailSmtpUser = "lmd.dat@gmail.com";
+	public $emailSmtpUser = "hoanglehiep85@gmail.com";
 
 	/**
 	 * Email Subject title
@@ -237,6 +243,11 @@ https://console.developers.google.com
 	 * google-site-verification
 	 */
 	public $googleSiteVerification = "";
+
+	/**
+	 * cot tai khoan
+	 */
+	public $identity = "email";
 
 	/**
 	 * Chiều cao tối đa của hình trên mobile

@@ -1258,22 +1258,26 @@ if(!function_exists('send_email'))
     function send_email($email_to, $email_from, $subject_title = null, $subject, $content, $reply_to = null, $bcc = null, $config = null)
     {
         //Gửi mail
-        try
-        {
+        try {
             $email = \Config\Services::email();
 
-            if (empty($config))
-            {
+            if (empty($config)) {
                 //$config = config('Email');
-                $config['protocol'] = config_item('email_engine');//'smtp';
-                $config['SMTPTimeout'] = config_item('email_smtp_timeout');
-                $config['mailType'] = 'html';
-                //$config['charset'] = 'utf-8';
-                $config['newline'] = "\r\n";
-                $config['validate'] = TRUE;
-                $config['SMTPHost'] = config_item('email_host'); //'10.30.46.99
-                $config['SMTPPort'] = config_item('email_port'); //25
+                $config = [
+                    'userAgent'   => 'CatCoolCMS',
+                    'protocol'    => config_item('email_engine'),//'smtp';
+                    'SMTPTimeout' => config_item('email_smtp_timeout'),
+                    'mailType'    => 'html',
+                    //'newline'     => "\r\n",
+                    //'CRLF'        => "\r\n",
+                    'validate'    => true,
+                    'SMTPHost'    => config_item('email_host'), //'10.30.46.99
+                    'SMTPPort'    => config_item('email_port'), //25
+                ];
 
+                if (!empty(config_item('email_smtp_crypto'))) {
+                    $config['SMTPCrypto'] = config_item('email_smtp_crypto');
+                }
                 if (!empty(config_item('email_smtp_user'))) {
                     $config['SMTPUser'] = config_item('email_smtp_user');
                 }
@@ -1283,6 +1287,8 @@ if(!function_exists('send_email'))
             }
 
             $email->initialize($config);
+
+            $email->setNewline("\r\n");
 
             $email->setFrom($email_from, $subject_title);
             $email->setTo($email_to);
@@ -1296,12 +1302,20 @@ if(!function_exists('send_email'))
                 $email->setReplyTo($reply_to);
             }
 
-            if($email->send()) {
+            if($email->send() === TRUE) {
                 return true;
             } else {
-                die($email->printDebugger());
+                if (ENVIRONMENT == 'development') {
+                   die($email->printDebugger());
+                }
+
+                set_alert($email->printDebugger(['subject']), ALERT_ERROR);
+                log_message('error', $email->printDebugger(['subject']));
+
+                return false;
             }
         } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
             return false;
         }
     }

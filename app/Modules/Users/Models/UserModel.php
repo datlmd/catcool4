@@ -34,7 +34,7 @@ class UserModel extends MyModel
         'forgotten_password_time',
         'last_login',
         'active',
-        'is_deleted',
+        'deleted',
         'language_id',
         'group_id',
         'store_id',
@@ -43,7 +43,8 @@ class UserModel extends MyModel
         'mtime'
     ];
 
-    //protected $with = ['user_groups', 'user_permissions'];
+    protected $useSoftDeletes = true;
+    protected $deletedField   = 'deleted';
 
     protected $auth_model;
 
@@ -62,12 +63,6 @@ class UserModel extends MyModel
     {
         $sort  = empty($sort) ? 'id' : $sort;
         $order = empty($order) ? 'DESC' : $order;
-
-        if (!empty($filter["is_deleted"])) {
-            $this->where('is_deleted', $filter["is_deleted"]);
-        } else {
-            $this->where('is_deleted', STATUS_OFF);
-        }
 
         if (!empty($filter["id"])) {
             $this->whereIn('id', (!is_array($filter["id"]) ? explode(',', $filter["id"]) : $filter["id"]));
@@ -133,7 +128,7 @@ class UserModel extends MyModel
             return FALSE;
         }
 
-        $user_info = $this->where(['username' => $username, 'is_deleted' => STATUS_OFF])->first();
+        $user_info = $this->where(['username' => $username])->first();
         if (empty($user_info)) {
             $this->errors[] = lang('Admin.text_login_unsuccessful');
 
@@ -196,7 +191,7 @@ class UserModel extends MyModel
             return FALSE;
         }
 
-        $user_info = $this->where(['id' => $user_token['user_id'], 'is_deleted' => STATUS_OFF])->first();
+        $user_info = $this->where(['id' => $user_token['user_id']])->first();
         if (empty($user_info)) {
             $this->errors[] = lang('Admin.text_login_unsuccessful');
             return FALSE;
@@ -259,13 +254,13 @@ class UserModel extends MyModel
         return $this->errors;
     }
 
-    public function getUserInfo($user_id, $is_deleted = STATUS_OFF)
+    public function getUserInfo($user_id)
     {
         if (empty($user_id)) {
             return null;
         }
 
-        return $this->where(['is_deleted' => $is_deleted])->find($user_id);
+        return $this->find($user_id);
     }
 
     public function forgotPassword($email)
@@ -277,7 +272,7 @@ class UserModel extends MyModel
         $this->errors = [];
 
         $user_info = $this->where('email', $email)->orWhere('username', $email)->first();
-        if (empty($user_info) || !empty($user_info['is_deleted'])) {
+        if (empty($user_info)) {
             $this->errors[] = lang('UserAdmin.text_email_not_found');
             return false;
         }
@@ -371,43 +366,53 @@ class UserModel extends MyModel
 
     public function register($data)
     {
-        if (empty($data) || empty($data['password'])) {
+        if (empty($data) || empty($data['identity']) || empty($data['password'])) {
             return false;
         }
 
         $this->errors = [];
+        $identity     = '';
+        $email        = $data['email'] ?? null;
+        $phone        = $data['phone'] ?? null;
 
-        $username = $data['username'] ?? null;
-        $email    = $data['email'] ?? null;
-        $phone    = $data['phone'] ?? null;
+        if (filter_var($data['identity'], FILTER_VALIDATE_EMAIL)) {
+            $identity = 'email';
+            $email    = $data['identity'];
+        } elseif (filter_var($data['identity'], FILTER_SANITIZE_NUMBER_INT)) {
+            $phone_to_check = str_replace("-", "", $data['identity']);
 
-        $user_info = $this->where('username', $username)->orWhere('email', $email)->orWhere('phone', $phone)->first();
-        if (!empty($user_info['username'])) {
-            $this->errors[] = lang('User.account_creation_duplicate_username');
+            if (strlen($phone_to_check) < 10 || strlen($phone_to_check) > 14) {
+
+            }
+
+            $identity = 'phone';
+            $phone    = $data['identity'];
+        }
+
+        $user_info = $this->where($identity, $data['identity'])->first();
+        if (!empty($user_info)) {
+            $this->errors[] = lang("User.account_creation_duplicate_$identity");
             return false;
         }
 
-        if (!empty($user_info['email'])) {
-            $this->errors[] = lang('User.account_creation_duplicate_email');
-            return false;
-        }
-
-        if (!empty($user_info['phone'])) {
-            $this->errors[] = lang('User.account_creation_duplicate_phone');
-            return false;
-        }
 
         $add_data = [
-            'username'   => $username,
+            $identity    => $data['identity'],
+            'username'   => $data['username'] ?? null,
             'email'      => strtolower($email),
             'password'   => $this->auth_model->hashPassword($data['password']),
             'first_name' => $data['first_name'] ?? null,
             'last_name'  => $data['last_name'] ?? null,
             'phone'      => $phone,
-            'address_id' => $data['address'] ?? null,
+            'gender'     => $data['gender'],
+            'address_id' => $data['address_id'] ?? null,
             'active'     => config_item('manual_activation'),
             'ip'         => $data['ip'] ?? null,
         ];
+
+        if (!empty($data['dob'])) {
+            $add_data['dob'] = standar_date($data['dob']);
+        }
 
         $id = $this->insert($add_data);
 
@@ -444,7 +449,13 @@ class UserModel extends MyModel
     public function activate($user_id, $code)
     {
         if (empty($user_id) || empty($code)) {
-            return FALSE;
+            return false;
+        }
+
+        $user_info = $this->find($user_id);
+        if (!empty($user_info) && !empty($user_info['active'])) {
+            $this->errors[] = lang('User.activate_successful');
+            return false;
         }
 
         $token = $this->auth_model->retrieveSelectorValidatorCouple($code);
@@ -468,6 +479,6 @@ class UserModel extends MyModel
 
         $this->update($user_id, $update);
 
-        return TRUE;
+        return true;
     }
 }

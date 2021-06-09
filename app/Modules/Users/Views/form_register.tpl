@@ -1,49 +1,86 @@
 {strip}
-    <h4 class="color-primary text-4 text-uppercase mb-3 {$register_title_class}">{lang('Frontend.title_register')}</h4>
-    {if !empty(print_flash_alert())}
-        <div class="col-12">{print_flash_alert()}</div>
-    {/if}
+    <h4 class="color-primary text-4 text-uppercase mb-3 {$register_title_class}">{lang('General.title_register')}</h4>
+    <div class="col-12">{print_flash_alert()}</div>
     {if !empty($errors)}
         <div class="col-12">
             {include file=get_theme_path('views/inc/alert.tpl') message=$errors type='danger'}
         </div>
     {/if}
     {form_open({site_url('users/post_register')}, ['id' => 'form_register', 'class' => 'row g-3'])}
-        <div class="col-md-12">
-            <label for="email" class="form-label fw-bold text-dark required-label">{lang('Frontend.text_email')}</label>
-            <input type="email" name="email" id="email" value="" class="form-control {if $validator->hasError('email')}is-invalid{/if}">
-            <div class="invalid-feedback">{$validator->getError("email")}</div>
-        </div>
         <div class="col-md-6">
-            <label for="password" class="form-label fw-bold text-dark required-label">{lang('Frontend.text_password')}</label>
-            <input type="password" name="password" id="password" value="" class="form-control {if $validator->hasError('password')}is-invalid{/if}">
-            <div class="invalid-feedback">{$validator->getError("password")}</div>
-        </div>
-        <div class="col-md-6">
-            <label for="password_confirm" class="form-label fw-bold text-dark required-label">{lang('Frontend.text_password_confirm')}</label>
-            <input type="password" name="password_confirm" id="password_confirm" value="" class="form-control {if $validator->hasError('password_confirm')}is-invalid{/if}">
-            <div class="invalid-feedback">{$validator->getError("password_confirm")}</div>
-        </div>
-        <div class="col-md-6">
-            <label for="first_name" class="form-label fw-bold text-dark required-label">{lang('Frontend.text_first_name')}</label>
-            <input type="text" name="first_name" id="first_name" value="" class="form-control {if $validator->hasError('first_name')}is-invalid{/if}">
+            <input type="text" name="first_name" id="first_name" value="{old('first_name')}" placeholder="{lang('General.text_first_name')}" class="form-control {if $validator->hasError('first_name')}is-invalid{/if}">
             <div class="invalid-feedback">{$validator->getError("first_name")}</div>
         </div>
         <div class="col-md-6">
-            <label for="last_name" class="form-label fw-bold text-dark">{lang('Frontend.text_last_name')}</label>
-            <input type="text" name="last_name" id="last_name" value="" class="form-control">
+            <input type="text" name="last_name" id="last_name" value="{old('last_name')}" placeholder="{lang('General.text_last_name')}" class="form-control">
         </div>
         <div class="col-md-12">
-            <label for="phone" class="form-label fw-bold text-dark">{lang('Frontend.text_phone')}</label>
-            <input type="text" name="phone" id="phone" value="" class="form-control">
+            <input type="text" name="identity" id="identity" value="{old('identity')}" placeholder="{lang('General.text_identity')}" class="form-control {if $validator->hasError('identity')}is-invalid{/if}">
+            <div class="invalid-feedback">{$validator->getError("identity")}</div>
+        </div>
+        <div class="col-md-12">
+            <input type="password" name="password" id="password" value="" placeholder="{lang('General.text_password')}" class="form-control {if $validator->hasError('password')}is-invalid{/if}">
+            <div class="invalid-feedback">{$validator->getError("password")}</div>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label fw-bold text-dark">{lang('General.text_dob')}</label>
+            <div class="row">
+            <div class="col-4">
+                <select name="dob_day" class="form-control">
+                    {for $d = 1; $d <= 31; $d++}
+                        <option value="{$d}" {if $d eq date('d')}selected{/if}>{$d}</option>
+                    {/for}
+                </select>
+            </div>
+            <div class="col-4">
+                <select name="dob_month" class="form-control">
+                    {for $m = 1; $m <= 12; $m++}
+                        <option value="{$m}" {if $m eq date('m')}selected{/if}>
+                            {if get_lang() eq 'vi'}
+                                {lang('General.text_month')} {$m}
+                            {else}
+                                {date("F", mktime(0, 0, 0, $m, 10))}
+                            {/if}
+                        </option>
+                    {/for}
+                </select>
+            </div>
+            <div class="col-4">
+                <select name="dob_year" class="form-control">
+                    {for $y = date("Y"); $y >= 1900; $y--}
+                        <option value="{$y}">{$y}</option>
+                    {/for}
+                </select>
+            </div>
+            </div>
         </div>
         <div class="col-12">
-            <label for="address" class="form-label fw-bold text-dark">{lang('Frontend.text_address')}</label>
-            <input type="text" name="address" class="form-control" id="address">
+            <label for="password" class="form-label fw-bold text-dark">{lang('General.text_gender')}</label>
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-check border rounded-1 w-100 p-2 overflow-hidden">
+                        <input class="form-check-input float-end {if $validator->hasError('gender')}is-invalid{/if}" type="radio" name="gender" id="gender_male" value="{GENDER_MALE}" {if old('gender') eq GENDER_MALE}checked{/if} >
+                        <label class="form-check-label float-start w-100" for="gender_male">{lang('General.text_male')}</label>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-check border rounded-1 w-100 p-2 overflow-hidden">
+                        <input class="form-check-input float-end {if $validator->hasError('gender')}is-invalid{/if}" type="radio" name="gender" id="gender_female" value="{GENDER_FEMALE}" {if old('gender') eq GENDER_FEMALE}checked{/if} >
+                        <label class="form-check-label float-start w-100" for="gender_female">{lang('General.text_female')}</label>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-check border rounded-1 w-100 p-2 overflow-hidden">
+                        <input class="form-check-input float-end {if $validator->hasError('gender')}is-invalid{/if}" type="radio" name="gender" id="gender_other" value="{GENDER_OTHER}" {if old('gender') eq GENDER_OTHER}checked{/if} >
+                        <label class="form-check-label float-start w-100" for="gender_other">{lang('General.text_other')}</label>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-12">
             <div class="form-check">
-                <input type="checkbox" name="policy" id="cb_policy" class="form-check-input mt-2 {if $validator->hasError('policy')}is-invalid{/if}">
+                <input type="checkbox" name="policy" id="cb_policy" value="1" {if !empty(old('policy'))}checked="checked"{/if} class="form-check-input {if $validator->hasError('policy')}is-invalid{/if}">
                 <label class="form-check-label" for="gridCheck">
                     {lang('Frontend.text_register_policy')}
                 </label>
@@ -51,7 +88,7 @@
             </div>
         </div>
         <div class="col-12">
-            <button type="submit" class="btn btn-primary">{lang('Frontend.button_register')}</button>
+            <button type="submit" class="btn btn-primary">{lang('General.button_register')}</button>
         </div>
     {form_close()}
 {/strip}

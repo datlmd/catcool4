@@ -11,7 +11,12 @@ return [
 	"activation_email_unsuccessful" => "Không thể gửi mail kích hoạt vào lúc này",
 	"deactivate_successful" => "Đã khoá tài khoản thành công",
 	"deactivate_unsuccessful" => "Không thể huỷ kích hoạt tài khoản",
+	"email_activate_heading" => "Kích hoạt tài khoản của {0}",
+	"email_activate_link" => "Kích hoạt tài khoản",
+	"email_activate_subheading" => "Vui lòng click vào link này để {0}.",
+	"email_activation_subject" => "Kích hoạt tài khoản",
 	"error_generate_code" => "Khởi tạo mã thất bại. Vui lòng thử lại",
 	"error_password_code" => "Code không hợp lệ hoặc đã hết hạn",
+	"heading_activate" => "Kích hoạt tài khoản",
 	"heading_title" => "Tài khoản",
 ];

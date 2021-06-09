@@ -25,4 +25,5 @@ $routes->group('users', ['namespace' => 'App\Modules\Users\Controllers'], functi
     $subroutes->add('groups_manage/publish', 'GroupsManage::publish');
 
     $subroutes->add('post_register', 'Users::postRegister');
+    $subroutes->add('activate/(:num)/(:any)', 'Users::activate/$1/$2');
 });
