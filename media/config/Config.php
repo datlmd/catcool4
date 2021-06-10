@@ -369,7 +369,7 @@ https://console.developers.google.com
 	/**
 	 * The maximum number of failed login attempts.
 	 */
-	public $maximumLoginAttempts = 2;
+	public $maximumLoginAttempts = 5;
 
 	/**
 	 * Minimum Required Length of Password (not enforced by lib - see note above)

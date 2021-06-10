@@ -12,7 +12,12 @@ return [
 	"deactivate_successful" => "Đã khoá tài khoản thành công",
 	"deactivate_unsuccessful" => "Không thể huỷ kích hoạt tài khoản",
 	"error_generate_code" => "Khởi tạo mã thất bại. Vui lòng thử lại",
+	"error_login_account_not_exist" => "Tài khoản không tồn tại. Vui lòng thử lại!",
+	"error_login_password_incorrect" => "Mật khẩu không đúng. Vui lòng thử lại!",
 	"error_password_code" => "Code không hợp lệ hoặc đã hết hạn",
 	"heading_activate" => "Kích hoạt tài khoản",
 	"heading_title" => "Tài khoản",
+	"text_login_timeout" => "Tài khoản này đã tạm thời bị khoá, vui lòng thử lại sau!",
+	"text_login_unsuccessful" => "Tài khoản hoặc mật khẩu không đúng",
+	"text_login_unsuccessful_not_active" => "Tài khoản của bạn đã bị khoá",
 ];

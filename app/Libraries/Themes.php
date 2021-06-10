@@ -532,6 +532,7 @@ class Themes
                 $paths = [
                     build_path(FCPATH, self::$config[THEME_PATH], self::$config[THEME], 'views', 'modules', strtolower($objTheme->module)),
                     build_path(APPPATH, 'Modules', $objTheme->module, 'Views'),
+					build_path(APPPATH, 'Views'),
                 ];
                 // remove uneccessary paths if $this->module is null
                 if (empty($objTheme->module))

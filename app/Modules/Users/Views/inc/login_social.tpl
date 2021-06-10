@@ -1,4 +1,4 @@
-<div class="text-center">Với mạng xã hội của bạn.</div>
+<div class="text-center">{lang('General.text_login_with')}</div>
 <div class="social-list text-center">
 	<a href="javascript:;" rel="nofollow" data-type="fb" onclick="fbLogin(this)" class="social-item fb btn">
 		<i class="fab fa-facebook-f"></i> Facebook

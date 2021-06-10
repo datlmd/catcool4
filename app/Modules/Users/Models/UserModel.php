@@ -2,6 +2,7 @@
 
 use App\Models\MyModel;
 use App\Modules\Users\Models\AuthModel;
+use App\Modules\Users\Models\UserLoginAttemptModel;
 
 class UserModel extends MyModel
 {
@@ -121,31 +122,43 @@ class UserModel extends MyModel
 //
     public function login($username, $password, $remember = FALSE)
     {
+        $attempt_model = new UserLoginAttemptModel();
+
         $this->errors = [];
 
         if (empty($username) || empty($password)) {
-            $this->errors[] = lang('Admin.text_login_unsuccessful');
+            $this->errors[] = lang('User.text_login_unsuccessful');
             return FALSE;
         }
 
-        $user_info = $this->where(['username' => $username])->first();
+        $user_info = $this->where('username', $username)
+            ->orWhere('email', $username)
+            ->orWhere('phone', $username)
+            ->first();
         if (empty($user_info)) {
-            $this->errors[] = lang('Admin.text_login_unsuccessful');
+            $this->errors[] = lang('User.error_login_account_not_exist');
+            return FALSE;
+        }
+
+        if ($attempt_model->isMaxLoginAttemptsExceeded($user_info['id'])) {
+            $this->errors[] = lang('User.text_login_timeout');
 
             return FALSE;
         }
 
         if (empty($user_info['active'])) {
-            $this->errors[] = lang('Admin.text_login_unsuccessful_not_active');
+            $this->errors[] = lang('User.text_login_unsuccessful_not_active');
             return FALSE;
         }
 
         if ($this->auth_model->checkPassword($password, $user_info['password']) === FALSE) {
-            $this->errors[] = lang('Admin.text_login_unsuccessful');
+            $attempt_model->increaseLoginAttempts($user_info['id']);
+
+            $this->errors[] = lang('User.error_login_password_incorrect');
             return FALSE;
         }
 
-        $this->auth_model->setSession($user_info, true);
+        $this->auth_model->setSession($user_info);
 
         $data_login = [];
         //check remember login
@@ -168,6 +181,9 @@ class UserModel extends MyModel
 
         $this->update($user_info['id'], $data_login);
 
+        //Clear attemt
+        $attempt_model->clearLoginAttempts($user_info['id']);
+
         return TRUE;
     }
 
@@ -181,29 +197,29 @@ class UserModel extends MyModel
         $token           = $this->auth_model->retrieveSelectorValidatorCouple($remember_cookie);
 
         if ($token === FALSE) {
-            $this->errors[] = lang('Admin.text_login_unsuccessful');
+            $this->errors[] = lang('User.text_login_unsuccessful');
             return FALSE;
         }
 
         $user_token = $user_token_model->where(['remember_selector' => $token['selector']])->first();
         if (empty($user_token)) {
-            $this->errors[] = lang('Admin.text_login_unsuccessful');
+            $this->errors[] = lang('User.text_login_unsuccessful');
             return FALSE;
         }
 
         $user_info = $this->where(['id' => $user_token['user_id']])->first();
         if (empty($user_info)) {
-            $this->errors[] = lang('Admin.text_login_unsuccessful');
+            $this->errors[] = lang('User.text_login_unsuccessful');
             return FALSE;
         }
 
         if (empty($user_info['active'])) {
-            $this->errors[] = lang('Admin.text_login_unsuccessful_not_active');
+            $this->errors[] = lang('User.text_login_unsuccessful_not_active');
             return FALSE;
         }
 
         if ($this->auth_model->checkPassword($token['validator'], $user_token['remember_code']) === FALSE) {
-            $this->errors[] = lang('Admin.text_login_unsuccessful');
+            $this->errors[] = lang('User.text_login_unsuccessful');
             return FALSE;
         }
 
@@ -278,7 +294,7 @@ class UserModel extends MyModel
         }
 
         if (empty($user_info['active'])) {
-            $this->errors[] = lang('Admin.text_login_unsuccessful_not_active');
+            $this->errors[] = lang('User.text_login_unsuccessful_not_active');
             return false;
         }
 

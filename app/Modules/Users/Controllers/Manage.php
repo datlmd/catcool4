@@ -611,7 +611,7 @@ class Manage extends AdminController
                 return redirect()->to($redirect);
             }
 
-            $data['errors'] = (empty($this->model->getErrors())) ? lang('Admin.text_login_unsuccessful') : $this->model->getErrors();
+            $data['errors'] = (empty($this->model->getErrors())) ? lang('User.text_login_unsuccessful') : $this->model->getErrors();
         }
 
         $data['username'] = $this->request->getPost('username');

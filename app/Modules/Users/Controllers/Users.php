@@ -99,6 +99,32 @@ class Users extends UserController
         return redirect()->to(site_url('customers/profile'));
     }
 
+    public function postLogin()
+    {
+        if (empty($this->request->getPost())) {
+            set_alert(lang('Alert.error'), ALERT_ERROR);
+            return redirect()->back()->withInput();
+        }
+
+        $this->validator->setRule('identity', lang('General.text_login_identity'), 'required');
+        $this->validator->setRule('password', lang('General.text_password'), 'required');
+
+        if (!$this->validator->withRequest($this->request)->run()) {
+            return redirect()->back()->withInput();
+        }
+
+        $remember = (bool)$this->request->getPost('remember');
+        if ($this->model->login($this->request->getPost('identity'), $this->request->getPost('password'), $remember)) {
+            cc_debug(55);
+            set_alert(lang('Admin.text_login_successful'), ALERT_SUCCESS);
+            return redirect()->to();
+        }
+
+cc_debug($this->model->getErrors());
+        set_alert(lang('User.account_creation_successful'), ALERT_SUCCESS);
+        return redirect()->to(site_url('customers/profile'));
+    }
+
     public function activate($id = null, $activation = null)
     {
 

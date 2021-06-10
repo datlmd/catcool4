@@ -68,7 +68,7 @@ ol {
 	text-align: center;
 	width: 40px;
 	height: 40px;
-	line-height: 33px;
+	line-height: 26px;
 	overflow: hidden;
 	display: inline-block;
 	margin-right: 5px;
@@ -86,10 +86,6 @@ ol {
 .social-list .fb {
 	background-color: #3b5998;
 	/*width: calc(100% - 110px);*/
-}
-
-.social-list .fb i {
-	padding-right: 13px;
 }
 
 .social-list .twitter {
@@ -111,7 +107,7 @@ ol {
 }
 
 .social-list .google i {
-	margin-left: -1px;
+	margin-left: -5px;
 }
 /* add appropriate colors to fb, zalo and google buttons */
 
@@ -119,8 +115,8 @@ ol {
 .text-center-line {
 	text-align: center;
 	position: relative;
-	padding-top: 15px;
-	padding-bottom: 25px;
+	padding-top: 10px;
+	padding-bottom: 15px;
 }
 
 .text-center-line:after, .text-center-line:before {
