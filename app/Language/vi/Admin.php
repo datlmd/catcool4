@@ -221,7 +221,6 @@ return [
 	"text_list" => "Danh sách",
 	"text_loading" => "Đang nạp...",
 	"text_login_remember" => "Nhớ mật khẩu?",
-	"text_login_successful" => "Đăng nhập thành công",
 	"text_logout" => "Đăng xuất",
 	"text_logout_successful" => "Đăng xuất thành công",
 	"text_manage_more" => "Mở rộng",

@@ -58,7 +58,7 @@
 
 		is_processing = true;
 		$.ajax({
-			url: base_url + '/customers/social_login',
+			url: base_url + '/users/social_login',
 			type: 'POST',
 			data: {
 				type: login_type,

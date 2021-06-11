@@ -221,7 +221,6 @@ return [
 	"text_list" => "List",
 	"text_loading" => "Loading...",
 	"text_login_remember" => "Remember password?",
-	"text_login_successful" => "Logged In successfully",
 	"text_logout" => "Logout",
 	"text_logout_successful" => "Logged Out Successfully",
 	"text_manage_more" => "Extend",

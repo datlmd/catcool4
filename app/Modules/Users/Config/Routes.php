@@ -24,7 +24,13 @@ $routes->group('users', ['namespace' => 'App\Modules\Users\Controllers'], functi
     $subroutes->add('groups_manage/delete', 'GroupsManage::delete');
     $subroutes->add('groups_manage/publish', 'GroupsManage::publish');
 
-    $subroutes->add('post_register', 'Users::postRegister');
-    $subroutes->add('post_login', 'Users::postLogin');
-    $subroutes->add('activate/(:num)/(:any)', 'Users::activate/$1/$2');
+    $subroutes->add('post_register', 'Register::postRegister');
+    $subroutes->add('register', 'Register::index');
+
+    $subroutes->add('login', 'Login::index');
+    $subroutes->add('post_login', 'Login::postLogin');
+    $subroutes->add('social_login', 'Login::socialLogin');
+
+    $subroutes->add('profile', 'Profile::index');
+    $subroutes->add('activate/(:num)/(:any)', 'Activate::index/$1/$2');
 });

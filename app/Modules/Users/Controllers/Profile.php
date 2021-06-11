@@ -12,8 +12,12 @@ class Users extends UserController
         parent::__construct();
 
 
-        $this->model      = new UserModel();
+        $this->model = new UserModel();
 
+    }
+
+    public function index()
+    {
         $this->themes->setTheme(config_item('theme_frontend'));
         $this->themes->addPartial('header_top')
             ->addPartial('header_bottom')
@@ -22,16 +26,23 @@ class Users extends UserController
             ->addPartial('footer_top')
             ->addPartial('footer_bottom');
 
-
         $this->breadcrumb->openTag(config_item('breadcrumb_open'));
         $this->breadcrumb->closeTag(config_item('breadcrumb_close'));
         $this->breadcrumb->add(lang('General.text_home'), base_url());
-    }
 
-    public function index()
-    {
-        $data = [];
 
-        theme_load('list', $data);
+        $data = [
+
+        ];
+
+        $this->breadcrumb->add(lang('General.text_account'), base_url('users/profile'));
+
+        $data_breadcrumb['breadcrumb']       = $this->breadcrumb->render();
+        $data_breadcrumb['breadcrumb_title'] = lang("User.heading_activate");
+        $this->themes->addPartial('breadcumb', $data_breadcrumb);
+
+        add_meta(['title' => lang("User.heading_activate")], $this->themes);
+
+        theme_load('profile', $data);
     }
 }

@@ -17,6 +17,7 @@ return [
 	"error_password_code" => "Code không hợp lệ hoặc đã hết hạn",
 	"heading_activate" => "Kích hoạt tài khoản",
 	"heading_title" => "Tài khoản",
+	"text_login_successful" => "Đăng nhập thành công",
 	"text_login_timeout" => "Tài khoản này đã tạm thời bị khoá, vui lòng thử lại sau!",
 	"text_login_unsuccessful" => "Tài khoản hoặc mật khẩu không đúng",
 	"text_login_unsuccessful_not_active" => "Tài khoản của bạn đã bị khoá",

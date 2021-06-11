@@ -607,7 +607,7 @@ class Manage extends AdminController
 
             $remember = (bool)$this->request->getPost('remember');
             if ($this->model->login($this->request->getPost('username'), $this->request->getPost('password'), $remember, true)) {
-                set_alert(lang('Admin.text_login_successful'), ALERT_SUCCESS, ALERT_POPUP);
+                set_alert(lang('User.text_login_successful'), ALERT_SUCCESS, ALERT_POPUP);
                 return redirect()->to($redirect);
             }
 

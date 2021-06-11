@@ -8,6 +8,4 @@ if(!isset($routes))
 $routes->group('customers', ['namespace' => 'App\Modules\Customers\Controllers'], function($subroutes){
     $subroutes->add('', 'Customers::index');
     $subroutes->add('login', 'Customers::login');
-    $subroutes->add('social_login', 'Customers::socialLogin');
-
 });

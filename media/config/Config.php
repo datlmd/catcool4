@@ -48,7 +48,7 @@ class CustomConfig extends BaseConfig
 	/**
 	 * Khai báo html cho breadcrumb open
 	 */
-	public $breadcrumbOpen = "<ul class='breadcrumb breadcrumb-light d-block text-center appear-animation' data-appear-animation='fadeIn' data-appear-animation-delay='300'>";
+	public $breadcrumbOpen = "<ul class='breadcrumb'>";
 
 	/**
 	 * key hash
