@@ -24,7 +24,7 @@
         </div>
         <div class="fform-group row my-2">
             <div class="col-12 text-center">
-                <input type="submit" value="{lang('General.button_login')}" class="btn btn-primary btn-modern" data-loading-text="Loading...">
+                <input type="submit" value="{lang('General.button_login')}" class="btn btn-primary" data-loading-text="Loading...">
             </div>
         </div>
     {form_close()}

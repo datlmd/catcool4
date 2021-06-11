@@ -142,7 +142,7 @@ class UserModel extends MyModel
             // Generate random tokens
             $token = $this->auth_model->generateSelectorValidatorCouple();
             if (!empty($token['validator_hashed'])) {
-                $this->auth_model->setCookie($token);
+                $this->auth_model->setCookie($token, true);
 
                 $user_token_model = new UserTokenModel();
                 $user_token_model->addToken($user_info['id'], $token);
@@ -166,7 +166,7 @@ class UserModel extends MyModel
 
         $user_token_model = new UserTokenModel();
 
-        $remember_cookie = $this->auth_model->getCookie();
+        $remember_cookie = $this->auth_model->getCookie(true);
         $token           = $this->auth_model->retrieveSelectorValidatorCouple($remember_cookie);
 
         if ($token === FALSE) {
@@ -217,14 +217,14 @@ class UserModel extends MyModel
             return FALSE;
         }
 
-        $remember_cookie = $this->auth_model->getCookie();
+        $remember_cookie = $this->auth_model->getCookie(true);
         $token           = $this->auth_model->retrieveSelectorValidatorCouple($remember_cookie);
 
         $user_token_model = new UserTokenModel();
         $user_token_model->deleteToken($token);
 
         $this->auth_model->clearSession();
-        $this->auth_model->deleteCookie();
+        $this->auth_model->deleteCookie(true);
 
         // Clear all codes
         $data_logout = [

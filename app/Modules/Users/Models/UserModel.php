@@ -87,39 +87,6 @@ class UserModel extends MyModel
         return $this;
     }
 
-//    public function remove($id, $is_trash = false)
-//    {
-//        if (empty($id)) {
-//            return false;
-//        }
-//
-//        if ($is_trash == true) {
-//            $return = $this->delete($id);
-//        } else {
-//            $return = $this->update(['is_deleted' => STATUS_ON], $id);
-//        }
-//
-//        if (empty($return)) {
-//            return false;
-//        }
-//
-//        return $return;
-//    }
-//
-//    public function update_acitve($id, $active)
-//    {
-//        if (empty($id)) {
-//            return false;
-//        }
-//
-//        $return = $this->update(['active' => $active], $id);
-//        if (empty($return)) {
-//            return false;
-//        }
-//
-//        return $return;
-//    }
-//
     public function login($username, $password, $remember = FALSE)
     {
         $attempt_model = new UserLoginAttemptModel();
@@ -223,7 +190,7 @@ class UserModel extends MyModel
             return FALSE;
         }
 
-        $this->auth_model->setSession($user_info, true);
+        $this->auth_model->setSession($user_info);
 
         //xoa forgotten pass neu login thanh cong
         $data_login = [

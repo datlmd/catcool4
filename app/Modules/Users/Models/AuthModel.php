@@ -115,6 +115,8 @@ class AuthModel extends MyModel
             'full_name'      => empty($user_info['last_name']) ? $user_info['first_name'] : $user_info['first_name'] . ' ' . $user_info['last_name'],
             'old_last_login' => $user_info['last_login'],
             'last_login'     => time(),
+            'is_admin'       => false,
+            'super_admin'    => false,
         ];
         if ($is_check_admin) {
             $session_data['is_admin'] = true;
@@ -139,7 +141,7 @@ class AuthModel extends MyModel
         session()->destroy();
     }
 
-    public function setCookie($token)
+    public function setCookie($token, $is_admin = false)
     {
         if (empty($token)) {
             return false;
@@ -147,7 +149,7 @@ class AuthModel extends MyModel
 
         $expire = empty(config_item('user_expire')) ? self::MAX_COOKIE_LIFETIME : config_item('user_expire');
         $cookie_config = [
-            'name'   => config_item('remember_cookie_name'),
+            'name'   => $this->_getNameCookie($is_admin),
             'value'  => $token['user_code'],
             'expire' => $expire,
             'domain' => '',
@@ -161,16 +163,25 @@ class AuthModel extends MyModel
         //set_cookie(config_item('remember_cookie_name'), $token['user_code'], $expire, site_url(), '/');
     }
 
-    public function getCookie()
+    public function getCookie($is_admin = false)
     {
-        return get_cookie(config_item('remember_cookie_name'));
+        return get_cookie($this->_getNameCookie($is_admin));
     }
 
-    public function deleteCookie()
+    public function deleteCookie($is_admin = false)
     {
         // delete the remember me cookies if they exist
         $response = \Config\Services::response();
-        $response->deleteCookie(config_item('remember_cookie_name'))->send();
+        $response->deleteCookie($this->_getNameCookie($is_admin))->send();
         //delete_cookie(config_item('remember_cookie_name'));
+    }
+
+    private function _getNameCookie($is_admin = false)
+    {
+        if ($is_admin) {
+            return config_item('remember_cookie_name') . '_admin';
+        }
+
+        return config_item('remember_cookie_name');
     }
 }
