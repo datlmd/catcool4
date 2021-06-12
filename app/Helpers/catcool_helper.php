@@ -1326,7 +1326,7 @@ if(!function_exists('get_avatar'))
     function get_avatar($avatar = null)
     {
         $image_ext = '.jpg';
-        if (session('is_admin')) {
+        if (session('admin.is_admin')) {
             $image_ext = '_ad.jpg';
         }
 
