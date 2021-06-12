@@ -17,6 +17,7 @@ return [
 	"error_password_code" => "Code is invalid or has expired",
 	"heading_activate" => "Account Activation",
 	"heading_title" => "Users",
+	"text_login_social_unsuccessful" => "Logged In unsuccessfully. Please try again!",
 	"text_login_successful" => "Logged In successfully",
 	"text_login_timeout" => "Temporarily Locked Out.  Try again later!",
 	"text_login_unsuccessful" => "The account or password is incorrect",

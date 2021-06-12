@@ -1,8 +1,6 @@
 <?php namespace App\Modules\Users\Models;
 
 use App\Models\MyModel;
-use App\Modules\Users\Models\AuthModel;
-use App\Modules\Users\Models\UserLoginAttemptModel;
 
 class UserModel extends MyModel
 {
@@ -202,6 +200,56 @@ class UserModel extends MyModel
         $this->update($user_info['id'], $data_login);
 
         return TRUE;
+    }
+
+    public function loginSocial($social_type, $data)
+    {
+        if (empty($data) || empty($data['id'])) {
+            return false;
+        }
+
+        $social_model = new UserLoginSocial();
+
+        $this->errors = [];
+
+        $social_info = $social_model->where(['id' => $data['id'], 'type' => $social_type])->first();
+        if (empty($social_info)) {
+            $email     = $data['email'] ?? null;
+            $user_info = [
+                'email'      => strtolower($email),
+                'first_name' => $data['first_name'] ?? null,
+                'last_name'  => $data['last_name'] ?? null,
+                'phone'      => $data['last_name'] ?? null,
+                'gender'     => $data['gender'] ?? null,
+                'active'     => STATUS_ON,
+                'dob'        => $data['dob'] ?? null,
+                'ip'         => get_client_ip(),
+            ];
+
+            if (!empty($data['image'])) {
+                //save image to local
+                $user_info['image'] = $data['image'];
+            }
+
+            $user_id         = $this->insert($user_info);
+            $user_info['id'] = $user_id;
+
+            $social_info = [
+                'social_id' => $data['id'],
+                'user_id'   => $user_id,
+                'type'      => $social_type,
+            ];
+            $social_model->insert($social_info);
+        }
+
+
+        if (empty($user_info)) {
+            $user_info = $this->where('id', $social_info['user_id'])->first();
+        }
+
+        $this->auth_model->setSession($user_info);
+
+        return true;
     }
 
     public function logout()
