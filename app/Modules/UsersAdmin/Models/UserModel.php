@@ -215,7 +215,7 @@ class UserModel extends MyModel
 
     public function logout()
     {
-        $user_id = $this->auth_model->getUserId();
+        $user_id = $this->auth_model->getUserIdAdmin();
         if (empty($user_id)) {
             return FALSE;
         }
@@ -226,7 +226,7 @@ class UserModel extends MyModel
         $user_token_model = new UserTokenModel();
         $user_token_model->deleteToken($token);
 
-        $this->auth_model->clearSession();
+        $this->auth_model->clearSession(true);
         $this->auth_model->deleteCookie(true);
 
         // Clear all codes

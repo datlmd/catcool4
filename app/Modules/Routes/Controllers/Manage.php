@@ -99,7 +99,7 @@ class Manage extends AdminController
                 'resource'    => $this->request->getPost('resource'),
                 'language_id' => $this->request->getPost('language_id'),
                 'route'       => $this->request->getPost('route'),
-                'user_id'     => $this->getUserId(),
+                'user_id'     => $this->getUserIdAdmin(),
                 'published'   => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
                 'ctime'       => get_date(),
             ];
@@ -134,7 +134,7 @@ class Manage extends AdminController
                 'resource'    => $this->request->getPost('resource'),
                 'language_id' => $this->request->getPost('language_id'),
                 'route'       => $this->request->getPost('route'),
-                'user_id'     => $this->getUserId(),
+                'user_id'     => $this->getUserIdAdmin(),
                 'published'   => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 

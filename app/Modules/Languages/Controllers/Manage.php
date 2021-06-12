@@ -72,7 +72,7 @@ class Manage extends AdminController
                 'name'      => $this->request->getPost('name'),
                 'code'      => $this->request->getPost('code'),
                 'icon'      => $this->request->getPost('icon'),
-                'user_id'   => $this->getUserId(),
+                'user_id'   => $this->getUserIdAdmin(),
                 'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
                 'ctime'     => get_date(),
             ];
@@ -109,7 +109,7 @@ class Manage extends AdminController
                 'name'      => $this->request->getPost('name'),
                 'code'      => $this->request->getPost('code'),
                 'icon'      => $this->request->getPost('icon'),
-                'user_id'   => $this->getUserId(),
+                'user_id'   => $this->getUserIdAdmin(),
                 'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 

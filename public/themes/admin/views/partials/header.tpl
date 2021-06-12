@@ -88,7 +88,7 @@
 							<h5 class="mb-0 text-white nav-user-name">{session('full_name')}</h5>
 							<span class="status"></span><span class="ms-2">{session('username')}</span>
 						</div>
-						<a class="dropdown-item" href="{site_url('users_admin/manage/edit/'|cat:session('user_id'))}"><i class="fas fa-user-circle me-2"></i>{lang('Admin.text_profile')}</a>
+						<a class="dropdown-item" href="{site_url('users_admin/manage/edit/'|cat:session('admin.user_id'))}"><i class="fas fa-user-circle me-2"></i>{lang('Admin.text_profile')}</a>
 						<a class="dropdown-item" href="{site_url('users_admin/manage/logout')}"><i class="fas fa-sign-out-alt me-2"></i>{lang('Admin.text_logout')}</a>
 					</div>
 				</li>

@@ -13,7 +13,7 @@ class UserController extends BaseController
 
     public function isSuperAdmin()
     {
-        $super_admin = session('super_admin');
+        $super_admin = session('admin.super_admin');
         if (!empty($super_admin) && $super_admin === TRUE) {
             return TRUE;
         }
@@ -21,11 +21,29 @@ class UserController extends BaseController
         return FALSE;
     }
 
+    /**
+     * User ID
+     *
+     * @return \CodeIgniter\Session\Session|mixed|null
+     */
     public function getUserId()
     {
-        $user_id = session('user_id');
-        if (!empty($user_id)) {
-            return $user_id;
+        if (!empty(session('user.user_id'))) {
+            return session('user.user_id');
+        }
+
+        return NULL;
+    }
+
+    /**
+     * User ID Admin
+     *
+     * @return \CodeIgniter\Session\Session|mixed|null
+     */
+    public function getUserIdAdmin()
+    {
+        if (!empty(session('admin.user_id'))) {
+            return session('admin.user_id');
         }
 
         return NULL;

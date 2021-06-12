@@ -128,21 +128,30 @@ class AuthModel extends MyModel
             return true;
         }
 
-        session()->set($session_data);
+        session()->set(['user' => $session_data]);
         return true;
     }
 
     public function getUserId()
     {
-        return session('user_id');
+        return session('user.user_id');
     }
 
-    public function clearSession()
+    public function getUserIdAdmin()
     {
-        session()->remove(['username', 'user_id']);
+        return session('admin.user_id');
+    }
+
+    public function clearSession($is_admin = false)
+    {
+        if ($is_admin) {
+            session()->remove(['admin']);
+        } else {
+            session()->remove(['user']);
+        }
 
         // Destroy the session
-        session()->destroy();
+        //session()->destroy();
     }
 
     public function setCookie($token, $is_admin = false)

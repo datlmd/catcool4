@@ -20,7 +20,7 @@
 			<div class="collapse navbar-collapse" id="menu_admin">
 				<ul class="navbar-nav flex-column">
 					<li class="nav-divider pb-0 d-xl-none d-lg-none">
-						<a class="" href="{site_url('users_admin/manage/edit/'|cat:session('user_id'))}">
+						<a class="" href="{site_url('users_admin/manage/edit/'|cat:session('admin.user_id'))}">
 							<span class="badge badge-info"><i class="fas fa-user-circle me-1"></i>{session('full_name')} ({session('username')})</span>
 						</a>
 					</li>

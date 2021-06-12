@@ -317,7 +317,7 @@ class Manage extends AdminController
                 'mtime'      => get_date(),
             ];
 
-            if ($id != $this->getUserId()) {
+            if ($id != $this->getUserIdAdmin()) {
                 $edit_data['active'] = !empty($this->request->getPost('active')) ? STATUS_ON : STATUS_OFF;
             }
             if ($this->isSuperAdmin()) {
@@ -495,7 +495,7 @@ class Manage extends AdminController
 
             try {
                 foreach($list_delete as $value) {
-                    if ((!empty($value['super_admin']) && empty($this->isSuperAdmin())) || $value['id'] == $this->getUserId()) {
+                    if ((!empty($value['super_admin']) && empty($this->isSuperAdmin())) || $value['id'] == $this->getUserIdAdmin()) {
                         continue;
                     }
                     $this->model->update($value['id'], ['is_deleted' => STATUS_ON]);
@@ -529,7 +529,7 @@ class Manage extends AdminController
 
         $list_undelete = [];
         foreach ($list_delete as $key => $value) {
-            if ((!empty($value['super_admin']) && empty($this->isSuperAdmin())) || $value['id'] == $this->getUserId()) {
+            if ((!empty($value['super_admin']) && empty($this->isSuperAdmin())) || $value['id'] == $this->getUserIdAdmin()) {
                 $list_undelete[] = $value;
                 unset($list_delete[$key]);
             }
@@ -555,7 +555,7 @@ class Manage extends AdminController
         }
 
         $id = $this->request->getPost('id');
-        if ($id == $this->getUserId()) {
+        if ($id == $this->getUserIdAdmin()) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('UserAdmin.error_permission_owner')]);
         }
 
@@ -586,7 +586,7 @@ class Manage extends AdminController
         $redirect = empty($this->request->getGetPost('redirect')) ? site_url(CATCOOL_DASHBOARD) : $this->request->getGetPost('redirect');
         $redirect = urldecode($redirect);
 
-        if (!empty(session('user_id'))) {
+        if (!empty(session('admin.user_id'))) {
             return redirect()->to($redirect);
         } else {
             //neu da logout thi check auto login

@@ -142,7 +142,7 @@ class Manage extends AdminController
                 'lang_value' => str_replace('"', "'", $values[$lang['id']]),
                 'lang_id'    => $lang['id'],
                 'module_id'  => $module_id,
-                'user_id'    => $this->getUserId(),
+                'user_id'    => $this->getUserIdAdmin(),
                 'ctime'      => get_date(),
             ];
             $this->model->insert($data_add);
@@ -198,7 +198,7 @@ class Manage extends AdminController
                     'lang_value' => str_replace('"', "'", $values[$lang['id']]),
                     'lang_id'    => $lang['id'],
                     'module_id'  => $module_id,
-                    'user_id'    => $this->getUserId(),
+                    'user_id'    => $this->getUserIdAdmin(),
                     'ctime'      => get_date(),
                 ];
 
@@ -209,7 +209,7 @@ class Manage extends AdminController
                 $data_edit['lang_value'] = str_replace('"', "'", $values[$lang['id']]);
                 $data_edit['lang_key']   = $key_new;
                 $data_edit['module_id']  = $module_id;
-                $data_edit['user_id']    = $this->getUserId();
+                $data_edit['user_id']    = $this->getUserIdAdmin();
 
                 //update
                 $this->model->update($data_edit['id'], $data_edit);
@@ -256,7 +256,7 @@ class Manage extends AdminController
                         'lang_value' => str_replace('"', "'", $value[$lang['id']]),
                         'lang_id'    => $lang['id'],
                         'module_id'  => $module_id,
-                        'user_id'    => $this->getUserId(),
+                        'user_id'    => $this->getUserIdAdmin(),
                         'ctime'      => get_date(),
                     ];
 
@@ -265,7 +265,7 @@ class Manage extends AdminController
                 } else {
                     $data_edit               = $translation_list[$translation_key][$lang['id']];
                     $data_edit['lang_value'] = str_replace('"', "'", $value[$lang['id']]);
-                    $data_edit['user_id']    = $this->getUserId();
+                    $data_edit['user_id']    = $this->getUserIdAdmin();
 
                     //update
                     $this->model->update($data_edit['id'], $data_edit);

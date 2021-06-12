@@ -68,7 +68,7 @@ class PermissionModel extends MyModel
 
     public function getTextPermission($permission = null)
     {
-        helper(['cookie', 'catcool']);
+        helper(['cookie', 'catcool', 'inflector']);
         \Config\Services::language()->setLocale(get_lang(true));
 
         $text_permission = lang('PermissionAdmin.not_permission');
@@ -98,17 +98,17 @@ class PermissionModel extends MyModel
 
     public function checkPermission($permission_name = null)
     {
-        if (empty(session('is_admin')) || empty(session('user_id'))) {
+        if (empty(session('admin.is_admin')) || empty(session('admin.user_id'))) {
             return false;
         }
 
-        $is_super_admin = session('super_admin');
+        $is_super_admin = session('admin.super_admin');
         if (!empty($is_super_admin) && $is_super_admin === TRUE) {
             return true;
         }
 
         $user_permission_model = new UserPermissionModel();
-        $user_id               = session('user_id');
+        $user_id               = session('admin.user_id');
         $permission            = [];
         $permission_name       = (!empty($permission_name)) ? $permission_name : uri_string();
         $permission_name       = explode('/', $permission_name);

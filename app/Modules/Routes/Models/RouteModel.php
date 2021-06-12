@@ -167,7 +167,7 @@ class RouteModel extends MyModel
                     'resource'    => $resource,
                     'language_id' => $key,
                     'route'       => $urls[$key]['route'],
-                    'user_id'     => session('user_id'),
+                    'user_id'     => session('admin.user_id'),
                     'published'   => STATUS_ON,
                     'ctime'       => get_date(),
                 ];

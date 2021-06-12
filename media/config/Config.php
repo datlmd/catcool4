@@ -157,11 +157,11 @@ pass: dat@!@#$%
 
 	public $fbGraphVersion = "v10.0";
 
-	public $fbLoginRedirectUrl = "https://localhost:84443/dev/catcool4/public/customers/social_login?type=fb";
+	public $fbLoginRedirectUrl = "https://localhost:84443/dev/catcool4/public/users/social_login?type=fb";
 
 	public $fbLoginType = "web";
 
-	public $fbLogoutRedirectUrl = "https//localhost:8443/dev/catcool4/public/customers/logout_facebook";
+	public $fbLogoutRedirectUrl = "https//localhost:8443/dev/catcool4/public/users/logout_facebook";
 
 	public $fbPages = "";
 
@@ -232,7 +232,7 @@ pass: dat@!@#$%
 	 * google_redirect_uri
 https://console.developers.google.com
 	 */
-	public $googleRedirectUri = "https://localhost:8443/dev/catcool4/public/customers/social_login?type=gg";
+	public $googleRedirectUri = "https://localhost:8443/dev/catcool4/public/users/social_login?type=gg";
 
 	/**
 	 * https://console.developers.google.com
@@ -467,7 +467,7 @@ If false, no automatic detection will be performed.
 	public $zaloAuthOnLoad = 1;
 
 	/**
-	 * https://localhost:8443/dev/catcool4/public/customers/social_login?type=zalo
+	 * https://localhost:8443/dev/catcool4/public/users/social_login?type=zalo
 	 */
 	public $zaloLoginRedirectUrl = "https://localhost/dev/catcool/members/manage/login";
 

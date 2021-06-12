@@ -16,7 +16,7 @@ class AuthAdminFilter implements FilterInterface
         }
 
         //check login
-        $user_id = session('user_id');
+        $user_id = session('admin.user_id');
         if (empty($user_id)) {
             helper(['cookie', 'catcool', 'inflector']);
             $user_model = new UserModel();
@@ -32,7 +32,7 @@ class AuthAdminFilter implements FilterInterface
             }
         }
 
-        if (empty(session('is_admin'))) {
+        if (empty(session('admin.is_admin'))) {
             //chuyen sang trang frontend
             return redirect()->to(site_url());
         }
