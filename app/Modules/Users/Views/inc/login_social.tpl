@@ -14,6 +14,12 @@
 <script type="application/javascript">
 	var is_processing = false;
 
+	{if !empty($return_url)}
+		var return_url = '{$return_url}';
+	{else}
+		var return_url = '{site_url()}';
+	{/if}
+
 	{literal}
 
 	window.fbAsyncInit = function() {
@@ -75,24 +81,27 @@
 					return false;
 				}
 
-				if (response.status == 'redirect') {
-					window.location = response.url;
+				if (response.status == 'logged_in') {
+					window.location = return_url;
 					return false;
 				}
 
-				if (response.auth_url.length) {
+				if (response.auth_url != '' && response.auth_url != 'undefined') {
 					if (login_type == '{/literal}{LOGIN_SOCIAL_TYPE_GOOGLE}{literal}' || login_type == '{/literal}{LOGIN_SOCIAL_TYPE_ZALO}{literal}') {
 						var win_popup = popupWindow(response.auth_url, "popup_login", 600, 700);
 						var pollTimer = window.setInterval(function() {
 							try {
 								//console.log(win_popup.document.URL);
-								if (win_popup.document.URL.indexOf('returnUrl') != -1) {
+								if (win_popup.document.URL.indexOf('logged_in') != -1) {
 									window.clearInterval(pollTimer);
 									var url = win_popup.document.URL;
 
 									win_popup.close();
+
+									window.location = return_url;
 								}
 							} catch(e) {
+								console.log('User cancelled login or did not fully authorize.');
 							}
 						}, 100);
 					}

@@ -30,29 +30,16 @@ class Login extends BaseController
     {
         $data = [];
 
-        // validate form input
-        $this->validator->setRule('username', lang('Customer.text_username'), 'required');
-        $this->validator->setRule('password', lang('Customer.text_password'), 'required');
-
-        if (!empty($this->request->getPost()) && $this->validator->withRequest($this->request)->run()) {
-            /*
-            if(!check_captcha($this->request->post('captcha'))) {
-                $data['errors'] = lang('error_captcha');
-            } else {
-                $remember = (bool)$this->request->post('remember');
-                if ($this->Customer->login($this->request->post('username'), $this->request->post('password'), $remember, true)) {
-                    set_alert(lang('text_login_successful'), ALERT_SUCCESS);
-                    redirect(self::MANAGE_URL);
-                }
-
-                $data['errors'] = empty($this->Member->errors()) ? lang('text_login_unsuccessful') : $this->Member->errors();
-            }
-            */
-        }
-
         if ($this->validator->getErrors()) {
             $data['errors'] = $this->validator->getErrors();
         }
+
+        $return_url = $this->request->getGet('return_url');
+        if (empty($return_url)) {
+            $return_url = site_url();
+        }
+
+        $data['return_url'] = $return_url;
 
         $this->breadcrumb->add(lang('General.text_account'), base_url('users/profile'));
 

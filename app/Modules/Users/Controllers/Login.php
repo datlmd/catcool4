@@ -64,14 +64,16 @@ class Login extends UserController
     public function socialLogin()
     {
         //check login
+        if (!empty(session('user.user_id'))) {
+            json_output(['status' => 'logged_in']);
+        }
 
         $auth_url  = '';
         $user_data = [];
 
-        $login_type = $this->request->getPostGet('type');
+        $login_type = $this->request->getGetPost('type');
 
-        if (!empty($this->request->getPostGet()) && !empty($login_type)) {
-
+        if (!empty($login_type)) {
             switch ($login_type) {
                 case LOGIN_SOCIAL_TYPE_FACEBOOK:
                     // Load facebook oauth library
@@ -103,8 +105,10 @@ class Login extends UserController
                     // Load zalo oauth library
                     $google = service('google');
                     if(!empty($this->request->getGet('code'))) {
+
                         // Authenticate user with google
-                        if($google->getAuthenticate($this->request->getGet('code'))) {
+                        $access_token = $google->getAuthenticate($this->request->getGet('code'));
+                        if($access_token) {
 
                             // Get user info from google
                             $gg_user = $google->getUserInfo();
@@ -117,7 +121,7 @@ class Login extends UserController
                                 'phone'        => !empty($gg_user['phone']) ? $gg_user['phone'] : '',
                                 'gender'       => !empty($gg_user['gender']) ? $gg_user['gender'] : '',
                                 'image'        => !empty($gg_user['picture']) ? $gg_user['picture'] : '',
-                                'access_token' => NULL,
+                                'access_token' => $access_token['access_token'],
                             ];
                         } else {
                             $auth_url = $google->loginUrl();
@@ -178,9 +182,9 @@ class Login extends UserController
         }
 
         if ($this->request->isAJAX()) {
-            json_output(['status' => 'redirect', 'url' => $return_url]);
+            json_output(['status' => 'logged_in', 'url' => $return_url]);
         }
 
-        return redirect()->to($return_url);
+        return redirect()->to(site_url('users/social_login') . "?logged_in=$login_type");
     }
 }

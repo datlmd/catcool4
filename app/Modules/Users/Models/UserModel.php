@@ -243,6 +243,8 @@ class UserModel extends MyModel
                 'access_token' => $data['access_token'] ?? null,
             ];
             $social_model->insert($social_info);
+        } else {
+            $social_model->update($data['id'], ['access_token' => $data['access_token'] ?? null]);
         }
 
 
