@@ -73,7 +73,7 @@ class Login extends UserController
         if (!empty($this->request->getPostGet()) && !empty($login_type)) {
 
             switch ($login_type) {
-                case 'fb':
+                case LOGIN_SOCIAL_TYPE_FACEBOOK:
                     // Load facebook oauth library
                     $facebook = service('facebook');
 
@@ -84,20 +84,21 @@ class Login extends UserController
                         //$fb_user   = $facebook->getUserInfor($user_id, $access_token);
                         $fb_user = $facebook->request('get', '/me?fields=id,name,first_name,last_name,email,link,gender,picture.type(large), birthday', $access_token);
                         $user_data = [
-                            'id'         => !empty($fb_user['id']) ? $fb_user['id'] : '',
-                            'first_name' => !empty($fb_user['first_name']) ? $fb_user['first_name'] : '',
-                            'last_name'  => !empty($fb_user['last_name']) ? $fb_user['last_name'] : '',
-                            'email'      => !empty($fb_user['email']) ? $fb_user['email'] : '',
-                            'phone'      => !empty($fb_user['phone']) ? $fb_user['phone'] : '',
-                            'gender'     => !empty($fb_user['gender']) ? $fb_user['gender'] : '',
-                            'image'      => !empty($fb_user['picture']['data']['url']) ? $fb_user['picture']['data']['url'] : '',
+                            'id'           => !empty($fb_user['id']) ? $fb_user['id'] : '',
+                            'first_name'   => !empty($fb_user['first_name']) ? $fb_user['first_name'] : '',
+                            'last_name'    => !empty($fb_user['last_name']) ? $fb_user['last_name'] : '',
+                            'email'        => !empty($fb_user['email']) ? $fb_user['email'] : '',
+                            'phone'        => !empty($fb_user['phone']) ? $fb_user['phone'] : '',
+                            'gender'       => !empty($fb_user['gender']) ? $fb_user['gender'] : '',
+                            'image'        => !empty($fb_user['picture']['data']['url']) ? $fb_user['picture']['data']['url'] : '',
+                            'access_token' => $access_token,
                         ];
                     } else {
                         $auth_url = $facebook->loginUrl();
                     }
 
                     break;
-                case 'gg':
+                case LOGIN_SOCIAL_TYPE_GOOGLE:
 
                     // Load zalo oauth library
                     $google = service('google');
@@ -109,13 +110,14 @@ class Login extends UserController
                             $gg_user = $google->getUserInfo();
 
                             $user_data = [
-                                'id'         => !empty($gg_user['id']) ? $gg_user['id'] : '',
-                                'first_name' => !empty($gg_user['given_name']) ? $gg_user['given_name'] : '',
-                                'last_name'  => !empty($gg_user['family_name']) ? $gg_user['family_name'] : '',
-                                'email'      => !empty($gg_user['email']) ? $gg_user['email'] : '',
-                                'phone'      => !empty($gg_user['phone']) ? $gg_user['phone'] : '',
-                                'gender'     => !empty($gg_user['gender']) ? $gg_user['gender'] : '',
-                                'image'      => !empty($gg_user['picture']) ? $gg_user['picture'] : '',
+                                'id'           => !empty($gg_user['id']) ? $gg_user['id'] : '',
+                                'first_name'   => !empty($gg_user['given_name']) ? $gg_user['given_name'] : '',
+                                'last_name'    => !empty($gg_user['family_name']) ? $gg_user['family_name'] : '',
+                                'email'        => !empty($gg_user['email']) ? $gg_user['email'] : '',
+                                'phone'        => !empty($gg_user['phone']) ? $gg_user['phone'] : '',
+                                'gender'       => !empty($gg_user['gender']) ? $gg_user['gender'] : '',
+                                'image'        => !empty($gg_user['picture']) ? $gg_user['picture'] : '',
+                                'access_token' => NULL,
                             ];
                         } else {
                             $auth_url = $google->loginUrl();
@@ -124,7 +126,7 @@ class Login extends UserController
                         $auth_url = $google->loginUrl();
                     }
                     break;
-                case 'zalo':
+                case LOGIN_SOCIAL_TYPE_ZALO:
                     // Load zalo oauth library
                     $zalo = service('zaloApi');
 
@@ -133,21 +135,22 @@ class Login extends UserController
                     if (!empty($access_token)) {
                         $zalo_user = $zalo->getUser($access_token);
                         $user_data = [
-                            'id'         => !empty($zalo_user['id']) ? $zalo_user['id'] : '',
-                            'first_name' => !empty($zalo_user['name']) ? $zalo_user['name'] : '',
-                            'last_name'  => !empty($zalo_user['last_name']) ? $zalo_user['last_name'] : '',
-                            'dob'        => !empty($zalo_user['birthday']) ? $zalo_user['birthday'] : '',
-                            'email'      => !empty($zalo_user['email']) ? $zalo_user['email'] : '',
-                            'phone'      => !empty($zalo_user['phone']) ? $zalo_user['phone'] : '',
-                            'gender'     => !empty($zalo_user['gender']) ? $zalo_user['gender'] : '',
-                            'image'      => !empty($zalo_user['picture']['data']['url']) ? $zalo_user['picture']['data']['url'] : '',
+                            'id'           => !empty($zalo_user['id']) ? $zalo_user['id'] : '',
+                            'first_name'   => !empty($zalo_user['name']) ? $zalo_user['name'] : '',
+                            'last_name'    => !empty($zalo_user['last_name']) ? $zalo_user['last_name'] : '',
+                            'dob'          => !empty($zalo_user['birthday']) ? $zalo_user['birthday'] : '',
+                            'email'        => !empty($zalo_user['email']) ? $zalo_user['email'] : '',
+                            'phone'        => !empty($zalo_user['phone']) ? $zalo_user['phone'] : '',
+                            'gender'       => !empty($zalo_user['gender']) ? $zalo_user['gender'] : '',
+                            'image'        => !empty($zalo_user['picture']['data']['url']) ? $zalo_user['picture']['data']['url'] : '',
+                            'access_token' => $access_token,
                         ];
                     } else {
                         $auth_url =  $zalo->loginUrl();
                     }
 
                     break;
-                case 'tt':
+                case LOGIN_SOCIAL_TYPE_TWITTER:
                 default:
                     break;
             }

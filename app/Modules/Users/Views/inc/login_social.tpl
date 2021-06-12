@@ -1,15 +1,15 @@
 <div class="text-center">{lang('General.text_login_with')}</div>
 <div class="social-list text-center">
-	<a href="javascript:;" rel="nofollow" data-type="fb" onclick="fbLogin(this)" class="social-item fb btn">
+	<a href="javascript:;" rel="nofollow" data-type="{LOGIN_SOCIAL_TYPE_FACEBOOK}" onclick="fbLogin(this)" class="social-item fb btn">
 		<i class="fab fa-facebook-f"></i> Facebook
 	</a>
     {*<a href="#" rel="nofollow" data-type="tt" class="social-item twitter btn my-3">*}
     {*<i class="fa fa-twitter fa-fw"></i> Twitter*}
     {*</a>*}
-	<a href="javascript:;" rel="nofollow" data-type="gg" class="social-item google btn">
+	<a href="javascript:;" rel="nofollow" data-type="{LOGIN_SOCIAL_TYPE_GOOGLE}" class="social-item google btn">
 		<i class="fab fa-google"></i> Google
 	</a>
-	<a href="javascript:;" rel="nofollow" data-type="zalo" class="social-item zalo btn my-3">Zalo</a>
+	<a href="javascript:;" rel="nofollow" data-type="{LOGIN_SOCIAL_TYPE_ZALO}" class="social-item zalo btn my-3">Zalo</a>
 </div>
 <script type="application/javascript">
 	var is_processing = false;
@@ -75,8 +75,13 @@
 					return false;
 				}
 
-				if (response.auth_url != '') {
-					if (login_type == 'gg' || login_type == 'zalo') {
+				if (response.status == 'redirect') {
+					window.location = response.url;
+					return false;
+				}
+
+				if (response.auth_url.length) {
+					if (login_type == '{/literal}{LOGIN_SOCIAL_TYPE_GOOGLE}{literal}' || login_type == '{/literal}{LOGIN_SOCIAL_TYPE_ZALO}{literal}') {
 						var win_popup = popupWindow(response.auth_url, "popup_login", 600, 700);
 						var pollTimer = window.setInterval(function() {
 							try {
@@ -90,13 +95,7 @@
 							} catch(e) {
 							}
 						}, 100);
-					} else {
-						window.location = response.auth_url;
 					}
-
-					return false;
-				} else if (response.status == 'redirect') {
-					window.location = response.url;
 					return false;
 				} else {
 					location.reload();
@@ -109,7 +108,7 @@
 	}
 
 	$('.social-list .social-item').on('click', function(e) {
-		if ($(this).data('type') == 'fb') {
+		if ($(this).data('type') == '{/literal}{LOGIN_SOCIAL_TYPE_FACEBOOK}{literal}') {
 			return;
 		}
 		loginSocial($(this).data('type'));

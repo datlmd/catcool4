@@ -23,6 +23,7 @@ class UserModel extends MyModel
         'salt',
         'cart',
         'wishlist',
+        'newsletter',
         'custom_field',
         'status',
         'safe',
@@ -212,9 +213,10 @@ class UserModel extends MyModel
 
         $this->errors = [];
 
-        $social_info = $social_model->where(['id' => $data['id'], 'type' => $social_type])->first();
+        $social_info = $social_model->where(['social_id' => $data['id'], 'type' => $social_type])->first();
         if (empty($social_info)) {
-            $email     = $data['email'] ?? null;
+            $email = $data['email'] ?? null;
+
             $user_info = [
                 'email'      => strtolower($email),
                 'first_name' => $data['first_name'] ?? null,
@@ -235,9 +237,10 @@ class UserModel extends MyModel
             $user_info['id'] = $user_id;
 
             $social_info = [
-                'social_id' => $data['id'],
-                'user_id'   => $user_id,
-                'type'      => $social_type,
+                'social_id'    => $data['id'],
+                'user_id'      => $user_id,
+                'type'         => $social_type,
+                'access_token' => $data['access_token'] ?? null,
             ];
             $social_model->insert($social_info);
         }

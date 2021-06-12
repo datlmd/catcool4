@@ -108,12 +108,12 @@ class AuthModel extends MyModel
         }
 
         $session_data = [
-            'username'       => $user_info['username'],
-            'user_email'     => $user_info['email'],
+            'username'       => $user_info['username'] ?? null,
+            'user_email'     => $user_info['email'] ?? null,
             'user_id'        => $user_info['id'], //everyone likes to overwrite id so we'll use user_id
-            'user_gender'    => $user_info['gender'],
+            'user_gender'    => $user_info['gender'] ?? null,
             'full_name'      => empty($user_info['last_name']) ? $user_info['first_name'] : $user_info['first_name'] . ' ' . $user_info['last_name'],
-            'old_last_login' => $user_info['last_login'],
+            'old_last_login' => $user_info['last_login'] ?? null,
             'last_login'     => time(),
             'is_admin'       => false,
             'super_admin'    => false,
@@ -123,9 +123,13 @@ class AuthModel extends MyModel
             if (isset($user_info['super_admin']) && $user_info['super_admin'] == true) {
                 $session_data['super_admin'] = TRUE;
             }
+
+            session()->set(['admin' => $session_data]);
+            return true;
         }
 
         session()->set($session_data);
+        return true;
     }
 
     public function getUserId()

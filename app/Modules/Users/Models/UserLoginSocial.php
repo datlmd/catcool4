@@ -11,6 +11,7 @@ class UserLoginSocial extends MyModel
         'social_id',
         'user_id',
         'type',
+        'access_token',
         'ctime',
         'mtime',
     ];

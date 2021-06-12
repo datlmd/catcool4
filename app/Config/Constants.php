@@ -141,3 +141,9 @@ defined('MENU_POSITION_OTHER')  OR define('MENU_POSITION_OTHER', 'other');
 //cache name
 defined('SET_CACHE_NAME_MENU') OR define('SET_CACHE_NAME_MENU', 'menu_position');
 
+//social
+defined('LOGIN_SOCIAL_TYPE_FACEBOOK')  OR define('LOGIN_SOCIAL_TYPE_FACEBOOK', 'fb');
+defined('LOGIN_SOCIAL_TYPE_GOOGLE')    OR define('LOGIN_SOCIAL_TYPE_GOOGLE', 'gg');
+defined('LOGIN_SOCIAL_TYPE_ZALO')      OR define('LOGIN_SOCIAL_TYPE_ZALO', 'zalo');
+defined('LOGIN_SOCIAL_TYPE_TWITTER')   OR define('LOGIN_SOCIAL_TYPE_TWITTER', 'tt');
+defined('LOGIN_SOCIAL_TYPE_INSTAGRAM') OR define('LOGIN_SOCIAL_TYPE_INSTAGRAM', 'ins');
