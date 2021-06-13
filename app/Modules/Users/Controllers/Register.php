@@ -52,6 +52,7 @@ class Register extends UserController
         $this->validator->setRule('dob_year', lang('General.text_year'), 'required|is_natural_no_zero');
 
         if (!$this->validator->withRequest($this->request)->run()) {
+            set_alert($this->validator->getErrors(), ALERT_ERROR);
             return redirect()->back()->withInput();
         }
 

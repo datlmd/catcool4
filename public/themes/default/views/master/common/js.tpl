@@ -2,7 +2,7 @@
 <script type="text/javascript" src="{base_url('common/plugin/jquery.easing/jquery.easing.min.js')}"></script>
 <script type="text/javascript" src="{base_url('common/plugin/jquery.cookie/jquery.cookie.min.js')}"></script>
 
-<script type="text/javascript" src="{theme_url('assets/js/common/common.js')}"></script>
+<script type="text/javascript" src="{theme_url('assets/js/common/common.min.js')}"></script>
 
 <script type="text/javascript" src="{base_url('common/plugin/jquery.validation/jquery.validate.min.js')}"></script>
 <script type="text/javascript" src="{base_url('common/plugin/jquery.easy-pie-chart/jquery.easypiechart.min.js')}"></script>

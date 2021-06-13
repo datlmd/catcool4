@@ -30,13 +30,13 @@ class Login extends BaseController
     {
         $data = [];
 
-        if ($this->validator->getErrors()) {
-            $data['errors'] = $this->validator->getErrors();
-        }
-
         $return_url = $this->request->getGet('return_url');
         if (empty($return_url)) {
             $return_url = site_url();
+        }
+
+        if (!empty(session('user.user_id'))) {
+            return redirect()->to($return_url);
         }
 
         $data['return_url'] = $return_url;

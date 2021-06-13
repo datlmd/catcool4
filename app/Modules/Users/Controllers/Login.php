@@ -42,15 +42,15 @@ class Login extends UserController
             return redirect()->back()->withInput();
         }
 
-        $this->validator->setRule('identity', lang('General.text_login_identity'), 'required');
-        $this->validator->setRule('password', lang('General.text_password'), 'required');
+        $this->validator->setRule('login_identity', lang('General.text_login_identity'), 'required');
+        $this->validator->setRule('login_password', lang('General.text_password'), 'required');
 
         if (!$this->validator->withRequest($this->request)->run()) {
             return redirect()->back()->withInput();
         }
 
         $remember = (bool)$this->request->getPost('remember');
-        if (!$this->model->login($this->request->getPost('identity'), $this->request->getPost('password'), $remember)) {
+        if (!$this->model->login($this->request->getPost('login_identity'), $this->request->getPost('login_password'), $remember)) {
             $errors = empty($this->model->getErrors()) ? lang('User.text_login_unsuccessful') : $this->model->getErrors()[0];
             set_alert($errors, ALERT_ERROR);
             return redirect()->back()->withInput();
