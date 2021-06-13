@@ -85,8 +85,8 @@
 					<a class="nav-link nav-user-img icon-animation" href="#" id="navbar_dropdown_user_info" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{get_avatar()}" alt="" class="user-avatar-md rounded-circle"></a>
 					<div class="dropdown-menu dropdown-menu-end nav-user-dropdown" aria-labelledby="navbar_dropdown_user_info">
 						<div class="nav-user-info">
-							<h5 class="mb-0 text-white nav-user-name">{session('full_name')}</h5>
-							<span class="status"></span><span class="ms-2">{session('username')}</span>
+							<h5 class="mb-0 text-white nav-user-name">{session('admin.full_name')}</h5>
+							<span class="status"></span><span class="ms-2">{session('admin.username')}</span>
 						</div>
 						<a class="dropdown-item" href="{site_url('users_admin/manage/edit/'|cat:session('admin.user_id'))}"><i class="fas fa-user-circle me-2"></i>{lang('Admin.text_profile')}</a>
 						<a class="dropdown-item" href="{site_url('users_admin/manage/logout')}"><i class="fas fa-sign-out-alt me-2"></i>{lang('Admin.text_logout')}</a>
