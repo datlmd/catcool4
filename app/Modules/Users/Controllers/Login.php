@@ -147,7 +147,7 @@ class Login extends UserController
                             'phone'        => !empty($zalo_user['phone']) ? $zalo_user['phone'] : '',
                             'gender'       => !empty($zalo_user['gender']) ? $zalo_user['gender'] : '',
                             'image'        => !empty($zalo_user['picture']['data']['url']) ? $zalo_user['picture']['data']['url'] : '',
-                            'access_token' => $access_token,
+                            'access_token' => $access_token->getValue(),
                         ];
                     } else {
                         $auth_url =  $zalo->loginUrl();

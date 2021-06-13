@@ -213,16 +213,27 @@ class UserModel extends MyModel
 
         $this->errors = [];
 
+        //check gender
+        $gender = $data['gender'] ?? null;
+        if ($gender == 'male') {
+            $gender = GENDER_MALE;
+        } elseif ($gender == 'female') {
+            $gender = GENDER_FEMALE;
+        } else {
+            $gender = GENDER_OTHER;
+        }
+        $data['gender'] = $gender; //unisex
+
         $social_info = $social_model->where(['social_id' => $data['id'], 'type' => $social_type])->first();
         if (empty($social_info)) {
             $email = $data['email'] ?? null;
-
+            
             $user_info = [
                 'email'      => strtolower($email),
                 'first_name' => $data['first_name'] ?? null,
                 'last_name'  => $data['last_name'] ?? null,
                 'phone'      => $data['last_name'] ?? null,
-                'gender'     => $data['gender'] ?? null,
+                'gender'     => $data['gender'],
                 'active'     => STATUS_ON,
                 'dob'        => $data['dob'] ?? null,
                 'ip'         => get_client_ip(),
@@ -251,6 +262,8 @@ class UserModel extends MyModel
         if (empty($user_info)) {
             $user_info = $this->where('id', $social_info['user_id'])->first();
         }
+
+        $user_info['access_token'] = $data['access_token'];
 
         $this->auth_model->setSession($user_info);
 
