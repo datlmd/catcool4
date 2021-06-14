@@ -11,13 +11,13 @@
                                 <nav class="header-nav-top">
                                     <ul class="nav nav-pills">
                                         <li class="nav-item nav-item-borders py-2">
-                                            <span class="ps-0"><i class="far fa-dot-circle text-4 text-color-primary" style="top: 1px;"></i> 1234 Street Name, City Name</span>
+                                            <span class="ps-0"><i class="far fa-dot-circle text-4 text-color-primary" style="top: 1px;"></i> {lang('Frontend.text_address_value')}</span>
                                         </li>
                                         <li class="nav-item nav-item-borders py-2 d-none d-lg-inline-flex">
-                                            <a href="tel:123-456-7890"><i class="fab fa-whatsapp text-4 text-color-primary" style="top: 0;"></i> 123-456-7890</a>
+                                            <a href="tel:123-456-7890"><i class="fab fa-whatsapp text-4 text-color-primary" style="top: 0;"></i> {lang('Frontend.text_phone_value')}</a>
                                         </li>
                                         <li class="nav-item nav-item-borders py-2 d-none d-sm-inline-flex">
-                                            <a href="mailto:mail@domain.com"><i class="far fa-envelope text-4 text-color-primary" style="top: 1px;"></i> mail@domain.com</a>
+                                            <a href="mailto:mail@domain.com"><i class="far fa-envelope text-4 text-color-primary" style="top: 1px;"></i> {lang('Frontend.text_email_value')}</a>
                                         </li>
                                     </ul>
                                 </nav>
@@ -38,7 +38,7 @@
                                         <li class="nav-item dropdown nav-item-left-border d-none d-sm-block">
                                             <a class="nav-link" href="#" role="button" id="dropdownLanguage" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <img src="{img_url('blank.gif')}" class="flag flag-us" alt="English" /> English
-                                                <i class="fas fa-angle-down"></i>
+                                                <i class="fas fa-angle-down ms-1"></i>
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="dropdownLanguage">
                                                 <a class="dropdown-item" href="#"><img src="{img_url('blank.gif')}" class="flag flag-us" alt="English" /> English</a>
@@ -69,14 +69,14 @@
                             <ul class="header-extra-info d-flex align-items-center me-3">
                                 <li class="d-none d-sm-inline-flex">
                                     <div class="header-extra-info-text">
-                                        <label>SEND US AN EMAIL</label>
-                                        <strong><a href="mailto:mail@example.com">MAIL@EXAMPLE.COM</a></strong>
+                                        <label>{lang('Frontend.text_email')|unescape}</label>
+                                        <strong><a href="mailto:mail@example.com">{lang('Frontend.text_email_value')}</a></strong>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="header-extra-info-text">
-                                        <label>CALL US NOW</label>
-                                        <strong><a href="tel:8001234567">800-123-4567</a></strong>
+                                        <label>{lang('Frontend.text_phone')|unescape}</label>
+                                        <strong><a href="tel:8001234567">{lang('Frontend.text_phone_value')}</a></strong>
                                     </div>
                                 </li>
                             </ul>
@@ -99,17 +99,17 @@
                                                     <p class="qty-price">
                                                         1X <span class="price">$890</span>
                                                     </p>
-                                                    <a href="#" title="Remove This Item" class="btn-remove"><i class="fas fa-times"></i></a>
+                                                    <a href="#" title="{lang('General.text_remove_item')}" class="btn-remove"><i class="fas fa-times"></i></a>
                                                 </div>
                                             </li>
                                         </ol>
                                         <div class="totals">
-                                            <span class="label">Total:</span>
+                                            <span class="label">{lang('General.text_total')}</span>
                                             <span class="price-total"><span class="price">$890</span></span>
                                         </div>
                                         <div class="actions">
-                                            <a class="btn btn-dark" href="#">View Cart</a>
-                                            <a class="btn btn-primary" href="#">Checkout</a>
+                                            <a class="btn btn-dark" href="#">{lang('General.text_view_cart')}</a>
+                                            <a class="btn btn-primary" href="#">{lang('General.text_checkout')}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -158,7 +158,7 @@
                                 <div class="header-nav-features header-nav-features-no-border d-none d-md-inline-flex" style="margin-right: 10px;" {literal}data-sticky-header-style="{'minResolution': 991}" data-sticky-header-style-active="{'margin-right': '50px'}" data-sticky-header-style-deactive="{'margin-right': '10px'}"{/literal}>
                                     <form role="search" action="page-search-results.html" method="get">
                                         <div class="simple-search input-group w-auto">
-                                            <input class="form-control text-1" id="headerSearch" name="q" type="search" value="" placeholder="Search...">
+                                            <input class="form-control text-1" id="headerSearch" name="q" type="search" value="" placeholder="{lang('General.text_search')}">
                                         <span class="input-group-append bg-white">
                                             <button class="btn" type="submit">
                                                 <i class="fa fa-search header-nav-top-icon"></i>

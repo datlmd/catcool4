@@ -7,7 +7,7 @@
             <div class="container">
                 <div class="row">
                     {if !empty($content_left)}
-                        <aside id="content-left" class="col-3 d-none d-md-block">
+                        <aside id="content_left" class="col-3 d-none d-md-block">
                             {$content_left}
                         </aside>
                     {/if}
@@ -19,7 +19,7 @@
                     </div>
 
                     {if !empty($content_right)}
-                        <aside id="content-right" class="col-3 d-none d-md-block">
+                        <aside id="content_right" class="col-3 d-none d-md-block">
                             {$content_right}
                         </aside>
                     {/if}
