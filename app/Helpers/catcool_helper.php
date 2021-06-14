@@ -1647,8 +1647,8 @@ if(!function_exists('breadcrumb'))
     function breadcrumb($breadcrumb, $theme, $title = null, $is_admin = false)
     {
         if (!$is_admin) {
-            $this->breadcrumb->openTag(config_item('breadcrumb_open'));
-            $this->breadcrumb->closeTag(config_item('breadcrumb_close'));
+            $breadcrumb->openTag(config_item('breadcrumb_open'));
+            $breadcrumb->closeTag(config_item('breadcrumb_close'));
         }
 
         $data_breadcrumb['breadcrumb']       = $breadcrumb->render();

@@ -26,9 +26,9 @@ class Login extends UserController
             ->addPartial('footer_bottom');
 
 
-        $this->breadcrumb->openTag(config_item('breadcrumb_open'));
-        $this->breadcrumb->closeTag(config_item('breadcrumb_close'));
         $this->breadcrumb->add(lang('General.text_home'), base_url());
+        $this->breadcrumb->add(lang('General.text_account'), base_url('users/profile'));
+        breadcrumb($this->breadcrumb, $this->themes, lang("General.heading_register"));
 
         $data = [];
 

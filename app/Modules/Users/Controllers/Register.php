@@ -15,26 +15,6 @@ class Register extends UserController
         $this->model = new UserModel();
     }
 
-    public function index()
-    {
-        $this->themes->setTheme(config_item('theme_frontend'));
-        $this->themes->addPartial('header_top')
-            ->addPartial('header_bottom')
-            ->addPartial('content_left')
-            ->addPartial('content_right')
-            ->addPartial('footer_top')
-            ->addPartial('footer_bottom');
-
-        $this->breadcrumb->openTag(config_item('breadcrumb_open'));
-        $this->breadcrumb->closeTag(config_item('breadcrumb_close'));
-        $this->breadcrumb->add(lang('General.text_home'), base_url());
-
-
-        $data = [];
-
-        theme_load('register', $data);
-    }
-
     public function postRegister()
     {
         if (empty($this->request->getPost())) {

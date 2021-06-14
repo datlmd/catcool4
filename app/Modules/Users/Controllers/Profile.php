@@ -25,21 +25,16 @@ class Users extends UserController
             ->addPartial('content_right')
             ->addPartial('footer_top')
             ->addPartial('footer_bottom');
-
-        $this->breadcrumb->openTag(config_item('breadcrumb_open'));
-        $this->breadcrumb->closeTag(config_item('breadcrumb_close'));
-        $this->breadcrumb->add(lang('General.text_home'), base_url());
+        
 
 
         $data = [
 
         ];
 
+        $this->breadcrumb->add(lang('General.text_home'), base_url());
         $this->breadcrumb->add(lang('General.text_account'), base_url('users/profile'));
-
-        $data_breadcrumb['breadcrumb']       = $this->breadcrumb->render();
-        $data_breadcrumb['breadcrumb_title'] = lang("User.heading_activate");
-        $this->themes->addPartial('breadcumb', $data_breadcrumb);
+        breadcrumb($this->breadcrumb, $this->themes, lang("General.heading_register"));
 
         add_meta(['title' => lang("User.heading_activate")], $this->themes);
 
