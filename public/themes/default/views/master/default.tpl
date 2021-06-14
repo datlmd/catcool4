@@ -1,3 +1,4 @@
+{strip}
 <!DOCTYPE html>
 <html class="{if !empty($html_class)}{$html_class}{/if}" dir="{lang('General.direction')}" lang="{lang('General.code')}">
 <head>
@@ -35,9 +36,7 @@
     <script>{script_global()}</script>
 </head>
 <body class="{if !empty($body_class)}{$body_class}{/if}">
-
 	{$layout}
-
 	<!-- JavaScripts -->
 	{include file=get_theme_path('views/master/common/js.tpl')}
 	{if !empty($js_files)}{$js_files}{/if}
@@ -54,3 +53,4 @@
 	{/if}
 </body>
 </html>
+{/strip}

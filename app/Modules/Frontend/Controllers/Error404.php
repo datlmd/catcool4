@@ -2,7 +2,7 @@
 
 use App\Controllers\BaseController;
 
-class Frontend extends BaseController
+class Error404 extends BaseController
 {
 
     public function __construct()
@@ -18,18 +18,14 @@ class Frontend extends BaseController
             ->addPartial('content_right')
             ->addPartial('footer_top')
             ->addPartial('footer_bottom');
-
-        $this->breadcrumb->openTag(config_item('breadcrumb_open'));
-        $this->breadcrumb->closeTag(config_item('breadcrumb_close'));
-        $this->breadcrumb->add(lang('General.text_home'), base_url());
     }
 
     public function index()
     {
         $data = [];
 
-        add_meta(['title' => lang("Frontend.heading_title")], $this->themes);
+        add_meta(['title' => lang("General.heading_page404")], $this->themes);
 
-        theme_load('index', $data);
+        theme_load('frontend/show404', $data);
     }
 }

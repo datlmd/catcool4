@@ -1462,14 +1462,13 @@ if(!function_exists('add_meta'))
     {
         try
         {
-            $title = !empty($data['title']) ? $data['title'] : config_item('site_name');
+            $title       = !empty($data['title']) ? $data['title'] : config_item('site_name');
             $description = !empty($data['description']) ? $data['description'] : config_item('site_description');
-            $keywords = !empty($data['keywords']) ? $data['keywords'] : config_item('site_keywords');
-            $url = !empty($data['url']) ? $data['url'] : base_url();
-            $image = !empty($data['image']) ? $data['image'] : config_item('site_image');
+            $keywords    = !empty($data['keywords']) ? $data['keywords'] : config_item('site_keywords');
+            $url         = !empty($data['url']) ? $data['url'] : base_url();
+            $image       = !empty($data['image']) ? $data['image'] : config_item('site_image');
 
             //$theme = \App\Libraries\Themes::init();
-
 
             $theme->setPageTitle($title);
 
@@ -1528,10 +1527,9 @@ if(!function_exists('add_meta'))
             if (!empty(config_item('alexa_verify_id'))) {
                 $theme->addMeta('alexaVerifyID', config_item('alexa_verify_id'));
             }
-        }
-        catch (\Exception $e)
-        {
-            die($e->getMessage());
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+            return false;
         }
 
         return $theme;
@@ -1641,5 +1639,23 @@ if(!function_exists('pager_string'))
         $page_to   = ($page_to >= $total) ? $total : $page_to; //reset total
 
         return lang('PagerAdmin.text_pagination', [$page_from, $page_to, $total]);
+    }
+}
+
+if(!function_exists('breadcrumb'))
+{
+    function breadcrumb($breadcrumb, $theme, $title = null, $is_admin = false)
+    {
+        if (!$is_admin) {
+            $this->breadcrumb->openTag(config_item('breadcrumb_open'));
+            $this->breadcrumb->closeTag(config_item('breadcrumb_close'));
+        }
+
+        $data_breadcrumb['breadcrumb']       = $breadcrumb->render();
+        $data_breadcrumb['breadcrumb_title'] = $title;
+
+        $theme->addPartial('breadcumb', $data_breadcrumb);
+
+        return $theme;
     }
 }
