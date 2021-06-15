@@ -194,6 +194,7 @@ return [
 	"text_confirm_title" => "Vui lòng xác nhận!",
 	"text_confirm_write" => "Bạn có chắc chắn muốn ghi file kông?",
 	"text_context" => "Context",
+	"text_ctime" => "Thời gian tạo",
 	"text_default" => "<b>(Mặc định)</b>",
 	"text_delete_file_success" => "Đã xoá file thành công!",
 	"text_delete_success" => "Đã xoá dữ liệu thành công!",
