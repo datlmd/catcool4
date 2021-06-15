@@ -248,22 +248,9 @@ class Manage extends AdminController
         $this->themes->addJS('common/js/admin/tiny_content');
         $this->themes->addJS('common/js/admin/articles/articles');
 
-        //add datetimepicker
-        $this->themes->addCSS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
-        $this->themes->addJS('common/plugin/datepicker/moment.min');
-        $this->themes->addJS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
-        if (get_lang(true) == 'vi') {
-            $this->themes->addJS('common/plugin/datepicker/locale/vi');
-        }
-
-        $this->themes->addJS('common/js/admin/filemanager');
-
         //add tags
         $this->themes->addCSS('common/js/tags/tagsinput');
         $this->themes->addJS('common/js/tags/tagsinput');
-
-        $this->themes->addCSS('common/plugin/multi-select/css/bootstrap-multiselect.min');
-        $this->themes->addJS('common/plugin/multi-select/js/bootstrap-multiselect.min');
 
         $data['language_list'] = get_list_lang(true);
 

@@ -25,7 +25,7 @@ class PageModel extends MyModel
     protected $deletedField   = 'deleted';
 
     const PAGE_CACHE_NAME      = 'page_list';
-    const ARTICLE_CACHE_EXPIRE = YEAR;
+    const PAGE_CACHE_EXPIRE = YEAR;
 
     function __construct()
     {
@@ -80,7 +80,7 @@ class PageModel extends MyModel
 
             if ($is_cache) {
                 // Save into the cache for $expire_time 1 month
-                cache()->save(self::PAGE_CACHE_NAME, $result, self::ARTICLE_CACHE_EXPIRE);
+                cache()->save(self::PAGE_CACHE_NAME, $result, self::PAGE_CACHE_EXPIRE);
             }
         }
 
