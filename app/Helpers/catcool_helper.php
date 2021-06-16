@@ -1659,3 +1659,11 @@ if(!function_exists('breadcrumb'))
         return $theme;
     }
 }
+
+if(!function_exists('page_not_found'))
+{
+    function page_not_found()
+    {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    }
+}

@@ -11,4 +11,6 @@ $routes->group('pages', ['namespace' => 'App\Modules\Pages\Controllers'], functi
     $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
     $subroutes->add('manage/delete', 'Manage::delete');
     $subroutes->add('manage/publish', 'Manage::publish');
+
+    $subroutes->add('detail/(:num)', 'Pages::detail/$1');
 });

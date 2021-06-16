@@ -24,7 +24,7 @@ class PageModel extends MyModel
     protected $useSoftDeletes = true;
     protected $deletedField   = 'deleted';
 
-    const PAGE_CACHE_NAME      = 'page_list';
+    const PAGE_CACHE_NAME   = 'page_detail_id_';
     const PAGE_CACHE_EXPIRE = YEAR;
 
     function __construct()
@@ -48,10 +48,6 @@ class PageModel extends MyModel
             $this->like("$this->table_lang.name", $filter["name"]);
         }
 
-//        if (!empty($filter["category"])) {
-//            $this->like("$this->table_lang.name", $filter["name"]);
-//        }
-
         if (!empty($filter["published"])) {
             $this->where("$this->table.published", $filter["published"]);
         }
@@ -64,32 +60,38 @@ class PageModel extends MyModel
         return $result;
     }
 
-    public function getListPublished($is_cache = true)
+    public function getPageInfo($id, $is_cache = true)
     {
-        $result = $is_cache ? cache()->get(self::PAGE_CACHE_NAME) : null;
+        if (empty($id)) {
+            return [];
+        }
+
+        $result = $is_cache ? cache()->get(self::PAGE_CACHE_NAME . $id) : null;
         if (empty($result)) {
-            $result = $this->orderBy('sort_order', 'DESC')->where(['published' => STATUS_ON])->findAll();
+            $result = $this->getDetail($id);
             if (empty($result)) {
-                return false;
+                return [];
             }
 
-            $language_id = get_lang_id(true);
-            foreach ($result as $key => $value) {
-                $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
+            foreach ($result['lang'] as $value) {
+                if (strpos(current_url(), $value['slug']) !== FALSE) {
+                    $result = array_merge($result, $value);
+                    break;
+                }
             }
 
             if ($is_cache) {
                 // Save into the cache for $expire_time 1 month
-                cache()->save(self::PAGE_CACHE_NAME, $result, self::PAGE_CACHE_EXPIRE);
+                cache()->save(self::PAGE_CACHE_NAME . $id, $result, self::PAGE_CACHE_EXPIRE);
             }
         }
 
         return $result;
     }
 
-    public function deleteCache()
+    public function deleteCache($id = null)
     {
-        cache()->delete(self::PAGE_CACHE_NAME);
+        cache()->delete(self::PAGE_CACHE_NAME . $id);
         return true;
     }
 }

@@ -16,7 +16,7 @@ class Manage extends AdminController
     CONST MANAGE_URL  = 'pages/manage';
 
     CONST SEO_URL_MODULE   = 'pages';
-    CONST SEO_URL_RESOURCE = 'detail/%s';
+    CONST SEO_URL_RESOURCE = 'Pages::Detail/%s';
 
     public function __construct()
     {
@@ -109,7 +109,6 @@ class Manage extends AdminController
             $seo_urls = $this->request->getPost('seo_urls');
             $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
 
-
             $add_data_lang = $this->request->getPost('lang');
             foreach (get_list_lang(true) as $value) {
                 $add_data_lang[$value['id']]['language_id'] = $value['id'];
@@ -120,7 +119,7 @@ class Manage extends AdminController
             }
 
             //reset cache
-            $this->model->deleteCache();
+            $this->model->deleteCache($id);
 
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
@@ -173,7 +172,7 @@ class Manage extends AdminController
                 }
 
                 //reset cache
-                $this->model->deleteCache();
+                $this->model->deleteCache($id);
 
                 set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
                 return redirect()->back();
@@ -209,10 +208,10 @@ class Manage extends AdminController
             //xoa slug ra khoi route
             foreach($list_delete as $value) {
                 $this->model_route->deleteByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $value['page_id']));
-            }
 
-            //reset cache
-            $this->model->deleteCache();
+                //reset cache
+                $this->model->deleteCache($value['page_id']);
+            }
 
             set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
             json_output(['status' => 'redirect', 'url' => site_url(self::MANAGE_URL)]);
@@ -321,7 +320,7 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        $this->model->deleteCache();
+        $this->model->deleteCache($id);
         $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')];
 
         json_output($data);

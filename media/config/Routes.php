@@ -22,5 +22,5 @@ $routes->add('gfdgfdggdffgfdgfd', 'Categories/detail/13', ['namespace' => 'App\M
 $routes->add('-dfggdfgdfgdfg-', 'Categories/detail/21', ['namespace' => 'App\Modules\Articles\Controllers']);
 $routes->add('dat-le', 'Detail/3', ['namespace' => 'App\Modules\Articles\Controllers']);
 $routes->add('dat-le', 'Detail/3', ['namespace' => 'App\Modules\Articles\Controllers']);
-$routes->add('gioi-thieu', 'Detail/1', ['namespace' => 'App\Modules\Pages\Controllers']);
-$routes->add('about-us', 'Detail/1', ['namespace' => 'App\Modules\Pages\Controllers']);
+$routes->add('gioi-thieu', 'Pages::Detail/1', ['namespace' => 'App\Modules\Pages\Controllers']);
+$routes->add('about-us', 'Pages::Detail/1', ['namespace' => 'App\Modules\Pages\Controllers']);
