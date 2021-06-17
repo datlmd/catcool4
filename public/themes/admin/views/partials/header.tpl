@@ -103,7 +103,7 @@
 								</a>
 								{if !empty($item.subs)}
 									{foreach $item.subs as $sub}
-										<a class="dropdown-item py-2" href="{site_url($sub.slug)}" {$sub.attributes}><i class="fas fa-angle-double-right ms-3 me-2"></i>{$sub.name}</a>
+										<a class="dropdown-item py-2" href="{$sub.slug}" {$sub.attributes}><i class="fas fa-angle-double-right ms-3 me-2"></i>{$sub.name}</a>
 									{/foreach}
 								{/if}
 							{/foreach}

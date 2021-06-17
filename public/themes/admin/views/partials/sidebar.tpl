@@ -37,7 +37,7 @@
 									<ul class="nav flex-column">
 										{foreach $item.subs as $sub}
 											<li class="nav-item">
-												<a class="nav-link {if $sub.selected eq $menu_current}active{/if}" href="{site_url($sub.slug)}" {$sub.attributes}><i class="fas fa-angle-double-right me-2"></i>{$sub.name}</a>
+												<a class="nav-link {if $sub.selected eq $menu_current}active{/if}" href="{$sub.slug}" {$sub.attributes}><i class="fas fa-angle-double-right me-2"></i>{$sub.name}</a>
 											</li>
 										{/foreach}
 									</ul>
@@ -82,7 +82,7 @@
 							<div class="row">
 							{foreach $item.subs as $sub}
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 text-center mt-2 mb-4">
-									<a href="{site_url($sub.slug)}" class="menu-sub-left-icon {if $sub.selected eq $menu_current}active{/if}" {$sub.attributes}>
+									<a href="{$sub.slug}" class="menu-sub-left-icon {if $sub.selected eq $menu_current}active{/if}" {$sub.attributes}>
 										<i class="{if !empty($sub.icon)}{$sub.icon}{else}fas fa-angle-double-right{/if}"></i>
 									</a>
 									<p class="text-dark mt-2">{$sub.name}</p>

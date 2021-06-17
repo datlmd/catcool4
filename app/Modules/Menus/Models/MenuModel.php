@@ -101,6 +101,17 @@ class MenuModel extends MyModel
                 $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
             }
 
+            foreach ($result as $key => $menu) {
+                if (empty($menu['lang'])) {
+                    foreach ($menu['lang'] as $key_lang => $lang) {
+                        $result[$key]['lang'][$key_lang]['slug'] = $this->_getFullUrl($lang['slug']);
+                    }
+                }
+                if (!empty($menu['slug'])) {
+                    $result[$key]['slug'] = $this->_getFullUrl($menu['slug']);
+                }
+            }
+
             if ($is_cache) {
                 // Save into the cache for $expire_time 1 month
                 $cache->save($cache_name, $result, $expire_time);
@@ -140,5 +151,19 @@ class MenuModel extends MyModel
         }
 
         return true;
+    }
+
+    private function _getFullUrl($slug)
+    {
+        if (empty($slug)) {
+            return null;
+        }
+
+        $url = site_url($slug);
+        if (strpos(strtolower($slug), "http") !== FALSE || strpos(strtolower($slug), "https") !== FALSE) {
+            $url = $slug;
+        }
+
+        return $url;
     }
 }

@@ -22,7 +22,7 @@
 									{if !empty($item.subs)}
 										<ul class="dropdown-menu">
 											{foreach $item.subs as $sub}
-												<p class="mb-1"><a href="{site_url({$sub.slug})}" class="text-3 link-hover-style-1">{$sub.name}</a></p>>
+												<p class="mb-1"><a href="{$sub.slug}" class="text-3 link-hover-style-1">{$sub.name}</a></p>>
 											{/foreach}
 										</ul>
 									{/if}
