@@ -150,6 +150,8 @@ class Manage extends AdminController
             $this->model->insert($data_add);
         }
 
+        $this->model->writeFile($module_id);
+
         set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
         json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_add_success')]);
     }
@@ -218,6 +220,8 @@ class Manage extends AdminController
             }
         }
 
+        $this->model->writeFile($module_id);
+
         set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
         json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_edit_success')]);
     }
@@ -275,6 +279,8 @@ class Manage extends AdminController
             }
         }
 
+        $this->model->writeFile($module_id);
+
         set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
         json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_edit_success')]);
     }
@@ -299,6 +305,8 @@ class Manage extends AdminController
             foreach ($translates as $translate) {
                 $this->model->delete($translate['id']);
             }
+
+            $this->model->writeFile($module_id);
         } catch (Exception $ex) {
             set_alert($ex->getMessage(), ALERT_ERROR, ALERT_POPUP);
             json_output(['token' => $token, 'status' => 'ng', 'msg' => $ex->getMessage()]);
@@ -311,11 +319,8 @@ class Manage extends AdminController
     public function write()
     {
         if (!$this->request->isAJAX()) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            page_not_found();
         }
-
-        $module_model = new ModuleModel();
-        $language_model = new LanguageModel();
 
         $token = csrf_hash();
 
@@ -323,46 +328,10 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        try {
-            $module_id = $this->request->getPost('module_id');
-
-            $module = $module_model->find($module_id);
-            if (empty($module)) {
-                json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
-            }
-
-            $translate_list = $this->model->orderBy('lang_key', 'ASC')->where('module_id', $module_id)->findAll();
-            if (empty($translate_list)) {
-                json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
-            }
-
-            $content_template = "\t\"%s\" => \"%s\",\n";
-
-            //list lang
-            $language_list = $language_model->getListPublished();
-            foreach ($language_list as $lang) {
-                // file content
-                $file_content = "<?php\n\nreturn [\n";
-
-                foreach ($translate_list as $translate) {
-                    if ($translate['lang_id'] == $lang['id']) {
-                        $file_content .= sprintf($content_template, $translate['lang_key'], $translate['lang_value']);
-                    }
-                }
-
-                $file_content .= "];\n";
-
-                // create module
-                if (!is_dir(APPPATH . "Language/" . $lang['code'])) {
-                    mkdir(APPPATH . 'Language/' . $lang['code'], 0775, true);
-                }
-
-                write_file(APPPATH . 'Language/' . $lang['code'] . '/' . $this->model->formatFileName($module['module'], $module['sub_module']) . '.php', $file_content);
-            }
-
-            json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_write_success')]);
-        } catch (\Exception $ex) {
-            json_output(['token' => $token, 'status' => 'ng', 'msg' => $ex->getMessage()]);
+        if (!$this->model->writeFile($this->request->getPost('module_id'))) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
+
+        json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_write_success')]);
     }
 }

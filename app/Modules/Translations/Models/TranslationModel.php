@@ -126,4 +126,52 @@ class TranslationModel extends MyModel
 
         return $language_name;
     }
+
+    public function writeFile($module_id)
+    {
+        try {
+            $module_model   = new \App\Modules\Modules\Models\ModuleModel();
+            $language_model = new \App\Modules\Languages\Models\LanguageModel();
+
+            $module = $module_model->find($module_id);
+            if (empty($module)) {
+                return false;
+            }
+
+            $translate_list = $this->orderBy('lang_key', 'ASC')->where('module_id', $module_id)->findAll();
+            if (empty($translate_list)) {
+                return false;
+            }
+
+            $content_template = "\t\"%s\" => \"%s\",\n";
+
+            //list lang
+            $language_list = $language_model->getListPublished();
+
+            foreach ($language_list as $lang) {
+                // file content
+                $file_content = "<?php\n\nreturn [\n";
+
+                foreach ($translate_list as $translate) {
+                    if ($translate['lang_id'] == $lang['id']) {
+                        $file_content .= sprintf($content_template, $translate['lang_key'], $translate['lang_value']);
+                    }
+                }
+
+                $file_content .= "];\n";
+
+                // create module
+                if (!is_dir(APPPATH . "Language/" . $lang['code'])) {
+                    mkdir(APPPATH . 'Language/' . $lang['code'], 0775, true);
+                }
+
+                write_file(APPPATH . 'Language/' . $lang['code'] . '/' . $this->formatFileName($module['module'], $module['sub_module']) . '.php', $file_content);
+            }
+        } catch (\Exception $ex) {
+            die($ex->getMessage());
+            return false;
+        }
+
+        return true;
+    }
 }
