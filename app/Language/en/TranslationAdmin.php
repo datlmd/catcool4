@@ -10,5 +10,5 @@ return [
 	"text_modules" => "Modules",
 	"text_sub_module" => "Sub Module",
 	"text_total" => "Total",
-	"text_value" => "Value",
+	"text_value" => "Text",
 ];

@@ -10,5 +10,5 @@ return [
 	"text_modules" => "Modules",
 	"text_sub_module" => "Module Con",
 	"text_total" => "Tồng",
-	"text_value" => "Giá trị",
+	"text_value" => "Text",
 ];

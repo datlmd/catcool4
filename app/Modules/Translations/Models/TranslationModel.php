@@ -19,6 +19,9 @@ class TranslationModel extends MyModel
         'mtime',
     ];
 
+    protected $useSoftDeletes = true;
+    protected $deletedField   = 'deleted';
+
     const TRANSLATION_CACHE_NAME   = 'translation_list';
     const TRANSLATION_CACHE_EXPIRE = 30*MINUTE;
 
@@ -29,6 +32,10 @@ class TranslationModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
+        if (empty($filter["module_id"]) && empty($filter["key"]) && empty($filter["value"])) {
+            return [];
+        }
+
         $sort  = empty($sort) ? 'lang_key' : $sort;
         $order = empty($order) ? 'DESC' : $order;
 
@@ -51,9 +58,20 @@ class TranslationModel extends MyModel
             return null;
         }
 
+        if (is_multi_lang() && !empty($filter["value"])) {
+            $translation_other = [];
+            foreach ($result as $value) {
+                $list_other = $this->where(['lang_key' => $value['lang_key'], 'lang_id !=' => $value['lang_id']])->findAll();
+                $translation_other = array_merge($translation_other, $list_other);
+            }
+
+            $result = array_merge($result, $translation_other);
+        }
+
         $list = [];
         foreach ($result as $value) {
-            $list[$value['lang_key']][$value['lang_id']] = $value;
+            $list[$value['lang_key']]['list'][$value['lang_id']] = $value;
+            $list[$value['lang_key']]['module_id'] = $value['module_id'];
         }
 
         return $list;

@@ -61,12 +61,14 @@ class Manage extends AdminController
 
         //check permissions
         $file_list = [];
-        foreach ($language_list as $lang) {
-            $key_file = 'Language/' . $lang['code'] . '/' . $this->model->formatFileName($module['module'], $module['sub_module']) . '.php';
-            if (is_file(APPPATH . $key_file)) {
-                $file_list[$key_file] = octal_permissions(fileperms(APPPATH . $key_file));
-            } else {
-                $file_list[$key_file] = "File not found!";
+        if (!empty($module)) {
+            foreach ($language_list as $lang) {
+                $key_file = 'Language/' . $lang['code'] . '/' . $this->model->formatFileName($module['module'], $module['sub_module']) . '.php';
+                if (is_file(APPPATH . $key_file)) {
+                    $file_list[$key_file] = octal_permissions(fileperms(APPPATH . $key_file));
+                } else {
+                    $file_list[$key_file] = "File not found!";
+                }
             }
         }
 
@@ -192,7 +194,7 @@ class Manage extends AdminController
         }
 
         foreach ($language_list as $lang) {
-            if (empty($translates[$key_old][$lang['id']])) {
+            if (empty($translates[$key_old]['list'][$lang['id']])) {
                 $data_add = [
                     'lang_key'   => $key_new,
                     'lang_value' => str_replace('"', "'", $values[$lang['id']]),
@@ -205,7 +207,7 @@ class Manage extends AdminController
                 //add
                 $this->model->insert($data_add);
             } else {
-                $data_edit               = $translates[$key_old][$lang['id']];
+                $data_edit               = $translates[$key_old]['list'][$lang['id']];
                 $data_edit['lang_value'] = str_replace('"', "'", $values[$lang['id']]);
                 $data_edit['lang_key']   = $key_new;
                 $data_edit['module_id']  = $module_id;
@@ -250,7 +252,7 @@ class Manage extends AdminController
                     continue;
                 }
 
-                if (empty($translation_list[$translation_key][$lang['id']])) {
+                if (empty($translation_list[$translation_key]['list'][$lang['id']])) {
                     $data_add = [
                         'lang_key'   => $translation_key,
                         'lang_value' => str_replace('"', "'", $value[$lang['id']]),
@@ -263,7 +265,7 @@ class Manage extends AdminController
                     //add
                     $this->model->insert($data_add);
                 } else {
-                    $data_edit               = $translation_list[$translation_key][$lang['id']];
+                    $data_edit               = $translation_list[$translation_key]['list'][$lang['id']];
                     $data_edit['lang_value'] = str_replace('"', "'", $value[$lang['id']]);
                     $data_edit['user_id']    = $this->getUserIdAdmin();
 
