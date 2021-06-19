@@ -557,7 +557,7 @@ if ( ! function_exists('slugify'))
         $string = str_replace("?", '2', $string);
 
         // Slugify and return the string
-        return url_title(convert_accented_characters($string), 'dash', true);
+        return url_title(convert_accented_characters($string), '-', true);
     }
 }
 
