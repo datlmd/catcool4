@@ -39,19 +39,19 @@ class Manage extends AdminController
     {
         add_meta(['title' => lang("NewsAdmin.heading_title")], $this->themes);
 
-        $news_id  = $this->request->getGet('news_id');
-        $name     = $this->request->getGet('name');
-        $category = $this->request->getGet('category');
-        $limit    = $this->request->getGet('limit');
-        $sort     = $this->request->getGet('sort');
-        $order    = $this->request->getGet('order');
+        $news_id     = $this->request->getGet('news_id');
+        $name        = $this->request->getGet('name');
+        $category_id = $this->request->getGet('category_id');
+        $limit       = $this->request->getGet('limit');
+        $sort        = $this->request->getGet('sort');
+        $order       = $this->request->getGet('order');
 
         $filter = [
-            'active'     => count(array_filter($this->request->getGet(['news_id', 'name', 'category', 'limit']))) > 0,
-            'news_id' => $news_id ?? "",
-            'name'       => $name ?? "",
-            'category'   => $category ?? "",
-            'limit'      => $limit,
+            'active'      => count(array_filter($this->request->getGet(['news_id', 'name', 'category_id', 'limit']))) > 0,
+            'news_id'     => $news_id ?? "",
+            'name'        => $name ?? "",
+            'category_id' => $category_id ?? "",
+            'limit'       => $limit,
         ];
 
         $list = $this->model->getAllByFilter($filter, $sort, $this->request->getGet('order'));
@@ -63,8 +63,8 @@ class Manage extends AdminController
         if (!empty($name)) {
             $url .= '&name=' . urlencode(html_entity_decode($name, ENT_QUOTES, 'UTF-8'));
         }
-        if (!empty($category)) {
-            $url .= '&category=' . $category;
+        if (!empty($category_id)) {
+            $url .= '&category_id=' . $category_id;
         }
         if (!empty($limit)) {
             $url .= '&limit=' . $limit;

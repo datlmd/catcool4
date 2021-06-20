@@ -64,66 +64,80 @@
                     </div>
                     <div class="card">
                         <h5 class="card-header">{lang('Admin.text_image')}</h5>
-                        <div class="card-body row text-center">
-                            <div class="col-xl-3 col-md-4 col-sm-4 col-6">
-                                {if isset($edit_data.images.thumb)}
-                                    {assign var="images_thumb" value="`$edit_data.images.thumb`"}
-                                {else}
-                                    {assign var="images_thumb" value=""}
-                                {/if}
-                                <label class="form-label fw-bold">Thumbnail Small</label><br/>
-                                <a href="javascript:void(0);" id="thumb_image_root" data-target="input_image_root_path" data-thumb="load_thumb_image_root" data-bs-toggle="image">
-                                    <img src="{if !empty(old('images[thumb]', $images_thumb))}{image_url(old('images[thumb]', $images_thumb))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_root" data-placeholder="{image_default_url()}"/>
-                                    <button type="button" id="button_image_root" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
-                                    <button type="button" id="button_clear_root" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
-                                </a>
-                                <input type="hidden" name="images[thumb]" value="{old('images[thumb]', $images_thumb)}" id="input_image_root_path" />
-                                <small>{lang('NewsAdmin.help_thumb_small')}</small>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-4 col-sm-4 col-6">
+                                    {if isset($edit_data.images.thumb)}
+                                        {assign var="images_thumb" value="`$edit_data.images.thumb`"}
+                                    {else}
+                                        {assign var="images_thumb" value=""}
+                                    {/if}
+                                    Thumbnail Small<br/>
+                                    <a href="javascript:void(0);" id="thumb_image_root" data-target="input_image_root_path" data-thumb="load_thumb_image_root" data-bs-toggle="image" class="my-1">
+                                        <img src="{if !empty(old('images[thumb]', $images_thumb))}{image_url(old('images[thumb]', $images_thumb))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_root" data-placeholder="{image_default_url()}"/>
+                                        <button type="button" id="button_image_root" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
+                                        <button type="button" id="button_clear_root" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
+                                    </a>
+                                    <input type="hidden" name="images[thumb]" value="{old('images[thumb]', $images_thumb)}" id="input_image_root_path" />
+                                    <small>{lang('NewsAdmin.help_thumb_small')}</small>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-6">
+                                    {if isset($edit_data.images.thumb_large)}
+                                        {assign var="images_thumb_larger" value="`$edit_data.images.thumb_large`"}
+                                    {else}
+                                        {assign var="images_thumb_larger" value=""}
+                                    {/if}
+                                    Thumbnail Large<br/>
+                                    <a href="javascript:void(0);" id="thumb_image_thumb_large" data-target="input_image_thumb_large_path" data-thumb="load_thumb_image_thumb_large" data-bs-toggle="image" class="my-1">
+                                        <img src="{if !empty(old('images[thumb_large]', $images_thumb_larger))}{image_url(old('images[thumb_large]', $images_thumb_larger))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_thumb_large" data-placeholder="{image_default_url()}"/>
+                                        <button type="button" id="button_image_thumb_large" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
+                                        <button type="button" id="button_clear_thumb_large" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
+                                    </a>
+                                    <input type="hidden" name="images[thumb_large]" value="{old('images[thumb_large]', $images_thumb_larger)}" id="input_image_thumb_large_path" />
+                                    <small>{lang('NewsAdmin.help_thumb_large')}</small>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-6">
+                                    Thumbnail Facebook<br/>
+                                    {if isset($edit_data.images.robot_fb)}
+                                        {assign var="images_fb" value="`$edit_data.images.robot_fb`"}
+                                    {else}
+                                        {assign var="images_fb" value=""}
+                                    {/if}
+                                    <a href="javascript:void(0);" id="thumb_image_robot_fb" data-target="input_image_robot_fb_path" data-thumb="load_thumb_image_robot_fb" data-bs-toggle="image" class="my-1">
+                                        <img src="{if !empty(old('images[fb]', $images_fb))}{image_url(old('images[fb]', $images_fb))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_robot_fb" data-placeholder="{image_default_url()}"/>
+                                        <button type="button" id="button_image_robot_fb" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
+                                        <button type="button" id="button_clear_robot_fb" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
+                                    </a>
+                                    <input type="hidden" name="images[fb]" value="{old('images[fb]', $images_fb)}" id="input_image_robot_fb_path" />
+                                    <small>{lang('NewsAdmin.help_thumb_fp')}</small>
+                                </div>
                             </div>
-                            <div class="col-xl-3 col-md-4 col-sm-4 col-6">
-                                {if isset($edit_data.images.thumb_large)}
-                                    {assign var="images_thumb_larger" value="`$edit_data.images.thumb_large`"}
-                                {else}
-                                    {assign var="images_thumb_larger" value=""}
-                                {/if}
-                                <label class="form-label fw-bold">Thumbnail Large</label><br/>
-                                <a href="javascript:void(0);" id="thumb_image_thumb_large" data-target="input_image_thumb_large_path" data-thumb="load_thumb_image_thumb_large" data-bs-toggle="image">
-                                    <img src="{if !empty(old('images[thumb_large]', $images_thumb_larger))}{image_url(old('images[thumb_large]', $images_thumb_larger))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_thumb_large" data-placeholder="{image_default_url()}"/>
-                                    <button type="button" id="button_image_thumb_large" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
-                                    <button type="button" id="button_clear_thumb_large" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
-                                </a>
-                                <input type="hidden" name="images[thumb_large]" value="{old('images[thumb_large]', $images_thumb_larger)}" id="input_image_thumb_large_path" />
-                                <small>{lang('NewsAdmin.help_thumb_large')}</small>
-                            </div>
-                            <div class="col-xl-3 col-md-4 col-sm-4 col-6">
-                                <label class="form-label fw-bold">Thumbnail Facebook</label><br/>
-                                {if isset($edit_data.images.robot_fb)}
-                                    {assign var="images_fb" value="`$edit_data.images.robot_fb`"}
-                                {else}
-                                    {assign var="images_fb" value=""}
-                                {/if}
-                                <a href="javascript:void(0);" id="thumb_image_robot_fb" data-target="input_image_robot_fb_path" data-thumb="load_thumb_image_robot_fb" data-bs-toggle="image">
-                                    <img src="{if !empty(old('images[fb]', $images_fb))}{image_url(old('images[fb]', $images_fb))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_robot_fb" data-placeholder="{image_default_url()}"/>
-                                    <button type="button" id="button_image_robot_fb" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
-                                    <button type="button" id="button_clear_robot_fb" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
-                                </a>
-                                <input type="hidden" name="images[fb]" value="{old('images[fb]', $images_fb)}" id="input_image_robot_fb_path" />
-                                <small>{lang('NewsAdmin.help_thumb_fp')}</small>
-                            </div>
-                            <div class="col-xl-3 col-md-4 col-sm-4 col-6">
-                                <label class="form-label fw-bold">Thumbnail Robot</label><br/>
-                                {if isset($edit_data.images.robot)}
-                                    {assign var="images_robot" value="`$edit_data.images.robot`"}
-                                {else}
-                                    {assign var="images_robot" value=""}
-                                {/if}
-
-                                <a href="javascript:void(0);" id="thumb_image_robot" data-target="input_image_robot_path" data-thumb="load_thumb_image_robot" data-bs-toggle="image">
-                                    <img src="{if !empty(old('images[robot]', $images_robot))}{image_url(old('images[robot]', $images_robot))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_robot" data-placeholder="{image_default_url()}"/>
-                                    <button type="button" id="button_image_robot" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
-                                    <button type="button" id="button_clear_robot" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
-                                </a>
-                                <input type="hidden" name="images[robot]" value="{old('images[robot]', $images_robot)}" id="input_image_robot_path" />
+                            <label class="form-label fw-bold mt-3">Image Robot</label>
+                            <div class="row text-center">
+                                <div class="col-md-4 col-sm-4 col-6">
+                                    Thumbnail Robot<br/>
+                                    {if isset($edit_data.images.robot)}
+                                        {assign var="images_robot" value="`$edit_data.images.robot`"}
+                                    {else}
+                                        {assign var="images_robot" value=""}
+                                    {/if}
+                                    <a href="javascript:void(0);" data-bs-toggle="image">
+                                        <img src="{image_url(old('images[robot]', $images_robot))}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" />
+                                    </a>
+                                    <input type="hidden" name="images[robot]" value="{old('images[robot]', $images_robot)}" />
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-6">
+                                    Thumbnail Robot Facebook<br/>
+                                    {if isset($edit_data.images.robot_fb)}
+                                        {assign var="images_robot_fb" value="`$edit_data.images.robot_fb`"}
+                                    {else}
+                                        {assign var="images_robot_fb" value=""}
+                                    {/if}
+                                    <a href="javascript:void(0);" data-bs-toggle="image">
+                                        <img src="{image_url(old('images[robot_fb]', $images_robot_fb))}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" />
+                                    </a>
+                                    <input type="hidden" name="images[robot_fb]" value="{old('images[robot_fb]', $images_robot_fb)}" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -361,7 +375,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group">
-                                <label class="form-label fw-bold">{lang('NewsAdmin.text_is_ads')}</label><br/>
+                                <label class="form-label">{lang('NewsAdmin.text_is_ads')}</label><br/>
                                 {if isset($edit_data.is_ads)}
                                     {assign var="is_ads" value="`$edit_data.is_ads`"}
                                 {else}
@@ -379,7 +393,7 @@
                                 <small>{lang('NewsAdmin.help_is_ads')}</small>
                             </div>
                             <div class="form-group mt-3">
-                                <label class="form-label fw-bold">{lang('NewsAdmin.text_is_fb_ia')}</label><br/>
+                                <label class="form-label">{lang('NewsAdmin.text_is_fb_ia')}</label><br/>
                                 {if isset($edit_data.is_fb_ia)}
                                     {assign var="is_fb_ia" value="`$edit_data.is_fb_ia`"}
                                 {else}
@@ -397,7 +411,7 @@
                                 <small>{lang('NewsAdmin.help_is_fb_ia')}</small>
                             </div>
                             <div class="form-group mt-3">
-                                <label class="form-label fw-bold">{lang('NewsAdmin.text_is_hot')}</label><br/>
+                                <label class="form-label">{lang('NewsAdmin.text_is_hot')}</label><br/>
                                 {if isset($edit_data.is_hot)}
                                     {assign var="is_hot" value="`$edit_data.is_hot`"}
                                 {else}
@@ -413,7 +427,7 @@
                                 </label>
                             </div>
                             <div class="form-group mt-3">
-                                <label class="form-label fw-bold">{lang('NewsAdmin.text_is_homepage')}</label><br/>
+                                <label class="form-label">{lang('NewsAdmin.text_is_homepage')}</label><br/>
                                 {if isset($edit_data.is_homepage)}
                                     {assign var="is_homepage" value="`$edit_data.is_homepage`"}
                                 {else}
@@ -429,7 +443,7 @@
                                 </label>
                             </div>
                             <div class="form-group mt-3">
-                                <label class="form-label fw-bold">{lang('NewsAdmin.text_is_disable_follow')}</label><br/>
+                                <label class="form-label">{lang('NewsAdmin.text_is_disable_follow')}</label><br/>
                                 {if isset($edit_data.is_disable_follow)}
                                     {assign var="is_disable_follow" value="`$edit_data.is_disable_follow`"}
                                 {else}
@@ -447,7 +461,7 @@
                                 <small>{lang('NewsAdmin.help_is_disable_follow')}</small>
                             </div>
                             <div class="form-group mt-3">
-                                <label class="form-label fw-bold">{lang('NewsAdmin.text_is_disable_robot')}</label><br/>
+                                <label class="form-label">{lang('NewsAdmin.text_is_disable_robot')}</label><br/>
                                 {if isset($edit_data.is_disable_robot)}
                                     {assign var="is_disable_robot" value="`$edit_data.is_disable_robot`"}
                                 {else}

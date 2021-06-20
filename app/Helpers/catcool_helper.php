@@ -548,13 +548,12 @@ if ( ! function_exists('slugify'))
     // Slugify a string
     function slugify($string)
     {
-        helper('text');
-        helper('url');
+        helper(['text', 'url']);
 
         // Replace unsupported characters (add your owns if necessary)
         $string = str_replace("'", '-', $string);
         $string = str_replace(".", '-', $string);
-        $string = str_replace("?", '2', $string);
+        //$string = str_replace("?", '2', $string);
 
         // Slugify and return the string
         return url_title(convert_accented_characters($string), '-', true);

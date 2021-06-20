@@ -41,9 +41,9 @@
 								<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.text_category')}
 									{$output_html = '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>'}
-									<select name="category" id="category" class="form-control">
+									<select name="category_id" id="category_id" class="form-control">
 										<option value="">{lang('Admin.text_select')}</option>
-										{draw_tree_output_name(['data' => $category_list, 'key_id' => 'category_id'], $output_html, 0, $filter.category)}
+										{draw_tree_output_name(['data' => $category_list, 'key_id' => 'category_id'], $output_html, 0, $filter.category_id)}
 									</select>
 								</div>
 								<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-2">

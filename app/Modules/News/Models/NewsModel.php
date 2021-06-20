@@ -163,13 +163,14 @@ class NewsModel extends FarmModel
         return $ids;
     }
 
-    public function formatImageList($image_robot = null, $image_fb = null, $image_thumb = null, $image_large = null)
+    public function formatImageList($images = null)
     {
         return [
-            'thumb'       => $image_thumb, //duong dan hinh tren server thumb small
-            'thumb_large' => $image_large,
-            'fb'          => $image_fb,
-            'robot'       => $image_robot,
+            'thumb'       => $images['thumb'] ?? null, //duong dan hinh tren server thumb small
+            'thumb_large' => $images['thumb_large'] ?? null,
+            'fb'          => $images['fb'] ?? null,
+            'robot'       => $images['robot'] ?? null,
+            'robot_fb'    => $images['robot_fb'] ?? null,
         ];
     }
 
