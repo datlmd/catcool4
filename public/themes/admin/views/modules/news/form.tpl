@@ -112,33 +112,37 @@
                                     <small>{lang('NewsAdmin.help_thumb_fp')}</small>
                                 </div>
                             </div>
-                            <label class="form-label fw-bold mt-3">Image Robot</label>
-                            <div class="row text-center">
-                                <div class="col-md-4 col-sm-4 col-6">
-                                    Thumbnail Robot<br/>
-                                    {if isset($edit_data.images.robot)}
-                                        {assign var="images_robot" value="`$edit_data.images.robot`"}
-                                    {else}
-                                        {assign var="images_robot" value=""}
-                                    {/if}
-                                    <a href="javascript:void(0);" data-bs-toggle="image">
-                                        <img src="{image_url(old('images[robot]', $images_robot))}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" />
-                                    </a>
-                                    <input type="hidden" name="images[robot]" value="{old('images[robot]', $images_robot)}" />
-                                </div>
-                                <div class="col-md-4 col-sm-4 col-6">
-                                    Thumbnail Robot Facebook<br/>
-                                    {if isset($edit_data.images.robot_fb)}
-                                        {assign var="images_robot_fb" value="`$edit_data.images.robot_fb`"}
-                                    {else}
-                                        {assign var="images_robot_fb" value=""}
-                                    {/if}
-                                    <a href="javascript:void(0);" data-bs-toggle="image">
-                                        <img src="{image_url(old('images[robot_fb]', $images_robot_fb))}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" />
-                                    </a>
-                                    <input type="hidden" name="images[robot_fb]" value="{old('images[robot_fb]', $images_robot_fb)}" />
-                                </div>
-                            </div>
+                            {if !empty($edit_data.news_id)}
+                                {if !empty($edit_data.images.robot) || !empty($edit_data.images.robot_fb)}
+                                    <label class="form-label fw-bold mt-3">Image Robot</label>
+                                    <div class="row text-center">
+                                        <div class="col-md-4 col-sm-4 col-6">
+                                            Thumbnail Robot<br/>
+                                            {if isset($edit_data.images.robot)}
+                                                {assign var="images_robot" value="`$edit_data.images.robot`"}
+                                            {else}
+                                                {assign var="images_robot" value=""}
+                                            {/if}
+                                            <a href="javascript:void(0);" data-bs-toggle="image">
+                                                <img src="{image_url(old('images[robot]', $images_robot))}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" />
+                                            </a>
+                                            <input type="hidden" name="images[robot]" value="{old('images[robot]', $images_robot)}" />
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-6">
+                                            Thumbnail Robot Facebook<br/>
+                                            {if isset($edit_data.images.robot_fb)}
+                                                {assign var="images_robot_fb" value="`$edit_data.images.robot_fb`"}
+                                            {else}
+                                                {assign var="images_robot_fb" value=""}
+                                            {/if}
+                                            <a href="javascript:void(0);" data-bs-toggle="image">
+                                                <img src="{image_url(old('images[robot_fb]', $images_robot_fb))}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" />
+                                            </a>
+                                            <input type="hidden" name="images[robot_fb]" value="{old('images[robot_fb]', $images_robot_fb)}" />
+                                        </div>
+                                    </div>
+                                {/if}
+                            {/if}
                         </div>
                     </div>
                     <div class="card">
@@ -160,7 +164,7 @@
                                 {else}
                                     {assign var="slug" value=""}
                                 {/if}
-                                <input type="text" name="slug" value='{old("slug", $slug)}' id="input-slug" class="form-control">
+                                <input type="text" name="slug" value='{old("slug", $slug)}' id="input_slug" class="form-control">
                             </div>
                             <div class="form-group mt-3">
                                 <label class="form-label">{lang('Admin.text_seo_description')}</label>
