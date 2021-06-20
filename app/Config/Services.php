@@ -11,6 +11,7 @@ use App\Libraries\Fba;
 use App\Libraries\Google;
 use App\Libraries\Facebook;
 use App\Libraries\ZaloApi;
+use App\Libraries\Robot;
 
 /**
  * Services Configuration file.
@@ -122,21 +123,26 @@ class Services extends BaseService
 
     public static function fba($getShared = true)
     {
-        return ($getShared === true ? static::getSharedInstance('Fba') : new Fba());
+        return ($getShared === true ? static::getSharedInstance('fba') : new Fba());
     }
 
     public static function google($getShared = true)
     {
-        return ($getShared === true ? static::getSharedInstance('Google') : new Google());
+        return ($getShared === true ? static::getSharedInstance('google') : new Google());
     }
 
     public static function facebook($getShared = true)
     {
-        return ($getShared === true ? static::getSharedInstance('Facebook') : new Facebook());
+        return ($getShared === true ? static::getSharedInstance('facebook') : new Facebook());
     }
 
     public static function zaloApi($getShared = true)
     {
-        return ($getShared === true ? static::getSharedInstance('ZaloApi') : new ZaloApi());
+        return ($getShared === true ? static::getSharedInstance('zaloApi') : new ZaloApi());
+    }
+
+    public static function robot($getShared = true)
+    {
+        return ($getShared === true ? static::getSharedInstance('robot') : new Robot());
     }
 }
