@@ -1360,8 +1360,11 @@ if(!function_exists('filter_sort_array'))
         foreach($list as $value) {
             $key = "id_" . $value["id"];
             $data[$key][$key_name] = $value["id"];
-            $data[$key]["parent_id"] = $parent_id;
             $data[$key]["sort_order"] = $sort_count;
+
+            if (!empty($parent_id)) {
+                $data[$key]["parent_id"] = $parent_id;
+            }
 
             if (!empty($value["children"])) {
                 $data_children = filter_sort_array($value["children"], $value["id"], $key_name);

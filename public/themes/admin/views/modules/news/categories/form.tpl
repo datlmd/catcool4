@@ -29,54 +29,79 @@
                 <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
                     <div class="card">
                         <h5 class="card-header"><i class="fas {if !empty($edit_data.category_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
-                        <div class="card-body p-0 pt-3 bg-light">
-                            <div class="tab-regular">
-                                {include file=get_theme_path('views/inc/tab_language.inc.tpl') languages=$language_list}
-                                <div class="tab-content border-0 p-3" id="cate_tab_content">
-                                    {foreach $language_list as $language}
-                                        <div class="tab-pane fade {if $language.active}show active{/if}" role="tabpanel" id="lanuage_content_{$language.id}"  aria-labelledby="language_tab_{$language.id}">
-                                            <div class="form-group row required has-error">
-                                                <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
-                                                    {lang('Admin.text_name')}
-                                                </label>
-                                                <div class="col-12 col-sm-8 col-lg-8">
-                                                    {if !empty($edit_data.lang[$language.id].name)}
-                                                        {assign var="name" value="`$edit_data.lang[$language.id].name`"}
-                                                    {else}
-                                                        {assign var="name" value=""}
-                                                    {/if}
-                                                    <input type="text" name="lang[{$language.id}][name]" value='{old("lang.{$language.id}.name", $name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang.{$language.id}.name")}is-invalid{/if}">
-                                                    <div class="invalid-feedback">
-                                                        {$validator->getError("lang.{$language.id}.name")}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-12 col-sm-3 col-form-label text-sm-end">
-                                                    {lang('Admin.text_description')}
-                                                </label>
-                                                <div class="col-12 col-sm-8 col-lg-8">
-                                                    {if !empty($edit_data.lang[$language.id].description)}
-                                                        {assign var="description" value="`$edit_data.lang[$language.id].description`"}
-                                                    {else}
-                                                        {assign var="description" value=""}
-                                                    {/if}
-                                                    <textarea name="lang[{$language.id}][description]" cols="40" rows="2" id="input_description_{$language.id}" type="textarea" class="form-control">{old("lang.{$language.id}.description", $description)}</textarea>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-12 col-sm-3 col-form-label text-sm-end">
-                                                    {lang('Admin.tab_seo')}
-                                                </label>
-                                                <div class="col-12 col-sm-8 col-lg-8 mt-2">
-                                                    {include file=get_theme_path('views/inc/seo_form.tpl')}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {/foreach}
+                        <div class="card-body">
+
+                            <div class="form-group">
+                                <label class="form-label required-label">{lang('Admin.text_name')}</label>
+
+                                {if !empty($edit_data.name)}
+                                    {assign var="name" value="`$edit_data.name`"}
+                                {else}
+                                    {assign var="name" value=""}
+                                {/if}
+                                <input type="text" name="name" value='{old("name", $name)}' id="input_name" data-slug-id="input_slug" class="form-control {if empty($edit_data.category_id)}make-slug{/if} {if $validator->hasError("name")}is-invalid{/if}">
+                                <div class="invalid-feedback">
+                                    {$validator->getError("name")}
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="form-label text-sm-end">{lang('Admin.text_description')}</label>
 
+                                {if !empty($edit_data.description)}
+                                    {assign var="description" value="`$edit_data.description`"}
+                                {else}
+                                    {assign var="description" value=""}
+                                {/if}
+                                <textarea name="description" cols="40" rows="2" id="input_description" type="textarea" class="form-control">{old("description", $description)}</textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h5 class="card-header">{lang('Admin.tab_seo')}</h5>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label">{lang('Admin.text_seo_title')}</label>
+                                {if !empty($edit_data.meta_title)}
+                                    {assign var="meta_title" value="`$edit_data.meta_title`"}
+                                {else}
+                                    {assign var="meta_title" value=""}
+                                {/if}
+                                <input type="text" name="meta_title" value='{old("meta_title", $meta_title)|unescape:"html"}' id="input-meta_title" class="form-control">
+                            </div>
+                            <div class="form-group mt-3">
+                                <label class="form-label">{lang('Admin.text_slug')}</label>
+                                {if !empty($edit_data.slug)}
+                                    {assign var="slug" value="`$edit_data.slug`"}
+                                {else}
+                                    {assign var="slug" value=""}
+                                {/if}
+                                {if !empty($seo_url.id)}
+                                    {assign var="seo_url_id" value="`$seo_url.id`"}
+                                {else}
+                                    {assign var="seo_url_id" value=""}
+                                {/if}
+                                {form_hidden('seo_id', $seo_url_id)}
+                                <input type="text" name="slug" value='{old("slug", $slug)}' id="input_slug" class="form-control">
+                            </div>
+                            <div class="form-group mt-3">
+                                <label class="form-label">{lang('Admin.text_seo_description')}</label>
+                                {if !empty($edit_data.meta_description)}
+                                    {assign var="meta_description" value="`$edit_data.meta_description`"}
+                                {else}
+                                    {assign var="meta_description" value=""}
+                                {/if}
+                                <textarea name="meta_description" cols="40" rows="3" id="input-meta_description" type="textarea" class="form-control">{old("meta_description", $meta_description)|unescape:"html"}</textarea>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label class="form-label">{lang('Admin.text_seo_keyword')}</label>
+                                {if !empty($edit_data.meta_keyword)}
+                                    {assign var="meta_keyword" value="`$edit_data.meta_keyword`"}
+                                {else}
+                                    {assign var="meta_keyword" value=""}
+                                {/if}
+                                <input type="text" name="meta_keyword" data-role="tagsinput" value='{old("meta_keyword", $meta_keyword)|unescape:"html"}' id="input-meta_keyword" class="form-control">
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -81,6 +81,25 @@ class RouteModel extends MyModel
         return $data;
     }
 
+    public function getRouteInfo($module, $resource)
+    {
+        if (empty($module) || empty($resource)) {
+            return false;
+        }
+
+        $data = [
+            'module'   => $module,
+            'resource' => $resource
+        ];
+
+        $result = $this->where($data)->first();
+        if (empty($result)) {
+            return false;
+        }
+
+        return $result;
+    }
+
     public function deleteByModule($module, $resource)
     {
         if (empty($module) || empty($resource)) {
@@ -155,23 +174,40 @@ class RouteModel extends MyModel
             return false;
         }
 
-        foreach (get_list_lang(true) as $key => $value) {
-            if (empty($urls[$key]['route'])) {
-                continue;
-            }
-            if (!empty($urls[$key]['id'])) {
-                $this->update($urls[$key]['id'], $urls[$key]);
+        if (!empty($urls['route'])) {
+            if (!empty($urls['id'])) {
+                $this->update($urls['id'], $urls);
             } else {
                 $route_data = [
                     'module'      => $module,
                     'resource'    => $resource,
-                    'language_id' => $key,
-                    'route'       => $urls[$key]['route'],
+                    'language_id' => get_lang_id(true),
+                    'route'       => $urls['route'],
                     'user_id'     => session('admin.user_id'),
                     'published'   => STATUS_ON,
                     'ctime'       => get_date(),
                 ];
                 $this->insert($route_data);
+            }
+        } else {
+            foreach (get_list_lang(true) as $key => $value) {
+                if (empty($urls[$key]['route'])) {
+                    continue;
+                }
+                if (!empty($urls[$key]['id'])) {
+                    $this->update($urls[$key]['id'], $urls[$key]);
+                } else {
+                    $route_data = [
+                        'module'      => $module,
+                        'resource'    => $resource,
+                        'language_id' => $key,
+                        'route'       => $urls[$key]['route'],
+                        'user_id'     => session('admin.user_id'),
+                        'published'   => STATUS_ON,
+                        'ctime'       => get_date(),
+                    ];
+                    $this->insert($route_data);
+                }
             }
         }
         $this->writeFile();

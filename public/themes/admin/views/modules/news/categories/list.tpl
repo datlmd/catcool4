@@ -16,7 +16,7 @@
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 				<div class="card">
 					<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('CategoryAdmin.text_list')}</h5>
-					<div class="card-body">
+					<div class="card-body py-4">
 						{if !empty($list)}
 							<div class="dd" id="list_category_sort">
 								<ol class="dd-list">

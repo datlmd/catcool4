@@ -16,7 +16,6 @@ class NewsModel extends FarmModel
         'meta_title',
         'meta_description',
         'meta_keyword',
-        'language_id',
         'category_ids',
         'related_ids',
         'publish_date',
@@ -42,6 +41,7 @@ class NewsModel extends FarmModel
         'counter_like',
         'published',
         'deleted',
+        'language_id',
         'ctime',
         'mtime',
     ];

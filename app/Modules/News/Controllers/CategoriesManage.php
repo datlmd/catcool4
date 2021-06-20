@@ -1,8 +1,7 @@
-<?php namespace App\Modules\Articles\Controllers;
+<?php namespace App\Modules\News\Controllers;
 
 use App\Controllers\AdminController;
-use App\Modules\Articles\Models\CategoryModel;
-use App\Modules\Articles\Models\CategoryLangModel;
+use App\Modules\News\Models\CategoryModel;
 use App\Modules\Routes\Models\RouteModel;
 
 class CategoriesManage extends AdminController
@@ -12,11 +11,11 @@ class CategoriesManage extends AdminController
     protected $model_lang;
     protected $model_route;
 
-    CONST MANAGE_ROOT = 'articles/categories_manage';
-    CONST MANAGE_URL  = 'articles/categories_manage';
+    CONST MANAGE_ROOT = 'news/categories_manage';
+    CONST MANAGE_URL  = 'news/categories_manage';
 
-    CONST SEO_URL_MODULE   = 'articles';
-    CONST SEO_URL_RESOURCE = 'categories/detail/%s';
+    CONST SEO_URL_MODULE   = 'news';
+    CONST SEO_URL_RESOURCE = 'Categories::Detail/%s';
 
     public function __construct()
     {
@@ -28,7 +27,6 @@ class CategoriesManage extends AdminController
             ->addPartial('sidebar');
 
         $this->model = new CategoryModel();
-        $this->model_lang = new CategoryLangModel();
         $this->model_route = new RouteModel();
 
         //create url manage
@@ -37,6 +35,7 @@ class CategoriesManage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
+        $this->breadcrumb->add(lang('NewsAdmin.heading_title'), site_url('news/manage'));
         $this->breadcrumb->add(lang('CategoryAdmin.heading_title'), base_url(self::MANAGE_URL));
     }
 
@@ -66,10 +65,17 @@ class CategoriesManage extends AdminController
             }
 
             $add_data = [
-                'sort_order' => $this->request->getPost('sort_order'),
-                'image'      => $this->request->getPost('image'),
-                'context'    => $this->request->getPost('context'),
-                'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'name'             => $this->request->getPost('name'),
+                'slug'             => !empty($this->request->getPost('slug')) ? slugify($this->request->getPost('slug')) : slugify($this->request->getPost('name')),
+                'description'      => $this->request->getPost('description'),
+                'meta_title'       => $this->request->getPost('meta_title'),
+                'meta_description' => $this->request->getPost('meta_description'),
+                'meta_keyword'     => $this->request->getPost('meta_keyword'),
+                'sort_order'       => $this->request->getPost('sort_order'),
+                'image'            => $this->request->getPost('image'),
+                'context'          => $this->request->getPost('context'),
+                'published'        => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'language_id'      => get_lang_id(true),
             ];
 
             if (!empty($this->request->getPost('parent_id'))) {
@@ -83,20 +89,11 @@ class CategoriesManage extends AdminController
             }
 
             //save route url
-            $seo_urls = $this->request->getPost('seo_urls');
+            $seo_urls = [
+                'id'    => $this->request->getPost('seo_id'),
+                'route' => $add_data['slug'],
+            ];
             $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
-
-            $add_data_lang = $this->request->getPost('lang');
-            foreach (get_list_lang(true) as $value) {
-                $add_data_lang[$value['id']]['language_id'] = $value['id'];
-                $add_data_lang[$value['id']]['category_id'] = $id;
-                $add_data_lang[$value['id']]['slug']        = !empty($seo_urls[$value['id']]['route']) ? $seo_urls[$value['id']]['route'] : '';
-
-                $this->model_lang->insert($add_data_lang[$value['id']]);
-            }
-
-            //reset cache
-            $this->model->deleteCache();
 
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
@@ -118,27 +115,17 @@ class CategoriesManage extends AdminController
                 return redirect()->back()->withInput();
             }
 
-            //save route url
-            $seo_urls = $this->request->getPost('seo_urls');
-            $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
-
-            $edit_data_lang = $this->request->getPost('lang');
-            foreach (get_list_lang(true) as $value) {
-                $edit_data_lang[$value['id']]['language_id'] = $value['id'];
-                $edit_data_lang[$value['id']]['category_id'] = $id;
-                $edit_data_lang[$value['id']]['slug']        = !empty($seo_urls[$value['id']]['route']) ? $seo_urls[$value['id']]['route'] : '';
-
-                if (!empty($this->model_lang->where(['category_id' => $id, 'language_id' => $value['id']])->find())) {
-                    $this->model_lang->where('language_id', $value['id'])->update($id, $edit_data_lang[$value['id']]);
-                } else {
-                    $this->model_lang->insert($edit_data_lang[$value['id']]);
-                }
-            }
-
             $edit_data = [
-                'sort_order' => $this->request->getPost('sort_order'),
-                'image'      => $this->request->getPost('image'),
-                'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'name'             => $this->request->getPost('name'),
+                'slug'             => !empty($this->request->getPost('slug')) ? slugify($this->request->getPost('slug')) : slugify($this->request->getPost('name')),
+                'description'      => $this->request->getPost('description'),
+                'meta_title'       => $this->request->getPost('meta_title'),
+                'meta_description' => $this->request->getPost('meta_description'),
+                'meta_keyword'     => $this->request->getPost('meta_keyword'),
+                'sort_order'       => $this->request->getPost('sort_order'),
+                'image'            => $this->request->getPost('image'),
+                'context'          => $this->request->getPost('context'),
+                'published'        => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
             if (!empty($this->request->getPost('parent_id'))) {
@@ -149,6 +136,13 @@ class CategoriesManage extends AdminController
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->back()->withInput();
             }
+
+            //save route url
+            $seo_urls = [
+                'id'    => $this->request->getPost('seo_id'),
+                'route' => $edit_data['slug'],
+            ];
+            $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
 
             //reset cache
             $this->model->deleteCache();
@@ -239,7 +233,7 @@ class CategoriesManage extends AdminController
             }
 
             //lay danh sach seo url tu route
-            $data['seo_urls'] = $this->model_route->getListByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
+            $data['seo_url'] = $this->model_route->getRouteInfo(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
 
             // display the edit user form
             $data['edit_data'] = $data_form;
@@ -260,10 +254,9 @@ class CategoriesManage extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        foreach(get_list_lang(true) as $value) {
-            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name'] . ')', 'required');
-            $this->validator->setRule(sprintf('seo_urls.%s.route', $value['id']), lang('Admin.text_slug'), 'checkRoute[' . ($this->request->getPost('seo_urls[' . $value['id'] . '][id]') ?? "") . ']');
-        }
+
+        $this->validator->setRule('name', lang('Admin.text_name'), 'required');
+        $this->validator->setRule('slug', lang('Admin.text_slug'), 'checkRoute[' . ($this->request->getPost('seo_id') ?? "") . ']');
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();

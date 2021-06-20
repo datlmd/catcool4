@@ -26,7 +26,7 @@ return [
 	"text_is_homepage" => "Enable Homepage",
 	"text_is_hot" => "Enable Hot",
 	"text_list" => "News List",
-	"text_name" => "News",
+	"text_name" => "Title",
 	"text_post_format" => "Post Format",
 	"text_publish_date" => "Publish Date",
 	"text_publish_time" => "Publish time",
@@ -34,4 +34,6 @@ return [
 	"text_source" => "Source",
 	"text_source_type" => "Source Type",
 	"text_tracking_code" => "Tracking Code",
+	"translate_admin_id" => "67",
+	"translate_frontend_id" => "66",
 ];

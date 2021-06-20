@@ -143,6 +143,7 @@ class Manage extends AdminController
                 'user_id'           => $this->getUserIdAdmin(),
                 'is_comment'        => $this->request->getPost('is_comment'),
                 'published'         => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'language_id'       => get_lang_id(true),
             ];
 
             $id = $this->model->insert($add_data);

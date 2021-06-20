@@ -26,7 +26,7 @@ return [
 	"text_is_homepage" => "Bật Homepae",
 	"text_is_hot" => "Bật Hot",
 	"text_list" => "Danh sách Tin tức",
-	"text_name" => "Tin tức",
+	"text_name" => "Tiêu đề",
 	"text_post_format" => "Post Format",
 	"text_publish_date" => "Ngày hiển thị",
 	"text_publish_time" => "Thời gian hiển thị",
@@ -34,4 +34,6 @@ return [
 	"text_source" => "Nguồn",
 	"text_source_type" => "Source Type",
 	"text_tracking_code" => "Tracking Code",
+	"translate_admin_id" => "67",
+	"translate_frontend_id" => "66",
 ];

@@ -19,6 +19,7 @@ class CategoryModel extends MyModel
         'meta_title',
         'meta_description',
         'meta_keyword',
+        'language_id',
         'ctime',
         'mtime',
     ];
@@ -33,7 +34,7 @@ class CategoryModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? $sort : "category_id";
+        $sort  = in_array($sort, $this->allowedFields) ? $sort : "sort_order";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
 
