@@ -209,6 +209,9 @@ class NewsModel extends FarmModel
             return false;
         }
 
+        $db = db_connect();
+        $db->reconnect();
+
         //reset table
         $this->setTableNameYear();
 
@@ -267,7 +270,7 @@ class NewsModel extends FarmModel
 
         $id = $this->insert($add_data);
 
-        return true;
+        return $id;
     }
 
     public function robotGetNews($attribute, $is_insert = true, $status = STATUS_ON)
@@ -336,8 +339,11 @@ class NewsModel extends FarmModel
             krsort($list_news);
             foreach ($list_menu as $key => $menu) {
                 foreach ($list_news as $news_key => $news) {
-                    $this->robotSave($news, $status);
-                    sleep(2);
+                    $id = $this->robotSave($news, $status);
+                    if (empty($id)) {
+                        unset($list_menu[$key]);
+                    }
+                    sleep(1);
                 }
             }
         }

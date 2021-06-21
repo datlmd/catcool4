@@ -31,6 +31,8 @@ return [
 	"text_publish_date" => "Publish Date",
 	"text_publish_time" => "Publish time",
 	"text_related" => "Related Post",
+	"text_robot_news" => "Robot News",
+	"text_scanned" => "Scanned & added successfully. Total {0}",
 	"text_source" => "Source",
 	"text_source_type" => "Source Type",
 	"text_tracking_code" => "Tracking Code",

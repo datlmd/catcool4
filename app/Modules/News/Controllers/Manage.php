@@ -390,4 +390,44 @@ class Manage extends AdminController
 
         json_output($data);
     }
+
+    public function robot()
+    {
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $robot = Config('Robot');
+
+        $token = csrf_hash();
+
+        if (empty($this->request->getPost())) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
+        }
+
+        $list       = [];
+        $robot_type = $this->request->getPost('robot_type');
+
+        switch ($robot_type) {
+            case 'kenh14':
+                $list = $this->model->robotGetNews($robot->pageKenh14);
+                break;
+            default:
+                break;
+        }
+
+        $total = 0;
+        foreach ($list as $value) {
+            if (empty($value['list_news'])) {
+                continue;
+            }
+            $total += count($value['list_news']);
+        }
+
+
+        set_alert(lang('NewsAdmin.text_scanned', [$total]), ALERT_SUCCESS, ALERT_POPUP);
+        $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('NewsAdmin.text_scanned', [$total])];
+
+        json_output($data);
+    }
 }

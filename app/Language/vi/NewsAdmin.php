@@ -31,6 +31,8 @@ return [
 	"text_publish_date" => "Ngày hiển thị",
 	"text_publish_time" => "Thời gian hiển thị",
 	"text_related" => "Bài viết liên quan",
+	"text_robot_news" => "Quét Tin",
+	"text_scanned" => "Đã quét thành công {0} tin mới.",
 	"text_source" => "Nguồn",
 	"text_source_type" => "Source Type",
 	"text_tracking_code" => "Tracking Code",

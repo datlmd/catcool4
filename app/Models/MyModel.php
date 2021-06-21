@@ -46,4 +46,14 @@ class MyModel extends Model
 
         return $result;
     }
+
+    public function showSQL(\CodeIgniter\Model $model)
+    {
+        if (empty($model)) {
+            return null;
+        }
+
+        $builder = $model->builder();
+        return $builder->getCompiledSelect();
+    }
 }

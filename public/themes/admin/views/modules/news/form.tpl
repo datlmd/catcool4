@@ -98,8 +98,8 @@
                                 </div>
                                 <div class="col-md-4 col-sm-4 col-6">
                                     Thumbnail Facebook<br/>
-                                    {if isset($edit_data.images.robot_fb)}
-                                        {assign var="images_fb" value="`$edit_data.images.robot_fb`"}
+                                    {if isset($edit_data.images.fb)}
+                                        {assign var="images_fb" value="`$edit_data.images.fb`"}
                                     {else}
                                         {assign var="images_fb" value=""}
                                     {/if}
