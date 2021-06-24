@@ -14,8 +14,6 @@ class Error404 extends BaseController
 
         $this->themes->addPartial('header_top')
             ->addPartial('header_bottom')
-            ->addPartial('content_left')
-            ->addPartial('content_right')
             ->addPartial('footer_top')
             ->addPartial('footer_bottom');
     }

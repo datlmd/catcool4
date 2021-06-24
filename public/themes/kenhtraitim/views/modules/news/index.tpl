@@ -1,9 +1,9 @@
-{include file=get_theme_path('views/_modules/news/inc/list_slide_home.tpl')}
+{include file=get_theme_path('views/modules/news/inc/list_slide_home.tpl')}
 <div class="row pb-1 pt-2">
 
 	<div class="col-md-9">
 
-		{include file=get_theme_path('views/_modules/news/inc/list_category_home.tpl')}
+		{include file=get_theme_path('views/modules/news/inc/list_category_home.tpl')}
 
 		<div class="text-center py-3 mb-4">
 			<iframe src="https://ds.polyad.net/ads/s/sungroup/2021/01/08/45182/970x250/dfp/pc/std/fixed/?link=https%3A%2F%2Fadclick.g.doubleclick.net%2Fpcs%2Fclick%3Fxai%3DAKAOjstgIaIT8d_q_1BUuQrAGX22qZ6zSytwr8eqjjcJltUipd4vn81dxZDMjvkBv3e7JrrH1Z6SZTP1x1DSV6RQu0KHQxxYf_EPHxHOPgWV4MSoz6pKXtaASwhcnJJGfxoTAfRLOcQkgmKLOizi7reLbfCiLC42wmooNDzsSdhJpAm-UNTnBV1Ql50p7IUuOmTPf63IcFARz1vsZlbYHYTkJveebX-338x0XZLeFy5dKxgBiRcVWRonkPTOFOWh-1lucJQBu1_RkFZh1vKC_bWvnKfXK_8B3eGR_FM5RDyIVHT67jWyD-Wsz56jSGzuNUtC%26sig%3DCg0ArKJSzDSZAn4iieRvEAE%26urlfix%3D1%26adurl%3Dhttps%253A%252F%252Fwww.facebook.com%252Fsunonsenvillage.limitededition&amp;otherlink=&amp;campaign_name=OnsenVilage&amp;index_brand=LB1001.13_SunGroup&amp;index_industrial=L1001_B%E1%BA%A5t%20%C4%91%E1%BB%99ng%20s%E1%BA%A3n" frameborder="0" scrolling="no" style="display: block; margin: 0px; padding: 0px; border-radius: 0px; border: 0px; min-width: 0px; min-height: 0px; background-image: none; background-color: transparent; width: 100%; max-width: 970px; max-height: 250px;"></iframe>
@@ -302,13 +302,9 @@
 		</div>
 
 		<aside class="sidebar pb-4">
-			<h5 class="font-weight-bold">Latest from Twitter</h5>
-			<div id="tweet" class="twitter mb-4" data-plugin-tweets data-plugin-options="{literal}{'username': 'oklerthemes', 'count': 2}{/literal}">
-				<p>Please wait...</p>
-			</div>
 			<h5 class="font-weight-bold pt-4">Photos from Instagram</h5>
 			<div id="instafeedNoMargins" class="mb-4 pb-1"></div>
-			{include file=get_theme_path('views/_modules/news/inc/list_tags.tpl')}
+			{include file=get_theme_path('views/modules/news/inc/list_tags.tpl')}
 
 			<a href="http://themeforest.net/item/porto-responsive-html5-template/4106987" target="_blank" class="my-4 pt-3 d-block">
 				<img alt="Porto" class="img-fluid" src="img/blog/blog-ad-1-medium.jpg" />

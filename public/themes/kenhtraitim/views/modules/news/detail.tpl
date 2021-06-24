@@ -1,7 +1,7 @@
 <div class="blog-posts single-post mt-4 ">
     <article class="post post-large blog-single-post border-0 m-0 p-0">
         <div class="post-content ml-0">
-            <h2 class="font-weight-bold">{$detail.name|unescape:"html"}</h2>
+            <h2 class="font-weight-bold text-primary">{$detail.name}</h2>
             <div class="post-meta">
                 <span><i class="far fa-user"></i> RSS: <a href="{$detail.source}" target="_blank" title="{$detail.source}">{$detail.source|truncate:70:"...":true}</a> </span>
 {*                {if !empty($detail.tags)}*}
@@ -17,12 +17,12 @@
 {*                    <span><i class="far fa-comments"></i> <a href="#">12 Comments</a></span>*}
             </div>
             <div>
-                {$detail.content|unescape:"html"}
+                {$detail.content}
             </div>
 
 
 
-            {include file=get_theme_path('views/_modules/news/inc/list_tags.tpl') tags=explode(',', $detail.tags)}
+            {include file=get_theme_path('views/modules/news/inc/list_tags.tpl') tags=explode(',', $detail.tags)}
 
             <div class="post-block mt-5 post-share">
                 <h4 class="mb-3">Share this Post</h4>
@@ -39,12 +39,12 @@
 
             </div>
 
-            {assign var="fb_url" value="`$news.slug`.`$news.news_id`"}
-            {include file=get_theme_path('views/inc/facebook_comment.tpl') fb_url=site_url($fb_url)}
+            {assign var="fb_url" value="`$detail.detail_url`"}
+            {include file=get_theme_path('views/inc/facebook_comment.tpl') fb_url=base_url($fb_url)}
 
 
         </div>
     </article>
 </div>
 
-{include file=get_theme_path('views/_modules/news/inc/list_news_top.tpl') news_list=$news_category_list news_id_not=$detail.news_id}
+{include file=get_theme_path('views/modules/news/inc/list_news_top.tpl') news_list=$news_category_list news_id_not=$detail.news_id}

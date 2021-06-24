@@ -86,14 +86,14 @@ if (/iPad|iPhone|iPod/.test(navigator.platform)) {
 Tooltip and Popover
 */
 (function($) {
-	$('[data-toggle="tooltip"]').tooltip();
-	$('[data-toggle="popover"]').popover();
+	$('[data-bs-toggle="tooltip"]').toggle();
+	$('[data-bs-toggle="popover"]').toggle();
 })(jQuery);
 
 /*
 Tabs
 */
-$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+$('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
 	$(this).parents('.nav-tabs').find('.active').removeClass('active');
 	$(this).addClass('active').parent().addClass('active');
 });
@@ -247,7 +247,7 @@ if( !$('html').hasClass('disable-onload-scroll') && window.location.hash ) {
 * Tab
 */
 (function($) {
-	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+	$('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
 		var $tabPane = $($(e.target).attr('href'));
 
 		if($tabPane.get(0)) {
@@ -356,9 +356,9 @@ function scrollAndFocus($this, scrollTarget, focusTarget, scrollOffset, scrollAg
 * Scroll and Focus
 */
 (function($) {
-	$('[data-toggle-text-click]').on('click', function () {
+	$('[data-bs-toggle-text-click]').on('click', function () {
 		$(this).text(function(i, text){
-			return text === $(this).attr('data-toggle-text-click') ? $(this).attr('data-toggle-text-click-alt') : $(this).attr('data-toggle-text-click');
+			return text === $(this).attr('data-bs-toggle-text-click') ? $(this).attr('data-bs-toggle-text-click-alt') : $(this).attr('data-bs-toggle-text-click');
 		});
 	});
 })(jQuery);

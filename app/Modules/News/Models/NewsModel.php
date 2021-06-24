@@ -56,6 +56,10 @@ class NewsModel extends FarmModel
     const SOURCE_TYPE_ROBOT = 1;
     const POST_FORMAT_NORMAL = 1;
 
+    const HOME_TYPE_SLIDE = 'slide';
+    const HOME_TYPE_CATEGORY = 'category';
+    const HOME_TYPE_CATEGORY_HOME = 'category_home';
+
     function __construct()
     {
         parent::__construct();
@@ -111,7 +115,7 @@ class NewsModel extends FarmModel
             $where = [
                 'news_id'         => $news_id,
                 'published'       => STATUS_ON,
-                'publish_date <=' => time(),
+                'publish_date <=' => get_date(),
             ];
             if ($is_preview) {
                 $where = [
@@ -123,6 +127,7 @@ class NewsModel extends FarmModel
                 return [];
             }
 
+            $result['detail_url'] = $this->formatDetailUrl($result['news_id'], $result['slug']);
             if ($is_cache) {
                 // Save into the cache for $expire_time 1 month
                 cache()->save(self::NEWS_CACHE_NAME . $news_id, $result, self::NEWS_CACHE_EXPIRE);
@@ -349,5 +354,90 @@ class NewsModel extends FarmModel
         }
 
         return $list_menu;
+    }
+
+    public function getListHome($type = self::HOME_TYPE_CATEGORY_HOME, $limit = 200)
+    {
+        $category_model = new CategoryModel();
+
+        // @TODO chua luu cache category
+        $category_list = $category_model->getListPublished();
+
+        $where = [
+            'published' => STATUS_ON,
+            'publish_date <=' => get_date(),
+        ];
+
+        $this->setTableNameYear();//set table
+
+        //->set_cache(self::CURRENCY_CACHE_FILE_NAME, 86400*30)
+        $list = $this->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
+
+        switch ($type) {
+            case self::HOME_TYPE_SLIDE:
+                $slides = [];
+                foreach ($list as $key_news => $value) {
+                    if ($key_news > 3) {
+                        break;
+                    }
+                    $value['news_id'] = $this->setFormatNewsId($value['news_id'], $value['ctime']);
+                    $value['detail_url'] = $this->formatDetailUrl($value['news_id'], $value['slug']);
+                    $slides[] = $this->formatJsonDecode($value);
+                }
+                return $slides;
+            case self::HOME_TYPE_CATEGORY_HOME:
+                foreach ($category_list as $key => $category) {
+                    foreach ($list as $key_news => $value) {
+                        if ($key_news <=3) {
+                            continue;
+                        }
+                        $value['news_id'] = $this->setFormatNewsId($value['news_id'], $value['ctime']);
+                        $value['detail_url'] = $this->formatDetailUrl($value['news_id'], $value['slug']);
+                        $value = $this->formatJsonDecode($value);
+
+                        if (in_array($category['category_id'], $value['category_ids'])) {
+                            $category_list[$key]['list'][] = $value;
+                            if (count($category_list[$key]['list']) >= 5) {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                return $category_list;
+            case self::HOME_TYPE_CATEGORY:
+                $category_list_tmp = [];
+                foreach ($category_list as $key => $category) {
+                    $category_list_tmp[$category['category_id']] = $category;
+                    foreach ($list as $key_news => $value) {
+                        $value['news_id'] = $this->setFormatNewsId($value['news_id'], $value['ctime']);
+                        $value['detail_url'] = $this->formatDetailUrl($value['news_id'], $value['slug']);
+                        $value = $this->formatJsonDecode($value);
+
+                        if (in_array($category['category_id'], $value['category_ids'])) {
+                            $category_list_tmp[$category['category_id']]['list'][] = $value;
+                            if (count($category_list_tmp[$category['category_id']]['list']) >= 5) {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                return $category_list_tmp;
+
+            default:
+                break;
+        }
+
+        return $list;
+    }
+
+    public function formatDetailUrl($news_id, $slug)
+    {
+        if (empty($news_id) || empty($slug)) {
+            return null;
+        }
+
+        return sprintf('%s-post%s.html', $slug, $news_id);
     }
 }

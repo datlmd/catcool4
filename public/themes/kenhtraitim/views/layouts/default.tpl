@@ -1,31 +1,32 @@
-<div class="body {Events::trigger('div_body_class', '', 'string')}">
-    {print_flash_alert()}
-    {$header_top}
-    {$header_bottom}
-    <div role="main" class="main">
-        {$breadcumb}
-        <div class="container">
-            <div class="row">
-                {if !empty($content_left)}
-                    <aside id="content-left" class="col-lg-3">
-                        {$content_left}
-                    </aside>
-                {/if}
+{strip}
+    <div class="body {if !empty($div_body_class)}{$div_body_class}{/if}">
+        {if !empty($header_top)}{$header_top}{/if}
+        {if !empty($header_bottom)}{$header_bottom}{/if}
+        <div role="main" class="main">
+            <section class="section border-0 m-0 py-3 py-lg-5">
+                {if !empty($breadcumb)}{$breadcumb}{/if}
+                <div class="container row">
+                    {if !empty($content_left)}
+                        <aside id="content_left" class="col-3 d-none d-md-block">
+                            {$content_left}
+                        </aside>
+                    {/if}
 
-                <div id="content" class="{if !empty($content_right) && !empty($content_left)}col-lg-6{elseif !empty($content_right)}col-lg-9 order-lg-1{elseif !empty($content_left)}col-lg-9{else}col-lg-12{/if}">
-                    {$content_top}
-                    {$content}
-                    {$content_bottom}
+                    <div id="content" class="col">
+                        {if !empty($content_top)}{$content_top}{/if}
+                        {if !empty($content)}{$content}{/if}
+                        {if !empty($content_bottom)}{$content_bottom}{/if}
+                    </div>
+
+                    {if !empty($content_right)}
+                        <aside id="content_right" class="col-3 d-none d-md-block">
+                            {$content_right}
+                        </aside>
+                    {/if}
                 </div>
-
-                {if !empty($content_right)}
-                    <aside id="content-right" class="col-lg-3 order-lg-2">
-                        {$content_right}
-                    </aside>
-                {/if}
-            </div>
+            </section>
         </div>
+        {if !empty($footer_top)}{$footer_top}{/if}
+        {if !empty($footer_bottom)}{$footer_bottom}{/if}
     </div>
-    {$footer_top}
-    {$footer_bottom}
-</div>
+{/strip}

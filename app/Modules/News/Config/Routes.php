@@ -20,3 +20,6 @@ $routes->group('news', ['namespace' => 'App\Modules\News\Controllers'], function
     $subroutes->add('categories_manage/publish', 'CategoriesManage::publish');
     $subroutes->add('categories_manage/update_sort', 'CategoriesManage::updateSort');
 });
+
+$routes->add('tin-tuc', 'News::index', ['namespace' => 'App\Modules\News\Controllers']);
+$routes->add('(:any)-post(:num)C(:num).html', 'Detail::index/$1/$2/$3', ['namespace' => 'App\Modules\News\Controllers']);
