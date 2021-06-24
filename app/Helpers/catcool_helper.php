@@ -1361,10 +1361,7 @@ if(!function_exists('filter_sort_array'))
             $key = "id_" . $value["id"];
             $data[$key][$key_name] = $value["id"];
             $data[$key]["sort_order"] = $sort_count;
-
-            if (!empty($parent_id)) {
-                $data[$key]["parent_id"] = $parent_id;
-            }
+            $data[$key]["parent_id"]  = !empty($parent_id) ? $parent_id : null;
 
             if (!empty($value["children"])) {
                 $data_children = filter_sort_array($value["children"], $value["id"], $key_name);

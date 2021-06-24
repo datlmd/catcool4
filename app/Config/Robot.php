@@ -17,7 +17,52 @@ class Robot extends BaseConfig
 			[
 				'href'  => 'https://kenh14.vn/star.chn',
 				'title' => 'Sao',
+				'id'    => [1],
+			],
+			[
+				'href'  => 'https://kenh14.vn/cine.chn',
+				'title' => 'Phim',
 				'id'    => [2],
+			],
+			[
+				'href'  => 'https://kenh14.vn/musik.chn',
+				'title' => 'Nhac',
+				'id'    => [3],
+			],
+			[
+				'href'  => 'https://kenh14.vn/beauty-fashion.chn',
+				'title' => 'Thời trang',
+				'id'    => [4],
+			],
+			[
+				'href'  => 'https://kenh14.vn/suc-khoe-gioi-tinh.chn',
+				'title' => 'Gioi tinh',
+				'id'    => [5],
+			],
+			[
+				'href'  => 'https://kenh14.vn/sport.chn',
+				'title' => 'The thao',
+				'id'    => [6],
+			],
+			[
+				'href'  => 'https://kenh14.vn/xa-hoi.chn',
+				'title' => 'Xa hoi',
+				'id'    => [7],
+			],
+			[
+				'href'  => 'https://kenh14.vn/the-gioi.chn',
+				'title' => 'The gioi',
+				'id'    => [8],
+			],
+			[
+				'href'  => 'https://kenh14.vn/2-tek.chn',
+				'title' => 'Công nghệ',
+				'id'    => [9],
+			],
+			[
+				'href'  => 'https://kenh14.vn/hoc-duong.chn',
+				'title' => 'Hoc duong',
+				'id'    => [10],
 			],
 		],
 

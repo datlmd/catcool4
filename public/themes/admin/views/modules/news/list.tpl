@@ -171,14 +171,24 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<div id="robot_validation_error" class="text-danger"></div>
+					<div id="robot_validation_error" class="text-danger mb-2"></div>
 					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 						{form_open('news/manage/robot', ['id' => 'robot_news_form'])}
 						<div class="form-group">
 							<label class="form-check">
-								<input type="radio" name="robot_type" value="kenh14" {if old('robot_type') eq 'kenh14'}checked="checked"{/if} id="robot_type_kenh14" class="form-check-input">
-								<label class="form-check-label" for="robot_type_kenh14">Kênh 14</label>
+								<input type="radio" name="robot_type" value="kenh14" checked="checked" id="robot_type_kenh14" class="form-check-input">
+								<label class="form-check-label fw-bold" for="robot_type_kenh14">Kênh 14</label>
 							</label>
+							{if !empty($kenh14_list['attribute_menu'])}
+								{foreach $kenh14_list['attribute_menu'] as $key => $value}
+									<div class="form-check form-check-inline me-2">
+										<input class="form-check-input" type="checkbox" name="robot_href[]" value="{$value.href}" id="robot_href_{$key}">
+										<label class="form-check-label" for="robot_href_{$key}">
+											{$value.title}
+										</label>
+									</div>
+								{/foreach}
+							{/if}
 						</div>
 
 						<div class="form-group row text-center">
@@ -234,7 +244,9 @@
 					return false;
 				}
 
-				location.reload();
+				if (response.status == 'ok') {
+					location.reload();
+				}
 			},
 			error: function (xhr, errorType, error) {
 				$("#robot_validation_error").html(xhr.responseJSON.message + " Please reload the page!!!");

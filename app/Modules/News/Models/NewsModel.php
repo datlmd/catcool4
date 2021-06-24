@@ -210,8 +210,8 @@ class NewsModel extends FarmModel
 
     public function robotSave($data, $status = STATUS_ON)
     {
-        if (empty($data['title']) || empty($data['note']) || empty($data['content'])) {
-            return false;
+        if (empty($data)) {
+            return [];
         }
 
         $db = db_connect();
@@ -220,62 +220,72 @@ class NewsModel extends FarmModel
         //reset table
         $this->setTableNameYear();
 
-        $check_list = $this->where('source', $data['href'])->findAll();
-        if (!empty($check_list)) {
-            return false;
+        $insert_list = [];
+        foreach ($data as $key => $value) {
+
+            if (empty($value['title']) || empty($value['note']) || empty($value['content'])) {
+                continue;
+            }
+
+            $check_list = $this->where('source', $value['href'])->findAll();
+            if (!empty($check_list)) {
+                continue;
+            }
+
+            $image = "";
+            if (!empty($value['image'])) {
+                $image = save_image_from_url($value['image'], 'news');
+            }
+            $image_fb = "";
+            if (!empty($value['image_fb'])) {
+                $image_fb = save_image_from_url($value['image_fb'], 'news');
+            }
+
+            $date_now = get_date();
+
+            if (!empty($value['tags'])) {
+                $tags = is_array($value['tags']) ? implode(",", $value['tags']) : $value['tags'];
+            } else {
+                $tags = "";
+            }
+
+            $insert_list[] = [
+                'name' => !empty($value['title']) ? html_entity_decode($value['title']) : "",
+                'slug' => !empty($value['title']) ? slugify(html_entity_decode($value['title'])) : "",
+                'description' => !empty($value['note']) ? html_entity_decode($value['note']) : "",
+                'content' => !empty($value['content']) ? html_entity_decode($value['content']) : "",
+                'meta_title' => !empty($value['title']) ? html_entity_decode($value['title']) : "",
+                'meta_description' => !empty($value['meta_description']) ? html_entity_decode($value['meta_description']) : "",
+                'meta_keyword' => !empty($value['meta_keyword']) ? html_entity_decode($value['meta_keyword']) : "",
+                'related_ids' => '',
+                'category_ids' => !empty($value['category_id']) ? json_encode($value['category_id'], JSON_FORCE_OBJECT) : "",
+                'publish_date' => $date_now,
+                'images' => json_encode($this->formatImageList(['robot' => $image, 'robot_fb' => $image_fb]), JSON_FORCE_OBJECT),
+                'tags' => html_entity_decode($tags),
+                'author' => !empty($value['author']) ? html_entity_decode($value['author']) : "",
+                'source_type' => self::SOURCE_TYPE_ROBOT,
+                'source' => !empty($value['href']) ? $value['href'] : "",
+                'post_format' => self::POST_FORMAT_NORMAL,
+                'is_ads' => STATUS_ON,
+                'is_fb_ia' => STATUS_ON,
+                'is_hot' => STATUS_OFF,
+                'is_homepage' => STATUS_OFF,
+                'is_disable_follow' => STATUS_OFF,
+                'is_disable_robot' => STATUS_OFF,
+                'ip' => get_client_ip(),
+                'user_id' => session('admin.user_id'),
+                'is_comment' => COMMENT_STATUS_ON,
+                'published' => $status,
+                'sort_order' => 0,
+                'language_id' => get_lang_id(true),
+            ];
         }
 
-        $image = "";
-        if (!empty($data['image'])) {
-            $image = save_image_from_url($data['image'], 'news');
-        }
-        $image_fb = "";
-        if (!empty($data['image_fb'])) {
-            $image_fb = save_image_from_url($data['image_fb'], 'news');
+        if (!empty($insert_list)) {
+            $this->insertBatch($insert_list);
         }
 
-        $date_now = get_date();
-
-        if (!empty($data['tags'])) {
-            $tags = is_array($data['tags']) ? implode(",", $data['tags']) : $data['tags'];
-        } else {
-            $tags = "";
-        }
-
-        $add_data = [
-            'name'              => !empty($data['title']) ? html_entity_decode($data['title']) : "",
-            'slug'              => !empty($data['title']) ? slugify(html_entity_decode($data['title'])) : "",
-            'description'       => !empty($data['note']) ? html_entity_decode($data['note']) : "",
-            'content'           => !empty($data['content']) ? html_entity_decode($data['content']) : "",
-            'meta_title'        => !empty($data['title']) ? html_entity_decode($data['title']) : "",
-            'meta_description'  => !empty($data['meta_description']) ? html_entity_decode($data['meta_description']) : "",
-            'meta_keyword'      => !empty($data['meta_keyword']) ? html_entity_decode($data['meta_keyword']) : "",
-            'related_ids'       => '',
-            'category_ids'      => !empty($data['category_id']) ? json_encode($data['category_id'], JSON_FORCE_OBJECT) : "",
-            'publish_date'      => $date_now,
-            'images'            => json_encode($this->formatImageList(['robot' => $image, 'robot_fb' => $image_fb]), JSON_FORCE_OBJECT),
-            'tags'              => html_entity_decode($tags),
-            'author'            => !empty($data['author']) ? html_entity_decode($data['author']) : "",
-            'source_type'       => self::SOURCE_TYPE_ROBOT,
-            'source'            => !empty($data['href']) ? $data['href'] : "",
-            'post_format'       => self::POST_FORMAT_NORMAL,
-            'is_ads'            => STATUS_ON,
-            'is_fb_ia'          => STATUS_ON,
-            'is_hot'            => STATUS_OFF,
-            'is_homepage'       => STATUS_OFF,
-            'is_disable_follow' => STATUS_OFF,
-            'is_disable_robot'  => STATUS_OFF,
-            'ip'                => get_client_ip(),
-            'user_id'           => session('admin.user_id'),
-            'is_comment'        => COMMENT_STATUS_ON,
-            'published'         => $status,
-            'sort_order'        => 0,
-            'language_id'       => get_lang_id(true),
-        ];
-
-        $id = $this->insert($add_data);
-
-        return $id;
+        return $insert_list;
     }
 
     public function robotGetNews($attribute, $is_insert = true, $status = STATUS_ON)
@@ -336,19 +346,15 @@ class NewsModel extends FarmModel
                     sleep(1);
                 }
             }
-
+            krsort($list_news);
             $list_menu[$key]['list_news'] = $list_news;
         }
 
         if ($is_insert === true) {
-            krsort($list_news);
             foreach ($list_menu as $key => $menu) {
-                foreach ($list_news as $news_key => $news) {
-                    $id = $this->robotSave($news, $status);
-                    if (empty($id)) {
-                        unset($list_menu[$key]);
-                    }
-                    sleep(1);
+                if (!empty($menu['list_news'])) {
+                    $menu['list_news'] = $this->robotSave($menu['list_news'], $status);
+                    usleep(500);
                 }
             }
         }

@@ -81,6 +81,7 @@ class Manage extends AdminController
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'           => $url,
             'category_list' => format_tree(['data' => $category_list, 'key_id' => 'category_id']),
+            'kenh14_list'   => Config('Robot')->pageKenh14,
         ];
 
         $this->themes::load('list', $data);
@@ -407,10 +408,19 @@ class Manage extends AdminController
 
         $list       = [];
         $robot_type = $this->request->getPost('robot_type');
+        $robot_href = $this->request->getPost('robot_href');
 
         switch ($robot_type) {
             case 'kenh14':
-                $list = $this->model->robotGetNews($robot->pageKenh14);
+                $kenh14 = $robot->pageKenh14;
+                if (!empty($robot_href)) {
+                    foreach ($kenh14['attribute_menu'] as $key => $value) {
+                        if (!in_array($value['href'], $robot_href)) {
+                            unset($kenh14['attribute_menu'][$key]);
+                        }
+                    }
+                }
+                $list = $this->model->robotGetNews($kenh14);
                 break;
             default:
                 break;
