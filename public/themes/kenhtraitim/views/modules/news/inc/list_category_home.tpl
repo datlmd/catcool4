@@ -1,7 +1,7 @@
 {foreach $category_list as $category}
 	{if !empty($category.list)}
 		<div class="heading heading-border heading-middle-border">
-			<h3 class="text-4"><strong class="font-weight-bold text-1 px-3 text-light py-2 bg-secondary">{$category.name}</strong></h3>
+			<h3 class="text-4"><strong class="font-weight-bold text-1 px-3 text-light py-2 {$bg_color[array_rand($bg_color)]}">{$category.name}</strong></h3>
 		</div>
 		<div class="row pb-1">
 			{foreach $category.list as $news}

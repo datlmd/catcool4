@@ -27,6 +27,7 @@ class News extends BaseController
         $data = [
             'category_list' => $this->model->getListHome(),
             'slide_list' => $this->model->getListHome(NewsModel::HOME_TYPE_SLIDE),
+            'bg_color' => ['bg-primary', 'bg-secondary', 'bg-tertiary', 'bg-quaternary', 'bg-success' , 'bg-info', 'bg-warning', 'bg-danger'],
         ];
 
         //cc_debug($data['category_list']);
