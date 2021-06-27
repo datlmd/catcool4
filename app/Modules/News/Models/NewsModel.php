@@ -442,4 +442,25 @@ class NewsModel extends FarmModel
 
         return $slides;
     }
+
+    public function getListHot($limit = 20)
+    {
+        $where = [
+            'published' => STATUS_ON,
+            'publish_date <=' => get_date(),
+            'is_hot' => STATUS_ON,
+        ];
+
+        $list = $this->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
+        if (empty($list)) {
+            return [];
+        }
+
+        $slides = [];
+        foreach ($list as $key_news => $value) {
+            $slides[] = $this->formatDetail($value);
+        }
+
+        return $slides;
+    }
 }

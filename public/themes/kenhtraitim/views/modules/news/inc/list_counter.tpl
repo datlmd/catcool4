@@ -10,7 +10,7 @@
 						</a>
 					</div>
 					<div class="col-8 px-0">
-						<h4 class="pb-2 line-height-4 font-weight-normal text-3 text-dark mb-0">
+						<h4 class="pb-2 line-height-4 font-weight-normal text-3 text-dark mb-0 pe-2">
 							<a href="{$news.detail_url}" class="text-decoration-none text-color-dark">{$news.name}</a>
 						</h4>
 					</div>

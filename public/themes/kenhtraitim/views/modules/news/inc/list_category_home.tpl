@@ -6,16 +6,16 @@
 			</div>
 			<div class="row ps-3 ps-md-3 ps-lg-4 pb-2">
 				{foreach $category.list as $news}
-					<div class="col-sm-12 d-md-none d-sm-block mb-3">
+					<div class="col-sm-12 d-md-none d-sm-block mb-4">
 						<article>
-							<div class="row pb-1">
+							<div class="row pb-1 pe-3">
 								<div class="col-4 p-0">
 									<a href="{$news.detail_url}">
 										<img src="{if !empty($news.images.root)}{image_url($news.images.root)}{else}{image_url($news.images.robot)}{/if}" class="img-fluid border-radius-0" alt="{$news.name}">
 									</a>
 								</div>
 								<div class="col-8 ps-2 pe-0">
-									<h4 class="pb-2 line-height-4 font-weight-normal text-3 text-dark mb-0">
+									<h4 class="pb-2 line-height-4 font-weight-normal text-3 text-dark mb-0 pe-1">
 										<a href="{$news.detail_url}" class="text-decoration-none text-color-dark">{$news.name}</a>
 									</h4>
 								</div>
