@@ -49,7 +49,6 @@
             {assign var="fb_url" value="`$detail.detail_url`"}
             {include file=get_theme_path('views/inc/facebook_comment.tpl') fb_url=base_url($fb_url)}
 
-
         </div>
     </article>
 </div>

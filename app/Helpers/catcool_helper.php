@@ -739,7 +739,7 @@ if ( ! function_exists('img_alt'))
         $params['text']         = (empty($params['text'])) ? $params['width'].' x '. $params['height'] : $params['text'];
         $params['background']   = (empty($params['background'])) ? 'CCCCCC' : $params['background'];
         $params['foreground']   = (empty($params['foreground'])) ? '969696' : $params['foreground'];
-        return '<img src="' . base_url("images/alt/"). $params['width'].'x'. $params['height'].'/'.$params['background'].'/'.$params['foreground'].'?text='. $params['text'].'" alt="CatCool CMS">';
+        return '<img src="' . base_url("img-alt") . '/' . $params['width'].'x'. $params['height'].'/'.$params['background'].'/'.$params['foreground'].'?text='. $params['text'].'" alt="CatCool CMS">';
     }
 }
 
@@ -769,7 +769,7 @@ if ( ! function_exists('img_alt_url'))
         $params['text']         = (empty($params['text'])) ? $params['width'].' x '. $params['height'] : $params['text'];
         $params['background']   = (empty($params['background'])) ? 'CCCCCC' : $params['background'];
         $params['foreground']   = (empty($params['foreground'])) ? '969696' : $params['foreground'];
-        return  base_url("images/alt/") . $params['width'].'x'. $params['height'].'/'.$params['background'].'/'.$params['foreground'].'?text='. $params['text'];
+        return  base_url("img-alt") . '/' . $params['width'].'x'. $params['height'].'/'.$params['background'].'/'.$params['foreground'].'?text='. $params['text'];
     }
 }
 
@@ -1146,6 +1146,41 @@ if(!function_exists('format_date'))
         return $format_date;
     }
 }
+
+if(!function_exists('time_ago'))
+{
+    function time_ago($date, $format = 'd/m/y, H:i')
+    {
+        $timestamp = strtotime($date);
+
+        $strTime = [
+            lang('General.text_second'),
+            lang('General.text_minute'),
+            lang('General.text_hour'),
+            lang('General.text_day'),
+            lang('General.text_month'),
+            lang('General.text_year')
+        ];
+        $length = ["60", "60", "24", "30", "12", "10"];
+
+        $currentTime = time();
+        if ($currentTime >= $timestamp) {
+            $diff = time() - $timestamp;
+            if ($diff > DAY) {
+                return date($format, strtotime($date));
+            }
+
+            for ($i = 0; $diff >= $length[$i] && $i < count($length) - 1; $i++) {
+                $diff = $diff / $length[$i];
+            }
+
+            $diff = round($diff);
+
+            return lang('General.text_time_ago', [$diff, strtolower($strTime[$i])]);
+        }
+    }
+}
+
 /**
  * Add/Subtract time
  * @param datetime $date

@@ -8,6 +8,8 @@ if(!isset($routes))
 $routes->add('img/(:any)', 'Img::Index/$1', ['namespace' => 'App\Modules\Images\Controllers']);
 $routes->add('img', 'Img::Index', ['namespace' => 'App\Modules\Images\Controllers']);
 
+$routes->add('img-alt/(:any)/(:any)/(:any)', 'Alt::Index/$1/$2/$3', ['namespace' => 'App\Modules\Images\Controllers']);
+
 $routes->group('file', ['namespace' => 'App\Modules\Images\Controllers'], function($subroutes){
     $subroutes->add('(:any)', 'File::index/$1');
     $subroutes->add('', 'File::index');

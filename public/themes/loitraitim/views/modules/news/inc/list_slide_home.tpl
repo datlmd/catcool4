@@ -14,7 +14,12 @@
 											<h2 class="font-weight-bold text-color-light line-height-2 text-4 mb-0">{$news.name}</h2>
 										</div>
 										<div class="thumb-info-show-more-content">
-											<p class="mb-0 text-1 line-height-9 mb-1 mt-2 text-light opacity-5">{$news.description}</p>
+											<span class="d-inline-block text-default text-1">
+												 {time_ago($news.publish_date)}
+											</span>
+											<p class="mb-0 text-1 line-height-4 mb-1 text-light opacity-7">
+												{$news.description}
+											</p>
 										</div>
 									</div>
 								</div>
