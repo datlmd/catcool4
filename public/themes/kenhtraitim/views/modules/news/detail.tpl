@@ -1,7 +1,8 @@
-<div class="blog-posts single-post mt-4 ">
-    <article class="post post-large blog-single-post border-0 m-0 p-0">
+<div class="blog-posts single-post mt-2 mt-lg-3">
+    <article class="post post-large">
+        <h2 class="font-weight-bold text-primary">{$detail.name}</h2>
+        <div class="post-date">sds</div>
         <div class="post-content ml-0">
-            <h2 class="font-weight-bold text-primary">{$detail.name}</h2>
             <div class="post-meta">
                 <span><i class="far fa-user"></i> RSS: <a href="{$detail.source}" target="_blank" title="{$detail.source}">{$detail.source|truncate:70:"...":true}</a> </span>
 {*                {if !empty($detail.tags)}*}
@@ -16,6 +17,12 @@
 
 {*                    <span><i class="far fa-comments"></i> <a href="#">12 Comments</a></span>*}
             </div>
+
+
+            <blockquote>
+                <p class="mb-0">{$detail.description}</p>
+            </blockquote>
+
             <div>
                 {$detail.content}
             </div>

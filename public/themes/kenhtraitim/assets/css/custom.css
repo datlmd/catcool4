@@ -1,1 +1,22 @@
 /* Add here all your CSS customizations */
+
+body {
+
+}
+
+p {
+    color: #2d2d2d;
+    line-height: 20px;
+    margin: 0 0 5px;
+    text-align: justify !important;
+}
+
+img.image-grayscale {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+
+img.image-grayscale:hover, .article-hot:hover .image-grayscale {
+    -webkit-filter: none;
+    filter: none;
+}

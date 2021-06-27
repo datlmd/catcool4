@@ -26,11 +26,10 @@ class News extends BaseController
     {
         $data = [
             'category_list' => $this->model->getListHome(),
-            'slide_list' => $this->model->getListHome(NewsModel::HOME_TYPE_SLIDE),
+            'slide_list' => $this->model->getSlideHome(4),
+            'counter_list' => $this->model->getListCounter(10),
             'bg_color' => ['bg-primary', 'bg-secondary', 'bg-tertiary', 'bg-quaternary', 'bg-success' , 'bg-info', 'bg-warning', 'bg-danger'],
         ];
-
-        //cc_debug($data['category_list']);
 
         add_meta(['title' => lang("News.heading_title")], $this->themes);
 

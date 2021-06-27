@@ -7,18 +7,18 @@
                 <div class="row align-items-center">
                     <div class="col-9">
                         <div class="py-4">
-                            <a href="index.html">
-                                <img class="ml-2" alt="Porto" width="82" height="40" data-change-src="img/logo.png" src="img/logo-default.png">
+                            <a href="{site_url()}">
+                                <img class="ml-2" alt="{config_item('site_name')}" height="40" data-change-src="{img_url('logo.png')}" src="{img_url('logo.png')}">
                             </a>
                         </div>
                     </div>
                     <div class="col-3 text-end">
                         <button class="hamburguer-btn" data-set-active="false">
-									<span class="hamburguer">
-										<span></span>
-										<span></span>
-										<span></span>
-									</span>
+                            <span class="hamburguer">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </span>
                         </button>
                     </div>
                 </div>
@@ -32,8 +32,8 @@
                 <div class="header-column flex-row flex-lg-column justify-content-center h-100">
                     <div class="header-row flex-row justify-content-start justify-content-lg-center py-lg-5">
                         <h1 class="header-logo">
-                            <a href="index.html">
-                                <img alt="Porto" width="100" height="48" src="img/logo.png">
+                            <a href="{site_url()}">
+                                <img alt="{config_item('site_name')}" width="90%" src="{img_url('logo.png')}">
                                 <span class="hide-text">Porto - Demo Blog 4</span>
                             </a>
                         </h1>

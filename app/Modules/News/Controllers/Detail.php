@@ -34,7 +34,7 @@ class Detail extends BaseController
         $detail = $this->model->getNewsInfo($news_id, $ctime);
 
         $news_category_list = [];
-        $category_list = $this->model->getListHome(NewsModel::HOME_TYPE_CATEGORY);
+        $category_list = $this->model->getListHome();
         if (!empty($category_list) && !empty($news['category_ids'])) {
             foreach ($news['category_ids'] as $category_id) {
                 if (isset($category_list[$category_id])) {
