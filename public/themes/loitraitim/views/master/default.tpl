@@ -3,6 +3,7 @@
 <html class="{if !empty($html_class)}{$html_class} {/if}side-header" dir="{lang('General.direction')}" lang="{lang('General.code')}">
 <head>
 	<meta charset="utf-8">
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<base href="{site_url()}">
 

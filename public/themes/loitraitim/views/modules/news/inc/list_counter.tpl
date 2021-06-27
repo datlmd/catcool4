@@ -1,6 +1,6 @@
 {strip}
 	{if !empty($counter_list)}
-		<h3 class="font-weight-bold text-center text-3 mb-2">{lang('News.text_popular_post')}</h3>
+		<h3 class="font-weight-bold mt-2 text-3 mb-2">{lang('News.text_popular_post')}</h3>
 		{foreach $counter_list as $news}
 			<article>
 				<a href="{$news.detail_url}">

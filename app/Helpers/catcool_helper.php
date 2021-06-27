@@ -1122,7 +1122,7 @@ if(!function_exists('format_date'))
     function format_date($date, $format = FALSE, $style = FALSE)
     {
         $style = $style ? $style : 1;
-        $format = $format ? $format : 'd/m/y, H:i';
+        $format = $format ? $format : 'd/m/Y, H:i';
 
         //format date to compare
         $date = date('Y-m-d H:i:s', strtotime($date));
@@ -1149,7 +1149,7 @@ if(!function_exists('format_date'))
 
 if(!function_exists('time_ago'))
 {
-    function time_ago($date, $format = 'd/m/y, H:i')
+    function time_ago($date, $format = 'd/m/Y, H:i')
     {
         $timestamp = strtotime($date);
 
@@ -1178,6 +1178,50 @@ if(!function_exists('time_ago'))
 
             return lang('General.text_time_ago', [$diff, strtolower($strTime[$i])]);
         }
+    }
+}
+
+if(!function_exists('get_today'))
+{
+    function get_today($format = 'd/m/Y')
+    {
+        $timestamp = time();
+
+        if (get_lang() != 'vi') {
+            $format = $format ?? "D, d M Y";
+            return date($format, $timestamp);
+        }
+
+        $text_day = "";
+        $day_of_week = date('w', $timestamp);
+
+        switch ($day_of_week) {
+            case 6:
+                $text_day = 'Chủ Nhật';
+                break;
+            case 0:
+                $text_day = 'Thứ Hai';
+                break;
+            case 1:
+                $text_day = 'Thứ Ba';
+                break;
+            case 2:
+                $text_day = 'Thứ Tư';
+                break;
+            case 3:
+                $text_day = 'Thứ Năm';
+                break;
+            case 4:
+                $text_day = 'Thứ Sáu';
+                break;
+            case 5:
+                $text_day = 'Thứ Bảy';
+                break;
+            default:
+                $text_day = '';
+        }
+
+        return sprintf("%s, %s", $text_day, date("d/m/Y", $timestamp));
     }
 }
 

@@ -53,7 +53,7 @@
                             <li class="social-icons-twitter"><a href="http://www.twitter.com/" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a></li>
                             <li class="social-icons-linkedin"><a href="http://www.linkedin.com/" target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a></li>
                         </ul>
-                        <p class="d-none d-lg-block text-1 pt-3">© 2018 PORTO. All rights reserved</p>
+                        <p class="d-none d-lg-block text-2 pt-3">{get_today()}</p>
                         <button class="btn header-btn-collapse-nav" data-bs-toggle="collapse" href="#menu_main_collapse">
                             <i class="fas fa-bars"></i>
                         </button>

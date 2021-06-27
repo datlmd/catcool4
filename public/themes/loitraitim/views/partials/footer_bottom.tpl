@@ -9,7 +9,7 @@
 							<li class="social-icons-twitter"><a href="http://www.twitter.com/" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a></li>
 							<li class="social-icons-linkedin"><a href="http://www.linkedin.com/" target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a></li>
 						</ul>
-						<p><strong>{config_item('site_name')}</strong>{lang('Frontend.text_copyright')}</p>
+						<p class="text-center">{lang('Frontend.text_copyright')}</p>
 					</div>
 				</div>
 			</div>
