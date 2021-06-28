@@ -433,7 +433,7 @@ If false, no automatic detection will be performed.
 	/**
 	 * Set theme frontend default/kenhtraitim
 	 */
-	public $themeFrontend = "default";
+	public $themeFrontend = "loitraitim";
 
 	/**
 	 * Track the number of failed login attempts for each user or ip.
