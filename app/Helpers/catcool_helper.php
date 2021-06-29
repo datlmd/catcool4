@@ -658,6 +658,36 @@ if(!function_exists('get_image_resize_info'))
     }
 }
 
+if(!function_exists('image_action'))
+{
+    /**
+     * Load hinh tu action image
+     *
+     * @param null $image
+     * @param null $width
+     * @param null $height
+     * @return null|string
+     */
+    function image_action($image = null, $width = null, $height = null)
+    {
+        if (stripos($image, "https://") !== false || stripos($image, "http://") !== false) {
+            return $image;
+        }
+
+        $image = $image ?? "none.png";
+        if (!is_null($width) && is_numeric($width) && !is_null($height) && is_numeric($height)) {
+            $image = sprintf('%dx%d/%s', $width, $height, $image);
+        }
+        $image = 'img/'.$image;
+
+        if (!empty(session()->get('is_admin'))) {
+            return image_domain($image) . '?' . time();
+        }
+
+        return image_domain($image);
+    }
+}
+
 if(!function_exists('image_url'))
 {
     function image_url($image = null, $width = null, $height = null)
