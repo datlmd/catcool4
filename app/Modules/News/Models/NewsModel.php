@@ -280,7 +280,7 @@ class NewsModel extends FarmModel
                 'is_homepage' => STATUS_OFF,
                 'is_disable_follow' => STATUS_OFF,
                 'is_disable_robot' => STATUS_OFF,
-                'ip' => get_client_ip(),
+                'ip' => CodeIgniter\HTTP\Request::getIPAddress(),//get_client_ip(),
                 'user_id' => session('admin.user_id'),
                 'is_comment' => COMMENT_STATUS_ON,
                 'published' => $status,

@@ -595,10 +595,10 @@ if(!function_exists('image_domain'))
 
 if(!function_exists('image_default_url'))
 {
-    function image_default_url() {
-        $upload_path = get_upload_url();
-        if (!empty(config_item('image_none')) && is_file( ROOTPATH . $upload_path . config_item('image_none'))) {
-            return image_domain('img/' . $upload_path . config_item('image_none'));
+    function image_default_url()
+    {
+        if (!empty(config_item('image_none')) && is_file(get_upload_path(config_item('image_none')))) {
+            return image_domain(get_upload_url(config_item('image_none')));
         }
 
         return base_url('common/'.UPLOAD_IMAGE_DEFAULT);
@@ -607,10 +607,10 @@ if(!function_exists('image_default_url'))
 
 if(!function_exists('image_default_path'))
 {
-    function image_default_path() {
-        $upload_path = get_upload_url();
-        if (!empty(config_item('image_none')) && is_file( ROOTPATH . $upload_path . config_item('image_none'))) {
-            return ROOTPATH . $upload_path . config_item('image_none');
+    function image_default_path()
+    {
+        if (!empty(config_item('image_none')) && is_file(get_upload_path(config_item('image_none')))) {
+            return get_upload_path(config_item('image_none'));
         }
 
         return ROOTPATH . 'public/common/' . UPLOAD_IMAGE_DEFAULT;
@@ -666,17 +666,25 @@ if(!function_exists('image_url'))
             return $image;
         }
 
-        $image = $image ?? "none.png";
-        if (!is_null($width) && is_numeric($width) && !is_null($height) && is_numeric($height)) {
-            $image = sprintf('%dx%d/%s', $width, $height, $image);
+        $agent = \Config\Services::request()->getUserAgent();
+        if (empty($width) || empty($height)) {
+            $width = ($agent->isMobile()) ? config_item('image_width_mobile') : config_item('image_width_pc');
+            $height = ($agent->isMobile()) ? config_item('image_height_mobile') : config_item('image_height_pc');
         }
-        $image = 'img/'.$image;
 
+        if (!is_file(get_upload_path($image))) {
+            return image_default_url();
+        }
+
+        $image_tool   = new \App\Libraries\ImageTool();
+        $image_resize = $image_tool->resize($image, $width, $height);
+
+        $image_resize = get_upload_url($image_resize);
         if (!empty(session()->get('is_admin'))) {
-            return image_domain($image) . '?' . time();
+            return image_domain($image_resize) . '?' . time();
         }
 
-        return image_domain($image);
+        return image_domain($image_resize);
     }
 }
 
@@ -694,8 +702,8 @@ if(!function_exists('image_thumb_url'))
     {
         $width = !empty($width) ? $width : (!empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH);
         $height = !empty($height) ? $height : (!empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT);
-        $upload_path = get_upload_url();
-        if (!is_file( ROOTPATH . $upload_path . $image)) {
+
+        if (!is_file(get_upload_path($image))) {
             return image_default_url();
         }
 
@@ -704,7 +712,8 @@ if(!function_exists('image_thumb_url'))
             $image_tool->resizeFit($image, $width, $height, $position)
             : $image_tool->resize($image, $width, $height);
 
-        $image_resize = "img/$upload_path/$image_resize";
+
+        $image_resize = get_upload_url($image_resize);
         if (!empty(session()->get('is_admin'))) {
             return image_domain($image_resize) . '?' . time();
         }
@@ -1010,6 +1019,7 @@ if(!function_exists('get_upload_url'))
     function get_upload_url($upload_uri = NULL)
     {
         $dir = !empty($upload_uri) ? UPLOAD_FILE_DIR . $upload_uri : UPLOAD_FILE_DIR;
+        $dir = str_ireplace('public/', '', $dir);
         $dir = preg_replace('@/+$@', '', $dir) . '/';
 
         return $dir;
@@ -1196,25 +1206,25 @@ if(!function_exists('get_today'))
         $day_of_week = date('w', $timestamp);
 
         switch ($day_of_week) {
-            case 6:
+            case 0:
                 $text_day = 'Chủ Nhật';
                 break;
-            case 0:
+            case 1:
                 $text_day = 'Thứ Hai';
                 break;
-            case 1:
+            case 2:
                 $text_day = 'Thứ Ba';
                 break;
-            case 2:
+            case 3:
                 $text_day = 'Thứ Tư';
                 break;
-            case 3:
+            case 4:
                 $text_day = 'Thứ Năm';
                 break;
-            case 4:
+            case 5:
                 $text_day = 'Thứ Sáu';
                 break;
-            case 5:
+            case 6:
                 $text_day = 'Thứ Bảy';
                 break;
             default:
@@ -1415,9 +1425,8 @@ if(!function_exists('get_avatar'))
             $user_gender = session('admin.user_gender');
         }
 
-        $upload_path = get_upload_url();
         $avatar      = empty($avatar) ? 'users/' . $username . $image_ext : $avatar;
-        if (!is_file( WRITEPATH . $upload_path . $avatar)) {
+        if (!is_file(get_upload_path($avatar))) {
             return ($user_gender == GENDER_MALE) ? base_url('common/'.config_item('avatar_default_male')) : base_url('common/'.config_item('avatar_default_female'));
         }
 

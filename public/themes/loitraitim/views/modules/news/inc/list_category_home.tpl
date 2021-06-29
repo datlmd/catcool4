@@ -11,7 +11,7 @@
 							<div class="row pb-1 pe-3">
 								<div class="col-4 p-0">
 									<a href="{$news.detail_url}">
-										<img src="{if !empty($news.images.root)}{image_url($news.images.root)}{else}{image_url($news.images.robot)}{/if}" class="img-fluid border-radius-0" alt="{$news.name}">
+										<img src="{if !empty($news.images.root)}{image_thumb_url($news.images.root)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid border-radius-0" alt="{$news.name}">
 									</a>
 								</div>
 								<div class="col-8 ps-2 pe-0">
@@ -31,7 +31,7 @@
 								<div class="row">
 									<div class="col">
 										<a href="{$news.detail_url}">
-											<img src="{if !empty($news.images.root)}{image_url($news.images.root)}{else}{image_url($news.images.robot)}{/if}" class="img-fluid border-radius-0" alt="{$news.name}">
+											<img src="{if !empty($news.images.root)}{image_thumb_url($news.images.root)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid border-radius-0" alt="{$news.name}">
 										</a>
 									</div>
 								</div>
@@ -62,7 +62,7 @@
 							<div class="row pb-1">
 								<div class="col-sm-4">
 									<a href="{$news.detail_url}">
-										<img src="{if !empty($news.images.root)}{image_url($news.images.root)}{else}{image_url($news.images.robot)}{/if}" class="img-fluid border-radius-0" alt="{$news.name}">
+										<img src="{if !empty($news.images.root)}{image_thumb_url($news.images.root)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid border-radius-0" alt="{$news.name}">
 									</a>
 								</div>
 								<div class="col-sm-8 ps-0">

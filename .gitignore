@@ -80,6 +80,9 @@ media/debugbar/*
 
 media/smarty/*
 
+public/uploads/*
+!public/uploads/index.html
+
 php_errors.log
 
 #-------------------------

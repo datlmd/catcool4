@@ -14,7 +14,7 @@
 						<article class="post post-medium border-0 pb-0 mb-5">
 							<div class="post-image">
 								<a href="{site_url($news.detail_url)}">
-									<img src="{if !empty($news.images.root)}{image_url($news.images.root)}{else}{image_url($news.images.robot)}{/if}" class="img-fluid img-thumbnail img-thumbnail-no-borders rounded-0 w-100" alt="{$news.name}" class="img-fluid img-thumbnail img-thumbnail-no-borders rounded-0" />
+									<img src="{if !empty($news.images.root)}{image_thumb_url($news.images.root)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid img-thumbnail img-thumbnail-no-borders rounded-0 w-100" alt="{$news.name}" class="img-fluid img-thumbnail img-thumbnail-no-borders rounded-0" />
 								</a>
 							</div>
 

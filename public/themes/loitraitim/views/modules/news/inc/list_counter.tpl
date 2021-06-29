@@ -4,7 +4,7 @@
 		{foreach $counter_list as $news}
 			<article>
 				<a href="{$news.detail_url}">
-					<img src="{if !empty($news.images.root)}{image_url($news.images.root)}{else}{image_url($news.images.robot)}{/if}" class="img-fluid border-radius-0 w-100" alt="{$news.name}">
+					<img src="{if !empty($news.images.root)}{image_thumb_url($news.images.root)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid border-radius-0 w-100" alt="{$news.name}">
 				</a>
 				<div class="d-inline-block text-default text-1">
 					{time_ago($news.publish_date)}
