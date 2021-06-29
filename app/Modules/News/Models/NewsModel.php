@@ -228,6 +228,8 @@ class NewsModel extends FarmModel
         //reset table
         $this->setTableNameYear();
 
+        $date_now = date("Y-m-d H:i:s", strtotime('-40 minutes', time()));
+
         $insert_list = [];
         foreach ($data as $key => $value) {
 
@@ -249,7 +251,7 @@ class NewsModel extends FarmModel
                 $image_fb = save_image_from_url($value['image_fb'], 'news');
             }
 
-            $date_now = get_date();
+            $date_now = date("Y-m-d H:i:s", strtotime('+5 minutes', strtotime($date_now)));
 
             if (!empty($value['tags'])) {
                 $tags = is_array($value['tags']) ? implode(",", $value['tags']) : $value['tags'];
@@ -280,7 +282,7 @@ class NewsModel extends FarmModel
                 'is_homepage' => STATUS_OFF,
                 'is_disable_follow' => STATUS_OFF,
                 'is_disable_robot' => STATUS_OFF,
-                'ip' => CodeIgniter\HTTP\Request::getIPAddress(),//get_client_ip(),
+                'ip' => get_client_ip(), //\CodeIgniter\HTTP\Request::getIPAddress()
                 'user_id' => session('admin.user_id'),
                 'is_comment' => COMMENT_STATUS_ON,
                 'published' => $status,
