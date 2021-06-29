@@ -57,7 +57,7 @@ class Paths
 	 *
 	 * @var string
 	 */
-	public $writableDirectory = __DIR__ . '/../../media';
+	public $writableDirectory = __DIR__ . '/../../writable';
 
 	/**
 	 * ---------------------------------------------------------------

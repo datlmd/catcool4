@@ -123,7 +123,7 @@ defined('URL_LAST_FLAG')      OR define('URL_LAST_FLAG', 1);
 defined('DISPLAY_LIST') OR define('DISPLAY_LIST', 'list');
 defined('DISPLAY_GRID') OR define('DISPLAY_GRID', 'grid');
 
-defined('UPLOAD_FILE_DIR')             OR define('UPLOAD_FILE_DIR', 'media/uploads/');
+defined('UPLOAD_FILE_DIR')             OR define('UPLOAD_FILE_DIR', 'public/uploads/');
 defined('UPLOAD_FILE_CACHE_DIR')       OR define('UPLOAD_FILE_CACHE_DIR', 'cache/');
 defined('UPLOAD_IMAGE_DEFAULT')        OR define('UPLOAD_IMAGE_DEFAULT', 'images/img_default.jpg');
 defined('RESIZE_IMAGE_DEFAULT_WIDTH')  OR define('RESIZE_IMAGE_DEFAULT_WIDTH', 2048);
