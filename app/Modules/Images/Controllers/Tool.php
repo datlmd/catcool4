@@ -33,7 +33,7 @@ class Tool extends BaseController
         }
 
         $params['height']     = (empty($params['height'])) ? $params['width'] : $params['height'];
-        $params['text']       = (empty($this->request->getGet("text"))) ? $params['width'].'x'. $params['height'] : $this->request->getGet("text", true);
+        $params['text']       = (empty($this->request->getGet("text"))) ? $params['width'].'x'. $params['height'] : $this->request->getGet("text");
         $params['background'] = (empty($background)) ? 'CCCCCC' : $background;
         $params['foreground'] = (empty($foreground)) ? '969696' : $foreground;
 
@@ -44,7 +44,7 @@ class Tool extends BaseController
 
         $this->response
             ->setStatusCode(200)
-            ->setContentType(preg_replace('/\s+/','',$response_alt->getHeader('Content-Type')->getValue()))
+            ->setContentType(preg_replace('/\s+/','', $response_alt->getHeader('Content-Type')->getValue()))
             ->setBody(file_get_contents_ssl($alt_url))
             ->send();
     }
