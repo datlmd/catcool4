@@ -70,7 +70,7 @@
 										<h4 class="pb-2 line-height-4 font-weight-normal text-3 text-dark mb-0">
 											<a href="{$news.detail_url}" class="text-decoration-none text-color-dark">{$news.name}</a>
 											<span class="d-inline-block text-default text-1 ps-2">
-												- {time_ago($news.publish_date)}
+												{time_ago($news.publish_date)}
 											</span>
 										</h4>
 									</div>

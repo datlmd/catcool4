@@ -49,8 +49,13 @@ class NewsModel extends FarmModel
     protected $useSoftDeletes = true;
     protected $deletedField   = 'deleted';
 
-    const NEWS_CACHE_NAME   = 'news_detail_id_';
     const NEWS_CACHE_EXPIRE = HOUR;
+    const NEWS_CACHE_DETAIL = 'news_detail_id_';
+    const NEWS_CACHE_CATEGORY_HOME = 'news_category_home_list';
+    const NEWS_CACHE_SLIDE_HOME = 'news_slide_home_list';
+    const NEWS_CACHE_COUNTER_LIST = 'news_counter_list';
+    const NEWS_CACHE_HOT_LIST = 'news_hot_list';
+    const NEWS_CACHE_NEW_LIST = 'news_new_list';
 
     const FORMAT_NEWS_ID = '%sC%s';
     const SOURCE_TYPE_ROBOT = 1;
@@ -103,7 +108,7 @@ class NewsModel extends FarmModel
             list($news_id, $ctime) = $this->getFormatNewsId($news_id);
         }
 
-        $result = $is_cache ? cache()->get(self::NEWS_CACHE_NAME . $news_id) : null;
+        $result = $is_cache ? cache()->get(self::NEWS_CACHE_DETAIL . $news_id) : null;
         if (empty($result)) {
 
             $this->setTableNameYear($ctime);
@@ -126,20 +131,29 @@ class NewsModel extends FarmModel
             $result = $this->formatDetail($result);
             if ($is_cache) {
                 // Save into the cache for $expire_time 1 month
-                cache()->save(self::NEWS_CACHE_NAME . $news_id, $result, self::NEWS_CACHE_EXPIRE);
+                cache()->save(self::NEWS_CACHE_DETAIL . $news_id, $result, self::NEWS_CACHE_EXPIRE);
             }
         }
 
         return $result;
     }
 
-    public function deleteCache($news_id)
+    public function deleteCache($news_id = null)
     {
-        if (strpos($news_id, 'C') !== FALSE) {
-            list($news_id) = $this->getFormatNewsId($news_id);
+        if (!empty($news_id)) {
+            if (strpos($news_id, 'C') !== FALSE) {
+                list($news_id) = $this->getFormatNewsId($news_id);
+            }
+
+            cache()->delete(self::NEWS_CACHE_DETAIL . $news_id);
         }
 
-        cache()->delete(self::NEWS_CACHE_NAME . $news_id);
+        cache()->delete(self::NEWS_CACHE_CATEGORY_HOME);
+        cache()->delete(self::NEWS_CACHE_SLIDE_HOME);
+        cache()->delete(self::NEWS_CACHE_COUNTER_LIST);
+        cache()->delete(self::NEWS_CACHE_HOT_LIST);
+        cache()->delete(self::NEWS_CACHE_NEW_LIST);
+
         return true;
     }
 
@@ -184,9 +198,12 @@ class NewsModel extends FarmModel
         }
 
         if (isset($data['images']) || isset($data['category_ids']) || isset($data['related_ids'])) {
-            $data['images']       = json_decode($data['images'], true);
-            $data['category_ids'] = json_decode($data['category_ids'], true);
-            $data['related_ids']  = json_decode($data['related_ids'], true);
+            $images       = $data['images'] ?? null;
+            $category_ids = $data['category_ids'] ?? null;
+            $related_ids  = $data['related_ids'] ?? null;
+            $data['images']       = json_decode($images, true);
+            $data['category_ids'] = json_decode($category_ids, true);
+            $data['related_ids']  = json_decode($related_ids, true);
         } else {
             foreach ($data as $key => $value) {
                 if (isset($value['images'])) {
@@ -372,117 +389,156 @@ class NewsModel extends FarmModel
         return $list_menu;
     }
 
-    public function getListHome($limit = 200)
+    public function getListHome($limit = 200, $is_cache = true)
     {
-        $category_model = new CategoryModel();
+        $category_list = $is_cache ? cache()->get(self::NEWS_CACHE_CATEGORY_HOME) : null;
+        if (empty($category_list)) {
+            $category_model = new CategoryModel();
+            $category_list = $category_model->getListPublished();
 
-        $category_list = $category_model->getListPublished();
+            $where = [
+                'published' => STATUS_ON,
+                'publish_date <=' => get_date(),
+            ];
 
-        $where = [
-            'published' => STATUS_ON,
-            'publish_date <=' => get_date(),
-        ];
+            $list = $this->select(['news_id', 'name', 'slug', 'description', 'publish_date', 'images', 'category_ids', 'ctime'])
+                ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
 
-        $list = $this->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
+            foreach ($category_list as $key => $category) {
+                foreach ($list as $key_news => $value) {
+                    $value = $this->formatDetail($value);
 
-        foreach ($category_list as $key => $category) {
-            foreach ($list as $key_news => $value) {
-                $value = $this->formatDetail($value);
-
-                if (in_array($category['category_id'], $value['category_ids'])) {
-                    $category_list[$key]['list'][] = $value;
-                    if (count($category_list[$key]['list']) >= 5) {
-                        break;
+                    if (in_array($category['category_id'], $value['category_ids'])) {
+                        $category_list[$key]['list'][] = $value;
+                        if (count($category_list[$key]['list']) >= 5) {
+                            break;
+                        }
                     }
                 }
+            }
+
+            if ($is_cache) {
+                // Save into the cache for $expire_time 1 month
+                cache()->save(self::NEWS_CACHE_CATEGORY_HOME, $category_list, self::NEWS_CACHE_EXPIRE);
             }
         }
 
         return $category_list;
     }
 
-    public function getSlideHome($limit = 5)
+    public function getSlideHome($limit = 5, $is_cache = true)
     {
-        $where = [
-            'published' => STATUS_ON,
-            'publish_date <=' => get_date(),
-            'is_homepage' => STATUS_ON
-        ];
+        $slides = $is_cache ? cache()->get(self::NEWS_CACHE_SLIDE_HOME) : null;
+        if (empty($slides)) {
+            $where = [
+                'published' => STATUS_ON,
+                'publish_date <=' => get_date(),
+                'is_homepage' => STATUS_ON
+            ];
 
-        $list = $this->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
-        if (empty($list)) {
-            return [];
-        }
+            $list = $this->select(['news_id', 'name', 'slug', 'description', 'publish_date', 'images', 'ctime'])
+                ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
+            if (empty($list)) {
+                return [];
+            }
 
-        $slides = [];
-        foreach ($list as $key_news => $value) {
-            $slides[] = $this->formatDetail($value);
+            foreach ($list as $key_news => $value) {
+                $slides[] = $this->formatDetail($value);
+            }
+
+            if ($is_cache) {
+                // Save into the cache for $expire_time 1 month
+                cache()->save(self::NEWS_CACHE_SLIDE_HOME, $slides, self::NEWS_CACHE_EXPIRE);
+            }
         }
 
         return $slides;
     }
 
-    public function getListCounter($limit = 20)
+    public function getListCounter($limit = 20, $is_cache = true)
     {
-       $from_date = date('Y-m-d H:i:s',strtotime('-3 day', time()));
+        $result = $is_cache ? cache()->get(self::NEWS_CACHE_COUNTER_LIST) : null;
+        if (empty($result)) {
+            $from_date = date('Y-m-d H:i:s', strtotime('-3 day', time()));
 
-        $where = [
-            'published' => STATUS_ON,
-            'publish_date <=' => get_date(),
-            'publish_date >=' => $from_date,
-        ];
+            $where = [
+                'published' => STATUS_ON,
+                'publish_date <=' => get_date(),
+                'publish_date >=' => $from_date,
+            ];
 
-        $list = $this->orderBy('counter_view', 'DESC')->where($where)->findAll($limit);
-        if (empty($list)) {
-            return [];
+            $list = $this->select(['news_id', 'name', 'slug', 'description', 'publish_date', 'images', 'ctime'])
+                ->orderBy('counter_view', 'DESC')->where($where)->findAll($limit);
+            if (empty($list)) {
+                return [];
+            }
+
+            foreach ($list as $key_news => $value) {
+                $result[] = $this->formatDetail($value);
+            }
+
+            if ($is_cache) {
+                // Save into the cache for $expire_time 1 month
+                cache()->save(self::NEWS_CACHE_COUNTER_LIST, $result, self::NEWS_CACHE_EXPIRE);
+            }
         }
 
-        $slides = [];
-        foreach ($list as $key_news => $value) {
-            $slides[] = $this->formatDetail($value);
-        }
-
-        return $slides;
+        return $result;
     }
 
-    public function getListHot($limit = 20)
+    public function getListHot($limit = 20, $is_cache = true)
     {
-        $where = [
-            'published' => STATUS_ON,
-            'publish_date <=' => get_date(),
-            'is_hot' => STATUS_ON,
-        ];
+        $result = $is_cache ? cache()->get(self::NEWS_CACHE_HOT_LIST) : null;
+        if (empty($result)) {
+            $where = [
+                'published' => STATUS_ON,
+                'publish_date <=' => get_date(),
+                'is_hot' => STATUS_ON,
+            ];
 
-        $list = $this->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
-        if (empty($list)) {
-            return [];
+            $list = $this->select(['news_id', 'name', 'slug', 'description', 'publish_date', 'images', 'ctime'])
+                ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
+            if (empty($list)) {
+                return [];
+            }
+
+            foreach ($list as $key_news => $value) {
+                $result[] = $this->formatDetail($value);
+            }
+
+            if ($is_cache) {
+                // Save into the cache for $expire_time 1 month
+                cache()->save(self::NEWS_CACHE_HOT_LIST, $result, self::NEWS_CACHE_EXPIRE);
+            }
         }
 
-        $slides = [];
-        foreach ($list as $key_news => $value) {
-            $slides[] = $this->formatDetail($value);
-        }
-
-        return $slides;
+        return $result;
     }
 
-    public function getListNew($limit = 20)
+    public function getListNew($limit = 20, $is_cache = true)
     {
-        $where = [
-            'published' => STATUS_ON,
-            'publish_date <=' => get_date(),
-        ];
+        $result = $is_cache ? cache()->get(self::NEWS_CACHE_NEW_LIST) : null;
+        if (empty($result)) {
+            $where = [
+                'published' => STATUS_ON,
+                'publish_date <=' => get_date(),
+            ];
 
-        $list = $this->orderBy('news_id', 'DESC')->where($where)->findAll($limit);
-        if (empty($list)) {
-            return [];
+            $list = $this->orderBy('news_id', 'DESC')->where($where)->findAll($limit);
+            if (empty($list)) {
+                return [];
+            }
+
+            foreach ($list as $key_news => $value) {
+                $result[] = $this->formatDetail($value);
+            }
+
+            if ($is_cache) {
+                // Save into the cache for $expire_time 1 month
+                cache()->save(self::NEWS_CACHE_NEW_LIST, $result, self::NEWS_CACHE_EXPIRE);
+            }
         }
 
-        $slides = [];
-        foreach ($list as $key_news => $value) {
-            $slides[] = $this->formatDetail($value);
-        }
-
-        return $slides;
+        return $result;
     }
 }
