@@ -2,6 +2,7 @@
 
 use App\Controllers\BaseController;
 use App\Modules\News\Models\NewsModel;
+use App\Modules\News\Models\CategoryModel;
 
 class Detail extends BaseController
 {
@@ -16,20 +17,16 @@ class Detail extends BaseController
 
         $this->themes->addPartial('header_top')
             ->addPartial('header_bottom')
-            ->addPartial('content_left')
-            ->addPartial('content_right')
             ->addPartial('footer_top')
             ->addPartial('footer_bottom');
-
-        $this->breadcrumb->openTag(config_item('breadcrumb_open'));
-        $this->breadcrumb->closeTag(config_item('breadcrumb_close'));
-        $this->breadcrumb->add(lang('General.text_home'), base_url());
 
         $this->model = new NewsModel();
     }
 
     public function index($slug, $news_id, $ctime)
     {
+        $category_model = new CategoryModel();
+        $category_list = $category_model->getListPublished();
 
         $detail = $this->model->getNewsInfo($news_id, $ctime);
 
@@ -47,6 +44,7 @@ class Detail extends BaseController
         $data = [
             'detail' => $detail,
             'news_category_list' => $news_category_list,
+            'category_list' => $category_list,
         ];
 
 

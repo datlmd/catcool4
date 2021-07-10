@@ -369,9 +369,9 @@ class NewsModel extends FarmModel
                 $list_tags = $robot->getTags($attribute['attribute_tags'], $detail['html']);
                 $list_news[$news_key]['tags'] = implode(",", $list_tags);
 
-                if ($news_key % 10 == 0) {
-                    sleep(1);
-                }
+//                if ($news_key % 10 == 0) {
+//                    sleep(1);
+//                }
             }
             krsort($list_news);
             $list_menu[$key]['list_news'] = $list_news;
@@ -384,6 +384,7 @@ class NewsModel extends FarmModel
                     usleep(500);
                 }
             }
+            $this->deleteCache();
         }
 
         return $list_menu;

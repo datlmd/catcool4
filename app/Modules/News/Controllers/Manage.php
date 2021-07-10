@@ -153,6 +153,8 @@ class Manage extends AdminController
                 return redirect()->back()->withInput();
             }
 
+            $this->model->deleteCache();
+
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }

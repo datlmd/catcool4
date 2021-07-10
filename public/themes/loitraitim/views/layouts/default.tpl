@@ -7,7 +7,7 @@
 
         <div role="main" class="main">
 
-            <section class="section container-fluid border-0 m-0 p-0 py-3 py-lg-5 mt-lg-4 mt-xl-0">
+            <section class="section container-fluid border-0 m-0 p-0 py-2 py-lg-5 mt-lg-4 py-xl-2 pt-xl-1 mt-xl-0">
 
                 {if !empty($breadcumb)}{$breadcumb}{/if}
                 <div class="row">

@@ -26,3 +26,54 @@ img.image-grayscale:hover, .article-hot:hover .image-grayscale {
 
 .header-logo a { display: block; overflow: hidden; }
 .header-logo a img { max-width: 200px; overflow: hidden; display: block; }
+
+.post.post-detail {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+.post.post-detail h2 { }
+.post.post-detail .detail-content p { padding: 0 20px; line-height: 24px; }
+.post.post-detail .detail-content div { width: 100%; text-align: center; }
+.post.post-detail .detail-content img, .post.post-detail .detail-content video { width: 100% !important; max-width: 500px !important; margin: 10px 0; }
+
+.post.post-detail .detail-content h1, .post.post-detail .detail-content h2, .post.post-detail .detail-content h3,
+.post.post-detail .detail-content h4, .post.post-detail .detail-content h5, .post.post-detail .detail-content h6
+{
+    margin: 0; padding: 8px 20px;
+}
+.post.post-detail .detail-content h1 { font-size: 20px; }
+.post.post-detail .detail-content h2 { font-size: 18px; }
+.post.post-detail .detail-content h3 { font-size: 17px; }
+.post.post-detail .detail-content h4 { font-size: 16px; }
+.post.post-detail .detail-content h5 { font-size: 15px; }
+.post.post-detail .detail-content h6 { font-size: 14px; }
+
+.post.post-detail .padding { padding: 20px; }
+
+.post.post-detail a {
+    text-decoration: none !important;
+}
+
+.fb-share {
+    width: 100%;
+    display: block;
+    background: #38529a;
+    padding: 10px;
+    color: #fff;
+    text-align: center !important;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    text-decoration: none;
+}
+
+.zalo-share a {
+    width: 100%;
+    display: block;
+    background: #0098f7;
+    padding: 10px;
+    color: #fff;
+    text-align: center !important;
+    -webkit-border-radius: 8px;
+    text-decoration: none;
+}
