@@ -45,7 +45,7 @@
 
                             <div class="row">
                                 <div class="col-sm-6 mt-2">
-                                    <a target="_blank" class="w-100 fb-share" url="https://www.facebook.com/sharer/sharer.php?u={base_url($detail.detail_url)}">Chia sẻ Facebook</a>
+                                    <a target="_blank" class="fb-share" href="https://www.facebook.com/sharer/sharer.php?u={base_url($detail.detail_url)}">Chia sẻ Facebook</a>
                                 </div>
                                 <div class="col-sm-6 mt-2 zalo-share">
                                     <script src="https://sp.zalo.me/plugins/sdk.js"></script>
