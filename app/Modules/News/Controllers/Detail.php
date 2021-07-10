@@ -31,26 +31,58 @@ class Detail extends BaseController
         $detail = $this->model->getNewsInfo($news_id, $ctime);
 
         $news_category_list = [];
-        $category_list = $this->model->getListHome();
-        if (!empty($category_list) && !empty($news['category_ids'])) {
-            foreach ($news['category_ids'] as $category_id) {
-                if (isset($category_list[$category_id])) {
-                    $news_category_list = array_merge($news_category_list, $category_list[$category_id]['list']);
+        $data_category_list = $this->model->getListHome();
+        if (!empty($data_category_list) && !empty($detail['category_ids'])) {
+            foreach ($detail['category_ids'] as $category_id) {
+                if (isset($data_category_list[$category_id])) {
+                    $news_category_list = array_merge($news_category_list, $data_category_list[$category_id]['list']);
                 }
             }
         }
         shuffle($news_category_list);
 
+        //META
+        $data_meta = [
+            'title'          => $detail['meta_title'] ?? $detail['name'],
+            'description'    => $detail['meta_description'] ?? $detail['description'],
+            'keywords'       => $detail['meta_keyword'],
+            'url'            => base_url($detail['detail_url']),
+            'image'          => $detail['images']['root'] ?? $detail['images']['robot'],
+            'image_fb'       => $detail['images']['fb'] ?? $detail['images']['robot_fb'],
+            'published_time' => date('c', strtotime($detail['publish_date'])),
+            'modified_time'  => date('c', strtotime($detail['mtime'])),
+        ];
+        add_meta($data_meta, $this->themes);
+
+        //GOOGLE BREADCRUMB STRUCTURED DATA
+        $script_breadcrumb  = [];
+        if (!empty($category_list) && !empty($detail['category_ids'])) {
+            foreach ($detail['category_ids'] as $category_id) {
+                if (isset($category_list[$category_id])) {
+                    $script_breadcrumb[] = [
+                        'name' => $category_list[$category_id]['name'],
+                        'url'  => sprintf('%s/%s.html',  base_url(), $category_list[$category_id]['slug'])
+                    ];
+                }
+            }
+        }
+        $script_detail = [
+            'name'           => $detail['meta_title'] ?? $detail['name'],
+            'description'    => $detail['meta_description'] ?? $detail['description'],
+            'url'            => base_url($detail['detail_url']),
+            'image'          => $detail['images']['root'] ?? $detail['images']['robot'],
+            'published_time' => date('c', strtotime($detail['publish_date'])),
+            'modified_time'  => date('c', strtotime($detail['mtime'])),
+            'author'         =>  $detail['author'] ?? "Ryan Lee",
+        ];
+        $script_google_search = script_google_search($script_detail, $script_breadcrumb);
+
         $data = [
             'detail' => $detail,
             'news_category_list' => $news_category_list,
             'category_list' => $category_list,
+            'script_google_search' => $script_google_search
         ];
-
-
-        //cc_debug($data['category_list']);
-
-        add_meta(['title' => lang("News.heading_title")], $this->themes);
 
         theme_load('detail', $data);
     }

@@ -3,6 +3,9 @@
 <html class="{if !empty($html_class)}{$html_class} {/if}side-header" dir="{lang('General.direction')}" lang="{lang('General.code')}">
 <head>
 	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="content-language" content="{lang('General.code')}">
+
 	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<base href="{site_url()}">
@@ -35,6 +38,8 @@
 	<script src="{base_url('common/plugin/bootstrap/js/popper.min.js')}" type="text/javascript"></script>
 
     <script>{script_global()}</script>
+	<!-- GOOGLE SEARCH STRUCTURED DATA FOR ARTICLE -->
+	{if !empty($script_google_search)}{$script_google_search}{/if}
 </head>
 <body class="{if !empty($body_class)}{$body_class}{/if}">
 	{$layout}
@@ -43,13 +48,16 @@
 	{if !empty($js_files)}{$js_files}{/if}
 
 	{if !empty(config_item('ga_enabled')) && !empty(config_item('ga_siteid'))}
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id={config_item('ga_siteid')}"></script>
 		{literal}
-		<!-- Google Analytics-->
-		<script>
-			window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
-			ga('create','{/literal}{config_item('ga_siteid')}{literal}','auto');ga('send','pageview')
-		</script>
-		<script src="https://www.google-analytics.com/analytics.js" async defer></script>
+			<script>
+				window.dataLayer = window.dataLayer || [];
+				function gtag(){dataLayer.push(arguments);}
+				gtag('js', new Date());
+
+				gtag('config', '{/literal}{config_item('ga_siteid')}{literal}');
+			</script>
 		{/literal}
 	{/if}
 

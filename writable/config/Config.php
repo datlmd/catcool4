@@ -205,7 +205,7 @@ pass: dat@!@#$%
 	/**
 	 * GA ID
 	 */
-	public $gaSiteid = "";
+	public $gaSiteid = "G-GE930MFDR1";
 
 	/**
 	 * https://console.developers.google.com

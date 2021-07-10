@@ -1579,23 +1579,32 @@ if(!function_exists('add_meta'))
     {
         try
         {
-            $title       = !empty($data['title']) ? $data['title'] : config_item('site_name');
-            $description = !empty($data['description']) ? $data['description'] : config_item('site_description');
-            $keywords    = !empty($data['keywords']) ? $data['keywords'] : config_item('site_keywords');
-            $url         = !empty($data['url']) ? $data['url'] : base_url();
-            $image       = !empty($data['image']) ? $data['image'] : config_item('site_image');
-
-            //$theme = \App\Libraries\Themes::init();
+            $title       = $data['title'] ?? config_item('site_name');
+            $description = $data['description'] ?? config_item('site_description');
+            $keywords    = $data['keywords'] ?? config_item('site_keywords');
+            $url         = $data['url'] ?? base_url();
+            $image       = $data['image'] ?? config_item('site_image');
+            $image_fb    = $data['image_fb'] ?? null;
 
             $theme->setPageTitle($title);
 
-            $theme->addMeta('robots', 'index,follow');
+            if ($is_admin) {
+                $theme->addMeta('robots', 'noindex');
+                $theme->addMeta('googlebot', 'noindex,');
+            } else {
+                $theme->addMeta('robots', 'index,follow');
+                $theme->addMeta('googlebot', 'index,follow');
+            }
+
+
             $theme->addMeta('revisit-after', '1 days');
 
             $theme->addMeta('generator', 'Cat Cool CMS');
-            $theme->addMeta('copyright', 'Cat Cool CMS');
+            if (!empty(lang('Frontend.text_copyright'))) {
+                $theme->addMeta('copyright', strip_tags(lang('Frontend.text_copyright')));
+            }
             $theme->addMeta('author', 'Dat Le');
-            $theme->addMeta('author', 'https://kenhtraitim.com', 'rel');
+            $theme->addMeta('author', site_url(), 'rel');
 
             $theme->addMeta('description', $description, 'meta', ['id' => 'meta_description']);
             $theme->addMeta('keywords', $keywords, 'meta', ['id' => 'meta_keywords']);
@@ -1615,20 +1624,23 @@ if(!function_exists('add_meta'))
             $theme->addMeta('og:url', $url);
             $theme->addMeta('og:title', $title);
             $theme->addMeta('og:description', $description);
-            $theme->addMeta('og:image', $image);
-            if (!empty($image)) {
-                $image = WRITEPATH . str_ireplace([base_url(), site_url()], ['', ''], $image);
-                if (is_file($image)) {
-                    $image_data = getimagesize($image);
+
+            if (!empty($image_fb)) {
+                $theme->addMeta('og:image', image_thumb_url($image_fb));
+
+                $image_fb_info = get_upload_path($image_fb);
+                if (is_file($image_fb_info)) {
+                    $image_data = getimagesize($image_fb_info);
                     if (!empty($image_data['mime']) && !empty($image_data[0]) && !empty($image_data[1])) {
                         $theme->addMeta('og:image:type', $image_data['mime']);
                         $theme->addMeta('og:image:width', $image_data[0]);
                         $theme->addMeta('og:image:height', $image_data[1]);
                     }
                 }
+
+                $theme->addMeta('og:twitter:image', image_thumb_url($image_fb), 'meta', ['property' => 'twitter:image']);
             }
 
-            $theme->addMeta('og:twitter:image', 'summary', 'meta', ['property' => 'twitter:image']);
             $theme->addMeta('og:twitter:card', 'summary_large_image', 'meta', ['property' => 'twitter:card']);
             $theme->addMeta('og:twitter:url', $url, 'meta', ['property' => 'twitter:url']);
             $theme->addMeta('og:twitter:title', $title, 'meta', ['property' => 'twitter:title']);
@@ -1636,6 +1648,22 @@ if(!function_exists('add_meta'))
 
             $theme->addMeta('resource-type', 'Document');
             $theme->addMeta('distribution', 'Global');
+
+            if (!empty($data['published_time'])) {
+                $theme->addMeta('published_at', $data['published_time']);
+                $theme->addMeta('og:article:published_time', $data['published_time'], 'meta', ['property' => 'article:published_time']);
+            }
+            if (!empty($data['modified_time'])) {
+                $theme->addMeta('updated_at', $data['modified_time']);
+                $theme->addMeta('og:article:modified_time', $data['modified_time'], 'meta', ['property' => 'article:modified_time']);
+            }
+
+            if (!empty($keywords)) {
+                $keyword_list = explode(',', $keywords);
+                foreach ($keyword_list as $keyword) {
+                    $theme->addMeta('og:article:tag', $keyword, 'meta', ['property' => 'article:tag']);
+                }
+            }
 
             if (!empty(config_item('google_site_verification'))) {
                 $theme->addMeta('google-site-verification', config_item('google_site_verification'));
@@ -1655,77 +1683,92 @@ if(!function_exists('add_meta'))
 
 if(!function_exists('script_google_search'))
 {
-    function script_google_search()
+    function script_google_search($detail = null, $breadcrumb_list = null)
     {
-        $CI = & get_instance();
+        $script_str = "";
 
-        return '
-            <!-- GOOGLE SEARCH STRUCTURED DATA FOR ARTICLE -->
-            <script type="application/ld+json">
-            {
-                "@context": "http://schema.org",
-                "@type": "NewsArticle",
-                "mainEntityOfPage":{
-                "@type":"WebPage",
-                    "@id":"https://kenh14.vn/meo-doc-tin-nhan-messenger-nhung-khong-bi-lo-da-xem-20210110231839102.chn"
-                },
-                "headline": "Mẹo đọc tin nhắn Messenger nhưng kh&amp;#244;ng bị lộ... &amp;quot;đ&amp;#227; xem&amp;quot;",
-                "description": "Messenger l&#224; ứng dụng nhắn tin phổ biến được d&#249;ng để tr&#242; chuyện tại Việt Nam. Tuy nhi&#234;n, c&#243; nhiều l&#250;c ch&#250;ng ta kh&#244;ng muốn để người kia biết được m&#236;nh đ&#227; đọc tin nhắn.",
-                "image": {
-                "@type": "ImageObject",
-                    "url": "https://kenh14cdn.com/zoom/700_438/203336854389633024/2021/1/10/photo1610295289747-16102952902141492839161.jpg",
-                    "width" : 700,
-                    "height" : 438
-                },
-                "datePublished": "2021-01-11T00:20:00+07:00",
-                "dateModified": "2021-01-11T00:20:00+07:00",
-                "author": {
-                "@type": "Person",
-                    "name": "Hạnh Koy"
-                },
-                "publisher": {
-                "@type": "Organization",
-                    "name": "kenh14.vn",
-                    "logo": {
-                    "@type": "ImageObject",
-                        "url": "https://kenh14cdn.com/zoom/60_60/k14-logo.png",
-                        "width": 60,
-                        "height": 60
+        if (!empty($detail)) {
+
+            $image = $detail['image'];
+            $image_info = get_upload_path($image);
+            if (is_file($image_info)) {
+                $image_data = getimagesize($image_info);
+            }
+
+            $script_str = '<script type="application/ld+json">
+                {
+                    "@context": "http://schema.org",
+                    "@type": "NewsArticle",
+                    "mainEntityOfPage": {
+                        "@type":"WebPage",
+                        "@id":"' . $detail['url'] .'"
+                    },
+                    "headline": "' . $detail['name'] . '",
+                    "description": "' . $detail['description'] . '",
+                    "image": {
+                        "@type": "ImageObject",
+                        "url": "' . image_thumb_url($image) . '",
+                        "width": ' . $image_data[0] . ',
+                        "height": ' . $image_data[1] . '
+                    },
+                    "datePublished": "' . $detail['published_time'] . '",
+                    "dateModified": "' . $detail['modified_time'] . '",
+                    "author": {
+                        "@type": "Person",
+                        "name": "' . $detail['author'] . '"
+                    },
+                    "publisher": {
+                        "@type": "Organization",
+                        "name": "' . str_ireplace('www.', '', base_url()) . '",
+                        "logo": {
+                        "@type": "ImageObject",
+                            "url": "https://kenh14cdn.com/zoom/60_60/k14-logo.png",
+                            "width": 60,
+                            "height": 60
+                        }
                     }
                 }
-            }
-            </script><!-- GOOGLE BREADCRUMB STRUCTURED DATA -->
-            <script type="application/ld+json">
+            </script>';
+        }
+
+        if (!empty($breadcrumb_list)) {
+            $script_str .= '<script type="application/ld+json">
             {
                 "@context": "http://schema.org",
                 "@type": "BreadcrumbList",
                 "itemListElement": [
-                {
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "item": {
+                        "@id": "' . base_url() . '",
+                            "name": "' . lang('General.text_home') . '"
+                        }
+                    },';
+
+            $breadcrumb_str = [];
+            $position     = 2;
+
+            foreach ($breadcrumb_list as $breadcrumb) {
+                $breadcrumb_str[] = '{
                     "@type": "ListItem",
-                    "position": 1,
+                    "position": ' . $position .',
                     "item": {
-                    "@id": "https://kenh14.vn",
-                        "name": "Trang chủ"
+                        "@id": "' . $breadcrumb['url'] . '",
+                        "name": "' . $breadcrumb['name'] . '"
                     }
-                },{
-                "@type": "ListItem",
-                                    "position": 2,
-                                    "item": {
-                    "@id": "https://kenh14.vn/2-tek.chn",
-                                        "name": "2-Tek"
-                                    }
-                                },{
-                "@type": "ListItem",
-                                    "position": 3,
-                                    "item": {
-                    "@id": "https://kenh14.vn/2-tek/ung-dung-thu-thuat.chn",
-                                        "name": "Ứng dụng/Thủ thuật"
-                                    }
-                                }
-                ]
+                }';
+
+                $position++;
+            }
+
+            $script_str .= implode(',', $breadcrumb_str) .
+                ']
             }
             </script>';
+        }
 
+        return $script_str;
     }
 }
 

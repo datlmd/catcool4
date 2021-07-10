@@ -3,6 +3,9 @@
 <html class="{if !empty($html_class)}{$html_class}{/if}" dir="{lang('General.direction')}" lang="{lang('General.code')}">
 <head>
 	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="content-language" content="{lang('General.code')}">
+
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<base href="{site_url()}">
 
@@ -42,15 +45,26 @@
 	{if !empty($js_files)}{$js_files}{/if}
 
 	{if !empty(config_item('ga_enabled')) && !empty(config_item('ga_siteid'))}
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id={config_item('ga_siteid')}"></script>
 		{literal}
-		<!-- Google Analytics-->
-		<script>
-			window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
-			ga('create','{/literal}{config_item('ga_siteid')}{literal}','auto');ga('send','pageview')
-		</script>
-		<script src="https://www.google-analytics.com/analytics.js" async defer></script>
+			<script>
+				window.dataLayer = window.dataLayer || [];
+				function gtag(){dataLayer.push(arguments);}
+				gtag('js', new Date());
+
+				gtag('config', '{/literal}{config_item('ga_siteid')}{literal}');
+			</script>
 		{/literal}
 	{/if}
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) return;
+			js = d.createElement(s); js.id = id;
+			js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.1';
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
 </body>
 </html>
 {/strip}
