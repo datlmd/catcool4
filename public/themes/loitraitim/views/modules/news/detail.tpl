@@ -45,11 +45,11 @@
 
                             <div class="row">
                                 <div class="col-sm-6 mt-2">
-                                    <a target="_blank" class="w-100 fb-share" url="https://www.facebook.com/sharer/sharer.php?u={$detail.detail_url}">Chia sẻ Facebook</a>
+                                    <a target="_blank" class="w-100 fb-share" url="https://www.facebook.com/sharer/sharer.php?u={base_url($detail.detail_url)}">Chia sẻ Facebook</a>
                                 </div>
                                 <div class="col-sm-6 mt-2 zalo-share">
                                     <script src="https://sp.zalo.me/plugins/sdk.js"></script>
-                                    <div class="zalo-share-button share-button-zalo" data-href="https://molistar.com/sao-han/kwang-soo-va-ban-gai-mac-chung-do" data-oaid="579745863508352884" data-layout="3" data-color="blue" data-customize="true">
+                                    <div class="zalo-share-button share-button-zalo" data-href="{base_url($detail.detail_url)}" data-oaid="579745863508352884" data-layout="3" data-color="blue" data-customize="true">
                                         <a href="javascript:void(0);">Chia sẻ Zalo</a>
                                     </div>
                                 </div>
@@ -81,4 +81,3 @@
 
     {include file=get_theme_path('views/modules/news/inc/list_news_top.tpl') news_list=$news_category_list news_id_not=$detail.news_id}
 {/strip}
-
