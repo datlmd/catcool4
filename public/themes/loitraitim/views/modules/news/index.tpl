@@ -40,7 +40,7 @@
 										{include file=get_theme_path('views/inc/facebook_box.tpl')}
 
 										<div class="mt-3 d-block">
-											<img src="{img_alt_url(220, 400, 'Ads')}" width="100%">
+											{*<img src="{img_alt_url(220, 400, 'Ads')}" width="100%">*}
 										</div>
 									</div>
 
@@ -56,7 +56,7 @@
 			</div>
 		</div>
 		<div class="col-xxl-2 d-none d-xxl-block">
-			<img src="{img_alt_url(200, 400, 'Ads')}" width="100%">
+			{*<img src="{img_alt_url(200, 400, 'Ads')}" width="100%">*}
 		</div>
 	</div>
 {/strip}
