@@ -35,7 +35,8 @@ img.image-grayscale:hover, .article-hot:hover .image-grayscale {
 .post.post-detail h2 { }
 .post.post-detail .detail-content p { padding: 0 20px; line-height: 24px; }
 .post.post-detail .detail-content div { width: 100%; text-align: center; }
-.post.post-detail .detail-content img, .post.post-detail .detail-content video { width: 100% !important; max-width: 500px !important; margin: 10px 0; }
+.post.post-detail .detail-content img, { width: 100% !important; max-width: 500px !important; margin: 10px 0; height: 100% !important; }
+.post.post-detail .detail-content video { width: 100% !important; max-width: 500px !important; margin: 10px 0; }
 
 .post.post-detail .detail-content h1, .post.post-detail .detail-content h2, .post.post-detail .detail-content h3,
 .post.post-detail .detail-content h4, .post.post-detail .detail-content h5, .post.post-detail .detail-content h6
