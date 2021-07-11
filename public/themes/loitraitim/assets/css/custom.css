@@ -87,11 +87,15 @@ html .text-color-primary, html .text-primary {
     background: #ca0e7d;
 }
 
+#header .header-body {
+    border-top: none !important;
+    border-bottom: none !important;
+    padding-top: 3px !important;
+}
+
 .list.list-ordened.list-ordened-style-3 li:before {
     background-color: #d1339b;
 }
-
-
 
 @media (max-width: 991px) {
     html.side-header #header.side-header .header-container {
