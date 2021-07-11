@@ -11,8 +11,9 @@
 	<base href="{site_url()}">
 
 	<!-- Favicon -->
-	<link rel="shortcut icon" href="{img_url('favicon.png')}" type="image/x-icon" />
-	<link rel="apple-touch-icon" href="{img_url('apple_favicon.png')}">
+	<link rel="shortcut icon" href="{img_url('favicon/favicon.ico')}" type="image/x-icon" />
+	<link rel="apple-touch-icon" sizes="180x180" href="{img_url('favicon/apple-touch-icon.png')}">
+	<link rel="icon" type="image/png" sizes="32x32" href="{img_url('favicon/favicon-32x32.png')}">
 
 	<title>{if !empty($page_title)}{$page_title}{/if}</title>
 	{$metadata}
