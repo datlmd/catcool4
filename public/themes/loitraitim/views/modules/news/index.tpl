@@ -1,11 +1,11 @@
 {strip}
 	<div class="row">
 		<div class="col-xxl-10 col-12">
-			<div class="row">
+			<div class="row mt-xl-4">
 				<div class="col-md-8 col-lg-7">
 					{include file=get_theme_path('views/modules/news/inc/list_slide_home.tpl')}
 				</div>
-				<div class="col-md-4 col-lg-5">
+				<div class="col-md-4 col-lg-5 ms-2 ms-md-0">
 					{include file=get_theme_path('views/modules/news/inc/list_new.tpl')}
 				</div>
 			</div>
@@ -21,7 +21,7 @@
 				<div class="col-lg-6">
 
 					<div class="row p-2 p-lg-0 p-md-3">
-						<div class="col-lg-12 d-none d-lg-block">
+						<div class="col-lg-12">
 
 							{include file=get_theme_path('views/modules/news/inc/list_hot.tpl')}
 

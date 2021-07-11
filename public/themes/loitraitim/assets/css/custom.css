@@ -11,9 +11,6 @@ p {
     text-align: justify !important;
 }
 
-article a { text-align: justify !important; }
-
-article h1, article h2, article h3, article h4, article h5, article h6 { text-align: justify !important; }
 img.image-grayscale {
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
@@ -22,6 +19,13 @@ img.image-grayscale {
 img.image-grayscale:hover, .article-hot:hover .image-grayscale {
     -webkit-filter: none;
     filter: none;
+}
+
+html .bg-color-primary, html .bg-primary {
+    background-color: #cb1884 !important;
+}
+html .text-color-primary, html .text-primary {
+    color: #383737 !important;
 }
 
 .header-logo a { display: block; overflow: hidden; }
@@ -77,4 +81,26 @@ img.image-grayscale:hover, .article-hot:hover .image-grayscale {
     text-align: center !important;
     -webkit-border-radius: 8px;
     text-decoration: none;
+}
+
+#header .header-btn-collapse-nav {
+    background: #ca0e7d;
+}
+
+.list.list-ordened.list-ordened-style-3 li:before {
+    background-color: #d1339b;
+}
+
+
+
+@media (max-width: 991px) {
+    html.side-header #header.side-header .header-container {
+        height: 50px !important;
+    }
+}
+
+@media (max-width: 575px) {
+    .text-3 {
+        font-size: 1.08em !important;
+    }
 }

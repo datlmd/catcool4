@@ -1,7 +1,24 @@
 {strip}
 	{if !empty($slide_list)}
+		<div class="row d-md-none d-sm-block px-2">
+			{foreach $slide_list as $news}
+				<div class="col-12 mb-2">
+					<article>
+						<a href="{$news.detail_url}">
+							<img src="{if !empty($news.images.root)}{image_thumb_url($news.images.root)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid border-radius-0 w-100" alt="{$news.name}">
+						</a>
+						<div class="d-inline-block text-default text-1">
+							{time_ago($news.publish_date)}
+						</div>
+						<h4 class="pb-2 line-height-4 font-weight-bold text-3 text-dark my-0 pe-1">
+							<a href="{$news.detail_url}" class="text-decoration-none text-color-dark">{$news.name}</a>
+						</h4>
+					</article>
+				</div>
+			{/foreach}
+		</div>
 		<div class="row ps-4">
-			<div class="col-lg-7 mb-4 pb-2">
+			<div class="col-lg-7 mb-4 pb-2 d-none d-md-block">
 				{foreach $slide_list as $news}
 					{if $news@iteration == 1}
 						<a href="{site_url($news.detail_url)}">
@@ -29,7 +46,8 @@
 					{/if}
 				{/foreach}
 			</div>
-			<div class="col-lg-5">
+
+			<div class="col-lg-5 d-none d-md-block">
 				{foreach $slide_list as $news}
 					{if $news@iteration == 1}
 						{continue}
@@ -55,6 +73,7 @@
 					</article>
 				{/foreach}
 			</div>
+
 		</div>
 	{/if}
 {/strip}

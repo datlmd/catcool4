@@ -12,4 +12,4 @@
 
 
 <link rel="stylesheet" type="text/css" href="{theme_url('assets/css/skins/default.css')}">
-<link rel="stylesheet" type="text/css" href="{theme_url('assets/css/custom.css')}">
+<link rel="stylesheet" type="text/css" href="{theme_url('assets/css/custom.css')}?{CACHE_TIME_CSS}">

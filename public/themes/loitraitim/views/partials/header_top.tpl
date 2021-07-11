@@ -1,6 +1,6 @@
 {strip}
     {literal}
-    <div class="sticky-wrapper sticky-wrapper-transparent sticky-wrapper-effect-1 sticky-wrapper-border-bottom d-none d-lg-block d-xl-none" data-plugin-sticky data-plugin-options="{'minWidth': 0, 'stickyStartEffectAt': 100, 'padding': {'top': 0}}">
+    <div class="sticky-wrapper sticky-wrapper-transparent sticky-wrapper-effect-1 sticky-wrapper-border-bottom d-lg-block d-xl-none" data-plugin-sticky data-plugin-options="{'minWidth': 0, 'stickyStartEffectAt': 100, 'padding': {'top': 0}}">
     {/literal}
         <div class="sticky-body bg-white">
             <div class="container-fluid">
@@ -8,12 +8,12 @@
                     <div class="col-9">
                         <div class="py-2">
                             <a href="{site_url()}">
-                                <img class="ml-2" alt="{config_item('site_name')}" height="30" data-change-src="{img_url('logo.png')}" src="{img_url('logo.png')}">
+                                <img class="ml-2" alt="{config_item('site_name')}" width="auto" data-change-src="{img_url('logo.png')}" src="{img_url('logo.png')}">
                             </a>
                         </div>
                     </div>
                     <div class="col-3 text-end">
-                        <button class="hamburguer-btn" data-set-active="false">
+                        <button class="hamburguer-btn m-1" data-set-active="false">
                             <span class="hamburguer">
                                 <span></span>
                                 <span></span>
@@ -31,9 +31,9 @@
             <div class="header-container px-3 d-flex h-100">
                 <div class="header-column flex-row flex-lg-column justify-content-center h-100">
                     <div class="header-row flex-row justify-content-start justify-content-lg-center py-lg-4 py-md-1">
-                        <h1 class="header-logo my-2">
+                        <h1 class="header-logo my-0 my-lg-2">
                             <a href="{site_url()}">
-                                <img alt="{config_item('site_name')}" width="90%" src="{img_url('logo.png')}">
+                                <img alt="{config_item('site_name')}" width="100%" src="{img_url('logo.png')}">
                                 <span class="hide-text">{config_item('site_name')}</span>
                             </a>
                         </h1>
@@ -48,13 +48,8 @@
                         </div>
                     </div>
                     <div class="header-row justify-content-end pb-lg-3">
-                        <ul class="header-social-icons social-icons d-none d-sm-block social-icons-clean d-sm-0">
-                            <li class="social-icons-facebook"><a href="http://www.facebook.com/" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
-                            <li class="social-icons-twitter"><a href="http://www.twitter.com/" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a></li>
-                            <li class="social-icons-linkedin"><a href="http://www.linkedin.com/" target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a></li>
-                        </ul>
-                        <p class="d-none d-lg-block text-2 pt-3">{get_today()}</p>
-                        <button class="btn header-btn-collapse-nav" data-bs-toggle="collapse" href="#menu_main_collapse">
+                        <p class="text-2 mt-0 pt-lg-3">{get_today()}</p>
+                        <button class="btn header-btn-collapse-nav m-0 ms-2" data-bs-toggle="collapse" href="#menu_main_collapse">
                             <i class="fas fa-bars"></i>
                         </button>
                     </div>

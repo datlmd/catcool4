@@ -8,6 +8,7 @@
 				{foreach $category.list as $news}
 					<div class="col-sm-12 d-md-none d-sm-block mb-4">
 						<article>
+
 							<div class="row pb-1 pe-3">
 								<div class="col-4 p-0">
 									<a href="{$news.detail_url}">
@@ -15,8 +16,11 @@
 									</a>
 								</div>
 								<div class="col-8 ps-2 pe-0">
-									<h4 class="pb-2 line-height-4 font-weight-normal text-3 text-dark mb-0 pe-1">
+									<h4 class="pb-2 line-height-4 font-weight-bold text-3 text-dark mb-0 pe-1">
 										<a href="{$news.detail_url}" class="text-decoration-none text-color-dark">{$news.name}</a>
+										<span class="d-inline-block text-default font-weight-normal text-1 ms-2">
+											 {time_ago($news.publish_date)}
+										</span>
 									</h4>
 								</div>
 							</div>
@@ -38,7 +42,7 @@
 								<div class="row">
 									<div class="col">
 										<div class="thumb-info-caption-text">
-											<h4 class="d-block line-height-3 text-3 text-dark mb-0 fw-bold">
+											<h4 class="d-block line-height-3 text-3 text-dark mb-0 fw-bold mt-2">
 												<a href="{$news.detail_url}" class="text-decoration-none text-color-dark">{$news.name}</a>
 											</h4>
 											<div class="d-inline-block text-default text-1 float-none">

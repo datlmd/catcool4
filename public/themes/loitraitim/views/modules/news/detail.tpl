@@ -1,8 +1,8 @@
 {strip}
-    <div class="row">
+    <div class="row container-fluid">
         <div class="col-12 col-md-8">
 
-            <div class="blog-posts single-post mt-2 mt-lg-3">
+            <div class="blog-posts single-post mt-2 mt-lg-0 mt-xl-3">
                 <article class="post post-detail">
                     <h2 class="font-weight-bold text-primary padding py-0 mb-0">{$detail.name}</h2>
                     <div class="post-content ml-0">
@@ -68,7 +68,7 @@
 
         </div>
         <div class="col-12 col-md-4">
-            <div data-plugin-sticky data-plugin-options="{literal}{'minWidth': 991, 'containerSelector': '.container-fluid', 'padding': {'top': 30}}{/literal}">
+            <div data-plugin-sticky data-plugin-options="{literal}{'minWidth': 991, 'containerSelector': '.container-fluid', 'padding': {'top': 55}}{/literal}">
                 {include file=get_theme_path('views/inc/facebook_box.tpl')}
                 {include file=get_theme_path('views/modules/news/inc/detail_right.tpl')}
             </div>
