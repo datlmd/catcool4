@@ -1,6 +1,6 @@
 {strip}
-    <div class="row container-fluid">
-        <div class="col-12 col-md-8">
+    <div class="row">
+        <div class="col-12 col-md-8 container-fluid">
 
             <div class="blog-posts single-post mt-2 mt-lg-0 mt-xl-3">
                 <article class="post post-detail">
