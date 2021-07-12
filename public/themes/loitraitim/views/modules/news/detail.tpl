@@ -1,8 +1,9 @@
 {strip}
-    <div class="row">
-        <div class="col-12 col-md-8 container-fluid">
+    <div class="row slide-right">
+        <div class="col-12 col-md-8">
 
             <div class="blog-posts single-post mt-2 mt-lg-0 mt-xl-3">
+
                 <article class="post post-detail">
                     <h2 class="font-weight-bold text-primary padding py-0 mb-0">{$detail.name}</h2>
                     <div class="post-content ml-0">
@@ -68,8 +69,10 @@
 
         </div>
         <div class="col-12 col-md-4">
-            <div data-plugin-sticky data-plugin-options="{literal}{'minWidth': 991, 'containerSelector': '.container-fluid', 'padding': {'top': 55}}{/literal}">
+            <div data-plugin-sticky data-plugin-options="{literal}{'minWidth': 991, 'containerSelector': '.slide-right', 'padding': {'top': 55}}{/literal}">
                 {include file=get_theme_path('views/inc/facebook_box.tpl')}
+                <div class="mt-4"></div>
+                {include file=get_theme_path('views/modules/news/inc/list_hot.tpl')}
                 {include file=get_theme_path('views/modules/news/inc/detail_right.tpl')}
             </div>
         </div>
@@ -77,7 +80,11 @@
     </div>
 
     <div class="row">
+        <div class="col-12 col-md-8">
+            {include file=get_theme_path('views/modules/news/inc/detail_same_category.tpl') news_list=$news_category_list news_id_not=$detail.news_id}
+        </div>
+        <div class="col-12 col-md-4">
+            {include file=get_theme_path('views/modules/news/inc/list_new.tpl')}
+        </div>
     </div>
-
-    {include file=get_theme_path('views/modules/news/inc/list_news_top.tpl') news_list=$news_category_list news_id_not=$detail.news_id}
 {/strip}

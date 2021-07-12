@@ -41,19 +41,25 @@ class Detail extends BaseController
         }
         shuffle($news_category_list);
 
-        //META
-        $data_meta = [
-            'title'          => $detail['meta_title'] ?? $detail['name'],
-            'description'    => $detail['meta_description'] ?? $detail['description'],
-            'keywords'       => $detail['meta_keyword'],
-            'url'            => base_url($detail['detail_url']),
-            'image'          => $detail['images']['root'] ?? $detail['images']['robot'],
-            'image_fb'       => $detail['images']['fb'] ?? $detail['images']['robot_fb'],
-            'published_time' => date('c', strtotime($detail['publish_date'])),
-            'modified_time'  => date('c', strtotime($detail['mtime'])),
-        ];
-        add_meta($data_meta, $this->themes);
+        //count detail
+        $this->model->updateInfo(['counter_view' => $detail['counter_view'] + 1], $news_id, $ctime);
 
+        $this->_setMeta($detail);
+
+        $data = [
+            'detail'               => $detail,
+            'news_category_list'   => $news_category_list,
+            'category_list'        => $category_list,
+            'hot_list'             => $this->model->getListHot(4),
+            'new_list'             => $this->model->getListNew(5),
+            'script_google_search' => $this->_scriptGoogleSearch($detail, $category_list),
+        ];
+
+        theme_load('detail', $data);
+    }
+
+    private function _scriptGoogleSearch($detail, $category_list)
+    {
         //GOOGLE BREADCRUMB STRUCTURED DATA
         $script_breadcrumb  = [];
         if (!empty($category_list) && !empty($detail['category_ids'])) {
@@ -77,13 +83,22 @@ class Detail extends BaseController
         ];
         $script_google_search = script_google_search($script_detail, $script_breadcrumb);
 
-        $data = [
-            'detail' => $detail,
-            'news_category_list' => $news_category_list,
-            'category_list' => $category_list,
-            'script_google_search' => $script_google_search
-        ];
+        return $script_google_search;
+    }
 
-        theme_load('detail', $data);
+    private function _setMeta($detail)
+    {
+        //META
+        $data_meta = [
+            'title'          => $detail['meta_title'] ?? $detail['name'],
+            'description'    => $detail['meta_description'] ?? $detail['description'],
+            'keywords'       => $detail['meta_keyword'],
+            'url'            => base_url($detail['detail_url']),
+            'image'          => $detail['images']['root'] ?? $detail['images']['robot'],
+            'image_fb'       => $detail['images']['fb'] ?? $detail['images']['robot_fb'],
+            'published_time' => date('c', strtotime($detail['publish_date'])),
+            'modified_time'  => date('c', strtotime($detail['mtime'])),
+        ];
+        add_meta($data_meta, $this->themes);
     }
 }
