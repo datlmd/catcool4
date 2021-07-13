@@ -200,7 +200,7 @@ pass: dat@!@#$%
 	 */
 	public $forgotPasswordExpiration = 1800;
 
-	public $gaEnabled = true;
+	public $gaEnabled = 0;
 
 	/**
 	 * GA ID
