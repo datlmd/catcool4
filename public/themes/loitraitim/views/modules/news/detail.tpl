@@ -35,16 +35,22 @@
                             {$detail.content}
                         </div>
 
-                        <div class="post-meta padding text-end">
+                        <div class="post-meta padding py-0 text-end">
                             {lang('News.text_source')}: <a href="{$detail.source}" target="_blank" title="{$detail.source}">{str_ireplace('www.', '', parse_url($detail.source, PHP_URL_HOST))}</a>
                         </div>
 
-                        <div class="padding">
+                        <div class="padding pb-0">
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="fb-like" data-href="{base_url($detail.detail_url)}" data-width="" data-layout="standard" data-action="like" data-size="large" data-share="false"></div>
+                                </div>
+                            </div>
+
                             <h4>{lang('News.text_tag')}</h4>
                             {include file=get_theme_path('views/modules/news/inc/list_tags.tpl') tags=explode(',', $detail.tags)}
 
-
                             <div class="row">
+
                                 <div class="col-sm-6 mt-2">
                                     <a target="_blank" class="fb-share" href="https://www.facebook.com/sharer/sharer.php?u={base_url($detail.detail_url)}">Chia sẻ Facebook</a>
                                 </div>

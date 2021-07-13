@@ -27,7 +27,7 @@
 				{*{/foreach}*}
 			{*</div>*}
 		{*</div>*}
-		<h3 class="text-3 text-dark mb-3 font-weight-bold ms-2 ms-md-4">{lang('News.text_same_category')}</h3>
+		<h3 class="text-4 text-dark mb-3 font-weight-bold ms-2 ms-md-4">{lang('News.text_same_category')}</h3>
 		{foreach $news_list as $news}
 			{if !empty($news_id_not) && $news.news_id eq $news_id_not}
 				{continue}

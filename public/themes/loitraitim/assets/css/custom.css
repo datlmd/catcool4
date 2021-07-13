@@ -97,6 +97,14 @@ html .text-color-primary, html .text-primary {
     background-color: #d1339b;
 }
 
+#header .header-nav.header-nav-links nav > ul li:hover > a {
+    color: #cd208a;
+}
+
+#header .header-nav-main:not(.header-nav-main-mobile-dark) nav > ul > li > a {
+    color: #6d4a7b;
+}
+
 @media (max-width: 991px) {
     html.side-header #header.side-header .header-container {
         height: 50px !important;
