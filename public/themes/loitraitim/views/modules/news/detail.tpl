@@ -35,14 +35,14 @@
                             {$detail.content}
                         </div>
 
-                        <div class="post-meta padding py-0 text-end">
+                        <div class="post-meta padding pb-0 text-end">
                             {lang('News.text_source')}: <a href="{$detail.source}" target="_blank" title="{$detail.source}">{str_ireplace('www.', '', parse_url($detail.source, PHP_URL_HOST))}</a>
                         </div>
 
                         <div class="padding pb-0">
                             <div class="row mb-4">
                                 <div class="col-12">
-                                    <div class="fb-like" data-href="{base_url($detail.detail_url)}" data-width="" data-layout="standard" data-action="like" data-size="large" data-share="false"></div>
+                                    <div class="fb-like" data-href="{base_url($detail.detail_url)}" data-width="" data-layout="standard" data-action="like" data-size="small" data-share="false"></div>
                                 </div>
                             </div>
 
