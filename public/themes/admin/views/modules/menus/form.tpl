@@ -77,7 +77,9 @@
                                                         {assign var="slug" value=""}
                                                     {/if}
                                                     <input type="text" name="lang[{$language.id}][slug]" value='{old("lang.{$language.id}.slug", $slug)}' id="input_slug_{$language.id}" class="form-control">
-                                                    <small>{lang('MenuAdmin.help_url')}</small>
+                                                    <small>{lang('MenuAdmin.help_url')}</small><br/>
+                                                    <small>Extension: {get_seo_extension()}</small><br/>
+                                                    <small>Example: {get_seo_extension('seo-url')}</small>
                                                 </div>
                                             </div>
                                         </div>

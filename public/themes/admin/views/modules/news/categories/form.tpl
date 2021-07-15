@@ -83,6 +83,8 @@
                                 {/if}
                                 {form_hidden('seo_id', $seo_url_id)}
                                 <input type="text" name="slug" value='{old("slug", $slug)}' id="input_slug" class="form-control">
+                                <small>Extension: {get_seo_extension()}</small><br/>
+                                <small>Example: {get_seo_extension('seo-url')}</small>
                             </div>
                             <div class="form-group mt-3">
                                 <label class="form-label">{lang('Admin.text_seo_description')}</label>

@@ -64,9 +64,11 @@ class CategoriesManage extends AdminController
                 return redirect()->back()->withInput()->with("errors", $this->errors);
             }
 
+            $slug = !empty($this->request->getPost('slug')) ? slugify($this->request->getPost('slug')) : slugify($this->request->getPost('name'));
+
             $add_data = [
                 'name'             => $this->request->getPost('name'),
-                'slug'             => !empty($this->request->getPost('slug')) ? slugify($this->request->getPost('slug')) : slugify($this->request->getPost('name')),
+                'slug'             => get_seo_extension($slug),
                 'description'      => $this->request->getPost('description'),
                 'meta_title'       => $this->request->getPost('meta_title'),
                 'meta_description' => $this->request->getPost('meta_description'),
@@ -115,9 +117,11 @@ class CategoriesManage extends AdminController
                 return redirect()->back()->withInput();
             }
 
+            $slug = !empty($this->request->getPost('slug')) ? slugify($this->request->getPost('slug')) : slugify($this->request->getPost('name'));
+
             $edit_data = [
                 'name'             => $this->request->getPost('name'),
-                'slug'             => !empty($this->request->getPost('slug')) ? slugify($this->request->getPost('slug')) : slugify($this->request->getPost('name')),
+                'slug'             => get_seo_extension($slug),
                 'description'      => $this->request->getPost('description'),
                 'meta_title'       => $this->request->getPost('meta_title'),
                 'meta_description' => $this->request->getPost('meta_description'),

@@ -1827,3 +1827,19 @@ if(!function_exists('page_not_found'))
         throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
     }
 }
+
+if(!function_exists('get_seo_extension'))
+{
+    function get_seo_extension($url = null)
+    {
+        if (empty(SEO_EXTENSION)) {
+            return '';
+        }
+
+        if (strpos($url, "." . SEO_EXTENSION) !== FALSE) {
+            return $url;
+        }
+
+        return sprintf("$url.%s", SEO_EXTENSION);
+    }
+}
