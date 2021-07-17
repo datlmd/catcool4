@@ -52,6 +52,7 @@ class Detail extends BaseController
             'category_list'        => $category_list,
             'hot_list'             => $this->model->getListHot(4),
             'new_list'             => $this->model->getListNew(5),
+            'counter_list'         => $this->model->getListCounter(6),
             'script_google_search' => $this->_scriptGoogleSearch($detail, $category_list),
         ];
 
@@ -90,12 +91,12 @@ class Detail extends BaseController
     {
         //META
         $data_meta = [
-            'title'          => $detail['meta_title'] ?? $detail['name'],
-            'description'    => $detail['meta_description'] ?? $detail['description'],
-            'keywords'       => $detail['meta_keyword'],
+            'title'          => !empty($detail['meta_title']) ? $detail['meta_title'] : $detail['name'],
+            'description'    => !empty($detail['meta_description']) ? $detail['meta_description'] : $detail['description'],
+            'keywords'       => !empty($detail['meta_keyword']) ? $detail['meta_keyword'] : null,
             'url'            => base_url($detail['detail_url']),
-            'image'          => $detail['images']['root'] ?? $detail['images']['robot'],
-            'image_fb'       => $detail['images']['fb'] ?? $detail['images']['robot_fb'],
+            'image'          => !empty($detail['images']['root']) ? $detail['images']['root'] : $detail['images']['robot'],
+            'image_fb'       => !empty($detail['images']['fb']) ? $detail['images']['fb'] : $detail['images']['robot_fb'],
             'published_time' => date('c', strtotime($detail['publish_date'])),
             'modified_time'  => date('c', strtotime($detail['mtime'])),
         ];

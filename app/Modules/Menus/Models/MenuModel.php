@@ -159,10 +159,11 @@ class MenuModel extends MyModel
             return null;
         }
 
-        $url = site_url($slug);
         if (strpos(strtolower($slug), "http") !== FALSE || strpos(strtolower($slug), "https") !== FALSE) {
             $url = $slug;
         }
+
+        $url = base_url(trim($slug));
 
         return $url;
     }

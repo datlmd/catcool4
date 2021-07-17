@@ -31,7 +31,7 @@ html .text-color-primary, html .text-primary {
 .header-logo a { display: block; overflow: hidden; }
 .header-logo a img { max-width: 200px; overflow: hidden; display: block; }
 
-.post.post-detail {
+.post.post-detail, .post-category-list {
     width: 100%;
     max-width: 700px;
     margin: 0 auto;
@@ -103,6 +103,15 @@ html .text-color-primary, html .text-primary {
 
 #header .header-nav-main:not(.header-nav-main-mobile-dark) nav > ul > li > a {
     color: #6d4a7b;
+}
+
+.pagination > a, .pagination > a:hover, .pagination > a:focus, .pagination > li > a, .pagination > li > span, .pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
+    color: #cd208a;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus, .pagination .page-item.active .page-link {
+    background-color: #d13198 !important;
+    border-color: #c70c74;
 }
 
 @media (max-width: 991px) {

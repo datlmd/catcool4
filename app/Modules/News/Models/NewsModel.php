@@ -557,4 +557,31 @@ class NewsModel extends FarmModel
 
         return $result;
     }
+
+    public function getListByCategory($category_id = null, $limit = PAGINATION_DEFAULF_LIMIT)
+    {
+        if (empty($category_id)) {
+            return [[],[]];
+        }
+
+        $where = [
+            'published' => STATUS_ON,
+            'publish_date <=' => get_date(),
+        ];
+
+        $result = $this->where($where)
+            ->like('category_ids', $category_id)
+            ->orderBy('publish_date', 'DESC');
+
+        $list = $result->paginate($limit, 'news');
+        if (empty($list)) {
+            return [[],[]];
+        }
+
+        foreach ($list as $key_news => $value) {
+            $list[$key_news] = $this->formatDetail($value);
+        }
+
+        return [$list, $result->pager];
+    }
 }

@@ -49,6 +49,7 @@
                     </div>
                     <div class="header-row justify-content-end pb-lg-3">
                         <p class="text-2 mt-0 pt-lg-3">{get_today()}</p>
+                        <p class="d-none text-1">{lang('News.text_copyright')}</p>
                         <button class="btn header-btn-collapse-nav m-0 ms-2" data-bs-toggle="collapse" href="#menu_main_collapse">
                             <i class="fas fa-bars"></i>
                         </button>

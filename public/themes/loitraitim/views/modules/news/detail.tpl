@@ -13,7 +13,7 @@
                                 <span>
                                     <i class="far fa-folder"></i>
                                     {foreach $detail.category_ids as $category_id}
-                                        <a href="{site_url($category_list[$category_id].slug)}}" class="me-1">{$category_list[$category_id].name}</a>
+                                        <a href="{base_url($category_list[$category_id].slug)}" class="me-1">{$category_list[$category_id].name}</a>
                                     {/foreach}
                                 </span>
                             {/if}
@@ -79,7 +79,6 @@
                 {include file=get_theme_path('views/inc/facebook_box.tpl')}
                 <div class="mt-4"></div>
                 {include file=get_theme_path('views/modules/news/inc/list_hot.tpl')}
-                {include file=get_theme_path('views/modules/news/inc/detail_right.tpl')}
             </div>
         </div>
 
@@ -87,10 +86,31 @@
 
     <div class="row">
         <div class="col-12 col-md-8">
-            {include file=get_theme_path('views/modules/news/inc/detail_same_category.tpl') news_list=$news_category_list news_id_not=$detail.news_id}
+            <div class="post-category-list">
+
+                {include file=get_theme_path('views/modules/news/inc/detail_same_category.tpl') news_list=$news_category_list news_id_not=$detail.news_id}
+
+                <div class="heading heading-border heading-bottom-double-border mt-4 mt-lg-5">
+                    <h3>{lang('News.text_new_post')}</h3>
+                </div>
+                {include file=get_theme_path('views/modules/news/inc/list_new.tpl')}
+
+
+                {if !empty($counter_list)}
+                    <div class="heading heading-border heading-bottom-double-border mt-3 mt-lg-4">
+                        <h3>{lang('News.text_popular_post')}</h3>
+                    </div>
+                    {foreach $counter_list as $news}
+                        {include file=get_theme_path('views/modules/news/inc/item_news.tpl') news=$news}
+                    {/foreach}
+                {/if}
+
+            </div>
+
         </div>
         <div class="col-12 col-md-4">
-            {include file=get_theme_path('views/modules/news/inc/list_new.tpl')}
+
+
         </div>
     </div>
 {/strip}
