@@ -5,7 +5,7 @@
                 <div class="col-4">
                     <div class="post-image">
                         <a href="{site_url($news.detail_url)}">
-                            <img src="{if !empty($news.images.root)}{image_thumb_url($news.images.root)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid img-thumbnail border-0 w-100" alt="{$news.name}" />
+                            <img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid img-thumbnail border-0 w-100" alt="{$news.name}" />
                         </a>
                     </div>
                 </div>
