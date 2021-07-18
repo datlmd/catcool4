@@ -133,6 +133,13 @@ class NewsModel extends FarmModel
                 // Save into the cache for $expire_time 1 month
                 cache()->save(self::NEWS_CACHE_DETAIL . $news_id, $result, self::NEWS_CACHE_EXPIRE);
             }
+        } else {
+            //get couter view
+            $this->setTableNameYear($ctime);
+            $counter = $this->select('counter_view')->where('news_id', $news_id)->first();
+            if (!empty($counter)) {
+                $result['counter_view'] = $counter['counter_view'];
+            }
         }
 
         return $result;
@@ -151,6 +158,21 @@ class NewsModel extends FarmModel
         $this->setTableNameYear($ctime);
 
         return $this->update($news_id, $data);
+    }
+
+    public function updateView($news_id, $ctime = null)
+    {
+        if (empty($news_id)) {
+            return false;
+        }
+
+        if (strpos($news_id, 'C') !== FALSE) {
+            list($news_id, $ctime) = $this->getFormatNewsId($news_id);
+        }
+
+        $this->setTableNameYear($ctime);
+
+        return $this->set('counter_view', 'counter_view + 1', false)->update($news_id);
     }
 
     public function deleteCache($news_id = null)

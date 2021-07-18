@@ -42,7 +42,7 @@ class Detail extends BaseController
         shuffle($news_category_list);
 
         //count detail
-        $this->model->updateInfo(['counter_view' => $detail['counter_view'] + 1], $news_id, $ctime);
+        $this->model->updateView($news_id, $ctime);
 
         $this->_setMeta($detail);
 
