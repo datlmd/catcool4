@@ -38,6 +38,7 @@ class Categories extends BaseController
             'hot_list'     => $this->news_model->getListHot(4),
             'new_list'     => $this->news_model->getListNew(5),
             'counter_list' => $this->news_model->getListCounter(6),
+            'category_list' => $category_list
         ];
 
         $this->_setMeta($detail);
@@ -49,10 +50,10 @@ class Categories extends BaseController
     {
         //META
         $data_meta = [
-            'title'          => !empty($detail['meta_title']) ? $detail['meta_title'] : $detail['name'],
-            'description'    => !empty($detail['meta_description']) ? $detail['meta_description'] : $detail['description'],
-            'keywords'       => !empty($detail['meta_keyword']) ? $detail['meta_keyword'] : null,
-            'url'            => base_url($detail['slug']),
+            'title'       => !empty($detail['meta_title']) ? $detail['meta_title'] : $detail['name'],
+            'description' => !empty($detail['meta_description']) ? $detail['meta_description'] : $detail['description'],
+            'keywords'    => !empty($detail['meta_keyword']) ? $detail['meta_keyword'] : null,
+            'url'         => base_url($detail['slug']),
         ];
 
         add_meta($data_meta, $this->themes);
