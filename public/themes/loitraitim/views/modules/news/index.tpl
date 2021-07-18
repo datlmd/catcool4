@@ -12,13 +12,13 @@
 
 			<div class="row pb-1 pt-2">
 
-				<div class="col-lg-6">
+				<div class="col-lg-7">
 
 					{include file=get_theme_path('views/modules/news/inc/list_category_home.tpl')}
 
 				</div>
 
-				<div class="col-lg-6">
+				<div class="col-lg-5">
 
 					<div class="row p-2 p-lg-0 p-md-3">
 						<div class="col-lg-12">
@@ -28,13 +28,13 @@
 						</div>
 						<div class="col-lg-12">
 							<div class="row home-ads">
-								<div class="col-md-6">
+								<div class="col-md-7">
 									<iframe frameborder="0" marginwidth="0" marginheight="0" src="http://thienduongweb.com/tool/weather/?r=1&w=1&g=1&col=1&d=0" width="100%" height="480" scrolling="yes"></iframe>
 
 									{include file=get_theme_path('views/modules/news/inc/list_counter.tpl')}
 
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-5">
 									{*data-plugin-sticky data-plugin-options="{literal}{'minWidth': 991, 'containerSelector': '.home-ads', 'padding': {'top': 20}}{/literal}"*}
 									<div class="w-100 pe-3">
 										
