@@ -5,11 +5,11 @@
             <div class="post-category-list mt-2 mt-lg-4">
 
                 <div class="heading heading-border heading-bottom-double-border">
-                    <h2>{$detail.name}</h2>
+                    <h2><i class="fas fa-hashtag me-1"></i>{$tag}</h2>
                 </div>
                 {if !empty($list)}
                     {foreach $list as $news}
-                        {include file=get_theme_path('views/modules/news/inc/item_news.tpl') news=$news}
+                        {include file=get_theme_path('views/modules/news/inc/item_news.tpl') news=$news is_show_category=true}
                     {/foreach}
                 {/if}
 

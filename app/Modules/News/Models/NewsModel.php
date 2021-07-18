@@ -474,7 +474,7 @@ class NewsModel extends FarmModel
                 'is_homepage' => STATUS_ON
             ];
 
-            $list = $this->select(['news_id', 'name', 'slug', 'description', 'publish_date', 'images', 'ctime'])
+            $list = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
                 ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
             if (empty($list)) {
                 return [];
@@ -505,7 +505,7 @@ class NewsModel extends FarmModel
                 'publish_date >=' => $from_date,
             ];
 
-            $list = $this->select(['news_id', 'name', 'slug', 'description', 'publish_date', 'images', 'ctime'])
+            $list = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
                 ->orderBy('counter_view', 'DESC')->where($where)->findAll($limit);
             if (empty($list)) {
                 return [];
@@ -534,7 +534,7 @@ class NewsModel extends FarmModel
                 'is_hot' => STATUS_ON,
             ];
 
-            $list = $this->select(['news_id', 'name', 'slug', 'description', 'publish_date', 'images', 'ctime'])
+            $list = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
                 ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
             if (empty($list)) {
                 return [];
@@ -593,6 +593,33 @@ class NewsModel extends FarmModel
 
         $result = $this->where($where)
             ->like('category_ids', $category_id)
+            ->orderBy('publish_date', 'DESC');
+
+        $list = $result->paginate($limit, 'news');
+        if (empty($list)) {
+            return [[],[]];
+        }
+
+        foreach ($list as $key_news => $value) {
+            $list[$key_news] = $this->formatDetail($value);
+        }
+
+        return [$list, $result->pager];
+    }
+
+    public function getListByTag($tag = null, $limit = PAGINATION_DEFAULF_LIMIT)
+    {
+        if (empty($tag)) {
+            return [[],[]];
+        }
+
+        $where = [
+            'published' => STATUS_ON,
+            'publish_date <=' => get_date(),
+        ];
+
+        $result = $this->where($where)
+            ->like('tags', $tag)
             ->orderBy('publish_date', 'DESC');
 
         $list = $result->paginate($limit, 'news');

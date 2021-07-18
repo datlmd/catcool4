@@ -1579,14 +1579,14 @@ if(!function_exists('add_meta'))
     {
         try
         {
-            $title       = $data['title'] ?? config_item('site_name');
-            $description = $data['description'] ?? config_item('site_description');
-            $keywords    = $data['keywords'] ?? config_item('site_keywords');
-            $url         = $data['url'] ?? base_url();
-            $image       = $data['image'] ?? config_item('site_image');
+            $title       = !empty($data['title']) ? $data['title'] : config_item('site_name');
+            $description = !empty($data['description']) ? $data['description'] : config_item('site_description');
+            $keywords    = !empty($data['keywords']) ? $data['keywords'] : config_item('site_keywords');
+            $url         = !empty($data['url']) ? $data['url'] : base_url();
+            $image       = !empty($data['image']) ? $data['image'] : config_item('site_image');
             $image_fb    = $data['image_fb'] ?? null;
 
-            $theme->setPageTitle($title);
+            $theme->setPageTitle($title . ' - ' . str_ireplace('www.', '', parse_url(base_url(), PHP_URL_HOST)));
 
             if ($is_admin) {
                 $theme->addMeta('robots', 'noindex');
