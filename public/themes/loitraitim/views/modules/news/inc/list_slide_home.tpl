@@ -5,7 +5,7 @@
 				<div class="col-12 mb-2">
 					<article>
 						<a href="{site_url($news.detail_url)}">
-							<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid border-radius-0 w-100" width="100%" alt="{htmlentities($news.name)}">
+							<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 220, 160)}{else}{image_thumb_url($news.images.robot, 220, 160)}{/if}" class="img-fluid border-radius-0 w-100" width="100%" alt="{htmlentities($news.name)}">
 						</a>
 						<div class="d-inline-block text-default text-1">
 							{time_ago($news.publish_date)}
@@ -25,7 +25,7 @@
 						<a href="{site_url($news.detail_url)}">
 							<article class="thumb-info thumb-info-no-borders thumb-info-bottom-info thumb-info-bottom-info-dark thumb-info-bottom-info-show-more thumb-info-no-zoom border-radius-0">
 								<div class="thumb-info-wrapper thumb-info-wrapper-opacity-6">
-									<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid" width="100%" alt="{htmlentities($news.name)}">
+									<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 280, 200)}{else}{image_thumb_url($news.images.robot, 280, 200)}{/if}" class="img-fluid" width="100%" alt="{htmlentities($news.name)}">
 									<div class="thumb-info-title bg-transparent p-4">
 										{*							<div class="thumb-info-type bg-color-dark px-2 mb-1">Photography</div>*}
 										<div class="thumb-info-inner mt-1">
@@ -57,7 +57,7 @@
 						<div class="row pb-1">
 							<div class="col-sm-5">
 								<a href="{site_url($news.detail_url)}">
-									<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
+									<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 220, 160)}{else}{image_thumb_url($news.images.robot, 220, 160)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
 								</a>
 							</div>
 							<div class="col-sm-7 ps-0">

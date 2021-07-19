@@ -4,7 +4,7 @@
 		{foreach $counter_list as $news}
 			<article>
 				<a href="{site_url($news.detail_url)}">
-					<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid border-radius-0 w-100 mb-1" width="100%" alt="{htmlentities($news.name)}">
+					<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 220, 160)}{else}{image_thumb_url($news.images.robot, 220, 160)}{/if}" class="img-fluid border-radius-0 w-100 mb-1" width="100%" alt="{htmlentities($news.name)}">
 				</a>
 				{if !empty($news.category_ids)}
 					<span>
