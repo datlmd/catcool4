@@ -5,7 +5,7 @@
 				<div class="col-12 mb-2">
 					<article>
 						<a href="{site_url($news.detail_url)}">
-							<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid border-radius-0 w-100" alt="{$news.name}">
+							<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid border-radius-0 w-100" width="100%" alt="{htmlentities($news.name)}">
 						</a>
 						<div class="d-inline-block text-default text-1">
 							{time_ago($news.publish_date)}
