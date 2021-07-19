@@ -1658,10 +1658,10 @@ if(!function_exists('add_meta'))
                 $theme->addMeta('og:article:modified_time', $data['modified_time'], 'meta', ['property' => 'article:modified_time']);
             }
 
-            if (!empty($keywords)) {
+            if (!empty($keywords) && $url != base_url()) {
                 $keyword_list = explode(',', $keywords);
-                foreach ($keyword_list as $keyword) {
-                    $theme->addMeta('og:article:tag', $keyword, 'meta', ['property' => 'article:tag']);
+                foreach ($keyword_list as $key => $keyword) {
+                    $theme->addMeta('og:article:tag', $keyword, 'meta', ['property' => 'article:tag', 'id' => "meta_tag_$key" ]);
                 }
             }
 

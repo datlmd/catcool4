@@ -1,7 +1,7 @@
 <?php
 
 return [
-	"heading_title" => "Lời Trái Tim",
+	"heading_title" => "Lời Trái Tim - Trang tin tức giải trí, chia sẻ thông tin",
 	"text_comment" => "Comments",
 	"text_copyright" => "© Copyright 2021. All Rights Reserved.",
 	"text_hot" => "Hot",

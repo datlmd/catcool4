@@ -725,10 +725,18 @@ class Themes
             }
             return $this;
         }
-        self::$metadata[$type.'::'.$name] = [
-            'content' => $content,
-            'attrs'   => $attrs,
-        ];
+		if (!empty($attrs['id'])) {
+			self::$metadata[$type.'::'.$name.'::'.$attrs['id']] = [
+				'content' => $content,
+				'attrs'   => $attrs,
+			];
+		} else {
+			self::$metadata[$type.'::'.$name] = [
+				'content' => $content,
+				'attrs'   => $attrs,
+			];
+		}
+
         return $this;
     }
 
