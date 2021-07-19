@@ -26,7 +26,7 @@
 								</div>
 								<div class="col-4 p-0">
 									<a href="{site_url($news.detail_url)}">
-										<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid border-radius-0" alt="{$news.name}">
+										<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
 									</a>
 								</div>
 								<div class="col-8 ps-2 pe-0">
@@ -64,7 +64,7 @@
 									<div class="row">
 										<div class="col">
 											<a href="{site_url($news.detail_url)}">
-												<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid border-radius-0" alt="{$news.name}">
+												<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
 											</a>
 										</div>
 									</div>
@@ -95,7 +95,7 @@
 								<div class="row pb-1">
 									<div class="col-sm-4">
 										<a href="{site_url($news.detail_url)}">
-											<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid border-radius-0" alt="{$news.name}">
+											<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb)}{else}{image_thumb_url($news.images.robot)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
 										</a>
 									</div>
 									<div class="col-sm-8 ps-0">
