@@ -593,8 +593,16 @@ class NewsModel extends FarmModel
             'publish_date <=' => get_date(),
         ];
 
+        //format like: 1 or 10, 11
+        // {"0":1} or {"0":1,"1":4}
+        $category_id_1 = ":$category_id}";
+        $category_id_2 = ":$category_id,";
+
         $result = $this->where($where)
-            ->like('category_ids', $category_id)
+            ->groupStart()
+            ->like('category_ids', $category_id_1)
+            ->orLike('category_ids', $category_id_2)
+            ->groupEnd()
             ->orderBy('publish_date', 'DESC');
 
         $list = $result->paginate($limit, 'news');
