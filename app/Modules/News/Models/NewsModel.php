@@ -272,6 +272,8 @@ class NewsModel extends FarmModel
 
     public function robotSave($data, $status = STATUS_ON)
     {
+        helper('catcool');
+
         if (empty($data)) {
             return [];
         }
