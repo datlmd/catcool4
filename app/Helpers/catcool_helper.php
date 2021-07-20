@@ -1586,6 +1586,10 @@ if(!function_exists('add_meta'))
             $image       = !empty($data['image']) ? $data['image'] : config_item('site_image');
             $image_fb    = $data['image_fb'] ?? null;
 
+            $title = str_ireplace('"', "", $title);
+            $description = str_ireplace('"', "", $description);
+            $keywords = str_ireplace('"', "", $keywords);
+
             $theme->setPageTitle($title . ' - ' . str_ireplace('www.', '', parse_url(base_url(), PHP_URL_HOST)));
 
             if ($is_admin) {
@@ -1695,6 +1699,12 @@ if(!function_exists('script_google_search'))
                 $image_data = getimagesize($image_info);
             }
 
+            $name = $detail['name'] ?? null;
+            $description = $detail['description'] ?? null;
+
+            $name = str_ireplace('"', '', $name);
+            $description = str_ireplace('"', '', $description);
+
             $script_str = '<script type="application/ld+json">
                 {
                     "@context": "http://schema.org",
@@ -1703,8 +1713,8 @@ if(!function_exists('script_google_search'))
                         "@type":"WebPage",
                         "@id":"' . $detail['url'] .'"
                     },
-                    "headline": "' . $detail['name'] . '",
-                    "description": "' . $detail['description'] . '",
+                    "headline": "' . htmlspecialchars($name, ENT_QUOTES) . '",
+                    "description": "' . htmlspecialchars($description, ENT_QUOTES) . '",
                     "image": {
                         "@type": "ImageObject",
                         "url": "' . image_thumb_url($image) . '",
@@ -1755,7 +1765,7 @@ if(!function_exists('script_google_search'))
                     "position": ' . $position .',
                     "item": {
                         "@id": "' . $breadcrumb['url'] . '",
-                        "name": "' . $breadcrumb['name'] . '"
+                        "name": "' . str_ireplace('"', "'",  $breadcrumb['name']) . '"
                     }
                 }';
 
