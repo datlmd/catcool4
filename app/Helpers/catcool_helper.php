@@ -1630,7 +1630,7 @@ if(!function_exists('add_meta'))
             $theme->addMeta('og:description', $description);
 
             if (!empty($image_fb)) {
-                $theme->addMeta('og:image', image_thumb_url($image_fb));
+                $theme->addMeta('og:image', image_thumb_url($image_fb, 600, 315));
 
                 $image_fb_info = get_upload_path($image_fb);
                 if (is_file($image_fb_info)) {
@@ -1642,7 +1642,7 @@ if(!function_exists('add_meta'))
                     }
                 }
 
-                $theme->addMeta('og:twitter:image', image_thumb_url($image_fb), 'meta', ['property' => 'twitter:image']);
+                $theme->addMeta('og:twitter:image', image_thumb_url($image_fb, 600, 315), 'meta', ['property' => 'twitter:image']);
             }
 
             $theme->addMeta('og:twitter:card', 'summary_large_image', 'meta', ['property' => 'twitter:card']);
