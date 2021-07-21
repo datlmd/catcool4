@@ -70,6 +70,7 @@
 			js.src = 'https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v3.1';
 			fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));</script>
+	<script src="https://www.googleoptimize.com/optimize.js?id=GTM-T6MWXC9"></script>
 </body>
 </html>
 {/strip}
