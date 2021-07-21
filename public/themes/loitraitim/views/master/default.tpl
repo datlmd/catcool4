@@ -41,6 +41,11 @@
     <script>{script_global()}</script>
 	<!-- GOOGLE SEARCH STRUCTURED DATA FOR ARTICLE -->
 	{if !empty($script_google_search)}{$script_google_search}{/if}
+
+	<!--- google adsend & optimize -->
+	<script data-ad-client="ca-pub-1427578177982640" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<script src="https://www.googleoptimize.com/optimize.js?id=GTM-T6MWXC9"></script>
+	<!--- end google adsend -->
 </head>
 <body class="{if !empty($body_class)}{$body_class}{/if}">
 	{$layout}
@@ -70,7 +75,7 @@
 			js.src = 'https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v3.1';
 			fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));</script>
-	<script src="https://www.googleoptimize.com/optimize.js?id=GTM-T6MWXC9"></script>
+
 </body>
 </html>
 {/strip}
