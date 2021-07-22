@@ -444,7 +444,7 @@ class NewsModel extends FarmModel
             ];
 
             $list = $this->select(['news_id', 'name', 'slug', 'description', 'publish_date', 'images', 'category_ids', 'ctime'])
-                ->orderBy('mtime', 'DESC')->where($where)->findAll($limit);
+                ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
 
             foreach ($category_list as $key => $category) {
                 foreach ($list as $key_news => $value) {
@@ -479,7 +479,7 @@ class NewsModel extends FarmModel
             ];
 
             $list = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
-                ->orderBy('mtime', 'DESC')->where($where)->findAll($limit);
+                ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
             if (empty($list)) {
                 return [];
             }
@@ -539,7 +539,7 @@ class NewsModel extends FarmModel
             ];
 
             $list = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
-                ->orderBy('mtime', 'DESC')->where($where)->findAll($limit);
+                ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
             if (empty($list)) {
                 return [];
             }
@@ -568,7 +568,7 @@ class NewsModel extends FarmModel
                 'is_homepage' => STATUS_OFF,
             ];
 
-            $list = $this->orderBy('mtime', 'DESC')->where($where)->findAll($limit);
+            $list = $this->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
             if (empty($list)) {
                 return [];
             }
@@ -607,7 +607,7 @@ class NewsModel extends FarmModel
             ->like('category_ids', $category_id_1)
             ->orLike('category_ids', $category_id_2)
             ->groupEnd()
-            ->orderBy('mtime', 'DESC');
+            ->orderBy('publish_date', 'DESC');
 
         $list = $result->paginate($limit, 'news');
         if (empty($list)) {
