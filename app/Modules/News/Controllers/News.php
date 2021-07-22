@@ -29,7 +29,7 @@ class News extends BaseController
 
         $data = [
             'category_list'        => $this->model->getListHome(),
-            'slide_list'           => $this->model->getSlideHome(4),
+            'slide_list'           => $this->model->getSlideHome(3),
             'counter_list'         => $this->model->getListCounter(10),
             'hot_list'             => $this->model->getListHot(4),
             'new_list'             => $this->model->getListNew(5),
