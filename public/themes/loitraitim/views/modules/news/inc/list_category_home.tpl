@@ -72,7 +72,7 @@
 					{else}
 
 						{foreach $category.list as $news}
-							{if $news@iteration <= 2}
+							{if $news@iteration == 1}
 								<div class="col-md-5 mb-4 pb-1">
 									<article class="thumb-info thumb-info-side-image thumb-info-no-zoom bg-transparent border-radius-0 pb-2 mb-2">
 										<div class="row">
@@ -102,7 +102,7 @@
 						{/foreach}
 						<div class="col-md-7">
 							{foreach $category.list as $news}
-								{if $news@iteration <= 2}
+								{if $news@iteration == 1}
 									{continue}
 								{/if}
 								<article class="thumb-info thumb-info-side-image thumb-info-no-zoom bg-transparent border-radius-0 pb-2 mb-2">
