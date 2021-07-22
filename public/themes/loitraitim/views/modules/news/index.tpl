@@ -5,16 +5,18 @@
 				<div class="col-md-8 col-lg-7">
 					{include file=get_theme_path('views/modules/news/inc/list_slide_home.tpl')}
 				</div>
-				<div class="col-md-4 col-lg-5 ms-2 ms-md-0">
-					{include file=get_theme_path('views/modules/news/inc/list_new.tpl')}
-				</div>
+				{if empty($is_mobile)}
+					<div class="col-md-4 col-lg-5 ms-2 ms-md-0">
+						{include file=get_theme_path('views/modules/news/inc/list_new.tpl')}
+					</div>
+				{/if}
 			</div>
 
 			<div class="row pb-1 pt-2">
 
 				<div class="col-lg-7">
 
-					{include file=get_theme_path('views/modules/news/inc/list_category_home.tpl')}
+					{include file=get_theme_path('views/modules/news/inc/list_category_home.tpl') style_show='category'}
 
 				</div>
 

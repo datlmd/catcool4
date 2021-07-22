@@ -7,7 +7,7 @@
 						<div class="col-12 mb-2">
 							<article>
 								<a href="{site_url($news.detail_url)}">
-									<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 220, 160)}{else}{image_thumb_url($news.images.robot, 220, 160)}{/if}" class="img-fluid border-radius-0 w-100" width="100%" alt="{htmlentities($news.name)}">
+									<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 450, 320)}{else}{image_thumb_url($news.images.robot, 450, 320)}{/if}" class="img-fluid border-radius-0 w-100" width="100%" alt="{htmlentities($news.name)}">
 								</a>
 								<h4 class="pb-2 line-height-4 font-weight-bold text-4 text-dark my-0 pe-1">
 									<a href="{site_url($news.detail_url)}" class="text-decoration-none text-color-dark">{$news.name}</a>
@@ -39,7 +39,7 @@
 							<div class="row">
 								<div class="col">
 									<a href="{site_url($news.detail_url)}">
-										<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 450, 320)}{else}{image_thumb_url($news.images.robot, 220, 160)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
+										<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 450, 320)}{else}{image_thumb_url($news.images.robot, 450, 320)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
 									</a>
 								</div>
 							</div>
