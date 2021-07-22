@@ -69,7 +69,7 @@
 					{/foreach}
 				</div>
 
-				<div class="col-lg-4 d-none">
+				<div class="col-lg-4">
 					{foreach $slide_list as $news}
 						{if $news@iteration == 1}
 							{continue}
