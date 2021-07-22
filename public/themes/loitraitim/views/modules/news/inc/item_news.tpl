@@ -2,14 +2,14 @@
     {if !empty($news)}
         <article class="post post-medium ms-2 ms-lg-0">
             <div class="row mb-4">
-                <div class="col-4">
+                <div class="col-4 px-1 px-lg-3">
                     <div class="post-image">
                         <a href="{site_url($news.detail_url)}">
-                            <img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 220, 160)}{else}{image_thumb_url($news.images.robot, 220, 160)}{/if}" class="img-fluid img-thumbnail border-0 w-100" width="100%" alt="{htmlentities($news.name)}" />
+                            <img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 220, 160)}{else}{image_thumb_url($news.images.robot, 220, 160)}{/if}" class="w-100" width="100%" alt="{htmlentities($news.name)}" />
                         </a>
                     </div>
                 </div>
-                <div class="col-8 ps-0">
+                <div class="col-8 ps-lg-0">
                     <div class="post-content">
                         <h4 class="font-weight-bold pt-0 text-4 line-height-4 mb-0"><a href="{site_url($news.detail_url)}" class="text-decoration-none text-color-dark">{$news.name}</a></h4>
                         {if !empty($is_show_category) && !empty($news.category_ids)}

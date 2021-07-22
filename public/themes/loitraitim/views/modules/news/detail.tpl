@@ -1,6 +1,6 @@
 {strip}
     <div class="row slide-right">
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-lg-8">
 
             <div class="blog-posts single-post mt-2 mt-lg-0 mt-xl-3">
 
@@ -75,18 +75,21 @@
             </div>
 
         </div>
-        <div class="col-12 col-md-4">
-            <div data-plugin-sticky data-plugin-options="{literal}{'minWidth': 991, 'containerSelector': '.slide-right', 'padding': {'top': 55}}{/literal}">
 
-                {include file=get_theme_path('views/modules/news/inc/list_hot.tpl')}
+        {if empty($is_mobile)}
+            <div class="col-12 col-lg-4 d-none d-lg-block">
+                <div data-plugin-sticky data-plugin-options="{literal}{'minWidth': 991, 'containerSelector': '.slide-right', 'padding': {'top': 55}}{/literal}">
 
+                    {include file=get_theme_path('views/modules/news/inc/list_hot.tpl')}
+
+                </div>
             </div>
-        </div>
+        {/if}
 
     </div>
 
     <div class="row">
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-lg-8 {if !empty($is_mobile)}px-4{/if} px-lg-4 px-xl-0">
             <div class="post-category-list">
 
                 {include file=get_theme_path('views/modules/news/inc/detail_same_category.tpl') news_list=$news_category_list news_id_not=$detail.news_id}
@@ -109,7 +112,7 @@
             </div>
 
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-lg-4">
 
 
         </div>
