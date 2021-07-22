@@ -33,7 +33,7 @@
 		{else}
 			<div class="row ps-4">
 
-				<div class="col-lg-8 mb-4 pb-2">
+				<div class="col-md-8 mb-4 pb-2">
 					{foreach $slide_list as $news}
 						{if $news@iteration == 1}
 							<div class="row">
@@ -69,7 +69,7 @@
 					{/foreach}
 				</div>
 
-				<div class="col-lg-4">
+				<div class="col-md-4">
 					{foreach $slide_list as $news}
 						{if $news@iteration == 1}
 							{continue}

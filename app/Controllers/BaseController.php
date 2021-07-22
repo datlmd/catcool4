@@ -96,7 +96,9 @@ class BaseController extends Controller
         \Config\Services::language()->setLocale(get_lang());
 
         $agent = $this->request->getUserAgent();
-        $this->smarty->assign('is_mobile', $agent->isMobile());
+        if ($agent->isMobile() && !$agent->isMobile('ipad')) {
+            $this->smarty->assign('is_mobile', $agent->isMobile());
+        }
     }
 
     public function __construct()
