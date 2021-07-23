@@ -17,7 +17,7 @@
 				<div class="row">
 					<p class="col-8 fst-italic">{$news.description}</p>
 					<div class="col-4">
-						<a href="{site_url($news.detail_url)}l">
+						<a href="{site_url($news.detail_url)}">
 							<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 220, 160)}{else}{image_thumb_url($news.images.robot, 220, 160)}{/if}" width="100%" alt="{htmlentities($news.name)}" class="image-grayscale">
 						</a>
 					</div>
