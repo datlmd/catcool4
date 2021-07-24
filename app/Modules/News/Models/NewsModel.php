@@ -398,6 +398,7 @@ class NewsModel extends FarmModel
                 $image_first = $robot->getImageFirst($content);
 
                 $list_news[$news_key]['content']          = $content;
+                $list_news[$news_key]['note']             = !empty($meta['description']) ? $meta['description'] : '';
                 $list_news[$news_key]['meta_description'] = !empty($meta['description']) ? $meta['description'] : '';
                 $list_news[$news_key]['meta_keyword']     = !empty($meta['keywords']) ? $meta['keywords'] : '';
                 $list_news[$news_key]['image']            = !empty($news['image']) ? $news['image'] : $image_first;
