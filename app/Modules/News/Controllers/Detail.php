@@ -74,13 +74,13 @@ class Detail extends BaseController
             }
         }
         $script_detail = [
-            'name'           => $detail['meta_title'] ?? $detail['name'],
-            'description'    => $detail['meta_description'] ?? $detail['description'],
+            'name'           => !empty($detail['meta_title']) ? $detail['meta_title'] : $detail['name'],
+            'description'    => !empty($detail['meta_description']) ? $detail['meta_description'] : $detail['description'],
             'url'            => base_url($detail['detail_url']),
-            'image'          => $detail['images']['root'] ?? $detail['images']['robot'],
+            'image'          => !empty($detail['images']['root']) ? $detail['images']['root'] : $detail['images']['robot'],
             'published_time' => date('c', strtotime($detail['publish_date'])),
             'modified_time'  => date('c', strtotime($detail['mtime'])),
-            'author'         =>  $detail['author'] ?? "Ryan Lee",
+            'author'         => !empty($detail['author']) ? $detail['author'] : "Ryan Lee",
         ];
         $script_google_search = script_google_search($script_detail, $script_breadcrumb);
 

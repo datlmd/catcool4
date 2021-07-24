@@ -8,7 +8,7 @@
                     <h2 class="font-weight-bold text-primary padding py-0 mb-0">{$detail.name}</h2>
                     <div class="post-content ml-0">
                         <div class="post-meta padding py-1">
-                            <span><i class="far fa-user"></i> Robot</span>
+                            <span><i class="far fa-user"></i> {if !empty($detail.author)}{$detail.author}{else}Ryan Lee{/if}</span>
                             {if !empty($detail.category_ids)}
                                 <span>
                                     <i class="far fa-folder"></i>
@@ -36,9 +36,11 @@
                             {$detail.content}
                         </div>
 
-                        <div class="post-meta padding pb-0 text-end">
-                            {lang('News.text_source')}: <a href="{$detail.source}" target="_blank" title="{$detail.source}">{str_ireplace('www.', '', parse_url($detail.source, PHP_URL_HOST))}</a>
-                        </div>
+                        {if !empty($detail.source)}
+                            <div class="post-meta padding pb-0 text-end">
+                                {lang('News.text_source')}: <a href="{$detail.source}" target="_blank" title="{$detail.source}">{str_ireplace('www.', '', parse_url($detail.source, PHP_URL_HOST))}</a>
+                            </div>
+                        {/if}
 
                         <div class="padding pb-0">
                             <div class="row mb-4">
