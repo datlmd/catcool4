@@ -381,6 +381,9 @@ var Catcool = {
             $('.show-time-picker').datetimepicker({
                 sideBySide: false,
                 format: $('.show-time-picker').data('date-format'),
+                pickDate: false,
+                pickSeconds: false,
+                pick12HourFormat: false
             });
         }
     },

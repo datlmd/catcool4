@@ -368,8 +368,8 @@
                                     <div class="input-group-text" data-target="#show-date-picker" data-toggle="datetimepicker"><i class="fa fa-calendar-alt"></i></div>
                                 </div>
                                 <label class="form-label mt-2">{lang('NewsAdmin.text_publish_time')}</label>
-                                <div class="input-group date show-time-picker mb-2" id="show-time-picker" data-target-input="nearest" data-date-format="hh:mm">
-                                    <input type="text" name="publish_date_hour" id="publish_date_hour" class="form-control datetimepicker-input" {if old('publish_date_hour', $publish_date)}value="{old('publish_date_hour', $publish_date)|date_format:'h:i'}"{/if} placeholder="H:i" data-target="#show-time-picker" />
+                                <div class="input-group date show-time-picker mb-2" id="show-time-picker" data-target-input="nearest" data-date-format="HH:mm">
+                                    <input type="text" name="publish_date_hour" id="publish_date_hour" class="form-control datetimepicker-input" {if old('publish_date_hour', $publish_date)}value="{old('publish_date_hour', $publish_date)|date_format:'H:i'}"{/if} placeholder="H:i" data-target="#show-time-picker" />
                                     <div class="input-group-text" data-target="#show-time-picker" data-toggle="datetimepicker"><i class="fa fa-clock"></i></div>
                                 </div>
                                 <small>{lang('NewsAdmin.help_publish_date')}</small>
