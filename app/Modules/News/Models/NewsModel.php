@@ -601,12 +601,16 @@ class NewsModel extends FarmModel
         //format like: 1 or 10, 11
         // {"0":1} or {"0":1,"1":4}
         $category_id_1 = ":$category_id}";
-        $category_id_2 = ":$category_id,";
+        $category_id_2 = ":\"$category_id\"}";
+        $category_id_3 = ":$category_id,";
+        $category_id_4 = ":\"$category_id\",";
 
         $result = $this->where($where)
             ->groupStart()
             ->like('category_ids', $category_id_1)
             ->orLike('category_ids', $category_id_2)
+            ->orLike('category_ids', $category_id_3)
+            ->orLike('category_ids', $category_id_4)
             ->groupEnd()
             ->orderBy('publish_date', 'DESC');
 
