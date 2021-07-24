@@ -10,17 +10,69 @@ class Sitemap extends Controller
 {
     protected $model;
 
-    protected $helpers = ['url','date', 'catcool'];
+    protected $helpers = ['url','date', 'catcool', 'inflector'];
 
     public function __construct()
     {
-
         $this->model = new NewsModel();
 
         $this->libsitemap = new LibSitemap();
+
+        date_default_timezone_set('Asia/Saigon');
     }
 
     public function index()
+    {
+
+
+        $this->libsitemap->add(base_url('sitemap-category.xml'), date('c', time()));
+        $this->libsitemap->add(base_url('sitemap-news.xml'), date('c', time()));
+
+        $x = $this->libsitemap->output('sitemapindex', 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
+
+        $this->response
+            ->setXML($x)
+            ->send();
+    }
+
+    public function news()
+    {
+        //add news
+        $where = [
+            'published' => STATUS_ON,
+            'publish_date <=' => get_date(),
+        ];
+        $news_list = $this->model
+            ->select('news_id, slug, name, tags, meta_keyword, publish_date, ctime, mtime')
+            ->orderBy('news_id', 'desc')
+            ->where($where)
+            ->findAll();
+
+        if (!empty($news_list))
+        {
+            foreach ($news_list as $key => $value) {
+                $value = $this->model->formatDetail($value);
+
+                $data_news = [
+                    'publication' => ['name' => config_item('site_name'), 'language' => 'vi'],
+                    'publication_date' => date('Y-m-d\TH:i:sP', strtotime($value['publish_date'])),
+                    'title' => htmlspecialchars($value['name']),
+                    'keywords' => !empty($value['meta_keyword']) ? htmlspecialchars($value['meta_keyword']) : $value['tags']
+                ];
+
+                $this->libsitemap->add(base_url($value['detail_url']), null, null, null, $data_news);
+            }
+        }
+
+        $x = $this->libsitemap->output('urlset', 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"');
+
+
+        $this->response
+            ->setXML($x)
+            ->send();
+    }
+
+    public function category()
     {
         $category_model = new CategoryModel();
         $category_list = $category_model->getListPublished();
@@ -29,34 +81,16 @@ class Sitemap extends Controller
         $priority = '1.0';
 
         //add home
-        $this->libsitemap->add(base_url(), date('c', now()), $changefreq, $priority);
+        $this->libsitemap->add(base_url(), date('Y-m-d\TH:i:sP', time()), $changefreq, $priority);
 
         //add category
         if (!empty($category_list)) {
-            $changefreq = null;
-            $priority = '0.9';
             foreach ($category_list as $value) {
-                $this->libsitemap->add(base_url($value['slug']), date('c', strtotime($value['mtime'])), $changefreq, $priority);
+                $this->libsitemap->add(base_url($value['slug']), date('Y-m-d\TH:i:sP', strtotime($value['mtime'])), $changefreq, $priority);
             }
         }
 
-        //add news
-        $where = [
-            'published' => STATUS_ON,
-            'publish_date <=' => get_date(),
-        ];
-        $news_list = $this->model->select('news_id, slug, ctime, mtime')->where($where)->findAll();
-        if (!empty($news_list))
-        {
-            $changefreq = null;
-            $priority = '0.8';
-            foreach ($news_list as $key => $value) {
-                $value = $this->model->formatDetail($value);
-                $this->libsitemap->add(base_url($value['detail_url']), date('c', strtotime($value['mtime'])), $changefreq, $priority);
-            }
-        }
-
-        $x = $this->libsitemap->output();
+        $x = $this->libsitemap->output('urlset', 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
 
         $this->response
             ->setXML($x)
