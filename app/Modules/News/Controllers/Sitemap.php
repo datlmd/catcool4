@@ -23,8 +23,6 @@ class Sitemap extends Controller
 
     public function index()
     {
-
-
         $this->libsitemap->add(base_url('sitemap-category.xml'), date('c', time()));
         $this->libsitemap->add(base_url('sitemap-news.xml'), date('c', time()));
 
@@ -56,8 +54,8 @@ class Sitemap extends Controller
                 $data_news = [
                     'publication' => ['name' => config_item('site_name'), 'language' => 'vi'],
                     'publication_date' => date('Y-m-d\TH:i:sP', strtotime($value['publish_date'])),
-                    'title' => htmlspecialchars($value['name']),
-                    'keywords' => !empty($value['meta_keyword']) ? htmlspecialchars($value['meta_keyword']) : $value['tags']
+                    'title' => $this->_utf8ForXml(htmlspecialchars($value['name'])),
+                    'keywords' => !empty($value['meta_keyword']) ? $this->_utf8ForXml(htmlspecialchars($value['meta_keyword'])) : $value['tags']
                 ];
 
                 $this->libsitemap->add(base_url($value['detail_url']), null, null, null, $data_news);
@@ -65,7 +63,6 @@ class Sitemap extends Controller
         }
 
         $x = $this->libsitemap->output('urlset', 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"');
-
 
         $this->response
             ->setXML($x)
@@ -95,5 +92,10 @@ class Sitemap extends Controller
         $this->response
             ->setXML($x)
             ->send();
+    }
+
+    private function _utf8ForXml($string)
+    {
+        return preg_replace ('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', ' ', $string);
     }
 }

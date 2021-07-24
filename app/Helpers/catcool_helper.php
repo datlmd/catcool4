@@ -1705,40 +1705,42 @@ if(!function_exists('script_google_search'))
             $name = str_ireplace('"', '', $name);
             $description = str_ireplace('"', '', $description);
 
-            $script_str = '<script type="application/ld+json">
-                {
-                    "@context": "http://schema.org",
-                    "@type": "NewsArticle",
-                    "mainEntityOfPage": {
-                        "@type":"WebPage",
-                        "@id":"' . $detail['url'] .'"
-                    },
-                    "headline": "' . htmlspecialchars($name, ENT_QUOTES) . '",
-                    "description": "' . htmlspecialchars($description, ENT_QUOTES) . '",
-                    "image": {
-                        "@type": "ImageObject",
-                        "url": "' . image_thumb_url($image) . '",
-                        "width": ' . $image_data[0] . ',
-                        "height": ' . $image_data[1] . '
-                    },
-                    "datePublished": "' . $detail['published_time'] . '",
-                    "dateModified": "' . $detail['modified_time'] . '",
-                    "author": {
-                        "@type": "Person",
-                        "name": "' . $detail['author'] . '"
-                    },
-                    "publisher": {
-                        "@type": "Organization",
-                        "name": "' . str_ireplace('www.', '', base_url()) . '",
-                        "logo": {
-                        "@type": "ImageObject",
-                            "url": "https://kenh14cdn.com/zoom/60_60/k14-logo.png",
-                            "width": 60,
-                            "height": 60
+            if (!empty($image_data)) {
+                $script_str = '<script type="application/ld+json">
+                    {
+                        "@context": "http://schema.org",
+                        "@type": "NewsArticle",
+                        "mainEntityOfPage": {
+                            "@type":"WebPage",
+                            "@id":"' . $detail['url'] . '"
+                        },
+                        "headline": "' . htmlspecialchars($name, ENT_QUOTES) . '",
+                        "description": "' . htmlspecialchars($description, ENT_QUOTES) . '",
+                        "image": {
+                            "@type": "ImageObject",
+                            "url": "' . image_thumb_url($image) . '",
+                            "width": ' . $image_data[0] . ',
+                            "height": ' . $image_data[1] . '
+                        },
+                        "datePublished": "' . $detail['published_time'] . '",
+                        "dateModified": "' . $detail['modified_time'] . '",
+                        "author": {
+                            "@type": "Person",
+                            "name": "' . $detail['author'] . '"
+                        },
+                        "publisher": {
+                            "@type": "Organization",
+                            "name": "' . str_ireplace('www.', '', base_url()) . '",
+                            "logo": {
+                            "@type": "ImageObject",
+                                "url": "https://kenh14cdn.com/zoom/60_60/k14-logo.png",
+                                "width": 60,
+                                "height": 60
+                            }
                         }
                     }
-                }
-            </script>';
+                </script>';
+            }
         }
 
         if (!empty($breadcrumb_list)) {
