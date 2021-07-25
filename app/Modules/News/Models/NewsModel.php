@@ -430,6 +430,85 @@ class NewsModel extends FarmModel
         return $list_menu;
     }
 
+    public function robotDetail($url, $is_insert = true, $status = STATUS_ON)
+    {
+        if (empty($url)) {
+            return [];
+        }
+
+        $robot = service('robot');
+
+        $data = [];
+
+        $domain = str_ireplace('www.', '', parse_url($url, PHP_URL_HOST));
+        $domain = strtolower($domain);
+
+        $attribute_meta = [
+            'title' => '/title>(.*?)<\/title/',
+            'title_fb' => '/property=\"og:title\" content=\"(.*?)\"/',
+            'description' => '/name=\"description\" content=\"(.*?)\"/',
+            'description_fb' => '/property=\"og:description\" content=\"(.*?)\"/',
+            'keywords' => '/name=\"keywords\" content=\"(.*?)\"/',
+            'image_fb' => '/property=\"og:image\" content=\"(.*?)\"/',
+        ];
+
+        $attribute_detail['attribute_detail'] = [];
+
+        switch ($domain) {
+            case 'ngoisao.vn':
+                $attribute_detail['attribute_detail']['content'] = 'div.ct-content';
+                break;
+            case 'kenh14.vn':
+                $attribute_detail['attribute_detail']['content'] = 'div.knc-content';
+                break;
+            case 'zingnews.vn':
+                $attribute_detail['attribute_detail']['content'] = 'div.the-article-body';
+                break;
+            case 'vnexpress.net':
+                $attribute_detail['attribute_detail']['content'] = 'article.fck_detail';
+                break;
+            case 'ngoisao.net':
+                $attribute_detail['attribute_detail']['content'] = 'article.fck_detail';
+                break;
+        }
+
+        try {
+            $meta = $robot->getMeta($attribute_meta, $url);
+        } catch (\Exception $e) {
+            $meta = [];
+        }
+        try {
+            $detail = $robot->getDetail($attribute_detail, $url, $domain);
+        } catch (\Exception $e) {
+            $detail = [];
+        }
+
+        $content = !empty($detail['content']) ? $detail['content'] : "";
+        if (strpos($content, 'data-src') !== FALSE) {
+            $content = $robot->convertImageData($content);
+        }
+
+        $name = !empty($meta['title']) ? $meta['title'] : (!empty($meta['title_fb']) ? $meta['title_fb'] : "");
+        $description = !empty($meta['description']) ? $meta['description'] : (!empty($meta['description_fb']) ? $meta['description_fb'] : "");
+        $keyword = !empty($meta['keywords']) ? $meta['keywords'] : "";
+
+        $data = [
+            'name'             => html_entity_decode($name),
+            'description'      => html_entity_decode($description),
+            'meta_title'       => html_entity_decode($name),
+            'meta_description' => html_entity_decode($description),
+            'meta_keyword'     => html_entity_decode($keyword),
+            'tags'             => html_entity_decode($keyword),
+            'url_image_fb'     => !empty($meta['image_fb']) ? $meta['image_fb'] : "",
+            'content'          => html_entity_decode($content),
+            'source_type'      => 2,
+            'source'           => $url
+        ];
+
+
+        return $data;
+    }
+
     public function getListHome($limit = 200, $is_cache = true)
     {
         $category_list = $is_cache ? cache()->get(self::NEWS_CACHE_CATEGORY_HOME) : null;

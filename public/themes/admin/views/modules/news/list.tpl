@@ -172,8 +172,15 @@
 				</div>
 				<div class="modal-body">
 					<div id="robot_validation_error" class="text-danger mb-2"></div>
+
 					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 						{form_open('news/manage/robot', ['id' => 'robot_news_form'])}
+
+						<div class="form-group mb-4">
+							<label class="form-label">Url</label>
+							<input type="text" name="url" value="" id="source" class="form-control">
+						</div>
+
 						<div class="form-group">
 							<label class="form-check">
 								<input type="radio" name="robot_type" value="kenh14" checked="checked" id="robot_type_kenh14" class="form-check-input">
@@ -218,40 +225,46 @@
 
 		$("#robot_validation_error").html('');
 
-		$.ajax({
-			url: $("#robot_news_form").attr('action'),
-			type: 'POST',
-			data: $("#robot_news_form").serialize(),
-			beforeSend: function () {
-				$('.btn-robot-news').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
-			},
-			complete: function () {
-				$('.btn-robot-news').find('i').replaceWith('<i class="far fa-newspaper me-1"></i>');
-			},
-			success: function (data) {
-				is_robot_processing = false;
+		if ($('#robot_news input[name="url"]').length) {
+			window.location.href = 'news/manage/add?url=' + $('#robot_news input[name="url"]').val();
+			return;
+		} else {
 
-				var response = JSON.stringify(data);
-				response     = JSON.parse(response);
+			$.ajax({
+				url: $("#robot_news_form").attr('action'),
+				type: 'POST',
+				data: $("#robot_news_form").serialize(),
+				beforeSend: function () {
+					$('.btn-robot-news').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
+				},
+				complete: function () {
+					$('.btn-robot-news').find('i').replaceWith('<i class="far fa-newspaper me-1"></i>');
+				},
+				success: function (data) {
+					is_robot_processing = false;
 
-				if (response.token) {
-					// Update CSRF hash
-					$("input[name*='" + csrf_token + "']").val(response.token);
+					var response = JSON.stringify(data);
+					response = JSON.parse(response);
+
+					if (response.token) {
+						// Update CSRF hash
+						$("input[name*='" + csrf_token + "']").val(response.token);
+					}
+
+					if (response.status == 'ng') {
+						$("#robot_validation_error").html(response.msg);
+						return false;
+					}
+
+					if (response.status == 'ok') {
+						location.reload();
+					}
+				},
+				error: function (xhr, errorType, error) {
+					$("#robot_validation_error").html(xhr.responseJSON.message + " Please reload the page!!!");
+					is_robot_processing = false;
 				}
-
-				if (response.status == 'ng') {
-					$("#robot_validation_error").html(response.msg);
-					return false;
-				}
-
-				if (response.status == 'ok') {
-					location.reload();
-				}
-			},
-			error: function (xhr, errorType, error) {
-				$("#robot_validation_error").html(xhr.responseJSON.message + " Please reload the page!!!");
-				is_robot_processing = false;
-			}
-		});
+			});
+		}
 	}
 </script>

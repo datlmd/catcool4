@@ -111,6 +111,15 @@
                                     <input type="hidden" name="images[fb]" value="{old('images[fb]', $images_fb)}" id="input_image_robot_fb_path" />
                                     <small>{lang('NewsAdmin.help_thumb_fp')}</small>
                                 </div>
+
+                                {if isset($edit_data.url_image_fb)}
+                                    <div class="col-md-4 col-sm-4 col-6 border mt-3 bg-danger py-2">
+                                        <a href="javascript:void(0);" data-bs-toggle="image">
+                                            <img src="{$edit_data.url_image_fb}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" />
+                                        </a>
+                                        <a href="{$edit_data.url_image_fb}" class="text-white" target="_blank" download>Download Image Url</a>
+                                    </div>
+                                {/if}
                             </div>
                             {if !empty($edit_data.news_id)}
                                 {if !empty($edit_data.images.robot) || !empty($edit_data.images.robot_fb)}

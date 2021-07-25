@@ -718,4 +718,60 @@ class Robot {
 
         return $content;
     }
+
+    public function convertImageData($html)
+    {
+        try {
+            if (empty($html)) {
+                log_message('error', 'Nội dung trang html null');
+            }
+            $content = $html;
+
+            $bool = true;
+            $i = 0;
+
+            $start = '<img';
+            $end = '>';
+
+            $content = str_ireplace("'", '"', $content);
+
+            do {
+
+                $p_start = 0;
+                $p_end = 0;
+                $p_start = strpos($content, $start, $p_start);
+
+                if ($p_start !== false) {
+                    $p_end = strpos($content, $end, $p_start);
+
+                    if ($p_end > 0) {
+                        $temp = substr($content, $p_start, $p_end - $p_start);
+
+                        $content = substr($content, $p_end, strlen($content) - 1);
+
+                        preg_match('/data-src=\"(.*?)\"/', $temp, $matches);
+                        if ($matches) {
+                            $image_src = $matches[1];
+
+                            preg_match('/ src=\"(.*?)\"/', $temp, $matches);
+                            if ($matches) {
+                                $image_new = str_ireplace($matches[1], $image_src, $temp);
+                                $html = str_ireplace($temp, $image_new, $html);
+                            }
+                        }
+
+                        if ($i % 50 == 0) {
+                            sleep(1);
+                        }
+                    }
+                } else {
+                    $bool = false;
+                }
+            } while ($bool);
+        } catch(Exception $e) {
+            return "";
+        }
+
+        return $html;
+    }
 }

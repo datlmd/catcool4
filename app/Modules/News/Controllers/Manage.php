@@ -340,6 +340,11 @@ class Manage extends AdminController
             // display the edit user form
             $data['edit_data'] = $data_form;
         } else {
+
+            if ($this->request->getGet('url')) {
+                $data['edit_data'] = $this->model->robotDetail($this->request->getGet('url'));
+            }
+
             $data['text_form']   = lang('NewsAdmin.text_add');
         }
 
@@ -358,6 +363,7 @@ class Manage extends AdminController
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         $this->validator->setRule('name', lang('NewsAdmin.text_name'), 'required');
         $this->validator->setRule('content', lang('NewsAdmin.text_content'), 'required');
+        $this->validator->setRule('category_ids', lang('Admin.text_category'), 'required');
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();
