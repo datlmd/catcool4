@@ -470,6 +470,33 @@ class NewsModel extends FarmModel
             case 'ngoisao.net':
                 $attribute_detail['attribute_detail']['content'] = 'article.fck_detail';
                 break;
+            case '2sao.vn':
+                $attribute_detail['attribute_detail']['content'] = 'div.main-detail-content';
+                break;
+            case 'molistar.com':
+                $attribute_detail['attribute_detail']['content'] = 'div.article-content';
+                break;
+            case 'thanhnien.vn':
+                $attribute_detail['attribute_detail']['content'] = 'div.details__content';
+                break;
+            case 'tuoitre.vn':
+                $attribute_detail['attribute_detail']['content'] = 'div#main-detail-body';
+                break;
+            case '24h.com.vn':
+                $attribute_detail['attribute_detail']['content'] = 'article#article_body';
+                break;
+            case 'dantri.com.vn':
+                $attribute_detail['attribute_detail']['content'] = 'div.dt-news__content';
+                break;
+            case 'eva.vn':
+                $attribute_detail['attribute_detail']['content'] = 'div#baiviet-container';
+                break;
+            case 'vietnamnet.vn':
+                $attribute_detail['attribute_detail']['content'] = 'div.ArticleContent';
+                break;
+            case 'suckhoedoisong.vn':
+                $attribute_detail['attribute_detail']['content'] = 'div#content_detail_news';
+                break;
         }
 
         try {
@@ -484,9 +511,13 @@ class NewsModel extends FarmModel
         }
 
         $content = !empty($detail['content']) ? $detail['content'] : "";
-        if (strpos($content, 'data-src') !== FALSE) {
-            $content = $robot->convertImageData($content);
-        }
+
+        //check image
+        $content = $robot->convertImageData($content);
+
+        //check video
+        $content = $robot->convertVideoData($content);
+
 
         $name = !empty($meta['title']) ? $meta['title'] : (!empty($meta['title_fb']) ? $meta['title_fb'] : "");
         $description = !empty($meta['description']) ? $meta['description'] : (!empty($meta['description_fb']) ? $meta['description_fb'] : "");
