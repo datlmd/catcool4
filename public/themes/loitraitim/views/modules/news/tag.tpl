@@ -1,11 +1,11 @@
 {strip}
     <div class="row slide-right">
-        <div class="col-12 col-md-8 {if !empty($is_mobile)}px-4{else}ps-5{/if}">
+        <div class="col-12 col-md-8 {if empty($is_mobile)}ps-5{/if}">
 
             <div class="post-category-list mt-2 mt-lg-2">
 
                 <div class="heading heading-border heading-bottom-double-border">
-                    <h2><i class="fas fa-hashtag me-1"></i>{$tag}</h2>
+                    <h2 class="{if !empty($is_mobile)}px-4{else}ps-5{/if}"><i class="fas fa-hashtag me-1"></i>{$tag}</h2>
                 </div>
                 {if !empty($list)}
                     {foreach $list as $news}

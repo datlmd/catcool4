@@ -15,7 +15,7 @@
 								{if !empty($news.category_ids)}
 									<span>
 										{foreach $news.category_ids as $category_id}
-											<a href="{base_url($category_list[$category_id].slug)}" class="text-decoration-none text-dark fw-bold me-2">{$category_list[$category_id].name}</a>
+											<a href="{base_url($category_list[$category_id].slug)}" class="text-decoration-none fw-light me-2">{$category_list[$category_id].name}</a>
 										{/foreach}
 									</span>
 								{/if}
@@ -26,7 +26,34 @@
 							</article>
 						</div>
 					{else}
-						{include file=get_theme_path('views/modules/news/inc/item_news.tpl') news=$news is_show_category=true}
+						<div class="col-12">
+							<article class="border-radius-0 py-4">
+								<div class="row">
+									<div class="col-4 pe-0">
+										<a href="{site_url($news.detail_url)}">
+											<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 180, 120)}{else}{image_thumb_url($news.images.robot, 180, 120)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
+										</a>
+									</div>
+									<div class="col-8">
+										<div class="thumb-info-caption-text">
+											<h4 class="line-height-4 font-weight-bold text-4 text-dark mb-0">
+												<a href="{site_url($news.detail_url)}" class="text-decoration-none text-color-dark">{$news.name}</a>
+											</h4>
+											{if !empty($news.category_ids)}
+												<span>
+													{foreach $news.category_ids as $category_id}
+														<a href="{base_url($category_list[$category_id].slug)}" class="text-decoration-none fw-light me-2">{$category_list[$category_id].name}</a>
+													{/foreach}
+												</span>
+											{/if}
+											<span class="d-inline-block text-default text-1">
+												{time_ago($news.publish_date)}
+											</span>
+										</div>
+									</div>
+								</div>
+							</article>
+						</div>
 					{/if}
 				{/foreach}
 			</div>
