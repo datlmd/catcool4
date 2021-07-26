@@ -1,8 +1,8 @@
 {strip}
     <div class="row slide-right">
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-md-8 {if !empty($is_mobile)}px-4{else}ps-5{/if}">
 
-            <div class="post-category-list mt-2 mt-lg-4">
+            <div class="post-category-list mt-2 mt-lg-2">
 
                 <div class="heading heading-border heading-bottom-double-border">
                     <h2><i class="fas fa-hashtag me-1"></i>{$tag}</h2>
@@ -20,7 +20,7 @@
             {/if}
 
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-4 {if !empty($is_mobile)}px-4{else}ps-5{/if}">
             <div data-plugin-sticky data-plugin-options="{literal}{'minWidth': 991, 'containerSelector': '.slide-right', 'padding': {'top': 55}}{/literal}">
 
                 {include file=get_theme_path('views/modules/news/inc/list_hot.tpl')}
@@ -31,7 +31,7 @@
     </div>
 
     <div class="row">
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-md-8 {if !empty($is_mobile)}px-4{else}ps-5{/if}">
 
             <div class="post-category-list mt-3">
 

@@ -4,12 +4,12 @@
 			<div class="row px-2">
 				{foreach $slide_list as $news}
 					{if $news@iteration == 1}
-						<div class="col-12 mb-2">
+						<div class="col-12 mb-3">
 							<article>
 								<a href="{site_url($news.detail_url)}">
 									<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 450, 320)}{else}{image_thumb_url($news.images.robot, 450, 320)}{/if}" class="img-fluid border-radius-0 w-100" width="100%" alt="{htmlentities($news.name)}">
 								</a>
-								<h4 class="pb-2 line-height-4 font-weight-bold text-4 text-dark my-0 pe-1">
+								<h4 class="line-height-4 font-weight-bold text-5 text-dark my-0 pe-1">
 									<a href="{site_url($news.detail_url)}" class="text-decoration-none text-color-dark">{$news.name}</a>
 								</h4>
 								{if !empty($news.category_ids)}
@@ -46,7 +46,7 @@
 							<div class="row">
 								<div class="col">
 									<div class="thumb-info-caption-text">
-										<h4 class="d-block line-height-3 text-5 text-dark mb-0 fw-bold mt-2">
+										<h4 class="d-block line-height-3 text-6 text-dark mb-0 fw-bold mt-2">
 											<a href="{site_url($news.detail_url)}" class="text-decoration-none text-color-dark">{$news.name}</a>
 										</h4>
 										{if !empty($news.category_ids)}
