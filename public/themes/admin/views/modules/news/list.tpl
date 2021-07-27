@@ -225,7 +225,7 @@
 
 		$("#robot_validation_error").html('');
 
-		if ($('#robot_news input[name="url"]').length) {
+		if ($('#robot_news input[name="url"]').length > 1) {
 			window.location.href = 'news/manage/add?url=' + $('#robot_news input[name="url"]').val();
 			return;
 		} else {

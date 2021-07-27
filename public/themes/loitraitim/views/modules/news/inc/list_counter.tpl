@@ -3,9 +3,12 @@
 		<h3 class="font-weight-bold mt-2 text-4 mb-2">{lang('News.text_popular_post')}</h3>
 		{foreach $counter_list as $news}
 			<article>
-				<a href="{site_url($news.detail_url)}">
-					<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 220, 160)}{else}{image_thumb_url($news.images.robot, 220, 160)}{/if}" class="img-fluid border-radius-0 w-100 mb-1" width="100%" alt="{htmlentities($news.name)}">
-				</a>
+				{if !empty($news.images.thumb) || !empty($news.images.robot)}
+					<a href="{site_url($news.detail_url)}">
+						<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 220, 160)}{else}{image_thumb_url($news.images.robot, 220, 160)}{/if}" class="img-fluid border-radius-0 w-100 mb-1" width="100%" alt="{htmlentities($news.name)}">
+					</a>
+
+				{/if}
 				{if !empty($news.category_ids)}
 					<span>
 						{foreach $news.category_ids as $category_id}

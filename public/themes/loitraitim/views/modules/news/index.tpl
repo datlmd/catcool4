@@ -31,7 +31,10 @@
 						<div class="col-lg-12">
 							<div class="row home-ads">
 								<div class="col-md-7">
-									<iframe frameborder="0" marginwidth="0" marginheight="0" src="http://thienduongweb.com/tool/weather/?r=1&w=1&g=1&col=1&d=0" width="100%" height="480" scrolling="yes"></iframe>
+
+									{include file=get_theme_path('views/modules/news/inc/weather.tpl')}
+
+									{*<iframe frameborder="0" marginwidth="0" marginheight="0" src="http://thienduongweb.com/tool/weather/?r=1&w=1&g=1&col=1&d=0" width="100%" height="480" scrolling="yes"></iframe>*}
 
 									{include file=get_theme_path('views/modules/news/inc/list_counter.tpl')}
 
