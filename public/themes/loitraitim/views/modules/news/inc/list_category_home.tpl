@@ -8,7 +8,7 @@
 					{foreach $category.list as $news}
 						{if $news@iteration < 4}
 
-							<article class="row p-3 mb-2 border-top border-bottom bg-white">
+							<article class="row p-3 mb-3 border-top border-bottom bg-white {if $news@iteration == 1}mt-2{/if}">
 								<h4 class="pb-2 line-height-4 font-weight-bold text-5 text-dark mb-0 ps-0 pe-1">
 									<a href="{site_url($news.detail_url)}" class="text-decoration-none text-color-dark">{$news.name}</a>
 								</h4>

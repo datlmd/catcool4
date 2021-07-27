@@ -5,18 +5,28 @@
             <div class="blog-posts single-post mt-2 mt-lg-0 mt-xl-3">
 
                 <article class="post post-detail">
+
+                    {if !empty($is_mobile)}
+                        {if !empty($detail.images.thumb) || !empty($detail.images.robot)}
+                            <img src="{if !empty($detail.images.thumb)}{image_thumb_url($detail.images.thumb, 440, 300)}{else}{image_thumb_url($detail.images.robot, 440, 300)}{/if}" class="img-fluid border-radius-0 mb-2" width="100%" alt="{htmlentities($detail.name)}">
+                        {/if}
+                    {/if}
+
+                    {if !empty($detail.category_ids)}
+                        {foreach $detail.category_ids as $category_id}
+                            <a href="{base_url($category_list[$category_id].slug)}" class="padding me-1">{$category_list[$category_id].name}</a>
+                        {/foreach}
+                    {/if}
+
                     <h2 class="font-weight-bold text-primary padding py-0 mb-0">{$detail.name}</h2>
                     <div class="post-content ml-0">
                         <div class="post-meta padding py-1">
-                            <span><i class="far fa-user"></i> {if !empty($detail.author)}{$detail.author}{else}Ryan Lee{/if}</span>
-                            {if !empty($detail.category_ids)}
+                            {if !empty($detail.source)}
                                 <span>
-                                    <i class="far fa-folder"></i>
-                                    {foreach $detail.category_ids as $category_id}
-                                        <a href="{base_url($category_list[$category_id].slug)}" class="me-2">{$category_list[$category_id].name}</a>
-                                    {/foreach}
+                                    {lang('News.text_source')}: {str_ireplace('www.', '', parse_url($detail.source, PHP_URL_HOST))}
                                 </span>
                             {/if}
+                            <span><i class="far fa-user"></i> {if !empty($detail.author)}{$detail.author}{else}Ryan Lee{/if}</span>
                             <span><i class="far fa-clock"></i> {time_ago($detail.publish_date)}</span>
                             <span><i class="fas fa-eye"></i> {$detail.counter_view}</span>
                             {if $detail.is_comment eq COMMENT_STATUS_ON}
@@ -35,12 +45,6 @@
                         <div class="detail-content">
                             {$detail.content}
                         </div>
-
-                        {if !empty($detail.source)}
-                            <div class="post-meta padding pb-0 text-end">
-                                {lang('News.text_source')}: <a href="{$detail.source}" target="_blank" title="{$detail.source}">{str_ireplace('www.', '', parse_url($detail.source, PHP_URL_HOST))}</a>
-                            </div>
-                        {/if}
 
                         <div class="padding pb-0">
                             <div class="row mb-4">
