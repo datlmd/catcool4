@@ -315,8 +315,8 @@ class NewsModel extends FarmModel
             $except_list = ['quiz'];
 
             $title = html_entity_decode($value['title']);
-            foreach ($except_list as $value) {
-                if (strpos($title, $value) !== FALSE) {
+            foreach ($except_list as $except_text) {
+                if (strpos($title, $except_text) !== FALSE) {
                     $is_except = true;
                 }
             }
