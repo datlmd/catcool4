@@ -308,7 +308,7 @@ class NewsModel extends FarmModel
             }
 
             if (empty($image) || empty($image_fb)) {
-                continue;
+                $status = STATUS_OFF;
             }
 
             $is_except = false;
