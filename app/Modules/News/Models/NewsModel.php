@@ -307,6 +307,24 @@ class NewsModel extends FarmModel
                 $image_fb = save_image_from_url($value['image_fb'], 'news');
             }
 
+            if (empty($image) || empty($image_fb)) {
+                continue;
+            }
+
+            $is_except = false;
+            $except_list = ['quiz'];
+
+            $title = html_entity_decode($value['title']);
+            foreach ($except_list as $value) {
+                if (strpos($title, $value) !== FALSE) {
+                    $is_except = true;
+                }
+            }
+
+            if ($is_except) {
+                continue;
+            }
+
             $date_now = date("Y-m-d H:i:s", strtotime('+5 minutes', strtotime($date_now)));
 
             if (!empty($value['tags'])) {
