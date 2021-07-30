@@ -14,7 +14,7 @@
 				<span>Độ ẩm: <b>{$weather.main.humidity}%</b></span><br/>
 				<span>Sức gió: <b>{$weather.wind.speed} km/h</b></span>
 
-				</div>
+				<span style="display: none;">{$weather.getloc}</span>
 			</div>
 
 

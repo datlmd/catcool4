@@ -177,6 +177,7 @@ class News extends BaseController
 
         $data = json_decode($response, true);
         $data['name'] = $city_list[$id];
+        $data['getloc'] = $getloc->region;
 
         return $data;
     }
