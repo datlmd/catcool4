@@ -25,13 +25,15 @@
 					<div class="row p-2 p-lg-0 p-md-3">
 						<div class="col-lg-12">
 
+							{include file=get_theme_path('views/modules/news/inc/weather.tpl')}
+
 							{include file=get_theme_path('views/modules/news/inc/list_hot.tpl')}
 
 						</div>
 						<div class="col-lg-12">
 							<div class="row home-ads">
 								<div class="col-md-7">
-									
+
 									{include file=get_theme_path('views/modules/news/inc/list_counter.tpl')}
 
 								</div>
