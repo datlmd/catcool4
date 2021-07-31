@@ -5,6 +5,7 @@ return [
 	"text_comment" => "Bình luận",
 	"text_copyright" => "© Copyright 2021. All Rights Reserved.",
 	"text_hot" => "Nóng",
+	"text_news_more" => "Xem thêm",
 	"text_new_post" => "Tin mới",
 	"text_popular_post" => "Xem nhiều",
 	"text_same_category" => "Tin cùng chuyên mục",

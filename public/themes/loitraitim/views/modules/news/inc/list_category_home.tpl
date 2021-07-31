@@ -32,35 +32,46 @@
 								</div>
 
 							</article>
+						{/if}
+					{/foreach}
 
-						{else}
-							<article class="row px-3 py-2">
+					<div class="float-none category-home h-auto" data-bs-toggle="collapse" href="#collapse_news_list_{$category.category_id}" role="button" aria-expanded="false" aria-controls="collapse_news_list_{$category.category_id}">
+						<a href="{base_url($category.slug)}" class="text-decoration-none fw-bold float-start">{$category.name}</a>
+						<span class="float-end pe-3"><i class="fas {if $category@iteration < 4}fa-minus{else}fa-plus{/if} me-1"></i>{lang('News.text_news_more')}</span>
+					</div>
+					<div class="collapse p-0 mb-2 {if $category@iteration < 4}show{/if}" id="collapse_news_list_{$category.category_id}">
+						{foreach $category.list as $news}
 
-								<div class="col-3 p-1">
-									<a href="{site_url($news.detail_url)}">
-										<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 180, 120)}{else}{image_thumb_url($news.images.robot, 180, 120)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
-									</a>
-								</div>
-								<div class="col-9 ps-2 pe-0">
+							{if $news@iteration > 3}
+								<article class="row px-3 py-3">
 									<h4 class="line-height-4 font-weight-bold text-4 text-dark mb-0 ps-0 pe-1">
 										<a href="{site_url($news.detail_url)}" class="text-decoration-none text-color-dark">{$news.name}</a>
 									</h4>
-									{if !empty($news.category_ids)}
-										<span>
-											{foreach $news.category_ids as $category_id}
-												<a href="{base_url($category_list[$category_id].slug)}" class="text-decoration-none fw-light me-2">{$category_list[$category_id].name}</a>
-											{/foreach}
+									<div class="col-3 p-1">
+										<a href="{site_url($news.detail_url)}">
+											<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 180, 120)}{else}{image_thumb_url($news.images.robot, 180, 120)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
+										</a>
+									</div>
+									<div class="col-9 ps-2 pe-0">
+										<p class="text-3">{$news.description|truncate:160}</p>
+										{if !empty($news.category_ids)}
+											<span>
+												{foreach $news.category_ids as $category_id}
+													<a href="{base_url($category_list[$category_id].slug)}" class="text-decoration-none fw-light me-2">{$category_list[$category_id].name}</a>
+												{/foreach}
+											</span>
+										{/if}
+										<span class="d-inline-block text-default font-weight-normal text-1">
+											 {time_ago($news.publish_date)}
 										</span>
-									{/if}
-									<span class="d-inline-block text-default font-weight-normal text-1">
-										 {time_ago($news.publish_date)}
-									</span>
-								</div>
+									</div>
 
-							</article>
-						{/if}
+								</article>
 
-					{/foreach}
+							{/if}
+
+						{/foreach}
+					</div>
 
 				{else}
 
@@ -106,38 +117,46 @@
 								</div>
 							{/if}
 						{/foreach}
+
 						<div class="col-12">
-							{foreach $category.list as $news}
-								{if $news@iteration < 3}
-									{continue}
-								{/if}
-								<article class="border-radius-0 py-4 border-top">
-									<div class="row">
-										<div class="col-sm-3">
-											<a href="{site_url($news.detail_url)}">
-												<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 180, 120)}{else}{image_thumb_url($news.images.robot, 180, 120)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
-											</a>
-										</div>
-										<div class="col-sm-9">
-											<div class="thumb-info-caption-text">
-												<h4 class="line-height-4 font-weight-normal text-4 text-dark mb-0">
-													<a href="{site_url($news.detail_url)}" class="text-decoration-none text-color-dark">{$news.name}</a>
-												</h4>
-												{if !empty($news.category_ids)}
-													<span>
-														{foreach $news.category_ids as $category_id}
-															<a href="{base_url($category_list[$category_id].slug)}" class="text-decoration-none fw-light me-2">{$category_list[$category_id].name}</a>
-														{/foreach}
+							<div class="float-none category-home h-auto" data-bs-toggle="collapse" href="#collapse_news_list_{$category.category_id}" role="button" aria-expanded="false" aria-controls="collapse_news_list_{$category.category_id}">
+								<a href="{base_url($category.slug)}" class="text-decoration-none fw-bold float-start">{$category.name}</a>
+								<span class="float-end"><i class="fas {if $category@iteration < 4}fa-minus{else}fa-plus{/if} me-1"></i>{lang('News.text_news_more')}</span>
+							</div>
+							<div class="collapse p-0 mt-4 mb-2 {if $category@iteration < 4}show{/if}" id="collapse_news_list_{$category.category_id}">
+								{foreach $category.list as $news}
+									{if $news@iteration < 3}
+										{continue}
+									{/if}
+									<article class="border-radius-0 py-4 border-bottom">
+										<div class="row">
+											<div class="col-sm-3">
+												<a href="{site_url($news.detail_url)}">
+													<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 180, 120)}{else}{image_thumb_url($news.images.robot, 180, 120)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
+												</a>
+											</div>
+											<div class="col-sm-9">
+												<div class="thumb-info-caption-text">
+													<h4 class="line-height-4 font-weight-normal text-4 text-dark mb-0">
+														<a href="{site_url($news.detail_url)}" class="text-decoration-none text-color-dark">{$news.name}</a>
+													</h4>
+													{if !empty($news.category_ids)}
+														<span>
+															{foreach $news.category_ids as $category_id}
+																<a href="{base_url($category_list[$category_id].slug)}" class="text-decoration-none fw-light me-2">{$category_list[$category_id].name}</a>
+															{/foreach}
+														</span>
+													{/if}
+													<span class="d-inline-block text-default text-1">
+														{time_ago($news.publish_date)}
 													</span>
-												{/if}
-												<span class="d-inline-block text-default text-1">
-													{time_ago($news.publish_date)}
-												</span>
+												</div>
 											</div>
 										</div>
-									</div>
-								</article>
-							{/foreach}
+									</article>
+								{/foreach}
+							</div>
+
 						</div>
 
 					{/if}
@@ -147,3 +166,10 @@
 		{/if}
 	{/foreach}
 {/strip}
+{literal}
+	<script>
+		$('.category-home').click(function() {
+			$(this).find('i').toggleClass('fas fa-plus fas fa-minus')
+		});
+	</script>
+{/literal}
