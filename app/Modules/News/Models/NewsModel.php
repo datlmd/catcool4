@@ -238,13 +238,17 @@ class NewsModel extends FarmModel
             $images       = $data['images'] ?? null;
             $category_ids = $data['category_ids'] ?? null;
             $related_ids  = $data['related_ids'] ?? null;
-            $data['images']       = json_decode($images, true);
+
+            $data['images'] = json_decode($images, true);
+            $data['images'] = $this->formatImageList($data['images']);
+
             $data['category_ids'] = json_decode($category_ids, true);
             $data['related_ids']  = json_decode($related_ids, true);
         } else {
             foreach ($data as $key => $value) {
                 if (isset($value['images'])) {
                     $data[$key]['images'] = json_decode($value['images'], true);
+                    $data[$key]['images'] = $this->formatImageList($data[$key]['images']);
                 }
                 if (isset($value['category_ids'])) {
                     $data[$key]['category_ids'] = json_decode($value['category_ids'], true);
@@ -411,6 +415,8 @@ class NewsModel extends FarmModel
                     if (!empty($attribute['attribute_remove'])) {
                         $content = $robot->removeContentHtml($content, $attribute['attribute_remove']);
                     }
+
+                    $content = $robot->convertVideoKenh14($content, $url);
                 }
                 //lay hing dau tien trong noi dung
                 $image_first = $robot->getImageFirst($content);

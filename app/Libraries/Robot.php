@@ -838,10 +838,92 @@ class Robot {
             foreach ($videos as $video) {
                 $extension = pathinfo($video, PATHINFO_EXTENSION);
 
-                $video_html .= '<p><video controls="controls" width="300" height="150"><source src="' . $video . '" type="video/' . $extension . '" /></video></p>';
+                $video_html .= '<p style="text-align: center !important;"><video controls="controls" width="300" height="150"><source src="' . $video . '" type="video/' . $extension . '" /></video></p>';
             }
         }
 
-        return $html . $video_html;;
+        return $html . $video_html;
+    }
+
+    public function convertVideoKenh14($html, $domain)
+    {
+        $videos = [];
+
+        if (strpos($domain, 'kenh14') === FALSE) {
+            return false;
+        }
+
+        try {
+            if (empty($html)) {
+                log_message('error', 'Nội dung trang html null');
+            }
+            $content = $html;
+
+            $bool = true;
+            $i = 0;
+
+            $start = 'data-vid=';
+            $end = 'data-contentid';
+
+            $content = str_ireplace("'", '"', $content);
+
+            do {
+
+                $p_start = 0;
+                $p_end = 0;
+                $p_start = strpos($content, $start, $p_start);
+
+                if ($p_start !== false) {
+                    $p_end = strpos($content, $end, $p_start);
+
+                    if ($p_end > 0) {
+                        $temp = substr($content, $p_start, $p_end - $p_start);
+                        $temp = 'data-vid=' . $temp;
+
+                        $content = substr($content, $p_end, strlen($content) - 1);
+
+                        preg_match('/vid=\"(.*?)\"/', $temp, $matches);
+                        if ($matches) {
+                            $url = $matches[1];
+                        }
+
+                        preg_match('/data-thumb=\"(.*?)\"/', $temp, $matches);
+                        if ($matches) {
+                            $thumb = $matches[1];
+                        }
+
+                        if (!empty($url)) {
+                            $videos[] = [
+                                'url'   => $url ?? "",
+                                'thumb' => $thumb ?? "",
+                            ];
+                        }
+
+                        if ($i % 50 == 0) {
+                            sleep(1);
+                        }
+                    }
+                } else {
+                    $bool = false;
+                }
+            } while ($bool);
+        } catch(Exception $e) {
+            return $html;
+        }
+
+        $video_html = "";
+        if (!empty($videos)) {
+            foreach ($videos as $video) {
+                if (strpos($video['url'], 'http') === FALSE) {
+                    $video['url'] = 'https://' . $video['url'];
+                }
+
+                $extension = pathinfo($video['url'], PATHINFO_EXTENSION);
+
+                $video_html .= '<p style="text-align: center !important;"><video controls="controls" width="300" height="150" poster="' . $video['thumb'] . '"><source src="' . $video['url'] . '" type="video/' . $extension . '" /></video></p>';
+            }
+        }
+
+        return $video_html . $html;
     }
 }
