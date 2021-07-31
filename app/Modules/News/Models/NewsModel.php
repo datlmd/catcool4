@@ -307,7 +307,7 @@ class NewsModel extends FarmModel
                 $image_fb = save_image_from_url($value['image_fb'], 'news');
             }
 
-            if (empty($image) || empty($image_fb)) {
+            if (empty($image) || empty($image_fb) || !is_file(get_upload_path($image)) || !is_file(get_upload_path($image_fb))) {
                 $status = STATUS_OFF;
             }
 
@@ -316,7 +316,7 @@ class NewsModel extends FarmModel
 
             $title = html_entity_decode($value['title']);
             foreach ($except_list as $except_text) {
-                if (strpos($title, $except_text) !== FALSE) {
+                if (strpos(strtolower($title), $except_text) !== FALSE) {
                     $is_except = true;
                 }
             }
