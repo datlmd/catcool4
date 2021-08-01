@@ -521,6 +521,9 @@ class NewsModel extends FarmModel
             case 'suckhoedoisong.vn':
                 $attribute_detail['attribute_detail']['content'] = 'div#content_detail_news';
                 break;
+            case 'phapluatbandoc.giadinh.net.vn':
+                $attribute_detail['attribute_detail']['content'] = 'div.detail__content';
+                break;
         }
 
         try {
