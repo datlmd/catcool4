@@ -400,6 +400,45 @@ class Manage extends AdminController
         json_output($data);
     }
 
+    public function status()
+    {
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $token = csrf_hash();
+
+        if (empty($this->request->getPost())) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
+        }
+
+        $id     = $this->request->getPost('id');
+        $status = $this->request->getPost('status');
+        $type   = $this->request->getPost('type');
+
+        $item_edit = $this->model->find($id);
+        if (empty($item_edit)) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+        }
+
+        if ($type == 'is_hot') {
+            $item_edit['is_hot'] = !empty($status) ? STATUS_ON : STATUS_OFF;
+        } else {
+            //is_homepage
+            $item_edit['is_homepage'] = !empty($status) ? STATUS_ON : STATUS_OFF;
+        }
+
+
+        if (!$this->model->update($id, $item_edit)) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
+        }
+
+        $this->model->deleteCache($id);
+        $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')];
+
+        json_output($data);
+    }
+
     public function robot()
     {
         if (!$this->request->isAJAX()) {

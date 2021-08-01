@@ -20,7 +20,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="row collapse {if !empty($filter.active)}show{/if}" id="filter_manage">
+		<div class="row collapse show" id="filter_manage">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 				<div class="card">
 					{form_open(uri_string(), ['id' => 'filter_validationform', 'method' => 'get'])}
@@ -88,11 +88,27 @@
 													{/if}
 												</a>
 											</th>
-											<th>{lang('Admin.text_image')}</th>
+											<th width="180">{lang('Admin.text_image')}</th>
 											<th>
 												<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
 													{lang('NewsAdmin.text_name')}
 													{if $sort eq 'name'}
+														<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+													{/if}
+												</a>
+											</th>
+											<th>
+												<a href="{site_url($manage_url)}?sort=is_homepage&order={$order}{$url}" class="text-dark">
+													{lang('NewsAdmin.text_is_homepage')}
+													{if $sort eq 'is_homepage'}
+														<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+													{/if}
+												</a>
+											</th>
+											<th>
+												<a href="{site_url($manage_url)}?sort=is_hot&order={$order}{$url}" class="text-dark">
+													{lang('NewsAdmin.text_is_hot')}
+													{if $sort eq 'is_hot'}
 														<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 													{/if}
 												</a>
@@ -108,16 +124,21 @@
 											<td class="text-center">{anchor("$manage_url/edit/`$item.news_id`", $item.news_id, 'class="text-primary"')}</td>
 											<td class="text-center">
 												<div class="thumbnail">
-													{foreach $item.images as $img_key => $img}
-														{if !empty($img)}
-															<a href="{image_url($img)}" data-lightbox="photos">
-																<img src="{image_url($img)}" class="img-thumbnail me-1 img-fluid">
-															</a>
-															<br/>
-															{$img_key}
-															<br/>
-														{/if}
-													{/foreach}
+													{if !empty($item.images.thumb)}
+														<a href="{image_url($item.images.thumb)}" data-lightbox="photos">
+															<img src="{image_url($item.images.thumb, 200, 120)}" class="img-thumbnail me-1 img-fluid w-100">
+														</a>
+														<br/>
+														Thumb
+														<br/>
+													{elseif !empty($item.images.robot)}
+														<a href="{image_url($item.images.robot)}" data-lightbox="photos">
+															<img src="{image_url($item.images.robot, 200, 120)}" class="img-thumbnail me-1 img-fluid w-100">
+														</a>
+														<br/>
+														Robot
+														<br/>
+													{/if}
 												</div>
 											</td>
 											<td>
@@ -133,6 +154,18 @@
 														{/foreach}
 													</ul>
 												{/if}
+											</td>
+											<td>
+												<div class="switch-button switch-button-xs catcool-center">
+													{form_checkbox("is_homepage_`$item.news_id`", ($item.is_homepage eq STATUS_ON) ? true : false, ($item.is_homepage eq STATUS_ON) ? true : false, ['id' => 'is_homepage_'|cat:$item.news_id, 'data-id' => $item.news_id, 'data-is-homepage' => $item.is_homepage, 'class' => 'change_homepage'])}
+													<span><label for="is_homepage_{$item.news_id}"></label></span>
+												</div>
+											</td>
+											<td>
+												<div class="switch-button switch-button-xs catcool-center">
+													{form_checkbox("is_hot_`$item.news_id`", ($item.is_hot eq STATUS_ON) ? true : false, ($item.is_hot eq STATUS_ON) ? true : false, ['id' => 'is_hot_'|cat:$item.news_id, 'data-id' => $item.news_id, 'data-is-hot' => $item.is_hot, 'class' => 'change_hot'])}
+													<span><label for="is_hot_{$item.news_id}"></label></span>
+												</div>
 											</td>
 											<td>
 												<div class="switch-button switch-button-xs catcool-center">
@@ -213,35 +246,92 @@
 			</div>
 		</div>
 	</div>
-{/strip}
-<script>
-	var is_robot_processing = false;
 
-	function robotNewsScan() {
-		if (is_robot_processing) {
-			return false;
+{literal}
+	<script>
+		var is_robot_processing = false;
+
+		function robotNewsScan() {
+			if (is_robot_processing) {
+				return false;
+			}
+			is_robot_processing = true;
+
+			$("#robot_validation_error").html('');
+
+			if ($('#robot_news input[name="url"]').val() != "") {
+				window.location.href = 'news/manage/add?url=' + $('#robot_news input[name="url"]').val();
+
+				return;
+			} else {
+
+				$.ajax({
+					url: $("#robot_news_form").attr('action'),
+					type: 'POST',
+					data: $("#robot_news_form").serialize(),
+					beforeSend: function () {
+						$('.btn-robot-news').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
+					},
+					complete: function () {
+						$('.btn-robot-news').find('i').replaceWith('<i class="far fa-newspaper me-1"></i>');
+					},
+					success: function (data) {
+						is_robot_processing = false;
+
+						var response = JSON.stringify(data);
+						response = JSON.parse(response);
+
+						if (response.token) {
+							// Update CSRF hash
+							$("input[name*='" + csrf_token + "']").val(response.token);
+						}
+
+						if (response.status == 'ng') {
+							$("#robot_validation_error").html(response.msg);
+							return false;
+						}
+
+						if (response.status == 'ok') {
+							location.reload();
+						}
+					},
+					error: function (xhr, errorType, error) {
+						$("#robot_validation_error").html(xhr.responseJSON.message + " Please reload the page!!!");
+						is_robot_processing = false;
+					}
+				});
+			}
 		}
-		is_robot_processing = true;
 
-		$("#robot_validation_error").html('');
+		function changeStatus(obj, type) {
+			if (is_processing) {
+				return false;
+			}
+			if (!$('input[name="manage_url"]').length) {
+				return false;
+			}
 
-		if ($('#robot_news input[name="url"]').length > 1) {
-			window.location.href = 'news/manage/add?url=' + $('#robot_news input[name="url"]').val();
-			return;
-		} else {
+			var manage   = $('input[name="manage_url"]').val();
+			var id       = $(obj).data("id");
+			var is_check = 0;
+			var url_api  = manage + '/status';
 
+			if ($(obj).is(':checked')) {
+				is_check = 1;
+			}
+
+			is_processing = true;
 			$.ajax({
-				url: $("#robot_news_form").attr('action'),
-				type: 'POST',
-				data: $("#robot_news_form").serialize(),
-				beforeSend: function () {
-					$('.btn-robot-news').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
+				url: url_api,
+				data: {
+					'id' : id,
+					'status': is_check,
+					'type': type,
+					[$("input[name*='" + csrf_token + "']").attr('name')] : $("input[name*='" + csrf_token + "']").val()
 				},
-				complete: function () {
-					$('.btn-robot-news').find('i').replaceWith('<i class="far fa-newspaper me-1"></i>');
-				},
+				type:'POST',
 				success: function (data) {
-					is_robot_processing = false;
+					is_processing = false;
 
 					var response = JSON.stringify(data);
 					response = JSON.parse(response);
@@ -252,19 +342,37 @@
 					}
 
 					if (response.status == 'ng') {
-						$("#robot_validation_error").html(response.msg);
+						$.notify(response.msg, {'type':'danger'});
+						$(obj).prop("checked", $(obj).attr("value"));
 						return false;
 					}
-
-					if (response.status == 'ok') {
-						location.reload();
-					}
+					$.notify(response.msg);
 				},
 				error: function (xhr, errorType, error) {
-					$("#robot_validation_error").html(xhr.responseJSON.message + " Please reload the page!!!");
-					is_robot_processing = false;
+					is_processing = false;
+					$.notify({
+							message: xhr.responseJSON.message + " Please reload the page!!!",
+							url: window.location.href,
+							target: "_self",
+						},
+						{'type': 'danger'},
+					);
 				}
 			});
 		}
-	}
-</script>
+
+		$(function () {
+			$(document).on('change', '.change_hot', function(e) {
+				e.preventDefault();
+				changeStatus(this, 'is_hot');
+			});
+
+			$(document).on('change', '.change_homepage', function(e) {
+				e.preventDefault();
+				changeStatus(this, 'is_homepage');
+			});
+		});
+	</script>
+{/literal}
+
+{/strip}
