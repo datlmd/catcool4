@@ -6,12 +6,6 @@
 
                 <article class="post post-detail">
 
-                    {if !empty($is_mobile)}
-                        {if !empty($detail.images.thumb) || !empty($detail.images.robot)}
-                            <img src="{if !empty($detail.images.thumb)}{image_thumb_url($detail.images.thumb, 440, 300)}{else}{image_thumb_url($detail.images.robot, 440, 300)}{/if}" class="img-fluid border-radius-0 mb-2" width="100%" alt="{htmlentities($detail.name)}">
-                        {/if}
-                    {/if}
-
                     {if !empty($detail.category_ids)}
                         {foreach $detail.category_ids as $category_id}
                             <a href="{base_url($category_list[$category_id].slug)}" class="padding me-1">{$category_list[$category_id].name}</a>
