@@ -22,7 +22,10 @@ $routes->group('news', ['namespace' => 'App\Modules\News\Controllers'], function
 });
 
 $routes->add('tin-tuc', 'News::index', ['namespace' => 'App\Modules\News\Controllers']);
+
+$routes->add('(:any)-post(:num)c(:num).html', 'Detail::index/$1/$2/$3', ['namespace' => 'App\Modules\News\Controllers']);
 $routes->add('(:any)-post(:num)C(:num).html', 'Detail::index/$1/$2/$3', ['namespace' => 'App\Modules\News\Controllers']);
+
 $routes->add('tag/(:any).html', 'Tag::index/$1', ['namespace' => 'App\Modules\News\Controllers']);
 
 $routes->add('robot/(:segment)/(:segment)', 'Robot::index/$1/$2', ['namespace' => 'App\Modules\News\Controllers']);

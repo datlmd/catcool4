@@ -57,7 +57,7 @@ class NewsModel extends FarmModel
     const NEWS_CACHE_HOT_LIST = 'news_hot_list';
     const NEWS_CACHE_NEW_LIST = 'news_new_list';
 
-    const FORMAT_NEWS_ID = '%sC%s';
+    const FORMAT_NEWS_ID = '%sc%s';
     const SOURCE_TYPE_ROBOT = 1;
     const POST_FORMAT_NORMAL = 1;
 
