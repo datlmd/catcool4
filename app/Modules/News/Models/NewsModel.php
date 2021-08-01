@@ -574,8 +574,6 @@ class NewsModel extends FarmModel
             $where = [
                 'published' => STATUS_ON,
                 'publish_date <=' => get_date(),
-                'is_hot' => STATUS_OFF,
-                'is_homepage' => STATUS_OFF,
             ];
 
             $list = $this->select(['news_id', 'name', 'slug', 'description', 'publish_date', 'images', 'category_ids', 'ctime'])
