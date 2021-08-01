@@ -64,7 +64,7 @@ class CategoriesManage extends AdminController
                 return redirect()->back()->withInput()->with("errors", $this->errors);
             }
 
-            $slug = !empty($this->request->getPost('slug')) ? slugify($this->request->getPost('slug')) : slugify($this->request->getPost('name'));
+            $slug = !empty($this->request->getPost('slug')) ? $this->request->getPost('slug') : $this->request->getPost('name');
 
             $add_data = [
                 'name'             => $this->request->getPost('name'),
@@ -117,7 +117,7 @@ class CategoriesManage extends AdminController
                 return redirect()->back()->withInput();
             }
 
-            $slug = !empty($this->request->getPost('slug')) ? slugify($this->request->getPost('slug')) : slugify($this->request->getPost('name'));
+            $slug = !empty($this->request->getPost('slug')) ? $this->request->getPost('slug') : $this->request->getPost('name');
 
             $edit_data = [
                 'name'             => $this->request->getPost('name'),

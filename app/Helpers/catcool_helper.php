@@ -1845,13 +1845,17 @@ if(!function_exists('get_seo_extension'))
     function get_seo_extension($url = null)
     {
         if (empty(SEO_EXTENSION)) {
-            return '';
-        }
-
-        if (strpos($url, "." . SEO_EXTENSION) !== FALSE) {
             return $url;
         }
 
+        if (strpos($url, "." . SEO_EXTENSION) !== FALSE) {
+            $url = str_ireplace("." . SEO_EXTENSION, "", $url);
+            $url = slugify($url) . "." . SEO_EXTENSION;
+
+            return $url;
+        }
+
+        $url = slugify($url);
         return sprintf("$url.%s", SEO_EXTENSION);
     }
 }
