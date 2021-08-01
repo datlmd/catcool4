@@ -14,7 +14,7 @@
 								</h4>
 								<div class="col-4 p-1">
 									<a href="{site_url($news.detail_url)}">
-										<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 180, 120)}{else}{image_thumb_url($news.images.robot, 180, 120)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
+										<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 110, 70)}{else}{image_thumb_url($news.images.robot, 110, 70)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
 									</a>
 								</div>
 								<div class="col-8 ps-2 pe-0">
@@ -47,7 +47,7 @@
 								<article class="col-6 px-1">
 
 									<a href="{site_url($news.detail_url)}">
-										<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 180, 120)}{else}{image_thumb_url($news.images.robot, 180, 120)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
+										<img src="{if !empty($news.images.thumb)}{image_thumb_url($news.images.thumb, 180, 110)}{else}{image_thumb_url($news.images.robot, 180, 110)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
 									</a>
 									<h4 class="line-height-4 font-weight-bold text-4 text-dark mb-0 ps-0 pe-1">
 										<a href="{site_url($news.detail_url)}" class="text-decoration-none text-color-dark">{$news.name}</a>
