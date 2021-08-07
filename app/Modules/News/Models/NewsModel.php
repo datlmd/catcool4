@@ -574,9 +574,12 @@ class NewsModel extends FarmModel
             $category_model = new CategoryModel();
             $category_list = $category_model->getListPublished();
 
+            $from_date = date('Y-m-d H:i:s', strtotime('-2 day', time()));
+
             $where = [
                 'published' => STATUS_ON,
                 'publish_date <=' => get_date(),
+                'publish_date >=' => $from_date,
             ];
 
             $list = $this->select(['news_id', 'name', 'slug', 'description', 'publish_date', 'images', 'category_ids', 'ctime'])
@@ -608,9 +611,11 @@ class NewsModel extends FarmModel
     {
         $slides = $is_cache ? cache()->get(self::NEWS_CACHE_SLIDE_HOME) : null;
         if (empty($slides)) {
+            $from_date = date('Y-m-d H:i:s', strtotime('-5 day', time()));
             $where = [
                 'published' => STATUS_ON,
                 'publish_date <=' => get_date(),
+                'publish_date >=' => $from_date,
                 'is_homepage' => STATUS_ON
             ];
 
@@ -668,9 +673,13 @@ class NewsModel extends FarmModel
     {
         $result = $is_cache ? cache()->get(self::NEWS_CACHE_HOT_LIST) : null;
         if (empty($result)) {
+
+            $from_date = date('Y-m-d H:i:s', strtotime('-4 day', time()));
+
             $where = [
                 'published' => STATUS_ON,
                 'publish_date <=' => get_date(),
+                'publish_date >=' => $from_date,
                 'is_hot' => STATUS_ON,
             ];
 
@@ -697,9 +706,12 @@ class NewsModel extends FarmModel
     {
         $result = $is_cache ? cache()->get(self::NEWS_CACHE_NEW_LIST) : null;
         if (empty($result)) {
+            $from_date = date('Y-m-d H:i:s', strtotime('-2 day', time()));
+
             $where = [
                 'published' => STATUS_ON,
                 'publish_date <=' => get_date(),
+                'publish_date >=' => $from_date,
             ];
 
             $list = $this->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
