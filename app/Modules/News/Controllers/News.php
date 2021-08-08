@@ -27,13 +27,32 @@ class News extends BaseController
     public function index()
     {
 
+        $category_list = $this->model->getListHome(120);
+
+        $new_list = [];
+        if (!empty($category_list)) {
+            foreach ($category_list as $cate) {
+                if (count($new_list) >= 5) {
+                    break;
+                }
+
+                if (empty($cate['list'])) {
+                    continue;
+                }
+
+                foreach ($cate['list'] as $val) {
+                    $new_list[] = $val;
+                    break;
+                }
+            }
+        }
 
         $data = [
-            'category_list'        => $this->model->getListHome(),
+            'category_list'        => $category_list,
             'slide_list'           => $this->model->getSlideHome(3),
             'counter_list'         => $this->model->getListCounter(10),
             'hot_list'             => $this->model->getListHot(4),
-            'new_list'             => $this->model->getListNew(5),
+            'new_list'             => $new_list,
             'script_google_search' => $this->_scriptGoogleSearch(),
             'weather'              => $this->_getWeather(),
         ];

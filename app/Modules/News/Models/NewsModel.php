@@ -61,11 +61,17 @@ class NewsModel extends FarmModel
     const SOURCE_TYPE_ROBOT = 1;
     const POST_FORMAT_NORMAL = 1;
 
+    private $_news_date_from = "3";
+
     function __construct()
     {
         parent::__construct();
 
         $this->setTableNameYear();
+
+        if (ENVIRONMENT == 'development') {
+            $this->_news_date_from = "120";
+        }
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
@@ -574,7 +580,7 @@ class NewsModel extends FarmModel
             $category_model = new CategoryModel();
             $category_list = $category_model->getListPublished();
 
-            $from_date = date('Y-m-d H:i:s', strtotime('-2 day', time()));
+            $from_date = date('Y-m-d H:i:s', strtotime('-' . $this->_news_date_from . ' day', time()));
 
             $where = [
                 'published' => STATUS_ON,
@@ -611,7 +617,7 @@ class NewsModel extends FarmModel
     {
         $slides = $is_cache ? cache()->get(self::NEWS_CACHE_SLIDE_HOME) : null;
         if (empty($slides)) {
-            $from_date = date('Y-m-d H:i:s', strtotime('-5 day', time()));
+            $from_date = date('Y-m-d H:i:s', strtotime('-' . $this->_news_date_from . ' day', time()));
             $where = [
                 'published' => STATUS_ON,
                 'publish_date <=' => get_date(),
@@ -642,7 +648,7 @@ class NewsModel extends FarmModel
     {
         $result = $is_cache ? cache()->get(self::NEWS_CACHE_COUNTER_LIST) : null;
         if (empty($result)) {
-            $from_date = date('Y-m-d H:i:s', strtotime('-3 day', time()));
+            $from_date = date('Y-m-d H:i:s', strtotime('-' . $this->_news_date_from . ' day', time()));
 
             $where = [
                 'published' => STATUS_ON,
@@ -674,7 +680,7 @@ class NewsModel extends FarmModel
         $result = $is_cache ? cache()->get(self::NEWS_CACHE_HOT_LIST) : null;
         if (empty($result)) {
 
-            $from_date = date('Y-m-d H:i:s', strtotime('-4 day', time()));
+            $from_date = date('Y-m-d H:i:s', strtotime('-' . $this->_news_date_from .' day', time()));
 
             $where = [
                 'published' => STATUS_ON,
@@ -706,7 +712,7 @@ class NewsModel extends FarmModel
     {
         $result = $is_cache ? cache()->get(self::NEWS_CACHE_NEW_LIST) : null;
         if (empty($result)) {
-            $from_date = date('Y-m-d H:i:s', strtotime('-2 day', time()));
+            $from_date = date('Y-m-d H:i:s', strtotime('-' . $this->_news_date_from . ' day', time()));
 
             $where = [
                 'published' => STATUS_ON,
@@ -714,7 +720,8 @@ class NewsModel extends FarmModel
                 'publish_date >=' => $from_date,
             ];
 
-            $list = $this->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
+            $list = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+                ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
             if (empty($list)) {
                 return [];
             }
