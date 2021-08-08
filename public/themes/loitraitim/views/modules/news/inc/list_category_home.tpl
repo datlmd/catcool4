@@ -39,7 +39,7 @@
 						<a href="{base_url($category.slug)}" class="text-decoration-none fw-bold float-start">{$category.name|upper}</a>
 						<span class="float-end pe-3"><i class="fas {if $category@iteration < 4}fa-minus{else}fa-plus{/if} me-1"></i>{lang('News.text_news_more')}</span>
 					</div>
-					<div class="collapse row px-3 mt-3 mb-2 {if $category@iteration < 4}show{/if}" id="collapse_news_list_{$category.category_id}">
+					<div class="collapse row px-3 mt-3 mb-2 show" id="collapse_news_list_{$category.category_id}">
 
 						{foreach $category.list as $news}
 
@@ -121,7 +121,7 @@
 								<a href="{base_url($category.slug)}" class="text-decoration-none fw-bold float-start">{$category.name|upper}</a>
 								<span class="float-end"><i class="fas {if $category@iteration < 4}fa-minus{else}fa-plus{/if} me-1"></i>{lang('News.text_news_more')}</span>
 							</div>
-							<div class="collapse p-0 mt-4 mb-2 {if $category@iteration < 4}show{/if}" id="collapse_news_list_{$category.category_id}">
+							<div class="collapse p-0 mt-4 mb-2 show" id="collapse_news_list_{$category.category_id}">
 								{foreach $category.list as $news}
 									{if $news@iteration < 3}
 										{continue}
