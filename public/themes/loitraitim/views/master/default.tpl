@@ -42,16 +42,21 @@
 	<!-- GOOGLE SEARCH STRUCTURED DATA FOR ARTICLE -->
 	{if !empty($script_google_search)}{$script_google_search}{/if}
 
-	<!--- google adsend & optimize -->
-	<script data-ad-client="ca-pub-1427578177982640" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-	<script src="https://www.googleoptimize.com/optimize.js?id=GTM-T6MWXC9"></script>
-	<!--- end google adsend -->
+	{if !empty(config_item('google_adsend_enabled')) && !empty(config_item('google_adsend_client'))}
+		<!--- google adsend -->
+		<script data-ad-client="{config_item('google_adsend_client')}" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+		<!--- end google adsend -->
+	{/if}
 </head>
 <body class="{if !empty($body_class)}{$body_class}{/if}">
 	{$layout}
 	<!-- JavaScripts -->
 	{include file=get_theme_path('views/master/common/js.tpl')}
 	{if !empty($js_files)}{$js_files}{/if}
+
+	{if !empty(config_item('google_optimize'))}
+		<script src="https://www.googleoptimize.com/optimize.js?id={config_item('google_optimize')}"></script>
+	{/if}
 
 	{if !empty(config_item('ga_enabled')) && !empty(config_item('ga_siteid'))}
 		<!-- Global site tag (gtag.js) - Google Analytics -->
