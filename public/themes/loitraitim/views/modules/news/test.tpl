@@ -54,5 +54,74 @@
             });
         }
 
+        dataLayer.push({
+            "event": "addToCart",
+            "ecommerce": {
+                "currencyCode": "USD",
+                "add": {
+                    "products": [{
+                        "id": "57b9d",
+                        "name": "Kiosk T-Shirt",
+                        "price": "55.00",
+                        "brand": "Kiosk",
+                        "category": "T-Shirts",
+                        "variant": "red",
+                        "dimension1": "M",
+                        "quantity": 1
+                    }]
+                }
+            }
+        });
+
+        gtag('event', 'purchase', {
+            "transaction_id": "24.031608523954162",
+            "affiliation": "Google online store",
+            "value": 23.07,
+            "currency": "USD",
+            "tax": 1.24,
+            "shipping": 0,
+            "items": [
+                {
+                    "id": "P12345",
+                    "name": "Android Warhol T-Shirt",
+                    "list_name": "Search Results",
+                    "brand": "Google",
+                    "category": "Apparel/T-Shirts",
+                    "variant": "Black",
+                    "list_position": 1,
+                    "quantity": 2,
+                    "price": "2.0"
+                },
+                {
+                    "id": "P67890",
+                    "name": "Flame challenge TShirt",
+                    "list_name": "Search Results",
+                    "brand": "MyBrand",
+                    "category": "Apparel/T-Shirts",
+                    "variant": "Red",
+                    "list_position": 2,
+                    "quantity": 1,
+                    "price": "3.0"
+                }
+            ]
+        });
+
+        dataLayer.push({
+            event: 'eec.purchase',
+            ecommerce: {
+                currencyCode: 'EUR',
+                purchase: {
+                    actionField: {
+                        id: 'order_id_001',
+                        revenue: '11.00'
+                    },
+                    products: [{
+                        id: 'product_id_001',
+                        price: '11.00',
+                        quantity: 2
+                    }]
+                }
+            }
+        });
     </script>
 {/literal}
