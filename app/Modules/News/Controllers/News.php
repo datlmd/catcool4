@@ -200,4 +200,15 @@ class News extends BaseController
 
         return $data;
     }
+
+    public function test($val = null)
+    {
+        $data = [
+            'val' => !empty($val) ? $val : 0,
+        ];
+
+        add_meta(['title' => "Test"], $this->themes);
+
+        theme_load('test', $data);
+    }
 }
