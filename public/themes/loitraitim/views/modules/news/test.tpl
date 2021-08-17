@@ -27,72 +27,77 @@
                       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <script>
-
-
-
-
-        dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
-        dataLayer.push({
-          event: "purchase",
-          ecommerce: {
-              transaction_id: "T12345",
-              affiliation: "Online Store",
-              value: "59.89",
-              tax: "4.90",
-              shipping: "5.99",
-              currency: "EUR",
-              coupon: "SUMMER_SALE",
-              items: [{
-                item_name: "Triblend Android T-Shirt",
-                item_id: "12345",
-                price: "15.25",
-                item_brand: "Google",
-                item_category: "Apparel",
-                item_variant: "Gray",
-                quantity: 1
-              }, {
-                item_name: "Donut Friday Scented T-Shirt",
-                item_id: "67890",
-                price: 33.75,
-                item_brand: "Google",
-                item_category: "Apparel",
-                item_variant: "Black",
-                quantity: 1
-              }]
-          }
-        });
-
-        dataLayer.push({
-            event: "purchase",
-            ecommerce: {
-                affiliation: "Online Store 3",
-                value: "59.89",
-                tax: "4.90",
-                shipping: "5.99",
-                currency: "EUR",
-                coupon: "SUMMER_SALE",
-                items: [{
-                    item_name: "Triblend Android T-Shirt 33",
+{/literal}
+{if $val < 300}
+    {literal}
+        <script>
+            dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+            dataLayer.push({
+              event: "purchase",
+              ecommerce: {
+                  transaction_id: "T12345",
+                  affiliation: "Online Store",
+                  value: "59.89",
+                  tax: "4.90",
+                  shipping: "5.99",
+                  currency: "EUR",
+                  coupon: "SUMMER_SALE",
+                  items: [{
+                    item_name: "Triblend Android T-Shirt",
                     item_id: "12345",
                     price: "15.25",
                     item_brand: "Google",
                     item_category: "Apparel",
                     item_variant: "Gray",
                     quantity: 1
-                }, {
-                    item_name: "Donut Friday Scented T-Shirt 44",
+                  }, {
+                    item_name: "Donut Friday Scented T-Shirt",
                     item_id: "67890",
                     price: 33.75,
                     item_brand: "Google",
                     item_category: "Apparel",
                     item_variant: "Black",
                     quantity: 1
-                }]
-            }
-        });
-    </script>
-{/literal}
+                  }]
+              }
+            });
+        </script>
+    {/literal}
+{else}
+    {literal}
+        <script>
+            dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+            dataLayer.push({
+                event: "purchase",
+                ecommerce: {
+                    affiliation: "Online Store 3",
+                    value: "59.89",
+                    tax: "4.90",
+                    shipping: "5.99",
+                    currency: "EUR",
+                    coupon: "SUMMER_SALE",
+                    items: [{
+                        item_name: "Triblend Android T-Shirt 33",
+                        item_id: "12345",
+                        price: "15.25",
+                        item_brand: "Google",
+                        item_category: "Apparel",
+                        item_variant: "Gray",
+                        quantity: 1
+                    }, {
+                        item_name: "Donut Friday Scented T-Shirt 44",
+                        item_id: "67890",
+                        price: 33.75,
+                        item_brand: "Google",
+                        item_category: "Apparel",
+                        item_variant: "Black",
+                        quantity: 1
+                    }]
+                }
+            });
+        </script>
+    {/literal}
+{/if}
 
 {*dataLayer = [];*}
 {*user_id = 1012828603;*}
