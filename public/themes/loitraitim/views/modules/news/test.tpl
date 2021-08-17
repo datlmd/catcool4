@@ -28,100 +28,94 @@
     <!-- End Google Tag Manager (noscript) -->
 
     <script>
-        dataLayer = [];
-        user_id = 1012828603;
-        user_sex = 1;
-
-        // purchase event
-        ga_is_purchase_event        = true;
-        ga_purchase_event_value     = {/literal}{$val}{literal};
-        ga_purchase_event_coupon    = "FIRE_first_free";
-        ga_purchase_event_items     = [{"item_id":"gacha_2118_1","item_name":"8\u6708FIRE \u590f\u7a7a\u306b\u604b\u3057\u3066","quantity":"1","discount":"300","price":"300","item_category":"gacha","item_category2":"FIRE","item_category3":"","item_category4":"","item_category5":""}];
 
 
-        dataLayer.push({'user_id': user_id});
-        dataLayer.push({'user_sex': user_sex});
 
-        // push purchase event
-        if (ga_is_purchase_event) {
-            dataLayer.push({
-                'event': 'purchase',
-                'ecommerce': {
-                    'value': ga_purchase_event_value,
-                    'coupon': ga_purchase_event_coupon,
-                    'items': ga_purchase_event_items
-                }
-            });
-        }
 
+        dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
         dataLayer.push({
-            "event": "addToCart",
-            "ecommerce": {
-                "currencyCode": "USD",
-                "add": {
-                    "products": [{
-                        "id": "57b9d",
-                        "name": "Kiosk T-Shirt",
-                        "price": "55.00",
-                        "brand": "Kiosk",
-                        "category": "T-Shirts",
-                        "variant": "red",
-                        "dimension1": "M",
-                        "quantity": 1
-                    }]
-                }
-            }
-        });
-
-        gtag('event', 'purchase', {
-            "transaction_id": "24.031608523954162",
-            "affiliation": "Google online store",
-            "value": 23.07,
-            "currency": "USD",
-            "tax": 1.24,
-            "shipping": 0,
-            "items": [
-                {
-                    "id": "P12345",
-                    "name": "Android Warhol T-Shirt",
-                    "list_name": "Search Results",
-                    "brand": "Google",
-                    "category": "Apparel/T-Shirts",
-                    "variant": "Black",
-                    "list_position": 1,
-                    "quantity": 2,
-                    "price": "2.0"
-                },
-                {
-                    "id": "P67890",
-                    "name": "Flame challenge TShirt",
-                    "list_name": "Search Results",
-                    "brand": "MyBrand",
-                    "category": "Apparel/T-Shirts",
-                    "variant": "Red",
-                    "list_position": 2,
-                    "quantity": 1,
-                    "price": "3.0"
-                }
-            ]
+          event: "purchase",
+          ecommerce: {
+              transaction_id: "T12345",
+              affiliation: "Online Store",
+              value: "59.89",
+              tax: "4.90",
+              shipping: "5.99",
+              currency: "EUR",
+              coupon: "SUMMER_SALE",
+              items: [{
+                item_name: "Triblend Android T-Shirt",
+                item_id: "12345",
+                price: "15.25",
+                item_brand: "Google",
+                item_category: "Apparel",
+                item_variant: "Gray",
+                quantity: 1
+              }, {
+                item_name: "Donut Friday Scented T-Shirt",
+                item_id: "67890",
+                price: 33.75,
+                item_brand: "Google",
+                item_category: "Apparel",
+                item_variant: "Black",
+                quantity: 1
+              }]
+          }
         });
 
         dataLayer.push({
-            event: 'eec.purchase',
+            event: "purchase",
             ecommerce: {
-                currencyCode: 'EUR',
-                purchase: {
-                    actionField: {
-                        id: 'order_id_001',
-                        revenue: '11.00'
-                    },
-                    products: [{
-                        id: 'product_id_001',
-                        price: '11.00',
-                        quantity: 2
-                    }]
-                }
+                affiliation: "Online Store 3",
+                value: "59.89",
+                tax: "4.90",
+                shipping: "5.99",
+                currency: "EUR",
+                coupon: "SUMMER_SALE",
+                items: [{
+                    item_name: "Triblend Android T-Shirt 33",
+                    item_id: "12345",
+                    price: "15.25",
+                    item_brand: "Google",
+                    item_category: "Apparel",
+                    item_variant: "Gray",
+                    quantity: 1
+                }, {
+                    item_name: "Donut Friday Scented T-Shirt 44",
+                    item_id: "67890",
+                    price: 33.75,
+                    item_brand: "Google",
+                    item_category: "Apparel",
+                    item_variant: "Black",
+                    quantity: 1
+                }]
             }
         });
     </script>
 {/literal}
+
+{*dataLayer = [];*}
+{*user_id = 1012828603;*}
+{*user_sex = 1;*}
+
+{*// purchase event*}
+{*ga_is_purchase_event        = true;*}
+{*ga_purchase_event_value     = {/literal}{$val}{literal};*}
+{*ga_purchase_event_coupon    = "FIRE_first_free";*}
+{*ga_purchase_event_items     = [{"item_id":"gacha_2118_1","item_name":"8\u6708FIRE \u590f\u7a7a\u306b\u604b\u3057\u3066","quantity":"1","discount":"300","price":"300","item_category":"gacha","item_category2":"FIRE","item_category3":"","item_category4":"","item_category5":""}];*}
+
+
+{*dataLayer.push({'user_id': user_id});*}
+{*dataLayer.push({'user_sex': user_sex});*}
+
+{*// push purchase event*}
+{*if (ga_is_purchase_event) {*}
+{*dataLayer.push({*}
+{*'event': 'purchase',*}
+{*'ecommerce': {*}
+{*'value': ga_purchase_event_value,*}
+{*'coupon': ga_purchase_event_coupon,*}
+{*'items': ga_purchase_event_items*}
+{*}*}
+{*});*}
+{*}*}
