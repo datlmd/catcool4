@@ -919,7 +919,9 @@ class Robot {
                 }
 
                 $extension = pathinfo($video['url'], PATHINFO_EXTENSION);
-
+                if ($extension == "mov") {
+                    $extension = "mp4";
+                }
                 $video_html .= '<p style="text-align: center !important;"><video controls="controls" width="300" height="150" poster="' . $video['thumb'] . '"><source src="' . $video['url'] . '" type="video/' . $extension . '" /></video></p>';
             }
         }
