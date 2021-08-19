@@ -730,6 +730,10 @@ if(!function_exists('image_thumb_url'))
      */
     function image_thumb_url($image = null, $width = null, $height = null, $is_fit = false, $position = "center")
     {
+        if (stripos($image, "https://") !== false || stripos($image, "http://") !== false) {
+            return $image;
+        }
+        
         $width = !empty($width) ? $width : (!empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH);
         $height = !empty($height) ? $height : (!empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT);
 

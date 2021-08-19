@@ -280,7 +280,7 @@ class NewsModel extends FarmModel
         return $this->formatJsonDecode($data);
     }
 
-    public function robotSave($data, $status = STATUS_ON)
+    public function robotSave($data, $status = STATUS_ON, $is_save_image = false)
     {
         helper('catcool');
 
@@ -309,12 +309,16 @@ class NewsModel extends FarmModel
             }
 
             $image = "";
-            if (!empty($value['image'])) {
+            if (!empty($value['image']) && $is_save_image) {
                 $image = save_image_from_url($value['image'], 'news');
+            } else {
+                $image = $value['image'];
             }
             $image_fb = "";
-            if (!empty($value['image_fb'])) {
+            if (!empty($value['image_fb']) && $is_save_image) {
                 $image_fb = save_image_from_url($value['image_fb'], 'news');
+            } else {
+                $image_fb = $value['image_fb'];
             }
 
             if (empty($image) || empty($image_fb) || !is_file(get_upload_path($image)) || !is_file(get_upload_path($image_fb))) {
