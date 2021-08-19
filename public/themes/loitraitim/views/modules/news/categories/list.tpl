@@ -50,8 +50,8 @@
 
             </div>
 
-            {if !empty($list) && !empty($pager->links('news', 'frontend'))}
-                {$pager->links('news', 'frontend')}
+            {if !empty($list) && !empty($pager->links('default', 'frontend'))}
+                {$pager->links('default', 'frontend')}
             {/if}
 
         </div>

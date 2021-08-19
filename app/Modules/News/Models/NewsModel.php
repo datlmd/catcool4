@@ -770,7 +770,7 @@ class NewsModel extends FarmModel
             ->groupEnd()
             ->orderBy('publish_date', 'DESC');
 
-        $list = $result->paginate($limit, 'news');
+        $list = $result->paginate($limit);
         if (empty($list)) {
             return [[],[]];
         }
