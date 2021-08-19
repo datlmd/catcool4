@@ -321,7 +321,7 @@ class NewsModel extends FarmModel
                 $image_fb = $value['image_fb'];
             }
 
-            if (empty($image) || empty($image_fb) || !is_file(get_upload_path($image)) || !is_file(get_upload_path($image_fb))) {
+            if (empty($image) || empty($image_fb)) {
                 $status = STATUS_OFF;
             }
 
@@ -386,7 +386,7 @@ class NewsModel extends FarmModel
         return $insert_list;
     }
 
-    public function robotGetNews($attribute, $is_insert = true, $status = STATUS_ON)
+    public function robotGetNews($attribute, $is_insert = true, $status = STATUS_ON, $is_save_image = false)
     {
         $robot = service('robot');
 
@@ -454,7 +454,7 @@ class NewsModel extends FarmModel
         if ($is_insert === true) {
             foreach ($list_menu as $key => $menu) {
                 if (!empty($menu['list_news'])) {
-                    $menu['list_news'] = $this->robotSave($menu['list_news'], $status);
+                    $menu['list_news'] = $this->robotSave($menu['list_news'], $status, $is_save_image);
                     usleep(500);
                 }
             }

@@ -733,7 +733,7 @@ if(!function_exists('image_thumb_url'))
         if (stripos($image, "https://") !== false || stripos($image, "http://") !== false) {
             return $image;
         }
-        
+
         $width = !empty($width) ? $width : (!empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH);
         $height = !empty($height) ? $height : (!empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT);
 
