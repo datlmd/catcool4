@@ -5,7 +5,7 @@
 			<div data-bs-toggle="collapse" href="#collapse_weather" role="button" aria-expanded="false" aria-controls="collapse_weather">
 				<h4 class="m-0 text-center text-dark d-inline">{$weather.name}</h4>
 				<img src="http://openweathermap.org/img/w/{$weather.weather[0].icon}.png" width="50" alt="Weather" />
-				<strong>{$weather.main.temp}°C</strong>
+				<strong>{round($weather.main.temp)}°C</strong>
 			</div>
 			<div class="collapse" id="collapse_weather">
 

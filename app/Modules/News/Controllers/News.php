@@ -26,6 +26,7 @@ class News extends BaseController
 
     public function index()
     {
+        $this->cachePage(180);
 
         $category_list = $this->model->getListHome(120);
 

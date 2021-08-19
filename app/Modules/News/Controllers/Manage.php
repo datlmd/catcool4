@@ -74,7 +74,7 @@ class Manage extends AdminController
 
         $data = [
             'breadcrumb'    => $this->breadcrumb->render(),
-            'list'          => $this->model->formatJsonDecode($list->paginate($limit, 'news')),
+            'list'          => $this->model->formatJsonDecode($list->paginate($limit)),
             'pager'         => $list->pager,
             'filter'        => $filter,
             'sort'          => empty($sort) ? 'news_id' : $sort,

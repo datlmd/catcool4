@@ -75,7 +75,7 @@
 						</div>
 
 						{if !empty($list)}
-							{include file=get_theme_path('views/inc/paging.tpl') pager_name='news'}
+							{include file=get_theme_path('views/inc/paging.tpl') pager_name='default'}
 							<div class="table-responsive">
 								<table class="table table-striped table-hover table-bordered second">
 									<thead>
@@ -185,7 +185,7 @@
 									</tbody>
 								</table>
 							</div>
-							{include file=get_theme_path('views/inc/paging.tpl') pager_name='news'}
+							{include file=get_theme_path('views/inc/paging.tpl') pager_name='default'}
 						{else}
 							{lang('Admin.text_no_results')}
 						{/if}
