@@ -73,7 +73,7 @@ class Manage extends AdminController
 
         $data = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($limit, 'pages'),
+            'list'       => $list->paginate($limit),
             'pager'      => $list->pager,
             'filter'     => $filter,
             'sort'       => empty($sort) ? 'page_id' : $sort,

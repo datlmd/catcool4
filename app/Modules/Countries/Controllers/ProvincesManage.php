@@ -62,7 +62,7 @@ class ProvincesManage extends AdminController
 
         $data = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($limit, 'provinces'),
+            'list'       => $list->paginate($limit),
             'pager'      => $list->pager,
             'total'      => $list->pager->getPerPage(),
             'filter'     => $filter,

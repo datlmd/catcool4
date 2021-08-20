@@ -60,7 +60,7 @@ class Manage extends AdminController
 
         $data = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($limit, 'countries'),
+            'list'       => $list->paginate($limit),
             'pager'      => $list->pager,
             'total'      => $list->pager->getPerPage(),
             'filter'     => $filter,

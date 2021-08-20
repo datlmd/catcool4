@@ -64,7 +64,7 @@ class WardsManage extends AdminController
 
         $data = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($limit, 'wards'),
+            'list'       => $list->paginate($limit),
             'pager'      => $list->pager,
             'total'      => $list->pager->getPerPage(),
             'filter'     => $filter,

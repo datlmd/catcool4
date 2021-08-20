@@ -131,7 +131,7 @@
 									</tbody>
 								</table>
 							</div>
-							{include file=get_theme_path('views/inc/paging.tpl') pager_name='articles'}
+							{include file=get_theme_path('views/inc/paging.tpl') pager_name='default'}
 						{else}
 							{lang('Admin.text_no_results')}
 						{/if}

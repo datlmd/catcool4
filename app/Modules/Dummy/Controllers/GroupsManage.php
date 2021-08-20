@@ -62,7 +62,7 @@ class GroupsManage extends AdminController
 
         $data = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($limit, 'dummy'),
+            'list'       => $list->paginate($limit),
             'pager'      => $list->pager,
             'filter'     => $filter,
             'sort'       => empty($sort) ? 'dummy_id' : $sort,

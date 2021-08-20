@@ -63,7 +63,7 @@ class DistrictsManage extends AdminController
 
         $data = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($limit, 'districts'),
+            'list'       => $list->paginate($limit),
             'pager'      => $list->pager,
             'total'      => $list->pager->getPerPage(),
             'filter'     => $filter,
