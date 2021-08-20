@@ -1,2 +1,5 @@
 User-agent: *
 Disallow: 
+
+Sitemap: https://loitraitim.vn/sitemap.xml
+Sitemap: https://loitraitim.vn/sitemap-news.xml
