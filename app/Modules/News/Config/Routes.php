@@ -8,7 +8,7 @@ if(!isset($routes))
 $routes->group('news', ['namespace' => 'App\Modules\News\Controllers'], function($subroutes){
     $subroutes->add('manage', 'Manage::index');
     $subroutes->add('manage/add', 'Manage::add');
-    $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
+    $subroutes->add('manage/edit/(:any)', 'Manage::edit/$1');
     $subroutes->add('manage/delete', 'Manage::delete');
     $subroutes->add('manage/publish', 'Manage::publish');
     $subroutes->add('manage/robot', 'Manage::Robot');

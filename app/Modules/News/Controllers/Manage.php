@@ -72,9 +72,14 @@ class Manage extends AdminController
 
         $category_list = $this->model_category->getListPublished();
 
+        $news_list = $list->paginate($limit);
+        foreach ($news_list as $key_news => $value) {
+            $news_list[$key_news] = $this->model->formatDetail($value);
+        }
+
         $data = [
             'breadcrumb'    => $this->breadcrumb->render(),
-            'list'          => $this->model->formatJsonDecode($list->paginate($limit)),
+            'list'          => $news_list,
             'pager'         => $list->pager,
             'filter'        => $filter,
             'sort'          => empty($sort) ? 'news_id' : $sort,
@@ -226,7 +231,7 @@ class Manage extends AdminController
                     'published'         => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
                 ];
 
-                if (!$this->model->update($id, $edit_data)) {
+                if (!$this->model->updateInfo($edit_data, $id)) {
                     set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
                     return redirect()->back()->withInput();
                 }
@@ -326,16 +331,16 @@ class Manage extends AdminController
         $data['categories_tree'] = format_tree(['data' => $category_list, 'key_id' => 'category_id']);
 
         //edit
-        if (!empty($id) && is_numeric($id)) {
+        if (!empty($id)) {
             $data['text_form']   = lang('NewsAdmin.text_edit');
 
-            $data_form = $this->model->find($id);
+            $data_form = $this->model->getInfo($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
-            $data_form = $this->model->formatJsonDecode($data_form);
+            $data_form = $this->model->formatDetail($data_form);
 
             // display the edit user form
             $data['edit_data'] = $data_form;
@@ -384,13 +389,13 @@ class Manage extends AdminController
         }
 
         $id        = $this->request->getPost('id');
-        $item_edit = $this->model->find($id);
+        $item_edit = $this->model->getInfo($id);
         if (empty($item_edit)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $item_edit['published'] = !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF;
-        if (!$this->model->update($id, $item_edit)) {
+        if (!$this->model->updateInfo($item_edit, $id)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
@@ -416,7 +421,7 @@ class Manage extends AdminController
         $status = $this->request->getPost('status');
         $type   = $this->request->getPost('type');
 
-        $item_edit = $this->model->find($id);
+        $item_edit = $this->model->getInfo($id);
         if (empty($item_edit)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
@@ -429,7 +434,7 @@ class Manage extends AdminController
         }
 
 
-        if (!$this->model->update($id, $item_edit)) {
+        if (!$this->model->updateInfo($item_edit, $id)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 

@@ -110,7 +110,7 @@ class NewsModel extends FarmModel
             return [];
         }
 
-        if (strpos($news_id, 'C') !== FALSE) {
+        if (strpos($news_id, 'c') !== FALSE) {
             list($news_id, $ctime) = $this->getFormatNewsId($news_id);
         }
 
@@ -151,13 +151,35 @@ class NewsModel extends FarmModel
         return $result;
     }
 
+    /**
+     * Su dung admin
+     *
+     * @param $news_id
+     * @param null $ctime
+     * @return array|bool|null|object
+     */
+    public function getInfo($news_id, $ctime = null)
+    {
+        if (empty($news_id)) {
+            return false;
+        }
+
+        if (strpos($news_id, 'c') !== FALSE) {
+            list($news_id, $ctime) = $this->getFormatNewsId($news_id);
+        }
+
+        $this->setTableNameYear($ctime);
+
+        return $this->find($news_id);
+    }
+
     public function updateInfo($data, $news_id, $ctime = null)
     {
         if (empty($news_id) || empty($data)) {
             return false;
         }
 
-        if (strpos($news_id, 'C') !== FALSE) {
+        if (strpos($news_id, 'c') !== FALSE) {
             list($news_id, $ctime) = $this->getFormatNewsId($news_id);
         }
 
@@ -172,7 +194,7 @@ class NewsModel extends FarmModel
             return false;
         }
 
-        if (strpos($news_id, 'C') !== FALSE) {
+        if (strpos($news_id, 'c') !== FALSE) {
             list($news_id, $ctime) = $this->getFormatNewsId($news_id);
         }
 
@@ -184,7 +206,7 @@ class NewsModel extends FarmModel
     public function deleteCache($news_id = null)
     {
         if (!empty($news_id)) {
-            if (strpos($news_id, 'C') !== FALSE) {
+            if (strpos($news_id, 'c') !== FALSE) {
                 list($news_id) = $this->getFormatNewsId($news_id);
             }
 
@@ -215,7 +237,7 @@ class NewsModel extends FarmModel
             return false;
         }
 
-        $ids = explode("C", $news_id);
+        $ids = explode("c", $news_id);
         if (count($ids) != 2) {
             return false;
         }
@@ -409,43 +431,47 @@ class NewsModel extends FarmModel
             }
 
             foreach ($list_news as $news_key => $news) {
-                if (stripos($news['href'], "https://") !== false || stripos($news['href'], "http://") !== false) {
-                    $url_detail = $news['href'];
-                } else {
-                    $url_detail = $url_domain . $news['href'];
-                }
-
-                $meta   = $robot->getMeta($attribute['attribute_meta'], $url_detail);
-                $detail = $robot->getDetail($attribute['attribute_detail'], $url_detail, $url_domain);
-
-                $content  = "";
-                if (!empty($detail['content'])) {
-                    $content = $detail['content'];
-                    //$content = $this->robot->convert_image_to_base($detail['content']);
-                    if (!empty($attribute['attribute_remove'])) {
-                        $content = $robot->removeContentHtml($content, $attribute['attribute_remove']);
+                try {
+                    if (stripos($news['href'], "https://") !== false || stripos($news['href'], "http://") !== false) {
+                        $url_detail = $news['href'];
+                    } else {
+                        $url_detail = $url_domain . $news['href'];
                     }
 
-                    $content = $robot->convertVideoKenh14($content, $url);
-                }
-                //lay hing dau tien trong noi dung
-                $image_first = $robot->getImageFirst($content);
+                    $meta = $robot->getMeta($attribute['attribute_meta'], $url_detail);
+                    $detail = $robot->getDetail($attribute['attribute_detail'], $url_detail, $url_domain);
 
-                $list_news[$news_key]['content']          = $content;
-                $list_news[$news_key]['note']             = !empty($meta['description']) ? $meta['description'] : '';
-                $list_news[$news_key]['meta_description'] = !empty($meta['description']) ? $meta['description'] : '';
-                $list_news[$news_key]['meta_keyword']     = !empty($meta['keywords']) ? $meta['keywords'] : '';
-                $list_news[$news_key]['image']            = !empty($news['image']) ? $news['image'] : $image_first;
-                $list_news[$news_key]['image_fb']         = !empty($meta['image_fb']) ? $meta['image_fb'] : $image_first;
-                $list_news[$news_key]['category_id']      = $menu['id'];
-                $list_news[$news_key]['href']             = $url_detail;
+                    $content = "";
+                    if (!empty($detail['content'])) {
+                        $content = $detail['content'];
+                        //$content = $this->robot->convert_image_to_base($detail['content']);
+                        if (!empty($attribute['attribute_remove'])) {
+                            $content = $robot->removeContentHtml($content, $attribute['attribute_remove']);
+                        }
 
-                $list_tags = $robot->getTags($attribute['attribute_tags'], $detail['html']);
-                $list_news[$news_key]['tags'] = implode(",", $list_tags);
+                        $content = $robot->convertVideoKenh14($content, $url);
+                    }
+                    //lay hing dau tien trong noi dung
+                    $image_first = $robot->getImageFirst($content);
+
+                    $list_news[$news_key]['content'] = $content;
+                    $list_news[$news_key]['note'] = !empty($meta['description']) ? $meta['description'] : '';
+                    $list_news[$news_key]['meta_description'] = !empty($meta['description']) ? $meta['description'] : '';
+                    $list_news[$news_key]['meta_keyword'] = !empty($meta['keywords']) ? $meta['keywords'] : '';
+                    $list_news[$news_key]['image'] = !empty($news['image']) ? $news['image'] : $image_first;
+                    $list_news[$news_key]['image_fb'] = !empty($meta['image_fb']) ? $meta['image_fb'] : $image_first;
+                    $list_news[$news_key]['category_id'] = $menu['id'];
+                    $list_news[$news_key]['href'] = $url_detail;
+
+                    $list_tags = $robot->getTags($attribute['attribute_tags'], $detail['html']);
+                    $list_news[$news_key]['tags'] = implode(",", $list_tags);
 
 //                if ($news_key % 10 == 0) {
 //                    sleep(1);
 //                }
+                } catch (\Exception $e) {
+                    continue;
+                }
             }
             krsort($list_news);
             $list_menu[$key]['list_news'] = $list_news;
