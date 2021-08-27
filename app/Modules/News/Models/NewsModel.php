@@ -173,6 +173,21 @@ class NewsModel extends FarmModel
         return $this->find($news_id);
     }
 
+    public function deleteInfo($news_id, $ctime = null)
+    {
+        if (empty($news_id)) {
+            return false;
+        }
+
+        if (strpos($news_id, 'c') !== FALSE) {
+            list($news_id, $ctime) = $this->getFormatNewsId($news_id);
+        }
+
+        $this->setTableNameYear($ctime);
+
+        return $this->delete($news_id);
+    }
+
     public function updateInfo($data, $news_id, $ctime = null)
     {
         if (empty($news_id) || empty($data)) {

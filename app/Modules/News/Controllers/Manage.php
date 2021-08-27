@@ -263,16 +263,14 @@ class Manage extends AdminController
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
-            $list_delete = $this->model->find($ids);
-            if (empty($list_delete)) {
-                json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
-            }
+            foreach ($ids as $id) {
+                $info = $this->model->getInfo($id);
+                if (empty($info)) {
+                    json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+                }
+                $this->model->deleteInfo($id);
 
-            $this->model->delete($ids);
-
-            //xoa slug ra khoi route
-            foreach($list_delete as $value) {
-                $this->model->deleteCache($value['news_id']);
+                $this->model->deleteCache($id);
             }
 
             set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
@@ -290,8 +288,11 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
+        $list_delete = [];
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->find($delete_ids);
+        foreach ($delete_ids as $id) {
+            $list_delete[] = $this->model->getInfo($id);
+        }
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }

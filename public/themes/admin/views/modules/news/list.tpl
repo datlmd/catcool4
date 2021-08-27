@@ -80,16 +80,15 @@
 								<table class="table table-striped table-hover table-bordered second">
 									<thead>
 										<tr class="text-center">
-											<th width="50">
+											<th width="150">
 												<a href="{site_url($manage_url)}?sort=news_id&order={$order}{$url}" class="text-dark">
-													{lang('Admin.column_id')}
+													{lang('Admin.text_image')}
 													{if $sort eq 'news_id'}
 														<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 													{/if}
 												</a>
 											</th>
-											<th width="180">{lang('Admin.text_image')}</th>
-											<th>
+											<th style="min-width: 450px;">
 												<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
 													{lang('NewsAdmin.text_name')}
 													{if $sort eq 'name'}
@@ -121,8 +120,8 @@
 									<tbody>
 									{foreach $list as $item}
 										<tr>
-											<td class="text-center">{anchor("$manage_url/edit/`$item.news_id`", $item.news_id, 'class="text-primary"')}</td>
 											<td class="text-center">
+												{anchor("$manage_url/edit/`$item.news_id`", $item.news_id, 'class="text-primary"')}
 												<div class="thumbnail">
 													{if !empty($item.images.thumb)}
 														<a href="{image_url($item.images.thumb)}" data-lightbox="photos">
