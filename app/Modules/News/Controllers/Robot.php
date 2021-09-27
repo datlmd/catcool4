@@ -30,7 +30,7 @@ class Robot extends BaseController
             switch ($robot_type) {
                 case 'kenh14':
                     $kenh14 = $robot->pageKenh14;
-                    if (!empty($robot_href_position)) {
+                    if (!is_null($robot_href_position)) {
                         $robot_href_position = is_array($robot_href_position) ? $robot_href_position : explode(',', $robot_href_position);
 
                         foreach ($kenh14['attribute_menu'] as $key => $value) {

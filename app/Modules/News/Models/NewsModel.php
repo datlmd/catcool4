@@ -376,7 +376,7 @@ class NewsModel extends FarmModel
                 continue;
             }
 
-            $date_now = date("Y-m-d H:i:s", strtotime('+5 minutes', strtotime($date_now)));
+            $date_now = date("Y-m-d H:i:s", strtotime('+25 minutes', strtotime($date_now)));
 
             if (!empty($value['tags'])) {
                 $tags = is_array($value['tags']) ? implode(",", $value['tags']) : $value['tags'];
