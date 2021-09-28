@@ -42,7 +42,7 @@
 								</div>
 								<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.filter_id')}
-									{form_input('news_id]', set_value('news_id', $filter.news_id), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
+									{form_input('news_id', set_value('news_id', $filter.news_id), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
 
 								</div>
 								<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-2">

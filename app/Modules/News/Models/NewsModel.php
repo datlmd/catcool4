@@ -84,7 +84,16 @@ class NewsModel extends FarmModel
         }
 
         if (!empty($filter["news_id"])) {
-            $this->whereIn("news_id", (!is_array($filter["news_id"]) ? explode(',', $filter["news_id"]) : $filter["news_id"]));
+            if (strpos($filter["news_id"], 'c') !== FALSE) {
+                list($news_id, $ctime) = $this->getFormatNewsId($filter["news_id"]);
+            } else {
+                $news_id = $filter["news_id"];
+            }
+            if (!empty($ctime)) {
+                $this->setTableNameYear($ctime);
+            }
+
+            $this->whereIn("news_id", (!is_array($news_id) ? explode(',', $news_id) : $news_id));
         }
 
         if (!empty($filter["name"])) {
