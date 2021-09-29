@@ -119,7 +119,7 @@
     </div>
     {literal}
         <style>
-            .VCSortableInPreviewMode, .eventNewsTimeline-wrapper {display: none;}
+            .LayoutAlbumWrapper, .eventNewsTimeline-wrapper {display: none;}
         </style>
     {/literal}
 {/strip}
