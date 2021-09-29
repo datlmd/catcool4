@@ -117,4 +117,9 @@
 
         </div>
     </div>
+    {literal}
+        <style>
+            .VCSortableInPreviewMode noCaption, .eventNewsTimeline-wrapper {display: none;}
+        </style>
+    {/literal}
 {/strip}
