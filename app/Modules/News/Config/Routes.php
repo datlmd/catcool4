@@ -13,6 +13,7 @@ $routes->group('news', ['namespace' => 'App\Modules\News\Controllers'], function
     $subroutes->add('manage/publish', 'Manage::publish');
     $subroutes->add('manage/robot', 'Manage::Robot');
     $subroutes->add('manage/status', 'Manage::status');
+    $subroutes->add('manage/related', 'Manage::related');
 
     $subroutes->add('categories_manage', 'CategoriesManage::index');
     $subroutes->add('categories_manage/add', 'CategoriesManage::add');

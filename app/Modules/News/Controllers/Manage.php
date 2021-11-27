@@ -493,4 +493,28 @@ class Manage extends AdminController
 
         json_output($data);
     }
+
+    public function related()
+    {
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        if (empty($this->request->getPost())) {
+            json_output(['status' => 'ng', 'msg' => lang('Admin.error_json')]);
+        }
+
+        $related = $this->request->getPost('related');
+        $data_view = [
+            'related' => $related,
+            'related_list' => $this->model->findRelated($related),
+        ];
+
+        $data = [
+            'status' => 'ok',
+            'view' => $this->themes::view('related_list', $data_view, true)
+        ];
+
+        json_output($data);
+    }
 }

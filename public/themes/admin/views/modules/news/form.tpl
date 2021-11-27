@@ -269,7 +269,7 @@
                     <div class="card">
                         <h5 class="card-header">{lang('NewsAdmin.text_related')}</h5>
                         <div class="card-body">
-
+                            {include file=get_theme_path('views/inc/articles/find_related.tpl') related_url='news/manage/related'}
                         </div>
                     </div>
                 </div>

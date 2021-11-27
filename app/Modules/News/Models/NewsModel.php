@@ -858,4 +858,28 @@ class NewsModel extends FarmModel
 
         return [$list, $result->pager];
     }
+
+    public function findRelated($related, $limit = 20)
+    {
+        if (empty($related)) {
+            return null;
+        }
+
+        $result = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+            ->orderBy('publish_date', 'DESC')
+            ->where(['published' => STATUS_ON])
+            ->like("name", trim($related))
+            ->findAll($limit);
+
+        if (empty($result)) {
+            return [];
+        }
+
+        $list = [];
+        foreach ($result as $key_news => $value) {
+            $list[] = $this->formatDetail($value);
+        }
+
+        return $list;
+    }
 }

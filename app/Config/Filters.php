@@ -43,9 +43,16 @@ class Filters extends BaseConfig
                     'countries/wards',
                     'utilities/manage/load_fba',
                     'users/social_login',
+					'*/manage/related',
                 ]
             ],
-            'auth_admin' => ['except' => ['*/login', '*/logout', 'permissions/manage/not_allowed']],
+            'auth_admin' => [
+				'except' => [
+					'*/login',
+					'*/logout',
+					'permissions/manage/not_allowed',
+				]
+			],
 		],
 		'after'  => [
 			'toolbar',
