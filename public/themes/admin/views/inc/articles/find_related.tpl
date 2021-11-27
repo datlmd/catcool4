@@ -3,7 +3,13 @@
 		<input type="text" name="related" id="related" class="form-control" />
 		<button class="input-group-text"><i class="fa fa-search"></i></button>
 	</div>
-	<div id="related_result" class="mt-4 mb-2" style="max-height: 250px; overflow: scroll; overflow-x: hidden; display: none;"></div>
+	<div id="related_result" class="mt-4 mb-2 ps-1" style="max-height: 250px; overflow: auto; overflow-x: hidden; {if empty($related_list_html)}display: none;{/if}">
+		{if !empty($related_list_html)}
+			{$related_list_html}
+			<hr>
+		{/if}
+		<div id="related_data"></div>
+	</div>
 {/strip}
 {literal}
 	<script>
@@ -39,21 +45,13 @@
 			if (is_releated_processing) {
 				return false;
 			}
-			if (related_text == $("#related").val()) {
-				return false;
-			}
-
-			related_text = $("#related").val();
-			if (related_text != "" && related_text.length < 3) {
-				return false;
-			}
 
 			is_releated_processing = true;
 			$.ajax({
 				url: related_url,
 				type: 'POST',
 				data: {
-					related: related_text,
+					related: $("#related").val(),
 				},
 				beforeSend: function () {
 					$('#related_find').find('i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
@@ -71,7 +69,8 @@
 						$.notify(response.msg, {'type': 'danger'});
 						return false;
 					}
-					$('#related_result').html(response.view).show();
+					$('#related_result').show();
+					$('#related_result #related_data').html(response.view);
 				},
 				error: function (xhr, errorType, error) {
 					$.notify(xhr.responseJSON.message, {'type': 'danger'});

@@ -269,7 +269,11 @@
                     <div class="card">
                         <h5 class="card-header">{lang('NewsAdmin.text_related')}</h5>
                         <div class="card-body">
-                            {include file=get_theme_path('views/inc/articles/find_related.tpl') related_url='news/manage/related'}
+                            {if !empty($edit_data.related_list_html)}
+                                {include file=get_theme_path('views/inc/articles/find_related.tpl') related_url='news/manage/related' related_list_html=$edit_data.related_list_html}
+                            {else}
+                                {include file=get_theme_path('views/inc/articles/find_related.tpl') related_url='news/manage/related'}
+                            {/if}
                         </div>
                     </div>
                 </div>

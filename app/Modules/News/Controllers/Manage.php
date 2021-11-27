@@ -343,6 +343,13 @@ class Manage extends AdminController
 
             $data_form = $this->model->formatDetail($data_form);
 
+            if (!empty($data_form['related_ids'])) {
+                $related_list = $this->model->getListByRelatedIds($data_form['related_ids']);
+                if (!empty($related_list)) {
+                    $data_form['related_list_html'] = $this->themes::view('related_list', ['related_list' => $related_list, 'is_checked' => true], true);
+                }
+            }
+
             // display the edit user form
             $data['edit_data'] = $data_form;
         } else {
@@ -504,15 +511,9 @@ class Manage extends AdminController
             json_output(['status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        $related = $this->request->getPost('related');
-        $data_view = [
-            'related' => $related,
-            'related_list' => $this->model->findRelated($related),
-        ];
-
         $data = [
             'status' => 'ok',
-            'view' => $this->themes::view('related_list', $data_view, true)
+            'view' => $this->themes::view('related_list', ['related_list' => $this->model->findRelated($this->request->getPost('related'))], true)
         ];
 
         json_output($data);

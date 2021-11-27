@@ -864,12 +864,49 @@ class NewsModel extends FarmModel
         if (empty($related)) {
             return null;
         }
+        $related = trim($related);
+        $result = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+            ->orderBy('publish_date', 'DESC')
+            ->groupStart()
+            ->like("name", $related)
+            ->orLike("tags", $related)
+            ->groupEnd()
+            ->where(['published' => STATUS_ON])
+            ->findAll($limit);
+
+        if (empty($result)) {
+            return [];
+        }
+
+        $list = [];
+        foreach ($result as $key_news => $value) {
+            $list[] = $this->formatDetail($value);
+        }
+
+        return $list;
+    }
+
+    public function getListByRelatedIds($related_ids, $limit = 0)
+    {
+        if (empty($related_ids)) {
+            return null;
+        }
+
+        $related_ids = is_array($related_ids) ? $related_ids : explode(',', $related_ids);
+
+        $ctime = null;
+        $news_ids = [];
+        foreach($related_ids as $value) {
+            list($news_id, $ctime) = $this->getFormatNewsId($value);
+            $news_ids[] = $news_id;
+        }
 
         $result = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
             ->orderBy('publish_date', 'DESC')
             ->where(['published' => STATUS_ON])
-            ->like("name", trim($related))
+            ->whereIn("news_id", $news_ids)
             ->findAll($limit);
+
 
         if (empty($result)) {
             return [];
