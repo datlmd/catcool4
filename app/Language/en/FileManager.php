@@ -19,7 +19,7 @@ return [
 	"heading_title" => "File Manager",
 	"text_clear_cache" => "Clear Cache",
 	"text_clear_cache_success" => "Clear cache successfully!",
-	"text_delete" => "Your file or directory has been deleted!",
+	"text_delete" => "Deleted successfully!",
 	"text_directory" => "Directory created!",
 	"text_rotation" => "Image rotated!",
 	"text_uploaded" => "Your file has been uploaded!",

@@ -19,7 +19,7 @@ return [
 	"heading_title" => "Quản lý tập tin",
 	"text_clear_cache" => "Xóa cache",
 	"text_clear_cache_success" => "Đã xóa cache thành công!",
-	"text_delete" => "Thư mục đã được xóa bỏ!",
+	"text_delete" => "Đã xóa thành công!",
 	"text_directory" => "Thư mục đã được tạo!",
 	"text_rotation" => "Đã xoay thành công!",
 	"text_uploaded" => "Tập tin của bạn đã được tải lên!",
