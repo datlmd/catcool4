@@ -34,10 +34,8 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'News::index', ['namespace' => 'App\Modules\News\Controllers']);
 
-foreach(glob(APPPATH . 'Modules/*', GLOB_ONLYDIR) as $item_dir)
-{
-	if (file_exists($item_dir . '/Config/Routes.php'))
-	{
+foreach(glob(APPPATH . 'Modules/*', GLOB_ONLYDIR) as $item_dir) {
+	if (file_exists($item_dir . '/Config/Routes.php')) {
 		require_once($item_dir . '/Config/Routes.php');
 	}
 }
@@ -56,15 +54,13 @@ foreach(glob(APPPATH . 'Modules/*', GLOB_ONLYDIR) as $item_dir)
  * You will have access to the $routes object within that file without
  * needing to reload it.
  */
-if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php'))
-{
+if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
 	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }
 
 /*
  * Additional Routing More - Database
  */
-if (file_exists(WRITEPATH . 'config/Routes.php'))
-{
+if (file_exists(WRITEPATH . 'config/Routes.php')) {
     require WRITEPATH . 'config/Routes.php';
 }
