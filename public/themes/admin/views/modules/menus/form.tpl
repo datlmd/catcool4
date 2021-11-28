@@ -97,7 +97,7 @@
                                     {else}
                                         {assign var="attributes" value=""}
                                     {/if}
-                                    <input type="text" name="attributes" value="{old('attributes', $attributes)}" id="attributes" class="form-control">
+                                    <input type="text" name="attributes" value="{old('attributes', htmlspecialchars($attributes, ENT_QUOTES,'UTF-8'))}" id="attributes" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">

@@ -1,6 +1,6 @@
 {strip}
     {form_hidden('manage_url', site_url($manage_url))}
-    <div class="container-fluid  dashboard-content">
+    <div class="container-fluid  dashboard-content form-confirm-leave">
         {form_open(uri_string(), ['id' => 'validationform'])}
             <div class="row">
                 <div class="col-sm-7 col-12">

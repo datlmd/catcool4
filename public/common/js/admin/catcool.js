@@ -584,10 +584,42 @@ $(function () {
     });
 
     if ($('.change_publish').length) {
-        $(document).on('change', '.change_publish', function(event) {
-            event.preventDefault();
+        $(document).on('change', '.change_publish', function(e) {
+            e.preventDefault();
             Catcool.changePublish(this);
         });
+    }
+
+    $(document).on('click', '#menu_file_manager, .show-file-manager', function(e) {
+        e.preventDefault();
+        Catcool.showMenuFileManager();
+        return false;
+    });
+
+    if ($("form").length) {
+        //stop enter in form
+        $("form").on("keypress", function (e) {
+            var keyPressed = e.keyCode || e.which;
+            if (keyPressed === 13) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    }
+
+    if ($(".form-confirm-leave").length) {
+        $('.form-confirm-leave form').data('serialize',$('.form-confirm-leave form').serialize()); // On load save form current state
+        $(window).bind('beforeunload', function(e) {
+            if($('.form-confirm-leave form').serialize()!=$('.form-confirm-leave form').data('serialize')) {
+                return true;
+            }
+            else {
+                e = null;
+            } // i.e; if form state change show warning box, else don't show it.
+        });
+        //$(window).bind('beforeunload', function(){
+        //    return 'Please save your setting before leaving the page!';
+        //});
     }
 
     /* set gia tri mac dinh */

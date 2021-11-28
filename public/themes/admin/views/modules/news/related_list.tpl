@@ -1,11 +1,11 @@
 {strip}
     {if !empty($related_list)}
         {foreach $related_list as $item}
-            <div class="form-check">
+            <div class="form-check my-2">
                 <input class="form-check-input" type="checkbox" name="related_ids[]" value="{$item.news_id}" {if !empty($is_checked)}checked="checked"{/if} id="related_id_{$item.news_id}">
                 <div class="row">
                     <label class="form-check-label col-10" for="related_id_{$item.news_id}">
-                        {$item.name}
+                        {$item.name} (<small class="text-secondary">{$item.publish_date}</small>)
                     </label>
                     <a href="{$manage_url}/edit/{$item.news_id}" target="_blank" class="text-primary col-2 text-center">{lang('Admin.button_link')}</a>
                 </div>
