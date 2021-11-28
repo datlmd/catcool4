@@ -7,6 +7,7 @@ class ImageTool
     protected $image;
     protected $dir_image_path;
     private $_quality;
+    private $_error = null;
 
     protected $upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
     private $_driver       = 'imagick'; //gd,gd2,imagick
@@ -83,6 +84,7 @@ class ImageTool
                         ->save($this->dir_image_path . $image_new, $this->_quality);
                 } catch (\Exception $e) {
                     log_message('error', $e->getMessage());
+                    $this->_error = $e->getMessage();
                     return false;
                 }
             }
@@ -186,6 +188,7 @@ class ImageTool
                 ->save($file_path, $this->_quality);
         } catch (\Exception $e) {
             log_message('error', $e->getMessage());
+            $this->_error = $e->getMessage();
             return false;
         }
 
@@ -218,6 +221,7 @@ class ImageTool
             }
         } catch (\Exception $e) {
             log_message('error', $e->getMessage());
+            $this->_error = $e->getMessage();
             return false;
         }
 
@@ -236,6 +240,7 @@ class ImageTool
                 ->getProperties(true);
         } catch (\Exception $e) {
             log_message('error', $e->getMessage());
+            $this->_error = $e->getMessage();
             return false;
         }
 
@@ -264,6 +269,7 @@ class ImageTool
         catch (\Exception $e)
         {
             log_message('error', $e->getMessage());
+            $this->_error = $e->getMessage();
             return false;
         }
 
@@ -287,6 +293,7 @@ class ImageTool
 
         } catch (\Exception $e) {
             log_message('error', $e->getMessage());
+            $this->_error = $e->getMessage();
             return false;
         }
 
@@ -305,6 +312,7 @@ class ImageTool
                 ->save($file_new, $this->_quality);
         } catch (\Exception $e) {
             log_message('error', $e->getMessage());
+            $this->_error = $e->getMessage();
             return false;
         }
 
@@ -404,6 +412,7 @@ class ImageTool
             }
         } catch (\Exception $e) {
             log_message('error', $e->getMessage());
+            $this->_error = $e->getMessage();
             return $image_root;
         }
 
@@ -431,5 +440,10 @@ class ImageTool
         $this->watermark($watermark);
 
         return site_url() . "img/$watermark";
+    }
+
+    public function getError()
+    {
+        return $this->_error;
     }
 }

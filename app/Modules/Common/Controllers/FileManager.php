@@ -8,8 +8,8 @@ class FileManager extends AdminController
     protected $image_tool;
     protected $dir_image      = '';
     protected $dir_image_path = '';
-    protected $file_url       = 'file/';
-    protected $img_url        = 'img/';
+    protected $file_url       = ''; // file/
+    protected $img_url        = ''; // img/
 
     CONST PATH_SUB_NAME   = 'root';
     CONST FILE_PAGE_LIMIT = 30;
@@ -666,8 +666,8 @@ class FileManager extends AdminController
         if (!is_file($this->dir_image_path . $path)) {
             $json['error'] = lang('FileManager.error_rotation');
         }
-
-        if (!$json) {
+  
+        if (empty($json)) {
             // Loop through each path
             $image = $this->image_tool->rotation($path, $type);
 
@@ -675,7 +675,7 @@ class FileManager extends AdminController
                 $json['success'] = lang('FileManager.text_rotation');
                 $json['image'] = image_url($image) . '?' . time();
             } else {
-                $json['error'] = lang('FileManager.error_rotation');
+                $json['error'] = !empty($this->image_tool->getError()) ? $this->image_tool->getError() : lang('FileManager.error_rotation');
             }
         }
 

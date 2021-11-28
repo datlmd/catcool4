@@ -256,7 +256,7 @@ label {
     content: url('data:image/gif;base64,R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==');
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
     width: 100%;
     max-width: 200px;
     max-height: 220px;
