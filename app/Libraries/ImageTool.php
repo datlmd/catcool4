@@ -423,6 +423,10 @@ class ImageTool
     {
         $file_name = !empty($file_name) ? get_upload_path() . $file_name : FCPATH . 'common/images/watermark_bg.jpg';
 
+        if (!is_dir($this->dir_image_path . 'tmp')) {
+            mkdir($this->dir_image_path . 'tmp', 0777);
+        }
+
         $watermark = 'tmp/watermark_bg.jpg';
         if (is_file(get_upload_path() . $watermark)) {
             delete_files(unlink(get_upload_path() . $watermark));
