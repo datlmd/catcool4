@@ -40,13 +40,24 @@ class Manage extends AdminController
         $sort  = $this->request->getGet('sort');
         $order = $this->request->getGet('order');
 
+        helper('filesystem');
+
+        //check permissions
+        $key_file = 'config/Config.php';
+        if (is_file(WRITEPATH . $key_file)) {
+            $file_permissions = $key_file . ': ' . octal_permissions(fileperms(WRITEPATH . $key_file));
+        } else {
+            $file_permissions = "File not found!";
+        }
+
         $data = [
-            'breadcrumb'      => $this->breadcrumb->render(),
-            'list'            => $this->model->getAllByFilter(null, $sort, $order),
-            'sort'            => empty($sort) ? 'id' : $sort,
-            'order'           => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'groups'          => $this->group_model->findAll(),
-            'config_group_id' => session('tab_group_id'),
+            'breadcrumb'       => $this->breadcrumb->render(),
+            'list'             => $this->model->getAllByFilter(null, $sort, $order),
+            'sort'             => empty($sort) ? 'id' : $sort,
+            'order'            => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'groups'           => $this->group_model->findAll(),
+            'config_group_id'  => session('tab_group_id'),
+            'file_permissions' => $file_permissions
         ];
 
         add_meta(['title' => lang("ConfigAdmin.heading_title")], $this->themes);
@@ -216,12 +227,12 @@ class Manage extends AdminController
             $data['file_permissions'] = "File not found!";
         }
 
-        add_meta(['title' => lang("Admin.text_settings")], $this->themes);
+        add_meta(['title' => lang("ConfigAdmin.heading_title")], $this->themes);
 
         $this->smarty->assign('manage_url', self::MANAGE_URL . '/settings');
         $this->breadcrumb->reset();
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), site_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang("Admin.text_settings"), site_url(CATCOOL_DASHBOARD . '/settings'));
+        $this->breadcrumb->add(lang("ConfigAdmin.heading_title"), site_url(CATCOOL_DASHBOARD . '/settings'));
 
         theme_load('setting', $data);
     }

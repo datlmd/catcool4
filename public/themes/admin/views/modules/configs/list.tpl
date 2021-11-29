@@ -26,7 +26,7 @@
 		</div>
 		<div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12">
 			<div class="card">
-				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('ConfigAdmin.text_list')}</h5>
+				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('ConfigAdmin.text_list')} {if !empty($file_permissions)}(<small>{$file_permissions}</small>){/if}</h5>
 				<div class="card-body">
 					<div class="tab-regular">
 						<ul class="nav nav-tabs border-bottom ps-3" id="config_tab" role="tablist">
