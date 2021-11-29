@@ -3,6 +3,10 @@
 		{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('UtilityAdmin.heading_title')}
 		<div class="row">
 
+			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12">
+				{include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active=file_browser}
+			</div>
+
 			<div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12">
 				<div class="card">
 					<h5 class="card-header"><i class="fas fa-folder-open me-2"></i>File Browser</h5>
@@ -16,10 +20,6 @@
 						<div id="fba" data-host="{site_url()}" data-api="{$api}" data-route="{$route}"></div>
 					</div>
 				</div>
-			</div>
-
-			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12">
-				{include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active=file_browser}
 			</div>
 			
 		</div>
