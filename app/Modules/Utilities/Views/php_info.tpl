@@ -3,11 +3,10 @@
 	<div class="container-fluid  dashboard-content">
 		{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('UtilityAdmin.heading_title')}
 		<div class="row">
-			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12">
-				{include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active=php_info}
-			</div>
+
 			<div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12">
 				<div class="card">
+					<h5 class="card-header"><i class="fas fa-folder-open me-2"></i>PHP Info</h5>
 					<div class="card-body">
 						{if !empty($info_list)}
 							{foreach $info_list as $key => $item}
@@ -35,6 +34,11 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12">
+				{include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active=php_info}
+			</div>
+
 		</div>
 	</div>
 {/strip}

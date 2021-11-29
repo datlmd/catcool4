@@ -39,9 +39,11 @@ class Manage extends AdminController
         $data['title'] = lang('UtilityAdmin.heading_title');
         $data['info_list'] = $this->_parsePhpInfo();
 
+        $this->breadcrumb->add(lang("UtilityAdmin.heading_title"), site_url(self::MANAGE_URL));
         $this->breadcrumb->add("PHP Info", site_url(self::MANAGE_URL));
         $data['breadcrumb'] = $this->breadcrumb->render();
 
+        add_meta(['title' => "PHP Info"], $this->themes);
         theme_load('php_info', $data);
     }
 
@@ -82,7 +84,7 @@ class Manage extends AdminController
         $this->themes->addJS('common/js/codemirror/lib/xml');
         $this->themes->addJS('common/js/fba/fba');
 
-        $dir_list = ['media', 'app/Language', 'public/themes'];
+        $dir_list = ['public/uploads', 'app/Language', 'public/themes'];
         if (!empty($_GET['dir']) && in_array($_GET['dir'], $dir_list)) {
             $dir = $_GET['dir'];
         } else {
@@ -96,9 +98,11 @@ class Manage extends AdminController
             "dir"      => urldecode($dir),
         ];
 
+        $this->breadcrumb->add(lang("UtilityAdmin.heading_title"), site_url(self::MANAGE_URL));
         $this->breadcrumb->add("File Browser", site_url(self::MANAGE_URL));
         $data['breadcrumb'] = $this->breadcrumb->render();
 
+        add_meta(['title' => lang("File Browser")], $this->themes);
         $this->themes::load('list_file', $data);
     }
 
@@ -108,7 +112,7 @@ class Manage extends AdminController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        $dir_list = ['media', 'app/Language', 'public/themes'];
+        $dir_list = ['public/uploads', 'app/Language', 'public/themes'];
         if (!empty($this->request->getGet('dir')) && in_array($this->request->getGet('dir'), $dir_list)) {
             $dir = $this->request->getGet('dir');
         } else {
@@ -135,5 +139,84 @@ class Manage extends AdminController
             // Output isi file
             json_output($res);
         }
+    }
+
+    public function logs()
+    {
+        helper(['filesystem', 'number']);
+
+        $name  = $this->request->getGet('name');
+        $type  = $this->request->getGet('type');
+        $sort  = $this->request->getGet('sort');
+        $order = $this->request->getGet('order');
+
+        $directory = WRITEPATH . "logs";
+        $files = glob($directory . '/*.log', GLOB_BRACE);
+
+        krsort($files);
+
+        $list = [];
+        foreach ($files as $value) {
+            $key = str_ireplace(WRITEPATH, '', $value);
+
+            $file = [
+                'name'       => $key,
+                'permission' => octal_permissions(fileperms($value)),
+                'size'       => number_to_size(filesize($value)),
+                "modify"     => date('Y-m-d h:i:s',filemtime($value)),
+            ];
+
+            $list[$key] = $file;
+        }
+
+        //check delete & clear
+        if ($type == 1 && !empty($list[$name])) {
+            if (is_file(WRITEPATH . $name)) {
+                unlink(WRITEPATH . $name);
+                set_alert(lang('FileManager.text_delete') . " ($name)", ALERT_SUCCESS);
+            } else {
+                set_alert(lang('FileManager.error_delete'), ALERT_ERROR);
+            }
+            return redirect()->back();
+        } elseif ($type == 2) {
+            //clear
+            foreach ($list as $value) {
+                if (is_file(WRITEPATH . $value['name'])) {
+                    unlink(WRITEPATH . $value['name']);
+                }
+            }
+            set_alert(lang('FileManager.text_delete'), ALERT_SUCCESS, ALERT_POPUP);
+            return redirect()->back();
+        }
+
+        $date_key = (empty($name) || empty($list[$name])) ? key($list) : $name;
+
+        $sort = (empty($sort) || !in_array($sort, ['name', 'size', 'modify'])) ? 'name' : $sort;
+        $sort_arr = array_column($list, $sort);
+        if ($order == 'ASC') {
+            array_multisort($sort_arr, SORT_ASC, $list);
+        } else {
+            array_multisort($sort_arr, SORT_DESC, $list);
+        }
+
+        $detail = [];
+        if (!empty($list[$date_key])) {
+            $detail = $list[$date_key];
+            $detail['content'] = file_get_contents(WRITEPATH . $date_key);
+        }
+
+        $data = [
+            'list'   => $list,
+            'detail' => $detail,
+            'sort'   => $sort,
+            'order'  => ($order == 'ASC') ? 'DESC' : 'ASC',
+        ];
+
+        $this->breadcrumb->add(lang("UtilityAdmin.heading_title"), site_url(self::MANAGE_URL));
+        $this->breadcrumb->add("Logs", site_url(self::MANAGE_URL) . 'logs');
+        $data['breadcrumb'] = $this->breadcrumb->render();
+
+        add_meta(['title' => lang("Logs")], $this->themes);
+        $this->themes::load('logs', $data);
     }
 }
