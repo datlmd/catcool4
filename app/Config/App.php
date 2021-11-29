@@ -69,7 +69,7 @@ class App extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $defaultLocale = 'vi';
+	public $defaultLocale = 'vi'; //datlm
 
 	/**
 	 * --------------------------------------------------------------------------
@@ -96,7 +96,7 @@ class App extends BaseConfig
 	 *
 	 * @var string[]
 	 */
-	public $supportedLocales = ['vi', 'en'];
+	public $supportedLocales = ['vi', 'en']; //datlm
 
 	/**
 	 * --------------------------------------------------------------------------
@@ -355,7 +355,7 @@ class App extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $CSRFTokenName = 'csrf_token_catcool_cms';
+	public $CSRFTokenName = 'csrf_token_catcool_cms'; //datlm
 
 	/**
 	 * --------------------------------------------------------------------------
