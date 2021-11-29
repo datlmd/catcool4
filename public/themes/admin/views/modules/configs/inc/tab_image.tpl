@@ -265,6 +265,7 @@
 				</a>
 				<input type="hidden" name="image_watermark_path" value="{old('image_watermark_path', $image_watermark_path)}" id="input_image_watermark_path" />
 			</div>
+			<hr>
 			<div class="form-group mt-4 fw-bold">
 				<label class="form-check form-check-inline">
 					<input type="radio" name="image_watermark_type" value="text" {if old('image_watermark_type', $image_watermark_type) eq 'text'}checked="checked"{/if} id="image_watermark_type_text" class="form-check-input">

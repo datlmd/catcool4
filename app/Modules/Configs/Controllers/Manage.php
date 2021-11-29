@@ -208,6 +208,14 @@ class Manage extends AdminController
         $data['timezone_list'] = $this->_getListTimezone();
         $data['currency_list'] = format_dropdown($currency_model->getListPublished(), 'code');
 
+        //check permissions
+        $key_file = 'config/Config.php';
+        if (is_file(WRITEPATH . $key_file)) {
+            $data['file_permissions'] = $key_file . ': ' . octal_permissions(fileperms(WRITEPATH . $key_file));
+        } else {
+            $data['file_permissions'] = "File not found!";
+        }
+
         add_meta(['title' => lang("Admin.text_settings")], $this->themes);
 
         $this->smarty->assign('manage_url', self::MANAGE_URL . '/settings');

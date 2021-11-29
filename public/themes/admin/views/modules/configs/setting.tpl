@@ -17,9 +17,8 @@
 			{/if}
 			<div class="col-12">
 				<div class="card">
-					<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('ConfigAdmin.heading_title')}</h5>
+					<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('ConfigAdmin.heading_title')} {if !empty($file_permissions)}(<small>{$file_permissions}</small>){/if}</h5>
 					<div class="card-body px-0 pb-0 pt-3 bg-light">
-
 						<div class="tab-regular">
 							<ul class="nav nav-tabs border-bottom ps-3" id="config_tab" role="tablist">
 								<li class="nav-item">

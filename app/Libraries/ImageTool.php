@@ -439,7 +439,7 @@ class ImageTool
         //$this->resize($watermark, config_item('image_width_pc'), config_item('image_height_pc'));
         $this->watermark($watermark);
 
-        return site_url() . "img/$watermark";
+        return image_url($watermark);
     }
 
     public function getError()
