@@ -11,7 +11,7 @@ $routes->group('news', ['namespace' => 'App\Modules\News\Controllers'], function
     $subroutes->add('manage/edit/(:any)', 'Manage::edit/$1');
     $subroutes->add('manage/delete', 'Manage::delete');
     $subroutes->add('manage/publish', 'Manage::publish');
-    $subroutes->add('manage/robot', 'Manage::Robot');
+    $subroutes->add('manage/robot', 'Manage::robot');
     $subroutes->add('manage/status', 'Manage::status');
     $subroutes->add('manage/related', 'Manage::related');
 
