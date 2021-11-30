@@ -32,8 +32,8 @@
 					</div>
 				</div>
 				<div class="card">
+					<h5 class="card-header"><i class="fas fa-list me-2"></i>{if !empty($dir)}{$dir|ucfirst}{/if} Logs</h5>
 					<div class="card-body">
-						<h5 class="card-header"><i class="fas fa-list me-2"></i>{if !empty($dir)}{$dir|ucfirst}{/if} Logs</h5>
 						{if !empty(print_flash_alert())}
 							{print_flash_alert()}
 						{/if}

@@ -81,7 +81,7 @@
 												<tr>
 													<td class="text-center">{$item.id}</td>
 													<td>{anchor("$manage_url/edit/`$item.id`?tab_group_id=0", $item.config_key, 'class="text-primary"')}</td>
-													<td>{$item.config_value|escape}</td>
+													<td title="{$item.config_value|escape}">{$item.config_value|truncate:40|escape}</td>
 													<td>{$item.description}</td>
 													<td>
 														<div class="switch-button switch-button-xs catcool-center">
@@ -148,7 +148,7 @@
 															<tr>
 																<td class="text-center">{$item.id}</td>
 																<td>{anchor("$manage_url/edit/`$item.id`?tab_group_id=`$group.id`", $item.config_key, 'class="text-primary"')}</td>
-																<td>{$item.config_value|escape}</td>
+																<td title="{$item.config_value|escape}">{$item.config_value|truncate:40|escape}</td>
 																<td>{$item.description}</td>
 																<td>
 																	<div class="switch-button switch-button-xs catcool-center">
