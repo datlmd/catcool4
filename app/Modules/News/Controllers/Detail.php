@@ -73,10 +73,11 @@ class Detail extends BaseController
                 }
             }
         }
+        $detail_url = !empty($detail['detail_url']) ? $detail['detail_url'] : "";
         $script_detail = [
             'name'           => !empty($detail['meta_title']) ? $detail['meta_title'] : $detail['name'],
             'description'    => !empty($detail['meta_description']) ? $detail['meta_description'] : $detail['description'],
-            'url'            => base_url($detail['detail_url']),
+            'url'            => base_url($detail_url),
             'image'          => !empty($detail['images']['root']) ? $detail['images']['root'] : $detail['images']['robot'],
             'published_time' => date('c', strtotime($detail['publish_date'])),
             'modified_time'  => date('c', strtotime($detail['mtime'])),
@@ -89,12 +90,13 @@ class Detail extends BaseController
 
     private function _setMeta($detail)
     {
+        $detail_url = !empty($detail['detail_url']) ? $detail['detail_url'] : "";
         //META
         $data_meta = [
             'title'          => !empty($detail['meta_title']) ? $detail['meta_title'] : $detail['name'],
             'description'    => !empty($detail['meta_description']) ? $detail['meta_description'] : $detail['description'],
             'keywords'       => !empty($detail['meta_keyword']) ? $detail['meta_keyword'] : null,
-            'url'            => base_url($detail['detail_url']),
+            'url'            => base_url($detail_url),
             'image'          => !empty($detail['images']['root']) ? $detail['images']['root'] : $detail['images']['robot'],
             'image_fb'       => !empty($detail['images']['fb']) ? $detail['images']['fb'] : $detail['images']['robot_fb'],
             'published_time' => date('c', strtotime($detail['publish_date'])),
