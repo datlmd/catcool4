@@ -939,6 +939,7 @@ if(!function_exists('delete_cache'))
 
         //clear file upload
         delete_files(get_upload_path('cache'), TRUE);
+        delete_files(get_upload_path('tmp'), TRUE);
 
         return true;
     }
