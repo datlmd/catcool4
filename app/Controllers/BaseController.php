@@ -120,4 +120,55 @@ class BaseController extends Controller
         $this->validator = \Config\Services::validation();
         $this->smarty->assign('validator', $this->validator);
     }
+
+    /**
+     * Ghi log mọi action trên website của tài khoản admin, nếu tài khoàn user thường thì tuỳ function sẽ gắn hàm
+     *
+     * @param bool|false $is_admin
+     * @return bool
+     */
+    public function trackingLogAccess($is_admin = false)
+    {
+        if (empty(config_item('is_tracking_log_access'))) {
+            return false;
+        }
+
+        $user_id = $is_admin ? $this->getUserIdAdmin() : $this->getUserId();
+        if (empty($user_id)) {
+            return false;
+        }
+
+        helper('filesystem');
+
+        $router = service('router');
+
+        $file_name = 'log-access-' . date('Y-m-d') . '.log';
+        if ($is_admin) {
+            $file_name = "admin-$file_name";
+        }
+
+        $controller = $router->controllerName();
+        $controller = str_ireplace("\\App\\Modules\\", "", $controller);
+
+        $data_log = [
+            'user_id' => $user_id,
+            'username' => session('admin.username'),
+            'module' => $controller,
+            'action' => $router->methodName(),
+            'post_params' => $_POST,
+            'get_params' => $_GET,
+            'ip' => get_client_ip()
+        ];
+
+        $directory = WRITEPATH . "logs/access/";
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, TRUE);
+        }
+
+        $message = json_encode($data_log);
+        $message = date('Y-m-d H:i:s') . ":\t$message" . ">>>>>" . "\n";
+        write_file($directory . $file_name, $message, 'a');
+
+        return true;
+    }
 }

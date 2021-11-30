@@ -145,12 +145,17 @@ class Manage extends AdminController
     {
         helper(['filesystem', 'number']);
 
+        $dir   = $this->request->getGet('dir');
         $name  = $this->request->getGet('name');
         $type  = $this->request->getGet('type');
         $sort  = $this->request->getGet('sort');
         $order = $this->request->getGet('order');
 
         $directory = WRITEPATH . "logs";
+        if (!empty($dir) && is_dir($directory . "/$dir")) {
+            $directory = $directory . "/$dir";
+        }
+
         $files = glob($directory . '/*.log', GLOB_BRACE);
 
         krsort($files);
@@ -171,6 +176,11 @@ class Manage extends AdminController
 
         //check delete & clear
         if ($type == 1 && !empty($list[$name])) {
+            $is_super_admin = session('admin.super_admin');
+            if (empty($is_super_admin) || $is_super_admin !== TRUE) {
+                return redirect()->back();
+            }
+
             if (is_file(WRITEPATH . $name)) {
                 unlink(WRITEPATH . $name);
                 set_alert(lang('FileManager.text_delete') . " ($name)", ALERT_SUCCESS);
@@ -179,6 +189,11 @@ class Manage extends AdminController
             }
             return redirect()->back();
         } elseif ($type == 2) {
+            $is_super_admin = session('admin.super_admin');
+            if (empty($is_super_admin) || $is_super_admin !== TRUE) {
+                return redirect()->back();
+            }
+
             //clear
             foreach ($list as $value) {
                 if (is_file(WRITEPATH . $value['name'])) {
@@ -208,6 +223,7 @@ class Manage extends AdminController
         $data = [
             'list'   => $list,
             'detail' => $detail,
+            'dir'    => $dir,
             'sort'   => $sort,
             'order'  => ($order == 'ASC') ? 'DESC' : 'ASC',
         ];
