@@ -542,22 +542,17 @@ class Manage extends AdminController
 
             foreach ($list as $value) {
                 $meta = service('robot')->getMeta(Config('Robot')->pageKenh14['attribute_meta'], $value['source']);
+                cc_debug($meta, false);
 
                 if (empty($meta['image_fb'])) {
+                    if (empty($value['images']['robot']) && empty($value['images']['robot_fb'])) {
+                        $this->model->updateInfo(['published' => STATUS_OFF], $value['news_id']);
+                    }
                     continue;
                 }
                 $img = json_encode($this->model->formatImageList(['robot' => $meta['image_fb'], 'robot_fb' => $meta['image_fb']]), JSON_FORCE_OBJECT);
 
-                $news_id = $value['news_id'];
-                if (strpos($news_id, 'c') !== FALSE) {
-                    list($news_id) = $this->model->getFormatNewsId($news_id);
-                }
-
-                if (empty($value['images']['robot']) || empty($value['images']['robot_fb'])) {
-                    $this->model->updateInfo(['published' => STATUS_OFF], $news_id);
-                } else {
-                    $this->model->updateInfo(['images' => $img], $news_id);
-                }
+                $this->model->updateInfo(['images' => $img], $value['news_id']);
 
                 if (is_file(get_upload_path($value['images']['robot']))) {
                     unlink(get_upload_path($value['images']['robot']));
