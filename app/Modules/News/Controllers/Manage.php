@@ -518,4 +518,55 @@ class Manage extends AdminController
 
         json_output($data);
     }
+
+    public function fix()
+    {
+        try {
+            $limit = $this->request->getGet('limit');
+            $limit = !empty($limit) ? $limit : 100;
+
+            $result = $this->model->select(['news_id', 'name', 'slug', 'source', 'images', 'ctime'])
+                ->orderBy('publish_date', 'DESC')
+                ->notLike("images", "http")
+                ->where(['published' => STATUS_ON])
+                ->findAll($limit);
+
+            $list = [];
+            foreach ($result as $key_news => $value) {
+                $list[] = $this->model->formatDetail($value);
+            }
+
+            if (empty($list)) {
+                cc_debug("Total: 0");
+            }
+
+            foreach ($list as $value) {
+                $meta = service('robot')->getMeta(Config('Robot')->pageKenh14['attribute_meta'], $value['source']);
+
+                if (!empty($meta['image_fb'])) {
+
+                }
+                $img = json_encode($this->model->formatImageList(['robot' => $meta['image_fb'], 'robot_fb' => $meta['image_fb']]), JSON_FORCE_OBJECT);
+
+                $news_id = $value['news_id'];
+                if (strpos($news_id, 'c') !== FALSE) {
+                    list($news_id) = $this->model->getFormatNewsId($news_id);
+                }
+                $this->model->updateInfo(['images' => $img], $news_id);
+
+                if (is_file(get_upload_path($value['images']['robot']))) {
+                    unlink(get_upload_path($value['images']['robot']));
+                }
+
+                if (is_file(get_upload_path($value['images']['robot_fb']))) {
+                    unlink(get_upload_path($value['images']['robot_fb']));
+                }
+            }
+
+            cc_debug("OK", false);
+            cc_debug($list[0]);
+        } catch (\Exception $ex) {
+            cc_debug($ex->getMessage());
+        }
+    }
 }
