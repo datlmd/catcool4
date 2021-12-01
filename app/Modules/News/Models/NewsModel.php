@@ -340,6 +340,22 @@ class NewsModel extends FarmModel
         //reset table
         $this->setTableNameYear();
 
+        //lay danh sach tin lien quan, hien tai lay tat ca roi check relate
+        $related_list = [];
+        $related_result = cache()->get('news_robot_related_list');
+        if (empty($related_result)) {
+            $related_result = $this->select(['news_id', 'name', 'tags', 'slug', 'ctime'])
+                ->orderBy('publish_date', 'DESC')
+                ->where(['published' => STATUS_ON])
+                ->findAll(1500);
+            if (!empty($related_result)) {
+                foreach ($related_result as $key_news => $value) {
+                    $related_list[] = $this->formatDetail($value);
+                }
+            }
+            cache()->save('news_robot_related_list', $related_result, 30 * MINUTE);
+        }
+
         $date_now = date("Y-m-d H:i:s", strtotime('-40 minutes', time()));
 
         $insert_list = [];
@@ -392,36 +408,57 @@ class NewsModel extends FarmModel
             } else {
                 $tags = "";
             }
+            $tags = html_entity_decode($tags);
+
+            //check related
+            $related_ids = [];
+            if (!empty($related_list)) {
+                $tags_tmp = explode(",", $tags);
+                if (!empty($tags_tmp[0]) && !empty($tags_tmp[1])) {
+                    foreach ($related_list as $related) {
+                        if (count($related_ids) >= 4) {
+                            break;
+                        }
+                        if (strpos($related['tags'], $tags_tmp[0]) !== false || strpos($related['name'], $tags_tmp[0]) !== false
+                            || strpos($related['tags'], $tags_tmp[1]) !== false || strpos($related['name'], $tags_tmp[1]) !== false
+                        ) {
+                            $related_ids[] = $related['news_id'];
+                        }
+                    }
+                }
+            }
+            $related_ids = !empty($related_ids) ? json_encode($related_ids, JSON_FORCE_OBJECT) : '';
+            //end related
 
             $insert_list[] = [
-                'name' => !empty($value['title']) ? html_entity_decode($value['title']) : "",
-                'slug' => !empty($value['title']) ? slugify(html_entity_decode($value['title'])) : "",
-                'description' => !empty($value['note']) ? html_entity_decode($value['note']) : "",
-                'content' => !empty($value['content']) ? html_entity_decode($value['content']) : "",
-                'meta_title' => !empty($value['title']) ? html_entity_decode($value['title']) : "",
-                'meta_description' => !empty($value['meta_description']) ? html_entity_decode($value['meta_description']) : "",
-                'meta_keyword' => !empty($value['meta_keyword']) ? html_entity_decode($value['meta_keyword']) : "",
-                'related_ids' => '',
-                'category_ids' => !empty($value['category_id']) ? json_encode($value['category_id'], JSON_FORCE_OBJECT) : "",
-                'publish_date' => $date_now,
-                'images' => json_encode($this->formatImageList(['robot' => $image, 'robot_fb' => $image_fb]), JSON_FORCE_OBJECT),
-                'tags' => html_entity_decode($tags),
-                'author' => !empty($value['author']) ? html_entity_decode($value['author']) : "",
-                'source_type' => self::SOURCE_TYPE_ROBOT,
-                'source' => !empty($value['href']) ? $value['href'] : "",
-                'post_format' => self::POST_FORMAT_NORMAL,
-                'is_ads' => STATUS_ON,
-                'is_fb_ia' => STATUS_ON,
-                'is_hot' => STATUS_OFF,
-                'is_homepage' => STATUS_OFF,
+                'name'              => !empty($value['title']) ? html_entity_decode($value['title']) : "",
+                'slug'              => !empty($value['title']) ? slugify(html_entity_decode($value['title'])) : "",
+                'description'       => !empty($value['note']) ? html_entity_decode($value['note']) : "",
+                'content'           => !empty($value['content']) ? html_entity_decode($value['content']) : "",
+                'meta_title'        => !empty($value['title']) ? html_entity_decode($value['title']) : "",
+                'meta_description'  => !empty($value['meta_description']) ? html_entity_decode($value['meta_description']) : "",
+                'meta_keyword'      => !empty($value['meta_keyword']) ? html_entity_decode($value['meta_keyword']) : "",
+                'related_ids'       => $related_ids,
+                'category_ids'      => !empty($value['category_id']) ? json_encode($value['category_id'], JSON_FORCE_OBJECT) : "",
+                'publish_date'      => $date_now,
+                'images'            => json_encode($this->formatImageList(['robot' => $image, 'robot_fb' => $image_fb]), JSON_FORCE_OBJECT),
+                'tags'              => $tags,
+                'author'            => !empty($value['author']) ? html_entity_decode($value['author']) : "",
+                'source_type'       => self::SOURCE_TYPE_ROBOT,
+                'source'            => !empty($value['href']) ? $value['href'] : "",
+                'post_format'       => self::POST_FORMAT_NORMAL,
+                'is_ads'            => STATUS_ON,
+                'is_fb_ia'          => STATUS_ON,
+                'is_hot'            => STATUS_OFF,
+                'is_homepage'       => STATUS_OFF,
                 'is_disable_follow' => STATUS_OFF,
-                'is_disable_robot' => STATUS_OFF,
-                'ip' => get_client_ip(), //\CodeIgniter\HTTP\Request::getIPAddress()
-                'user_id' => session('admin.user_id'),
-                'is_comment' => COMMENT_STATUS_ON,
-                'published' => $status,
-                'sort_order' => 0,
-                'language_id' => get_lang_id(true),
+                'is_disable_robot'  => STATUS_OFF,
+                'ip'                => get_client_ip(), //\CodeIgniter\HTTP\Request::getIPAddress()
+                'user_id'           => 0,//session('admin.user_id'),
+                'is_comment'        => COMMENT_STATUS_ON,
+                'published'         => $status,
+                'sort_order'        => 0,
+                'language_id'       => get_lang_id(true),
             ];
         }
 
