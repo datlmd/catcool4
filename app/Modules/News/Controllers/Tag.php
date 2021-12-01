@@ -26,7 +26,7 @@ class Tag extends BaseController
 
     public function index($tag = null)
     {
-       $category_list = $this->category_model->getListPublished();
+        $category_list = $this->category_model->getListPublished();
 
         $tag = str_ireplace('-', ' ', $tag);
 

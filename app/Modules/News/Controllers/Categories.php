@@ -28,6 +28,9 @@ class Categories extends BaseController
     {
         $category_list = $this->model->getListPublished();
         $detail = $category_list[$id] ?? null;
+        if (empty($detail)) {
+            $this->pageNotFound();
+        }
 
         list($list, $pager) = $this->news_model->getListByCategory($id);
 

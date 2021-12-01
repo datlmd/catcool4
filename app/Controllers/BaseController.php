@@ -171,4 +171,9 @@ class BaseController extends Controller
 
         return true;
     }
+
+    public function pageNotFound()
+    {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    }
 }

@@ -29,6 +29,9 @@ class Detail extends BaseController
         $category_list = $category_model->getListPublished();
 
         $detail = $this->model->getNewsInfo($news_id, $ctime);
+        if (empty($detail)) {
+            $this->pageNotFound();
+        }
 
         $news_category_list = [];
         $data_category_list = $this->model->getListHome();
