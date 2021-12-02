@@ -25,41 +25,47 @@ class Detail extends BaseController
 
     public function index($slug, $news_id, $ctime)
     {
-        $category_model = new CategoryModel();
-        $category_list = $category_model->getListPublished();
+        try {
+            $category_model = new CategoryModel();
+            $category_list = $category_model->getListPublished();
 
-        $detail = $this->model->getNewsInfo($news_id, $ctime);
-        if (empty($detail)) {
-            $this->pageNotFound();
-        }
+            $detail = $this->model->getNewsInfo($news_id, $ctime);
+            if (empty($detail)) {
+                page_not_found();
+            }
 
-        $news_category_list = [];
-        $data_category_list = $this->model->getListHome();
-        if (!empty($data_category_list) && !empty($detail['category_ids'])) {
-            foreach ($detail['category_ids'] as $category_id) {
-                if (isset($data_category_list[$category_id])) {
-                    $news_category_list = array_merge($news_category_list, $data_category_list[$category_id]['list']);
+            $news_category_list = [];
+            $data_category_list = $this->model->getListHome();
+            if (!empty($data_category_list) && !empty($detail['category_ids'])) {
+                foreach ($detail['category_ids'] as $category_id) {
+                    if (isset($data_category_list[$category_id])) {
+                        $news_category_list = array_merge($news_category_list, $data_category_list[$category_id]['list']);
+                    }
                 }
             }
+            shuffle($news_category_list);
+
+            //count detail
+            $this->model->updateView($news_id, $ctime);
+
+            $this->_setMeta($detail);
+
+            $data = [
+                'detail'               => $detail,
+                'related_list'         => $this->model->getListByRelatedIds($detail['related_ids'], 3),
+                'news_category_list'   => $news_category_list,
+                'category_list'        => $category_list,
+                'hot_list'             => $this->model->getListHot(4),
+                'new_list'             => $this->model->getListNew(5),
+                'counter_list'         => $this->model->getListCounter(6),
+                'script_google_search' => $this->_scriptGoogleSearch($detail, $category_list),
+            ];
+
+            theme_load('detail', $data);
+        } catch (\Exception $ex) {
+            log_message('error', $ex->getMessage());
+            page_not_found();
         }
-        shuffle($news_category_list);
-
-        //count detail
-        $this->model->updateView($news_id, $ctime);
-
-        $this->_setMeta($detail);
-
-        $data = [
-            'detail'               => $detail,
-            'news_category_list'   => $news_category_list,
-            'category_list'        => $category_list,
-            'hot_list'             => $this->model->getListHot(4),
-            'new_list'             => $this->model->getListNew(5),
-            'counter_list'         => $this->model->getListCounter(6),
-            'script_google_search' => $this->_scriptGoogleSearch($detail, $category_list),
-        ];
-
-        theme_load('detail', $data);
     }
 
     private function _scriptGoogleSearch($detail, $category_list)
@@ -76,11 +82,11 @@ class Detail extends BaseController
                 }
             }
         }
-        $detail_url = !empty($detail['detail_url']) ? $detail['detail_url'] : "";
+
         $script_detail = [
             'name'           => !empty($detail['meta_title']) ? $detail['meta_title'] : $detail['name'],
             'description'    => !empty($detail['meta_description']) ? $detail['meta_description'] : $detail['description'],
-            'url'            => base_url($detail_url),
+            'url'            => base_url($detail['detail_url']),
             'image'          => !empty($detail['images']['root']) ? $detail['images']['root'] : $detail['images']['robot'],
             'published_time' => date('c', strtotime($detail['publish_date'])),
             'modified_time'  => date('c', strtotime($detail['mtime'])),
@@ -93,13 +99,12 @@ class Detail extends BaseController
 
     private function _setMeta($detail)
     {
-        $detail_url = !empty($detail['detail_url']) ? $detail['detail_url'] : "";
         //META
         $data_meta = [
             'title'          => !empty($detail['meta_title']) ? $detail['meta_title'] : $detail['name'],
             'description'    => !empty($detail['meta_description']) ? $detail['meta_description'] : $detail['description'],
             'keywords'       => !empty($detail['meta_keyword']) ? $detail['meta_keyword'] : null,
-            'url'            => base_url($detail_url),
+            'url'            => base_url($detail['detail_url']),
             'image'          => !empty($detail['images']['root']) ? $detail['images']['root'] : $detail['images']['robot'],
             'image_fb'       => !empty($detail['images']['fb']) ? $detail['images']['fb'] : $detail['images']['robot_fb'],
             'published_time' => date('c', strtotime($detail['publish_date'])),

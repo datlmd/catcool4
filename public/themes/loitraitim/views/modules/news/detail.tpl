@@ -30,11 +30,19 @@
                             {/if}
                         </div>
 
-                        <div class="w-100 padding py-1">
-                            <blockquote class="blockquote-tertiary">
-                                <p class="mb-0">{$detail.description}</p>
-                            </blockquote>
+                        <div class="w-100 padding py-1 mb-2 text-dark">
+                            <strong>{$detail.description}</strong>
                         </div>
+
+                        {if !empty($related_list)}
+                            <div class="padding py-0">
+                                <ul class="list list-icons list-icons-sm w-100 testimonial testimonial-style-4">
+                                    {foreach $related_list as $related}
+                                        <li class="mb-0"><i class="fas fa-caret-right"></i><a href="{site_url($related.detail_url)}" class="text-decoration-none text-primary text-2">{$related.name}</a></li>
+                                    {/foreach}
+                                </ul>
+                            </div>
+                        {/if}
 
                         <div class="detail-content">
                             {$detail.content}

@@ -6013,7 +6013,7 @@ label.error#captcha-error {
 h1, h2, h3, h4, h5, h6 {
 	color: #212529;
 	font-weight: 200;
-	letter-spacing: -.05em;
+	
 	margin: 0;
 	-webkit-font-smoothing: antialiased;
 }
@@ -12690,7 +12690,7 @@ html.boxed .slider-container {
 	color: #FFF;
 	font-weight: 600;
 	left: 0;
-	letter-spacing: -.05em;
+	
 	position: absolute;
 	z-index: 2;
 	max-width: 90%;
@@ -13177,7 +13177,7 @@ html.boxed .slider-container {
 	background: rgba(33, 37, 41, 0.8);
 	color: #FFF;
 	font-weight: 600;
-	letter-spacing: -.05em;
+	
 	font-size: 17px;
 	padding: 13px 21px;
 }
@@ -13727,7 +13727,7 @@ p .alternative-font {
 
 /* Lead */
 .lead {
-	letter-spacing: -.05em;
+	
 	font-size: 19.2px;
 	font-size: 1.2rem;
 }
