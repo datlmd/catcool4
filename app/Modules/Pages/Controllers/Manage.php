@@ -182,7 +182,7 @@ class Manage extends AdminController
             }
         }
 
-        $this->_getForm($id);
+        return $this->_getForm($id);
     }
 
     public function delete($id = null)

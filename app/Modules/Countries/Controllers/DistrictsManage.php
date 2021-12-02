@@ -144,7 +144,7 @@ class DistrictsManage extends AdminController
             return redirect()->back();
         }
 
-        $this->_getForm($id);
+        return $this->_getForm($id);
     }
 
     public function delete($id = null)

@@ -151,7 +151,7 @@ class Manage extends AdminController
             return redirect()->back();
         }
 
-        $this->_getForm($id);
+        return $this->_getForm($id);
     }
 
     private function _getForm($id = null)
