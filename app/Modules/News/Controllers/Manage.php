@@ -533,7 +533,7 @@ class Manage extends AdminController
 
             $list = [];
             foreach ($result as $key_news => $value) {
-                $list[] = $this->model->formatDetail($value);
+                $list[] = $this->model->formatJsonDecode($value);
             }
 
             if (empty($list)) {
@@ -546,9 +546,7 @@ class Manage extends AdminController
 
 
                 if (empty($meta['image_fb'])) {
-                    if (empty($value['images']['robot']) && empty($value['images']['robot_fb'])) {
-                        $this->model->deleteInfo($value['news_id']);
-                    }
+                    $this->model->delete($value['news_id']);
                     $news_delete[] = $value['news_id'];
                     continue;
                 }
@@ -556,7 +554,7 @@ class Manage extends AdminController
                 $value['images']['robot_fb'] = $meta['image_fb'];
                 $img = json_encode($this->model->formatImageList($value['images']), JSON_FORCE_OBJECT);
 
-                $this->model->updateInfo(['images' => $img], $value['news_id']);
+                $this->model->update($value['news_id'], ['images' => $img]);
 
                 if (is_file(get_upload_path($value['images']['robot']))) {
                     unlink(get_upload_path($value['images']['robot']));
