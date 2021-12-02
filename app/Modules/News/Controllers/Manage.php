@@ -540,17 +540,21 @@ class Manage extends AdminController
                 cc_debug("Total: 0");
             }
 
-            foreach ($list as $value) {
+            $news_delete = [];
+            foreach ($list as $key => $value) {
                 $meta = service('robot')->getMeta(Config('Robot')->pageKenh14['attribute_meta'], $value['source']);
-                cc_debug($meta, false);
+
 
                 if (empty($meta['image_fb'])) {
                     if (empty($value['images']['robot']) && empty($value['images']['robot_fb'])) {
-                        $this->model->updateInfo(['published' => STATUS_OFF], $value['news_id']);
+                        $this->model->deleteInfo($value['news_id']);
                     }
+                    $news_delete[] = $value['news_id'];
                     continue;
                 }
-                $img = json_encode($this->model->formatImageList(['robot' => $meta['image_fb'], 'robot_fb' => $meta['image_fb']]), JSON_FORCE_OBJECT);
+                $value['images']['robot'] = $meta['image_fb'];
+                $value['images']['robot_fb'] = $meta['image_fb'];
+                $img = json_encode($this->model->formatImageList($value['images']), JSON_FORCE_OBJECT);
 
                 $this->model->updateInfo(['images' => $img], $value['news_id']);
 
@@ -561,9 +565,14 @@ class Manage extends AdminController
                 if (is_file(get_upload_path($value['images']['robot_fb']))) {
                     unlink(get_upload_path($value['images']['robot_fb']));
                 }
+
+                if ($key % 50 == 0) {
+                    usleep(500);
+                }
             }
 
             cc_debug("OK", false);
+            cc_debug($news_delete, false);
             cc_debug($list[0]);
         } catch (\Exception $ex) {
             cc_debug($ex->getMessage());
