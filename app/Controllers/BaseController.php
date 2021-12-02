@@ -119,6 +119,9 @@ class BaseController extends Controller
 
         $this->validator = \Config\Services::validation();
         $this->smarty->assign('validator', $this->validator);
+
+        //check clear cache
+        $this->clearCacheAuto();
     }
 
     /**
@@ -129,51 +132,96 @@ class BaseController extends Controller
      */
     public function trackingLogAccess($is_admin = false)
     {
-        if (empty(config_item('is_tracking_log_access'))) {
+        try {
+            if (empty(config_item('is_tracking_log_access'))) {
+                return false;
+            }
+
+            $user_id = $is_admin ? $this->getUserIdAdmin() : $this->getUserId();
+            if (empty($user_id)) {
+                return false;
+            }
+
+            helper('filesystem');
+
+            $router = service('router');
+
+            $file_name = 'log-access-' . date('Y-m-d') . '.log';
+            if ($is_admin) {
+                $file_name = "admin-$file_name";
+            }
+
+            $controller = $router->controllerName();
+            $controller = str_ireplace("\\App\\Modules\\", "", $controller);
+
+            $data_log = [
+                'user_id' => $user_id,
+                'username' => session('admin.username'),
+                'module' => $controller,
+                'action' => $router->methodName(),
+                'post_params' => $_POST,
+                'get_params' => $_GET,
+                'ip' => get_client_ip()
+            ];
+
+            $directory = WRITEPATH . "logs/access/";
+            if (!is_dir($directory)) {
+                mkdir($directory, 0777, TRUE);
+            }
+
+            $message = json_encode($data_log);
+            $message = date('Y-m-d H:i:s') . ":\t$message" . ">>>>>" . "\n";
+            write_file($directory . $file_name, $message, 'a');
+
+            //TODO save data to DB
+
+            return true;
+        } catch (\Exception $ex) {
+            log_message('error', $ex->getMessage());
             return false;
         }
-
-        $user_id = $is_admin ? $this->getUserIdAdmin() : $this->getUserId();
-        if (empty($user_id)) {
-            return false;
-        }
-
-        helper('filesystem');
-
-        $router = service('router');
-
-        $file_name = 'log-access-' . date('Y-m-d') . '.log';
-        if ($is_admin) {
-            $file_name = "admin-$file_name";
-        }
-
-        $controller = $router->controllerName();
-        $controller = str_ireplace("\\App\\Modules\\", "", $controller);
-
-        $data_log = [
-            'user_id' => $user_id,
-            'username' => session('admin.username'),
-            'module' => $controller,
-            'action' => $router->methodName(),
-            'post_params' => $_POST,
-            'get_params' => $_GET,
-            'ip' => get_client_ip()
-        ];
-
-        $directory = WRITEPATH . "logs/access/";
-        if (!is_dir($directory)) {
-            mkdir($directory, 0777, TRUE);
-        }
-
-        $message = json_encode($data_log);
-        $message = date('Y-m-d H:i:s') . ":\t$message" . ">>>>>" . "\n";
-        write_file($directory . $file_name, $message, 'a');
-
-        return true;
     }
 
     public function pageNotFound()
     {
         throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    }
+
+    /**
+     * Xoa data cache cua cac file detail sau 1 thoi gian luu cache, giam dung luong thu muc cache/html
+     *
+     * @return bool
+     */
+    public function clearCacheAuto()
+    {
+        try {
+            $day = date("d", time());
+            if ($day != 2) {
+                return false;
+            }
+
+            $result = cache()->get('clear_cache_file_html_auto');
+            if (!empty($result)) {
+                return false;
+            }
+
+            foreach (cache()->getCacheInfo() as $value) {
+                switch (true) {
+                    case strpos($value['name'], "detail") !== false:
+                        cache()->delete($value['name']);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            cache()->save('clear_cache_file_html_auto', true, 2 * DAY);
+
+            log_message('info', "Da xoa cache auto ngay $day");
+            return true;
+        } catch (\Exception $ex) {
+            log_message('error', $ex->getMessage());
+            return false;
+        }
     }
 }
