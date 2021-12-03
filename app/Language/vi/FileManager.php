@@ -21,6 +21,8 @@ return [
 	"text_clear_cache_success" => "Đã xóa cache thành công!",
 	"text_delete" => "Đã xóa thành công!",
 	"text_directory" => "Thư mục đã được tạo!",
+	"text_mtime" => "Last Modified",
 	"text_rotation" => "Đã xoay thành công!",
+	"text_size" => "Size",
 	"text_uploaded" => "Tập tin của bạn đã được tải lên!",
 ];

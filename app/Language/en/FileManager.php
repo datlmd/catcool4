@@ -21,6 +21,8 @@ return [
 	"text_clear_cache_success" => "Clear cache successfully!",
 	"text_delete" => "Deleted successfully!",
 	"text_directory" => "Directory created!",
+	"text_mtime" => "Last Modified",
 	"text_rotation" => "Image rotated!",
+	"text_size" => "Size",
 	"text_uploaded" => "Your file has been uploaded!",
 ];

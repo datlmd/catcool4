@@ -5,15 +5,15 @@
                 <a href="{$parent}" title="{$button_parent}" id="button_parent" class="btn btn-sm btn-light btn-space"><i class="fas fa-level-up-alt"></i></a>
                 <a href="{$display_url}&d={DISPLAY_GRID}" title="{lang("Admin.text_list")}" id="button_display_grid" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-th"></i></a>
                 <a href="{$display_url}&d={DISPLAY_LIST}" title="{lang("Admin.text_grid")}" id="button_display_list" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-list"></i></a>
-                <a href="{$refresh}" title="{$button_refresh}" id="button_refresh" class="btn btn-sm btn-secondary btn-space"><i class="fas fa-sync me-1"></i>{$button_refresh}</a>
+                <a href="{$refresh}" title="{$button_refresh}" id="button_refresh" class="btn btn-sm btn-secondary btn-space"><i class="fas fa-sync"></i></a>
                 <button type="button" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary btn-space"><i class="fas fa-upload me-1"></i>{$button_upload}</button>
                 <button type="button" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success btn-space"><i class="fas fa-folder me-1"></i>{$button_folder}</button>
-                <button type="button" title="{$button_delete}" id="button_delete" class="btn btn-sm btn-danger btn-space"><i class="fas fa-trash me-1"></i>{$button_delete}</button>
+                <button type="button" title="{$button_delete}" id="button_delete" class="btn btn-sm btn-danger btn-space"><i class="fas fa-trash"></i></button>
             </div>
             <div class="col-sm-4 col-12 mb-1">
                 <div class="input-group">
                     <input type="text" name="search" value="{$filter_name}" placeholder="{$entry_search}" class="form-control btn-space me-0">
-                    <button type="button" title="{$button_search}" id="button_search" class="btn btn-sm btn-primary btn-space">{$button_search}</button>
+                    <button type="button" title="{$button_search}" id="button_search" class="btn btn-sm btn-primary btn-space"><i class="fas fa-search"></i></button>
                     <a href="{base_url('image/editor')}" title="Photo Editor" target="_blank" class="btn btn-sm btn-warning btn-space me-0"><i class="fas fa-pencil-alt me-1"></i>Photo Editor</a>
                 </div>
             </div>
@@ -26,13 +26,11 @@
                     <table class="table table-striped table-hover table-bordered second">
                         <thead>
                         <tr class="text-center">
-                            <th width="40"></th>
-                            <th width="100"></th>
-                            <th>{lang('Admin.text_name')}</th>
+                            <th colspan="3">{lang('Admin.text_name')}</th>
                             <th width="110">
                                 {lang('FileManager.text_size')}
                             </th>
-                            <th width="170">{lang('FileManager.text_date')}</th>
+                            <th width="170">{lang('FileManager.text_mtime')}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -49,7 +47,7 @@
                                             <a href="{$file.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
                                                 <img src="{image_thumb_url($file.path, 180, 180)}" style="background-image: url('{image_thumb_url($file.path, 180, 180)}');" alt="{$file.name}" style="width: 85px;" title="{$file.name}" class="img-thumbnail img-fluid img-photo-list" />
                                             </a>
-                                            <button type="button" class="btn btn-xs btn-outline-light image-setting shadow-sm" style="right: 0; top: 0;" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
+                                            <button type="button" class="btn btn-xs btn-light image-setting shadow-sm" data-path="{$file.path}" style="right: 0; top: 0;" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
                                         </div>
                                     {elseif $file.type == 'video'}
                                         <div class="position-relative">
@@ -100,7 +98,7 @@
                 </div>
             {else}
                 {foreach $file_list as $key => $file}
-                    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-4 mb-2 text-center position-relative">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-6 mb-2 text-center position-relative">
                         {if $file.type == 'directory'}
                             <div class="text-center"><a href="{$file.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a></div>
                             <p class="mt-1">
@@ -115,7 +113,7 @@
                                 <input type="checkbox" name="path[]" value="{$file.path}" id="cb_{$key}" class="me-1" />
                                 <label class="file-label-cb" for="cb_{$key}">{$file.name}</label>
                             </p>
-                            <button type="button" class="btn btn-xs btn-outline-light image-setting shadow-sm" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
+                            <button type="button" class="btn btn-xs btn-light image-setting shadow-sm" data-path="{$file.path}" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
                         {elseif $file.type == 'video'}
                             <a href="{$file.href}" target="_blank" class="thumbnail" data-file-target="#cb_{$key}" style="vertical-align: middle;">
     {*                            <i class="{$file.class}"></i>*}
@@ -562,6 +560,8 @@
             return;
         }
 
+        var path_url = $(this).data('path');
+
         image_setting.popover({
             animation: false,
             html: true,
@@ -573,7 +573,7 @@
                 var html = '<a href="' + image_setting.parent().find("a.thumbnail").attr('href') + '" data-lightbox="photos" id="button_image_zoom" class="btn btn-xs btn-info"><i class="fas fa-search-plus"></i></a>';
                 html += ' <button type="button" id="btn_rotation_left" class="btn btn-xs btn-secondary"><i class="fas fa-undo"></i></button>';
                 html += ' <button type="button" id="btn_rotation_hor" class="btn btn-xs btn-primary"><i class="fas fa-arrows-alt-h"></i></button> <button type="button" id="btn_rotation_vrt" class="btn btn-xs btn-primary"><i class="fas fa-arrows-alt-v"></i></button>';
-                html += ' <button type="button" id="btn_image_crop" onclick="Catcool.cropImage(\'' + image_setting.parent().find("input").val() + '\', 0)" class="btn btn-xs btn-warning"><i class="fas fa-crop"></i></button>';
+                html += ' <button type="button" id="btn_image_crop" onclick="Catcool.cropImage(\'' + path_url + '\', 0)" class="btn btn-xs btn-warning"><i class="fas fa-crop"></i></button>';
                 return html;
             }
         });
@@ -595,7 +595,7 @@
                 url: base_url + '/common/filemanager/rotation/90',
                 type: 'POST',
                 data: {
-                    'path': image_setting.parent().find("input").val()
+                    'path': path_url
                 },
                 dataType: 'json',
                 beforeSend: function() {
@@ -639,7 +639,7 @@
                 url: base_url + '/common/filemanager/rotation/hor',
                 type: 'POST',
                 data: {
-                    'path': image_setting.parent().find("input").val()
+                    'path': path_url
                 },
                 dataType: 'json',
                 beforeSend: function() {
@@ -683,7 +683,7 @@
                 url: base_url + '/common/filemanager/rotation/vrt',
                 type: 'POST',
                 data: {
-                    'path': image_setting.parent().find("input").val()
+                    'path': path_url
                 },
                 dataType: 'json',
                 beforeSend: function() {
