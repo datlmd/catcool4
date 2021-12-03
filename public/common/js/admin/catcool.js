@@ -607,19 +607,21 @@ $(function () {
         });
     }
 
+    //khong cho leave page khi dang edit
     if ($(".form-confirm-leave").length) {
         $('.form-confirm-leave form').data('serialize',$('.form-confirm-leave form').serialize()); // On load save form current state
         $(window).bind('beforeunload', function(e) {
-            if($('.form-confirm-leave form').serialize()!=$('.form-confirm-leave form').data('serialize')) {
+            if($('.form-confirm-leave form').serialize()!= $('.form-confirm-leave form').data('serialize')) {
                 return true;
             }
             else {
                 e = null;
             } // i.e; if form state change show warning box, else don't show it.
+
         });
-        //$(window).bind('beforeunload', function(){
-        //    return 'Please save your setting before leaving the page!';
-        //});
+        $(document).on('click', '.form-confirm-leave .btn', function() {
+            $(window).unbind('beforeunload');
+        });
     }
 
     /* set gia tri mac dinh */
