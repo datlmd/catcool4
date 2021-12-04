@@ -2,6 +2,9 @@
 {form_hidden('manage_url', site_url($manage_url))}
 {csrf_field()}
 <div class="container-fluid  dashboard-content">
+
+	{include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active=modules}
+
 	<div class="row">
 		<div class="col-sm-7 col-12">
             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('ModuleAdmin.heading_title')}
@@ -14,9 +17,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-12">
-			{include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active=modules}
-		</div>
+
 		<div class="col-12">
 			<div class="collapse {if !empty($filter.active)}show{/if}" id="filter_manage">
 				<div class="card">

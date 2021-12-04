@@ -1,6 +1,9 @@
 {strip}
 {form_hidden('manage_url', site_url($manage_url))}
 <div class="container-fluid  dashboard-content">
+
+    {include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active=modules}
+
     {form_open(uri_string(), ['id' => 'validationform'])}
         <div class="row">
             <div class="col-sm-7 col-12">
@@ -15,9 +18,7 @@
             {form_hidden('id', $edit_data.id)}
         {/if}
         <div class="row">
-            <div class="col-12">
-                {include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active=modules}
-            </div>
+
             <div class="col-12">
                 {if !empty(print_flash_alert())}
                     <div class="col-12 px-0">{print_flash_alert()}</div>

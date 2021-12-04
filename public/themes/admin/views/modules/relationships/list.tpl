@@ -2,6 +2,9 @@
 {form_hidden('manage_url', site_url($manage_url))}
 {csrf_field()}
 <div class="container-fluid  dashboard-content">
+
+	{include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active=relationships}
+
 	<div class="row">
 		<div class="col-sm-7 col-12">
             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('RelationshipAdmin.heading_title')}
@@ -14,10 +17,8 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12">
-			{include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active=relationships}
-		</div>
-		<div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12">
+
+		<div class="col-12">
 			<div class="collapse {if !empty($filter.active)}show{/if}" id="filter_manage">
 				<div class="card">
 					{form_open(uri_string(), ['id' => 'filter_validationform', 'method' => 'get'])}

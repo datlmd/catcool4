@@ -1,6 +1,7 @@
 {strip}
 	{form_hidden('manage_url', $manage_url)}
 	<div class="container-fluid  dashboard-content">
+		{include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active="logs"}
 		<div class="row">
 			<div class="col-sm-7 col-12">
 				{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('UtilityAdmin.heading_title')}
@@ -14,11 +15,7 @@
 
 		<div class="row">
 
-			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12">
-				{include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active="logs"}
-			</div>
-
-			<div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12">
+			<div class="col-12">
 				<div class="card">
 					<h5 class="card-header"><i class="fas fa-history me-2"></i>Logs {if !empty($detail)}<strong>: {$detail.name} ({$detail.size})</strong>{/if}</h5>
 					<div class="card-body">
