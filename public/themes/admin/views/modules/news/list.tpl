@@ -21,19 +21,10 @@
 			</div>
 		</div>
 		<div class="row collapse show" id="filter_manage">
-			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+			<div class="col-12">
 				<div class="card">
+					<h5 class="card-header"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
 					{form_open(uri_string(), ['id' => 'filter_validationform', 'method' => 'get'])}
-						<div class="card-header">
-							<div class="row">
-								<div class="col-6">
-									<h5 class="mb-0 mt-1 ms-2"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
-								</div>
-								<div class="col-6 text-end">
-									<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('Admin.filter_submit')}</button>
-								</div>
-							</div>
-						</div>
 						<div class="card-body">
 							<div class="row">
 								<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
@@ -56,6 +47,9 @@
 								<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.text_limit')}
 									{form_dropdown('limit', get_list_limit(), set_value('limit', $filter.limit), ['class' => 'form-control form-control-sm'])}
+								</div>
+								<div class="col-12 text-end">
+									<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('Admin.filter_submit')}</button>
 								</div>
 							</div>
 						</div>

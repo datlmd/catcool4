@@ -17,33 +17,27 @@
 	<div class="row collapse {if !empty($filter.active)}show{/if}" id="filter_manage">
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="card">
+				<h5 class="card-header"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
 				{form_open(uri_string(), ['id' => 'filter_validationform', 'method' => 'get'])}
-				<div class="card-header">
-					<div class="row">
-						<div class="col-6">
-							<h5 class="mb-0 mt-1 ms-2"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
-						</div>
-						<div class="col-6 text-end">
-							<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('Admin.filter_submit')}</button>
-						</div>
-					</div>
-				</div>
-				<div class="card-body">
-					<div class="row">
-						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
-							<label class="form-label">{lang('UserAdmin.filter_search_user')}</label>
-							{form_input('name', set_value('name', $filter.name), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_name')])}
-						</div>
-						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
-							<label class="form-label">{lang('Admin.filter_id')}</label>
-							{form_input('id', set_value('id', $filter.id), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
-						</div>
-						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
-							<label class="form-label">{lang('Admin.text_limit')}</label>
-							{form_dropdown('limit', get_list_limit(), set_value('limit', $filter.limit), ['class' => 'form-control form-control-sm'])}
-						</div>
-					</div>
-				</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
+                                <label class="form-label">{lang('UserAdmin.filter_search_user')}</label>
+                                {form_input('name', set_value('name', $filter.name), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_name')])}
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
+                                <label class="form-label">{lang('Admin.filter_id')}</label>
+                                {form_input('id', set_value('id', $filter.id), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
+                                <label class="form-label">{lang('Admin.text_limit')}</label>
+                                {form_dropdown('limit', get_list_limit(), set_value('limit', $filter.limit), ['class' => 'form-control form-control-sm'])}
+                            </div>
+                            <div class="col-12 text-end">
+                                <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('Admin.filter_submit')}</button>
+                            </div>
+                        </div>
+                    </div>
 				{form_close()}
 			</div>
 		</div>
