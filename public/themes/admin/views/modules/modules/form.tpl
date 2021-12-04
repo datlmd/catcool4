@@ -15,10 +15,10 @@
             {form_hidden('id', $edit_data.id)}
         {/if}
         <div class="row">
-            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12">
+            <div class="col-12">
                 {include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active=modules}
             </div>
-            <div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12">
+            <div class="col-12">
                 {if !empty(print_flash_alert())}
                     <div class="col-12 px-0">{print_flash_alert()}</div>
                 {/if}

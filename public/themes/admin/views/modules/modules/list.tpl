@@ -14,10 +14,10 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12">
+		<div class="col-12">
 			{include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active=modules}
 		</div>
-		<div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12">
+		<div class="col-12">
 			<div class="collapse {if !empty($filter.active)}show{/if}" id="filter_manage">
 				<div class="card">
 					{form_open(uri_string(), ['id' => 'filter_validationform', 'method' => 'get'])}
@@ -68,22 +68,22 @@
 										</th>
 										<th>
 											<a href="{site_url($manage_url)}?sort=module&order={$order}{$url}" class="text-dark">
-												{lang('ModuleAdmin.text_module')}
+												{lang('Admin.text_name')}
 												{if $sort eq 'module'}
 													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 												{/if}
 											</a>
 										</th>
 										<th>
-											<a href="{site_url($manage_url)}?sort=sub_module&order={$order}{$url}" class="text-dark">
-												{lang('ModuleAdmin.text_sub_module')}
-												{if $sort eq 'sub_module'}
+											<a href="{site_url($manage_url)}?sort=module&order={$order}{$url}" class="text-dark">
+												{lang('ModuleAdmin.text_module')}
+												{if $sort eq 'module'}
 													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 												{/if}
 											</a>
 										</th>
-										<th>{lang('Admin.column_published')}</th>
 										<th>Language</th>
+										<th>{lang('Admin.column_published')}</th>
 										<th width="160">{lang('Admin.column_function')}</th>
 										<th width="50">{form_checkbox('manage_check_all')}</th>
 									</tr>
@@ -93,19 +93,20 @@
 									<tr>
 										<td class="text-center">{$item.id}</td>
 										<td>
-											{anchor("$manage_url/edit/`$item.id`", $item.module, 'class="text-primary"')}
 											{if !empty($item.sub_module)}
-												<br /> ---- {$item.sub_module}
+												{anchor("$manage_url/edit/`$item.id`", $item.sub_module, 'class="text-primary"')}
+											{else}
+												{anchor("$manage_url/edit/`$item.id`", $item.module, 'class="text-primary"')}
 											{/if}
 										</td>
-										<td>{$item.sub_module}</td>
+										<td><strong>{$item.module}</strong>/{$item.sub_module}</td>
+										<td class="text-center">{anchor("translations/manage?module_id=`$item.id`", 'Translation')}</td>
 										<td>
 											<div class="switch-button switch-button-xs catcool-center">
 												{form_checkbox("published_`$item.id`", ($item.published eq STATUS_ON) ? true : false, ($item.published eq STATUS_ON) ? true : false, ['id' => 'published_'|cat:$item.id, 'data-id' => $item.id, 'data-published' => $item.published, 'class' => 'change_publish'])}
 												<span><label for="published_{$item.id}"></label></span>
 											</div>
 										</td>
-										<td class="text-center">{anchor("translations/manage?module_id=`$item.id`", 'Translation')}</td>
 										<td class="text-center">
 											<div class="btn-group ms-auto">
 												<a href="{site_url($manage_url)}/edit/{$item.id}" class="btn btn-sm btn-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_edit')}"{/if}><i class="fas fa-edit"></i></a>

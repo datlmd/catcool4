@@ -1,5 +1,8 @@
 {strip}
-	<div class="sidebar-nav-fixed">
+	<div class="mb-2">
+		<button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#menu_utilities" aria-expanded="false" aria-controls="menu_utilities">Menu Utilities</button>
+	</div>
+	<div class="sidebar-nav-fixed collapse" id="menu_utilities">
 		<ul class="list-unstyled">
 			<li><a href="{site_url('configs/manage')}" {if !empty($active) && $active eq 'configs'}class="active"{/if}>Confgs</a></li>
 			<li><a href="{site_url('modules/manage')}" {if !empty($active) && $active eq 'modules'}class="active"{/if}>Modules</a></li>
