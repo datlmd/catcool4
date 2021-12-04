@@ -63,7 +63,7 @@ class Detail extends BaseController
 
             theme_load('detail', $data);
         } catch (\Exception $ex) {
-            log_message('error', $ex->getMessage());
+            log_message('error', $ex->getMessage() . "[ID: $news_id, $ctime, $slug]");
             page_not_found();
         }
     }
