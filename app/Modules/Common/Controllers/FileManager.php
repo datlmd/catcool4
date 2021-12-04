@@ -18,6 +18,8 @@ class FileManager extends AdminController
     CONST PATH_SUB_NAME   = 'root';
     CONST FILE_PAGE_LIMIT = 30;
 
+    CONST MANAGE_URL = 'common/filemanager';
+
     public function __construct()
     {
         parent::__construct();
@@ -49,6 +51,16 @@ class FileManager extends AdminController
 
     public function index()
     {
+        if (!$this->request->isAJAX()) {
+            $this->smarty->assign('manage_url', self::MANAGE_URL);
+
+            return $this->themes->setTheme(config_item('theme_admin'))
+                ->addPartial('header')
+                ->addPartial('footer')
+                ->addPartial('sidebar')
+                ::load('index');
+        }
+
         $server = site_url();
 
         $filter_name = $this->request->getGet('filter_name');
@@ -448,17 +460,8 @@ class FileManager extends AdminController
 
         $data['pagination'] = $this->pagination($config);
 
-        if ($this->request->isAJAX()) {
-            $data['is_ajax'] = true;
-            echo $this->themes::view('filemanager', $data);
-        } else {
-            $data['is_ajax'] = false;
-            $this->themes->setTheme(config_item('theme_admin'))
-                ->addPartial('header')
-                ->addPartial('footer')
-                ->addPartial('sidebar')
-                ::load('filemanager', $data);
-        }
+        $data['is_ajax'] = true;
+        echo $this->themes::view('filemanager', $data);
     }
 
     public function upload()

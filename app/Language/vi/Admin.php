@@ -35,7 +35,7 @@ return [
 	"button_export" => "Xuất",
 	"button_filter" => "Lọc dữ liệu",
 	"button_filter_add" => "Thêm bộ lọc tìm kiếm",
-	"button_folder" => "Thư mục mới",
+	"button_folder" => "Tạo thư mục",
 	"button_generate" => "Tạo ra",
 	"button_geo_zone_add" => "Thêm Khu vực",
 	"button_history_add" => "Thêm lịch sử đơn đặt hàng",

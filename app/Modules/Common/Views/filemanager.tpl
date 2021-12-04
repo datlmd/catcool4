@@ -131,7 +131,7 @@
 
                         {elseif $file.type == 'video'}
                             <div class="w-100 position-relative">
-                                <a href="{$file.href}" target="_blank" class="thumbnail" title="{$file.name}" data-file-target="#cb_{$key}" style="vertical-align: middle;"
+                                <a href="{$file.href}" target="_blank" class="thumbnail" title="{$file.name}" data-file-target="#cb_{$key}" style="vertical-align: middle;">
                                     <video style="width: 100%; max-width: 200px; height: auto;" muted="muted" loop="loop">
                                         <source src="{$file.href}" type="{$file.ext}">
                                         <p>Your browser doesn't support HTML5 video. Here is

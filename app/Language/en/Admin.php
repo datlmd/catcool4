@@ -194,7 +194,7 @@ return [
 	"text_confirm_title" => "Please confirm!",
 	"text_confirm_write" => "Are you sure to save the file?",
 	"text_context" => "Context",
-	"text_ctime" => "Created time",
+	"text_ctime" => "Created at",
 	"text_default" => "<b>(Default)</b>",
 	"text_delete_file_success" => "File deleted successfully!",
 	"text_delete_success" => "Deleted successfully!",
