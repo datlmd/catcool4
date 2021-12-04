@@ -5,47 +5,46 @@ use App\Libraries\Themes;
 
 class FileManager extends AdminController
 {
-    protected $image_tool;
-    protected $dir_image      = '';
-    protected $dir_image_path = '';
-    protected $file_url       = ''; // file/
-    protected $img_url        = ''; // img/
+    protected $_image_tool;
+    protected $_dir_image      = '';
+    protected $_dir_image_path = '';
+    protected $_file_url       = ''; // file/
+    protected $_img_url        = ''; // img/
+
+    protected $_upload_type = '';
+    protected $_image_thumb_width  = '';
+    protected $_image_thumb_height = '';
 
     CONST PATH_SUB_NAME   = 'root';
     CONST FILE_PAGE_LIMIT = 30;
-
-    protected $upload_type = '';
-
-    protected $image_thumb_width  = '';
-    protected $image_thumb_height = '';
 
     public function __construct()
     {
         parent::__construct();
 
         helper('filesystem');
-        $this->image_tool = new \App\Libraries\ImageTool();
+        $this->_image_tool = new \App\Libraries\ImageTool();
 
         $this->request   = \Config\Services::request();
         $this->themes    = Themes::init();
         $this->validator = \Config\Services::validation();
 
-        $this->dir_image      = get_upload_url();
-        $this->dir_image_path = get_upload_path();
+        $this->_dir_image      = get_upload_url();
+        $this->_dir_image_path = get_upload_path();
 
-        $this->upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
+        $this->_upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
         if (!empty($this->request->getGet('type')) && in_array($this->request->getGet('type'), ["image", "media"])) {
             if ($this->request->getGet('type') == "image") {
-                $this->upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
+                $this->_upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
             } else {
-                $this->upload_type = 'webm,WEBM,mpg,MPG,mp2,MP2,mpeg,MPEG,mpe,MPE,mpv,MPV,ogg,OGG,mp4,MP4,m4p,M4P,m4v,M4V,avi,AVI,wmv,WMV,mov,MOV,qt,QT,flv,FLV,swf,SWF,avchd,AVCHD';
+                $this->_upload_type = 'webm,WEBM,mpg,MPG,mp2,MP2,mpeg,MPEG,mpe,MPE,mpv,MPV,ogg,OGG,mp4,MP4,m4p,M4P,m4v,M4V,avi,AVI,wmv,WMV,mov,MOV,qt,QT,flv,FLV,swf,SWF,avchd,AVCHD';
             }
         } elseif (!empty(config_item('file_ext_allowed'))) {
-            $this->upload_type = str_replace('|', ',', config_item('file_ext_allowed'));
+            $this->_upload_type = str_replace('|', ',', config_item('file_ext_allowed'));
         }
 
-        $this->image_thumb_width = !empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH;
-        $this->image_thumb_height = !empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT;
+        $this->_image_thumb_width = !empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH;
+        $this->_image_thumb_height = !empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT;
     }
 
     public function index()
@@ -62,9 +61,9 @@ class FileManager extends AdminController
         // Make sure we have the correct directory
         $directory = $this->request->getGet('directory');
         if (isset($directory)) {
-            $directory = rtrim($this->dir_image_path . self::PATH_SUB_NAME . '/' . str_replace('*', '', $directory), '/');
+            $directory = rtrim($this->_dir_image_path . self::PATH_SUB_NAME . '/' . str_replace('*', '', $directory), '/');
         } else {
-            $directory = $this->dir_image_path . self::PATH_SUB_NAME;
+            $directory = $this->_dir_image_path . self::PATH_SUB_NAME;
         }
 
         $page = $this->request->getGet('page');
@@ -79,7 +78,7 @@ class FileManager extends AdminController
 
         $data['file_list'] = [];
 
-        if (substr(str_replace('\\', '/', realpath($directory . '/')), 0, strlen($this->dir_image_path . self::PATH_SUB_NAME)) == $this->dir_image_path . self::PATH_SUB_NAME) {
+        if (substr(str_replace('\\', '/', realpath($directory . '/')), 0, strlen($this->_dir_image_path . self::PATH_SUB_NAME)) == $this->_dir_image_path . self::PATH_SUB_NAME) {
             // Get directories
             $directories = glob($directory . '/*' . $filter_name . '*', GLOB_ONLYDIR);
 
@@ -87,7 +86,7 @@ class FileManager extends AdminController
                 $directories = [];
             }
 
-            $files = glob($directory . '/*' . $filter_name . '*.{' . $this->upload_type . '}', GLOB_BRACE);
+            $files = glob($directory . '/*' . $filter_name . '*.{' . $this->_upload_type . '}', GLOB_BRACE);
 
             if (!$files) {
                 $files = [];
@@ -107,7 +106,11 @@ class FileManager extends AdminController
                 'file' => $file
             ];
         }
-        usort($file_tmp, $this->_sortByDate('date'));
+        //usort($file_tmp, $this->_sortByDate('date'));
+
+        $sort_key = array_keys($file_tmp);
+        $sort_date = array_column($file_tmp, "date");
+        array_multisort($sort_date, SORT_DESC, $sort_key, SORT_DESC, $file_tmp);
 
         foreach ($file_tmp as $key => $file) {
             $file_tmp[$key] = $file['file'];
@@ -123,7 +126,6 @@ class FileManager extends AdminController
 
         foreach ($file_list as $image) {
             $name = str_split(basename($image), 14);
-
             if (is_dir($image)) {
                 $url = '';
 
@@ -151,10 +153,10 @@ class FileManager extends AdminController
 
                 $data['file_list'][] = [
                     'thumb' => '',
-                    'name'  => implode(' ', $name),
+                    'name'  => implode('', $name),
                     'type'  => 'directory',
-                    'path'  => substr($image, strlen($this->dir_image_path)),
-                    'href'  => site_url('common/filemanager').'?directory=' .substr($image, strlen($this->dir_image_path . self::PATH_SUB_NAME . '/')) . $url,
+                    'path'  => substr($image, strlen($this->_dir_image_path)),
+                    'href'  => site_url('common/filemanager').'?directory=' .substr($image, strlen($this->_dir_image_path . self::PATH_SUB_NAME . '/')) . $url,
                 ];
             } elseif (is_file($image)) {
                 $ext_tmp = explode('.', implode('', $name));
@@ -171,37 +173,37 @@ class FileManager extends AdminController
                     case "indd":
                     case "heif":
                         $data['file_list'][] = [
-                            'thumb' => image_url(substr($image, strlen($this->dir_image_path))),
-                            'name'  => implode(' ', $name),
+                            'thumb' => image_url(substr($image, strlen($this->_dir_image_path))),
+                            'name'  => implode('', $name),
                             'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
                             'date'  => $file_size[$image]['date'],
                             'type'  => 'image',
-                            'path'  => substr($image, strlen($this->dir_image_path)),
-                            'href'  => $server . $this->img_url . $this->dir_image . substr($image, strlen($this->dir_image_path)) . '?' . time(),
+                            'path'  => substr($image, strlen($this->_dir_image_path)),
+                            'href'  => $server . $this->_img_url . $this->_dir_image . substr($image, strlen($this->_dir_image_path)) . '?' . time(),
                         ];
                         break;
                     case "svg":
                     case "svgz":
                         $data['file_list'][] = [
-                            'thumb' => $server . $this->dir_image . substr($image, strlen($this->dir_image_path)). '?' . time(),
-                            'name'  => implode(' ', $name),
+                            'thumb' => $server . $this->_dir_image . substr($image, strlen($this->_dir_image_path)). '?' . time(),
+                            'name'  => implode('', $name),
                             'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
                             'date'  => $file_size[$image]['date'],
                             'type'  => 'image',
-                            'path'  => substr($image, strlen($this->dir_image_path)),
-                            'href'  => $server . $this->img_url . $this->dir_image . substr($image, strlen($this->dir_image_path)) . '?' . time(),
+                            'path'  => substr($image, strlen($this->_dir_image_path)),
+                            'href'  => $server . $this->_img_url . $this->_dir_image . substr($image, strlen($this->_dir_image_path)) . '?' . time(),
                         ];
                         break;
                     case "pdf":
                         $data['file_list'][] = [
                             'thumb' => '',
-                            'name'  => implode(' ', $name),
+                            'name'  => implode('', $name),
                             'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
                             'date'  => $file_size[$image]['date'],
                             'type'  => 'file',
-                            'path'  => substr($image, strlen($this->dir_image_path)),
+                            'path'  => substr($image, strlen($this->_dir_image_path)),
                             'class' => 'far fa-file-pdf text-danger fa-5x',
-                            'href'  => $server . $this->file_url . $this->dir_image . substr($image, strlen($this->dir_image_path)),
+                            'href'  => $server . $this->_file_url . $this->_dir_image . substr($image, strlen($this->_dir_image_path)),
                         ];
                         break;
                     case "html":
@@ -217,25 +219,25 @@ class FileManager extends AdminController
                     case "py":
                         $data['file_list'][] = [
                             'thumb' => '',
-                            'name'  => implode(' ', $name),
+                            'name'  => implode('', $name),
                             'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
                             'date'  => $file_size[$image]['date'],
                             'type'  => 'file',
-                            'path'  => substr($image, strlen($this->dir_image_path)),
+                            'path'  => substr($image, strlen($this->_dir_image_path)),
                             'class' => 'far fa-file text-dark fa-4x',
-                            'href'  => $server . $this->file_url . $this->dir_image . substr($image, strlen($this->dir_image_path)),
+                            'href'  => $server . $this->_file_url . $this->_dir_image . substr($image, strlen($this->_dir_image_path)),
                         ];
                         break;
                     case "apk":
                         $data['file_list'][] = [
                             'thumb' => '',
-                            'name'  => implode(' ', $name),
+                            'name'  => implode('', $name),
                             'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
                             'date'  => $file_size[$image]['date'],
                             'type'  => 'file',
-                            'path'  => substr($image, strlen($this->dir_image_path)),
+                            'path'  => substr($image, strlen($this->_dir_image_path)),
                             'class' => 'fab fa-android text-warning fa-4x',
-                            'href'  => $server . $this->file_url . $this->dir_image . substr($image, strlen($this->dir_image_path)),
+                            'href'  => $server . $this->_file_url . $this->_dir_image . substr($image, strlen($this->_dir_image_path)),
                         ];
                         break;
                     case "webm":
@@ -256,26 +258,26 @@ class FileManager extends AdminController
                         $file_video = new \CodeIgniter\Files\File($image);
                         $data['file_list'][] = [
                             'thumb' => '',
-                            'name'  => implode(' ', $name),
+                            'name'  => implode('', $name),
                             'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
                             'date'  => $file_size[$image]['date'],
                             'ext'   => $file_video->getMimeType(),
                             'type'  => 'video',
-                            'path'  => substr($image, strlen($this->dir_image_path)),
+                            'path'  => substr($image, strlen($this->_dir_image_path)),
                             'class' => 'fas fa-film text-dark fa-4x',
-                            'href'  => $server . $this->file_url . $this->dir_image . substr($image, strlen($this->dir_image_path)),
+                            'href'  => $server . $this->_file_url . $this->_dir_image . substr($image, strlen($this->_dir_image_path)),
                         ];
                         break;
                     default:
                         $data['file_list'][] = [
                             'thumb' => '',
-                            'name'  => implode(' ', $name),
+                            'name'  => implode('', $name),
                             'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
                             'date'  => $file_size[$image]['date'],
                             'type'  => 'file',
-                            'path'  => substr($image, strlen($this->dir_image_path)),
+                            'path'  => substr($image, strlen($this->_dir_image_path)),
                             'class' => 'fas fa-download text-secondary fa-4x',
-                            'href'  => $server . $this->file_url . $this->dir_image . substr($image, strlen($this->dir_image_path)),
+                            'href'  => $server . $this->_file_url . $this->_dir_image . substr($image, strlen($this->_dir_image_path)),
                         ];
                         break;
                 }
@@ -309,7 +311,6 @@ class FileManager extends AdminController
         } else {
             $data['directory'] = '';
         }
-
 
         $data['directory']   = !empty($this->request->getGet('directory')) ? urlencode($this->request->getGet('directory')) : "";
         $data['filter_name'] = $this->request->getGet('filter_name') ?? "";
@@ -467,15 +468,15 @@ class FileManager extends AdminController
             $json = [];
 
             // create folder
-            if (!is_dir($this->dir_image_path . self::PATH_SUB_NAME)) {
-                mkdir($this->dir_image_path . self::PATH_SUB_NAME, 0777, true);
+            if (!is_dir($this->_dir_image_path . self::PATH_SUB_NAME)) {
+                mkdir($this->_dir_image_path . self::PATH_SUB_NAME, 0777, true);
             }
 
             $directory = $this->request->getGet('directory');
             if (isset($directory)) {
-                $directory = rtrim($this->dir_image_path . self::PATH_SUB_NAME . '/' . $directory, '/');
+                $directory = rtrim($this->_dir_image_path . self::PATH_SUB_NAME . '/' . $directory, '/');
             } else {
-                $directory = $this->dir_image_path . self::PATH_SUB_NAME;
+                $directory = $this->_dir_image_path . self::PATH_SUB_NAME;
             }
 
             $file_name  = 'file';
@@ -488,7 +489,7 @@ class FileManager extends AdminController
 
             $valids = [
                 sprintf('uploaded[%s]', $file_name),
-                sprintf('ext_in[%s,%s]', $file_name, $this->upload_type),
+                sprintf('ext_in[%s,%s]', $file_name, $this->_upload_type),
             ];
 
             if (!empty($max_size)) {
@@ -507,12 +508,11 @@ class FileManager extends AdminController
                 json_output(['error' => $validation->getError($file_name)]);
             }
 
-
             if ($this->request->getFileMultiple($file_name)) {
                 //if ($file->isValid() && !$file->hasMoved()) {
                 foreach($this->request->getFileMultiple($file_name) as $file) {
                     // Get random file name
-                    $newName = !empty(config_item('file_encrypt_name')) ? trim($file->getRandomName()) : trim($file->getName());
+                    $newName = !empty(config_item('file_encrypt_name')) ? trim($file->getRandomName()) : str_replace(" ", "", trim($file->getName()));
                     // Store file in public/uploads/ folder
                     $file->move($directory, $newName);
 
@@ -522,7 +522,7 @@ class FileManager extends AdminController
                     $json['success'] = lang('FileManager.text_uploaded');
 
                     if (!empty(config_item('enable_resize_image'))) {
-                        $this->image_tool->resizeUpload($filepath);
+                        $this->_image_tool->resizeUpload($filepath);
                     }
                     usleep(1000);
                 }
@@ -544,13 +544,13 @@ class FileManager extends AdminController
         // Make sure we have the correct directory
         $directory = $this->request->getGet('directory');
         if (isset($directory)) {
-            $directory = rtrim($this->dir_image_path . self::PATH_SUB_NAME . '/' . $directory, '/');
+            $directory = rtrim($this->_dir_image_path . self::PATH_SUB_NAME . '/' . $directory, '/');
         } else {
-            $directory = $this->dir_image_path . self::PATH_SUB_NAME;
+            $directory = $this->_dir_image_path . self::PATH_SUB_NAME;
         }
 
         // Check its a directory
-        if (!is_dir($directory) || substr(str_replace('\\', '/', realpath($directory)), 0, strlen($this->dir_image_path . self::PATH_SUB_NAME)) != $this->dir_image_path . self::PATH_SUB_NAME) {
+        if (!is_dir($directory) || substr(str_replace('\\', '/', realpath($directory)), 0, strlen($this->_dir_image_path . self::PATH_SUB_NAME)) != $this->_dir_image_path . self::PATH_SUB_NAME) {
             $json['error'] = lang('FileManager.error_directory');
         }
 
@@ -597,9 +597,8 @@ class FileManager extends AdminController
         // Loop through each path to run validations
         foreach ($paths as $path) {
             // Check path exsists
-            if ($path == $this->dir_image_path . self::PATH_SUB_NAME || substr(str_replace('\\', '/', realpath($this->dir_image_path . $path)), 0, strlen($this->dir_image_path . self::PATH_SUB_NAME)) != $this->dir_image_path . self::PATH_SUB_NAME) {
+            if ($path == $this->_dir_image_path . self::PATH_SUB_NAME || substr(str_replace('\\', '/', realpath($this->_dir_image_path . $path)), 0, strlen($this->_dir_image_path . self::PATH_SUB_NAME)) != $this->_dir_image_path . self::PATH_SUB_NAME) {
                 $json['error'] = lang('FileManager.error_delete');
-
                 break;
             }
         }
@@ -607,7 +606,7 @@ class FileManager extends AdminController
         if (!$json) {
             // Loop through each path
             foreach ($paths as $path) {
-                $path = rtrim($this->dir_image_path . $path, '/');
+                $path = rtrim($this->_dir_image_path . $path, '/');
 
                 // If path is just a file delete it
                 if (is_file($path)) {
@@ -663,19 +662,19 @@ class FileManager extends AdminController
 
         $path = $this->request->getPost('path');
         // Check path exsists
-        if (!is_file($this->dir_image_path . $path)) {
+        if (!is_file($this->_dir_image_path . $path)) {
             $json['error'] = lang('FileManager.error_rotation');
         }
   
         if (empty($json)) {
             // Loop through each path
-            $image = $this->image_tool->rotation($path, $type);
+            $image = $this->_image_tool->rotation($path, $type);
 
             if (!empty($image)) {
                 $json['success'] = lang('FileManager.text_rotation');
                 $json['image'] = image_url($image) . '?' . time();
             } else {
-                $json['error'] = !empty($this->image_tool->getError()) ? $this->image_tool->getError() : lang('FileManager.error_rotation');
+                $json['error'] = !empty($this->_image_tool->getError()) ? $this->_image_tool->getError() : lang('FileManager.error_rotation');
             }
         }
 
@@ -688,6 +687,7 @@ class FileManager extends AdminController
 
         try {
             delete_cache();
+
             $json['success'] = lang('FileManager.text_clear_cache_success');
         } catch (Exception $e) {
             $json['error'] = lang('Admin.error');

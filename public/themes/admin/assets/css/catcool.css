@@ -252,17 +252,38 @@ label {
 .table .list_datetime {
     font-size: 12px; font-style: italic; color: #a9a9a9;
 }
+
 .img-photo-list {
-    content: url('data:image/gif;base64,R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==');
+    width: 140px;
+    height: 140px;
+    overflow: hidden;
+    display: block;
+    margin: 0 auto;
+}
+
+.img-photo-list img {
+    content: url(data:image/gif;base64,R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
-    width: 100%;
-    max-width: 200px;
-    max-height: 220px;
+    position: absolute;
+    width: 140px;
+    height: 140px;
     margin: 0 auto;
     display: block;
+    z-index: 2;
 }
+
+.img-photo-list .img-blur {
+    background-size: 100% 100%;
+    z-index: 1;
+    opacity: 0.8;
+    -moz-filter: blur(3px);
+    -o-filter: blur(3px);
+    -ms-filter: blur(3px);
+    filter: blur(3px);
+}
+
 ul.list-album-photos {
     list-style: none;
     margin: 0;
@@ -292,8 +313,9 @@ ul.list-album-photos {
 }
 #filemanager .image-setting, #filemanager .video-play {
     position: absolute;
-    top: 5px;
-    right: 15px;
+    top: 3px;
+    right: 3px;
+    z-index: 10;
 }
 a[data-bs-toggle="image"] {
     width: 100%;
@@ -687,4 +709,10 @@ a[data-bs-toggle="image"] {
     .nav-left-sidebar-content-scrolled { margin-left: 0; }
     .navbar-full-text { width: auto; }
     .navbar-full-text-content { margin-left: 0; }
+    .img-photo-list, .img-photo-list img { width: 100px; height: 100px; }
+}
+
+/* Extra small devices (portrait galaxyfold, less than 300px)*/
+@media (max-width: 300px) {
+    .img-photo-list, .img-photo-list img { width: 70px; height: 70px; }
 }

@@ -12,7 +12,7 @@
             </div>
             <div class="col-sm-4 col-12 mb-1">
                 <div class="input-group">
-                    <input type="text" name="search" value="{$filter_name}" placeholder="{$entry_search}" class="form-control btn-space me-0">
+                    <input type="text" name="search" value="{$filter_name}" placeholder="{$entry_search}" style="min-width: 50px;" class="form-control btn-space me-0">
                     <button type="button" title="{$button_search}" id="button_search" class="btn btn-sm btn-primary btn-space"><i class="fas fa-search"></i></button>
                     <a href="{base_url('image/editor')}" title="Photo Editor" target="_blank" class="btn btn-sm btn-warning btn-space me-0"><i class="fas fa-pencil-alt me-1"></i>Photo Editor</a>
                 </div>
@@ -25,13 +25,13 @@
                 <div class="table-responsive">
                     <table class="table table-striped table-hover table-bordered second">
                         <thead>
-                        <tr class="text-center">
-                            <th colspan="3">{lang('Admin.text_name')}</th>
-                            <th width="110">
-                                {lang('FileManager.text_size')}
-                            </th>
-                            <th width="170">{lang('FileManager.text_mtime')}</th>
-                        </tr>
+                            <tr class="text-center">
+                                <th colspan="3">{lang('Admin.text_name')}</th>
+                                <th width="110">
+                                    {lang('FileManager.text_size')}
+                                </th>
+                                <th width="170">{lang('FileManager.text_mtime')}</th>
+                            </tr>
                         </thead>
                         <tbody>
                         {foreach $file_list as $key => $file}
@@ -43,11 +43,12 @@
                                     {if $file.type == 'directory'}
                                         <a href="{$file.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a>
                                     {elseif $file.type == 'image'}
-                                        <div class="position-relative">
+                                        <div class="img-photo-list position-relative">
+                                            <img src="{image_thumb_url($file.path, 180, 180)}" style="background-image: url('{image_thumb_url($file.path, 180, 180)}');" alt="{$file.name}" title="{$file.name}" class="img-blur" />
                                             <a href="{$file.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
-                                                <img src="{image_thumb_url($file.path, 180, 180)}" style="background-image: url('{image_thumb_url($file.path, 180, 180)}');" alt="{$file.name}" style="width: 85px;" title="{$file.name}" class="img-thumbnail img-fluid img-photo-list" />
+                                                <img src="{image_thumb_url($file.path, 180, 180)}" style="background-image: url('{image_thumb_url($file.path, 180, 180)}');" alt="{$file.name}" title="{$file.name}" class="" />
                                             </a>
-                                            <button type="button" class="btn btn-xs btn-light image-setting shadow-sm" data-path="{$file.path}" style="right: 0; top: 0;" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
+                                            <button type="button" class="btn btn-xs btn-light image-setting shadow-sm" data-path="{$file.path}" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
                                         </div>
                                     {elseif $file.type == 'video'}
                                         <div class="position-relative">
@@ -98,7 +99,7 @@
                 </div>
             {else}
                 {foreach $file_list as $key => $file}
-                    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-6 mb-2 text-center position-relative">
+                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6 mb-3 text-center">
                         {if $file.type == 'directory'}
                             <div class="text-center"><a href="{$file.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a></div>
                             <p class="mt-1">
@@ -106,23 +107,39 @@
                                 <label class="file-label-cb" for="cb_{$key}">{$file.name}</label>
                             </p>
                         {elseif $file.type == 'image'}
-                            <a href="{$file.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
-                                <img src="{image_thumb_url($file.path, 180, 180)}" style="background-image: url('{image_thumb_url($file.path, 180, 180)}');" alt="{$file.name}" title="{$file.name}" class="img-thumbnail img-fluid img-photo-list" />
-                            </a>
-                            <p class="mt-1">
-                                <input type="checkbox" name="path[]" value="{$file.path}" id="cb_{$key}" class="me-1" />
-                                <label class="file-label-cb" for="cb_{$key}">{$file.name}</label>
-                            </p>
-                            <button type="button" class="btn btn-xs btn-light image-setting shadow-sm" data-path="{$file.path}" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
+
+                            <div class="img-photo-list position-relative">
+                                <img src="{image_thumb_url($file.path, 180, 180)}" style="background-image: url('{image_thumb_url($file.path, 180, 180)}');" alt="{$file.name}" title="{$file.name}" class="img-blur" />
+                                <a href="{$file.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
+                                    <img src="{image_thumb_url($file.path, 180, 180)}" style="background-image: url('{image_thumb_url($file.path, 180, 180)}');" alt="{$file.name}" title="{$file.name}" class="" />
+                                </a>
+                                <button type="button" class="btn btn-xs btn-light image-setting shadow-sm" data-path="{$file.path}" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
+                            </div>
+
+                            <div class="row mt-1">
+                                <div class="col-12">
+                                    <input type="checkbox" name="path[]" value="{$file.path}" id="cb_{$key}" class="me-1" />
+                                    <label class="file-label-cb" for="cb_{$key}" title="{$file.name}">
+                                        {if strlen($file.name) > 30}
+                                            {substr_replace($file.name, "...", 5, strlen($file.name) - 15)}
+                                        {else}
+                                            {$file.name}
+                                        {/if}
+                                    </label>
+                                </div>
+                            </div>
+
                         {elseif $file.type == 'video'}
-                            <a href="{$file.href}" target="_blank" class="thumbnail" data-file-target="#cb_{$key}" style="vertical-align: middle;">
-    {*                            <i class="{$file.class}"></i>*}
-                                <video style="width: 100%; max-width: 200px; height: auto;" muted="muted" loop="loop">
-                                    <source src="{$file.href}" type="{$file.ext}">
-                                    <p>Your browser doesn't support HTML5 video. Here is
-                                        a link to the video instead.</p>
-                                </video>
-                            </a>
+                            <div class="w-100 position-relative">
+                                <a href="{$file.href}" target="_blank" class="thumbnail" title="{$file.name}" data-file-target="#cb_{$key}" style="vertical-align: middle;"
+                                    <video style="width: 100%; max-width: 200px; height: auto;" muted="muted" loop="loop">
+                                        <source src="{$file.href}" type="{$file.ext}">
+                                        <p>Your browser doesn't support HTML5 video. Here is
+                                            a link to the video instead.</p>
+                                    </video>
+                                </a>
+                                <button type="button" class="btn btn-xs btn-light video-play shadow-sm" data-bs-toggle="modal" data-bs-target="#play_video_{$key}"><i class="fas fa-play"></i></button>
+                            </div>
     {*                            <object width="90" height="60">*}
     {*                                <param name="src" value="{$file.href}">*}
     {*                                <param name="autoplay" value="false">*}
@@ -150,14 +167,25 @@
                             </div>
                             <p class="mt-1">
                                 <input type="checkbox" name="path[]" value="{$file.path}" id="cb_{$key}" class="me-1" />
-                                <label class="file-label-cb" for="cb_{$key}">{$file.name}</label>
+                                <label class="file-label-cb" for="cb_{$key}" title="{$file.name}">
+                                    {if strlen($file.name) > 30}
+                                        {substr_replace($file.name, "...", 5, strlen($file.name) - 15)}
+                                    {else}
+                                        {$file.name}
+                                    {/if}
+                                </label>
                             </p>
-                            <button type="button" class="btn btn-xs btn-light video-play shadow-sm" data-bs-toggle="modal" data-bs-target="#play_video_{$key}"><i class="fas fa-play"></i></button>
                         {else}
-                            <a href="{$file.href}" target="_blank" class="thumbnail" data-file-target="#cb_{$key}" style="vertical-align: middle;"><i class="{$file.class}"></i></a>
+                            <a href="{$file.href}" target="_blank" class="thumbnail" data-file-target="#cb_{$key}" title="{$file.name}" style="vertical-align: middle;"><i class="{$file.class}"></i></a>
                             <p class="mt-1">
                                 <input type="checkbox" name="path[]" value="{$file.path}" id="cb_{$key}" class="me-1" />
-                                <label class="file-label-cb" for="cb_{$key}">{$file.name}</label>
+                                <label class="file-label-cb" for="cb_{$key}" title="{$file.name}">
+                                    {if strlen($file.name) > 30}
+                                        {substr_replace($file.name, "...", 5, strlen($file.name) - 15)}
+                                    {else}
+                                        {$file.name}
+                                    {/if}
+                                </label>
                             </p>
                         {/if}
                     </div>
