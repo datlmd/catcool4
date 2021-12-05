@@ -1595,7 +1595,8 @@ if(!function_exists('add_meta'))
             $description = str_ireplace('"', "", $description);
             $keywords = str_ireplace('"', "", $keywords);
 
-            $theme->setPageTitle($title . ' - ' . str_ireplace('www.', '', parse_url(base_url(), PHP_URL_HOST)));
+            //$theme->setPageTitle($title . ' - ' . str_ireplace('www.', '', parse_url(base_url(), PHP_URL_HOST)));
+            $theme->setPageTitle($title);
 
             if ($is_admin) {
                 $theme->addMeta('robots', 'noindex');

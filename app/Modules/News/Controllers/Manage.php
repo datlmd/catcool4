@@ -45,6 +45,7 @@ class Manage extends AdminController
         $limit       = $this->request->getGet('limit');
         $sort        = $this->request->getGet('sort');
         $order       = $this->request->getGet('order');
+        $is_trash    = $this->request->getGet('is_trash');
 
         $filter = [
             'active'      => count(array_filter($this->request->getGet(['news_id', 'name', 'category_id', 'limit']))) > 0,
@@ -54,7 +55,13 @@ class Manage extends AdminController
             'limit'       => $limit,
         ];
 
-        $list = $this->model->getAllByFilter($filter, $sort, $this->request->getGet('order'));
+        $tpl_name = "list";
+        if (!empty($is_trash) && $is_trash == 1) {
+            $tpl_name = "list_trash";
+            $list = $this->model->onlyDeleted()->getAllByFilter($filter, $sort, $this->request->getGet('order'));
+        } else {
+            $list = $this->model->getAllByFilter($filter, $sort, $this->request->getGet('order'));
+        }
 
         $url = "";
         if (!empty($news_id)) {
@@ -68,6 +75,9 @@ class Manage extends AdminController
         }
         if (!empty($limit)) {
             $url .= '&limit=' . $limit;
+        }
+        if (!empty($is_trash)) {
+            $url .= '&is_trash=' . $is_trash;
         }
 
         $category_list = $this->model_category->getListPublished();
@@ -85,11 +95,12 @@ class Manage extends AdminController
             'sort'          => empty($sort) ? 'news_id' : $sort,
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'           => $url,
+            'is_trash'      => $is_trash,
             'category_list' => format_tree(['data' => $category_list, 'key_id' => 'category_id']),
             'kenh14_list'   => Config('Robot')->pageKenh14,
         ];
 
-        $this->themes::load('list', $data);
+        $this->themes::load($tpl_name, $data);
     }
 
     public function add()
@@ -258,23 +269,39 @@ class Manage extends AdminController
 
         $token = csrf_hash();
 
+        $is_trash = $this->request->getGetPost('is_trash');
+
         //delete
         if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
             foreach ($ids as $id) {
-                $info = $this->model->getInfo($id);
+                if (!empty($is_trash) && $is_trash == 1) {
+                    $info = $this->model->getInfo($id);
+                } else {
+                    $info = $this->model->onlyDeleted()->getInfo($id);
+                }
+
                 if (empty($info)) {
                     json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
                 }
-                $this->model->deleteInfo($id);
+
+                if (!empty($is_trash) && $is_trash == 1) {
+                    $this->model->deleteInfo($id);
+                } else {
+                    $this->model->deleteInfo($id, null, true);
+                }
 
                 $this->model->deleteCache($id);
             }
 
-            set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
-            json_output(['status' => 'redirect', 'url' => site_url(self::MANAGE_URL)]);
+            $message = lang('Admin.text_delete_success');
+            if (!empty($is_trash) && $is_trash == 1) {
+                $message = lang('Admin.text_trashed');
+            }
+
+            json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => $message]);
         }
 
         $delete_ids = $id;
@@ -291,14 +318,21 @@ class Manage extends AdminController
         $list_delete = [];
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
         foreach ($delete_ids as $id) {
-            $list_delete[] = $this->model->getInfo($id);
+            if (!empty($is_trash) && $is_trash == 1) {
+                $list_delete[] = $this->model->getInfo($id);
+            } else {
+                $list_delete[] = $this->model->onlyDeleted()->getInfo($id);
+            }
         }
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $data['list_delete'] = $list_delete;
-        $data['ids']         = $delete_ids;
+        $data = [
+            'list_delete' => $list_delete,
+            'ids'         => $delete_ids,
+            'is_trash'    => $is_trash
+        ];
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }
@@ -333,9 +367,7 @@ class Manage extends AdminController
 
         //edit
         if (!empty($id)) {
-            $data['text_form']   = lang('NewsAdmin.text_edit');
-
-            $data_form = $this->model->getInfo($id);
+            $data_form = $this->model->withDeleted()->getInfo($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->to(site_url(self::MANAGE_URL));
@@ -349,6 +381,8 @@ class Manage extends AdminController
                     $data_form['related_list_html'] = $this->themes::view('related_list', ['related_list' => $related_list, 'is_checked' => true], true);
                 }
             }
+
+            $data['text_form'] = lang('NewsAdmin.text_edit');
 
             // display the edit user form
             $data['edit_data'] = $data_form;

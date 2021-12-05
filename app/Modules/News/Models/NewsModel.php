@@ -182,7 +182,7 @@ class NewsModel extends FarmModel
         return $this->find($news_id);
     }
 
-    public function deleteInfo($news_id, $ctime = null)
+    public function deleteInfo($news_id, $ctime = null, $is_trash = false)
     {
         if (empty($news_id)) {
             return false;
@@ -194,7 +194,7 @@ class NewsModel extends FarmModel
 
         $this->setTableNameYear($ctime);
 
-        return $this->delete($news_id);
+        return $this->delete($news_id, $is_trash);
     }
 
     public function updateInfo($data, $news_id, $ctime = null)

@@ -7,7 +7,10 @@
                     {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('NewsAdmin.heading_title')}
                 </div>
                 <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                    <button type="submit" class="btn btn-sm btn-space btn-primary mb-0" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
+                    {if isset($edit_data.deleted) && is_null($edit_data.deleted)}
+                        <button type="submit" class="btn btn-sm btn-space btn-primary mb-0" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
+                    {/if}
+
                     <a href="{if previous_url() eq current_url()}{site_url($manage_url)}{else}{previous_url()}{/if}" class="btn btn-sm btn-secondary me-0 mb-0" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_cancel')}</a>
                 </div>
             </div>
@@ -28,8 +31,8 @@
                 {/if}
                 <div class="col-xl-9 col-lg-9 col-md-8 col-sm-12 col-12">
                     <div class="card">
-                        <h5 class="card-header"><i class="fas {if !empty($edit_data.news_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
-                        <div class="card-body">
+                        <h5 class="card-header" data-bs-toggle="collapse" data-bs-target="#article_content_collapse" aria-expanded="false" aria-controls="article_content_collapse"><i class="fas {if !empty($edit_data.news_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form} {if isset($edit_data.deleted) && !is_null($edit_data.deleted)}<small class="text-danger">({lang('Admin.text_trashed')})</small>{/if}</h5>
+                        <div class="card-body collapse show" id="article_content_collapse">
                             <div class="form-group">
                                 <label class="form-label required-label">{lang('NewsAdmin.text_name')}</label>
                                 {if !empty($edit_data.name)}
@@ -63,8 +66,8 @@
                         </div>
                     </div>
                     <div class="card">
-                        <h5 class="card-header">{lang('Admin.text_image')}</h5>
-                        <div class="card-body">
+                        <h5 class="card-header" data-bs-toggle="collapse" data-bs-target="#article_images_collapse" aria-expanded="false" aria-controls="article_images_collapse">{lang('Admin.text_image')}</h5>
+                        <div class="card-body collapse show" id="article_images_collapse">
                             <div class="row text-center">
                                 <div class="col-md-4 col-sm-4 col-6">
                                     {if isset($edit_data.images.thumb)}
@@ -155,8 +158,8 @@
                         </div>
                     </div>
                     <div class="card">
-                        <h5 class="card-header">{lang('Admin.tab_seo')}</h5>
-                        <div class="card-body">
+                        <h5 class="card-header" data-bs-toggle="collapse" data-bs-target="#article_seo_collapse" aria-expanded="false" aria-controls="article_seo_collapse">{lang('Admin.tab_seo')}</h5>
+                        <div class="card-body collapse show" id="article_seo_collapse">
                             <div class="form-group">
                                 <label class="form-label">{lang('Admin.text_seo_title')}</label>
                                 {if !empty($edit_data.meta_title)}
@@ -267,8 +270,8 @@
                         </div>
                     </div>
                     <div class="card">
-                        <h5 class="card-header">{lang('NewsAdmin.text_related')}</h5>
-                        <div class="card-body">
+                        <h5 class="card-header" data-bs-toggle="collapse" data-bs-target="#article_related_collapse" aria-expanded="false" aria-controls="article_related_collapse">{lang('NewsAdmin.text_related')}</h5>
+                        <div class="card-body collapse show" id="article_related_collapse">
                             {if !empty($edit_data.related_list_html)}
                                 {include file=get_theme_path('views/inc/articles/find_related.tpl') related_url='news/manage/related' related_list_html=$edit_data.related_list_html}
                             {else}

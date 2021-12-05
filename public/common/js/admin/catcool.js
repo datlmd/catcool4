@@ -231,6 +231,13 @@ var Catcool = {
         var manage = $('input[name="manage_url"]').val();
         var url    = manage + '/delete';
 
+        var is_trash = 0;
+        if (obj.data('is-trash') == 1) {
+            is_trash = 1;
+        }
+
+        url += "?is_trash=" + is_trash;
+
         $.ajax({
             url: url,
             data: {
@@ -309,6 +316,11 @@ var Catcool = {
                 var response = JSON.stringify(data);
                 response = JSON.parse(response);
 
+                if (response.token) {
+                    // Update CSRF hash
+                    $("input[name*='" + csrf_token + "']").val(response.token);
+                }
+
                 if (response.status == 'redirect') {
                     window.location = response.url;
                     return false;
@@ -320,6 +332,15 @@ var Catcool = {
                     return false;
                 }
 
+                $.each(response.ids, function(i, news_id) {
+                    if (!$("tr#item_id_" + news_id).length) {
+                        location.reload();
+                        return false;
+                    }
+                    $("tr#item_id_" + news_id).remove('slow').fadeOut();
+                });
+
+                $('#modal_delete_confirm').modal('hide');
                 $.notify(response.msg);
             },
             error: function (xhr, errorType, error) {
