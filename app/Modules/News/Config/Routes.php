@@ -15,6 +15,8 @@ $routes->group('news', ['namespace' => 'App\Modules\News\Controllers'], function
     $subroutes->add('manage/status', 'Manage::status');
     $subroutes->add('manage/related', 'Manage::related');
     $subroutes->add('manage/fix', 'Manage::fix');
+    $subroutes->add('manage/restore/(:any)', 'Manage::restore/$1');
+    $subroutes->add('manage/empty_trash', 'Manage::emptyTrash');
 
     $subroutes->add('categories_manage', 'CategoriesManage::index');
     $subroutes->add('categories_manage/add', 'CategoriesManage::add');

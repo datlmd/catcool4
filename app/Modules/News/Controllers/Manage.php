@@ -96,6 +96,7 @@ class Manage extends AdminController
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'           => $url,
             'is_trash'      => $is_trash,
+            'count_trash'   => $this->model->onlyDeleted()->countAllResults(),
             'category_list' => format_tree(['data' => $category_list, 'key_id' => 'category_id']),
             'kenh14_list'   => Config('Robot')->pageKenh14,
         ];
@@ -551,6 +552,45 @@ class Manage extends AdminController
         ];
 
         json_output($data);
+    }
+
+    public function restore($id = null)
+    {
+        try {
+            $data_form = $this->model->onlyDeleted()->getInfo($id);
+            if (empty($data_form)) {
+                set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+                return redirect()->back();
+            }
+
+            if (!$this->model->updateInfo(['deleted' => null], $id)) {
+                set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
+                return redirect()->back()->withInput();
+            }
+
+            //reset cache
+            $this->model->deleteCache($id);
+
+            set_alert(lang('Admin.text_restore_success'), ALERT_SUCCESS, ALERT_POPUP);
+            return redirect()->back();
+
+        } catch (\Exception $ex) {
+            set_alert($ex->getMessage(), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->back();
+        }
+    }
+
+    public function emptyTrash()
+    {
+        try {
+            $this->model->purgeDeleted();
+
+            set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
+            return redirect()->back();
+        } catch (\Exception $ex) {
+            set_alert($ex->getMessage(), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->back();
+        }
     }
 
     public function fix()

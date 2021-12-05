@@ -10,7 +10,7 @@
 				<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" data-is-trash="1" style="display: none;" title="{lang('Admin.text_move_to_trash')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.text_move_to_trash')}</span>
 				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" title="{lang('NewsAdmin.text_add')}"><i class="fas fa-plus me-1"></i>{lang('NewsAdmin.text_add')}</a>
 				<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter me-1"></i>{lang('Admin.filter_header')}</button>
-				<a href="{site_url($manage_url)}?is_trash=1" class="btn btn-sm btn-secondary btn-space" title="{lang('Admin.button_trash')}"><i class="fas fa-trash me-1"></i>{lang('Admin.button_trash')}</a>
+				<a href="{site_url($manage_url)}?is_trash=1" class="btn btn-sm btn-secondary btn-space" title="{lang('Admin.button_trash')}"><i class="fas fa-trash me-1"></i>{lang('Admin.button_trash')} ({$count_trash})</a>
 				<button id="btn_group_drop_setting" type="button" class="btn btn-sm btn-light btn-space me-0" data-bs-toggle="dropdown" aria-expanded="false">
 					<i class="fas fa-cog"></i>
 				</button>
