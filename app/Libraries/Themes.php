@@ -481,6 +481,9 @@ class Themes
         $objTheme->setVar('layout', $objTheme->_loadFile('layout', self::$config[LAYOUT], $layout, true));
 
         // Prepare the output
+		$body_class = sprintf("%s-%s-%s", self::$instance->module, self::$instance->controller, self::$instance->method);
+		$objTheme->setVar('body_class', strtolower($body_class));
+
         $output = $objTheme->_loadFile('default', self::$config[MASTER], $objTheme::getData(), true);
 
         \Config\Services::timer()->stop('render_view');

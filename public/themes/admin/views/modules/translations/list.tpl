@@ -12,7 +12,12 @@
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('TranslationAdmin.heading_title')}
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                <button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space me-0" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter me-1"></i>{lang('Admin.filter_header')}</button>
+                {if !empty($module_id)}
+                    <button type="button" class="btn btn-sm btn-primary btn-space" data-bs-toggle="modal" data-bs-target="#add_lang"><i class="fas fa-plus"></i></button>
+                    <button type="button" id="btn_save_translate" onclick="saveTranslate()" class="btn btn-sm btn-secondary btn-space"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
+                    <button type="button" id="btn_write_translate" onclick="writeTranslate({$module_id})" class="btn btn-sm btn-light btn-space"><i class="fas fa-sync me-1"></i>{lang('Admin.button_write')}</button>
+                {/if}
+                <button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space me-0" data-bs-toggle="tooltip" data-placement="top" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
                 {if strpos(previous_url(), 'translations') === false}
                     <a href="{previous_url()}" class="btn btn-sm btn-space btn-secondary ms-1 me-0" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_back')}</a>
                 {/if}
@@ -54,19 +59,7 @@
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header pb-2">
-                        <div class="row">
-                            <div class="col-md-5 col-12">
-                                <h5 class="mb-0 mt-1"><i class="fas fa-list me-2"></i>{lang('TranslationAdmin.text_list')}</h5>
-                            </div>
-                            <div class="col-md-7 col-12 text-end">
-                                {if !empty($module_id)}
-                                    <button type="button" class="btn btn-sm btn-primary me-1" data-bs-toggle="modal" data-bs-target="#add_lang"><i class="fas fa-plus me-1"></i>{lang('TranslationAdmin.text_add')}</button>
-                                    <button type="button" id="btn_save_translate" onclick="saveTranslate()" class="btn btn-sm btn-secondary me-0"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
-                                {/if}
-                            </div>
-                        </div>
-                    </div>
+                    <h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('TranslationAdmin.text_list')}</h5>
                     <div class="card-body">
                         {if !empty($module)}
                             <h5 class="mb-2">
@@ -82,16 +75,7 @@
                         </ul>
                         {if !empty($list)}
 
-                            <div class="row mb-3">
-                                <div class="col-5">
-                                    <strong>{lang("TranslationAdmin.text_total")}: {count($list)}</strong>
-                                </div>
-                                <div class="col-7 text-end">
-                                    {if !empty($module_id)}
-                                        <button type="button" id="btn_write_translate" onclick="writeTranslate({$module_id})" class="btn btn-sm btn-success"><i class="fas fa-sync me-1"></i>{lang('Admin.button_write')}</button>
-                                    {/if}
-                                </div>
-                            </div>
+                            <div class="mb-2">{lang("TranslationAdmin.text_total")}: {count($list)}</div>
 
                             {form_open('translations/manage/save', ['id' => 'save_validationform'])}
                                 {form_hidden('module_id', $module_id)}
@@ -128,9 +112,9 @@
                                                 {foreach $language_list as $lang}
                                                     <td>
                                                         {if isset($item.list[$lang.id])}
-                                                            <textarea id="{$key}_{$lang.id}" name="translate[{$key}][{$lang.id}]" data-edit-modal="edit_value_{$lang.id}" class="form-control" rows="2">{$item.list[$lang.id].lang_value}</textarea>
+                                                            <textarea id="{$key}_{$lang.id}" name="translate[{$key}][{$lang.id}]" data-edit-modal="edit_value_{$lang.id}" class="form-control" rows="2" style="min-width: 140px;">{$item.list[$lang.id].lang_value}</textarea>
                                                         {else}
-                                                            <textarea id="{$key}_{$lang.id}" name="translate[{$key}][{$lang.id}]" data-edit-modal="edit_value_{$lang.id}" class="form-control" rows="2"></textarea>
+                                                            <textarea id="{$key}_{$lang.id}" name="translate[{$key}][{$lang.id}]" data-edit-modal="edit_value_{$lang.id}" class="form-control" rows="2" style="min-width: 140px;"></textarea>
                                                         {/if}
                                                     </td>
                                                 {/foreach}
