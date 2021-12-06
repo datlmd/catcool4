@@ -36,7 +36,7 @@ class TranslationModel extends MyModel
             return [];
         }
 
-        $sort  = empty($sort) ? 'lang_key' : $sort;
+        $sort  = empty($sort) ? 'id' : $sort;
         $order = empty($order) ? 'DESC' : $order;
 
         if (!empty($filter["module_id"])) {

@@ -2,13 +2,13 @@
     {capture name="content_filemanager"}
         <div class="row">
             <div class="col-sm-8 col-12 mb-1">
-                <a href="{$parent}" title="{$button_parent}" id="button_parent" class="btn btn-sm btn-light btn-space"><i class="fas fa-level-up-alt"></i></a>
-                <a href="{$display_url}&d={DISPLAY_GRID}" title="{lang("Admin.text_list")}" id="button_display_grid" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-th"></i></a>
-                <a href="{$display_url}&d={DISPLAY_LIST}" title="{lang("Admin.text_grid")}" id="button_display_list" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-list"></i></a>
-                <a href="{$refresh}" title="{$button_refresh}" id="button_refresh" class="btn btn-sm btn-secondary btn-space"><i class="fas fa-sync"></i></a>
-                <button type="button" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary btn-space"><i class="fas fa-upload me-1"></i>{$button_upload}</button>
-                <button type="button" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success btn-space"><i class="fas fa-folder me-1"></i>{$button_folder}</button>
-                <button type="button" title="{$button_delete}" id="button_delete" class="btn btn-sm btn-danger btn-space"><i class="fas fa-trash"></i></button>
+                <a href="{$parent}" data-bs-toggle="tooltip" title="{$button_parent}" id="button_parent" class="btn btn-sm btn-light btn-space"><i class="fas fa-level-up-alt"></i></a>
+                <a href="{$display_url}&d={DISPLAY_GRID}" data-bs-toggle="tooltip" title="{lang("Admin.text_list")}" id="button_display_grid" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-th"></i></a>
+                <a href="{$display_url}&d={DISPLAY_LIST}" data-bs-toggle="tooltip" title="{lang("Admin.text_grid")}" id="button_display_list" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-list"></i></a>
+                <a href="{$refresh}" data-bs-toggle="tooltip" title="{$button_refresh}" id="button_refresh" class="btn btn-sm btn-secondary btn-space"><i class="fas fa-sync"></i></a>
+                <button type="button" data-bs-toggle="tooltip" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary btn-space"><i class="fas fa-upload me-1"></i>{$button_upload}</button>
+                <button type="button" data-bs-toggle="tooltip" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success btn-space"><i class="fas fa-folder me-1"></i>{$button_folder}</button>
+                <button type="button" data-bs-toggle="tooltip" title="{$button_delete}" id="button_delete" class="btn btn-sm btn-danger btn-space"><i class="fas fa-trash"></i></button>
             </div>
             <div class="col-sm-4 col-12 mb-1">
                 <div class="input-group">

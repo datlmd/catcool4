@@ -303,7 +303,7 @@ class Manage extends AdminController
             }
 
             foreach ($translates as $translate) {
-                $this->model->delete($translate['id']);
+                $this->model->delete($translate['id'], true);
             }
 
             $this->model->writeFile($module_id);

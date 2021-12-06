@@ -18,7 +18,7 @@
         <script type="text/javascript" src="{base_url('common/js/respond-1.4.2.min.js')}"></script>
         <![endif]-->
 
-        <script src="{base_url('common/plugin/bootstrap/js/bootstrap.bundle.js')}" type="text/javascript"></script>
+        <script src="{base_url('common/plugin/bootstrap/js/bootstrap.bundle.min.js')}" type="text/javascript"></script>
         <script src="{base_url('common/plugin/jquery/jquery.min.js')}" type="text/javascript"></script>
         <script src="{base_url('common/js/admin/catcool.js')}?{CACHE_TIME_JS}" type="text/javascript"></script>
 

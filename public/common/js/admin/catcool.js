@@ -672,9 +672,14 @@ $(function () {
         $(this).ekkoLightbox();
     });
 
-    if ($('[data-toggle=\'popover\']').length) {
-        $('[data-toggle=\'popover\']').popover('dispose')
-        $('[data-toggle=\'popover\']').popover()
+    if ($('[data-bs-toggle=\'popover\']').length) {
+        $('[data-bs-toggle=\'popover\']').popover('dispose');
+        $('[data-bs-toggle=\'popover\']').popover();
+    }
+
+    if ($('[data-bs-toggle=\'tooltip\']').length) {
+        $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
+        $('[data-bs-toggle=\'tooltip\']').tooltip();
     }
 
     if ($('#btn_search').length) {

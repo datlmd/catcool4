@@ -13,11 +13,11 @@
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
                 {if !empty($module_id)}
-                    <button type="button" class="btn btn-sm btn-primary btn-space" data-bs-toggle="modal" data-bs-target="#add_lang"><i class="fas fa-plus"></i></button>
-                    <button type="button" id="btn_save_translate" onclick="saveTranslate()" class="btn btn-sm btn-secondary btn-space"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
-                    <button type="button" id="btn_write_translate" onclick="writeTranslate({$module_id})" class="btn btn-sm btn-light btn-space"><i class="fas fa-sync me-1"></i>{lang('Admin.button_write')}</button>
+                    <button type="button" class="btn btn-sm btn-primary btn-space" data-bs-toggle="tooltip" title="{lang('TranslationAdmin.text_add')}" onclick="openPopup();"><i class="fas fa-plus"></i></button>
+                    <button type="button" id="btn_save_translate" onclick="saveTranslate()" class="btn btn-sm btn-secondary btn-space" data-bs-toggle="tooltip" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
+                    <button type="button" id="btn_write_translate" onclick="writeTranslate({$module_id})" class="btn btn-sm btn-light btn-space" data-bs-toggle="tooltip" title="{lang('Admin.button_write')}"><i class="fas fa-sync me-1"></i>{lang('Admin.button_write')}</button>
                 {/if}
-                <button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space me-0" data-bs-toggle="tooltip" data-placement="top" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
+                <button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space me-0" data-bs-toggle="tooltip" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
                 {if strpos(previous_url(), 'translations') === false}
                     <a href="{previous_url()}" class="btn btn-sm btn-space btn-secondary ms-1 me-0" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_back')}</a>
                 {/if}
@@ -83,7 +83,14 @@
                                     <table class="table table-striped table-hover table-bordered second">
                                         <thead>
                                             <tr class="text-center">
-                                                <th>No</th>
+                                                <th width="60">
+                                                    <a href="{site_url($manage_url)}?sort=id&order={$order}{$url}" class="text-dark">
+                                                        No
+                                                        {if $sort eq 'id'}
+                                                            <i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+                                                        {/if}
+                                                    </a>
+                                                </th>
                                                 <th>
                                                     <a href="{site_url($manage_url)}?sort=lang_key&order={$order}{$url}" class="text-dark">
                                                         {lang('TranslationAdmin.text_key')}
@@ -102,7 +109,7 @@
                                         {assign var=key_no value=1}
                                         {foreach $list as $key => $item}
                                             <tr id="{$key}">
-                                                <td align="center" width="40">{$key_no}{$key_no=$key_no+1}</td>
+                                                <td align="center">{$key_no}{$key_no=$key_no+1}</td>
                                                 <td>
                                                     {$key}<br/>
                                                     {if empty($module) && !empty($module_list[$item.module_id])}
@@ -120,8 +127,8 @@
                                                 {/foreach}
                                                 <td class="text-center">
                                                     <div class="btn-group ms-auto">
-                                                        <button type="button" class="btn btn-sm btn-light" data-key="{$key}" data-module="{$item.module_id}" onclick="editTranslate(this)" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></button>
-                                                        <button type="button" class="btn btn-sm btn-light text-danger" data-module="{$item.module_id}" data-key="{$key}" onclick="deleteTranslate(this)" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
+                                                        <button type="button" class="btn btn-sm btn-light" data-key="{$key}" data-module="{$item.module_id}" onclick="editTranslate(this)" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></button>
+                                                        <button type="button" class="btn btn-sm btn-light text-danger" data-module="{$item.module_id}" data-key="{$key}" onclick="deleteTranslate(this)" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -271,6 +278,10 @@
     </div>
 {/strip}
 <script>
+
+    function openPopup() {
+        $('#add_lang').modal('show');
+    }
     function addTranslate() {
         $('#add_validation_error').html('');
 
