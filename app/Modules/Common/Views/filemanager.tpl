@@ -3,11 +3,11 @@
         <div class="row">
             <div class="col-sm-8 col-12 mb-1">
                 <a href="{$parent}" data-bs-toggle="tooltip" title="{$button_parent}" id="button_parent" class="btn btn-sm btn-light btn-space"><i class="fas fa-level-up-alt"></i></a>
-                <a href="{$display_url}&d={DISPLAY_GRID}" data-bs-toggle="tooltip" title="{lang("Admin.text_list")}" id="button_display_grid" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-th"></i></a>
-                <a href="{$display_url}&d={DISPLAY_LIST}" data-bs-toggle="tooltip" title="{lang("Admin.text_grid")}" id="button_display_list" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-list"></i></a>
+                <a href="{$display_url}&d={DISPLAY_GRID}" data-bs-toggle="tooltip" title="{lang("Admin.text_grid")}" id="button_display_grid" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-th"></i></a>
+                <a href="{$display_url}&d={DISPLAY_LIST}" data-bs-toggle="tooltip" title="{lang("Admin.text_list")}" id="button_display_list" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-list"></i></a>
                 <a href="{$refresh}" data-bs-toggle="tooltip" title="{$button_refresh}" id="button_refresh" class="btn btn-sm btn-secondary btn-space"><i class="fas fa-sync"></i></a>
                 <button type="button" data-bs-toggle="tooltip" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary btn-space"><i class="fas fa-upload me-1"></i>{$button_upload}</button>
-                <button type="button" data-bs-toggle="tooltip" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success btn-space"><i class="fas fa-folder me-1"></i>{$button_folder}</button>
+                <button type="button" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success btn-space"><i class="fas fa-folder me-1"></i>{$button_folder}</button>
                 <button type="button" data-bs-toggle="tooltip" title="{$button_delete}" id="button_delete" class="btn btn-sm btn-danger btn-space"><i class="fas fa-trash"></i></button>
             </div>
             <div class="col-sm-4 col-12 mb-1">
@@ -18,6 +18,7 @@
                 </div>
             </div>
         </div>
+        <div>{lang('Admin.text_upload_drop_drap')}</div>
         <hr />
         <div id="msg" class="text-secondary"></div>
         <div class="row" id="filemanager_list">
@@ -239,6 +240,7 @@
         is_disposing = false;
 
         e.preventDefault();
+        $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
         $('#modal_image').load($(this).attr('href'));
         return false;
     });
@@ -248,33 +250,40 @@
         is_disposing = false;
 
         e.preventDefault();
+        $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
         $('#modal_image').load($(this).attr('href'));
         return false;
     });
     $('#button_parent').on('click', function(e) {
         $('.image-setting').popover('dispose');
         $('#button_folder').popover('dispose');
+        $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
         is_disposing = false;
 
         e.preventDefault();
+        $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
         $('#modal_image').load($(this).attr('href'));
         return false;
     });
     $('#button_display_grid').on('click', function(e) {
         $('.image-setting').popover('dispose');
         $('#button_folder').popover('dispose');
+        $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
         is_disposing = false;
 
         e.preventDefault();
+        $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
         $('#modal_image').load($(this).attr('href'));
         return false;
     });
     $('#button_display_list').on('click', function(e) {
         $('.image-setting').popover('dispose');
         $('#button_folder').popover('dispose');
+        $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
         is_disposing = false;
 
         e.preventDefault();
+        $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
         $('#modal_image').load($(this).attr('href'));
         return false;
     });
@@ -286,9 +295,11 @@
 
         $('.image-setting').popover('dispose');
         $('#button_folder').popover('dispose');
+        $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
         is_disposing = false;
 
         e.preventDefault();
+        $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
         $('#modal_image').load($(this).attr('href'));
         return false;
     });
@@ -351,11 +362,14 @@
             url += '&type=' + $('input[name=\'file_type\']').val();
         }
 
+        $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
         $('#modal_image').load(url);
     });
 
     $('#button-upload').on('click', function() {
         filemanager_dispose_all();
+
+        $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
 
         $('#form-upload').remove();
         $('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" id="files" name="file[]" value="" multiple="multiple" /></form>');
@@ -508,6 +522,8 @@
     });
 
     $('#modal_image #button_delete').on('click', function(e) {
+
+        $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
 
         if ( ! $('input[name^=\'path\']:checked').length) {
             $.notify('{{$error_file_null}}', {
@@ -780,6 +796,13 @@
     $(function () {
         filemanager_dispose_all();
 
+        $('.loading').remove().fadeOut();
+
+        if ($('[data-bs-toggle=\'tooltip\']').length) {
+            $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
+            $('[data-bs-toggle=\'tooltip\']').tooltip();
+        }
+
         $(document).on("click", "button.close-video", function (e) {
             $('.video-model').modal('hide');
             $('.video-model video').get(0).pause();
@@ -798,6 +821,7 @@
             e.preventDefault();
             e.stopPropagation();
             /*$("h5").text("Drag here");*/
+            $('#modal_image .modal-body').removeClass('upload-drop');
         });
         $("html").on("drop", function (e) {
             e.preventDefault();
@@ -806,11 +830,12 @@
         $('#filemanager').on('dragenter', function (e) {
             e.stopPropagation();
             e.preventDefault();
-            /*$("h5").text("Drop");*/
+            $('#modal_image .modal-body').addClass('upload-drop');
         });
         $('#filemanager').on('dragover', function (e) {
             e.stopPropagation();
             e.preventDefault();
+            $('#modal_image .modal-body').addClass('upload-drop');
         });
         // Drop
         $('#filemanager').on('drop', function (e) {

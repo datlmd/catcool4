@@ -246,6 +246,9 @@ label {
 .tox-statusbar__branding {
     display: none !important;
 }
+#filemanager .upload-drop {
+    border: 2px dashed;
+}
 .table .img-thumbnail {
     width: 120px;
 }

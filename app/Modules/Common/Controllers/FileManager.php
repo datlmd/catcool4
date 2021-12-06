@@ -168,7 +168,7 @@ class FileManager extends AdminController
                     'name'  => implode('', $name),
                     'type'  => 'directory',
                     'path'  => substr($image, strlen($this->_dir_image_path)),
-                    'href'  => site_url('common/filemanager').'?directory=' .substr($image, strlen($this->_dir_image_path . self::PATH_SUB_NAME . '/')) . $url,
+                    'href'  => site_url('common/filemanager').'?directory=' . urlencode(substr($image, strlen($this->_dir_image_path . self::PATH_SUB_NAME . '/'))) . $url,
                 ];
             } elseif (is_file($image)) {
                 $ext_tmp = explode('.', implode('', $name));
