@@ -1,8 +1,8 @@
 <?php namespace App\Modules\Frontend\Controllers;
 
-use App\Controllers\BaseController;
+use App\Controllers\MyController;
 
-class Error404 extends BaseController
+class Error404 extends MyController
 {
 
     public function __construct()

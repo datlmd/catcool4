@@ -1,9 +1,9 @@
 <?php
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
+use App\Controllers\MyController;
 
-class ApiController extends BaseController
+class ApiController extends MyController
 {
     public function __construct()
     {

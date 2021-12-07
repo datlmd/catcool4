@@ -1,8 +1,8 @@
 <?php namespace App\Modules\Images\Controllers;
 
-use App\Controllers\BaseController;
+use App\Controllers\MyController;
 
-class File extends BaseController
+class File extends MyController
 {
     private $_file_path;
     private $_file_url;

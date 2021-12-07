@@ -1,8 +1,8 @@
 <?php namespace App\Modules\Frontend\Controllers;
 
-use App\Controllers\BaseController;
+use App\Controllers\MyController;
 
-class Frontend extends BaseController
+class Frontend extends MyController
 {
 
     public function __construct()

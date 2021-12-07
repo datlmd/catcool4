@@ -1,9 +1,9 @@
 <?php namespace App\Modules\News\Controllers;
 
-use App\Controllers\BaseController;
+use App\Controllers\MyController;
 use App\Modules\News\Models\NewsModel;
 
-class Robot extends BaseController
+class Robot extends MyController
 {
     protected $model;
 

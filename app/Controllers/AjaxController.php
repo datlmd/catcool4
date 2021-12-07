@@ -1,9 +1,9 @@
 <?php
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
+use App\Controllers\MyController;
 
-class AjaxController extends BaseController
+class AjaxController extends MyController
 {
     public function __construct()
     {

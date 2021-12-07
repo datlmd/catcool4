@@ -1,10 +1,10 @@
 <?php namespace App\Modules\Countries\Controllers;
 
-use App\Controllers\BaseController;
+use App\Controllers\MyController;
 use App\Modules\Countries\Models\DistrictModel;
 use App\Modules\Countries\Models\ProvinceModel;
 
-class Countries extends BaseController
+class Countries extends MyController
 {
     public function __construct()
     {

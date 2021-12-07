@@ -1,10 +1,10 @@
 <?php namespace App\Modules\News\Controllers;
 
-use App\Controllers\BaseController;
+use App\Controllers\MyController;
 use App\Modules\News\Models\NewsModel;
 use App\Modules\News\Models\CategoryModel;
 
-class Categories extends BaseController
+class Categories extends MyController
 {
     protected $model;
 

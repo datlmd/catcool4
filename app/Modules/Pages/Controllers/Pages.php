@@ -1,9 +1,9 @@
 <?php namespace App\Modules\Pages\Controllers;
 
-use App\Controllers\BaseController;
+use App\Controllers\MyController;
 use App\Modules\Pages\Models\PageModel;
 
-class Pages extends BaseController
+class Pages extends MyController
 {
     private $mode;
 

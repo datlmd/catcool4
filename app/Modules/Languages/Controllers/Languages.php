@@ -1,8 +1,8 @@
 <?php namespace App\Modules\Languages\Controllers;
 
-use App\Controllers\BaseController;
+use App\Controllers\MyController;
 
-class Languages extends BaseController
+class Languages extends MyController
 {
     public $config_form = [];
     public $data        = [];

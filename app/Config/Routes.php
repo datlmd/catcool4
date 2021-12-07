@@ -30,6 +30,8 @@ $routes->setAutoRoute(true);
  * --------------------------------------------------------------------
  */
 
+$routes->get('install', 'Install::index');
+
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'News::index', ['namespace' => 'App\Modules\News\Controllers']);
@@ -39,7 +41,6 @@ foreach(glob(APPPATH . 'Modules/*', GLOB_ONLYDIR) as $item_dir) {
 		require_once($item_dir . '/Config/Routes.php');
 	}
 }
-
 
 /*
  * --------------------------------------------------------------------

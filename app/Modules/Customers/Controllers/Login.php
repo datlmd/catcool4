@@ -1,8 +1,8 @@
 <?php namespace App\Modules\Customers\Controllers;
 
-use App\Controllers\BaseController;
+use App\Controllers\MyController;
 
-class Login extends BaseController
+class Login extends MyController
 {
 
 
