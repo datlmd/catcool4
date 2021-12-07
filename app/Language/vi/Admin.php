@@ -240,7 +240,7 @@ return [
 	"text_name" => "Tên",
 	"text_no" => "Không",
 	"text_none" => " --- Không --- ",
-	"text_no_results" => "Không có kết quả!",
+	"text_no_results" => "Không có dữ liệu!",
 	"text_parent" => "Danh mục cha",
 	"text_password" => "Mật khẩu",
 	"text_permission" => "Quyền hạn",
