@@ -33,6 +33,7 @@ $routes->add('tin-tuc', 'News::index', ['namespace' => 'App\Modules\News\Control
 
 $routes->add('(:any)-post(:num)c(:num).html', 'Detail::index/$1/$2/$3', ['namespace' => 'App\Modules\News\Controllers']);
 $routes->add('(:any)-post(:num)C(:num).html', 'Detail::index/$1/$2/$3', ['namespace' => 'App\Modules\News\Controllers']);
+$routes->add('(:any)-post(:num)c(:num).preview', 'Detail::index/$1/$2/$3/preview', ['namespace' => 'App\Modules\News\Controllers']);
 
 $routes->add('tag/(:any).html', 'Tag::index/$1', ['namespace' => 'App\Modules\News\Controllers']);
 

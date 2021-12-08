@@ -138,7 +138,8 @@ class NewsModel extends FarmModel
             ];
             if ($is_preview) {
                 $where = [
-                    'news_id' => $news_id,
+                    'news_id'   => $news_id,
+                    'published' => STATUS_OFF,
                 ];
             }
             $result = $this->where($where)->first();

@@ -23,13 +23,29 @@ class Detail extends MyController
         $this->model = new NewsModel();
     }
 
-    public function index($slug, $news_id, $ctime)
+    public function index($slug, $news_id, $ctime, $type = null)
     {
         try {
+
+
+            if (!empty($type) && $type !== 'preview') {
+                page_not_found();
+            }
+
+            $is_preview = false;
+            if (!empty($type) && $type === 'preview') {
+                $is_preview = true;
+            }
+
             $category_model = new CategoryModel();
             $category_list = $category_model->getListPublished();
 
-            $detail = $this->model->getNewsInfo($news_id, $ctime);
+            if ($is_preview) {
+                $detail = $this->model->getNewsInfo($news_id, $ctime, $is_preview, false);
+            } else {
+                $detail = $this->model->getNewsInfo($news_id, $ctime);
+            }
+
             if (empty($detail)) {
                 page_not_found();
             }
