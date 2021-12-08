@@ -47,6 +47,14 @@ class FileManager extends AdminController
 
         $this->_image_thumb_width = !empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH;
         $this->_image_thumb_height = !empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT;
+
+        if (!is_dir($this->_dir_image_path . 'cache')) {
+            mkdir($this->_dir_image_path . 'cache', 0777, TRUE);
+        }
+
+        if (!is_dir($this->_dir_image_path . 'tmp')) {
+            mkdir($this->_dir_image_path . 'tmp', 0777, TRUE);
+        }
     }
 
     public function index()
