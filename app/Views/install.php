@@ -16,7 +16,7 @@
 	<script src="<?= base_url('common/plugin/jquery/jquery.min.js') ?>" type="text/javascript"></script>
 </head>
 <body>
-<div class="container my-5">
+<div class="container my-5" style="max-width: 800px;">
 	<h1 class="text-center text-primary lh-1">
 		Cài đặt Cat Cool - CI <?= CodeIgniter\CodeIgniter::CI_VERSION ?><br/>
 		<small>Install Cat Cool</small>
@@ -61,44 +61,76 @@
 									<?php endif ?>
 								</td>
 							</tr>
-							<tr>
+							<tr <?php if ($register_globals): ?>class="text-danger"<?php endif ?>>
 								<td>Register Globals</td>
 								<td class="text-center">
-									OFF
+									<?php if ($register_globals): ?>
+										ON
+									<?php else: ?>
+										OFF
+									<?php endif ?>
 								</td>
 								<td class="text-center">OFF</td>
 								<td class="text-center">
-									<i class="fas fa-check text-success"></i>
+									<?php if ($register_globals): ?>
+										<i class="fas fa-exclamation-triangle text-danger"></i>
+									<?php else: ?>
+										<i class="fas fa-check text-success"></i>
+									<?php endif ?>
 								</td>
 							</tr>
-							<tr>
+							<tr <?php if ($magic_quotes_gpc): ?>class="text-danger"<?php endif ?>>
 								<td>Magic Quotes GPC</td>
 								<td class="text-center">
-									OFF
+									<?php if ($magic_quotes_gpc): ?>
+										ON
+									<?php else: ?>
+										OFF
+									<?php endif ?>
 								</td>
 								<td class="text-center">OFF</td>
 								<td class="text-center">
-									<i class="fas fa-check text-success"></i>
+									<?php if ($magic_quotes_gpc): ?>
+										<i class="fas fa-exclamation-triangle text-danger"></i>
+									<?php else: ?>
+										<i class="fas fa-check text-success"></i>
+									<?php endif ?>
 								</td>
 							</tr>
-							<tr>
+							<tr <?php if (!$file_uploads): ?>class="text-danger"<?php endif ?>>
 								<td>File Uploads</td>
 								<td class="text-center">
-									ON
+									<?php if ($file_uploads): ?>
+										ON
+									<?php else: ?>
+										OFF
+									<?php endif ?>
 								</td>
 								<td class="text-center">ON</td>
 								<td class="text-center">
-									<i class="fas fa-check text-success"></i>
+									<?php if (!$file_uploads): ?>
+										<i class="fas fa-exclamation-triangle text-danger"></i>
+									<?php else: ?>
+										<i class="fas fa-check text-success"></i>
+									<?php endif ?>
 								</td>
 							</tr>
-							<tr>
+							<tr <?php if ($session_auto_start): ?>class="text-danger"<?php endif ?>>
 								<td>Session Auto Start</td>
 								<td class="text-center">
-									OFF
+									<?php if ($session_auto_start): ?>
+										ON
+									<?php else: ?>
+										OFF
+									<?php endif ?>
 								</td>
 								<td class="text-center">OFF</td>
 								<td class="text-center">
-									<i class="fas fa-check text-success"></i>
+									<?php if ($session_auto_start): ?>
+										<i class="fas fa-exclamation-triangle text-danger"></i>
+									<?php else: ?>
+										<i class="fas fa-check text-success"></i>
+									<?php endif ?>
 								</td>
 							</tr>
 						</tbody>
@@ -120,31 +152,33 @@
 						</tr>
 						</thead>
 						<tbody>
-						<?php foreach ($extension_list as $ext => $status):?>
-							<tr <?php if ($status !== 'ON'): ?>class="text-danger"<?php endif ?>>
-								<td><?= $ext ?></td>
-								<td class="text-center">
-									<?= $status ?>
-								</td>
-								<td class="text-center">
-									ON
-								</td>
-								<td class="text-center">
-									<?php if ($status !== 'ON'): ?>
-										<i class="fas fa-exclamation-triangle text-danger"></i>
-									<?php else: ?>
-										<i class="fas fa-check text-success"></i>
-									<?php endif ?>
-								</td>
-							</tr>
-						<?php endforeach;?>
+
+							<?php foreach ($extension_list as $ext => $value):?>
+								<tr <?php if ($value['status'] !== 'ON' && $value['required'] === 'ON'): ?>class="text-danger"<?php endif ?>>
+									<td><?= $ext ?></td>
+									<td class="text-center">
+										<?= $value['status'] ?>
+									</td>
+									<td class="text-center">
+										<?= $value['required'] ?>
+									</td>
+									<td class="text-center">
+										<?php if ($value['status'] !== $value['required']): ?>
+											<i class="fas fa-exclamation-triangle text-danger"></i>
+										<?php else: ?>
+											<i class="fas fa-check text-success"></i>
+										<?php endif ?>
+									</td>
+								</tr>
+							<?php endforeach;?>
 
 						</tbody>
 					</table>
 				</div>
+				<small>*** GD or GD2 or IMAGICK ***</small>
 			</li>
 
-			<li>
+			<li class="mt-3">
 				<b>Kiểm tra quyền đọc/ ghi file và thư mục</b><br/>
 				<small>Please make sure you have set the correct permissions on the files & directories list below</small>
 				<div class="table-responsive">

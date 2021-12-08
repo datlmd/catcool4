@@ -8,18 +8,19 @@ class Install extends BaseController
 		helper(['filesystem', 'number', 'catcool']);
 
 		$extension_info = [
-			'database',
-			'curl',
-			'intl',
-			'json',
-			'mbstring',
-			'xml',
-			'gd',
-			'gd2',
-			'imagick',
-			'mcrypt',
-			'zlip',
-			'zip'
+			'curl' => 'ON',
+			'intl' => 'ON',
+			'json' => 'ON',
+			'mbstring' => 'ON',
+			'xml' => 'ON',
+			'openssl' => 'ON',
+			'iconv' => 'ON',
+			'gd' => 'ON',
+			'gd2' => 'ON',
+			'imagick'  => 'ON',
+			'mcrypt' => 'ON',
+			'zlip' => 'ON',
+			'zip' => 'ON',
 		];
 
 		$permission_info = [
@@ -47,13 +48,32 @@ class Install extends BaseController
 		}
 
 		$extension_list = [];
-		foreach ($extension_info as $value) {
-			$extension_list[$value] = (!extension_loaded($value)) ? 'OFF' : 'ON';
+		foreach ($extension_info as $key => $value) {
+			$extension_list[$key]['required'] = $value;
+			$extension_list[$key]['status'] = (!extension_loaded($key)) ? 'OFF' : 'ON';
+		}
+
+		$db = [
+			'mysqli',
+			'pgsql',
+			'pdo'
+		];
+
+		if (!array_filter($db, 'extension_loaded')) {
+			$extension_list['database']['required'] = 'ON';
+			$extension_list['database']['status'] = 'OFF';
+		} else {
+			$extension_list['database']['required'] = 'ON';
+			$extension_list['database']['status'] = 'ON';
 		}
 
 		$data = [
 			'permission_list' => $permission_list,
 			'extension_list' => $extension_list,
+			'register_globals' => ini_get('register_globals'),
+			'magic_quotes_gpc' => ini_get('magic_quotes_gpc'),
+			'file_uploads' => ini_get('file_uploads'),
+			'session_auto_start' => ini_get('session_auto_start'),
 		];
 
 		return view('install', $data);
