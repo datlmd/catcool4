@@ -250,6 +250,7 @@ return [
 	"text_photo_crop" => "Cắt hình",
 	"text_photo_edit" => "Chọn hình",
 	"text_plus" => "+",
+	"text_preview" => "Xem trước",
 	"text_profile" => "Trang cá nhân",
 	"text_published" => "Trạng thái",
 	"text_published_success" => "Đã cập nhật trạng thái thành công!",

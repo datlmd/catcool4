@@ -8,9 +8,9 @@
 			</div>
 			<div class="col-sm-7 col-12 mb-2 mb-sm-0 text-end">
 				<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" data-is-trash="1" style="display: none;" title="{lang('Admin.text_move_to_trash')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.text_move_to_trash')}</span>
-				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" title="{lang('NewsAdmin.text_add')}"><i class="fas fa-plus me-1"></i>{lang('NewsAdmin.text_add')}</a>
-				<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter me-1"></i>{lang('Admin.filter_header')}</button>
-				<a href="{site_url($manage_url)}?is_trash=1" class="btn btn-sm btn-secondary btn-space" title="{lang('Admin.button_trash')}"><i class="fas fa-trash me-1"></i>{lang('Admin.button_trash')} ({$count_trash})</a>
+				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" data-bs-toggle="tooltip" title="{lang('NewsAdmin.text_add')}"><i class="fas fa-plus"></i></a>
+				<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" data-bs-toggle="tooltip" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
+				<a href="{site_url($manage_url)}?is_trash=1" class="btn btn-sm btn-secondary btn-space" data-bs-toggle="tooltip" title="{lang('Admin.button_trash')}"><i class="fas fa-trash me-1"></i>({$count_trash})</a>
 				<button id="btn_group_drop_setting" type="button" class="btn btn-sm btn-light btn-space me-0" data-bs-toggle="dropdown" aria-expanded="false">
 					<i class="fas fa-cog"></i>
 				</button>
@@ -64,22 +64,6 @@
 													{/if}
 												</a>
 											</th>
-											<th>
-												<a href="{site_url($manage_url)}?sort=is_homepage&order={$order}{$url}" class="text-dark">
-													{lang('NewsAdmin.text_is_homepage')}
-													{if $sort eq 'is_homepage'}
-														<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
-													{/if}
-												</a>
-											</th>
-											<th>
-												<a href="{site_url($manage_url)}?sort=is_hot&order={$order}{$url}" class="text-dark">
-													{lang('NewsAdmin.text_is_hot')}
-													{if $sort eq 'is_hot'}
-														<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
-													{/if}
-												</a>
-											</th>
 											<th>{lang('Admin.column_published')}</th>
 											<th width="160">{lang('Admin.column_function')}</th>
 											<th width="50">{form_checkbox('manage_check_all')}</th>
@@ -107,7 +91,7 @@
 												<span class="list_datetime">{$item.ctime}</span><br />
 												{$item.description}
 												{if !empty($item.category_ids)}
-													<ul class="list-unstyled bullet-check">
+													<ul class="list-unstyled bullet-check mb-0">
 														{foreach $item.category_ids as $val}
 															{if isset($category_list[$val])}
 																<li class="text-secondary">{$category_list[$val].name}</li>
@@ -115,18 +99,15 @@
 														{/foreach}
 													</ul>
 												{/if}
-											</td>
-											<td>
-												<div class="switch-button switch-button-xs catcool-center">
-													{form_checkbox("is_homepage_`$item.news_id`", ($item.is_homepage eq STATUS_ON) ? true : false, ($item.is_homepage eq STATUS_ON) ? true : false, ['id' => 'is_homepage_'|cat:$item.news_id, 'data-id' => $item.news_id, 'data-is-homepage' => $item.is_homepage, 'class' => 'change_homepage'])}
-													<span><label for="is_homepage_{$item.news_id}"></label></span>
+												<div class="form-check form-switch form-check-inline">
+													{form_checkbox("is_homepage_`$item.news_id`", ($item.is_homepage eq STATUS_ON) ? true : false, ($item.is_homepage eq STATUS_ON) ? true : false, ['id' => 'is_homepage_'|cat:$item.news_id, 'data-id' => $item.news_id, 'data-is-homepage' => $item.is_homepage, 'class' => 'change_homepage form-check-input'])}
+													<label class="form-check-label me-3" for="is_homepage_{$item.news_id}">{lang('NewsAdmin.text_is_homepage')}</label>
 												</div>
-											</td>
-											<td>
-												<div class="switch-button switch-button-xs catcool-center">
-													{form_checkbox("is_hot_`$item.news_id`", ($item.is_hot eq STATUS_ON) ? true : false, ($item.is_hot eq STATUS_ON) ? true : false, ['id' => 'is_hot_'|cat:$item.news_id, 'data-id' => $item.news_id, 'data-is-hot' => $item.is_hot, 'class' => 'change_hot'])}
-													<span><label for="is_hot_{$item.news_id}"></label></span>
+												<div class="form-check form-switch form-check-inline">
+													{form_checkbox("is_hot_`$item.news_id`", ($item.is_hot eq STATUS_ON) ? true : false, ($item.is_hot eq STATUS_ON) ? true : false, ['id' => 'is_hot_'|cat:$item.news_id, 'data-id' => $item.news_id, 'data-is-hot' => $item.is_hot, 'class' => 'change_hot form-check-input'])}
+													<label class="form-check-label" for="is_hot_{$item.news_id}">{lang('NewsAdmin.text_is_hot')}</label>
 												</div>
+
 											</td>
 											<td>
 												<div class="switch-button switch-button-xs catcool-center">
@@ -136,8 +117,9 @@
 											</td>
 											<td class="text-center">
 												<div class="btn-group ms-auto">
-													<a href="{site_url($manage_url)}/edit/{$item.news_id}" class="btn btn-sm btn-light" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
-													<button type="button" data-id="{$item.news_id}" data-is-trash="1" class="btn btn-sm btn-light text-danger btn_delete_single" title="{lang('Admin.text_move_to_trash')}"><i class="fas fa-trash-alt"></i></button>
+													<a href="{site_url($item.preview_url)}" target="_blank" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('Admin.text_preview')}"><i class="fas fa-eye text-primary"></i></a>
+													<a href="{site_url($manage_url)}/edit/{$item.news_id}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
+													<button type="button" data-id="{$item.news_id}" data-is-trash="1" class="btn btn-sm btn-light text-danger btn_delete_single" data-bs-toggle="tooltip" title="{lang('Admin.text_move_to_trash')}"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>
 											<td class="text-center">{form_checkbox('manage_ids[]', $item.news_id)}</td>

@@ -84,7 +84,9 @@ class Manage extends AdminController
 
         $news_list = $list->paginate($limit);
         foreach ($news_list as $key_news => $value) {
-            $news_list[$key_news] = $this->model->formatDetail($value);
+            $value                = $this->model->formatDetail($value);
+            $value['preview_url'] = str_ireplace('.html', '.preview', $value['detail_url']);
+            $news_list[$key_news] = $value;
         }
 
         $data = [

@@ -61,6 +61,8 @@ class NewsModel extends FarmModel
     const SOURCE_TYPE_ROBOT = 1;
     const POST_FORMAT_NORMAL = 1;
 
+    const NEWS_DETAIL_FORMAT = "%s-post%s.html";
+
     private $_news_date_from = "3";
 
     function __construct()
@@ -108,7 +110,8 @@ class NewsModel extends FarmModel
             $this->where("$this->table.published", $filter["published"]);
         }
 
-        $result = $this->orderBy($sort, $order);
+        $result = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'is_hot', 'is_homepage', 'publish_date', 'published', 'images', 'ctime'])
+            ->orderBy($sort, $order);
 
         return $result;
     }
@@ -321,7 +324,7 @@ class NewsModel extends FarmModel
         }
 
         $data['news_id'] = $this->setFormatNewsId($data['news_id'], $data['ctime']);
-        $data['detail_url'] = sprintf('%s-post%s.html', $data['slug'], $data['news_id']);
+        $data['detail_url'] = sprintf(self::NEWS_DETAIL_FORMAT, $data['slug'], $data['news_id']);
 
         return $this->formatJsonDecode($data);
     }

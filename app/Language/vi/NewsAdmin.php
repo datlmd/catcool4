@@ -20,7 +20,7 @@ return [
 	"text_content" => "Nội dung",
 	"text_edit" => "Cập nhật Tin",
 	"text_is_ads" => "Bật Ads",
-	"text_is_disable_follow" => "Tắc Follow",
+	"text_is_disable_follow" => "Tắt Follow",
 	"text_is_disable_robot" => "Tắt Robot",
 	"text_is_fb_ia" => "Facebook Instant Articles",
 	"text_is_homepage" => "Bật Homepae",

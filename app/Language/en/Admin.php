@@ -250,6 +250,7 @@ return [
 	"text_photo_crop" => "Crop Image",
 	"text_photo_edit" => "Select Image",
 	"text_plus" => "+",
+	"text_preview" => "Preview",
 	"text_profile" => "Your profile",
 	"text_published" => "Status",
 	"text_published_success" => "Status updated successfully!",
