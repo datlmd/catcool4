@@ -335,17 +335,14 @@
 	</div>
 
 </div>
-<footer class="container-fluid text-center bg-success text-white py-3">
-	<div class="mb-2">
+<footer class="container-fluid text-center bg-success py-3">
+	<small class="mb-2">
 		Page rendered in {elapsed_time} seconds<br/>
 		Environment: <?= ENVIRONMENT ?>
-	</div>
+	</small>
 
 	<div class="copyrights">
-
-		<small>&copy; <?= date('Y') ?> CodeIgniter Foundation. CodeIgniter is open source project released under the MIT
-			open source licence.</small>
-
+		<small>Copyright © <?= date('Y') ?> CatCool. All rights reserved. Dashboard by Dat Le.</small>
 	</div>
 
 </footer>
