@@ -13,16 +13,25 @@
 		</button>
 		<div class="collapse navbar-collapse " id="navbarSupportedContent">
 			<ul class="navbar-nav ms-auto navbar-right-top">
-				<li class="nav-item">
-					<div id="custom-search" class="top-search-bar">
+				<li class="nav-item dropdown">
+					<div id="custom_search" class="top-search-bar">
 						{if is_multi_lang() == true}
-							<select onchange="javascript:window.location.href='{site_url()}languages/manage/switch/' + this.value;" class="form-control form-control-sm">
+							<a class="icon-animation nav-link p-0" href="#" id="navbar_dropdown_menu_language" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 14px !important;">
 								{foreach get_list_lang(true) as $key => $value}
-									<option value={$value.code}  {if $value.code == session(get_name_session_lang(true))}selected="selected"{/if}>
-										{lang("General.`$value.code`")}
-									</option>
+									{if $value.code == session(get_name_session_lang(true))}
+										{$value.icon}{lang("General.`$value.code`")}
+									{/if}
 								{/foreach}
-							</select>
+							</a>
+							<div class="dropdown-menu dropdown-menu-end nav-user-dropdown" aria-labelledby="navbar_dropdown_menu_language" style="min-width: 170px;">
+								<div class="px-3 py-1">
+									{foreach get_list_lang(true) as $key => $value}
+										<a href="{site_url("languages/manage/switch/`$value.code`")}" class="overflow-hidden d-block my-2">
+											{$value.icon}{lang("General.`$value.code`")}
+										</a>
+									{/foreach}
+								</div>
+							</div>
 						{/if}
 					</div>
 				</li>
