@@ -14,7 +14,7 @@
                 <div class="input-group">
                     <input type="text" name="search" value="{$filter_name}" placeholder="{$entry_search}" style="min-width: 50px;" class="form-control btn-space me-0">
                     <button type="button" title="{$button_search}" id="button_search" class="btn btn-sm btn-primary btn-space"><i class="fas fa-search"></i></button>
-                    <a href="{base_url('image/editor')}" title="Photo Editor" target="_blank" class="btn btn-sm btn-warning btn-space me-0"><i class="fas fa-pencil-alt me-1"></i>Photo Editor</a>
+                    <a href="{base_url('image/editor')}" data-bs-toggle="tooltip" title="Photo Editor" target="_blank" class="btn btn-sm btn-warning btn-space me-0"><i class="fas fa-pencil-alt"></i></a>
                 </div>
             </div>
         </div>
