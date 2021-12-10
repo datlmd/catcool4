@@ -500,8 +500,8 @@ class Manage extends AdminController
                     }
                     $this->model->update($value['id'], ['is_deleted' => STATUS_ON]);
                 }
-
-                set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
+                
+                json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
             } catch (Exception $e) {
                 set_alert($e->getMessage(), ALERT_ERROR, ALERT_POPUP);
             }

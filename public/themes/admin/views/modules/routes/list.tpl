@@ -8,8 +8,8 @@
 			</div>
 			<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
 				<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
-				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" title="{lang('RouteAdmin.text_add')}"><i class="fas fa-plus me-1"></i>{lang('RouteAdmin.text_add')}</a>
-				<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter me-1"></i>{lang('Admin.filter_header')}</button>
+				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" data-bs-toggle="tooltip" title="{lang('RouteAdmin.text_add')}"><i class="fas fa-plus"></i></a>
+				<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" data-bs-toggle="tooltip" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
 				<a href="{site_url($manage_url)}/write" class="btn btn-sm btn-secondary btn-space"><i class="fas fa-save me-1"></i>{lang('Admin.button_write')}</a>
 				{include file=get_theme_path('views/inc/button_translate.tpl') translate_frontend=lang('RouteAdmin.translate_frontend_id') translate_admin=lang('RouteAdmin.translate_admin_id')}
 			</div>
@@ -92,7 +92,7 @@
 									</thead>
 									<tbody>
 									{foreach $list as $item}
-										<tr>
+										<tr id="item_id_{$item.id}">
 											<td class="text-center">{anchor("$manage_url/edit/`$item.id`", $item.id, 'class="text-primary"')}</td>
 											<td>{anchor("$manage_url/edit/`$item.id`", $item.route, 'class="text-primary"')}</td>
 											<td class="text-center">{anchor("$manage_url/edit/`$item.id`", $item.module, 'class="text-primary"')}</td>
@@ -106,8 +106,8 @@
 											</td>
 											<td class="text-center">
 												<div class="btn-group ms-auto">
-													<a href="{site_url($manage_url)}/edit/{$item.id}" class="btn btn-sm btn-light" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
-													<button type="button" data-id="{$item.id}" class="btn btn-sm btn-light text-danger btn_delete_single" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
+													<a href="{site_url($manage_url)}/edit/{$item.id}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
+													<button type="button" data-id="{$item.id}" class="btn btn-sm btn-light text-danger btn_delete_single" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>
 											<td class="text-center">{form_checkbox('manage_ids[]', $item.id)}</td>

@@ -338,6 +338,7 @@ var Catcool = {
                         return false;
                     }
                     $("tr#item_id_" + news_id).remove('slow').fadeOut();
+                    $("tr#item_id_" + news_id + " .btn_delete_single").tooltip('dispose');
                 });
 
                 $('#modal_delete_confirm').modal('hide');

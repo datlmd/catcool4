@@ -151,8 +151,7 @@ class GroupsManage extends AdminController
             }
             $this->model->delete($ids);
 
-            set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
-            json_output(['token' => $token, 'status' => 'redirect', 'url' => site_url(self::MANAGE_URL)]);
+            json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
         }
 
         $delete_ids = $id;
