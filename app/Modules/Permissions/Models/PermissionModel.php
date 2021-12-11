@@ -98,50 +98,59 @@ class PermissionModel extends MyModel
 
     public function checkPermission($permission_name = null)
     {
-        if (empty(session('admin.is_admin')) || empty(session('admin.user_id'))) {
-            return false;
-        }
+        try {
+            if (empty(session('admin.is_admin')) || empty(session('admin.user_id'))) {
+                return false;
+            }
 
-        $is_super_admin = session('admin.super_admin');
-        if (!empty($is_super_admin) && $is_super_admin === TRUE) {
+            $is_super_admin = session('admin.super_admin');
+            if (!empty($is_super_admin) && $is_super_admin === TRUE) {
+                return true;
+            }
+
+            $user_id         = session('admin.user_id');
+            $permission      = [];
+            $permission_name = (!empty($permission_name)) ? $permission_name : uri_string();
+            $permission_name = explode('/', $permission_name);
+
+            if (count($permission_name) < 4) {
+                $permission_tmp = [];
+                foreach ($permission_name as $val) {
+                    if (is_numeric($val)) {
+                        continue;
+                    }
+                    $permission_tmp[] = $val;
+                }
+                $permission_name = implode('/', $permission_tmp);
+            } else {
+                $permission_name = sprintf('%s/%s/%s', $permission_name[0], $permission_name[1], $permission_name[2]);
+            }
+
+            $permissions = $this->getListPublished();
+            if (empty($permissions)) {
+                return false;
+            }
+
+            foreach ($permissions as $value) {
+                if (!empty($value['name']) && $permission_name == $value['name']) {
+                    $permission = $value;
+                    break;
+                }
+            }
+
+            $user_permission_model = new \App\Modules\UsersAdmin\Models\UserPermissionModel();
+
+            $relationships = $user_permission_model->getListPermissionByUserId($user_id);
+            if (empty($permission) || empty($relationships)
+                || !in_array($permission['id'], array_column($relationships, 'permission_id'))) {
+                return false;
+            }
+
             return true;
-        }
-
-        $user_id               = session('admin.user_id');
-        $permission            = [];
-        $permission_name       = (!empty($permission_name)) ? $permission_name : uri_string();
-        $permission_name       = explode('/', $permission_name);
-
-        $permission_tmp = [];
-        foreach ($permission_name as $val) {
-            if (is_numeric($val)) {
-                continue;
-            }
-            $permission_tmp[] = $val;
-        }
-        $permission_name = implode('/', $permission_tmp);
-
-        $permissions = $this->getListPublished();
-        if (empty($permissions)) {
+        } catch (\Exception $ex) {
+            log_message('error', $ex->getMessage());
             return false;
         }
-
-        foreach ($permissions as $value) {
-            if (!empty($value['name']) && $permission_name == $value['name']) {
-                $permission = $value;
-                break;
-            }
-        }
-
-        $user_permission_model = new \App\Modules\UsersAdmin\Models\UserPermissionModel();
-
-        $relationships = $user_permission_model->getListPermissionByUserId($user_id);
-        if (empty($permission) || empty($relationships)
-            || !in_array($permission['id'], array_column($relationships, 'permission_id'))) {
-            return false;
-        }
-
-        return true;
     }
 
     public function formatListPublished($permissions)
