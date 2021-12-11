@@ -170,7 +170,7 @@ class Manage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        $this->_getForm();
+        return $this->_getForm();
     }
 
     private function _getForm($id = null)
