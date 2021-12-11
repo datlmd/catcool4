@@ -88,7 +88,7 @@
 											</td>
 											<td>
 												{anchor("$manage_url/edit/`$item.news_id`", $item.name|unescape:"html", 'class="text-primary"')}<br/>
-												<span class="list_datetime">{$item.published}</span><br />
+												<span class="list_datetime">{$item.publish_date}</span><br />
 												{$item.description}
 												{if !empty($item.category_ids)}
 													<ul class="list-unstyled bullet-check mb-0">
