@@ -218,7 +218,7 @@
                             <label class="form-check-label" for="active_off">OFF</label>
                         </label>
                     </div>
-                    {if $is_super_admin}
+                    {if !empty($is_super_admin)}
                         <div class="form-group">
                             <label class="form-label">{lang('Admin.text_super_admin')}</label>
                             {if isset($edit_data.super_admin)}

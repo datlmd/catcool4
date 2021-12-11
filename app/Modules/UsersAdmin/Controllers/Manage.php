@@ -44,6 +44,9 @@ class Manage extends AdminController
         $this->smarty->assign('manage_url', self::MANAGE_URL);
         $this->smarty->assign('manage_root', self::MANAGE_ROOT);
 
+        //set supper admin
+        $this->smarty->assign('is_super_admin', $this->isSuperAdmin());
+
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
         $this->breadcrumb->add(lang('UserAdmin.heading_title'), base_url(self::MANAGE_URL));
@@ -117,7 +120,14 @@ class Manage extends AdminController
             $avatar = $this->request->getPost('avatar');
             if (!empty($avatar)) {
                 $avatar_name = 'users/' . $username . '_ad.jpg'; //pathinfo($avatar, PATHINFO_EXTENSION);
-                $avatar      = move_file_tmp($avatar, $avatar_name);
+
+                $width  = !empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH;
+                $height = !empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT;
+
+                $image_tool = new \App\Libraries\ImageTool();
+                $image_tool->thumbFit($avatar, $avatar_name, $width, $height);
+
+                $avatar = $avatar_name;
             }
 
             $add_data = [
@@ -133,7 +143,6 @@ class Manage extends AdminController
                 'image'      => $avatar,
                 'active'     => !empty($this->request->getPost('active')) ? STATUS_ON : STATUS_OFF,
                 'user_ip'    => $this->request->getIPAddress(),
-                'ctime'      => get_date(),
             ];
 
             if ($this->isSuperAdmin()) {
@@ -156,6 +165,7 @@ class Manage extends AdminController
                 }
             }
 
+            /*
             $permission_ids = $this->request->getPost('permissions');
             if (!empty($permission_ids)) {
                 $list_permission = $this->permission_model->where(['published', STATUS_ON])->find($permission_ids);
@@ -165,12 +175,13 @@ class Manage extends AdminController
                     }
                 }
             }
+            */
 
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        $this->_getForm();
+        return $this->_getForm();
     }
 
     private function _getForm($id = null)
@@ -211,14 +222,13 @@ class Manage extends AdminController
 
             $data['user_groups']      = $this->user_group_model->where('user_id', $id)->findAll();
             $data['user_permissions'] = $this->user_permission_model->where('user_id', $id)->findAll();
-            
+
             $data['edit_data'] = $data_form;
         } else {
-            $data['text_form']   = lang('UserAdmin.text_add');
+            $data['text_form'] = lang('UserAdmin.text_add');
         }
 
         $data['errors'] = $this->errors;
-        $data['is_super_admin'] = $this->isSuperAdmin();
 
         $this->breadcrumb->add($data['text_form'], base_url(self::MANAGE_URL));
         $data['breadcrumb'] = $this->breadcrumb->render();
@@ -299,7 +309,14 @@ class Manage extends AdminController
             $avatar = $this->request->getPost('avatar');
             if (!empty($avatar)) {
                 $avatar_name = 'users/' . $item_edit['username'] . '_ad.jpg';
-                $avatar      = move_file_tmp($avatar, $avatar_name);
+
+                $width  = !empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH;
+                $height = !empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT;
+
+                $image_tool = new \App\Libraries\ImageTool();
+                $image_tool->thumbFit($avatar, $avatar_name, $width, $height);
+
+                $avatar = $avatar_name;
             } else {
                 $avatar = $this->request->getPost('avatar_root');
             }
@@ -314,7 +331,6 @@ class Manage extends AdminController
                 'gender'     => $this->request->getPost('gender'),
                 'image'      => $avatar,
                 'user_ip'    => $this->request->getIPAddress(),
-                'mtime'      => get_date(),
             ];
 
             if ($id != $this->getUserIdAdmin()) {
@@ -343,6 +359,7 @@ class Manage extends AdminController
 
             $this->user_permission_model->delete(['user_id' => $id]);
 
+            /*
             $permission_ids = $this->request->getPost('permissions');
             if (!empty($permission_ids)) {
                 $list_permission = $this->permission_model->whereIn('id', $permission_ids)->where(['published' => STATUS_ON])->findAll();
@@ -355,6 +372,7 @@ class Manage extends AdminController
                 //reset cache
                 $this->user_permission_model->deleteCache($id);
             }
+            */
 
             set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->back();
@@ -498,9 +516,9 @@ class Manage extends AdminController
                     if ((!empty($value['super_admin']) && empty($this->isSuperAdmin())) || $value['id'] == $this->getUserIdAdmin()) {
                         continue;
                     }
-                    $this->model->update($value['id'], ['is_deleted' => STATUS_ON]);
+                    $this->model->delete($value['id']);
                 }
-                
+
                 json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
             } catch (Exception $e) {
                 set_alert($e->getMessage(), ALERT_ERROR, ALERT_POPUP);

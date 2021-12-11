@@ -4,27 +4,34 @@ $(function() {
     $("html").on("dragover", function(e) {
         e.preventDefault();
         e.stopPropagation();
-        //$("h5").text("Drag here");
+        $('.upload-area h5').removeClass('upload-drop');
+        console.log(1);
     });
 
-    $("html").on("drop", function(e) { e.preventDefault(); e.stopPropagation(); });
-
-    // Drag enter
-    $('.upload-area').on('dragenter', function (e) {
-        e.stopPropagation();
+    $("html").on("drop", function(e) {
         e.preventDefault();
-        //$("h5").text("Drop");
+        e.stopPropagation();
+        console.log(2);
     });
 
-    // Drag over
-    $('.upload-area').on('dragover', function (e) {
+    // Drag enter .upload-area
+    $('body').on('dragenter', function (e) {
         e.stopPropagation();
         e.preventDefault();
-        //$("h5").text("Drop");
+        $('.upload-area h5').removeClass('upload-drop');
+        console.log(3);
+    });
+
+    // Drag over class .upload-area
+    $('body').on('dragover', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $('.upload-area h5').addClass('upload-drop');
+        console.log(4);
     });
 
     // Drop
-    $('.upload-area').on('drop', function (e) {
+    $('body').on('drop', function (e) {
         e.stopPropagation();
         e.preventDefault();
 
@@ -100,6 +107,8 @@ function uploadData(formdata) {
             is_uploading = false;
             $('.loading').fadeOut();
             $('.drop-drap-file .progress').remove().fadeOut();
+            $('.upload-area h5').removeClass('upload-drop');
+
             var response = JSON.stringify(data);
             response     = JSON.parse(response);
             if (response.status == 'ng') {
@@ -112,6 +121,7 @@ function uploadData(formdata) {
             is_uploading = false;
             $('.loading').fadeOut();
             $('.drop-drap-file .progress').remove().fadeOut();
+            $('.upload-area h5').removeClass('upload-drop');
         }
     });
 }
@@ -170,7 +180,7 @@ function addThumbnail(data) {
     var size = convertSize(data.file.size);
     var src = image_url + '/' + data.image;
 
-    var image_html = '<a href="' + src + '" data-lightbox="photos"><img src="' + src + '" class="' + image_class + '"></a>';
+    var image_html = '<a href="' + src + '" data-lightbox="photos"><img src="' + src + '" style="background-image: url(' + src + ');" class="' + image_class + '"></a>';
     image_html += '<input type="hidden" name="' + input_name + '" value="' + data.image + '">';
 
     if ($("#button-image-crop").length) {

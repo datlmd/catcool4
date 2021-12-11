@@ -107,7 +107,6 @@ class PermissionModel extends MyModel
             return true;
         }
 
-        $user_permission_model = new UserPermissionModel();
         $user_id               = session('admin.user_id');
         $permission            = [];
         $permission_name       = (!empty($permission_name)) ? $permission_name : uri_string();
@@ -133,6 +132,8 @@ class PermissionModel extends MyModel
                 break;
             }
         }
+
+        $user_permission_model = new \App\Modules\UsersAdmin\Models\UserPermissionModel();
 
         $relationships = $user_permission_model->getListPermissionByUserId($user_id);
         if (empty($permission) || empty($relationships)

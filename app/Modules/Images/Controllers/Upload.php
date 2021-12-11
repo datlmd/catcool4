@@ -34,7 +34,10 @@ class Upload extends MyController
             }
 
             $file_name     = 'file';
+
             $allowed_types = !empty(config_item('file_ext_allowed')) ?config_item('file_ext_allowed') : 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP';
+            $allowed_types = str_replace('|', ',', config_item('file_ext_allowed'));
+
             $max_size      = !empty(config_item('file_max_size')) ? config_item('file_max_size') : null;
             $max_width     = !empty(config_item('file_max_width')) ? config_item('file_max_width') : null;
             $max_height    = !empty(config_item('file_max_height')) ? config_item('file_max_height') : null;
@@ -63,8 +66,8 @@ class Upload extends MyController
                 json_output(['status' => 'ng', 'msg' => $validation->getError($file_name)]);
             }
 
-            if($file = $this->request->getFile($file_name))
-            {
+            if ($file = $this->request->getFile($file_name)) {
+
                 // Get random file name
                 $newName = trim($file->getRandomName());
 

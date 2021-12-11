@@ -888,6 +888,7 @@
                         },
                         success: function (json) {
                             $('#filemanager #msg').html(json);
+                            $('#modal_image .modal-body').removeClass('upload-drop');
                             if (json['error']) {
                                 $.notify(json['error'], {
                                     'type': 'danger'
@@ -901,6 +902,7 @@
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
                             $('.progress').remove();
+                            $('#modal_image .modal-body').removeClass('upload-drop');
                             alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
                         }
                     });

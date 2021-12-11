@@ -9,6 +9,7 @@ body {
 .img-h-100 { height: 100px !important; }
 .img-h-150 { height: 150px !important; }
 .img-h-200 { height: 200px !important; }
+
 .dropdown-toggle::after {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -246,7 +247,7 @@ label {
 .tox-statusbar__branding {
     display: none !important;
 }
-#filemanager .upload-drop {
+#filemanager .upload-drop, .upload-area .upload-drop {
     border: 2px dashed;
 }
 .table .img-thumbnail {
@@ -254,6 +255,13 @@ label {
 }
 .table .list_datetime {
     font-size: 12px; font-style: italic; color: #818181;
+}
+
+.img-backgroud {
+    content: url(data:image/gif;base64,R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .img-photo-list {

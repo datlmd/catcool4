@@ -7,7 +7,6 @@
             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('UserAdmin.heading_title')}
 		</div>
 		<div class="col-sm-6 col-12 mb-2 mb-sm-0 text-end">
-			<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
 			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary btn-space" data-bs-toggle="tooltip" title="{lang('UserAdmin.button_add')}"><i class="fas fa-plus"></i></a>
 			<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" data-bs-toggle="tooltip" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
 			<a href="{site_url("users/groups_manage")}" class="btn btn-sm btn-primary btn-space"><i class="fas fa-list me-1"></i> {lang('Admin.module_group')}</a>
@@ -87,7 +86,6 @@
 										<th>{lang('UserAdmin.text_phone')}</th>
 										<th>{lang('Admin.text_active')}</th>
 										<th width="160">{lang('Admin.column_function')}</th>
-										<th width="50">{form_checkbox('manage_check_all')}</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -105,7 +103,7 @@
 											{/if}
 											{anchor("$manage_url/edit/`$item.id`", htmlspecialchars($item.username, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}
 										</td>
-										<td class="text-center">{$item.first_name} {$item.last_name}</td>
+										<td class="text-center">{$item.first_name}</td>
 										<td>{htmlspecialchars($item.email, ENT_QUOTES,'UTF-8')}</td>
 										<td>{htmlspecialchars($item.phone, ENT_QUOTES,'UTF-8')}</td>
 										<td>
@@ -117,12 +115,13 @@
 										<td class="text-center">
 											<div class="btn-group ms-auto">
 												<a href="{$manage_url}/edit/{$item.id}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
-												<a href="{$manage_url}/change_password/{$item.id}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('UserAdmin.text_change_password')}"><i class="fas fa-key"></i></a>
-												<a href="{$manage_url}/permission/{$item.id}" class="btn btn-sm btn-light text-brand" data-bs-toggle="tooltip" title="{lang('UserAdmin.text_permission_select')}"><i class="fas fa-lock-open"></i></a>
+												<a href="{$manage_url}/change_password/{$item.id}" class="btn btn-sm btn-light text-primary" data-bs-toggle="tooltip" title="{lang('UserAdmin.text_change_password')}"><i class="fas fa-key"></i></a>
+
+												<a href="{$manage_url}/permission/{$item.id}" class="btn btn-sm btn-light text-dark" data-bs-toggle="tooltip" title="{lang('UserAdmin.text_permission_select')}"><i class="fas fa-lock-open"></i></a>
+
 												<button type="button" data-id="{$item.id}" class="btn btn-sm btn-light btn_delete_single text-danger" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
 											</div>
 										</td>
-										<td class="text-center">{form_checkbox('manage_ids[]', $item.id)}</td>
 									</tr>
 								{/foreach}
 								</tbody>

@@ -208,10 +208,6 @@
                         {form_close()}
                     </div>
                 </div>
-                {*<div class="modal-footer text-center">*}
-                {*<button type="submit" class="btn btn-sm btn-space btn-primary">{lang('button_save')}</button>*}
-                {*<a href="#" class="btn btn-secondary btn-sm btn-space" data-dismiss="modal">Close</a>*}
-                {*</div>*}
             </div>
         </div>
     </div>
