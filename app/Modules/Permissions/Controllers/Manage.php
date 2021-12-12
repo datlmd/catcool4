@@ -221,6 +221,9 @@ class Manage extends AdminController
         $module_model = new \App\Modules\Modules\Models\ModuleModel();
         $module_list  = $module_model->where('sub_module', "")->findAll();
 
+        $this->breadcrumb->reset();
+        $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
+        $this->breadcrumb->add(lang('PermissionAdmin.heading_title'), base_url(self::MANAGE_URL));
         $this->breadcrumb->add("Check Module", base_url(self::MANAGE_URL));
 
         $data = [
