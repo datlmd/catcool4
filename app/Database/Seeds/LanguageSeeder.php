@@ -7,38 +7,41 @@ class LanguageSeeder extends Seeder
 	public function run()
 	{
 		$data = [
+
 			[
-				'lang_key'   => 'error_module',
-				'lang_value' => 'Module không tồn tại',
+				'lang_key'   => 'translate_admin_id',
+				'lang_value' => '56',
 				'lang_id'    => 1, // viet nam
-				'module_id'  => 46, // Admin
+				'module_id'  => 56, // Admin
 				'user_id'	 => 1, //admin
 				'published'  => 1,
 			],
 			[
-				'lang_key'   => 'error_module',
-				'lang_value' => 'Module does not exist!',
+				'lang_key'   => 'translate_admin_id',
+				'lang_value' => '56',
 				'lang_id'    => 2, // tieng anh
-				'module_id'  => 46, // Admin
+				'module_id'  => 56, // Admin
 				'user_id'	 => 1, //admin
 				'published'  => 1,
 			],
+
 			[
-				'lang_key'   => 'button_check',
-				'lang_value' => 'Check',
+				'lang_key'   => 'translate_frontend_id',
+				'lang_value' => '55',
 				'lang_id'    => 1, // viet nam
-				'module_id'  => 46, // Admin
+				'module_id'  => 56, // Admin
 				'user_id'	 => 1, //admin
 				'published'  => 1,
 			],
 			[
-				'lang_key'   => 'button_check',
-				'lang_value' => 'Check',
+				'lang_key'   => 'translate_frontend_id',
+				'lang_value' => '55',
 				'lang_id'    => 2, // tieng anh
-				'module_id'  => 46, // Admin
+				'module_id'  => 56, // Admin
 				'user_id'	 => 1, //admin
 				'published'  => 1,
-			]
+			],
+
 		];
 
 		$model = model('App\Modules\Translations\Models\TranslationModel');

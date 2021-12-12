@@ -375,7 +375,7 @@ class Builder extends AdminController
             }
             if (!is_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/delete.tpl')) {
                 write_file(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/delete.tpl', $string_delete_tpl);
-                chmode(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/delete.tpl', 0777);
+                chmod(APPPATH . 'Modules/' . $module_name_class . '/Views/' . $controller_name . '/delete.tpl', 0777);
             } else {
                 $error_created[] = sprintf(lang('Builder.file_created'), $controller_name . '/delete.tpl');
             }
