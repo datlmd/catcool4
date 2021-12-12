@@ -32,9 +32,7 @@
                                 {lang('Admin.button_delete')}
                             {/if}
                         </button>
-                        <a href="#" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</span>
-                        </a>
+                        <button type="button" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</button>
                     </div>
                 {form_close()}
             </div>

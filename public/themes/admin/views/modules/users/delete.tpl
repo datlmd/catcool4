@@ -17,9 +17,7 @@
                         {form_hidden('ids', $ids)}
                         {form_hidden('is_delete', true)}
                         <button type="button" id="submit_delete" onclick="Catcool.submitDelete('delete_validationform');" class="btn btn-sm btn-space btn-danger"><i class="fas fa-trash-alt me-2"></i>{lang('Admin.button_delete')}</button>
-                        <a href="#" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</span>
-                        </a>
+                        <button type="button" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</button>
                     </div>
                 {/if}
             {form_close()}
@@ -32,9 +30,7 @@
                 </ul>
                 {if empty($list_delete)}
                     <div class="form-group text-center clearfix">
-                        <a href="#" class="btn btn-sm btn-space btn-light" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</span>
-                        </a>
+                        <button type="button" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</button>
                     </div>
                 {/if}
             {/if}

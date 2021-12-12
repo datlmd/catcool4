@@ -200,9 +200,7 @@
                                 <div class="col-12 col-sm-3"></div>
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     <button type="button" onclick="addTranslate()" class="btn btn-sm btn-space btn-primary btn-add-translate"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
-                                    <a href="#" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</span>
-                                    </a>
+                                    <button type="button" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</button>
                                 </div>
                             </div>
                         {form_close()}
@@ -261,9 +259,7 @@
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     <input type="hidden" name="module_id_old" id="module_id_old" value="">
                                     <button type="button" onclick="submitEditTranslate()" class="btn btn-sm btn-space btn-primary btn-edit-translate"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
-                                    <a href="#" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</span>
-                                    </a>
+                                    <button type="button" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</button>
                                 </div>
                             </div>
                         {form_close()}
