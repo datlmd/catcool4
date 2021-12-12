@@ -76,8 +76,7 @@ class Manage extends AdminController
     public function add()
     {
 
-        if (!empty($this->request->getPost()))
-        {
+        if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
@@ -135,6 +134,106 @@ class Manage extends AdminController
         }
 
         return $this->_getForm($id);
+    }
+
+    public function checkModule()
+    {
+        helper('filesystem');
+
+        $module_methods = [];
+        $module = $this->request->getPost('module');
+
+        $except = [
+            '__construct',
+            'initController',
+            'trackingLogAccess',
+            'pageNotFound',
+            'clearCacheAuto',
+            'forceHTTPS',
+            'cachePage',
+            'loadHelpers',
+            'validate',
+            'isSuperAdmin',
+            'getUserId',
+            'getUserIdAdmin'
+        ];
+
+        if (!empty($module)) {
+
+            $module = ucfirst($module);
+
+            if (!is_dir(APPPATH . 'Modules/' . $module)) {
+                set_alert(lang("Admin.error_module"), ALERT_ERROR);
+                return redirect()->back()->withInput();
+            }
+
+            $permission_arr = $this->model->findAll();
+
+            $permission_list = [];
+            foreach ($permission_arr as $value) {
+                $permission_list[$value['name']] = $value;
+            }
+
+            $controllers = get_filenames(APPPATH . 'Modules/' . $module . '/Controllers/');
+            foreach ($controllers as $key => $value) {
+                if( strpos( $value, '.php' ) === FALSE) {
+                    unset($controllers[$key]);
+                }
+
+                foreach ($controllers as $controller) {
+
+                    if (strpos(strtolower($controller), 'manage') === false) {
+                        continue;
+                    }
+
+                    $controller = str_replace('.php', '', $controller);
+                    $controller_tmp = "\\App\\Modules\\$module\\Controllers\\$controller";
+
+                    $controller_tmp = new $controller_tmp();
+                    $methods = get_class_methods($controller_tmp);
+
+                    foreach ($methods as $method) {
+                        if (in_array($method, $except)) {
+                            continue;
+                        }
+
+                        $action_tmp = str_ireplace("manage", "", strtolower($controller));
+                        if (!empty($action_tmp)) {
+                            $action_tmp = implode("_", array_merge([$action_tmp], ['manage']));
+                        } else {
+                            $action_tmp = "manage";
+                        }
+
+                        preg_match('/[A-Z]/', $method, $match);
+                        if (!empty($match[0])) {
+                            $method = explode($match[0], $method);
+                            $method = implode("_$match[0]", $method);
+                        }
+
+                        $method = sprintf("%s/%s/%s", strtolower($module), $action_tmp, strtolower($method));
+                        $method = str_ireplace("/index", "", $method);
+                        $module_methods[$controller][$method] = !empty($permission_list[$method]) ? $permission_list[$method] : null;
+                    }
+                }
+            }
+        }
+
+        $module_model = new \App\Modules\Modules\Models\ModuleModel();
+        $module_list  = $module_model->where('sub_module', "")->findAll();
+
+        $this->breadcrumb->add("Check Module", base_url(self::MANAGE_URL));
+
+        $data = [
+            'module_list'    => $module_list,
+            'manage_url'     => self::MANAGE_URL,
+            'module'         => $module,
+            'module_methods' => $module_methods,
+            'breadcrumb'     => $this->breadcrumb->render(),
+        ];
+
+        add_meta(['title' => "Check Module"], $this->themes);
+
+        $this->themes::load('check_module', $data);
     }
 
     public function delete($id = null)
@@ -208,7 +307,12 @@ class Manage extends AdminController
 
             $data['edit_data'] = $data_form;
         } else {
-            $data['text_form']   = lang('PermissionAdmin.text_add');
+            $data['text_form'] = lang('PermissionAdmin.text_add');
+        }
+
+        if (empty($id) && empty($data['edit_data']) && !empty($this->request->getGet())) {
+            $data['edit_data']['name'] = $this->request->getGet('name');
+            $data['edit_data']['description'] = $this->request->getGet('description');
         }
 
         $data['errors'] = $this->errors;

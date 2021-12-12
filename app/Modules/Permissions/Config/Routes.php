@@ -12,4 +12,5 @@ $routes->group('permissions', ['namespace' => 'App\Modules\Permissions\Controlle
     $subroutes->add('manage/delete', 'Manage::delete');
     $subroutes->add('manage/publish', 'Manage::publish');
     $subroutes->add('manage/not_allowed', 'Manage::notAllowed');
+    $subroutes->add('manage/check_module', 'Manage::checkModule');
 });
