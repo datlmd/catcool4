@@ -85,7 +85,7 @@ return [
 	"button_use_icon" => "Use Selected Icon",
 	"button_view" => "View",
 	"button_voucher_add" => "Add Voucher",
-	"button_write" => "Save File",
+	"button_write" => "Write File",
 	"catcool_dashboard" => "Home",
 	"column_context" => "Context",
 	"column_description" => "Description",
