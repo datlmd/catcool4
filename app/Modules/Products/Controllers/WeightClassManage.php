@@ -88,10 +88,6 @@ class WeightClassManage extends AdminController
             }
 
             $add_data = [
-                'sort_order' => $this->request->getPost('sort_order'),
-                'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-                'ctime'      => get_date(),
-                
                 'value' => $this->request->getPost('value'),
             ];
             $id = $this->model->insert($add_data);
@@ -102,8 +98,8 @@ class WeightClassManage extends AdminController
 
             $add_data_lang = $this->request->getPost('lang');
             foreach (get_list_lang(true) as $language) {
-                $add_data_lang[$language['id']]['language_id'] = $language['id'];
-                $add_data_lang[$language['id']]['weight_class_id']    = $id;
+                $add_data_lang[$language['id']]['language_id']     = $language['id'];
+                $add_data_lang[$language['id']]['weight_class_id'] = $id;
                 $this->model_lang->insert($add_data_lang[$language['id']]);
             }
 
@@ -129,8 +125,8 @@ class WeightClassManage extends AdminController
 
             $edit_data_lang = $this->request->getPost('lang');
             foreach (get_list_lang(true) as $language) {
-                $edit_data_lang[$language['id']]['language_id'] = $language['id'];
-                $edit_data_lang[$language['id']]['weight_class_id']    = $id;
+                $edit_data_lang[$language['id']]['language_id']     = $language['id'];
+                $edit_data_lang[$language['id']]['weight_class_id'] = $id;
 
                 if (!empty($this->model_lang->where(['weight_class_id' => $id, 'language_id' => $language['id']])->find())) {
                     $this->model_lang->where('language_id', $language['id'])->update($id,$edit_data_lang[$language['id']]);
@@ -140,11 +136,8 @@ class WeightClassManage extends AdminController
             }
 
             $edit_data = [
-                'weight_class_id'   => $id,
-                'sort_order' => $this->request->getPost('sort_order'),
-                'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-                
-                'value' => $this->request->getPost('value'),
+                'weight_class_id' => $id,
+                'value'           => $this->request->getPost('value'),
             ];
             if ($this->model->save($edit_data) !== FALSE) {
                 set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
