@@ -190,9 +190,10 @@ class WeightClassManage extends AdminController
 
     private function _validateForm()
     {
-        $this->validator->setRule('value', lang('ProductWeightClassAdmin.text_value'), 'numeric');
+        $this->validator->setRule('value', lang('ProductWeightClassAdmin.text_value'), 'required|numeric');
         foreach(get_list_lang(true) as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
+            $this->validator->setRule(sprintf('lang.%s.unit', $value['id']), lang('ProductWeightClassAdmin.text_unit') . ' (' . $value['name']  . ')', 'required');
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();

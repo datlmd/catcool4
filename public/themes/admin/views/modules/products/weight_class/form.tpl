@@ -23,11 +23,31 @@
                         {include file=get_theme_path('views/inc/alert.tpl') message=$errors type='danger'}
                     </div>
                 {/if}
-                <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+                <div class="col-12">
                     <div class="card">
                         <h5 class="card-header"><i class="fas {if !empty($edit_data.weight_class_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
-                        <div class="card-body p-0 pt-3 bg-light">
-                            <div class="tab-regular">
+
+                        <div class="card-body p-0 pt-3">
+
+                            <div class="form-group row pb-3">
+                                <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
+                                    {lang('ProductWeightClassAdmin.text_value')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-7">
+                                    {if isset($edit_data.value)}
+                                        {assign var="value" value="`$edit_data.value`"}
+                                    {else}
+                                        {assign var="value" value=""}
+                                    {/if}
+                                    <input type="text" name="value" value="{old('value', $value)}" id="value" class="form-control {if $validator->hasError("value")}is-invalid{/if}">
+                                    <div class="invalid-feedback">
+                                        {$validator->getError("value")}
+                                    </div>
+                                    <small>{lang('ProductWeightClassAdmin.help_weight_value')}</small>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-regular border-top bg-light pt-3">
 
                                 {include file=get_theme_path('views/inc/tab_language.inc.tpl') languages=$language_list}
                                 <div class="tab-content border-0 p-3" id="dummy_tab_content">
@@ -51,7 +71,7 @@
                                             </div>
                                             
                                             <div class="form-group row">
-                                                <label class="col-12 col-sm-3 col-form-label text-sm-end">
+                                                <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
                                                     {lang('ProductWeightClassAdmin.text_unit')}
                                                 </label>
                                                 <div class="col-12 col-sm-8 col-lg-7">
@@ -60,7 +80,10 @@
                                                     {else}
                                                         {assign var="unit" value=""}
                                                     {/if}
-                                                    <input type="text" name="lang[{$language.id}][unit]" value="{old("lang.{$language.id}.unit", $unit)}" id="input_unit_{$language.id}" class="form-control">
+                                                    <input type="text" name="lang[{$language.id}][unit]" value="{old("lang.{$language.id}.unit", $unit)}" id="input_unit_{$language.id}" class="form-control {if $validator->hasError("lang.{$language.id}.unit")}is-invalid{/if}">
+                                                    <div class="invalid-feedback">
+                                                        {$validator->getError("lang.{$language.id}.unit")}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -71,24 +94,24 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
-                    <div class="card">
-                        <h5 class="card-header">{lang('Admin.text_manage_more')}</h5>
-                        <div class="card-body">
-                            
-                            <div class="form-group">
-                                <label class="form-label">{lang('ProductWeightClassAdmin.text_value')}</label>
-                                {if isset($edit_data.value)}
-                                    {assign var="value" value="`$edit_data.value`"}
-                                {else}
-                                    {assign var="value" value=""}
-                                {/if}
-                                <input type="text" name="value" value="{old('value', $value)}" id="value" class="form-control">
-                            </div>
+                {*<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">*}
+                    {*<div class="card">*}
+                        {*<h5 class="card-header">{lang('Admin.text_manage_more')}</h5>*}
+                        {*<div class="card-body">*}
 
-                        </div>
-                    </div>
-                </div>
+                            {*<div class="form-group">*}
+                                {*<label class="form-label">{lang('ProductWeightClassAdmin.text_value')}</label>*}
+                                {*{if isset($edit_data.value)}*}
+                                    {*{assign var="value" value="`$edit_data.value`"}*}
+                                {*{else}*}
+                                    {*{assign var="value" value=""}*}
+                                {*{/if}*}
+                                {*<input type="text" name="value" value="{old('value', $value)}" id="value" class="form-control">*}
+                            {*</div>*}
+
+                        {*</div>*}
+                    {*</div>*}
+                {*</div>*}
             </div>
         {form_close()}
     </div>
