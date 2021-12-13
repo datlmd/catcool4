@@ -37,7 +37,7 @@ class RunSeeder extends AdminController
             $seeder->call('LanguageSeeder');
 
             // add config
-            //$seeder->call('ConfigSeeder');
+            $seeder->call('ConfigSeeder');
 
             $message = "Added successfully!";
         } catch (\Exception $ex) {

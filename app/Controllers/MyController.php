@@ -183,8 +183,15 @@ class MyController extends Controller
     public function clearCacheAuto()
     {
         try {
+            $day_clear = config_item('day_clear_cache_auto');
+            if (empty($day_clear)) {
+                return false;
+            }
+
+            $day_clear = explode(",", $day_clear);
+
             $day = date("d", time());
-            if ($day != 2) {
+            if (!in_array($day, $day_clear)) {
                 return false;
             }
 
