@@ -22,15 +22,14 @@ class ConfigSeeder extends Seeder
 		 */
 
 		$data = [
-
-			[
-				'config_key'   => "day_clear_cache_auto",
-				'config_value' => "1,14,28",
-				'description'  => "Xóa cache html detail các ngày 1, 14 và ngày 28",
-				'group_id'	   => 5,
-				'published'    => 1,
-				'user_id'	   => 1,
-			],
+//			[
+//				'config_key'   => "day_clear_cache_auto",
+//				'config_value' => "1,14,28",
+//				'description'  => "Xóa cache html detail các ngày 1, 14 và ngày 28",
+//				'group_id'	   => 5,
+//				'published'    => 1,
+//				'user_id'	   => 1,
+//			],
 		];
 
 		$model = model('App\Modules\Configs\Models\ConfigModel');
