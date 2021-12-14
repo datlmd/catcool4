@@ -53,7 +53,12 @@
 										{foreach $list as $item}
 											<tr id="item_id_{$item.length_class_id}">
 												<td class="text-center">{anchor("$manage_url/edit/`$item.length_class_id`", $item.length_class_id, 'class="text-primary"')}</td>
-												<td class="text-center">{anchor("$manage_url/edit/`$item.length_class_id`", $item.name, 'class="text-primary"')}</td>
+												<td>
+													{anchor("$manage_url/edit/`$item.length_class_id`", $item.name, 'class="text-primary"')}
+													{if $item.length_class_id eq config_item('length_class')}
+														&nbsp{lang('Admin.text_default')}
+													{/if}
+												</td>
 												<td class="text-center">{$item.unit}</td>
 												<td class="text-center">{$item.value}</td>
 												<td class="text-center">
