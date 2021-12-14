@@ -10,7 +10,7 @@
 		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
 			<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
 			<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" title="{lang('ConfigAdmin.text_add')}"><i class="fas fa-plus me-1"></i>{lang('ConfigAdmin.text_add')}</a>
-			<a href="{$manage_url}/write" class="btn btn-sm btn-secondary btn-space" title="{lang('Admin.button_write')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_write')}</a>
+			<a href="{$manage_url}/write" class="btn btn-sm btn-light btn-space" title="{lang('Admin.button_write')}"><i class="fas fa-sync me-1"></i>{lang('Admin.button_write')}</a>
 			<button id="btn_group_drop_setting" type="button" class="btn btn-sm btn-light btn-space me-0" data-bs-toggle="dropdown" aria-expanded="false">
 				<i class="fas fa-cog"></i>
 			</button>
