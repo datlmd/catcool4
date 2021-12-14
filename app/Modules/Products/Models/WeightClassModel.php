@@ -21,6 +21,9 @@ class WeightClassModel extends MyModel
     protected $table_lang = 'weight_class_lang';
     protected $with = ['weight_class_lang'];
 
+    const WEIGHT_CLASS_CACHE_NAME = 'weight_class_list_all';
+    const WEIGHT_CLASS_CACHE_EXPIRE = YEAR;
+
     public function __construct()
     {
         parent::__construct();
@@ -47,5 +50,34 @@ class WeightClassModel extends MyModel
             ->orderBy($sort, $order);
 
         return $this;
+    }
+
+    public function getListALL($is_cache = true)
+    {
+        $result = $is_cache ? cache()->get(self::WEIGHT_CLASS_CACHE_NAME) : null;
+        if (empty($result)) {
+            $result = $this->orderBy('value', 'ASC')->findAll();
+            if (empty($result)) {
+                return false;
+            }
+
+            $language_id = get_lang_id(true);
+            foreach ($result as $key => $value) {
+                $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
+            }
+
+            if ($is_cache) {
+                // Save into the cache for $expire_time 1 month
+                cache()->save(self::WEIGHT_CLASS_CACHE_NAME, $result, self::WEIGHT_CLASS_CACHE_EXPIRE);
+            }
+        }
+
+        return $result;
+    }
+
+    public function deleteCache()
+    {
+        cache()->delete(self::WEIGHT_CLASS_CACHE_NAME);
+        return true;
     }
 }

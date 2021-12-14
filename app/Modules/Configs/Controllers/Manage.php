@@ -210,11 +210,11 @@ class Manage extends AdminController
         $data['country_list']  = $country_model->getListDisplay();
         $data['province_list'] = $province_model->getListDisplay();
 
-        //$this->load->model("products/Length_class", "Length_class");
-        $data['length_class_list'] = null;//format_dropdown($this->Length_class->get_list(), 'length_class_id');
+        $length_class_model = new \App\Modules\Products\Models\LengthClassModel();
+        $data['length_class_list'] = format_dropdown($length_class_model->getListALL(), 'length_class_id');
 
-        //$this->load->model("products/Weight_class", "Weight_class");
-        $data['weight_class_list'] = null;//format_dropdown($this->Weight_class->get_list(), 'weight_class_id');
+        $weight_class_model = new \App\Modules\Products\Models\WeightClassModel();
+        $data['weight_class_list'] = format_dropdown($weight_class_model->getListALL(), 'weight_class_id');
 
         $data['timezone_list'] = $this->_getListTimezone();
         $data['currency_list'] = format_dropdown($currency_model->getListPublished(), 'code');

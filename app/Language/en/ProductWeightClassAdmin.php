@@ -1,7 +1,7 @@
 <?php
 
 return [
-	"heading_title" => "Weight class",
+	"heading_title" => "Weight classes",
 	"help_weight_value" => "Set to 1.00000 if this is your default weight",
 	"text_unit" => "Unit",
 	"text_value" => "Value",

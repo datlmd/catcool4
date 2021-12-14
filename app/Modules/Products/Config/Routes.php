@@ -12,13 +12,13 @@ $routes->group('products', ['namespace' => 'App\Modules\Products\Controllers'], 
     $subroutes->add('manage/delete', 'Manage::delete');
     $subroutes->add('manage/publish', 'Manage::publish');
 
-    $subroutes->add('weight_class_manage', 'WeightClassManage::index');
-    $subroutes->add('weight_class_manage/add', 'WeightClassManage::add');
-    $subroutes->add('weight_class_manage/edit/(:num)', 'WeightClassManage::edit/$1');
-    $subroutes->add('weight_class_manage/delete', 'WeightClassManage::delete');
+    $subroutes->add('weight_classes_manage', 'WeightClassesManage::index');
+    $subroutes->add('weight_classes_manage/add', 'WeightClassesManage::add');
+    $subroutes->add('weight_classes_manage/edit/(:num)', 'WeightClassesManage::edit/$1');
+    $subroutes->add('weight_classes_manage/delete', 'WeightClassesManage::delete');
 
-    $subroutes->add('length_class_manage', 'LengthClassManage::index');
-    $subroutes->add('length_class_manage/add', 'LengthClassManage::add');
-    $subroutes->add('length_class_manage/edit/(:num)', 'LengthClassManage::edit/$1');
-    $subroutes->add('length_class_manage/delete', 'LengthClassManage::delete');
+    $subroutes->add('length_classes_manage', 'LengthClassesManage::index');
+    $subroutes->add('length_classes_manage/add', 'LengthClassesManage::add');
+    $subroutes->add('length_classes_manage/edit/(:num)', 'LengthClassesManage::edit/$1');
+    $subroutes->add('length_classes_manage/delete', 'LengthClassesManage::delete');
 });

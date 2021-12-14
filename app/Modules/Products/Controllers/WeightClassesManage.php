@@ -1,17 +1,17 @@
 <?php namespace App\Modules\Products\Controllers;
 
 use App\Controllers\AdminController;
-use App\Modules\Products\Models\LengthClassModel;
-use App\Modules\Products\Models\LengthClassLangModel;
+use App\Modules\Products\Models\WeightClassModel;
+use App\Modules\Products\Models\WeightClassLangModel;
 
-class LengthClassManage extends AdminController
+class WeightClassesManage extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'products/length_class_manage';
-    CONST MANAGE_URL  = 'products/length_class_manage';
+    CONST MANAGE_ROOT = 'products/weight_classes_manage';
+    CONST MANAGE_URL  = 'products/weight_classes_manage';
 
     public function __construct()
     {
@@ -22,8 +22,8 @@ class LengthClassManage extends AdminController
             ->addPartial('footer')
             ->addPartial('sidebar');
 
-        $this->model = new LengthClassModel();
-        $this->model_lang = new LengthClassLangModel();
+        $this->model = new WeightClassModel();
+        $this->model_lang = new WeightClassLangModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -35,17 +35,17 @@ class LengthClassManage extends AdminController
 
 	public function index()
 	{
-        add_meta(['title' => lang('ProductLengthClassAdmin.heading_title')], $this->themes);
+        add_meta(['title' => lang('ProductWeightClassAdmin.heading_title')], $this->themes);
 
-        $length_class_id = $this->request->getGet('length_class_id');
+        $weight_class_id = $this->request->getGet('weight_class_id');
         $name     = $this->request->getGet('name');
         $limit    = $this->request->getGet('limit');
         $sort     = $this->request->getGet('sort');
         $order    = $this->request->getGet('order');
 
         $filter = [
-            'active'   => count(array_filter($this->request->getGet(['length_class_id', 'name', 'limit']))) > 0,
-            'length_class_id' => $length_class_id ?? "",
+            'active'   => count(array_filter($this->request->getGet(['weight_class_id', 'name', 'limit']))) > 0,
+            'weight_class_id' => $weight_class_id ?? "",
             'name'     => $name ?? "",
             'limit'    => $limit,
         ];
@@ -53,8 +53,8 @@ class LengthClassManage extends AdminController
         $list = $this->model->getAllByFilter($filter, $sort, $this->request->getGet('order'));
 
         $url = "";
-        if (!empty($length_class_id)) {
-            $url .= '&length_class_id=' . $length_class_id;
+        if (!empty($weight_class_id)) {
+            $url .= '&weight_class_id=' . $weight_class_id;
         }
         if (!empty($name)) {
             $url .= '&name=' . urlencode(html_entity_decode($name, ENT_QUOTES, 'UTF-8'));
@@ -64,19 +64,19 @@ class LengthClassManage extends AdminController
         }
 
         $this->breadcrumb->add(lang('ProductAdmin.heading_title'), site_url('products/manage'));
-        $this->breadcrumb->add(lang('ProductLengthClassAdmin.heading_title'), site_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang('ProductWeightClassAdmin.heading_title'), site_url(self::MANAGE_URL));
 
 	    $data = [
             'breadcrumb' => $this->breadcrumb->render(),
             'list'       => $list->paginate($limit),
             'pager'      => $list->pager,
             'filter'     => $filter,
-            'sort'       => empty($sort) ? 'length_class_id' : $sort,
+            'sort'       => empty($sort) ? 'weight_class_id' : $sort,
             'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'        => $url,
         ];
 
-        $this->themes::load('length_class/list', $data);
+        $this->themes::load('weight_classes/list', $data);
 	}
 
     public function add()
@@ -99,9 +99,11 @@ class LengthClassManage extends AdminController
             $add_data_lang = $this->request->getPost('lang');
             foreach (get_list_lang(true) as $language) {
                 $add_data_lang[$language['id']]['language_id']     = $language['id'];
-                $add_data_lang[$language['id']]['length_class_id'] = $id;
+                $add_data_lang[$language['id']]['weight_class_id'] = $id;
                 $this->model_lang->insert($add_data_lang[$language['id']]);
             }
+
+            $this->model->deleteCache();
 
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
@@ -117,7 +119,7 @@ class LengthClassManage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()) && $id == $this->request->getPost('length_class_id')) {
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('weight_class_id')) {
             if (!$this->_validateForm()) {
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
@@ -126,24 +128,28 @@ class LengthClassManage extends AdminController
             $edit_data_lang = $this->request->getPost('lang');
             foreach (get_list_lang(true) as $language) {
                 $edit_data_lang[$language['id']]['language_id']     = $language['id'];
-                $edit_data_lang[$language['id']]['length_class_id'] = $id;
+                $edit_data_lang[$language['id']]['weight_class_id'] = $id;
 
-                if (!empty($this->model_lang->where(['length_class_id' => $id, 'language_id' => $language['id']])->find())) {
-                    $this->model_lang->where('language_id', $language['id'])->update($id, $edit_data_lang[$language['id']]);
+                if (!empty($this->model_lang->where(['weight_class_id' => $id, 'language_id' => $language['id']])->find())) {
+                    $this->model_lang->where('language_id', $language['id'])->update($id,$edit_data_lang[$language['id']]);
                 } else {
                     $this->model_lang->insert($edit_data_lang[$language['id']]);
                 }
             }
 
             $edit_data = [
-                'length_class_id' => $id,
+                'weight_class_id' => $id,
                 'value'           => $this->request->getPost('value'),
             ];
-            if ($this->model->save($edit_data) !== FALSE) {
-                set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
-            } else {
+
+            if (!$this->model->save($edit_data)) {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
+                return redirect()->back();
             }
+
+            $this->model->deleteCache();
+
+            set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
 
             return redirect()->back();
         }
@@ -157,7 +163,7 @@ class LengthClassManage extends AdminController
 
         //edit
         if (!empty($id) && is_numeric($id)) {
-            $data['text_form'] = lang('Admin.text_edit');
+            $data['text_form']   = lang('Admin.text_edit');
 
             $data_form = $this->model->getDetail($id);
             if (empty($data_form)) {
@@ -167,26 +173,26 @@ class LengthClassManage extends AdminController
 
             $data['edit_data'] = $data_form;
         } else {
-            $data['text_form'] = lang('Admin.text_add');
+            $data['text_form']   = lang('Admin.text_add');
         }
 
         $data['errors'] = $this->errors;
 
-        $this->breadcrumb->add(lang('ProductLengthClassAdmin.heading_title'), site_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang('ProductWeightClassAdmin.heading_title'), site_url(self::MANAGE_URL));
         $this->breadcrumb->add($data['text_form'], base_url(self::MANAGE_URL));
         add_meta(['title' => $data['text_form']], $this->themes);
 
         $data['breadcrumb'] = $this->breadcrumb->render();
 
-        $this->themes::load('length_class/form', $data);
+        $this->themes::load('weight_classes/form', $data);
     }
 
     private function _validateForm()
     {
-        $this->validator->setRule('value', lang('ProductLengthClassAdmin.text_value'), 'required|numeric');
+        $this->validator->setRule('value', lang('ProductWeightClassAdmin.text_value'), 'required|numeric');
         foreach(get_list_lang(true) as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
-            $this->validator->setRule(sprintf('lang.%s.unit', $value['id']), lang('ProductLengthClassAdmin.text_unit') . ' (' . $value['name']  . ')', 'required');
+            $this->validator->setRule(sprintf('lang.%s.unit', $value['id']), lang('ProductWeightClassAdmin.text_unit') . ' (' . $value['name']  . ')', 'required');
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
@@ -215,6 +221,8 @@ class LengthClassManage extends AdminController
 
             $this->model->delete($ids);
 
+            $this->model->deleteCache();
+
             json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
         }
 
@@ -238,6 +246,6 @@ class LengthClassManage extends AdminController
         $data['list_delete'] = $list_delete;
         $data['ids']         = $delete_ids;
 
-        json_output(['token' => $token, 'data' => $this->themes::view('length_class/delete', $data)]);
+        json_output(['token' => $token, 'data' => $this->themes::view('weight_classes/delete', $data)]);
     }
 }
