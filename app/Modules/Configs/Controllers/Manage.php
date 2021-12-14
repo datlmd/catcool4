@@ -45,7 +45,8 @@ class Manage extends AdminController
         //check permissions
         $key_file = 'config/Config.php';
         if (is_file(WRITEPATH . $key_file)) {
-            $file_permissions = $key_file . ': ' . octal_permissions(fileperms(WRITEPATH . $key_file));
+            $is_writable = is_writable(WRITEPATH . $key_file) ? "Writable" : "Not writable";
+            $file_permissions = "$key_file: $is_writable";
         } else {
             $file_permissions = "File not found!";
         }
@@ -222,7 +223,8 @@ class Manage extends AdminController
         //check permissions
         $key_file = 'config/Config.php';
         if (is_file(WRITEPATH . $key_file)) {
-            $data['file_permissions'] = $key_file . ': ' . octal_permissions(fileperms(WRITEPATH . $key_file));
+            $is_writable = is_writable(WRITEPATH . $key_file) ? "Writable" : "Not writable";
+            $data['file_permissions'] = "$key_file: $is_writable";
         } else {
             $data['file_permissions'] = "File not found!";
         }
