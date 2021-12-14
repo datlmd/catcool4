@@ -50,7 +50,7 @@ class NewsModel extends FarmModel
     protected $deletedField   = 'deleted';
 
     const NEWS_CACHE_EXPIRE = HOUR;
-    const NEWS_CACHE_DETAIL = 'news_detail_id_';
+    const NEWS_CACHE_DETAIL = 'news_detail_id_%s_%s';
     const NEWS_CACHE_CATEGORY_HOME = 'news_category_home_list';
     const NEWS_CACHE_SLIDE_HOME = 'news_slide_home_list';
     const NEWS_CACHE_COUNTER_LIST = 'news_counter_list';
@@ -126,7 +126,11 @@ class NewsModel extends FarmModel
             list($news_id, $ctime) = $this->getFormatNewsId($news_id);
         }
 
-        $result = $is_cache ? cache()->get(self::NEWS_CACHE_DETAIL . $news_id) : null;
+        $cache_year = !empty($ctime) ? date("Y", $ctime) : date("Y", time());
+
+        $cache_name = sprintf(self::NEWS_CACHE_DETAIL, $cache_year, $news_id);
+
+        $result = $is_cache ? cache()->get($cache_name) : null;
         if (empty($result)) {
 
             $this->setTableNameYear($ctime);
@@ -150,7 +154,7 @@ class NewsModel extends FarmModel
             $result = $this->formatDetail($result);
             if ($is_cache) {
                 // Save into the cache for $expire_time 1 month
-                cache()->save(self::NEWS_CACHE_DETAIL . $news_id, $result, self::NEWS_CACHE_EXPIRE);
+                cache()->save($cache_name, $result, self::NEWS_CACHE_EXPIRE);
             }
         } else {
             //get couter view
@@ -235,10 +239,12 @@ class NewsModel extends FarmModel
     {
         if (!empty($news_id)) {
             if (strpos($news_id, 'c') !== FALSE) {
-                list($news_id) = $this->getFormatNewsId($news_id);
+                list($news_id, $ctime) = $this->getFormatNewsId($news_id);
             }
 
-            cache()->delete(self::NEWS_CACHE_DETAIL . $news_id);
+            $ctime = !empty($ctime) ? date("Y", $ctime) : date("Y", time());
+
+            cache()->delete(sprintf(self::NEWS_CACHE_DETAIL, $ctime, $news_id));
         }
 
         cache()->delete(self::NEWS_CACHE_CATEGORY_HOME);
@@ -263,6 +269,10 @@ class NewsModel extends FarmModel
     {
         if (empty($news_id)) {
             return false;
+        }
+
+        if (is_numeric($news_id)) {
+            return [$news_id, date("Y", time())];
         }
 
         $ids = explode("c", $news_id);
