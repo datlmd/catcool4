@@ -72,7 +72,16 @@ class WeightClassModel extends MyModel
             }
         }
 
-        return $result;
+        if (empty($result)) {
+            return [];
+        }
+
+        $weight_list = [];
+        foreach ($result as $value) {
+            $weight_list[$value['weight_class_id']] = $value;
+        }
+        
+        return $weight_list;
     }
 
     public function deleteCache()

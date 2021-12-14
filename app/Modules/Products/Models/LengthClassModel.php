@@ -72,7 +72,16 @@ class LengthClassModel extends MyModel
             }
         }
 
-        return $result;
+        if (empty($result)) {
+            return [];
+        }
+
+        $length_list = [];
+        foreach ($result as $value) {
+            $length_list[$value['length_class_id']] = $value;
+        }
+
+        return $length_list;
     }
 
     public function deleteCache()
