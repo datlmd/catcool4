@@ -78,7 +78,7 @@
 				{/if}
 			</div>
 
-			<aside class="col-lg-5 col-md-4">
+			<aside class="col-lg-5 col-md-4 ps-4">
 
 				{include file=get_theme_path('views/modules/news/inc/list_hot.tpl')}
 
