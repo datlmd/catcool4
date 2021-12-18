@@ -1,7 +1,7 @@
 {strip}
 	<div class="container-xxl bg-white py-2 mt-lg-0 mt-xl-3">
 		<div class="row">
-			<div class="col text-secondary">
+			<div class="col text-secondary pt-1">
 				{get_today()}
 			</div>
 			<div class="col-5 text-end">
@@ -47,7 +47,7 @@
 		</div>
 		<div class="row">
 
-			<div class="col-lg-7 col-md-8">
+			<div class="col-lg-7 col-md-8 col-12">
 				{if !empty($category_list)}
 					{foreach $category_list as $category}
 						{if empty($category.list)}
@@ -78,7 +78,7 @@
 				{/if}
 			</div>
 
-			<aside class="col-lg-5 col-md-4 ps-4">
+			<aside class="col-lg-5 col-md-4 col-12 ps-lg-4">
 
 				{include file=get_theme_path('views/modules/news/inc/list_hot.tpl')}
 

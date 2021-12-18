@@ -27,7 +27,7 @@
 						</div>
 						<p class="fst-italic newspaper-description"><i class="fas fa-quote-left me-2"></i>{$news.description}<i class="fas fa-quote-right ms-2"></i></p>
 						<div class="newspaper-content">
-							{strip_tags($news.content, "<p><br><h1><h2><h3><h4>")|truncate:1300}
+							{strip_tags($news.content, "<p><br><h1><h2><h3><h4>")|truncate:1000}
 						</div>
 					</div>
 					<a href="{site_url($news.detail_url)}" class="text-end d-block mt-2">{lang('News.text_news_more')}</a>

@@ -3,79 +3,32 @@
         <nav class="navbar navbar-expand-lg navbar-light container-xxl p-0">
             <div class="container-fluid">
                 <a href="{site_url()}" class="navbar-brand">
-                    <img class="ml-2" alt="{config_item('site_name')}" width="auto" data-change-src="{img_url('logo.png')}" src="{img_url('logo.png')}">
+                    <img alt="{config_item('site_name')}" width="auto" data-change-src="{img_url('logo.png')}" src="{img_url('logo.png')}">
                     <span class="d-none">{config_item('site_name')}</span>
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar_menu_header" aria-controls="navbar_menu_header" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button"  data-bs-toggle="offcanvas" href="#navbar_menu_header_mobile" role="button" aria-controls="navbar_menu_header_mobile">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbar_menu_header">
+                <div class="navbar-collapse d-none d-lg-block" id="navbar_menu_header">
                     {include file=get_theme_path('views/inc/menu_main.tpl')}
                     <form class="d-flex d-none">
                         <div><i class="fas fa-search"></i></div>
                     </form>
                 </div>
+
+                <div class="offcanvas offcanvas-start d-flex" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="navbar_menu_header_mobile">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title"></h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <a href="{site_url()}" class="text-center d-flex-row justify-content-center">
+                        <img class="ml-2" alt="{config_item('site_name')}" width="auto" data-change-src="{img_url('logo.png')}" src="{img_url('logo.png')}">
+                        <span class="d-none">{config_item('site_name')}</span>
+                    </a>
+                    {include file=get_theme_path('views/inc/menu_main.tpl') menu_type='mobile'}
+                    <p class="text-center d-flex-row justify-content-center text-secondary py-3">{get_today()}</p>
+                </div>
             </div>
         </nav>
     </header>
-    {*{literal}*}
-    {*<div class="sticky-wrapper sticky-wrapper-transparent sticky-wrapper-effect-1 sticky-wrapper-border-bottom d-lg-block d-xl-none" data-plugin-sticky data-plugin-options="{'minWidth': 0, 'stickyStartEffectAt': 100, 'padding': {'top': 0}}">*}
-    {*{/literal}*}
-        {*<div class="sticky-body bg-white">*}
-            {*<div class="container-fluid">*}
-                {*<div class="row align-items-center">*}
-                    {*<div class="col-9">*}
-                        {*<div class="py-2">*}
-                            {*<a href="{site_url()}">*}
-                                {*<img class="ml-2" alt="{config_item('site_name')}" width="auto" data-change-src="{img_url('logo.png')}" src="{img_url('logo.png')}">*}
-                            {*</a>*}
-                        {*</div>*}
-                    {*</div>*}
-                    {*<div class="col-3 text-end">*}
-                        {*<button class="hamburguer-btn m-1" data-set-active="false">*}
-                            {*<span class="hamburguer">*}
-                                {*<span></span>*}
-                                {*<span></span>*}
-                                {*<span></span>*}
-                            {*</span>*}
-                        {*</button>*}
-                    {*</div>*}
-                {*</div>*}
-            {*</div>*}
-        {*</div>*}
-    {*</div>*}
-
-    {*<header id="header" class="side-header d-flex">*}
-        {*<div class="header-body">*}
-            {*<div class="header-container px-3 d-flex h-100">*}
-                {*<div class="header-column flex-row flex-lg-column justify-content-center h-100">*}
-                    {*<div class="header-row flex-row justify-content-start justify-content-lg-center py-lg-4 py-md-1">*}
-                        {*<h1 class="header-logo my-0 my-lg-2">*}
-                            {*<a href="{site_url()}">*}
-                                {*<img alt="{config_item('site_name')}" width="100%" src="{img_url('logo.png')}">*}
-                                {*<span class="hide-text">{config_item('site_name')}</span>*}
-                            {*</a>*}
-                        {*</h1>*}
-                    {*</div>*}
-                    {*<div class="header-row header-row-side-header flex-row h-100 pb-lg-5">*}
-                        {*<div class="header-nav header-nav-links header-nav-links-side-header header-nav-links-vertical header-nav-links-vertical-columns align-self-center">*}
-                            {*<div class="header-nav-main header-nav-main-square header-nav-main-dropdown-no-borders">*}
-                                {*<nav class="collapse" id="menu_main_collapse">*}
-                                    {*{include file=get_theme_path('views/inc/menu_main.tpl')}*}
-                                {*</nav>*}
-                            {*</div>*}
-                        {*</div>*}
-                    {*</div>*}
-                    {*<div class="header-row justify-content-end pb-lg-3">*}
-                        {*<p class="text-2 mt-0 pt-lg-3">{get_today()}</p>*}
-                        {*<p class="d-none text-1">{lang('News.text_copyright')}</p>*}
-                        {*<button class="btn header-btn-collapse-nav m-0 ms-2" data-bs-toggle="collapse" href="#menu_main_collapse">*}
-                            {*<i class="fas fa-bars"></i>*}
-                        {*</button>*}
-                    {*</div>*}
-                {*</div>*}
-            {*</div>*}
-        {*</div>*}
-    {*</header>*}
-
 {/strip}
