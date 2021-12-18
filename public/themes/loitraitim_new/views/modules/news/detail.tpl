@@ -84,7 +84,7 @@
                 {/if}
 
             </div>
-            <div class="col-md-4 col-12 d-none d-lg-block">
+            <aside class="col-md-4 col-12 d-none d-lg-block">
 
                 {if !empty(slide_list)}
                     {foreach $new_list as $news}
@@ -92,11 +92,11 @@
                     {/foreach}
                 {/if}
 
-            </div>
+            </aside>
         </div>
     </article>
 
-    <div class="container-xxl bg-white px-5 pb-3">
+    <section class="container-xxl bg-white px-5 pb-3">
         <div class="row">
             <div class="col">
 
@@ -109,7 +109,7 @@
 
             </div>
         </div>
-    </div>
+    </section>
 
 
     {include file=get_theme_path('views/modules/news/inc/counter_view.tpl')}
