@@ -1,6 +1,6 @@
 {strip}
 	{if !empty($hot_list)}
-		<div class="newspaper">
+		<div class="newspaper mt-3">
 			{foreach $hot_list as $news}
 				{if $news@iteration neq 1}
 					{break}
