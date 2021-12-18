@@ -57,6 +57,8 @@ class MyController extends Controller
 
     protected $validator;
 
+    protected $is_mobile;
+
 
     /**
      * Constructor.
@@ -85,6 +87,7 @@ class MyController extends Controller
 
         $agent = $this->request->getUserAgent();
         if ($agent->isMobile() && !$agent->isMobile('ipad')) {
+            $this->is_mobile = true;
             $this->smarty->assign('is_mobile', $agent->isMobile());
         }
     }
@@ -100,7 +103,10 @@ class MyController extends Controller
             date_default_timezone_set('Asia/Saigon');
         }
 
+        \Config\Services::language()->setLocale(get_lang());
+
         $this->site_lang = \Config\Services::language()->getLocale();
+
         $this->themes = Themes::init();
         $this->breadcrumb = service('Breadcrumb');
         $this->smarty = service('SmartyEngine');

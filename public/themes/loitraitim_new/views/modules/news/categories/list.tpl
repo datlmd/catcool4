@@ -6,26 +6,28 @@
                 <div class="category-name d-block mt-4 mb-4">
                     <span>{$detail.name}</span>
                 </div>
-                <div class="row">
-                {foreach $list as $news}
-                    {if $news@iteration > 2}
-                        {break}
-                    {/if}
-                    <div class="col-sm-6 col-12">
-                        {include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_class="mb-3 home-page"}
+                {if !empty($list)}
+                    <div class="row">
+                        {foreach $list as $news}
+                            {if $news@iteration > 2}
+                                {break}
+                            {/if}
+                            <div class="col-sm-6 col-12">
+                                {include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_class="mb-3 home-page"}
+                            </div>
+                        {/foreach}
                     </div>
-                {/foreach}
-                </div>
 
-                {foreach $list as $news}
-                    {if $news@iteration <= 2}
-                        {continue}
+                    {foreach $list as $news}
+                        {if $news@iteration <= 2}
+                            {continue}
+                        {/if}
+                        {include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-4 pt-4 border-top category"}
+                    {/foreach}
+
+                    {if !empty($list) && !empty($pager->links('default', 'frontend'))}
+                        {$pager->links('default', 'frontend')}
                     {/if}
-                    {include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-4 pt-4 border-top category"}
-                {/foreach}
-
-                {if !empty($list) && !empty($pager->links('default', 'frontend'))}
-                    {$pager->links('default', 'frontend')}
                 {/if}
             </div>
             <aside class="col-md-4 col-12 d-none d-lg-block pt-3 ps-4">

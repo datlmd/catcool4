@@ -60,7 +60,12 @@ class News extends MyController
 
         add_meta(['title' => lang("News.heading_title")], $this->themes);
 
-        theme_load('index', $data);
+        $tpl_name = 'index';
+        if (!empty($this->is_mobile)) {
+            $tpl_name = 'mobile/index';
+        }
+
+        theme_load($tpl_name, $data);
     }
 
     private function _scriptGoogleSearch()

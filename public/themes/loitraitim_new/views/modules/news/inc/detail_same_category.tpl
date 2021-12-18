@@ -7,7 +7,12 @@
 			{if !empty($news_id_not) && $news.news_id eq $news_id_not}
 				{continue}
 			{/if}
-			{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='small' article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
+			{if !empty($article_type)}
+				{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type=$article_type article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
+			{else}
+				{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='small' article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
+			{/if}
+
 		{/foreach}
 	{/if}
 {/strip}

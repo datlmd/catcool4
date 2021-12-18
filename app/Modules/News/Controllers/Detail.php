@@ -26,8 +26,6 @@ class Detail extends MyController
     public function index($slug, $news_id, $ctime, $type = null)
     {
         try {
-
-
             if (!empty($type) && $type !== 'preview') {
                 page_not_found();
             }
@@ -77,7 +75,12 @@ class Detail extends MyController
                 'script_google_search' => $this->_scriptGoogleSearch($detail, $category_list),
             ];
 
-            theme_load('detail', $data);
+            $tpl_name = 'detail';
+            if (!empty($this->is_mobile)) {
+                $tpl_name = 'mobile/detail';
+            }
+
+            theme_load($tpl_name, $data);
         } catch (\Exception $ex) {
             log_message('error', $ex->getMessage() . "[ID: $news_id, $ctime, $slug]");
             page_not_found();

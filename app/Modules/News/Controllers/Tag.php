@@ -44,7 +44,12 @@ class Tag extends MyController
 
         add_meta(['title' => $tag, 'url' => current_url()], $this->themes);
 
-        theme_load('tag', $data);
+        $tpl_name = 'tag';
+        if (!empty($this->is_mobile)) {
+            $tpl_name = 'mobile/tag';
+        }
+
+        theme_load($tpl_name, $data);
     }
 
 }

@@ -46,7 +46,12 @@ class Categories extends MyController
 
         $this->_setMeta($detail);
 
-        theme_load('categories/list', $data);
+        $tpl_name = 'categories/list';
+        if (!empty($this->is_mobile)) {
+            $tpl_name = 'mobile/category';
+        }
+
+        theme_load($tpl_name, $data);
     }
 
     private function _setMeta($detail)
