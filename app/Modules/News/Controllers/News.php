@@ -51,8 +51,8 @@ class News extends MyController
         $data = [
             'category_list'        => $category_list,
             'slide_list'           => $this->model->getSlideHome(3),
-            'counter_list'         => $this->model->getListCounter(10),
-            'hot_list'             => $this->model->getListHot(4),
+            'counter_list'         => $this->model->getListCounter(6),
+            'hot_list'             => $this->model->getListHot(2),
             'new_list'             => $new_list,
             'script_google_search' => $this->_scriptGoogleSearch(),
             'weather'              => $this->_getWeather(),

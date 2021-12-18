@@ -794,7 +794,7 @@ class NewsModel extends FarmModel
                 'is_hot' => STATUS_ON,
             ];
 
-            $list = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+            $list = $this->select(['news_id', 'name', 'slug', 'description', 'content', 'category_ids', 'publish_date', 'images', 'ctime'])
                 ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
             if (empty($list)) {
                 return [];
@@ -898,7 +898,7 @@ class NewsModel extends FarmModel
             ->like('tags', $tag)
             ->orderBy('publish_date', 'DESC');
 
-        $list = $result->paginate($limit, 'news');
+        $list = $result->paginate($limit);
         if (empty($list)) {
             return [[],[]];
         }

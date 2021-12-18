@@ -36,7 +36,7 @@ class Tag extends MyController
             'tag'           => $tag,
             'list'          => $list,
             'pager'         => $pager,
-            'hot_list'      => $this->model->getListHot(4),
+            'slide_list'    => $this->model->getSlideHome(3),
             'new_list'      => $this->model->getListNew(5),
             'counter_list'  => $this->model->getListCounter(6),
             'category_list' => $category_list

@@ -71,7 +71,7 @@ class Detail extends MyController
                 'related_list'         => $this->model->getListByRelatedIds($detail['related_ids'], 3),
                 'news_category_list'   => $news_category_list,
                 'category_list'        => $category_list,
-                'hot_list'             => $this->model->getListHot(4),
+                'slide_list'           => $this->model->getSlideHome(3),
                 'new_list'             => $this->model->getListNew(5),
                 'counter_list'         => $this->model->getListCounter(6),
                 'script_google_search' => $this->_scriptGoogleSearch($detail, $category_list),
