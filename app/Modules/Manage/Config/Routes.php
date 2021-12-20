@@ -13,4 +13,6 @@ $routes->group('manage', ['namespace' => 'App\Modules\Manage\Controllers'], func
     $subroutes->add('backup/export', 'Backup::export');
     $subroutes->add('backup/history', 'Backup::history');
     $subroutes->add('backup/delete', 'Backup::delete');
+    $subroutes->add('backup/download', 'Backup::download');
+    $subroutes->add('backup/restore', 'Backup::restore');
 });

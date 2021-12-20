@@ -12,7 +12,29 @@ class BackupModel
 
     public function getTables(): array
     {
-        return $this->db->listTables();
+        $prefix = $this->db->getPrefix();
+        $result = $this->db->listTables();
+
+        $ignore = [
+            $prefix . 'user_admin',
+            $prefix . 'user_admin_group',
+            $prefix . 'user_admin_groups',
+            $prefix . 'user_admin_permissions',
+            $prefix . 'user_admin_token',
+            $prefix . 'user_admin_login_attempt',
+        ];
+
+        foreach ($result as $key => $value) {
+            if (in_array($value, $ignore)) {
+                unset($result[$key]);
+                continue;
+            }
+            $result[$key] = str_ireplace($prefix, '', $value);
+        }
+
+        ksort($result);
+
+        return $result;
     }
 
     public function getRecords(string $table, int $start = 0, int $limit = 100): array

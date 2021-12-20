@@ -13,6 +13,8 @@ class Backup extends AdminController
     protected $model;
     protected $db;
 
+    protected $backup_path;
+
     CONST FILE_PAGE_LIMIT = 3;
 
     public function __construct()
@@ -28,6 +30,8 @@ class Backup extends AdminController
         $this->model = new BackupModel();
         $this->db = db_connect();
 
+        $this->backup_path = WRITEPATH . "database/backup/";
+
         helper('filesystem');
         
         //create url manage
@@ -40,7 +44,7 @@ class Backup extends AdminController
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), site_url(CATCOOL_DASHBOARD));
         $this->breadcrumb->add(lang('Backup.heading_title'), site_url(self::MANAGE_URL));
-        
+
         $tables = $this->model->getTables();
 
         $data = [
@@ -58,9 +62,8 @@ class Backup extends AdminController
         if (!$this->request->isAJAX()) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
-        $json = [];
 
-        $token = csrf_hash();
+        $json = [];
 
         if (empty($this->request->getPost()) || empty($this->request->getGet())) {
             $json['error'] = lang('Admin.error_json');
@@ -90,7 +93,12 @@ class Backup extends AdminController
             $output = '';
 
             if ($page == 1) {
-                $output .= 'TRUNCATE TABLE `' . $this->db->escape($table) . '`;' . "\n\n";
+                if (in_array($table . "_lang", $table_list)) {
+                    $output .= 'DELETE FROM `' . $this->db->escapeString($table) . '`;' . "\n";
+                    $output .= 'ALTER TABLE `' . $this->db->escapeString($table) .  '` AUTO_INCREMENT = 1;' . "\n\n";
+                } else {
+                    $output .= 'TRUNCATE TABLE `' . $this->db->escapeString($table) . '`;' . "\n\n";
+                }
             }
 
             $record_total = $this->model->getTotalRecords($table);
@@ -118,6 +126,8 @@ class Backup extends AdminController
                     $values .= '\'' . $value . '\', ';
                 }
 
+                $values = str_ireplace('\'\'', 'NULL', $values);
+
                 $output .= 'INSERT INTO `' . $table . '` (' . preg_replace('/, $/', '', $fields) . ') VALUES (' . preg_replace('/, $/', '', $values) . ');' . "\n";
             }
 
@@ -139,11 +149,11 @@ class Backup extends AdminController
                 $json['progress'] = 0;
             }
 
-            if (!is_dir(WRITEPATH . "database/backup")) {
-                mkdir(WRITEPATH . "database/backup", 0777, true);
+            if (!is_dir($this->backup_path)) {
+                mkdir($this->backup_path, 0777, true);
             }
-            
-            $handle = fopen(WRITEPATH . "database/backup/" . $filename, 'a');
+
+            $handle = fopen($this->backup_path . $filename, 'a');
 
             fwrite($handle, $output);
 
@@ -162,7 +172,7 @@ class Backup extends AdminController
             }
         }
 
-        $json['token'] = $token;
+        $json['token'] = csrf_hash();
 
         json_output($json);
     }
@@ -178,20 +188,21 @@ class Backup extends AdminController
             $page = 1;
         }
 
-        $directory = WRITEPATH . "database/backup";
+        $directory = $this->backup_path;
         $files = glob($directory . '/*.sql', GLOB_BRACE);
 
         krsort($files);
 
         $list = [];
         foreach ($files as $value) {
-            $key = str_ireplace(WRITEPATH . "database/backup/", '', $value);
+            $key = str_ireplace("$this->backup_path/", '', $value);
 
             $file = [
                 'name'       => $key,
                 'permission' => octal_permissions(fileperms($value)),
                 'size'       => number_to_size(filesize($value)),
                 "modify"     => date('Y-m-d h:i:s', filemtime($value)),
+                'download'   => site_url(self::MANAGE_URL) . '/download?filename=' . urlencode(basename($key)),
             ];
 
             $list[$key] = $file;
@@ -242,24 +253,149 @@ class Backup extends AdminController
         return $p;
     }
 
+    public function restore(): void
+    {
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $json = [];
+
+        if (!empty($this->request->getGet('filename'))) {
+            $filename = basename(html_entity_decode($this->request->getGet('filename'), ENT_QUOTES, 'UTF-8'));
+        } else {
+            $filename = '';
+        }
+
+        if (isset($this->request->get['position'])) {
+            $position = $this->request->get['position'];
+        } else {
+            $position = 0;
+        }
+
+        $file = $this->backup_path . $filename;
+
+        if (!is_file($file)) {
+            $json['error'] = lang('Backup.error_file');
+        }
+
+        if (!$json) {
+            // We set $i so we can batch execute the queries rather than do them all at once.
+            $i = 0;
+            $start = false;
+
+            $prefix = $this->db->getPrefix();
+
+            $handle = fopen($file, 'r');
+
+            fseek($handle, $position, SEEK_SET);
+
+            while (!feof($handle) && ($i < 100)) {
+                $position = ftell($handle);
+
+                $line = fgets($handle, 1000000);
+
+                if (substr($line, 0, 14) == 'TRUNCATE TABLE'
+                    || substr($line, 0, 11) == 'INSERT INTO'
+                    || substr($line, 0, 11) == 'DELETE FROM'
+                    || strpos($line, 'AUTO_INCREMENT = 1') !== false
+                ) {
+                    $sql = '';
+
+                    $start = true;
+                }
+
+                if ($i > 0 && (substr($line, 0, strlen('TRUNCATE TABLE `' . $prefix . 'user_admin`')) == 'TRUNCATE TABLE `' . $prefix . 'user_admin`'
+                        || substr($line, 0, strlen('TRUNCATE TABLE `' . $prefix . 'user_admin_group`')) == 'TRUNCATE TABLE `' . $prefix . 'user_admin_group`'
+                        || substr($line, 0, strlen('TRUNCATE TABLE `' . $prefix . 'user_admin_groups`')) == 'TRUNCATE TABLE `' . $prefix . 'user_admin_groups`'
+                        || substr($line, 0, strlen('TRUNCATE TABLE `' . $prefix . 'user_admin_permissions`')) == 'TRUNCATE TABLE `' . $prefix . 'user_admin_permissions`'
+                        || substr($line, 0, strlen('TRUNCATE TABLE `' . $prefix . 'user_admin_token`')) == 'TRUNCATE TABLE `' . $prefix . 'user_admin_token`'
+                        || substr($line, 0, strlen('TRUNCATE TABLE `' . $prefix . 'user_admin_login_attempt`')) == 'TRUNCATE TABLE `' . $prefix . 'user_admin_login_attempt`'
+                    )
+                ) {
+                    fseek($handle, $position, SEEK_SET);
+
+                    break;
+                }
+
+                if ($start) {
+                    $sql .= $line;
+                }
+
+                if ($start && substr($line, -2) == ";\n") {
+
+                    $this->db->query(substr($sql, 0, strlen($sql) -2));
+
+                    $start = false;
+                }
+
+                $i++;
+            }
+
+            $position = ftell($handle);
+
+            $size = filesize($file);
+
+
+            if ($position) {
+                $json['progress'] = round(($position / $size) * 100);
+            } else {
+                $json['progress'] = 0;
+            }
+
+            if ($position && !feof($handle)) {
+                $json['text'] = sprintf(lang('Backup.text_restore'), $position, $size);
+
+                $json['next'] = site_url() . 'manage/backup/restore?' . 'filename=' . urlencode($filename) . '&position=' . $position;
+            } else {
+                $json['success'] = lang('Backup.text_success');
+            }
+
+            fclose($handle);
+        }
+
+        $json['token'] = csrf_hash();
+
+        json_output($json);
+    }
+
     public function delete()
     {
         $token = csrf_hash();
 
-        $filename = $this->request->getGet('f');
+        $filename = $this->request->getGet('filename');
 
         $is_super_admin = session('admin.super_admin');
         if (empty($is_super_admin) || $is_super_admin !== TRUE) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_permission_execute')]);
         }
 
-        if (!is_file(WRITEPATH . "database/backup/" . $filename)) {
+        if (!is_file($this->backup_path . $filename)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('FileManager.error_delete')]);
         }
 
-        unlink(WRITEPATH . "database/backup/" . $filename);
+        unlink($this->backup_path . $filename);
 
         json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('FileManager.text_delete') . " ($filename)"]);
     }
 
+    public function download()
+    {
+        $filename = $this->request->getGet('filename');
+
+        $file = $this->backup_path . $filename;
+
+        if (!is_file($file)) {
+            set_alert(sprintf(lang('Backup.error_not_found'), $filename), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->back();
+        }
+
+        if (!headers_sent()) {
+            return $this->response->download($file, null);
+        } else {
+            set_alert(sprintf(lang('Backup.error_headers_sent'), $filename), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->back();
+        }
+
+    }
 }

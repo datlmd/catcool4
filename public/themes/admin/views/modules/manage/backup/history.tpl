@@ -33,7 +33,9 @@
 								<td class="text-center">{$item.modify}</td>
 								<td class="text-center">
 									<div class="btn-group ms-auto">
-										<a href="{site_url($manage_url)}/delete?f={$item.name}" data-id="{md5($key)}" class="btn btn-sm btn-light delete" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt text-danger"></i></a>
+										<a href="{site_url($manage_url)}/restore?filename={$item.name}" data-id="{$key}" class="btn btn-sm btn-light restore" data-bs-toggle="tooltip" title="{lang('Admin.button_restore')}"><i class="fas fa-sync text-primary"></i></a>
+										<button onclick="location = '{$item.download}'" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('Admin.button_download')}"><i class="fas fa-download"></i></button>
+										<a href="{site_url($manage_url)}/delete?filename={$item.name}" data-id="{md5($key)}" class="btn btn-sm btn-light delete" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt text-danger"></i></a>
 									</div>
 								</td>
 							</tr>
