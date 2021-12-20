@@ -50,9 +50,11 @@ class Detail extends MyController
 
             $news_category_list = [];
             $data_category_list = $this->model->getListHome();
+
             if (!empty($data_category_list) && !empty($detail['category_ids'])) {
                 foreach ($detail['category_ids'] as $category_id) {
-                    if (isset($data_category_list[$category_id])) {
+                    if (!empty($data_category_list[$category_id]['list'])) {
+
                         $news_category_list = array_merge($news_category_list, $data_category_list[$category_id]['list']);
                     }
                 }
