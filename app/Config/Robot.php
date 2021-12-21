@@ -35,7 +35,7 @@ class Robot extends BaseConfig
 				'id'    => [4],
 			],
 			[
-				'href'  => 'https://kenh14.vn/suc-khoe-gioi-tinh.chn',
+				'href'  => 'https://kenh14.vn/suc-khoe.chn',
 				'title' => 'Gioi tinh',
 				'id'    => [5],
 			],
