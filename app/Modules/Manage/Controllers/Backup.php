@@ -256,7 +256,7 @@ class Backup extends AdminController
     public function restore(): void
     {
         if (!$this->request->isAJAX()) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            page_not_found();
         }
 
         $json = [];
@@ -267,10 +267,10 @@ class Backup extends AdminController
             $filename = '';
         }
 
-        if (isset($this->request->get['position'])) {
-            $position = $this->request->get['position'];
+        if (!empty($this->request->getGet('page'))) {
+            $page = (int)$this->request->getGet('page');
         } else {
-            $position = 0;
+            $page = 1;
         }
 
         $file = $this->backup_path . $filename;
@@ -279,79 +279,56 @@ class Backup extends AdminController
             $json['error'] = lang('Backup.error_file');
         }
 
-        if (!$json) {
-            // We set $i so we can batch execute the queries rather than do them all at once.
-            $i = 0;
-            $start = false;
+        $file_contents = file_get_contents($file);
+        $file_contents = explode(";", $file_contents);
 
-            $prefix = $this->db->getPrefix();
-
-            $handle = fopen($file, 'r');
-
-            fseek($handle, $position, SEEK_SET);
-
-            while (!feof($handle) && ($i < 100)) {
-                $position = ftell($handle);
-
-                $line = fgets($handle, 1000000);
-
-                if (substr($line, 0, 14) == 'TRUNCATE TABLE'
-                    || substr($line, 0, 11) == 'INSERT INTO'
-                    || substr($line, 0, 11) == 'DELETE FROM'
-                    || strpos($line, 'AUTO_INCREMENT = 1') !== false
-                ) {
-                    $sql = '';
-
-                    $start = true;
-                }
-
-                if ($i > 0 && (substr($line, 0, strlen('TRUNCATE TABLE `' . $prefix . 'user_admin`')) == 'TRUNCATE TABLE `' . $prefix . 'user_admin`'
-                        || substr($line, 0, strlen('TRUNCATE TABLE `' . $prefix . 'user_admin_group`')) == 'TRUNCATE TABLE `' . $prefix . 'user_admin_group`'
-                        || substr($line, 0, strlen('TRUNCATE TABLE `' . $prefix . 'user_admin_groups`')) == 'TRUNCATE TABLE `' . $prefix . 'user_admin_groups`'
-                        || substr($line, 0, strlen('TRUNCATE TABLE `' . $prefix . 'user_admin_permissions`')) == 'TRUNCATE TABLE `' . $prefix . 'user_admin_permissions`'
-                        || substr($line, 0, strlen('TRUNCATE TABLE `' . $prefix . 'user_admin_token`')) == 'TRUNCATE TABLE `' . $prefix . 'user_admin_token`'
-                        || substr($line, 0, strlen('TRUNCATE TABLE `' . $prefix . 'user_admin_login_attempt`')) == 'TRUNCATE TABLE `' . $prefix . 'user_admin_login_attempt`'
-                    )
-                ) {
-                    fseek($handle, $position, SEEK_SET);
-
-                    break;
-                }
-
-                if ($start) {
-                    $sql .= $line;
-                }
-
-                if ($start && substr($line, -2) == ";\n") {
-
-                    $this->db->query(substr($sql, 0, strlen($sql) -2));
-
-                    $start = false;
-                }
-
-                $i++;
+        $sql_contents = [];
+        foreach ($file_contents as $value) {
+            if (empty($value)
+                || strpos(strtolower($value), 'user_admin') !== false
+                || strpos(strtolower($value), 'sessions') !== false
+            ) {
+                continue;
             }
 
-            $position = ftell($handle);
+            if (empty($value)
+                || strpos(strtolower($value), 'truncate table') !== false
+                || strpos(strtolower($value), 'insert into') !== false
+                || strpos(strtolower($value), 'delete from') !== false
+                || strpos(strtolower($value), 'auto_increment = 1') !== false
+            ) {
+                $sql_contents[] = $value;
+            }
+        }
 
-            $size = filesize($file);
+        if (empty($sql_contents)) {
+            $json['error'] = lang('Backup.error_file');
+        }
 
+        if (!$json) {
+            $limit = 200;
 
+            $count_content = count($sql_contents);
+            $sql_contents = array_splice($sql_contents, ($page - 1) * $limit, $limit);
+
+            foreach ($sql_contents as $sql) {
+                $this->db->query($sql);
+            }
+
+            $position = $page * $limit;
             if ($position) {
-                $json['progress'] = round(($position / $size) * 100);
+                $json['progress'] = round(($position / $count_content) * 100);
             } else {
                 $json['progress'] = 0;
             }
 
-            if ($position && !feof($handle)) {
-                $json['text'] = sprintf(lang('Backup.text_restore'), $position, $size);
-
-                $json['next'] = site_url() . 'manage/backup/restore?' . 'filename=' . urlencode($filename) . '&position=' . $position;
-            } else {
+            if ($page * $limit >= $count_content) {
                 $json['success'] = lang('Backup.text_success');
-            }
+            } else {
+                $json['text'] = sprintf(lang('Backup.text_restore'), ($page - 1) * $limit, $count_content);
 
-            fclose($handle);
+                $json['next'] = site_url() . 'manage/backup/restore?' . 'filename=' . urlencode($filename) . '&page=' . ($page + 1);
+            }
         }
 
         $json['token'] = csrf_hash();
