@@ -67,6 +67,8 @@ writable/debugbar/*
 
 writable/smarty/*
 
+writable/database/*
+
 media/cache/*
 !media/cache/index.html
 
