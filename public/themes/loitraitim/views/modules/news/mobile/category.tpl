@@ -2,7 +2,7 @@
 
     <div class="bg-white my-0 p-2">
 
-        <div class="category-name d-block mt-2 mb-4 shadow">
+        <div class="category-name d-block mt-2 mb-4 shadow-sm">
             <span>{$detail.name}</span>
         </div>
 

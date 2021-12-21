@@ -1,5 +1,5 @@
 {strip}
-    <header id="header" class="header shadow">
+    <header id="header" class="header shadow-sm">
         <nav class="navbar navbar-expand-lg navbar-light container-xxl p-0">
             <div class="container-fluid">
                 <a href="{site_url()}" class="navbar-brand">

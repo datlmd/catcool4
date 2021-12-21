@@ -37,7 +37,7 @@
 					{continue}
 				{/if}
 
-				<div class="category-name d-block shadow">
+				<div class="category-name d-block shadow-sm">
 					<a href="{base_url($category.slug)}" class="text-decoration-none">{$category.name|upper}</a>
 				</div>
 

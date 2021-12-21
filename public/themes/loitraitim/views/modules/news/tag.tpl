@@ -3,7 +3,7 @@
     <div class="container-xxl bg-white my-0 mt-lg-0 mt-xl-3 py-3 px-5">
         <div class="row">
             <div class="col">
-                <div class="category-name d-block mt-4 mb-4 shadow">
+                <div class="category-name d-block mt-4 mb-4 shadow-sm">
                     <span><i class="fas fa-hashtag"></i>{$tag}</span>
                 </div>
 
