@@ -37,14 +37,14 @@
 					{continue}
 				{/if}
 
-				<div class="category-name d-block">
+				<div class="category-name d-block shadow">
 					<a href="{base_url($category.slug)}" class="text-decoration-none">{$category.name|upper}</a>
 				</div>
 
 				<div class="my-3 overflow-auto">
 					{foreach $category.list as $news}
 						{if $news@iteration < 3}
-							{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='left' article_class="category border-bottom pb-4 mb-4"}
+							{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='middle_left' article_class="category border-bottom pb-4 mb-4"}
 						{/if}
 					{/foreach}
 

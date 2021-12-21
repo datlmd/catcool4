@@ -3,7 +3,7 @@
     <div class="container-xxl bg-white my-0 mt-lg-0 mt-xl-3 py-3 px-5">
         <div class="row">
             <div class="col">
-                <div class="category-name d-block mt-4 mb-4">
+                <div class="category-name d-block mt-4 mb-4 shadow">
                     <span>{$detail.name}</span>
                 </div>
                 {if !empty($list)}

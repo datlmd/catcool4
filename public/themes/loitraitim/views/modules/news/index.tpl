@@ -13,7 +13,7 @@
 			<div class="col-md-4">
 				{if !empty($new_list)}
 					{foreach $new_list as $news}
-						{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='small' article_class="mb-4" is_hide_datetime=true is_hide_description=true}
+						{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='small' article_class="mb-3 pt-3 border-top" is_hide_datetime=true is_hide_description=true}
 					{/foreach}
 				{/if}
 			</div>
@@ -54,14 +54,14 @@
 							{continue}
 						{/if}
 
-						<div class="category-name d-block">
+						<div class="category-name d-block shadow">
 							<a href="{base_url($category.slug)}" class="text-decoration-none">{$category.name|upper}</a>
 						</div>
 
 						<div class="my-3 overflow-auto">
 							{foreach $category.list as $news}
 								{if $news@iteration < 3}
-									{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='right' article_class="category mb-4"}
+									{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='right' article_class="category mb-3 pb-3 border-bottom"}
 								{/if}
 							{/foreach}
 
