@@ -369,7 +369,7 @@ class Backup extends AdminController
         }
 
         if (!headers_sent()) {
-            $this->downloadFileChunked($file);
+            $this->downloadLargeFile($file);
             //return $this->response->download($file, null);
         } else {
             set_alert(sprintf(lang('Backup.error_headers_sent'), $filename), ALERT_ERROR, ALERT_POPUP);
@@ -449,6 +449,43 @@ class Backup extends AdminController
             }
             return $qty;
         }
+    }
+
+    function downloadLargeFile($path) {
+        $file_info = new \CodeIgniter\Files\File($path);
+        $file_name = $file_info->getFilename();
+
+        $mime_type = $file_info->getMimeType();
+
+        $attachment = (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) ? "" : " attachment"; // IE 5.5 fix.
+
+        // send the headers
+        header("Content-Type: $mime_type");
+        //header('Content-Length: ' . filesize($path)); //PHP Warning: filesize(): stat failed for remote file
+        //header("Content-Disposition: attachment; filename=$file_name;");
+        header("Content-Disposition: $attachment; filename=$file_name;");
+
+        //Disable SSL verification
+        $options=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+        );
+
+        $context  = stream_context_create($options);
+
+        // stream the file
+        //$fp = fopen($path, 'rb');
+        $fp = fopen($path, 'rb', false, $context);
+
+        ob_end_clean();//output buffering is disabled, so you won't hit your memory limit
+
+        fpassthru($fp);
+
+        fclose($fp);
+
+        exit;
     }
 
     protected function downloadFileChunked($path)
