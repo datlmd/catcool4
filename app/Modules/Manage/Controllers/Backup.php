@@ -369,20 +369,7 @@ class Backup extends AdminController
         }
 
         if (!headers_sent()) {
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="' . $filename . '"');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-            header('Pragma: public');
-            header('Content-Length: ' . filesize($file));
-
-            if (ob_get_level()) {
-                ob_end_clean();
-            }
-
-            readfile($file, 'rb');
-
-            exit();
+            $this->downloadFileChunked($file);
             //return $this->response->download($file, null);
         } else {
             set_alert(sprintf(lang('Backup.error_headers_sent'), $filename), ALERT_ERROR, ALERT_POPUP);
@@ -462,5 +449,50 @@ class Backup extends AdminController
             }
             return $qty;
         }
+    }
+
+    protected function downloadFileChunked($path)
+    {
+        $file_info = new \CodeIgniter\Files\File($path);
+        $file_name = $file_info->getFilename();
+
+        $mime_type = $file_info->getMimeType();
+
+        $attachment = (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) ? "" : " attachment"; // IE 5.5 fix.
+
+        // send the headers
+        header("Content-Type: $mime_type");
+        header('Content-Transfer-Encoding: binary');
+        //header('Content-Length: ' . filesize($path)); //PHP Warning: filesize(): stat failed for remote file
+        //header("Content-Disposition: attachment; filename=$file_name;");
+        header("Content-Disposition: $attachment; filename=$file_name;");
+
+        $options = [
+            "ssl" => [
+                "verify_peer"      =>false,
+                "verify_peer_name" =>false,
+            ],
+        ];
+
+        $context  = stream_context_create($options);
+
+        $handle = fopen($path, 'rb', false, $context);
+
+        ob_end_clean();//output buffering is disabled, so you won't hit your memory limit
+
+        $buffer = '';
+        $chunkSize = 1024 * 1024;
+
+        ob_start();
+        while (!feof($handle)) {
+            $buffer = fread($handle, $chunkSize);
+            echo $buffer;
+            ob_flush();
+            flush();
+        }
+
+        fclose($handle);
+
+        exit;
     }
 }
