@@ -44,6 +44,7 @@ class Filters extends BaseConfig
                     'utilities/manage/load_fba',
                     'users/social_login',
 					'*/manage/related',
+					'manage/backup/upload',
                 ]
             ],
             'auth_admin' => [

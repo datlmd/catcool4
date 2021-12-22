@@ -11,7 +11,8 @@ class AuthAdminFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         $name_permission = uri_string();
-        if (!strpos($name_permission, 'manage')) {
+        //kiem tra action admin
+        if (strpos($name_permission, 'manage') === false) {
             return null;
         }
 

@@ -50,6 +50,7 @@ class Backup extends AdminController
         $data = [
             'breadcrumb' => $this->breadcrumb->render(),
             'tables' => $tables,
+            'config_file_max_size' => $this->convertBytes(ini_get('upload_max_filesize')),
         ];
 
         add_meta(['title' => lang('Backup.heading_title')], $this->themes);
@@ -368,11 +369,98 @@ class Backup extends AdminController
         }
 
         if (!headers_sent()) {
-            return $this->response->download($file, null);
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+
+            if (ob_get_level()) {
+                ob_end_clean();
+            }
+
+            readfile($file, 'rb');
+
+            exit();
+            //return $this->response->download($file, null);
         } else {
             set_alert(sprintf(lang('Backup.error_headers_sent'), $filename), ALERT_ERROR, ALERT_POPUP);
             return redirect()->back();
         }
 
+    }
+
+    public function upload()
+    {
+        try {
+
+            $json = [];
+
+            // create folder
+            if (!is_dir($this->backup_path)) {
+                mkdir($this->backup_path, 0777, true);
+            }
+
+            $file_name = 'upload';
+
+            $file = $this->request->getFile($file_name);
+            if (empty($file)) {
+                $json['error'] = lang('FileManager.error_upload');
+            }
+
+            $config_file_max_size = $this->convertBytes(ini_get('upload_max_filesize'));
+            if ($file->getSize() > $config_file_max_size) {
+                $json['error'] = lang('Admin.error_upload_1');
+            }
+
+            if (!$json) {
+                $filename = basename(html_entity_decode($file->getName(), ENT_QUOTES, 'UTF-8'));
+
+                if ((strlen($filename) < 3) || (strlen($filename) > 128)) {
+                    $json['error'] = lang('FileManager.error_filename');
+                }
+
+                // Allowed file extension types
+                if (strtolower(substr(strrchr($filename, '.'), 1)) != 'sql') {
+                    $json['error'] = lang('FileManager.error_filetype');
+                }
+            }
+
+            if (!$json) {
+                move_uploaded_file($file->getRealPath(), $this->backup_path . $filename);
+                $json['success'] = lang('FileManager.text_uploaded');
+            }
+
+        } catch (\Exception $ex) {
+            $json['error'] = $ex->getMessage();
+        }
+
+        $json['token'] = csrf_hash();
+
+        json_output($json);
+    }
+
+    private function convertBytes($value)
+    {
+        if ( is_numeric( $value ) ) {
+            return $value;
+        } else {
+            $value_length = strlen($value);
+            $qty = substr( $value, 0, $value_length - 1 );
+            $unit = strtolower( substr( $value, $value_length - 1 ) );
+            switch ( $unit ) {
+                case 'k':
+                    $qty *= 1024;
+                    break;
+                case 'm':
+                    $qty *= 1048576;
+                    break;
+                case 'g':
+                    $qty *= 1073741824;
+                    break;
+            }
+            return $qty;
+        }
     }
 }

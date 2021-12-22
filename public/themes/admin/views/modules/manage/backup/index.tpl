@@ -13,7 +13,7 @@
 						{lang('Admin.button_import')}
 					</label>
 					<div class="col-12 col-sm-8 col-lg-6">
-						<button class="btn btn-sm btn-secondary"><i class="fa fa-upload me-1"></i>{lang('Admin.button_import')}</button>
+						<button id="btn_upload" class="btn btn-sm btn-secondary"><i class="fa fa-upload me-1"></i>{lang('Admin.button_import')}</button>
 					</div>
 				</div>
 				<div class="form-group row">
@@ -31,7 +31,7 @@
 							<input type="checkbox" name="cb_backup_all" id="cb_backup_all" value="all" checked="checked" class="form-check-input">
 							<label class="form-check-label me-3 text-secondary" for="cb_backup_all">{lang('Admin.text_select_all')}</label>
 						</div>
-						<div id="tables" class="bg-light p-2" style="max-height: 350px; overflow-y: scroll;">
+						<div id="tables" class="bg-light p-2" style="max-height: 250px; overflow-y: scroll;">
 							{foreach $tables as $table}
 								<div class="form-check">
 									<input type="checkbox" name="cb_backup[]" id="cb_backup_{$table}" value="{$table}" checked="checked" class="form-check-input">
@@ -352,6 +352,87 @@
 			});
 
 			return false;
+		});
+
+		// Upload
+		$('#btn_upload').on('click', function() {
+			if (is_processing) {
+				return false;
+			}
+			is_processing = true;
+
+			$('#form-upload').remove();
+			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="upload" /></form>');
+			$('#form-upload input[name=\'upload\']').trigger('click');
+			$('#form-upload input[name=\'upload\']').on('change', function() {
+
+				if ($('#form-upload')[0].size > {/literal}{$config_file_max_size}{literal}) {
+					$.notify('{/literal}{lang('Admin.error_upload_1')}{literal}', {'type':'danger'});
+					$(this).val('');
+					is_processing = false;
+					$('#btn_upload').find('i').replaceWith('<i class="fa fa-upload me-1"></i>');
+				}
+			});
+			if (typeof timer != 'undefined') {
+				clearInterval(timer);
+			}
+			timer = setInterval(function() {
+				if ($('#form-upload input[name=\'upload\']').val() != '') {
+					clearInterval(timer);
+
+					$('#progress_bar').css('width', '0%');
+					$('#progress_bar').removeClass('progress-bar-danger progress-bar-success');
+					$('#progress_backup').show();
+
+					$.ajax({
+						url: base_url + '/manage/backup/upload',
+						type: 'post',
+						data: new FormData($('#form-upload')[0]),
+						cache: false,
+						contentType: false,
+						processData: false,
+						xhr: function () {
+                            var xhr = new window.XMLHttpRequest();
+                            xhr.upload.addEventListener("progress", function (evt) {
+                                if (evt.lengthComputable) {
+                                    var percentComplete = evt.loaded / evt.total;
+                                    percentComplete = parseInt(percentComplete * 100);
+                                    $('#progress_bar').attr("aria-valuenow", percentComplete);
+                                    $('#progress_bar').attr("style", 'width: ' + percentComplete + '%;');
+                                }
+                            }, false);
+                            return xhr;
+                        },
+						beforeSend: function() {
+							$('#btn_upload').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
+						},
+						complete: function() {
+							$('#btn_upload').find('i').replaceWith('<i class="fa fa-upload me-1"></i>');
+						},
+						success: function(data) {
+							var response = JSON.stringify(data);
+							response     = JSON.parse(response);
+
+							if (response.error) {
+								is_processing = false;
+								$.notify(response.error, {'type':'danger'});
+								$('#progress_backup').hide();
+							}
+							if (response.success) {
+								is_processing = false;
+								$.notify(response.success);
+								history(base_url + "/manage/backup/history");
+								$('#progress_backup').hide();
+							}
+						},
+						error: function(xhr, ajaxOptions, thrownError) {
+							is_processing = false;
+							$('#progress_backup').hide();
+							console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+						}
+					});
+				}
+			}, 500);
 		});
 
 		$(function () {
