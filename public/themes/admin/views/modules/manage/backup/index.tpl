@@ -8,7 +8,7 @@
 			<h5 class="card-header"><i class="fas fa-exchange-alt me-2"></i>{lang('Backup.heading_title')}</h5>
 			<div class="card-body py-2">
 
-				<div class="form-group row mt-3">
+				<div class="form-group row my-3">
 					<label class="col-12 col-sm-3 col-form-label text-end">
 						{lang('Admin.button_import')}
 					</label>
@@ -21,16 +21,12 @@
 						{lang('Admin.button_export')}
 					</label>
 					<div class="col-12 col-sm-8 col-lg-6">
-						<button id="btn_backup" class="btn btn-sm btn-outline-light"><i class="fa fa-download me-1"></i>{lang('Admin.button_export')}</button>
+						<button id="btn_backup" class="btn btn-sm btn-light text-dark"><i class="fa fa-download me-1"></i>{lang('Admin.button_export')}</button>
 					</div>
 				</div>
-				<div class="form-group row my-3">
+				<div class="form-group row mb-3">
 					<label class="col-12 col-sm-3 col-form-label text-end"></label>
 					<div class="col-12 col-sm-8 col-lg-6">
-						<div class="form-check ms-2">
-							<input type="checkbox" name="cb_backup_all" id="cb_backup_all" value="all" checked="checked" class="form-check-input">
-							<label class="form-check-label me-3 text-secondary" for="cb_backup_all">{lang('Admin.text_select_all')}</label>
-						</div>
 						<div id="tables" class="bg-light p-2" style="max-height: 250px; overflow-y: scroll;">
 							{foreach $tables as $table}
 								<div class="form-check">
@@ -38,6 +34,10 @@
 									<label class="form-check-label text-dark" for="cb_backup_{$table}">{$table}</label>
 								</div>
 							{/foreach}
+						</div>
+						<div class="form-check ms-2 mt-2">
+							<input type="checkbox" name="cb_backup_all" id="cb_backup_all" value="all" checked="checked" class="form-check-input">
+							<label class="form-check-label me-3 text-secondary" for="cb_backup_all">{lang('Admin.text_select_all')}</label>
 						</div>
 					</div>
 				</div>
@@ -106,10 +106,10 @@
 						is_processing = false;
 
 						$('#progress_bar').addClass('progress_bar-danger');
-						$('#progress_text').html('<div class="text-danger">' + response.error + '</div>');
-
 						$('#btn_backup').find('i').replaceWith('<i class="fa fa-download me-1"></i>');
 						$('#progress_backup').hide();
+
+						$('#backup_history').before('<div class="alert alert-danger alert-dismissible"><i class="fas fa-exclamation-circle"></i> ' + response.error + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
 					}
 					if (response.success) {
 						is_processing = false;
@@ -117,7 +117,7 @@
                         $('#progress_bar').attr('aria-valuenow', '100');
                         $('#progress_bar').html('100%');
 
-						$('#progress_text').html('<div class="text-success">' + response.success + '</div>');
+						$('#backup_history').before('<div class="alert alert-success alert-dismissible"><i class="fas fa-check-circle"></i> ' + response.success + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
 
 						$('#btn_backup').find('i').replaceWith('<i class="fa fa-download me-1"></i>');
 						$('#progress_backup').hide();
@@ -253,10 +253,10 @@
 						is_processing = false;
 
 						$('#progress_bar').addClass('progress_bar-danger');
-						$('#progress_text').html('<div class="invalid-feedback">' + response.error + '</div>');
-
                         $(obj).find('i').replaceWith('<i class="fas fa-sync text-primary"></i>');
 						$('#progress_backup').hide();
+
+						$('#backup_history').before('<div class="alert alert-danger alert-dismissible"><i class="fas fa-exclamation-circle"></i> ' + response.error + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
 					}
 					if (response.success) {
 						is_processing = false;
@@ -265,7 +265,7 @@
                         $('#progress_bar').attr('aria-valuenow', '100');
                         $('#progress_bar').html('100%');
 
-						$('#progress_text').html('<div class="text-success">' + response.success + '</div>');
+						$('#backup_history').before('<div class="alert alert-success alert-dismissible"><i class="fas fa-check-circle"></i> ' + response.success + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
 
                         $(obj).find('i').replaceWith('<i class="fas fa-sync text-primary"></i>');
 						$('#progress_backup').hide();
@@ -327,13 +327,11 @@
 					}
 
 					if (response.status == 'ng') {
-						$.notify(response.msg, {
-							'type':'danger'
-						});
+						$('#backup_history').before('<div class="alert alert-danger alert-dismissible"><i class="fas fa-exclamation-circle"></i> ' + response.msg + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
 						return false;
 					}
 
-					$.notify(response.msg);
+					$('#backup_history').before('<div class="alert alert-success alert-dismissible"><i class="fas fa-check-circle"></i> ' + response.msg + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
 
 					$('tr#' + tr_id).remove();
 				},
@@ -356,10 +354,6 @@
 
 		// Upload
 		$('#btn_upload').on('click', function() {
-			if (is_processing) {
-				return false;
-			}
-			is_processing = true;
 
 			$('#form-upload').remove();
 			$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="upload" /></form>');
@@ -369,7 +363,6 @@
 				if ($('#form-upload')[0].size > {/literal}{$config_file_max_size}{literal}) {
 					$.notify('{/literal}{lang('Admin.error_upload_1')}{literal}', {'type':'danger'});
 					$(this).val('');
-					is_processing = false;
 					$('#btn_upload').find('i').replaceWith('<i class="fa fa-upload me-1"></i>');
 				}
 			});
@@ -379,6 +372,11 @@
 			timer = setInterval(function() {
 				if ($('#form-upload input[name=\'upload\']').val() != '') {
 					clearInterval(timer);
+
+					if (is_processing) {
+						return false;
+					}
+					is_processing = true;
 
 					$('#progress_bar').css('width', '0%');
 					$('#progress_bar').removeClass('progress-bar-danger progress-bar-success');
@@ -415,12 +413,12 @@
 
 							if (response.error) {
 								is_processing = false;
-								$.notify(response.error, {'type':'danger'});
+								$('#backup_history').before('<div class="alert alert-danger alert-dismissible"><i class="fas fa-exclamation-circle"></i> ' + response.error + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
 								$('#progress_backup').hide();
 							}
 							if (response.success) {
 								is_processing = false;
-								$.notify(response.success);
+								$('#backup_history').before('<div class="alert alert-success alert-dismissible"><i class="fas fa-check-circle"></i> ' + response.success + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
 								history(base_url + "/manage/backup/history");
 								$('#progress_backup').hide();
 							}

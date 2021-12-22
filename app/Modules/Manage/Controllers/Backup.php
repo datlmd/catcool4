@@ -15,7 +15,7 @@ class Backup extends AdminController
 
     protected $backup_path;
 
-    CONST FILE_PAGE_LIMIT = 3;
+    CONST FILE_PAGE_LIMIT = 30;
 
     public function __construct()
     {
@@ -209,7 +209,7 @@ class Backup extends AdminController
             $list[$key] = $file;
         }
 
-        $sort_arr = array_column($list, 'name');
+        $sort_arr = array_column($list, 'modify');
         array_multisort($sort_arr, SORT_DESC, $list);
 
         $count_list = count($list);
@@ -268,6 +268,112 @@ class Backup extends AdminController
             $filename = '';
         }
 
+        if (!empty($this->request->getGet('position'))) {
+            $position = (int)$this->request->getGet('position');
+        } else {
+            $position = 0;
+        }
+
+        $file = $this->backup_path . $filename;
+
+        if (!is_file($file)) {
+            $json['error'] = lang('Backup.error_file');
+        }
+
+        if (!$json) {
+            // We set $i so we can batch execute the queries rather than do them all at once.
+            $i = 0;
+            $start = false;
+
+            $handle = fopen($file, 'r');
+
+            fseek($handle, $position, SEEK_SET);
+
+            while (!feof($handle) && ($i < 100)) {
+                $position = ftell($handle);
+
+                $line = fgets($handle, 1000000);
+
+                //if (substr($line, 0, 14) == 'TRUNCATE TABLE' || substr($line, 0, 11) == 'INSERT INTO') {
+                if (strpos(strtolower($line), 'truncate table') !== false
+                    || strpos(strtolower($line), 'insert into') !== false
+                    || strpos(strtolower($line), 'delete from') !== false
+                    || strpos(strtolower($line), 'auto_increment = 1') !== false
+                ) {
+                    $sql = '';
+
+                    $start = true;
+                }
+
+                if ($i > 0 && (strpos(strtolower($line), 'user_admin') !== false
+                        || strpos(strtolower($line), 'sessions') !== false
+                    )
+                ) {
+                    fseek($handle, $position, SEEK_SET);
+
+                    break;
+                }
+
+                if ($start) {
+                    $sql .= $line;
+                }
+
+                if ($start && substr($line, -2) == ";\n") {
+                    try {
+                        $this->db->query(substr($sql, 0, strlen($sql) -2));
+                    } catch (\Exception $ex) {
+                        log_message('error', $sql);
+                        log_message('error', $ex->getMessage());
+                    }
+
+                    $start = false;
+                }
+
+                $i++;
+            }
+
+            $position = ftell($handle);
+
+            $size = filesize($file);
+
+            if ($position) {
+                $json['progress'] = round(($position / $size) * 100);
+            } else {
+                $json['progress'] = 0;
+            }
+
+            if ($position && !feof($handle)) {
+                $json['text'] = sprintf(lang('Backup.text_restore'), $position, $size);
+                $json['next'] = site_url() . 'manage/backup/restore?' . 'filename=' . urlencode($filename) . '&position=' . $position;
+            } else {
+                $json['success'] = lang('Backup.text_success');
+            }
+
+            fclose($handle);
+        }
+
+        $json['token'] = csrf_hash();
+
+        json_output($json);
+    }
+
+    /**
+     * Backup restore
+     */
+    public function restore_bk(): void
+    {
+        if (!$this->request->isAJAX()) {
+            page_not_found();
+        }
+
+        $json = [];
+
+        if (!empty($this->request->getGet('filename'))) {
+            $filename = basename(html_entity_decode($this->request->getGet('filename'), ENT_QUOTES, 'UTF-8'));
+        } else {
+            $filename = '';
+        }
+
         if (!empty($this->request->getGet('page'))) {
             $page = (int)$this->request->getGet('page');
         } else {
@@ -292,8 +398,7 @@ class Backup extends AdminController
                 continue;
             }
 
-            if (empty($value)
-                || strpos(strtolower($value), 'truncate table') !== false
+            if (strpos(strtolower($value), 'truncate table') !== false
                 || strpos(strtolower($value), 'insert into') !== false
                 || strpos(strtolower($value), 'delete from') !== false
                 || strpos(strtolower($value), 'auto_increment = 1') !== false
@@ -369,8 +474,7 @@ class Backup extends AdminController
         }
 
         if (!headers_sent()) {
-            $this->downloadLargeFile($file);
-            //return $this->response->download($file, null);
+            return $this->response->download($file, null);
         } else {
             set_alert(sprintf(lang('Backup.error_headers_sent'), $filename), ALERT_ERROR, ALERT_POPUP);
             return redirect()->back();
@@ -449,87 +553,5 @@ class Backup extends AdminController
             }
             return $qty;
         }
-    }
-
-    function downloadLargeFile($path) {
-        $file_info = new \CodeIgniter\Files\File($path);
-        $file_name = $file_info->getFilename();
-
-        $mime_type = $file_info->getMimeType();
-
-        $attachment = (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) ? "" : " attachment"; // IE 5.5 fix.
-
-        // send the headers
-        header("Content-Type: $mime_type");
-        //header('Content-Length: ' . filesize($path)); //PHP Warning: filesize(): stat failed for remote file
-        //header("Content-Disposition: attachment; filename=$file_name;");
-        header("Content-Disposition: $attachment; filename=$file_name;");
-
-        //Disable SSL verification
-        $options=array(
-            "ssl"=>array(
-                "verify_peer"=>false,
-                "verify_peer_name"=>false,
-            ),
-        );
-
-        $context  = stream_context_create($options);
-
-        // stream the file
-        //$fp = fopen($path, 'rb');
-        $fp = fopen($path, 'rb', false, $context);
-
-        ob_end_clean();//output buffering is disabled, so you won't hit your memory limit
-
-        fpassthru($fp);
-
-        fclose($fp);
-
-        exit;
-    }
-
-    protected function downloadFileChunked($path)
-    {
-        $file_info = new \CodeIgniter\Files\File($path);
-        $file_name = $file_info->getFilename();
-
-        $mime_type = $file_info->getMimeType();
-
-        $attachment = (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) ? "" : " attachment"; // IE 5.5 fix.
-
-        // send the headers
-        header("Content-Type: $mime_type");
-        header('Content-Transfer-Encoding: binary');
-        //header('Content-Length: ' . filesize($path)); //PHP Warning: filesize(): stat failed for remote file
-        //header("Content-Disposition: attachment; filename=$file_name;");
-        header("Content-Disposition: $attachment; filename=$file_name;");
-
-        $options = [
-            "ssl" => [
-                "verify_peer"      =>false,
-                "verify_peer_name" =>false,
-            ],
-        ];
-
-        $context  = stream_context_create($options);
-
-        $handle = fopen($path, 'rb', false, $context);
-
-        ob_end_clean();//output buffering is disabled, so you won't hit your memory limit
-
-        $buffer = '';
-        $chunkSize = 1024 * 1024;
-
-        ob_start();
-        while (!feof($handle)) {
-            $buffer = fread($handle, $chunkSize);
-            echo $buffer;
-            ob_flush();
-            flush();
-        }
-
-        fclose($handle);
-
-        exit;
     }
 }
