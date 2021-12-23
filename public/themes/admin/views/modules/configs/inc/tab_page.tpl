@@ -188,6 +188,18 @@
 				<img src="{img_url('bg-03.jpg')}" class="img-thumbnail" width="200">
 			</label>
 		</label>
+		<label class="form-check form-check-inline">
+			<input type="radio" name="background_image_admin_path" value="bg-04.jpeg" {if old('background_image_admin_path', $background_image_admin_path) eq 'bg-04.jpeg'}checked="checked"{/if} id="background_image_admin_path_05" class="form-check-input">
+			<label class="form-check-label" for="background_image_admin_path_05">
+				<img src="{img_url('bg-04.jpeg')}" class="img-thumbnail" width="200">
+			</label>
+		</label>
+		<label class="form-check form-check-inline">
+			<input type="radio" name="background_image_admin_path" value="bg-05.jpeg" {if old('background_image_admin_path', $background_image_admin_path) eq 'bg-05.jpeg'}checked="checked"{/if} id="background_image_admin_path_06" class="form-check-input">
+			<label class="form-check-label" for="background_image_admin_path_06">
+				<img src="{img_url('bg-05.jpeg')}" class="img-thumbnail" width="200">
+			</label>
+		</label>
 	</div>
 </div>
 <div class="form-group row mt-3">
