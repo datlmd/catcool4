@@ -718,6 +718,19 @@ if(!function_exists('image_url'))
     }
 }
 
+if(!function_exists('image_root'))
+{
+    function image_root($image = null)
+    {
+
+        if (!is_file(get_upload_path($image))) {
+            return image_default_url();
+        }
+
+        return image_domain($image);
+    }
+}
+
 if(!function_exists('image_thumb_url'))
 {
     /**

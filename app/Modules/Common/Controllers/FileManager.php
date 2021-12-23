@@ -24,7 +24,7 @@ class FileManager extends AdminController
     {
         parent::__construct();
 
-        helper('filesystem');
+        helper(['filesystem', 'number']);
         $this->_image_tool = new \App\Libraries\ImageTool();
 
         $this->request   = \Config\Services::request();
@@ -195,7 +195,7 @@ class FileManager extends AdminController
                         $data['file_list'][] = [
                             'thumb' => image_url(substr($image, strlen($this->_dir_image_path))),
                             'name'  => implode('', $name),
-                            'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
+                            'size'  => number_to_size($file_size[$image]['size']),
                             'date'  => $file_size[$image]['date'],
                             'type'  => 'image',
                             'path'  => substr($image, strlen($this->_dir_image_path)),
@@ -207,7 +207,7 @@ class FileManager extends AdminController
                         $data['file_list'][] = [
                             'thumb' => $server . $this->_dir_image . substr($image, strlen($this->_dir_image_path)). '?' . time(),
                             'name'  => implode('', $name),
-                            'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
+                            'size'  => number_to_size($file_size[$image]['size']),
                             'date'  => $file_size[$image]['date'],
                             'type'  => 'image',
                             'path'  => substr($image, strlen($this->_dir_image_path)),
@@ -218,7 +218,7 @@ class FileManager extends AdminController
                         $data['file_list'][] = [
                             'thumb' => '',
                             'name'  => implode('', $name),
-                            'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
+                            'size'  => number_to_size($file_size[$image]['size']),
                             'date'  => $file_size[$image]['date'],
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->_dir_image_path)),
@@ -240,7 +240,7 @@ class FileManager extends AdminController
                         $data['file_list'][] = [
                             'thumb' => '',
                             'name'  => implode('', $name),
-                            'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
+                            'size'  => number_to_size($file_size[$image]['size']),
                             'date'  => $file_size[$image]['date'],
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->_dir_image_path)),
@@ -252,7 +252,7 @@ class FileManager extends AdminController
                         $data['file_list'][] = [
                             'thumb' => '',
                             'name'  => implode('', $name),
-                            'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
+                            'size'  => number_to_size($file_size[$image]['size']),
                             'date'  => $file_size[$image]['date'],
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->_dir_image_path)),
@@ -279,7 +279,7 @@ class FileManager extends AdminController
                         $data['file_list'][] = [
                             'thumb' => '',
                             'name'  => implode('', $name),
-                            'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
+                            'size'  => number_to_size($file_size[$image]['size']),
                             'date'  => $file_size[$image]['date'],
                             'ext'   => $file_video->getMimeType(),
                             'type'  => 'video',
@@ -292,7 +292,7 @@ class FileManager extends AdminController
                         $data['file_list'][] = [
                             'thumb' => '',
                             'name'  => implode('', $name),
-                            'size'  => $this->_convertFileSize($file_size[$image]['size'], 0),
+                            'size'  => number_to_size($file_size[$image]['size']),
                             'date'  => $file_size[$image]['date'],
                             'type'  => 'file',
                             'path'  => substr($image, strlen($this->_dir_image_path)),
@@ -467,6 +467,8 @@ class FileManager extends AdminController
         $config['url']        = $url;
 
         $data['pagination'] = $this->pagination($config);
+
+        $data['file_max_size'] = number_to_size(config_item('file_max_size') * 1024);
 
         $data['is_ajax'] = true;
         echo $this->themes::view('filemanager', $data);

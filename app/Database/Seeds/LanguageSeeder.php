@@ -7,22 +7,22 @@ class LanguageSeeder extends Seeder
 	public function run()
 	{
 		$data = [
-//			[
-//				'lang_key'   => 'heading_title',
-//				'lang_value' => 'Backup &amp; Restore',
-//				'lang_id'    => 1, // viet nam
-//				'module_id'  => 30,
-//				'user_id'	 => 1, //admin
-//				'published'  => 1,
-//			],
-//			[
-//				'lang_key'   => 'heading_title',
-//				'lang_value' => 'Backup &amp; Restore',
-//				'lang_id'    => 2, // tieng anh
-//				'module_id'  => 30,
-//				'user_id'	 => 1, //admin
-//				'published'  => 1,
-//			],
+			[
+				'lang_key'   => 'text_maximum_upload',
+				'lang_value' => 'Kích thuớc tối đa',
+				'lang_id'    => 1, // viet nam
+				'module_id'  => 46,
+				'user_id'	 => 1, //admin
+				'published'  => 1,
+			],
+			[
+				'lang_key'   => 'text_maximum_upload',
+				'lang_value' => 'Maximum upload file size',
+				'lang_id'    => 2, // tieng anh
+				'module_id'  => 46,
+				'user_id'	 => 1, //admin
+				'published'  => 1,
+			],
 
 		];
 

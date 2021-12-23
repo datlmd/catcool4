@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div>{lang('Admin.text_upload_drop_drap')}</div>
+        <div>{lang('Admin.text_upload_drop_drap')} - {lang('Admin.text_maximum_upload')}: {$file_max_size}</div>
         <hr />
         <div id="msg" class="text-secondary"></div>
         <div class="row" id="filemanager_list">
@@ -234,7 +234,7 @@
         });
     }
 
-    $('a.directory').on('click', function(e) {
+    $('#filemanager a.directory').on('click', function(e) {
         $('.image-setting').popover('dispose');
         $('#button_folder').popover('dispose');
         is_disposing = false;
@@ -244,7 +244,7 @@
         $('#modal_image').load($(this).attr('href'));
         return false;
     });
-    $('.pagination a').on('click', function(e) {
+    $('#filemanager .pagination a').on('click', function(e) {
         $('.image-setting').popover('dispose');
         $('#button_folder').popover('dispose');
         is_disposing = false;
@@ -254,18 +254,7 @@
         $('#modal_image').load($(this).attr('href'));
         return false;
     });
-    $('#button_parent').on('click', function(e) {
-        $('.image-setting').popover('dispose');
-        $('#button_folder').popover('dispose');
-        $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
-        is_disposing = false;
-
-        e.preventDefault();
-        $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
-        $('#modal_image').load($(this).attr('href'));
-        return false;
-    });
-    $('#button_display_grid').on('click', function(e) {
+    $('#filemanager #button_parent').on('click', function(e) {
         $('.image-setting').popover('dispose');
         $('#button_folder').popover('dispose');
         $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
@@ -276,7 +265,7 @@
         $('#modal_image').load($(this).attr('href'));
         return false;
     });
-    $('#button_display_list').on('click', function(e) {
+    $('#filemanager #button_display_grid').on('click', function(e) {
         $('.image-setting').popover('dispose');
         $('#button_folder').popover('dispose');
         $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
@@ -287,7 +276,18 @@
         $('#modal_image').load($(this).attr('href'));
         return false;
     });
-    $('#button_refresh').on('click', function(e) {
+    $('#filemanager #button_display_list').on('click', function(e) {
+        $('.image-setting').popover('dispose');
+        $('#button_folder').popover('dispose');
+        $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
+        is_disposing = false;
+
+        e.preventDefault();
+        $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
+        $('#modal_image').load($(this).attr('href'));
+        return false;
+    });
+    $('#filemanager #button_refresh').on('click', function(e) {
         if (is_processing) {
             return false;
         }
@@ -330,13 +330,13 @@
         });
         return false;
     });
-    $('input[name=\'search\']').on('keydown', function(e) {
+    $('#filemanager input[name=\'search\']').on('keydown', function(e) {
         if (e.which == 13) {
             $('#button_search').trigger('click');
         }
     });
 
-    $('#button_search').on('click', function(e) {
+    $('#filemanager #button_search').on('click', function(e) {
         $('.image-setting').popover('dispose');
         $('#button_folder').popover('dispose');
         is_disposing = false;
@@ -366,7 +366,7 @@
         $('#modal_image').load(url);
     });
 
-    $('#button-upload').on('click', function() {
+    $('#filemanager #button-upload').on('click', function() {
         filemanager_dispose_all();
 
         $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
@@ -442,7 +442,7 @@
         }, 500);
     });
 
-    $('#button_folder').on('click', function (e) {
+    $('#filemanager #button_folder').on('click', function (e) {
         var button_folder = $(this);
         var $popover = button_folder.data('bs.popover');
 
@@ -592,7 +592,7 @@
         });
     });
 
-    $('.image-setting').on('click', function (e) {
+    $('#filemanager .image-setting').on('click', function (e) {
         var image_setting = $(this);
         var $popover = image_setting.data('bs.popover');
 
@@ -663,6 +663,7 @@
                         image_setting.parent().find("img").css("background-image", "url('')");
                         image_setting.parent().find("img").attr('src', json['image']);
                         image_setting.parent().find("img").css("background-image", "url('" + json['image'] + "')").fadeIn(500);
+                        image_setting.parent().find("a").attr('href', json['image']);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
@@ -707,6 +708,7 @@
                         image_setting.parent().find("img").css("background-image", "url('')");
                         image_setting.parent().find("img").attr('src', json['image']);
                         image_setting.parent().find("img").css("background-image", "url('" + json['image'] + "')").fadeIn(500);
+                        image_setting.parent().find("a").attr('href', json['image']);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
@@ -751,6 +753,7 @@
                         image_setting.parent().find("img").css("background-image", "url('')");
                         image_setting.parent().find("img").attr('src', json['image']);
                         image_setting.parent().find("img").css("background-image", "url('" + json['image'] + "')").fadeIn(500);
+                        image_setting.parent().find("a").attr('href', json['image']);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {

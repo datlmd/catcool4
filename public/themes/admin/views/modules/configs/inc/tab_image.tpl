@@ -10,7 +10,10 @@
 			{assign var="file_max_size" value="0"}
 		{/if}
 		<input type="number" name="file_max_size" value="{old('file_max_size', $file_max_size)}" id="file_max_size" class="form-control {if $validator->hasError("file_max_size")}is-invalid{/if}">
-		<small>{lang('ConfigAdmin.help_file_max_size')}</small>
+		<small>
+			{lang('ConfigAdmin.help_file_max_size')}<br/>
+			upload_max_filesize: {ini_get('upload_max_filesize')}
+		</small>
 		<div class="invalid-feedback">
 			{$validator->getError("file_max_size")}
 		</div>

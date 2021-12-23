@@ -236,6 +236,7 @@ return [
 	"text_manage_placeholder" => "Please enter %s",
 	"text_manage_validation" => "%s required!",
 	"text_manage_validation_number" => "Please enter the integer type for %s",
+	"text_maximum_upload" => "Maximum upload file size",
 	"text_minus" => "-",
 	"text_module" => "Module",
 	"text_move_to_trash" => "Move to trash",
