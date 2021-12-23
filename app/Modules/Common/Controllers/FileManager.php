@@ -193,7 +193,7 @@ class FileManager extends AdminController
                     case "indd":
                     case "heif":
                         $data['file_list'][] = [
-                            'thumb' => image_url(substr($image, strlen($this->_dir_image_path))),
+                            'thumb' => image_root(substr($image, strlen($this->_dir_image_path))),
                             'name'  => implode('', $name),
                             'size'  => number_to_size($file_size[$image]['size']),
                             'date'  => $file_size[$image]['date'],
@@ -685,7 +685,7 @@ class FileManager extends AdminController
 
             if (!empty($image)) {
                 $json['success'] = lang('FileManager.text_rotation');
-                $json['image'] = image_url($image) . '?' . time();
+                $json['image'] = image_root($image) . '?' . time();
             } else {
                 $json['error'] = !empty($this->_image_tool->getError()) ? $this->_image_tool->getError() : lang('FileManager.error_rotation');
             }

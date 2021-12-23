@@ -680,7 +680,7 @@ if(!function_exists('image_action'))
         }
         $image = 'img/'.$image;
 
-        if (!empty(session()->get('is_admin'))) {
+        if (!empty(session()->get('admin.is_admin'))) {
             return image_domain($image) . '?' . time();
         }
 
@@ -710,7 +710,7 @@ if(!function_exists('image_url'))
         $image_resize = $image_tool->resize($image, $width, $height);
 
         $image_resize = get_upload_url($image_resize);
-        if (!empty(session()->get('is_admin'))) {
+        if (!empty(session()->get('admin.is_admin'))) {
             return image_domain($image_resize) . '?' . time();
         }
 
@@ -727,7 +727,11 @@ if(!function_exists('image_root'))
             return image_default_url();
         }
 
-        return image_domain($image);
+        if (!empty(session()->get('admin.is_admin'))) {
+            return image_domain(get_upload_url($image)) . '?' . time();
+        }
+
+        return image_domain(get_upload_url($image));
     }
 }
 
@@ -761,7 +765,7 @@ if(!function_exists('image_thumb_url'))
 
 
         $image_resize = get_upload_url($image_resize);
-        if (!empty(session()->get('is_admin'))) {
+        if (!empty(session()->get('admin.is_admin'))) {
             return image_domain($image_resize) . '?' . time();
         }
 

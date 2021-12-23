@@ -45,9 +45,9 @@
                                         <a href="{$file.href}" class="directory" style="vertical-align: middle;"><i class="fas fa-folder fa-4x"></i></a>
                                     {elseif $file.type == 'image'}
                                         <div class="img-photo-list position-relative">
-                                            <img src="{image_thumb_url($file.path, 180, 180)}" style="background-image: url('{image_thumb_url($file.path, 180, 180)}');" alt="{$file.name}" title="{$file.name}" class="img-blur" />
+                                            <img src="{image_root($file.path)}" style="background-image: url('{image_root($file.path)}');" alt="{$file.name}" title="{$file.name}" class="img-blur" />
                                             <a href="{$file.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
-                                                <img src="{image_thumb_url($file.path, 180, 180)}" style="background-image: url('{image_thumb_url($file.path, 180, 180)}');" alt="{$file.name}" title="{$file.name}" class="" />
+                                                <img src="{image_root($file.path)}" style="background-image: url('{image_root($file.path)}');" alt="{$file.name}" title="{$file.name}" class="" />
                                             </a>
                                             <button type="button" class="btn btn-xs btn-light image-setting shadow-sm" data-path="{$file.path}" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
                                         </div>
@@ -110,9 +110,9 @@
                         {elseif $file.type == 'image'}
 
                             <div class="img-photo-list position-relative">
-                                <img src="{image_thumb_url($file.path, 180, 180)}" style="background-image: url('{image_thumb_url($file.path, 180, 180)}');" alt="{$file.name}" title="{$file.name}" class="img-blur" />
+                                <img src="{image_root($file.path)}" style="background-image: url('{image_root($file.path)}');" alt="{$file.name}" title="{$file.name}" class="img-blur" />
                                 <a href="{$file.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
-                                    <img src="{image_thumb_url($file.path, 180, 180)}" style="background-image: url('{image_thumb_url($file.path, 180, 180)}');" alt="{$file.name}" title="{$file.name}" class="" />
+                                    <img src="{image_root($file.path)}" style="background-image: url('{image_root($file.path)}');" alt="{$file.name}" title="{$file.name}" class="" />
                                 </a>
                                 <button type="button" class="btn btn-xs btn-light image-setting shadow-sm" data-path="{$file.path}" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
                             </div>
