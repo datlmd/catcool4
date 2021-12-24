@@ -598,7 +598,7 @@ if(!function_exists('image_default_url'))
     function image_default_url()
     {
         if (!empty(config_item('image_none')) && is_file(get_upload_path(config_item('image_none')))) {
-            return image_domain(get_upload_url(config_item('image_none')));
+            return image_domain(get_upload_url() . config_item('image_none'));
         }
 
         return base_url('common/'.UPLOAD_IMAGE_DEFAULT);
@@ -707,7 +707,7 @@ if(!function_exists('image_url'))
         $image_tool   = new \App\Libraries\ImageTool();
         $image_resize = $image_tool->resize($image, $width, $height);
 
-        $image_resize = get_upload_url($image_resize);
+        $image_resize = get_upload_url() . $image_resize;
 
         $mtime = filemtime($image_resize);
 
@@ -726,7 +726,7 @@ if(!function_exists('image_root'))
 
         $mtime = filemtime(get_upload_path($image));
 
-        return image_domain(get_upload_url($image)) . "?$mtime";
+        return image_domain(get_upload_url() . $image) . "?$mtime";
     }
 }
 
@@ -759,7 +759,7 @@ if(!function_exists('image_thumb_url'))
             : $image_tool->resize($image, $width, $height);
 
 
-        $image_resize = get_upload_url($image_resize);
+        $image_resize = get_upload_url() . $image_resize;
         $mtime = filemtime($image_resize);
 
         return image_domain($image_resize) . "?$mtime";
