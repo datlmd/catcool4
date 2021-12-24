@@ -680,11 +680,9 @@ if(!function_exists('image_action'))
         }
         $image = 'img/'.$image;
 
-        if (!empty(session()->get('admin.is_admin'))) {
-            return image_domain($image) . '?' . time();
-        }
+        $mtime = filemtime($image);
 
-        return image_domain($image);
+        return image_domain($image) . "?$mtime";
     }
 }
 
@@ -710,11 +708,10 @@ if(!function_exists('image_url'))
         $image_resize = $image_tool->resize($image, $width, $height);
 
         $image_resize = get_upload_url($image_resize);
-        if (!empty(session()->get('admin.is_admin'))) {
-            return image_domain($image_resize) . '?' . time();
-        }
 
-        return image_domain($image_resize);
+        $mtime = filemtime($image_resize);
+
+        return image_domain($image_resize) . "?$mtime";
     }
 }
 
@@ -727,11 +724,9 @@ if(!function_exists('image_root'))
             return image_default_url();
         }
 
-        if (!empty(session()->get('admin.is_admin'))) {
-            return image_domain(get_upload_url($image)) . '?' . time();
-        }
+        $mtime = filemtime(get_upload_path($image));
 
-        return image_domain(get_upload_url($image));
+        return image_domain(get_upload_url($image)) . "?$mtime";
     }
 }
 
@@ -765,11 +760,9 @@ if(!function_exists('image_thumb_url'))
 
 
         $image_resize = get_upload_url($image_resize);
-        if (!empty(session()->get('admin.is_admin'))) {
-            return image_domain($image_resize) . '?' . time();
-        }
+        $mtime = filemtime($image_resize);
 
-        return image_domain($image_resize);
+        return image_domain($image_resize) . "?$mtime";
     }
 }
 
@@ -1465,7 +1458,7 @@ if(!function_exists('send_email'))
 
 if(!function_exists('get_avatar'))
 {
-    function get_avatar($avatar = null)
+    function get_avatar($avatar = null, $width = 32, $height = 32)
     {
         $username    = session('user.username');
         $user_gender = session('user.user_gender');
@@ -1482,7 +1475,7 @@ if(!function_exists('get_avatar'))
             return ($user_gender == GENDER_MALE) ? base_url('common/'.config_item('avatar_default_male')) : base_url('common/'.config_item('avatar_default_female'));
         }
 
-        return image_url($avatar);
+        return image_url($avatar, $width, $height);
     }
 }
 

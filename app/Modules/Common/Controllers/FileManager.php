@@ -199,19 +199,19 @@ class FileManager extends AdminController
                             'date'  => $file_size[$image]['date'],
                             'type'  => 'image',
                             'path'  => substr($image, strlen($this->_dir_image_path)),
-                            'href'  => $server . $this->_img_url . $this->_dir_image . substr($image, strlen($this->_dir_image_path)) . '?' . time(),
+                            'href'  => $server . $this->_img_url . $this->_dir_image . substr($image, strlen($this->_dir_image_path)),
                         ];
                         break;
                     case "svg":
                     case "svgz":
                         $data['file_list'][] = [
-                            'thumb' => $server . $this->_dir_image . substr($image, strlen($this->_dir_image_path)). '?' . time(),
+                            'thumb' => $server . $this->_dir_image . substr($image, strlen($this->_dir_image_path)),
                             'name'  => implode('', $name),
                             'size'  => number_to_size($file_size[$image]['size']),
                             'date'  => $file_size[$image]['date'],
                             'type'  => 'image',
                             'path'  => substr($image, strlen($this->_dir_image_path)),
-                            'href'  => $server . $this->_img_url . $this->_dir_image . substr($image, strlen($this->_dir_image_path)) . '?' . time(),
+                            'href'  => $server . $this->_img_url . $this->_dir_image . substr($image, strlen($this->_dir_image_path)),
                         ];
                         break;
                     case "pdf":
