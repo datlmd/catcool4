@@ -10,7 +10,15 @@
 <link rel="stylesheet" type="text/css" href="{base_url('common/js/lightbox/lightbox.css')}">
 <link rel="stylesheet" type="text/css" href="{base_url('common/js/rcrop/rcrop.css')}">
 
-<link rel="stylesheet" type="text/css" href="{theme_url('assets/css/catcool.css')}?{CACHE_TIME_CSS}">
-{if !empty(config_item('enable_dark_mode'))}
-    <link rel="stylesheet" type="text/css" href="{theme_url('assets/css/catcool_dark.css')}?{CACHE_TIME_CSS}">
+{if ENVIRONMENT === 'production'}
+    <link rel="stylesheet" type="text/css" href="{theme_url('assets/css/catcool.min.css')}?{CACHE_TIME_CSS}">
+    {if !empty(config_item('enable_dark_mode'))}
+        <link rel="stylesheet" type="text/css" href="{theme_url('assets/css/catcool_dark.min.css')}?{CACHE_TIME_CSS}">
+    {/if}
+{else}
+    <link rel="stylesheet" type="text/css" href="{theme_url('assets/css/catcool.css')}?{CACHE_TIME_CSS}">
+    {if !empty(config_item('enable_dark_mode'))}
+        <link rel="stylesheet" type="text/css" href="{theme_url('assets/css/catcool_dark.css')}?{CACHE_TIME_CSS}">
+    {/if}
 {/if}
+

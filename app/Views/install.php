@@ -456,10 +456,14 @@
 				Run css custom.css to custom.min.css<br/>
 				<code>
 					minify -b -o public/themes/loitraitim/assets/css/custom.min.css public/themes/loitraitim/assets/css/custom.css<br/><br/>
+					minify -b -o public/themes/admin/assets/css/catcool.min.css public/themes/admin/assets/css/catcool.css<br/><br/>
+					minify -b -o public/themes/admin/assets/css/catcool_dark.min.css public/themes/admin/assets/css/catcool_dark.css
 				</code>
+				<br/><br/>
 				Run js custom.js to custom.min.js<br/>
 				<code>
-					minify -b -o public/themes/loitraitim/assets//js/custom.min.js public/themes/loitraitim/assets//js/custom.js
+					minify -b -o public/themes/loitraitim/assets/js/custom.min.js public/themes/loitraitim/assets/js/custom.js<br/>
+					minify -b -o public/common/js/admin/catcool.min.js public/common/js/admin/catcool.js
 				</code>
 			</li>
 		</ul>

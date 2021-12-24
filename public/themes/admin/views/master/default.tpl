@@ -20,7 +20,12 @@
 
         <script src="{base_url('common/plugin/bootstrap/js/bootstrap.bundle.min.js')}" type="text/javascript"></script>
         <script src="{base_url('common/plugin/jquery/jquery.min.js')}" type="text/javascript"></script>
-        <script src="{base_url('common/js/admin/catcool.js')}?{CACHE_TIME_JS}" type="text/javascript"></script>
+
+        {if ENVIRONMENT === 'production'}
+            <script src="{base_url('common/js/admin/catcool.min.js')}?{CACHE_TIME_JS}" type="text/javascript"></script>
+        {else}
+            <script src="{base_url('common/js/admin/catcool.js')}?{CACHE_TIME_JS}" type="text/javascript"></script>
+        {/if}
 
         <script>{script_global()}</script>
     </head>
