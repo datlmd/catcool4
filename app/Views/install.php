@@ -334,6 +334,137 @@
 		</ul>
 	</div>
 
+	<div class="my-2">
+		<h2 data-bs-toggle="collapse" data-bs-target="#collapse_minify" aria-expanded="false" aria-controls="collapse_minify">
+			- Minify -
+		</h2>
+		<ul class="list collapse" id="collapse_minify">
+			<li>
+				<a href="https://github.com/tdewolff/minify/tree/master/cmd/minify" target="_blank">Git</a><br/>
+				Installation
+				<div class="bg-light my-2 p-2 w-100">
+					<code>
+						mkdir $HOME/src<br/>
+						cd $HOME/src<br/>
+						git clone https://github.com/tdewolff/minify.git<br/>
+						cd minify<br/>
+						make install<br/><br/>
+
+						//MacOS<br/>
+						brew install tdewolff/tap/minify
+					</code>
+				</div>
+			</li>
+			<li>
+				Usage<br/>
+				Type<br/>
+				<code>
+					css     text/css<br/>
+					htm     text/html<br/>
+					html    text/html<br/>
+					js      application/javascript<br/>
+					json    application/json<br/>
+					svg     image/svg+xml<br/>
+					xml     text/xml<br/>
+				</code>
+
+				<br/><br/>
+				Minify index.html to index-min.html:<br/>
+				<code>
+					$ minify -o index-min.html index.html
+				</code>
+
+				<br/><br/>
+				Minify index.html to standard output (leave -o blank):<br/>
+				<code>
+					$ minify index.html
+				</code>
+
+				<br/><br/>
+				Normally the mimetype is inferred from the extension, to set the mimetype explicitly:<br/>
+				<code>
+					$ minify --type=html -o index-min.tpl index.tpl
+				</code>
+
+				<br/><br/>
+				You need to set the type or the mimetype option when using standard input:<br/>
+				<code>
+					$ minify --mime=application/javascript < script.js > script-min.js<br/>
+					$ cat script.js | minify --type=js > script-min.js
+				</code>
+
+				<br/><br/>
+				<b>Directories</b><br/>
+				You can also give directories as input, and these directories can be minified recursively.<br/>
+				Minify files in the current working directory to out/ (no subdirectories):<br/>
+				<code>
+					$ minify -o out/ *
+				</code>
+
+				<br/><br/>
+				Minify files recursively in src/:<br/>
+				<code>
+					$ minify -r -o out/ src
+				</code>
+
+				<br/><br/>
+				Minify only javascript files in src/:<br/>
+				<code>
+					$ minify -r -o out/ --match=\.js src
+				</code>
+
+				<br/><br/>
+				<b>Concatenate</b><br/>
+				When multiple inputs are given and the output is either standard output or a single file, it will concatenate the files together if you use the bundle option.<br/>
+				Concatenate one.css and two.css into style.css:<br/>
+				<code>
+					$ minify -b -o style.css one.css two.css
+				</code>
+
+				<br/><br/>
+				Concatenate all files in styles/ into style.css:<br/>
+				<code>
+					$ minify -r -b -o style.css styles
+				</code>
+				<br/><br/>
+				You can also use cat as standard input to concatenate files and use gzip for example:<br/>
+				<code>
+					$ cat one.css two.css three.css | minify --type=css | gzip -9 -c > style.css.gz
+				</code>
+
+				<br/><br/>
+				<b>Watching</b><br/>
+				To watch file changes and automatically re-minify you can use the -w or --watch option.<br/>
+				Minify style.css to itself and watch changes:<br/>
+				<code>
+					$ minify -w -o style.css style.css
+				</code>
+
+				<br/><br/>
+				Minify and concatenate one.css and two.css to style.css and watch changes:<br/>
+				<code>
+					$ minify -w -o style.css one.css two.css
+				</code>
+
+				<br/><br/>
+				Minify files in src/ and subdirectories to out/ and watch changes:<br/>
+				<code>
+					$ minify -w -r -o out/ src
+				</code>
+
+				<br/><br/>
+				Run css custom.css to custom.min.css<br/>
+				<code>
+					minify -b -o public/themes/loitraitim/assets/css/custom.min.css public/themes/loitraitim/assets/css/custom.css<br/><br/>
+				</code>
+				Run js custom.js to custom.min.js<br/>
+				<code>
+					minify -b -o public/themes/loitraitim/assets//js/custom.min.js public/themes/loitraitim/assets//js/custom.js
+				</code>
+			</li>
+		</ul>
+	</div>
+
 </div>
 <footer class="container-fluid text-center bg-success py-3">
 	<small class="mb-2">
