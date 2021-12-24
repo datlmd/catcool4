@@ -1,7 +1,7 @@
 {strip}
     <header id="header" class="header shadow-sm">
         <nav class="navbar navbar-expand-lg navbar-light container-xxl p-0">
-            <div class="container-fluid">
+            <div class="container-fluid px-1">
                 <a href="{site_url()}" class="navbar-brand">
                     <img alt="{config_item('site_name')}" width="auto" data-change-src="{img_url('logo.png')}" src="{img_url('logo.png')}">
                     <span class="d-none">{config_item('site_name')}</span>
