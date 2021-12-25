@@ -16,7 +16,7 @@
                     </form>
                 </div>
 
-                <div class="offcanvas offcanvas-start d-flex" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="navbar_menu_header_mobile" aria-labelledby="offcanvasLeftLabel">
+                <div class="offcanvas offcanvas-start d-flex" data-bs-scroll="false" data-bs-backdrop="true" tabindex="-1" id="navbar_menu_header_mobile" aria-labelledby="offcanvasLeftLabel">
                     <div class="offcanvas-header">
                         <h5 id="offcanvasLeftLabel" class="offcanvas-title"></h5>
                         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
