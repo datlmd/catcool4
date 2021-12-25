@@ -10,7 +10,7 @@
 			</li>
 			{if !empty($menu_main)}
 				{foreach $menu_main as $key => $item}
-					<li class="list-group-item dropdown">
+					<li class="list-group-item dropdown text-start">
 						<a class="dropdown-item" href="{$item.slug}">
 							{$item.name}
 						</a>
@@ -38,7 +38,7 @@
 			</li>
 			{if !empty($menu_main)}
 				{foreach $menu_main as $key => $item}
-					<li class="dropdown">
+					<li class="dropdown text-center">
 						<a class="dropdown-item" href="{$item.slug}">
 							{$item.name}
 						</a>
