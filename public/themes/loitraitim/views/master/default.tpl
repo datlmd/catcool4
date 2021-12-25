@@ -48,6 +48,9 @@
 		<script data-ad-client="{config_item('google_adsend_client')}" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 		<!--- end google adsend -->
 	{/if}
+
+	<meta property="fb:pages" content="494134137267796" />
+	
 </head>
 <body class="{if !empty($body_class)}{$body_class}{/if}">
 

@@ -43,3 +43,5 @@ $routes->add('sitemap.xml', 'Sitemap::index', ['namespace' => 'App\Modules\News\
 $routes->add('sitemap-category.xml', 'Sitemap::category', ['namespace' => 'App\Modules\News\Controllers']);
 $routes->add('sitemap-news.xml', 'Sitemap::news', ['namespace' => 'App\Modules\News\Controllers']);
 $routes->add('sitemap-news-(:any).xml', 'Sitemap::news/$1', ['namespace' => 'App\Modules\News\Controllers']);
+
+$routes->add('fb-news', 'Facebook::index', ['namespace' => 'App\Modules\News\Controllers']);
