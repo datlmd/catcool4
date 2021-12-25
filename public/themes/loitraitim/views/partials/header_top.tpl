@@ -6,7 +6,7 @@
                     <img alt="{config_item('site_name')}" width="auto" data-change-src="{img_url('logo.png')}" src="{img_url('logo.png')}">
                     <span class="d-none">{config_item('site_name')}</span>
                 </a>
-                <button class="navbar-toggler" type="button"  data-bs-toggle="offcanvas" href="#navbar_menu_header_mobile" aria-controls="navbar_menu_header_mobile">
+                <button class="navbar-toggler" type="button" id="btn_menu_show_offcanvas" data-bs-toggle="offcanvas" href="#navbar_menu_header_mobile" aria-controls="navbar_menu_header_mobile">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse d-none d-lg-block" id="navbar_menu_header">
