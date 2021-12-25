@@ -7,7 +7,7 @@
                 {/foreach}
             {/if}
             <h2>{$detail.name}</h2>
-            <div class="post-meta padding py-1">
+            <div class="post-meta padding fs-small py-1">
                 <span>{if !empty($detail.author)}{$detail.author}{else}Ryan Lee{/if},</span>
                 {if !empty($detail.source)}
                     <span>

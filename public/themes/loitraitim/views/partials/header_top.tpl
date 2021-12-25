@@ -26,7 +26,7 @@
                         <span class="d-none">{config_item('site_name')}</span>
                     </a>
                     {include file=get_theme_path('views/inc/menu_main.tpl') menu_type='mobile'}
-                    <p class="text-center d-flex-row justify-content-center text-secondary py-3">{get_today()}</p>
+                    <p class="text-center d-flex-row justify-content-center text-secondary fs-small py-3">{get_today()}</p>
                 </div>
             </div>
         </nav>

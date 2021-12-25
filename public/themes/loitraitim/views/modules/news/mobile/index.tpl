@@ -1,6 +1,6 @@
 {strip}
 	<div class="bg-white p-2 pb-4">
-		<div class="row">
+		<div class="row fs-small">
 			<div class="col text-secondary pt-1">
 				{get_today()}
 			</div>
