@@ -36,7 +36,7 @@
                     </ul>
                 {/if}
                 <div class="post-content">
-                    <div class="post-content-start">
+                    <div class="post-content-start position-sticky">
                         <ul>
                             <li>
                                 <a href="{site_url()}">
@@ -58,7 +58,7 @@
                             <li>
                                 <script src="https://sp.zalo.me/plugins/sdk.js"></script>
                                 <div class="zalo-share-button share-button-zalo" data-href="{base_url($detail.detail_url)}" data-oaid="579745863508352884" data-layout="3" data-color="blue" data-customize="true">
-                                    <a title="Share Zalo" href="javascript:void(0);">Zalo</a>
+                                    <a title="Share Zalo" href="javascript:void(0);"><i>Zalo</i></a>
                                 </div>
                             </li>
                         </ul>
@@ -85,13 +85,13 @@
 
             </div>
             <aside class="col-md-4 col-12 d-none d-lg-block">
-
-                {if !empty(slide_list)}
-                    {foreach $new_list as $news}
-                        {include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3" is_show_category=true is_hide_description=true}
-                    {/foreach}
-                {/if}
-
+                <div class="position-sticky">
+                    {if !empty(slide_list)}
+                        {foreach $new_list as $news}
+                            {include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3" is_show_category=true is_hide_description=true}
+                        {/foreach}
+                    {/if}
+                </div>
             </aside>
         </div>
     </article>

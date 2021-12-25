@@ -81,7 +81,7 @@ defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125); // highest auto
 //datlm custom
 
 //cache browser js css loader
-defined('CACHE_TIME_CSS') OR define('CACHE_TIME_CSS', '20211225_01');
+defined('CACHE_TIME_CSS') OR define('CACHE_TIME_CSS', '20211225_02');
 defined('CACHE_TIME_JS') OR define('CACHE_TIME_JS', '20211225');
 
 // CAT COOL

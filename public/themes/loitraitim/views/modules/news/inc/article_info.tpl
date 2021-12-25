@@ -1,7 +1,7 @@
 {strip}
     {if !empty($article_info)}
         {if empty($article_type) || $article_type eq 'top'}
-            <article {if !empty($article_class)}class="{$article_class}"{/if}>
+            <article class="{if !empty($article_class)}{$article_class}{/if} overflow-hidden">
                 {if empty($is_hide_image)}
                     <a href="{site_url($article_info.detail_url)}" class="mb-2 d-block">
                         <img src="{if !empty($article_info.images.thumb)}{image_thumb_url($article_info.images.thumb, 140, 90)}{else}{image_thumb_url($article_info.images.robot, 140, 90)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
@@ -27,7 +27,7 @@
                 {/if}
             </article>
         {elseif $article_type eq 'left'}
-            <article {if !empty($article_class)}class="{$article_class}"{/if}>
+            <article class="{if !empty($article_class)}{$article_class}{/if} overflow-hidden">
                 {if empty($is_hide_image)}
                     <a href="{site_url($article_info.detail_url)}" class="art-image">
                         <img src="{if !empty($article_info.images.thumb)}{image_thumb_url($article_info.images.thumb, 140, 90)}{else}{image_thumb_url($article_info.images.robot, 140, 90)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
@@ -55,7 +55,7 @@
                 </header>
             </article>
         {elseif $article_type eq 'right'}
-            <article {if !empty($article_class)}class="{$article_class}"{/if}>
+            <article class="{if !empty($article_class)}{$article_class}{/if} overflow-hidden">
 
                 {if empty($is_hide_image)}
                     <a href="{site_url($article_info.detail_url)}" class="art-image art-image-right">
@@ -86,7 +86,7 @@
 
             </article>
         {elseif $article_type eq 'middle_left'}
-            <article {if !empty($article_class)}class="{$article_class}"{/if}>
+            <article class="{if !empty($article_class)}{$article_class}{/if} overflow-hidden">
                 <header class="mb-1">
                     <h4>
                         <a href="{site_url($article_info.detail_url)}" class="art-title">{$article_info.name}</a>
@@ -116,7 +116,7 @@
 
             </article>
         {elseif $article_type eq 'middle_right'}
-            <article {if !empty($article_class)}class="{$article_class}"{/if}>
+            <article class="{if !empty($article_class)}{$article_class}{/if} overflow-hidden">
                 <header class="mb-1">
                     <h4>
                         <a href="{site_url($article_info.detail_url)}" class="art-title">{$article_info.name}</a>
@@ -146,7 +146,7 @@
 
             </article>
         {elseif $article_type eq 'small'}
-            <article {if !empty($article_class)}class="{$article_class}"{/if}>
+            <article class="{if !empty($article_class)}{$article_class}{/if} overflow-hidden">
                 {if empty($is_hide_image)}
                     <a href="{site_url($article_info.detail_url)}" class="art-image art-image-small">
                         <img src="{if !empty($article_info.images.thumb)}{image_thumb_url($article_info.images.thumb, 140, 90)}{else}{image_thumb_url($article_info.images.robot, 140, 90)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">

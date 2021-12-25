@@ -1,6 +1,5 @@
 html {
 	direction: ltr;
-	overflow-x: hidden;
 	box-shadow: none !important;
 	-webkit-font-smoothing: antialiased;
 }
@@ -35,7 +34,7 @@ a:hover {
 }
 
 #content {
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .fs-small {
@@ -98,7 +97,7 @@ article {
 	width: 100%;
 	clear: both;
 	display: block;
-	overflow: auto;
+	/*overflow: auto;*/
 }
 
 article .art-image {
@@ -358,14 +357,13 @@ article.post-detail .post-description {
 article.post-detail .post-content {
 	font-size: 16px;
 	line-height: 1.6;
-	padding-left: 75px;
 	position: relative;
 }
 
 article.post-detail .post-content-start {
-	left: 0;
-	top: 0;
-	position: absolute;
+	width: 55px;
+	float: left;
+	z-index: 10;
 }
 
 article.post-detail .post-content-start ul {
@@ -389,13 +387,25 @@ article.post-detail .post-content-start li a {
 	line-height: 2.4;
 	text-decoration: none;
 }
+
 article.post-detail .post-content-start li:hover a {
 	border: 1px solid #df3062;
 	color: #df3062;
 }
 
+article.post-detail .post-content-start li:hover i {
+	animation: heartBeat;
+	-webkit-animation: heartBeat;
+	-moz-animation: heartBeat;
+	-ms-animation: heartBeat;
+	-o-animation: heartBeat;
+	animation-duration: 1s;
+}
+
 article.post-detail .post-content-end {
 	position: relative;
+	padding-left: 75px;
+	z-index: 2;
 }
 
 article.post-detail .post-content p {
@@ -570,23 +580,8 @@ article.post-detail .post-related a::before {
 	background-color: rgb(255 178 228 / 60%);
 }
 
-
-@media (max-width: 575px) {
-	article .art-image {
-		margin-right: 7px;
-	}
-
-	article.post-detail header.detail {
-		margin-top: 5px;
-	}
-
-	article.post-detail .post-content {
-		padding-left: 0;
-		position: inherit;
-	}
-
-	#btn_scroll_to_top {
-		bottom: 25px;
-		right: 25px;
-	}
+.position-sticky {
+	/*position: -webkit-sticky;*/
+	/*position: sticky;*/
+	top: 60px;
 }
