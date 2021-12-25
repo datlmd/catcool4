@@ -86,15 +86,6 @@ header.header.fixed .navbar-light .navbar-brand img {
 	padding-top: 49px;
 }
 
-.offcanvas.show {
-	animation: slideInLeft;
-	-webkit-animation: slideInLeft;
-	-moz-animation: slideInLeft;
-	-ms-animation: slideInLeft;
-	-o-animation: slideInLeft;
-	animation-duration: 1s;
-}
-
 article {
 	margin: 5px 0;
 	width: 100%;
