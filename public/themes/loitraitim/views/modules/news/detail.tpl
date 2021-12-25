@@ -67,7 +67,7 @@
                         <div class="post-description text-start">
                             <strong>{$detail.description}</strong>
                         </div>
-                        {$detail.content}
+                        {str_ireplace('<img ', '<img data-fancybox="gallery" ', $detail.content)}
                         <br/>
                     </div>
 

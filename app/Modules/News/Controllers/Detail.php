@@ -82,6 +82,9 @@ class Detail extends MyController
                 $tpl_name = 'mobile/detail';
             }
 
+            $this->themes->addCSS('common/plugin/fancybox/fancybox');
+            $this->themes->addJS('common/plugin/fancybox/fancybox');
+
             theme_load($tpl_name, $data);
         } catch (\Exception $ex) {
             log_message('error', $ex->getMessage() . "[ID: $news_id, $ctime, $slug]");

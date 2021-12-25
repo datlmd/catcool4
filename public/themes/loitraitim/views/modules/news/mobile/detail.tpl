@@ -39,7 +39,7 @@
         {/if}
         <div class="post-content">
 
-            {$detail.content}
+            {str_ireplace('<img ', '<img data-fancybox="gallery" ', $detail.content)}
 
         </div>
 
