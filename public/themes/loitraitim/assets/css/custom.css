@@ -92,7 +92,7 @@ header.header.fixed .navbar-light .navbar-brand img {
 	-moz-animation: slideInLeft;
 	-ms-animation: slideInLeft;
 	-o-animation: slideInLeft;
-	animation-duration: 400ms;
+	animation-duration: 1s;
 }
 
 article {
