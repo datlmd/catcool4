@@ -38,7 +38,7 @@ class Facebook extends Controller
                 ->select('news_id, slug, name, description, content, images, publish_date, ctime, mtime')
                 ->orderBy('news_id', 'desc')
                 ->where($where)
-                ->findAll(2);
+                ->findAll(10);
 
             $rssfeed = '<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">';
             $rssfeed .= '<channel>';
