@@ -3,7 +3,7 @@
 
 	{if !empty($menu_type) && $menu_type eq 'mobile'}
 		<ul class="list-group list-group-flush d-flex-row h-100 justify-content-center" id="menu_main_mobile">
-			<li class="list-group-item dropdown">
+			<li class="list-group-item dropdown text-start">
 				<a class="dropdown-item" href="{site_url()}">
 					{lang('General.text_home')}
 				</a>
@@ -31,7 +31,7 @@
 		</ul>
 	{else}
 		<ul class="nav nav-pills" id="menu_main">
-			<li class="dropdown">
+			<li class="dropdown text-center">
 				<a class="dropdown-item" href="{site_url()}">
 					<i class="fas fa-home"></i>
 				</a>
