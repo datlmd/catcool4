@@ -87,7 +87,7 @@
             <aside class="col-md-4 col-12 d-none d-lg-block">
                 <div class="position-sticky">
                     {if !empty(slide_list)}
-                        {foreach $new_list as $news}
+                        {foreach $slide_list as $news}
                             {include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3" is_show_category=true is_hide_description=true}
                         {/foreach}
                     {/if}
