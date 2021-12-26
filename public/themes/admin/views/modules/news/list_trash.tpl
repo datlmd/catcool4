@@ -7,14 +7,14 @@
 				{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('NewsAdmin.heading_title')}
 			</div>
 			<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" title="{lang('NewsAdmin.text_add')}"><i class="fas fa-plus"></i></a>
+				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" data-bs-toggle="tooltip" title="{lang('NewsAdmin.text_add')}"><i class="fas fa-plus"></i></a>
 				<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
 
 				{if !empty($list)}
 					<button type="button" class="btn btn-sm btn-danger btn-space" data-bs-toggle="modal" data-bs-target="#empty_trash"><i class="far fa-trash-alt me-1"></i>{lang('Admin.text_empty_trash')}</button>
 				{/if}
 
-				<a href="{site_url($manage_url)}" class="btn btn-sm btn-secondary btn-space" title="{lang('Admin.button_back')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_back')}</a>
+				<a href="{site_url($manage_url)}" class="btn btn-sm btn-secondary btn-space" data-bs-toggle="tooltip" title="{lang('Admin.button_back')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_back')}</a>
 				<button id="btn_group_drop_setting" type="button" class="btn btn-sm btn-light btn-space me-0" data-bs-toggle="dropdown" aria-expanded="false">
 					<i class="fas fa-cog"></i>
 				</button>
