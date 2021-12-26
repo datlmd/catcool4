@@ -76,12 +76,12 @@
 												{anchor("$manage_url/edit/`$item.news_id`", $item.news_id, 'class="text-primary"')}
 												<div class="thumbnail">
 													{if !empty($item.images.thumb)}
-														<a href="{image_url($item.images.thumb)}" data-lightbox="photos">
-															<img src="{image_url($item.images.thumb, 200, 120)}" class="img-thumbnail me-1 img-fluid w-100">
+														<a href="{image_root($item.images.thumb)}" data-lightbox="photos">
+															<img src="{image_root($item.images.thumb)}" class="img-thumbnail me-1 img-fluid w-100">
 														</a>
 													{elseif !empty($item.images.robot)}
-														<a href="{image_url($item.images.robot)}" data-lightbox="photos">
-															<img src="{image_url($item.images.robot, 200, 120)}" class="img-thumbnail me-1 img-fluid w-100">
+														<a href="{$item.images.robot}" data-lightbox="photos">
+															<img src="{$item.images.robot}" class="img-thumbnail me-1 img-fluid w-100">
 														</a>
 													{/if}
 												</div>
