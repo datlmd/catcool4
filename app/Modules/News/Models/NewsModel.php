@@ -65,6 +65,52 @@ class NewsModel extends FarmModel
 
     private $_news_date_from = "3";
 
+    private $_queries = [
+        'create_table' => "
+            CREATE TABLE `TABLE_NAME` (
+              `news_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+              `name` varchar(255) NOT NULL DEFAULT '',
+              `slug` varchar(255) DEFAULT '',
+              `description` varchar(255) DEFAULT NULL,
+              `content` text NOT NULL,
+              `meta_title` varchar(255) DEFAULT NULL,
+              `meta_description` text,
+              `meta_keyword` text,
+              `category_ids` varchar(100) DEFAULT NULL,
+              `related_ids` varchar(255) DEFAULT NULL,
+              `publish_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              `is_comment` tinyint(1) NOT NULL DEFAULT '1',
+              `images` text,
+              `tags` varchar(255) DEFAULT NULL,
+              `author` varchar(100) DEFAULT NULL,
+              `source_type` tinyint(1) DEFAULT '1',
+              `source` varchar(255) DEFAULT NULL,
+              `tracking_code` varchar(255) DEFAULT NULL,
+              `post_format` tinyint(1) DEFAULT '1',
+              `is_ads` tinyint(1) DEFAULT '0',
+              `is_fb_ia` tinyint(1) DEFAULT '0',
+              `is_hot` tinyint(1) DEFAULT '0',
+              `is_homepage` tinyint(1) DEFAULT '0',
+              `is_disable_follow` tinyint(1) DEFAULT '0',
+              `is_disable_robot` tinyint(1) DEFAULT '0',
+              `sort_order` int(3) DEFAULT '0',
+              `user_id` int(11) NOT NULL DEFAULT '0',
+              `ip` varchar(40) DEFAULT '0.0.0.0',
+              `counter_view` int(11) DEFAULT '0',
+              `counter_comment` int(11) DEFAULT '0',
+              `counter_like` int(11) DEFAULT '0',
+              `published` tinyint(1) NOT NULL DEFAULT '1',
+              `deleted` datetime DEFAULT NULL,
+              `language_id` int(11) DEFAULT NULL,
+              `ctime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              `mtime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+              PRIMARY KEY (`news_id`),
+              KEY `publish_date` (`publish_date`,`ctime`),
+              KEY `published` (`published`,`deleted`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        ",
+    ];
+
     function __construct()
     {
         parent::__construct();
@@ -72,7 +118,7 @@ class NewsModel extends FarmModel
         $this->setTableNameYear();
 
         if (ENVIRONMENT == 'development') {
-            $this->_news_date_from = "120";
+            $this->_news_date_from = "120"; // so ngay
         }
     }
 
@@ -553,6 +599,9 @@ class NewsModel extends FarmModel
         }
 
         if ($is_insert === true) {
+            //check create table
+            $this->createTable();
+
             foreach ($list_menu as $key => $menu) {
                 if (!empty($menu['list_news'])) {
                     $menu['list_news'] = $this->robotSave($menu['list_news'], $status, $is_save_image);
@@ -969,5 +1018,30 @@ class NewsModel extends FarmModel
         }
 
         return $list;
+    }
+
+    public function createTable()
+    {
+        $db = db_connect();
+
+        $prefix = $db->getPrefix();
+        $tables = $db->listTables();
+
+        $news_year  = date('Y', time());
+        $table_name = sprintf('%snews_%s', $prefix, $news_year);
+
+        if (in_array($table_name, $tables)) {
+            return false;
+        }
+
+        try {
+            $sql = str_ireplace('TABLE_NAME', $table_name, $this->_queries['create_table']);
+            $db->query($sql);
+        } catch (\Exception $ex) {
+            log_message('error', $ex->getMessage());
+            return false;
+        }
+
+        return true;
     }
 }
