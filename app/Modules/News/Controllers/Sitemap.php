@@ -46,7 +46,7 @@ class Sitemap extends Controller
                 ->send();
         } catch (\Exception $ex) {
             log_message('error', $ex->getMessage());
-            $this->pageNotFound();
+            page_not_found();
         }
     }
 
@@ -68,6 +68,10 @@ class Sitemap extends Controller
                 'publish_date >=' => $from_date,
                 'publish_date <=' => $to_date,
             ];
+
+            //reset table
+            $this->model->setTableNameYear(strtotime($from_date));
+
             $news_list = $this->model
                 ->select('news_id, slug, name, tags, meta_keyword, publish_date, ctime, mtime')
                 ->orderBy('news_id', 'desc')
@@ -96,7 +100,7 @@ class Sitemap extends Controller
                 ->send();
         } catch (\Exception $ex) {
             log_message('error', $ex->getMessage());
-            $this->pageNotFound();
+            page_not_found();
         }
     }
 
@@ -126,7 +130,7 @@ class Sitemap extends Controller
                 ->send();
         } catch (\Exception $ex) {
             log_message('error', $ex->getMessage());
-            $this->pageNotFound();
+            page_not_found();
         }
     }
 
