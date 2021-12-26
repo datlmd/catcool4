@@ -25,7 +25,31 @@
 						<div class="col-md-8">
 							{foreach $slide_list as $news}
 								{if $news@iteration == 1}
-									{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_class="home-page" is_show_category=true}
+
+									<article class="home-page overflow-hidden">
+										<a href="{site_url($news.detail_url)}" class="mb-2 d-block">
+											{if !empty($news.images.thumb)}
+												<img src="{image_thumb_url($news.images.thumb, 580, 390)}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
+											{else}
+												<img src="{image_thumb_url($news.images.robot, 580, 390)}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
+											{/if}
+										</a>
+										<h4>
+											<a href="{site_url($news.detail_url)}" class="art-title">{$news.name}</a>
+										</h4>
+										{if !empty($news.category_ids)}
+											<div class="d-inline-block me-2">
+												{foreach $news.category_ids as $category_id}
+													<a href="{base_url($category_list[$category_id].slug)}" class="art-category">{$category_list[$category_id].name}</a>
+												{/foreach}
+											</div>
+										{/if}
+										<div class="d-inline-block art-time">
+											{time_ago($news.publish_date)}
+										</div>
+										<p class="art-description">{$news.description|truncate:160}</p>
+									</article>
+
 									{break}
 								{/if}
 							{/foreach}
@@ -36,7 +60,21 @@
 								{if $news@iteration == 1}
 									{continue}
 								{/if}
-								{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_class="mb-3" is_hide_datetime=true is_hide_description=true}
+								{if $news@iteration > 3}
+									{break}
+								{/if}
+								<article class="mb-3 overflow-hidden">
+									<a href="{site_url($news.detail_url)}" class="mb-2 d-block">
+										{if !empty($news.images.thumb)}
+											<img src="{image_thumb_url($news.images.thumb, 300, 190)}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
+										{else}
+											<img src="{image_thumb_url($news.images.robot, 300, 190)}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($news.name)}">
+										{/if}
+									</a>
+									<h4>
+										<a href="{site_url($news.detail_url)}" class="art-title">{$news.name}</a>
+									</h4>
+								</article>
 							{/foreach}
 						</div>
 

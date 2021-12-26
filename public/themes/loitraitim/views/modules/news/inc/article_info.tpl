@@ -4,7 +4,11 @@
             <article class="{if !empty($article_class)}{$article_class}{/if} overflow-hidden">
                 {if empty($is_hide_image)}
                     <a href="{site_url($article_info.detail_url)}" class="mb-2 d-block">
-                        <img src="{if !empty($article_info.images.thumb)}{image_thumb_url($article_info.images.thumb, 140, 90)}{else}{image_thumb_url($article_info.images.robot, 140, 90)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {if !empty($article_info.images.thumb)}
+                            <img src="{image_thumb_url($article_info.images.thumb, 300, 190)}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {else}
+                            <img src="{$article_info.images.robot}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {/if}
                     </a>
                 {/if}
                 <h4>
@@ -30,7 +34,11 @@
             <article class="{if !empty($article_class)}{$article_class}{/if} overflow-hidden">
                 {if empty($is_hide_image)}
                     <a href="{site_url($article_info.detail_url)}" class="art-image">
-                        <img src="{if !empty($article_info.images.thumb)}{image_thumb_url($article_info.images.thumb, 140, 90)}{else}{image_thumb_url($article_info.images.robot, 140, 90)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {if !empty($article_info.images.thumb)}
+                            <img src="{image_thumb_url($article_info.images.thumb, 300, 190)}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {else}
+                            <img src="{$article_info.images.robot}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {/if}
                     </a>
                 {/if}
                 <header>
@@ -59,7 +67,11 @@
 
                 {if empty($is_hide_image)}
                     <a href="{site_url($article_info.detail_url)}" class="art-image art-image-right">
-                        <img src="{if !empty($article_info.images.thumb)}{image_thumb_url($article_info.images.thumb, 140, 90)}{else}{image_thumb_url($article_info.images.robot, 140, 90)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {if !empty($article_info.images.thumb)}
+                            <img src="{image_thumb_url($article_info.images.thumb, 300, 190)}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {else}
+                            <img src="{$article_info.images.robot}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {/if}
                     </a>
                 {/if}
 
@@ -94,7 +106,11 @@
                 </header>
                 {if empty($is_hide_image)}
                     <a href="{site_url($article_info.detail_url)}" class="art-image">
-                        <img src="{if !empty($article_info.images.thumb)}{image_thumb_url($article_info.images.thumb, 140, 90)}{else}{image_thumb_url($article_info.images.robot, 140, 90)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {if !empty($article_info.images.thumb)}
+                            <img src="{image_thumb_url($article_info.images.thumb, 300, 190)}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {else}
+                            <img src="{$article_info.images.robot}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {/if}
                     </a>
                 {/if}
 
@@ -124,7 +140,11 @@
                 </header>
                 {if empty($is_hide_image)}
                     <a href="{site_url($article_info.detail_url)}" class="art-image art-image-right">
-                        <img src="{if !empty($article_info.images.thumb)}{image_thumb_url($article_info.images.thumb, 140, 90)}{else}{image_thumb_url($article_info.images.robot, 140, 90)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {if !empty($article_info.images.thumb)}
+                            <img src="{image_thumb_url($article_info.images.thumb, 300, 190)}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {else}
+                            <img src="{$article_info.images.robot}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {/if}
                     </a>
                 {/if}
 
@@ -149,7 +169,11 @@
             <article class="{if !empty($article_class)}{$article_class}{/if} overflow-hidden">
                 {if empty($is_hide_image)}
                     <a href="{site_url($article_info.detail_url)}" class="art-image art-image-small">
-                        <img src="{if !empty($article_info.images.thumb)}{image_thumb_url($article_info.images.thumb, 140, 90)}{else}{image_thumb_url($article_info.images.robot, 140, 90)}{/if}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {if !empty($article_info.images.thumb)}
+                            <img src="{image_thumb_url($article_info.images.thumb, 150, 95)}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {else}
+                            <img src="{$article_info.images.robot}" class="img-fluid border-radius-0" width="100%" alt="{htmlentities($article_info.name)}">
+                        {/if}
                     </a>
                 {/if}
                 <header>
