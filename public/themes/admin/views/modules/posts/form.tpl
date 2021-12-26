@@ -171,8 +171,12 @@
                                 {if isset($edit_data.source_type)}
                                     {assign var="source_type" value="`$edit_data.source_type`"}
                                 {else}
-                                    {assign var="source_type" value="1"}
+                                    {assign var="source_type" value="3"}
                                 {/if}
+                                <label class="form-check form-check-inline">
+                                    <input type="radio" name="source_type" value="3" {if old('source_type', $source_type) eq 3}checked="checked"{/if} id="source_type_self_writing" class="form-check-input">
+                                    <label class="form-check-label" for="source_type_self_writing">Self Writing</label>
+                                </label>
                                 <label class="form-check form-check-inline">
                                     <input type="radio" name="source_type" value="1" {if old('source_type', $source_type) eq 1}checked="checked"{/if} id="source_type_robot" class="form-check-input">
                                     <label class="form-check-label" for="source_type_robot">Robot</label>
@@ -180,10 +184,6 @@
                                 <label class="form-check form-check-inline">
                                     <input type="radio" name="source_type" value="2" {if old('source_type', $source_type) eq 2}checked="checked"{/if} id="source_type_copy" class="form-check-input">
                                     <label class="form-check-label" for="source_type_copy">Copy</label>
-                                </label>
-                                <label class="form-check form-check-inline">
-                                    <input type="radio" name="source_type" value="3" {if old('source_type', $source_type) eq 3}checked="checked"{/if} id="source_type_self_writing" class="form-check-input">
-                                    <label class="form-check-label" for="source_type_self_writing">Self Writing</label>
                                 </label>
                                 <label class="form-check form-check-inline">
                                     <input type="radio" name="source_type" value="4" {if old('source_type', $source_type) eq 4}checked="checked"{/if} id="source_type_pr" class="form-check-input">

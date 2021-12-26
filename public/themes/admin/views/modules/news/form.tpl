@@ -74,11 +74,11 @@
                                     {/if}
                                     Thumbnail Small<br/>
                                     <a href="javascript:void(0);" id="thumb_image_root" data-target="input_image_root_path" data-thumb="load_thumb_image_root" data-bs-toggle="image" class="my-1">
-                                        <img src="{if !empty(old('images[thumb]', $images_thumb))}{image_root(old('images[thumb]', $images_thumb))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_root" data-placeholder="{image_default_url()}"/>
+                                        <img src="{if !empty(old('images.thumb', $images_thumb))}{image_root(old('images.thumb.', $images_thumb))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_root" data-placeholder="{image_default_url()}"/>
                                         <button type="button" id="button_image_root" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
                                         <button type="button" id="button_clear_root" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
                                     </a>
-                                    <input type="hidden" name="images[thumb]" value="{old('images[thumb]', $images_thumb)}" id="input_image_root_path" />
+                                    <input type="hidden" name="images[thumb]" value="{old('images.thumb', $images_thumb)}" id="input_image_root_path" />
                                     <small>{lang('NewsAdmin.help_thumb_small')}</small>
                                 </div>
                                 <div class="col-md-4 col-sm-4 col-6">
@@ -89,11 +89,11 @@
                                     {/if}
                                     Thumbnail Large<br/>
                                     <a href="javascript:void(0);" id="thumb_image_thumb_large" data-target="input_image_thumb_large_path" data-thumb="load_thumb_image_thumb_large" data-bs-toggle="image" class="my-1">
-                                        <img src="{if !empty(old('images[thumb_large]', $images_thumb_larger))}{image_root(old('images[thumb_large]', $images_thumb_larger))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_thumb_large" data-placeholder="{image_default_url()}"/>
+                                        <img src="{if !empty(old('images.thumb_large', $images_thumb_larger))}{image_root(old('images.thumb_large', $images_thumb_larger))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_thumb_large" data-placeholder="{image_default_url()}"/>
                                         <button type="button" id="button_image_thumb_large" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
                                         <button type="button" id="button_clear_thumb_large" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
                                     </a>
-                                    <input type="hidden" name="images[thumb_large]" value="{old('images[thumb_large]', $images_thumb_larger)}" id="input_image_thumb_large_path" />
+                                    <input type="hidden" name="images[thumb_large]" value="{old('images.thumb_large', $images_thumb_larger)}" id="input_image_thumb_large_path" />
                                     <small>{lang('NewsAdmin.help_thumb_large')}</small>
                                 </div>
                                 <div class="col-md-4 col-sm-4 col-6">
@@ -104,11 +104,11 @@
                                         {assign var="images_fb" value=""}
                                     {/if}
                                     <a href="javascript:void(0);" id="thumb_image_robot_fb" data-target="input_image_robot_fb_path" data-thumb="load_thumb_image_robot_fb" data-bs-toggle="image" class="my-1">
-                                        <img src="{if !empty(old('images[fb]', $images_fb))}{image_root(old('images[fb]', $images_fb))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_robot_fb" data-placeholder="{image_default_url()}"/>
+                                        <img src="{if !empty(old('images.fb', $images_fb))}{image_root(old('images.fb', $images_fb))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_robot_fb" data-placeholder="{image_default_url()}"/>
                                         <button type="button" id="button_image_robot_fb" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
                                         <button type="button" id="button_clear_robot_fb" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
                                     </a>
-                                    <input type="hidden" name="images[fb]" value="{old('images[fb]', $images_fb)}" id="input_image_robot_fb_path" />
+                                    <input type="hidden" name="images[fb]" value="{old('images.fb', $images_fb)}" id="input_image_robot_fb_path" />
                                     <small>{lang('NewsAdmin.help_thumb_fp')}</small>
                                 </div>
 
@@ -133,9 +133,9 @@
                                                 {assign var="images_robot" value=""}
                                             {/if}
                                             <a href="{$images_robot}" data-lightbox="photos">
-                                                <img src="{old('images[robot]', $images_robot)}" class="img-thumbnail me-1 img-fluid" alt="" title="" />
+                                                <img src="{old('images.robot', $images_robot)}" class="img-thumbnail me-1 img-fluid" alt="" title="" />
                                             </a>
-                                            <input type="hidden" name="images[robot]" value="{old('images[robot]', $images_robot)}" />
+                                            <input type="hidden" name="images[robot]" value="{old('images.robot', $images_robot)}" />
                                         </div>
                                         <div class="col-md-4 col-sm-4 col-6">
                                             Thumbnail Robot Facebook<br/>
@@ -145,9 +145,9 @@
                                                 {assign var="images_robot_fb" value=""}
                                             {/if}
                                             <a href="{$images_robot_fb}" data-lightbox="photos">
-                                                <img src="{old('images[robot_fb]', $images_robot_fb)}" class="img-thumbnail me-1 img-fluid" alt="" title="" />
+                                                <img src="{old('images.robot_fb', $images_robot_fb)}" class="img-thumbnail me-1 img-fluid" alt="" title="" />
                                             </a>
-                                            <input type="hidden" name="images[robot_fb]" value="{old('images[robot_fb]', $images_robot_fb)}" />
+                                            <input type="hidden" name="images[robot_fb]" value="{old('images.robot_fb', $images_robot_fb)}" />
                                         </div>
                                     </div>
                                 {/if}
