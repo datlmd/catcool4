@@ -408,8 +408,9 @@ article.post-detail .post-content-end {
 	z-index: 2;
 }
 
-article.post-detail .post-content p {
+article.post-detail .post-content > p {
 	margin-bottom: 10px;
+	text-align: left;
 }
 
 article.post-detail .post-content .post-content-end div, article.post-detail .post-content div div {
