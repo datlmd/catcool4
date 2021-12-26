@@ -4,10 +4,10 @@
 	<div class="container-fluid dashboard-content">
 		<div class="row">
 			<div class="col-sm-7 col-12">
-				{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('NewsAdmin.heading_title')}
+				{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('PostAdmin.heading_title')}
 			</div>
 			<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" title="{lang('NewsAdmin.text_add')}"><i class="fas fa-plus"></i></a>
+				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" title="{lang('Admin.text_add')}"><i class="fas fa-plus"></i></a>
 				<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
 
 				{if !empty($list)}
@@ -19,9 +19,9 @@
 					<i class="fas fa-cog"></i>
 				</button>
 				<ul class="dropdown-menu" aria-labelledby="btn_group_drop_setting">
-					<li><a class="dropdown-item" href="{site_url('news/categories_manage')}">{lang('CategoryAdmin.heading_title')}</a></li>
-					<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('NewsAdmin.translate_frontend_id')}">{lang("Admin.text_translate")}</a></li>
-					<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('NewsAdmin.translate_admin_id')}">{lang("Admin.text_translate_admin")}</a></li>
+					<li><a class="dropdown-item" href="{site_url('posts/categories_manage')}">{lang('CategoryAdmin.heading_title')}</a></li>
+					<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('PostAdmin.translate_frontend_id')}">{lang("Admin.text_translate")}</a></li>
+					<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('PostAdmin.translate_admin_id')}">{lang("Admin.text_translate_admin")}</a></li>
 				</ul>
 			</div>
 		</div>
@@ -30,7 +30,7 @@
 				<div class="card">
 					<h5 class="card-header"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
 					<div class="card-body">
-						{include file=get_theme_path('views/modules/news/inc/filter_form.tpl')}
+						{include file=get_theme_path('views/modules/posts/inc/filter_form.tpl')}
 					</div>
 				</div>
 			</div>
@@ -38,7 +38,7 @@
 		<div class="row">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 				<div class="card">
-					<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('NewsAdmin.text_list')} - {lang('Admin.text_trash')}</h5>
+					<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('Admin.text_list')} - {lang('Admin.text_trash')}</h5>
 					<div class="card-body">
 						<div class="row">
 							<div class="col-12 text-end mb-2">

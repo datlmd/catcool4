@@ -4,7 +4,7 @@
         {form_open(uri_string(), ['id' => 'validationform'])}
             <div class="row">
                 <div class="col-sm-7 col-12">
-                    {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('NewsAdmin.heading_title')}
+                    {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('PostAdmin.heading_title')}
                 </div>
                 <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
                     <button type="submit" class="btn btn-sm btn-space btn-primary mb-0" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>

@@ -35,7 +35,7 @@ class CategoriesManage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('NewsAdmin.heading_title'), site_url('posts/manage'));
+        $this->breadcrumb->add(lang('PostAdmin.heading_title'), site_url('posts/manage'));
         $this->breadcrumb->add(lang('CategoryAdmin.heading_title'), base_url(self::MANAGE_URL));
     }
 

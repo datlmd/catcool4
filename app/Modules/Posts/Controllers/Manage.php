@@ -32,12 +32,12 @@ class Manage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('NewsAdmin.heading_title'), base_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang('PostAdmin.heading_title'), base_url(self::MANAGE_URL));
     }
 
     public function index()
     {
-        add_meta(['title' => lang("NewsAdmin.heading_title")], $this->themes);
+        add_meta(['title' => lang("PostAdmin.heading_title")], $this->themes);
 
         $post_id     = $this->request->getGet('post_id');
         $name        = $this->request->getGet('name');
@@ -389,7 +389,7 @@ class Manage extends AdminController
                 }
             }
 
-            $data['text_form'] = lang('NewsAdmin.text_edit');
+            $data['text_form'] = lang('Admin.text_edit');
 
             // display the edit user form
             $data['edit_data'] = $data_form;
@@ -399,7 +399,7 @@ class Manage extends AdminController
                 $data['edit_data'] = $this->model->robotDetail($this->request->getGet('url'));
             }
 
-            $data['text_form']   = lang('NewsAdmin.text_add');
+            $data['text_form']   = lang('Admin.text_add');
         }
 
         $data['errors'] = $this->errors;

@@ -4,11 +4,11 @@
 	<div class="container-fluid dashboard-content">
 		<div class="row">
 			<div class="col-sm-5 col-12">
-				{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('NewsAdmin.heading_title')}
+				{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('PostAdmin.heading_title')}
 			</div>
 			<div class="col-sm-7 col-12 mb-2 mb-sm-0 text-end">
 				<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" data-is-trash="1" style="display: none;" title="{lang('Admin.text_move_to_trash')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.text_move_to_trash')}</span>
-				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" data-bs-toggle="tooltip" title="{lang('NewsAdmin.text_add')}"><i class="fas fa-plus"></i></a>
+				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" data-bs-toggle="tooltip" title="{lang('Admin.text_add')}"><i class="fas fa-plus"></i></a>
 				<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" data-bs-toggle="tooltip" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
 				<a href="{site_url($manage_url)}?is_trash=1" class="btn btn-sm btn-secondary btn-space" data-bs-toggle="tooltip" title="{lang('Admin.button_trash')}"><i class="fas fa-trash me-1"></i>({$count_trash})</a>
 				<button id="btn_group_drop_setting" type="button" class="btn btn-sm btn-light btn-space me-0" data-bs-toggle="dropdown" aria-expanded="false">
@@ -16,8 +16,8 @@
 				</button>
 				<ul class="dropdown-menu" aria-labelledby="btn_group_drop_setting">
 					<li><a class="dropdown-item" href="{site_url('posts/categories_manage')}">{lang('CategoryAdmin.heading_title')}</a></li>
-					<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('NewsAdmin.translate_frontend_id')}">{lang("Admin.text_translate")}</a></li>
-					<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('NewsAdmin.translate_admin_id')}">{lang("Admin.text_translate_admin")}</a></li>
+					<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('PostAdmin.translate_frontend_id')}">{lang("Admin.text_translate")}</a></li>
+					<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('PostAdmin.translate_admin_id')}">{lang("Admin.text_translate_admin")}</a></li>
 				</ul>
 			</div>
 		</div>
@@ -34,7 +34,7 @@
 		<div class="row">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 				<div class="card">
-					<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('NewsAdmin.text_list')}</h5>
+					<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('Admin.text_list')}</h5>
 					<div class="card-body">
 
 						{if !empty($list)}
