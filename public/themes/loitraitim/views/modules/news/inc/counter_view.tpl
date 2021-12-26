@@ -9,7 +9,11 @@
 				<div class="row">
 					{foreach $counter_list as $news}
 						<div class="col-lg-2 col-md-4 col-6">
-							{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_class="mb-3" is_show_category=true is_hide_description=true}
+							{if !empty($is_mobile)}
+								{include file=get_theme_path('views/modules/news/inc/article_info_mobile.tpl') article_info=$news article_class="mb-3" is_show_category=true is_hide_description=true}
+							{else}
+								{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_class="mb-3" is_show_category=true is_hide_description=true}
+							{/if}
 						</div>
 					{/foreach}
 				</div>

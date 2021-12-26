@@ -9,7 +9,7 @@
         {if !empty($list)}
 
             {foreach $list as $news}
-                {include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='middle_left' article_class="mb-4 pb-4 border-bottom category" is_show_category=true}
+                {include file=get_theme_path('views/modules/news/inc/article_info_mobile.tpl') article_info=$news article_type='middle_left' article_class="mb-4 pb-4 border-bottom category" is_show_category=true}
             {/foreach}
 
             {if !empty($list) && !empty($pager->links('default', 'frontend'))}

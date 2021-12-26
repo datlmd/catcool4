@@ -42,7 +42,7 @@ a:hover {
 }
 
 header.header {
-    border-bottom: 1px solid #DF3062;
+    border-bottom: 2px solid rgb(223 48 98 / 60%);
     background-color: #fff;
     overflow: hidden;
     /*background: linear-gradient(0deg, #ffb8e6 0%, #ffd5ef 10%, #ffffff 80%);*/

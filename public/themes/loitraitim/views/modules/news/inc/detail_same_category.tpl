@@ -8,9 +8,17 @@
 				{continue}
 			{/if}
 			{if !empty($article_type)}
-				{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type=$article_type article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
+				{if !empty($is_mobile)}
+					{include file=get_theme_path('views/modules/news/inc/article_info_mobile.tpl') article_info=$news article_type=$article_type article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
+				{else}
+					{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type=$article_type article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
+				{/if}
 			{else}
-				{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='small' article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
+				{if !empty($is_mobile)}
+					{include file=get_theme_path('views/modules/news/inc/article_info_mobile.tpl') article_info=$news article_type='small' article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
+				{else}
+					{include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='small' article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
+				{/if}
 			{/if}
 
 		{/foreach}
