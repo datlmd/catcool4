@@ -24,3 +24,17 @@ article.post-detail .post-content {
 	bottom: 25px;
 	right: 25px;
 }
+
+article.post-detail {
+	width: 100%;
+	overflow: hidden;
+}
+
+.padding-x,
+article.post-detail .post-content p, article.post-detail .post-content span,
+article.post-detail .post-content h1, article.post-detail .post-content h2, article.post-detail .post-content h3,
+article.post-detail .post-content h4, article.post-detail .post-content h5, article.post-detail .post-content h6
+{
+	padding-left: 15px !important;
+	padding-right: 15px !important;
+}

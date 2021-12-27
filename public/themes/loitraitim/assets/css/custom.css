@@ -17,6 +17,7 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0;
     padding: 0;
 	font-size: 1rem;
+	margin-bottom: 7px;
 }
 
 dl, ol, ul , p {
@@ -360,6 +361,30 @@ article.post-detail .post-content {
 	position: relative;
 }
 
+article.post-detail .post-content h1 {
+	font-size: 2rem !important;
+}
+
+article.post-detail .post-content h2 {
+	font-size: 1.8rem !important;
+}
+
+article.post-detail .post-content h3 {
+	font-size: 1.6rem !important;
+}
+
+article.post-detail .post-content h4 {
+	font-size: 1.4rem !important;
+}
+
+article.post-detail .post-content h5 {
+	font-size: 1.2rem !important;
+}
+
+article.post-detail .post-content h6 {
+	font-size: 1.1rem !important;
+}
+
 article.post-detail .post-content-start {
 	width: 55px;
 	float: left;
@@ -420,7 +445,7 @@ article.post-detail .post-content .post-content-end div, article.post-detail .po
 
 article.post-detail .post-content img {
 	width: 100% !important;
-	max-width: 600px !important;
+	max-width: 550px !important;
 	text-align: center;
 	margin: 10px auto 5px auto;
 }

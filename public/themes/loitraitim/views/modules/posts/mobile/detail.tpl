@@ -11,9 +11,7 @@
                 <span>{if !empty($detail.author)}{$detail.author}{else}Ryan Lee{/if},</span>
                 {if !empty($detail.source)}
                     <span>
-                        <a href="{$detail.source}" target="_blank">
-                            {lang('News.text_source')}: {str_ireplace('www.', '', parse_url($detail.source, PHP_URL_HOST))}
-                        </a>
+                        {lang('News.text_source')}: {str_ireplace('www.', '', parse_url($detail.source, PHP_URL_HOST))}
                     </span>
                 {/if}
                 <span><i class="far fa-clock"></i> {time_ago($detail.publish_date)}</span>
@@ -77,9 +75,6 @@
         <div class="row">
             <div class="col">
 
-                {include file=get_theme_path('views/modules/news/inc/detail_same_category.tpl') news_list=$news_category_list news_id_not=$detail.news_id article_type="right"}
-
-                {include file=get_theme_path('views/modules/news/inc/list_new.tpl')}
 
             </div>
             <div class="col-md-4 col-12">
@@ -88,14 +83,4 @@
         </div>
     </section>
 
-
-    {include file=get_theme_path('views/modules/news/inc/counter_view.tpl')}
-
-    {literal}
-        <style>
-            .LayoutAlbumWrapper, .eventNewsTimeline-wrapper {
-                display: none;
-            }
-        </style>
-    {/literal}
 {/strip}

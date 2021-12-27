@@ -98,7 +98,7 @@ class PostModel extends MyModel
         return $result;
     }
 
-    public function getNewsInfo($post_id, $is_preview = false, $is_cache = true)
+    public function getPostInfo($post_id, $is_preview = false, $is_cache = true)
     {
         if (empty($post_id)) {
             return [];
@@ -108,7 +108,6 @@ class PostModel extends MyModel
 
         $result = $is_cache ? cache()->get($cache_name) : null;
         if (empty($result)) {
-
 
             $where = [
                 'post_id' => $post_id,
@@ -221,5 +220,32 @@ class PostModel extends MyModel
         $data['detail_url'] = sprintf(self::POST_DETAIL_FORMAT, $data['slug'], $data['post_id']);
 
         return $this->formatJsonDecode($data);
+    }
+
+    public function getListByRelatedIds($related_ids, $limit = 0)
+    {
+        if (empty($related_ids)) {
+            return null;
+        }
+
+        $related_ids = is_array($related_ids) ? $related_ids : explode(',', $related_ids);
+
+        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images'])
+            ->orderBy('publish_date', 'DESC')
+            ->where(['published' => STATUS_ON])
+            ->whereIn("post_id", $related_ids)
+            ->findAll($limit);
+
+
+        if (empty($result)) {
+            return [];
+        }
+
+        $list = [];
+        foreach ($result as $key_news => $value) {
+            $list[] = $this->formatDetail($value);
+        }
+
+        return $list;
     }
 }
