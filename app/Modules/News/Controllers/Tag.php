@@ -33,13 +33,13 @@ class Tag extends MyController
         list($list, $pager) = $this->model->getListByTag($tag);
 
         $data = [
-            'tag'           => $tag,
-            'list'          => $list,
-            'pager'         => $pager,
-            'slide_list'    => $this->model->getSlideHome(5),
-            'new_list'      => $this->model->getListNew(5),
-            'counter_list'  => $this->model->getListCounter(6),
-            'category_list' => $category_list
+            'tag'                => $tag,
+            'list'               => $list,
+            'pager'              => $pager,
+            'slide_list'         => $this->model->getSlideHome(5),
+            'new_list'           => $this->model->getListNew(5),
+            'counter_list'       => $this->model->getListCounter(6),
+            'news_category_list' => $category_list
         ];
 
         add_meta(['title' => $tag, 'url' => current_url()], $this->themes);

@@ -48,18 +48,18 @@ class Detail extends MyController
                 page_not_found();
             }
 
-            $news_category_list = [];
+            $news_the_same_list = [];
             $data_category_list = $this->model->getListHome();
 
             if (!empty($data_category_list) && !empty($detail['category_ids'])) {
                 foreach ($detail['category_ids'] as $category_id) {
                     if (!empty($data_category_list[$category_id]['list'])) {
 
-                        $news_category_list = array_merge($news_category_list, $data_category_list[$category_id]['list']);
+                        $news_the_same_list = array_merge($news_the_same_list, $data_category_list[$category_id]['list']);
                     }
                 }
             }
-            shuffle($news_category_list);
+            shuffle($news_the_same_list);
 
             //count detail
             $this->model->updateView($news_id, $ctime);
@@ -69,8 +69,8 @@ class Detail extends MyController
             $data = [
                 'detail'               => $detail,
                 'related_list'         => $this->model->getListByRelatedIds($detail['related_ids'], 3),
-                'news_category_list'   => $news_category_list,
-                'category_list'        => $category_list,
+                'news_the_same_list'   => $news_the_same_list,
+                'news_category_list'   => $category_list,
                 'slide_list'           => $this->model->getSlideHome(5),
                 'new_list'             => $this->model->getListNew(5),
                 'counter_list'         => $this->model->getListCounter(6),

@@ -40,7 +40,7 @@
 										{if !empty($news.category_ids)}
 											<div class="d-inline-block me-2">
 												{foreach $news.category_ids as $category_id}
-													<a href="{base_url($category_list[$category_id].slug)}" class="art-category">{$category_list[$category_id].name}</a>
+													<a href="{base_url($news_category_list[$category_id].slug)}" class="art-category">{$news_category_list[$category_id].name}</a>
 												{/foreach}
 											</div>
 										{/if}
@@ -86,8 +86,8 @@
 		<div class="row">
 
 			<div class="col-lg-7 col-md-8 col-12">
-				{if !empty($category_list)}
-					{foreach $category_list as $category}
+				{if !empty($news_category_list)}
+					{foreach $news_category_list as $category}
 						{if empty($category.list)}
 							{continue}
 						{/if}

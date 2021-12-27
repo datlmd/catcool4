@@ -3,7 +3,7 @@
         <header class="detail">
             {if !empty($detail.category_ids)}
                 {foreach $detail.category_ids as $category_id}
-                    <a href="{base_url($category_list[$category_id].slug)}">{$category_list[$category_id].name}</a>
+                    <a href="{base_url($news_category_list[$category_id].slug)}">{$news_category_list[$category_id].name}</a>
                 {/foreach}
             {/if}
             <h2>{$detail.name}</h2>
@@ -86,7 +86,7 @@
             </div>
             <aside class="col-md-4 col-12 d-none d-lg-block">
                 <div class="position-sticky">
-                    {if !empty(slide_list)}
+                    {if !empty($slide_list)}
                         {foreach $slide_list as $news}
                             {include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3" is_show_category=true is_hide_description=true}
                         {/foreach}
@@ -100,7 +100,7 @@
         <div class="row">
             <div class="col">
 
-                {include file=get_theme_path('views/modules/news/inc/detail_same_category.tpl') news_list=$news_category_list news_id_not=$detail.news_id}
+                {include file=get_theme_path('views/modules/news/inc/detail_same_category.tpl') news_list=$news_the_same_list news_id_not=$detail.news_id}
 
                 {include file=get_theme_path('views/modules/news/inc/list_new.tpl')}
 

@@ -35,13 +35,13 @@ class Categories extends MyController
         list($list, $pager) = $this->news_model->getListByCategory($id);
 
         $data = [
-            'detail'       => $detail,
-            'list'         => $list,
-            'pager'        => $pager,
-            'slide_list'   => $this->news_model->getSlideHome(5),
-            'new_list'     => $this->news_model->getListNew(5),
-            'counter_list' => $this->news_model->getListCounter(6),
-            'category_list' => $category_list
+            'detail'             => $detail,
+            'list'               => $list,
+            'pager'              => $pager,
+            'slide_list'         => $this->news_model->getSlideHome(5),
+            'new_list'           => $this->news_model->getListNew(5),
+            'counter_list'       => $this->news_model->getListCounter(6),
+            'news_category_list' => $category_list
         ];
 
         $this->_setMeta($detail);

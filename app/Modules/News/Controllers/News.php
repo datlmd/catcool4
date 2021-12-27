@@ -49,8 +49,8 @@ class News extends MyController
         }
 
         $data = [
-            'category_list'        => $category_list,
-            'slide_list'           => $this->model->getSlideHome(3),
+            'news_category_list'   => $category_list,
+            'slide_list'           => $this->model->getSlideHome(5),
             'counter_list'         => $this->model->getListCounter(6),
             'hot_list'             => $this->model->getListHot(2),
             'new_list'             => $new_list,
