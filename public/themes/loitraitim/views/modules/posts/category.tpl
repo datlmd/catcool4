@@ -4,13 +4,25 @@
         <div class="row">
             <div class="col">
                 <div class="category-name d-block mt-4 mb-4 shadow-sm">
-                    <span><i class="fas fa-hashtag"></i>{$tag}</span>
+                    <span>{$detail.name}</span>
                 </div>
-
                 {if !empty($list)}
+                    <div class="row">
+                        {foreach $list as $news}
+                            {if $news@iteration > 2}
+                                {break}
+                            {/if}
+                            <div class="col-sm-6 col-12">
+                                {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_class="mb-3 home-page"}
+                            </div>
+                        {/foreach}
+                    </div>
 
                     {foreach $list as $news}
-                        {include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-4 pb-4 border-bottom category" is_show_category=true}
+                        {if $news@iteration <= 2}
+                            {continue}
+                        {/if}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-4 pt-4 border-top category"}
                     {/foreach}
 
                     {if !empty($list) && !empty($pager->links('default', 'frontend'))}
@@ -20,7 +32,7 @@
             </div>
             <aside class="col-md-4 col-12 d-none d-lg-block pt-3 ps-4">
 
-                {if !empty($slide_list)}
+                {if !empty(slide_list)}
                     {foreach $slide_list as $news}
                         {include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3" is_show_category=true is_hide_description=true}
                     {/foreach}
@@ -45,6 +57,5 @@
 
 
     {include file=get_theme_path('views/modules/news/inc/counter_view.tpl')}
-
 
 {/strip}

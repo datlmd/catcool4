@@ -3,7 +3,7 @@
         <header class="detail">
             {if !empty($detail.category_ids)}
                 {foreach $detail.category_ids as $category_id}
-                    <a href="{base_url($category_list[$category_id].slug)}">{$category_list[$category_id].name}</a>
+                    <a href="{base_url($post_category_list[$category_id].slug)}">{$post_category_list[$category_id].name}</a>
                 {/foreach}
             {/if}
             <h2>{$detail.name}</h2>
@@ -74,7 +74,7 @@
                 <div class="fb-like" data-href="{base_url($detail.detail_url)}" data-width="" data-layout="standard" data-action="like" data-size="small" data-share="false"></div>
 
                 <div class="mt-2">
-                    {include file=get_theme_path('views/modules/news/inc/list_tags.tpl') tags=explode(',', $detail.tags)}
+                    {include file=get_theme_path('views/modules/posts/inc/list_tags.tpl') tags=explode(',', $detail.tags)}
                 </div>
 
                 {if $detail.is_comment eq COMMENT_STATUS_ON}
@@ -84,7 +84,11 @@
             </div>
             <aside class="col-md-4 col-12 d-none d-lg-block">
                 <div class="position-sticky">
-
+                    {if !empty($slide_list)}
+                        {foreach $slide_list as $news}
+                            {include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3" is_show_category=true is_hide_description=true}
+                        {/foreach}
+                    {/if}
                 </div>
             </aside>
         </div>
@@ -94,7 +98,16 @@
         <div class="row">
             <div class="col">
 
+                {if !empty($post_same_category_list)}
+                    <div class="category-name d-block mt-2 mb-4">
+                        <span>{lang('News.text_same_category')}</span>
+                    </div>
+                    {foreach $post_same_category_list as $news}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
+                    {/foreach}
+                {/if}
 
+                {include file=get_theme_path('views/modules/news/inc/list_new.tpl')}
 
             </div>
             <div class="col-md-4 col-12">
@@ -102,6 +115,8 @@
             </div>
         </div>
     </section>
+
+    {include file=get_theme_path('views/modules/news/inc/counter_view.tpl')}
 
     {literal}
         <style>

@@ -222,7 +222,7 @@ class PostModel extends MyModel
         return $this->formatJsonDecode($data);
     }
 
-    public function getListByRelatedIds($related_ids, $limit = 0)
+    public function getListByRelatedIds($related_ids, $limit = 10)
     {
         if (empty($related_ids)) {
             return null;
@@ -247,5 +247,98 @@ class PostModel extends MyModel
         }
 
         return $list;
+    }
+
+    public function getListTheSameCategory($category_id, $post_id, $limit = 10)
+    {
+        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images'])
+            ->orderBy('publish_date', 'DESC')
+            ->where([
+                'published' => STATUS_ON,
+                'publish_date <=' => get_date(),
+                'post_id !=' => $post_id
+            ])
+            ->like("category_ids", $category_id)
+            ->findAll($limit);
+
+
+        if (empty($result)) {
+            return [];
+        }
+
+        $list = [];
+        foreach ($result as $key_news => $value) {
+            $list[] = $this->formatDetail($value);
+        }
+
+        return $list;
+    }
+
+    public function getListByCategory($category_id = null, $limit = PAGINATION_DEFAULF_LIMIT)
+    {
+        if (empty($category_id)) {
+            return [[],[]];
+        }
+
+        $where = [
+            'published' => STATUS_ON,
+            'publish_date <=' => get_date(),
+        ];
+
+        //format like: 1 or 10, 11
+        // {"0":1} or {"0":1,"1":4}
+        $category_id_1 = ":$category_id}";
+        $category_id_2 = ":\"$category_id\"}";
+        $category_id_3 = ":$category_id,";
+        $category_id_4 = ":\"$category_id\",";
+
+        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+            ->where($where)
+            ->groupStart()
+            ->like('category_ids', $category_id_1)
+            ->orLike('category_ids', $category_id_2)
+            ->orLike('category_ids', $category_id_3)
+            ->orLike('category_ids', $category_id_4)
+            ->groupEnd()
+            ->orderBy('publish_date', 'DESC');
+
+        $list = $result->paginate($limit);
+        if (empty($list)) {
+            return [[],[]];
+        }
+
+        foreach ($list as $key_news => $value) {
+            $list[$key_news] = $this->formatDetail($value);
+        }
+
+        return [$list, $result->pager];
+    }
+
+    public function getListByTag($tag = null, $limit = PAGINATION_DEFAULF_LIMIT)
+    {
+        if (empty($tag)) {
+            return [[],[]];
+        }
+
+        $where = [
+            'published' => STATUS_ON,
+            'publish_date <=' => get_date(),
+        ];
+
+        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+            ->where($where)
+            ->like('tags', $tag)
+            ->orderBy('publish_date', 'DESC');
+
+        $list = $result->paginate($limit);
+        if (empty($list)) {
+            return [[],[]];
+        }
+
+        foreach ($list as $key_news => $value) {
+            $list[$key_news] = $this->formatDetail($value);
+        }
+
+        return [$list, $result->pager];
     }
 }

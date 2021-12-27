@@ -911,7 +911,8 @@ class NewsModel extends FarmModel
         $category_id_3 = ":$category_id,";
         $category_id_4 = ":\"$category_id\",";
 
-        $result = $this->where($where)
+        $result = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+            ->where($where)
             ->groupStart()
             ->like('category_ids', $category_id_1)
             ->orLike('category_ids', $category_id_2)
@@ -943,7 +944,8 @@ class NewsModel extends FarmModel
             'publish_date <=' => get_date(),
         ];
 
-        $result = $this->where($where)
+        $result = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+            ->where($where)
             ->like('tags', $tag)
             ->orderBy('publish_date', 'DESC');
 
@@ -986,7 +988,7 @@ class NewsModel extends FarmModel
         return $list;
     }
 
-    public function getListByRelatedIds($related_ids, $limit = 0)
+    public function getListByRelatedIds($related_ids, $limit = 10)
     {
         if (empty($related_ids)) {
             return null;

@@ -3,7 +3,7 @@
         <header class="detail padding-x">
             {if !empty($detail.category_ids)}
                 {foreach $detail.category_ids as $category_id}
-                    <a href="{base_url($category_list[$category_id].slug)}">{$category_list[$category_id].name}</a>
+                    <a href="{base_url($post_category_list[$category_id].slug)}">{$post_category_list[$category_id].name}</a>
                 {/foreach}
             {/if}
             <h2>{$detail.name}</h2>
@@ -46,7 +46,7 @@
         </div>
 
         <div class="mt-2 padding-x">
-            {include file=get_theme_path('views/modules/news/inc/list_tags.tpl') tags=explode(',', $detail.tags)}
+            {include file=get_theme_path('views/modules/posts/inc/list_tags.tpl') tags=explode(',', $detail.tags)}
         </div>
 
         <div class="row padding-x">
@@ -75,6 +75,16 @@
         <div class="row">
             <div class="col">
 
+                {if !empty($post_same_category_list)}
+                    <div class="category-name d-block mt-2 mb-4">
+                        <span>{lang('News.text_same_category')}</span>
+                    </div>
+                    {foreach $post_same_category_list as $news}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$news article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
+                    {/foreach}
+                {/if}
+
+                {include file=get_theme_path('views/modules/news/inc/list_new.tpl')}
 
             </div>
             <div class="col-md-4 col-12">
@@ -82,5 +92,7 @@
             </div>
         </div>
     </section>
+
+    {include file=get_theme_path('views/modules/news/inc/counter_view.tpl')}
 
 {/strip}
