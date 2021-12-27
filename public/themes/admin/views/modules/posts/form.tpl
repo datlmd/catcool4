@@ -481,6 +481,28 @@
                     </div>
                     {if !empty($edit_data.post_id)}
                         {include file=get_theme_path('views/inc/status_form.inc.tpl')}
+                    {else}
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <a href="https://ngoisao.vn" target="_blank">ngoisao.vn</a><br/>
+                                    <a href="https://kenh14.vn" target="_blank">kenh14.vn</a><br/>
+                                    <a href="https://zingnews.vn" target="_blank">zingnews.vn</a><br/>
+                                    <a href="https://vnexpress.net" target="_blank">vnexpress.net</a><br/>
+                                    <a href="https://ngoisao.net" target="_blank">ngoisao.net</a><br/>
+                                    <a href="https://2sao.vn" target="_blank">2sao.vn</a><br/>
+                                    <a href="https://molistar.com" target="_blank">molistar.com</a><br/>
+                                    <a href="https://thanhnien.vn" target="_blank">thanhnien.vn</a><br/>
+                                    <a href="https://tuoitre.vn" target="_blank">tuoitre.vn</a><br/>
+                                    <a href="https://24h.com.vn" target="_blank">24h.com.vn</a><br/>
+                                    <a href="https://dantri.com.vn" target="_blank">dantri.com.vn</a><br/>
+                                    <a href="https://eva.vn" target="_blank">eva.vn</a><br/>
+                                    <a href="https://vietnamnet.vn" target="_blank">vietnamnet.vn</a><br/>
+                                    <a href="https://suckhoedoisong.vn" target="_blank">suckhoedoisong.vn</a><br/>
+                                    <a href="https://phapluatbandoc.giadinh.net.vn" target="_blank">phapluatbandoc.giadinh.net.vn</a><br/>
+                                </div>
+                            </div>
+                        </div>
                     {/if}
                 </div>
             </div>

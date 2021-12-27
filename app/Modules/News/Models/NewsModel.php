@@ -679,7 +679,7 @@ class NewsModel extends FarmModel
                 $attribute_detail['attribute_detail']['content'] = 'div.ArticleContent';
                 break;
             case 'suckhoedoisong.vn':
-                $attribute_detail['attribute_detail']['content'] = 'div#content_detail_news';
+                $attribute_detail['attribute_detail']['content'] = 'div#detail__contenent-main';
                 break;
             case 'phapluatbandoc.giadinh.net.vn':
                 $attribute_detail['attribute_detail']['content'] = 'div.detail__content';
@@ -696,7 +696,7 @@ class NewsModel extends FarmModel
         } catch (\Exception $e) {
             $detail = [];
         }
-
+        
         $content = !empty($detail['content']) ? $detail['content'] : "";
 
         //check image
