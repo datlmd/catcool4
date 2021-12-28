@@ -12,6 +12,9 @@ $(function () {
             e.preventDefault();
 
             $('#modal_image').remove();//target=$element.parent().find('input').attr('id')
+
+            $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
+
             var element = $(this);
             $.ajax({
                 url: 'common/filemanager?target=' + encodeURIComponent(element.parent().data('target')) + '&thumb=' + encodeURIComponent(element.parent().data('thumb')) + '&type=' + encodeURIComponent(element.parent().data('type')),
@@ -24,12 +27,14 @@ $(function () {
                 },
                 success: function (html) {
                     is_processing = false;
+                    $('.loading').remove().fadeOut();
 
                     $('body').append('<div id="modal_image" class="modal fade" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1">' + html + '</div>');
                     $('#modal_image').modal('show');
                     $('html').css('overflow', 'hidden');
                 },
                 error: function (xhr, errorType, error) {
+                    $('.loading').remove().fadeOut();
                     is_processing = false;
                 }
             });
@@ -43,6 +48,5 @@ $(function () {
             //$($(this).parent()).parent().find('input').val('');
         });
     }
-    /** filemanager **/
 });
 
