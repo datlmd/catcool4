@@ -361,6 +361,12 @@ article.post-detail .post-content {
 	position: relative;
 }
 
+article.post-detail .post-content ul {
+	list-style-position: inside;
+	list-style-type: circle;
+	padding: 5px 15px 15px 15px;
+}
+
 article.post-detail .post-content h1 {
 	font-size: 2rem !important;
 }
