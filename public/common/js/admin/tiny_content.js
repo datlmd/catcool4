@@ -12,7 +12,7 @@ var Tiny_content = {
         tinymce.init({
             selector: '[data-bs-toggle=\'tinymce\']',
             skin: 'oxide-dark',
-            //themes: "silver",
+            themes: "silver",
             //plugins: 'print preview fullpage powerpaste casechange importcss tinydrive searchreplace autolink autosave save directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists checklist wordcount tinymcespellchecker a11ychecker imagetools textpattern noneditable help formatpainter permanentpen pageembed charmap tinycomments mentions quickbars linkchecker emoticons',
             plugins: 'print preview paste searchreplace autolink autosave save hr directionality visualblocks visualchars fullscreen image imagetools responsivefilemanager link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern noneditable help charmap quickbars emoticons code',
             //imagetools_cors_hosts: ['picsum.photos'],
