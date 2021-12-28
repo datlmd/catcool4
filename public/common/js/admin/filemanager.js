@@ -25,8 +25,9 @@ $(function () {
                 success: function (html) {
                     is_processing = false;
 
-                    $('body').append('<div id="modal_image" class="modal fade" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">' + html + '</div>');
+                    $('body').append('<div id="modal_image" class="modal fade" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1">' + html + '</div>');
                     $('#modal_image').modal('show');
+                    $('html').css('overflow', 'hidden');
                 },
                 error: function (xhr, errorType, error) {
                     is_processing = false;
@@ -42,9 +43,6 @@ $(function () {
             //$($(this).parent()).parent().find('input').val('');
         });
     }
-    $(document).on('hidden.bs.modal, hide.bs.modal','#modal_image', function () {
-        //$('#button_folder').popover('dispose');
-    });
     /** filemanager **/
 });
 

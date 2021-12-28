@@ -194,7 +194,7 @@
             {/if}
         </div>
     {/capture}
-    <div id="filemanager" class="modal-dialog modal-xl px-4" style="max-width: 100% !important;">
+    <div id="filemanager" class="modal-dialog modal-xl modal-dialog-centered" style="max-width: 1200px !important;">
         <div class="modal-content">
             <div class="modal-header bg-dark">
                 <h5 class="modal-title text-white" id="photoModalLabel">{$heading_title}{if !empty($directory)} ({$directory|urldecode}){/if}</h5>
@@ -811,7 +811,7 @@
             $('.video-model video').get(0).pause();
             $('body').addClass('modal-open');
         });
-        $(document).on('hidden.bs.modal', '.video-model', function (e) {
+        $(document).on('hidden.bs.modal, hide.bs.modal', '.video-model', function (e) {
             $('.video-model').modal('hide');
             $(this).find('video').get(0).pause();
             $('body').addClass('modal-open');

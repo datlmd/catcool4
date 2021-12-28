@@ -1,5 +1,5 @@
 var Article = {
 };
 $(function () {
-    Tiny_content.loadTiny(800);
+    Tiny_content.loadTiny(500);
 });

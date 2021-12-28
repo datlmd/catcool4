@@ -11,14 +11,14 @@ var Tiny_content = {
 
         tinymce.init({
             selector: '[data-bs-toggle=\'tinymce\']',
-            //skin: 'oxide-dark',
+            skin: 'oxide-dark',
             //themes: "silver",
             //plugins: 'print preview fullpage powerpaste casechange importcss tinydrive searchreplace autolink autosave save directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists checklist wordcount tinymcespellchecker a11ychecker imagetools textpattern noneditable help formatpainter permanentpen pageembed charmap tinycomments mentions quickbars linkchecker emoticons',
             plugins: 'print preview paste searchreplace autolink autosave save hr directionality visualblocks visualchars fullscreen image imagetools responsivefilemanager link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern noneditable help charmap quickbars emoticons code',
             //imagetools_cors_hosts: ['picsum.photos'],
             language: lang_code,
             language_url: base_url + '/common/js/tinymce/langs/' + lang_code + '.js',
-            remove_script_host:false,
+            remove_script_host: false,
             relative_urls: false,
             menubar: false,
             toolbar: 'undo redo | fullscreen preview code | formatselect bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | link image myFileManager media pageembed | numlist bullist checklist | table | fontselect fontsizeselect | forecolor backcolor casechange permanentpen formatpainter removeformat | hr pagebreak codesample | print emoticons help', /* charmap emoticons a11ycheck ltr rtl */
@@ -41,10 +41,13 @@ var Tiny_content = {
             template_cdate_format: '[Date Created (CDATE): %d/%m/%Y : %H:%M:%S]',
             template_mdate_format: '[Date Modified (MDATE): %d/%m/%Y : %H:%M:%S]',
             height: max_height,
-            quickbars_selection_toolbar: 'bold italic blockquote forecolor removeformat | quicklink | alignleft aligncenter alignright',
-            quickbars_insert_toolbar: 'formatselect blockquote quicktable image myFileManager',
+            quickbars_selection_toolbar: 'formatselect bold italic blockquote forecolor removeformat | quicklink | alignleft aligncenter alignright',
+            quickbars_insert_toolbar: false,// 'formatselect blockquote quicktable image myFileManager',
             toolbar_drawer: 'sliding',
             contextmenu: "link image",/*right click*/
+            mobile: {
+                theme: 'silver'
+            },
             /*
             setup: (editor) => {
                 editor.ui.registry.addButton('myFileManager', {
@@ -107,9 +110,10 @@ var Tiny_content = {
                     dataType: 'html',
                     success: function(html) {
                         is_tiny_processing = false;
-                        $('body').append('<div id="modal_image" class="modal" data-keyboard="false" data-backdrop="static">' + html + '</div>');
+                        $('body').append('<div id="modal_image" class="modal" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1">' + html + '</div>');
 
                         $('#modal_image').modal('show');
+                        $('html').css('overflow', 'hidden');
                         $('#modal_image').delegate('a.thumbnail', 'click', function(e) {
                             e.preventDefault();
 

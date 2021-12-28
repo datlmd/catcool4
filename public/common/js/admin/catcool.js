@@ -514,8 +514,9 @@ var Catcool = {
                     return false;
                 }
 
-                $('body').append('<div id="modal_image" class="modal fade" role="dialog" data-keyboard="false" data-bs-backdrop="static">' + html + '</div>');
+                $('body').append('<div id="modal_image" class="modal fade" role="dialog" data-bs-keyboard="false"  data-bs-backdrop="static" tabindex="-1">' + html + '</div>');
 
+                $('html').css('overflow', 'hidden');
                 $('#modal_image').modal('show');
             },
             error: function (xhr, errorType, error) {
@@ -616,6 +617,10 @@ $(function () {
         e.preventDefault();
         Catcool.showMenuFileManager();
         return false;
+    });
+
+    $(document).on('hidden.bs.modal, hide.bs.modal','#modal_image', function () {
+        $('html').css('overflow', '');
     });
 
     if ($("form").length) {
