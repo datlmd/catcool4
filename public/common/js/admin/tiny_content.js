@@ -105,11 +105,16 @@ var Tiny_content = {
                     type = meta.filetype;
                 }
 
+                $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
+
                 $.ajax({
                     url: 'common/filemanager?type=' + type,
                     dataType: 'html',
                     success: function(html) {
                         is_tiny_processing = false;
+
+                        $('.loading').remove().fadeOut();
+
                         $('body').append('<div id="modal_image" class="modal" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1">' + html + '</div>');
 
                         $('#modal_image').modal('show');
@@ -129,6 +134,7 @@ var Tiny_content = {
                         });
                     },
                     error: function (xhr, errorType, error) {
+                        $('.loading').remove().fadeOut();
                         is_tiny_processing = false;
                     }
                 });
