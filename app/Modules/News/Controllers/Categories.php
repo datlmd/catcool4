@@ -41,7 +41,8 @@ class Categories extends MyController
             'slide_list'         => $this->news_model->getSlideHome(5),
             'new_list'           => $this->news_model->getListNew(5),
             'counter_list'       => $this->news_model->getListCounter(6),
-            'news_category_list' => $category_list
+            'news_category_list' => $category_list,
+            'news_category_tree' => get_list_tree_selected($category_list, $id, 'category_id'),
         ];
 
         $this->_setMeta($detail);

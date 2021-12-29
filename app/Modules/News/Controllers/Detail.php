@@ -71,6 +71,7 @@ class Detail extends MyController
                 'related_list'         => $this->model->getListByRelatedIds($detail['related_ids'], 3),
                 'news_the_same_list'   => $news_the_same_list,
                 'news_category_list'   => $category_list,
+                'news_category_tree'   => get_list_tree_selected($category_list, $detail['category_ids'], 'category_id'),
                 'slide_list'           => $this->model->getSlideHome(5),
                 'new_list'             => $this->model->getListNew(5),
                 'counter_list'         => $this->model->getListCounter(6),
