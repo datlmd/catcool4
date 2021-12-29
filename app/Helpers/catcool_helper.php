@@ -518,8 +518,58 @@ if(!function_exists('draw_tree_output_name'))
     }
 }
 
-if (!function_exists('format_dropdown'))
-{
+if (!function_exists('get_parent_id')) {
+
+    function get_parent_id($list_all, $id, $key_id_name = 'id')
+    {
+        if (empty($list_all) || empty($id)) {
+            return false;
+        }
+
+        $parent_ids[] = $list_all[$id][$key_id_name];
+
+        if (!empty($list_all[$id]['parent_id'])) {
+            $parent_ids = array_merge($parent_ids, get_parent_id($list_all, $list_all[$id]['parent_id'], $key_id_name));
+        }
+
+        return $parent_ids;
+    }
+}
+
+if (!function_exists('get_list_tree_selected')) {
+
+    function get_list_tree_selected($list_all, $id_list, $key_id_name = 'id')
+    {
+        if (empty($list_all) || empty($id_list)) {
+            return '';
+        }
+
+        $id_list = is_array($id_list) ? $id_list : [$id_list];
+        
+        $data = [];
+
+        foreach ($id_list as $value) {
+            if (empty($list_all[$value])) {
+                continue;
+            }
+
+            $parent_ids = get_parent_id($list_all, $value, $key_id_name);
+            foreach ($parent_ids as $id) {
+                if (empty($list_all[$id])) {
+                    continue;
+                }
+                $list_all[$id]['id'] = $list_all[$id][$key_id_name];
+                $data[$id] = $list_all[$id];
+            }
+        }
+
+        $tree_list = format_tree(['data' => $data, 'key_id' => $key_id_name]);
+
+        return $tree_list;
+    }
+}
+
+if (!function_exists('format_dropdown')) {
     function format_dropdown($list_array, $key_id = 'id')
     {
         if (empty($list_array)) {

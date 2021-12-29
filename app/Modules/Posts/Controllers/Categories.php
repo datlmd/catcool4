@@ -42,6 +42,7 @@ class Categories extends MyController
             'list'               => $list,
             'pager'              => $pager,
             'post_category_list' => $post_category_list,
+            'post_category_tree' => get_list_tree_selected($post_category_list, $id, 'category_id'),
             'news_category_list' => $news_category_model->getListPublished(),
             'slide_list'         => $news_model->getSlideHome(5),
             'new_list'           => $news_model->getListNew(5),

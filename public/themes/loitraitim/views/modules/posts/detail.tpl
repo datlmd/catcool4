@@ -1,11 +1,11 @@
 {strip}
     <article class="container-xxl post-detail my-0 mt-lg-0 mt-xl-3 py-3 px-5">
         <header class="detail">
-            {if !empty($detail.category_ids)}
-                {foreach $detail.category_ids as $category_id}
-                    <a href="{base_url($post_category_list[$category_id].slug)}">{$post_category_list[$category_id].name}</a>
-                {/foreach}
-            {/if}
+
+            <div class="category-tree">
+                {include file=get_theme_path('views/inc/category_tree.tpl') categories=$post_category_tree}
+            </div>
+
             <h2>{$detail.name}</h2>
             <div class="post-meta padding fs-small py-1">
                 <span>{if !empty($detail.author)}{$detail.author}{else}Ryan Lee{/if},</span>
@@ -32,6 +32,7 @@
                             <li><a href="{site_url($related.detail_url)}">{$related.name}</a></li>
                         {/foreach}
                     </ul>
+
                 {/if}
                 <div class="post-content">
                     <div class="post-content-start position-sticky">

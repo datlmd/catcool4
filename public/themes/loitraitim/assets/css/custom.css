@@ -147,6 +147,17 @@ article .art-category:hover {
 	text-decoration: underline;
 }
 
+article .art-category::after {
+	content: '|';
+	color: #d1d1d1;
+	padding: 0 3px;
+}
+
+article .art-category:last-child::after {
+	content: '';
+	padding: 0;
+}
+
 article .art-time {
 	font-size: smaller;
 	color: #888888;
@@ -334,10 +345,14 @@ article.post-detail header.detail h2 {
 	color: #DF3062;
 }
 
-article.post-detail header.detail a {
+.category-tree a {
 	text-decoration: none;
 	color: #258ca3;
 	text-transform: uppercase;
+}
+
+.category-tree i {
+	color: #d1d1d1;
 }
 
 article.post-detail header.detail .post-meta span {

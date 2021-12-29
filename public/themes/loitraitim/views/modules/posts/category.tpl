@@ -3,7 +3,16 @@
     <div class="container-xxl bg-white my-0 mt-lg-0 mt-xl-3 py-3 px-5">
         <div class="row">
             <div class="col">
-                <div class="category-name d-block mt-4 mb-4 shadow-sm">
+
+                <div class="category-tree">
+                    <a class="dropdown-item" href="{site_url()}">
+                        <i class="fas fa-home"></i>
+                    </a>
+                    <i class="fas fa-angle-right me-2"></i>
+                    {include file=get_theme_path('views/inc/category_tree.tpl') categories=$post_category_tree}
+                </div>
+
+                <div class="category-name d-block mt-3 mb-4 shadow-sm">
                     <span>{$detail.name}</span>
                 </div>
                 {if !empty($list)}

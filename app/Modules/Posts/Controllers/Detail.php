@@ -38,7 +38,7 @@ class Detail extends MyController
 
             $post_category_model = new CategoryModel();
             $post_category_list  = $post_category_model->getListPublished();
-
+            
             if ($is_preview) {
                 $detail = $this->model->getPostInfo($post_id, $is_preview, false);
             } else {
@@ -67,6 +67,7 @@ class Detail extends MyController
                 'detail'                  => $detail,
                 'related_list'            => $this->model->getListByRelatedIds($detail['related_ids'], 3),
                 'post_same_category_list' => $post_same_category_list,
+                'post_category_tree'      => get_list_tree_selected($post_category_list, $detail['category_ids'], 'category_id'),
                 'post_category_list'      => $post_category_list,
                 'script_google_search'    => $this->_scriptGoogleSearch($detail, $post_category_list),
                 'news_category_list'      => $news_category_model->getListPublished(),
