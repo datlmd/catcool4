@@ -289,15 +289,7 @@
         <select name="category_ids[]" id="category_ids[]" class="selectpicker form-control form-control-sm" data-style="btn-outline-light" data-size="8" title="{lang('text_select')}" multiple data-actions-box="false" data-live-search="true" data-selected-text-format="count > 2">
             {draw_tree_output_name(['data' => $categories_tree, 'key_id' => 'category_id'], $output_html, 0, $edit_data.categories)}
         </select>
-        <div id="category_review" class="w-100 p-3 bg-light">
-            <ul class="list-unstyled bullet-check mb-0">
-                {if $edit_data.product_id && !empty($edit_data.categories)}
-                    {foreach $edit_data.categories as $value_cate}
-                        <li>{$categories[$value_cate].detail.name}</li>
-                    {/foreach}
-                {/if}
-            </ul>
-        </div>
+        <div id="category_review" class="w-100 p-3 bg-light"></div>
     </div>
     <div class="form-group">
         {lang('text_manufacturer_id')}

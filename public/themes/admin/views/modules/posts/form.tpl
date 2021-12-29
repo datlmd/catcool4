@@ -306,15 +306,7 @@
                                     {/if}
 
                                 </select>
-                                <div id="category_review" class="w-100 p-3 bg-light">
-                                    <ul class="list-unstyled bullet-check mb-0">
-                                        {if !empty($post_id) && !empty(old('category_ids', $edit_data.category_ids))}
-                                            {foreach old('category_ids', $edit_data.category_ids) as $value_cate}
-                                                <li>{$categories_tree[$value_cate].name}</li>
-                                            {/foreach}
-                                        {/if}
-                                    </ul>
-                                </div>
+                                <div id="category_review" class="w-100 p-3 bg-light"></div>
                             </div>
                             <div class="form-group border-top pt-3">
                                 <label class="form-label">{lang('NewsAdmin.text_author')}</label>

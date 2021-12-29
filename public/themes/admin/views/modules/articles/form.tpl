@@ -170,15 +170,7 @@
                                 <select name="category_ids[]" id="category_ids[]" class="form-control form-control-sm multiselect" multiple="multiple" title="{lang('Admin.text_select')}">
                                     {draw_tree_output_name(['data' => $categories_tree, 'key_id' => 'category_id'], $output_html, 0, old('category_ids', $categories))}
                                 </select>
-                                <div id="category_review" class="w-100 p-3 bg-light">
-                                    <ul class="list-unstyled bullet-check mb-0">
-                                        {if !empty($article_id) && !empty(old('category_ids', $categories))}
-                                            {foreach old('category_ids', $categories) as $value_cate}
-                                                <li>{$categories[$value_cate].name}</li>
-                                            {/foreach}
-                                        {/if}
-                                    </ul>
-                                </div>
+                                <div id="category_review" class="w-100 p-3 bg-light"></div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{lang('Admin.text_tags')}</label>

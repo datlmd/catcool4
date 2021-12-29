@@ -126,6 +126,10 @@ label {
 }
 .dashboard-content .btn:hover i {
     animation: heartBeat;
+    -webkit-animation: heartBeat;
+    -moz-animation: heartBeat;
+    -ms-animation: heartBeat;
+    -o-animation: heartBeat;
     animation-duration: 1s;
 }
 .dashboard-header .navbar {
@@ -133,8 +137,11 @@ label {
 }
 .icon-animation:hover i:before {
     display: inline-block;
-    -webkit-animation: swing .5s ease-in-out 1 alternate;
     animation: swing .5s ease-in-out 1 alternate;
+    -webkit-animation: swing .5s ease-in-out 1 alternate;
+    -moz-animation: swing .5s ease-in-out 1 alternate;
+    -ms-animation: swing .5s ease-in-out 1 alternate;
+    -o-animation: swing .5s ease-in-out 1 alternate;
 }
 .fixed-top {
     z-index: 915;
@@ -395,8 +402,11 @@ a[data-bs-toggle="image"] {
 .nav-left-sidebar .menu-left-icon:hover i:before, .nav-left-sidebar ul li a:hover i:before,
 .menu-sub-left-icon:hover i:before {
     display: inline-block;
-    -webkit-animation: swing .5s ease-in-out 1 alternate;
     animation: swing .5s ease-in-out 1 alternate;
+    -webkit-animation: swing .5s ease-in-out 1 alternate;
+    -moz-animation: swing .5s ease-in-out 1 alternate;
+    -ms-animation: swing .5s ease-in-out 1 alternate;
+    -o-animation: swing .5s ease-in-out 1 alternate;
 }
 .navbar-full-text {
     width: 200px;
@@ -474,6 +484,10 @@ a[data-bs-toggle="image"] {
 .menu-left-icon:hover .tooltiptext {
     visibility: visible;
     animation: fadeInRight;
+    -webkit-animation: fadeInRight;
+    -moz-animation: fadeInRight;
+    -ms-animation: fadeInRight;
+    -o-animation: fadeInRight;
     animation-duration: 600ms;
 }
 .popup-sub-menu-left {
@@ -486,8 +500,11 @@ a[data-bs-toggle="image"] {
 /* end scrollMenu */
 .nav-user-img:hover img {
     display: inline-block;
-    -webkit-animation: swing .5s ease-in-out 1 alternate;
     animation: swing .5s ease-in-out 1 alternate;
+    -webkit-animation: swing .5s ease-in-out 1 alternate;
+    -moz-animation: swing .5s ease-in-out 1 alternate;
+    -ms-animation: swing .5s ease-in-out 1 alternate;
+    -o-animation: swing .5s ease-in-out 1 alternate;
 }
 
 /* end sortable */
@@ -684,6 +701,10 @@ a[data-bs-toggle="image"] {
 
 .tox-fullscreen .tox.tox-tinymce.tox-fullscreen {
     z-index: 1050 !important;
+}
+
+.tox-fullscreen .tox.tox-tinymce-aux {
+    z-index: 1051 !important;
 }
 
 /* Extra large devices (large desktops, 1200px and up)*/

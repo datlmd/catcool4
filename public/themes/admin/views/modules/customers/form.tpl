@@ -211,15 +211,7 @@
                                     <option value="{$key}" {if !empty($user_groups) && in_array($key, array_column($user_groups, 'group_id'))}selected{/if}>{$group.name}</option>
                                 {/foreach}
                             </select>
-                            <div id="category_review" class="w-100 p-3 bg-light">
-                                <ul class="list-unstyled bullet-check mb-0">
-                                    {if $edit_data.id && !empty($user_groups)}
-                                        {foreach $user_groups as $group}
-                                            <li>{$groups[$group.group_id].name}</li>
-                                        {/foreach}
-                                    {/if}
-                                </ul>
-                            </div>
+                            <div id="category_review" class="w-100 p-3 bg-light"></div>
                         {/if}
                     </div>
                 </div>

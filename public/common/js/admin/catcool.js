@@ -714,7 +714,21 @@ $(function () {
                         $('#category_review ul').append('<li>' + text_select_array[i] + '</li>');
                     }
                 }
+                $('#category_review').show();
             });
+
+            setTimeout(function() {
+                if ($('.multiselect').val()) {
+                    $('#category_review').append('<ul class="list-unstyled bullet-check mb-0"></ul>');
+                    $('.multiselect :selected').each(function(){
+                        $('#category_review ul').append('<li>' + $(this).text() + '</li>');
+                    });
+                    $('#category_review').show();
+                } else {
+                    $('#category_review').hide();
+                }
+            }, 500);
+
         }
     }
 
