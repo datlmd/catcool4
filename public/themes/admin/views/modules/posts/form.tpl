@@ -7,8 +7,11 @@
                     {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('PostAdmin.heading_title')}
                 </div>
                 <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                    <button type="submit" class="btn btn-sm btn-space btn-primary mb-0" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
-                    <a href="{if previous_url() eq current_url() || strpos(previous_url(), $manage_url) === false}{site_url($manage_url)}{else}{previous_url()}{/if}" class="btn btn-sm btn-secondary me-0 mb-0" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_cancel')}</a>
+                    <button type="submit" class="btn btn-sm btn-space btn-primary" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
+                    <a href="{if previous_url() eq current_url() || strpos(previous_url(), $manage_url) === false}{site_url($manage_url)}{else}{previous_url()}{/if}" class="btn btn-sm btn-secondary btn-space {if !empty($edit_data.post_id)}me-0{/if}" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_cancel')}</a>
+                    {if empty($edit_data.post_id)}
+                        <button type="button" class="btn btn-sm btn-light btn-space me-0" data-bs-toggle="modal" data-bs-target="#robot_news"><i class="far fa-newspaper me-1"></i>{lang('NewsAdmin.text_robot_news')}</button>
+                    {/if}
                 </div>
             </div>
             {if !empty($edit_data.post_id)}
@@ -28,7 +31,9 @@
                 {/if}
                 <div class="col-xl-9 col-lg-9 col-md-8 col-sm-12 col-12">
                     <div class="card">
-                        <h5 class="card-header" data-bs-toggle="collapse" data-bs-target="#article_content_collapse" aria-expanded="false" aria-controls="article_content_collapse"><i class="fas {if !empty($edit_data.post_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form} {if isset($edit_data.deleted) && !is_null($edit_data.deleted)}<small class="text-danger">({lang('Admin.text_trashed')})</small>{/if}</h5>
+                        <h5 class="card-header" data-bs-toggle="collapse" data-bs-target="#article_content_collapse" aria-expanded="false" aria-controls="article_content_collapse">
+                            <i class="fas {if !empty($edit_data.post_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form} {if isset($edit_data.deleted) && !is_null($edit_data.deleted)}<small class="text-danger">({lang('Admin.text_trashed')})</small>{/if}
+                        </h5>
                         <div class="card-body collapse show" id="article_content_collapse">
                             <div class="form-group">
                                 <label class="form-label required-label">{lang('NewsAdmin.text_name')}</label>
@@ -473,31 +478,56 @@
                     </div>
                     {if !empty($edit_data.post_id)}
                         {include file=get_theme_path('views/inc/status_form.inc.tpl')}
-                    {else}
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <a href="https://ngoisao.vn" target="_blank">ngoisao.vn</a><br/>
-                                    <a href="https://kenh14.vn" target="_blank">kenh14.vn</a><br/>
-                                    <a href="https://zingnews.vn" target="_blank">zingnews.vn</a><br/>
-                                    <a href="https://vnexpress.net" target="_blank">vnexpress.net</a><br/>
-                                    <a href="https://ngoisao.net" target="_blank">ngoisao.net</a><br/>
-                                    <a href="https://2sao.vn" target="_blank">2sao.vn</a><br/>
-                                    <a href="https://molistar.com" target="_blank">molistar.com</a><br/>
-                                    <a href="https://thanhnien.vn" target="_blank">thanhnien.vn</a><br/>
-                                    <a href="https://tuoitre.vn" target="_blank">tuoitre.vn</a><br/>
-                                    <a href="https://24h.com.vn" target="_blank">24h.com.vn</a><br/>
-                                    <a href="https://dantri.com.vn" target="_blank">dantri.com.vn</a><br/>
-                                    <a href="https://eva.vn" target="_blank">eva.vn</a><br/>
-                                    <a href="https://vietnamnet.vn" target="_blank">vietnamnet.vn</a><br/>
-                                    <a href="https://suckhoedoisong.vn" target="_blank">suckhoedoisong.vn</a><br/>
-                                    <a href="https://phapluatbandoc.giadinh.net.vn" target="_blank">phapluatbandoc.giadinh.net.vn</a><br/>
-                                </div>
-                            </div>
-                        </div>
                     {/if}
                 </div>
             </div>
         {form_close()}
+    </div>
+
+    <!-- Modal add -->
+    <div class="modal fade" id="robot_news" tabindex="-1" role="dialog" aria-labelledby="robotNewsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Robot- Scan News</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    {form_open('posts/manage/add', ['id' => 'robot_news_form', 'method' => 'get'])}
+                        <div class="form-group">
+                            Url
+                            <input type="text" name="url" id="url" class="form-control"  />
+                        </div>
+                        <a href="https://ngoisao.vn" class="d-inline-flex m-2 link-success" target="_blank">ngoisao.vn</a>
+                        <a href="https://kenh14.vn" class="d-inline-flex m-2" target="_blank">kenh14.vn</a>
+                        <a href="https://zingnews.vn" class="d-inline-flex m-2" target="_blank">zingnews.vn</a>
+                        <a href="https://vnexpress.net" class="d-inline-flex m-2" target="_blank">vnexpress.net</a>
+                        <a href="https://ngoisao.net" class="d-inline-flex m-2 link-primary" target="_blank">ngoisao.net</a>
+                        <a href="https://2sao.vn" class="d-inline-flex m-2" target="_blank">2sao.vn</a>
+                        <a href="https://molistar.com" class="d-inline-flex m-2" target="_blank">molistar.com</a>
+                        <a href="https://thanhnien.vn" class="d-inline-flex m-2 link-dark" target="_blank">thanhnien.vn</a>
+                        <a href="https://tuoitre.vn" class="d-inline-flex m-2 link-danger" target="_blank">tuoitre.vn</a>
+                        <a href="https://24h.com.vn" class="d-inline-flex m-2" target="_blank">24h.com.vn</a>
+                        <a href="https://dantri.com.vn" class="d-inline-flex m-2" target="_blank">dantri.com.vn</a>
+                        <a href="https://eva.vn" class="d-inline-flex m-2" target="_blank">eva.vn</a>
+                        <a href="https://vietnamnet.vn" class="d-inline-flex m-2" target="_blank">vietnamnet.vn</a>
+                        <a href="https://suckhoedoisong.vn" class="d-inline-flex m-2" target="_blank">suckhoedoisong.vn</a>
+                        <a href="https://phapluatbandoc.giadinh.net.vn" class="d-inline-flex m-2" target="_blank">phapluatbandoc.giadinh.net.vn</a>
+
+                        <div class="form-group row text-center">
+                            <div class="col-12 col-sm-3"></div>
+                            <div class="col-12 col-sm-8 col-lg-6">
+                                <button type="submit" class="btn btn-sm btn-space btn-primary btn-robot-news"><i class="far fa-newspaper me-1"></i>{lang('NewsAdmin.text_robot_news')}</button>
+                                <a href="#" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</span>
+                                </a>
+                            </div>
+                        </div>
+                    {form_close()}
+
+                </div>
+            </div>
+        </div>
     </div>
 {/strip}
