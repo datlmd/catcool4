@@ -356,15 +356,23 @@ article.post-detail .post-description {
 }
 
 article.post-detail .post-content {
-	font-size: 16px;
-	line-height: 1.6;
+	font-size: 1.1rem;
+	line-height: 1.7;
 	position: relative;
 }
 
 article.post-detail .post-content ul {
 	list-style-position: inside;
-	list-style-type: circle;
 	padding: 5px 15px 15px 15px;
+}
+
+article.post-detail .post-content ul li::marker {
+	margin-left: 7px;
+	color: #ca1b80;
+}
+
+article.post-detail .post-content figure figcaption {
+	text-align: center;
 }
 
 article.post-detail .post-content h1 {
@@ -445,13 +453,9 @@ article.post-detail .post-content > p, article.post-detail .post-content div > p
 	text-align: left;
 }
 
-article.post-detail .post-content .post-content-end div, article.post-detail .post-content div div {
-	width: 100%;
-	text-align: center;
-}
-
 article.post-detail .post-content img {
 	width: 100% !important;
+	height: 100% !important;
 	max-width: 550px !important;
 	text-align: center;
 	display: block;

@@ -93,8 +93,12 @@
 
     {literal}
         <style>
-            .LayoutAlbumWrapper, .eventNewsTimeline-wrapper {
+            .LayoutAlbumWrapper:last-child, .eventNewsTimeline-wrapper:last-child {
                 display: none;
+            }
+            article.post-detail .post-content .post-content-end div, article.post-detail .post-content div div {
+                width: 100%;
+                text-align: center;
             }
         </style>
     {/literal}
