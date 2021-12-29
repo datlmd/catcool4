@@ -14,6 +14,9 @@ class CustomRules
 
         if (!is_null($seo_url)) {
             $model_route = new RouteModel();
+
+            $seo_url = get_seo_extension($seo_url);
+
             $seo_data = $model_route->getListAvailable($seo_url, $route_id);
             if (empty($seo_data)) {
                 return true;
