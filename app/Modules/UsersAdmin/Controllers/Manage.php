@@ -24,6 +24,8 @@ class Manage extends AdminController
 
     const DOB_DEFAULT = '1900-01-01';
 
+    const FOLDER_UPLOAD = 'users/';
+
     public function __construct()
     {
         parent::__construct();
@@ -119,7 +121,12 @@ class Manage extends AdminController
             //avatar la hinh sau khi chon input file, avatar_root la hinh goc da luu
             $avatar = $this->request->getPost('avatar');
             if (!empty($avatar)) {
-                $avatar_name = 'users/' . $username . '_ad.jpg'; //pathinfo($avatar, PATHINFO_EXTENSION);
+                // create folder
+                if (!is_dir(get_upload_path() . self::FOLDER_UPLOAD)) {
+                    mkdir(get_upload_path() . self::FOLDER_UPLOAD, 0777, true);
+                }
+
+                $avatar_name = self::FOLDER_UPLOAD . $username . '_ad.jpg'; //pathinfo($avatar, PATHINFO_EXTENSION);
 
                 $width  = !empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH;
                 $height = !empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT;
@@ -308,7 +315,12 @@ class Manage extends AdminController
             //avatar la hinh sau khi chon input file, avatar_root la hinh goc da luu
             $avatar = $this->request->getPost('avatar');
             if (!empty($avatar)) {
-                $avatar_name = 'users/' . $item_edit['username'] . '_ad.jpg';
+                // create folder
+                if (!is_dir(get_upload_path() . self::FOLDER_UPLOAD)) {
+                    mkdir(get_upload_path() . self::FOLDER_UPLOAD, 0777, true);
+                }
+
+                $avatar_name = self::FOLDER_UPLOAD . $item_edit['username'] . '_ad.jpg';
 
                 $width  = !empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH;
                 $height = !empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT;

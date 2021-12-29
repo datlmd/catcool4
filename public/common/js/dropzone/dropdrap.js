@@ -80,50 +80,59 @@ function uploadData(formdata) {
     $('.drop-drap-file').append(progress);
 
     $('.loading').fadeIn();
-    is_uploading = true;
-    $.ajax({
-        url: 'image/upload',
-        type: 'POST',
-        data: formdata,
-        contentType: false,
-        processData: false,
-        dataType: 'json',
-        xhr: function() {
-            var xhr = new window.XMLHttpRequest();
 
-            xhr.upload.addEventListener("progress", function(evt) {
-                if (evt.lengthComputable) {
-                    var percentComplete = evt.loaded / evt.total;
-                    percentComplete = parseInt(percentComplete * 100);
+    if (typeof timer != 'undefined') {
+        clearInterval(timer);
+    }
 
-                    $('#progress-bar').attr("aria-valuenow", percentComplete);
-                    $('#progress-bar').attr("style", 'width: ' + percentComplete + '%;');
+    timer = setInterval(function() {
+        clearInterval(timer);
+
+        is_uploading = true;
+        $.ajax({
+            url: 'image/upload',
+            type: 'POST',
+            data: formdata,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+
+                xhr.upload.addEventListener("progress", function(evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        percentComplete = parseInt(percentComplete * 100);
+
+                        $('#progress-bar').attr("aria-valuenow", percentComplete);
+                        $('#progress-bar').attr("style", 'width: ' + percentComplete + '%;');
+                    }
+                }, false);
+
+                return xhr;
+            },
+            success: function(data){
+                is_uploading = false;
+                $('.loading').fadeOut();
+                $('.drop-drap-file .progress').remove().fadeOut();
+                $('.upload-area h5').removeClass('upload-drop');
+
+                var response = JSON.stringify(data);
+                response     = JSON.parse(response);
+                if (response.status == 'ng') {
+                    $.notify(response.msg, {'type':'danger'});
+                    return false;
                 }
-            }, false);
-
-            return xhr;
-        },
-        success: function(data){
-            is_uploading = false;
-            $('.loading').fadeOut();
-            $('.drop-drap-file .progress').remove().fadeOut();
-            $('.upload-area h5').removeClass('upload-drop');
-
-            var response = JSON.stringify(data);
-            response     = JSON.parse(response);
-            if (response.status == 'ng') {
-                $.notify(response.msg, {'type':'danger'});
-                return false;
+                addThumbnail(response);
+            },
+            error: function (xhr, errorType, error) {
+                is_uploading = false;
+                $('.loading').fadeOut();
+                $('.drop-drap-file .progress').remove().fadeOut();
+                $('.upload-area h5').removeClass('upload-drop');
             }
-            addThumbnail(response);
-        },
-        error: function (xhr, errorType, error) {
-            is_uploading = false;
-            $('.loading').fadeOut();
-            $('.drop-drap-file .progress').remove().fadeOut();
-            $('.upload-area h5').removeClass('upload-drop');
-        }
-    });
+        });
+    }, 500);
 }
 
 function delete_file(obj) {

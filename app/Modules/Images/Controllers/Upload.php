@@ -35,7 +35,7 @@ class Upload extends MyController
 
             $file_name     = 'file';
 
-            $allowed_types = !empty(config_item('file_ext_allowed')) ?config_item('file_ext_allowed') : 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP';
+            $allowed_types = !empty(config_item('file_ext_allowed')) ? config_item('file_ext_allowed') : 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP';
             $allowed_types = str_replace('|', ',', config_item('file_ext_allowed'));
 
             $max_size      = !empty(config_item('file_max_size')) ? config_item('file_max_size') : null;

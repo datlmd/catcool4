@@ -79,60 +79,68 @@ var Photo = {
         progress += '</div>';
         $(image_form_id + ' .drop-drap-file').append(progress);
 
-        is_uploading = true;
-        $.ajax({
-            url: 'photos/manage/do_upload',
-            type: 'POST',
-            data: formdata,
-            contentType: false,
-            processData: false,
-            dataType: 'json',
-            xhr: function() {
-                var xhr = new window.XMLHttpRequest();
+        if (typeof timer != 'undefined') {
+            clearInterval(timer);
+        }
 
-                xhr.upload.addEventListener("progress", function(evt) {
-                    if (evt.lengthComputable) {
-                        var percentComplete = evt.loaded / evt.total;
-                        percentComplete = parseInt(percentComplete * 100);
+        timer = setInterval(function() {
+            clearInterval(timer);
 
-                        $('#progress-bar').attr("aria-valuenow", percentComplete);
-                        $('#progress-bar').attr("style", 'width: ' + percentComplete + '%;');
+            is_uploading = true;
+            $.ajax({
+                url: 'photos/manage/do_upload',
+                type: 'POST',
+                data: formdata,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+
+                    xhr.upload.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            percentComplete = parseInt(percentComplete * 100);
+
+                            $('#progress-bar').attr("aria-valuenow", percentComplete);
+                            $('#progress-bar').attr("style", 'width: ' + percentComplete + '%;');
+                        }
+                    }, false);
+
+                    return xhr;
+                },
+                success: function (data) {
+                    is_uploading = false;
+
+                    $('.drop-drap-file .progress').remove().fadeOut();
+
+                    var response = JSON.stringify(data);
+                    response = JSON.parse(response);
+                    if (response.status == 'ng') {
+                        $.notify(response.msg, {'type': 'danger'});
+                        return false;
                     }
-                }, false);
+                    if (typeof(is_multi) != 'undefined' && is_multi == 'multiple') {
+                        $(image_form_id + ' #image_thumb').append(response.image);
+                    } else {
+                        $(image_form_id + ' #image_thumb').html('');
+                        $(image_form_id +' #image_thumb').html(response.image);
+                    }
 
-                return xhr;
-            },
-            success: function (data) {
-                is_uploading = false;
+                    if ($(image_form_id + " #button-image-crop").length) {
+                        $(image_form_id + " #button-image-crop").attr("onclick", "Catcool.cropImage('" + response.image_url  + "', 0);");
+                        $(image_form_id + " #button-image-crop").show();
+                    }
 
-                $('.drop-drap-file .progress').remove().fadeOut();
-
-                var response = JSON.stringify(data);
-                response = JSON.parse(response);
-                if (response.status == 'ng') {
-                    $.notify(response.msg, {'type': 'danger'});
-                    return false;
+                    $(image_form_id + ' #image_thumb').focus();
+                },
+                error: function (xhr, errorType, error) {
+                    is_uploading = false;
+                    $('.drop-drap-file .progress').remove().fadeOut();
+                    $.notify('System Error!', {'type': 'danger'});
                 }
-                if (typeof(is_multi) != 'undefined' && is_multi == 'multiple') {
-                    $(image_form_id + ' #image_thumb').append(response.image);
-                } else {
-                    $(image_form_id + ' #image_thumb').html('');
-                    $(image_form_id +' #image_thumb').html(response.image);
-                }
-
-                if ($(image_form_id + " #button-image-crop").length) {
-                    $(image_form_id + " #button-image-crop").attr("onclick", "Catcool.cropImage('" + response.image_url  + "', 0);");
-                    $(image_form_id + " #button-image-crop").show();
-                }
-
-                $(image_form_id + ' #image_thumb').focus();
-            },
-            error: function (xhr, errorType, error) {
-                is_uploading = false;
-                $('.drop-drap-file .progress').remove().fadeOut();
-                $.notify('System Error!', {'type': 'danger'});
-            }
-        });
+            });
+        }, 500);
     },
     delete_div_photo: function (obj) {
         if (is_uploading) {
