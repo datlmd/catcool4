@@ -138,6 +138,27 @@ class Manage extends AdminController
                 $publish_date      = $publish_date . ' ' . $publish_date_hour;
                 $publish_date      = date('Y-m-d H:i:00', strtotime(str_replace('/', '-', $publish_date)));
             }
+
+            $category_ids = $this->request->getPost('category_ids');
+            if (!empty($category_ids)) {
+                //check parent id and save it
+                $category_list = $this->model_category->getListPublished();
+                $parent_ids = [];
+                foreach ($category_ids as $value) {
+                    if (empty($category_list[$value])) {
+                        continue;
+                    }
+
+                    $parent_ids = array_merge($parent_ids, get_parent_id($category_list, $value, 'category_id'));
+                }
+
+                if (!empty($parent_ids)) {
+                    $category_ids = [];
+                    foreach ($parent_ids as $value) {
+                        $category_ids[$value] = $value;
+                    }
+                }
+            }
             
             $add_data = [
                 'name'              => $this->request->getPost('name'),
@@ -152,7 +173,7 @@ class Manage extends AdminController
                 'images'            => json_encode($this->request->getPost('images'), JSON_FORCE_OBJECT),
                 'tags'              => $this->request->getPost('tags'),
                 'author'            => $this->request->getPost('author'),
-                'category_ids'      => json_encode($this->request->getPost('category_ids'), JSON_FORCE_OBJECT),
+                'category_ids'      => json_encode($category_ids, JSON_FORCE_OBJECT),
                 'related_ids'       => json_encode($this->request->getPost('related_ids'), JSON_FORCE_OBJECT),
                 'source_type'       => $this->request->getPost('source_type'),
                 'source'            => $this->request->getPost('source'),
@@ -219,6 +240,27 @@ class Manage extends AdminController
                     $publish_date = date('Y-m-d H:i:00', strtotime(str_replace('/', '-', $publish_date)));
                 }
 
+                $category_ids = $this->request->getPost('category_ids');
+                if (!empty($category_ids)) {
+                    //check parent id and save it
+                    $category_list = $this->model_category->getListPublished();
+                    $parent_ids = [];
+                    foreach ($category_ids as $value) {
+                        if (empty($category_list[$value])) {
+                            continue;
+                        }
+
+                        $parent_ids = array_merge($parent_ids, get_parent_id($category_list, $value, 'category_id'));
+                    }
+
+                    if (!empty($parent_ids)) {
+                        $category_ids = [];
+                        foreach ($parent_ids as $value) {
+                            $category_ids[$value] = $value;
+                        }
+                    }
+                }
+
                 $edit_data = [
                     'name'              => $this->request->getPost('name'),
                     'slug'              => !empty($this->request->getPost('slug')) ? slugify($this->request->getPost('slug')) : slugify($this->request->getPost('name')),
@@ -232,7 +274,7 @@ class Manage extends AdminController
                     'images'            => json_encode($this->request->getPost('images'), JSON_FORCE_OBJECT),
                     'tags'              => $this->request->getPost('tags'),
                     'author'            => $this->request->getPost('author'),
-                    'category_ids'      => json_encode($this->request->getPost('category_ids'), JSON_FORCE_OBJECT),
+                    'category_ids'      => json_encode($category_ids, JSON_FORCE_OBJECT),
                     'related_ids'       => json_encode($this->request->getPost('related_ids'), JSON_FORCE_OBJECT),
                     'source_type'       => $this->request->getPost('source_type'),
                     'source'            => $this->request->getPost('source'),

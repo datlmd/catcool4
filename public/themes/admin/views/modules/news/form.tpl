@@ -329,7 +329,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group">
-                                <label class="form-label"><a href="{site_url('articles/categories_manage')}" target="_blank" class="link-primary">{lang('Admin.text_category')}</a></label>
+                                <label class="form-label"><a href="{site_url('news/categories_manage')}" target="_blank" class="link-primary">{lang('Admin.text_category')}</a></label>
 
                                 {$output_html = '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>'}
                                 <select name="category_ids[]" id="category_ids[]" class="form-control form-control-sm multiselect" multiple="multiple" title="{lang('Admin.text_select')}">
