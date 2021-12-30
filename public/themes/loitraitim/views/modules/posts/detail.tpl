@@ -126,7 +126,7 @@
     {literal}
         <style>
             article.post-detail .post-content img {
-                max-width: 400px !important;
+                max-width: 600px !important;
             }
         </style>
     {/literal}
