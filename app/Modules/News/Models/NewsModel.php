@@ -687,6 +687,9 @@ class NewsModel extends FarmModel
             case 'talkbeauty.vn':
                 $attribute_detail['attribute_detail']['content'] = 'div.contentDetailWrap';
                 break;
+            case 'dulichchat.com':
+                $attribute_detail['attribute_detail']['content'] = 'div.entry-content';
+                break;
         }
 
         try {
