@@ -398,6 +398,7 @@ class Manage extends AdminController
             if ($this->request->getGet('url')) {
                 $news_model = new \App\Modules\News\Models\NewsModel();
                 $data['edit_data'] = $news_model->robotDetail($this->request->getGet('url'));
+                $data['url']       = $this->request->getGet('url');
             }
 
             $data['text_form']   = lang('Admin.text_add');

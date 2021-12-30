@@ -527,23 +527,10 @@
                     {form_open('news/manage/add', ['id' => 'robot_news_form', 'method' => 'get'])}
                     <div class="form-group">
                         Url
-                        <input type="text" name="url" id="url" class="form-control"  />
+                        <input type="text" name="url" id="url" class="form-control" value="{if !empty($url)}{$url}{/if}" />
                     </div>
-                    <a href="https://ngoisao.vn" class="d-inline-flex m-2 link-success" target="_blank">ngoisao.vn</a>
-                    <a href="https://kenh14.vn" class="d-inline-flex m-2" target="_blank">kenh14.vn</a>
-                    <a href="https://zingnews.vn" class="d-inline-flex m-2" target="_blank">zingnews.vn</a>
-                    <a href="https://vnexpress.net" class="d-inline-flex m-2" target="_blank">vnexpress.net</a>
-                    <a href="https://ngoisao.net" class="d-inline-flex m-2 link-primary" target="_blank">ngoisao.net</a>
-                    <a href="https://2sao.vn" class="d-inline-flex m-2" target="_blank">2sao.vn</a>
-                    <a href="https://molistar.com" class="d-inline-flex m-2" target="_blank">molistar.com</a>
-                    <a href="https://thanhnien.vn" class="d-inline-flex m-2 link-dark" target="_blank">thanhnien.vn</a>
-                    <a href="https://tuoitre.vn" class="d-inline-flex m-2 link-danger" target="_blank">tuoitre.vn</a>
-                    <a href="https://24h.com.vn" class="d-inline-flex m-2" target="_blank">24h.com.vn</a>
-                    <a href="https://dantri.com.vn" class="d-inline-flex m-2" target="_blank">dantri.com.vn</a>
-                    <a href="https://eva.vn" class="d-inline-flex m-2" target="_blank">eva.vn</a>
-                    <a href="https://vietnamnet.vn" class="d-inline-flex m-2" target="_blank">vietnamnet.vn</a>
-                    <a href="https://suckhoedoisong.vn" class="d-inline-flex m-2" target="_blank">suckhoedoisong.vn</a>
-                    <a href="https://phapluatbandoc.giadinh.net.vn" class="d-inline-flex m-2" target="_blank">phapluatbandoc.giadinh.net.vn</a>
+
+                    {include file=get_theme_path('views/modules/news/inc/link_robot_list.tpl')}
 
                     <div class="form-group row text-center">
                         <div class="col-12 col-sm-3"></div>
