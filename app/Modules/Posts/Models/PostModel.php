@@ -89,7 +89,7 @@ class PostModel extends MyModel
             $this->where("$this->table.published", $filter["published"]);
         }
 
-        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'is_hot', 'is_homepage', 'publish_date', 'published', 'images', 'ctime'])
+        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'is_hot', 'is_homepage', 'publish_date', 'published', 'counter_view', 'images', 'ctime'])
             ->orderBy($sort, $order);
 
         return $result;
