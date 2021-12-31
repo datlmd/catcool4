@@ -80,7 +80,7 @@
     <section class="bg-white padding-x pb-3">
 
         {if !empty($related_list)}
-            <div class="category-name d-block mt-2 mb-4">
+            <div class="category-name d-block pt-3 mb-4">
                 <span>{lang('News.text_related')}</span>
             </div>
             {foreach $related_list as $news}
