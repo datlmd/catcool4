@@ -43,7 +43,7 @@
 								<table class="table table-striped table-hover table-bordered second">
 									<thead>
 										<tr class="text-center">
-											<th width="150">
+											<th style="min-width: 150px;">
 												<a href="{site_url($manage_url)}?sort=post_id&order={$order}{$url}" class="text-dark">
 													{lang('Admin.text_image')}
 													{if $sort eq 'post_id'}

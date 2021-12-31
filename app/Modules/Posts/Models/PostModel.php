@@ -341,4 +341,31 @@ class PostModel extends MyModel
 
         return [$list, $result->pager];
     }
+
+    public function findRelated($related, $limit = 20)
+    {
+        if (empty($related)) {
+            return null;
+        }
+        $related = trim($related);
+        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+            ->orderBy('publish_date', 'DESC')
+            ->groupStart()
+            ->like("name", $related)
+            ->orLike("tags", $related)
+            ->groupEnd()
+            ->where(['published' => STATUS_ON])
+            ->findAll($limit);
+
+        if (empty($result)) {
+            return [];
+        }
+
+        $list = [];
+        foreach ($result as $key_news => $value) {
+            $list[] = $this->formatDetail($value);
+        }
+
+        return $list;
+    }
 }

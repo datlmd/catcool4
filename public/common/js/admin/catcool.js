@@ -803,10 +803,11 @@ $(function () {
     }
 
     //check double click form
-    $("form").submit(function() {
+    $("form#validationform").submit(function() {
         $(this).submit(function() {
             return false;
         });
+        $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
         return true;
     });
 });
