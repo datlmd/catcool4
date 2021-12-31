@@ -104,7 +104,17 @@
         <div class="row">
             <div class="col">
 
-                {include file=get_theme_path('views/modules/news/inc/detail_same_category.tpl') news_list=$news_the_same_list news_id_not=$detail.news_id}
+                {if !empty($news_the_same_list)}
+                    <div class="category-name d-block mt-2 mb-4">
+                        <span>{lang('News.text_same_category')}</span>
+                    </div>
+                    {foreach $news_the_same_list as $news}
+                        {if $news.news_id eq $detail.news_id}
+                            {continue}
+                        {/if}
+                        {include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
+                    {/foreach}
+                {/if}
 
                 {include file=get_theme_path('views/modules/news/inc/list_new.tpl')}
 
