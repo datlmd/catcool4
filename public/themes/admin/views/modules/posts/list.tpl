@@ -43,8 +43,8 @@
 								<table class="table table-striped table-hover table-bordered second">
 									<thead>
 										<tr class="text-center">
-											<th style="min-width: 140px; max-width: 150px;">
-												<a href="{site_url($manage_url)}?sort=post_id&order={$order}{$url}" class="text-dark">
+											<th >
+												<a href="{site_url($manage_url)}?sort=post_id&order={$order}{$url}" class="text-dark" style="width: 150px; display: block">
 													{lang('Admin.text_image')}
 													{if $sort eq 'post_id'}
 														<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
