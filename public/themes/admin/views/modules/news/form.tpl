@@ -289,7 +289,7 @@
                                 {if isset($edit_data.published)}
                                     {assign var="published" value="`$edit_data.published`"}
                                 {else}
-                                    {assign var="published" value="1"}
+                                    {assign var="published" value="0"}
                                 {/if}
                                 <label class="form-check form-check-inline ms-2">
                                     <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $published) eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
