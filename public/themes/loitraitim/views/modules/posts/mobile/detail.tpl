@@ -11,7 +11,7 @@
             </div>
 
             <h2>{$detail.name}</h2>
-            <div class="post-meta padding fs-small py-1">
+            <div class="post-meta padding fs-small py-1 d-none">
                 <span>{if !empty($detail.author)}{$detail.author}{else}Ryan Lee{/if},</span>
                 {if !empty($detail.source)}
                     <span>
