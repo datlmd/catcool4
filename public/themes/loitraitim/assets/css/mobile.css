@@ -31,11 +31,20 @@ article.post-detail {
 }
 
 .padding-x,
-article.post-detail .post-content p, article.post-detail .post-content span,
+article.post-detail .post-content p, article.post-detail .post-content span, article.post-detail .post-content strong
 article.post-detail .post-content h1, article.post-detail .post-content h2, article.post-detail .post-content h3,
 article.post-detail .post-content h4, article.post-detail .post-content h5, article.post-detail .post-content h6
 {
 	padding-left: 15px !important;
 	padding-right: 15px !important;
+	display: block;
+}
+
+article.post-detail .post-content p > p, article.post-detail .post-content p > span, article.post-detail .post-content p > strong
+article.post-detail .post-content p > h1, article.post-detail .post-content p > h2, article.post-detail .post-content p > h3,
+article.post-detail .post-content p > h4, article.post-detail .post-content p > h5, article.post-detail .post-content p > h6
+{
+	padding-left: 0 !important;
+	padding-right: 0 !important;
 	display: block;
 }
