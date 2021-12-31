@@ -29,7 +29,7 @@ $(function () {
                     is_processing = false;
                     $('.loading').remove().fadeOut();
 
-                    $('body').append('<div id="modal_image" class="modal fade" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1">' + html + '</div>');
+                    $('body').append('<div id="modal_image" class="modal fade" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">' + html + '</div>');
                     $('#modal_image').modal('show');
                     $('html').css('overflow', 'hidden');
                 },

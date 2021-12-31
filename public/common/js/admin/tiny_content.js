@@ -115,7 +115,7 @@ var Tiny_content = {
 
                         $('.loading').remove().fadeOut();
 
-                        $('body').append('<div id="modal_image" class="modal" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1">' + html + '</div>');
+                        $('body').append('<div id="modal_image" class="modal" data-bs-keyboard="false" data-bs-backdrop="static">' + html + '</div>');
 
                         $('#modal_image').modal('show');
                         $('html').css('overflow', 'hidden');

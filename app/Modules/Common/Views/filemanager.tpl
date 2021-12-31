@@ -442,7 +442,7 @@
         }, 500);
     });
 
-    $('#filemanager #button_folder').on('click', function (e) {
+    $('#button_folder').on('click', function (e) {
         var button_folder = $(this);
         var $popover = button_folder.data('bs.popover');
 
@@ -455,7 +455,7 @@
         }
 
         button_folder.popover({
-            animation: false,
+            animation: true,
             sanitize: false,
             html: true,
             placement: 'bottom',
@@ -463,7 +463,7 @@
             trigger: 'manual',
             title: '{{$entry_folder}}',
             content: function () {
-                html = '<div class="input-group">';
+                var html = '<div class="input-group">';
                 html += '  <input type="text" name="folder_filemanager" value="" placeholder="{{$entry_folder}}" class="form-control">';
                 html += '  <button type="button" title="{{$button_folder}}" id="button_create_folder" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i></button>';
                 html += '</div>';
@@ -473,6 +473,8 @@
 
         button_folder.popover('toggle');
         is_disposing = true;
+
+        $('input[name=\'folder_filemanager\']').focus();
 
         $('#button_create_folder').on('click', function() {
             if (!$('input[name=\'folder_filemanager\']').val()) {
