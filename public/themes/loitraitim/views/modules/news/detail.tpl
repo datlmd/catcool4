@@ -79,9 +79,11 @@
 
                 <div class="fb-like" data-href="{base_url($detail.detail_url)}" data-width="" data-layout="standard" data-action="like" data-size="small" data-share="false"></div>
 
-                <div class="mt-2">
-                    {include file=get_theme_path('views/modules/news/inc/list_tags.tpl') tags=explode(',', $detail.tags)}
-                </div>
+                {if !empty($detail.tags)}
+                    <div class="mt-2">
+                        {include file=get_theme_path('views/modules/news/inc/list_tags.tpl') tags=explode(',', $detail.tags)}
+                    </div>
+                {/if}
 
                 {if $detail.is_comment eq COMMENT_STATUS_ON}
                     {include file=get_theme_path('views/inc/facebook_comment.tpl') fb_url=base_url($detail.detail_url)}

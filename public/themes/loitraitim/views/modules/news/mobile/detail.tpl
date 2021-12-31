@@ -51,9 +51,11 @@
             <div class="fb-like" data-href="{base_url($detail.detail_url)}" data-width="" data-layout="standard" data-action="like" data-size="small" data-share="false"></div>
         </div>
 
-        <div class="mt-2 padding-x">
-            {include file=get_theme_path('views/modules/news/inc/list_tags.tpl') tags=explode(',', $detail.tags)}
-        </div>
+        {if !empty($detail.tags)}
+            <div class="mt-2 padding-x">
+                {include file=get_theme_path('views/modules/news/inc/list_tags.tpl') tags=explode(',', $detail.tags)}
+            </div>
+        {/if}
 
         <div class="row padding-x">
 
