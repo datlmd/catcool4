@@ -14,16 +14,16 @@
                 <h4>
                     <a href="{site_url($article_info.detail_url)}" class="art-title">{$article_info.name}</a>
                 </h4>
-                {if empty($is_hide_datetime)}
-                    {if !empty($is_show_category) && !empty($article_info.category_ids)}
-                        <div class="d-inline-block me-2">
-                            {foreach $article_info.category_ids as $category_id}
-                                <a href="{base_url($post_category_list[$category_id].slug)}" class="art-category">{$post_category_list[$category_id].name}</a>
-                            {/foreach}
-                        </div>
-                    {/if}
+                {if !empty($is_show_category) && !empty($article_info.category_ids)}
+                    <div class="d-inline-block me-2">
+                        {foreach $article_info.category_ids as $category_id}
+                            <a href="{base_url($post_category_list[$category_id].slug)}" class="art-category">{$post_category_list[$category_id].name}</a>
+                        {/foreach}
+                    </div>
+                {/if}
+                {if !empty($is_show_datetime)}
                     <div class="d-inline-block art-time">
-                         {time_ago($article_info.publish_date)}
+                        {time_ago($article_info.publish_date)}
                     </div>
                 {/if}
                 {if empty($is_hide_description)}
@@ -45,14 +45,14 @@
                     <h4>
                         <a href="{site_url($article_info.detail_url)}" class="art-title">{$article_info.name}</a>
                     </h4>
-                    {if empty($is_hide_datetime)}
-                        {if !empty($is_show_category) && !empty($article_info.category_ids)}
-                            <div class="d-inline-block me-2">
-                                {foreach $article_info.category_ids as $category_id}
-                                    <a href="{base_url($post_category_list[$category_id].slug)}" class="art-category">{$post_category_list[$category_id].name}</a>
-                                {/foreach}
-                            </div>
-                        {/if}
+                    {if !empty($is_show_category) && !empty($article_info.category_ids)}
+                        <div class="d-inline-block me-2">
+                            {foreach $article_info.category_ids as $category_id}
+                                <a href="{base_url($post_category_list[$category_id].slug)}" class="art-category">{$post_category_list[$category_id].name}</a>
+                            {/foreach}
+                        </div>
+                    {/if}
+                    {if !empty($is_show_datetime)}
                         <div class="d-inline-block art-time">
                             {time_ago($article_info.publish_date)}
                         </div>
@@ -79,14 +79,14 @@
                     <h4>
                         <a href="{site_url($article_info.detail_url)}" class="art-title">{$article_info.name}</a>
                     </h4>
-                    {if empty($is_hide_datetime)}
-                        {if !empty($is_show_category) && !empty($article_info.category_ids)}
-                            <div class="d-inline-block me-2">
-                                {foreach $article_info.category_ids as $category_id}
-                                    <a href="{base_url($post_category_list[$category_id].slug)}" class="art-category">{$post_category_list[$category_id].name}</a>
-                                {/foreach}
-                            </div>
-                        {/if}
+                    {if !empty($is_show_category) && !empty($article_info.category_ids)}
+                        <div class="d-inline-block me-2">
+                            {foreach $article_info.category_ids as $category_id}
+                                <a href="{base_url($post_category_list[$category_id].slug)}" class="art-category">{$post_category_list[$category_id].name}</a>
+                            {/foreach}
+                        </div>
+                    {/if}
+                    {if !empty($is_show_datetime)}
                         <div class="d-inline-block art-time">
                             {time_ago($article_info.publish_date)}
                         </div>
@@ -114,14 +114,14 @@
                     </a>
                 {/if}
 
-                {if empty($is_hide_datetime)}
-                    {if !empty($is_show_category) && !empty($article_info.category_ids)}
-                        <div class="d-inline-block me-2">
-                            {foreach $article_info.category_ids as $category_id}
-                                <a href="{base_url($post_category_list[$category_id].slug)}" class="art-category">{$post_category_list[$category_id].name}</a>
-                            {/foreach}
-                        </div>
-                    {/if}
+                {if !empty($is_show_category) && !empty($article_info.category_ids)}
+                    <div class="d-inline-block me-2">
+                        {foreach $article_info.category_ids as $category_id}
+                            <a href="{base_url($post_category_list[$category_id].slug)}" class="art-category">{$post_category_list[$category_id].name}</a>
+                        {/foreach}
+                    </div>
+                {/if}
+                {if !empty($is_show_datetime)}
                     <div class="d-inline-block art-time">
                         {time_ago($article_info.publish_date)}
                     </div>
@@ -148,14 +148,14 @@
                     </a>
                 {/if}
 
-                {if empty($is_hide_datetime)}
-                    {if !empty($is_show_category) && !empty($article_info.category_ids)}
-                        <div class="d-inline-block me-2">
-                            {foreach $article_info.category_ids as $category_id}
-                                <a href="{base_url($post_category_list[$category_id].slug)}" class="art-category">{$post_category_list[$category_id].name}</a>
-                            {/foreach}
-                        </div>
-                    {/if}
+                {if !empty($is_show_category) && !empty($article_info.category_ids)}
+                    <div class="d-inline-block me-2">
+                        {foreach $article_info.category_ids as $category_id}
+                            <a href="{base_url($post_category_list[$category_id].slug)}" class="art-category">{$post_category_list[$category_id].name}</a>
+                        {/foreach}
+                    </div>
+                {/if}
+                {if !empty($is_show_datetime)}
                     <div class="d-inline-block art-time">
                         {time_ago($article_info.publish_date)}
                     </div>
@@ -180,14 +180,14 @@
                     <h4>
                         <a href="{site_url($article_info.detail_url)}" class="art-title">{$article_info.name}</a>
                     </h4>
-                    {if empty($is_hide_datetime)}
-                        {if !empty($is_show_category) && !empty($article_info.category_ids)}
-                            <div class="d-inline-block me-2">
-                                {foreach $article_info.category_ids as $category_id}
-                                    <a href="{base_url($post_category_list[$category_id].slug)}" class="art-category">{$post_category_list[$category_id].name}</a>
-                                {/foreach}
-                            </div>
-                        {/if}
+                    {if !empty($is_show_category) && !empty($article_info.category_ids)}
+                        <div class="d-inline-block me-2">
+                            {foreach $article_info.category_ids as $category_id}
+                                <a href="{base_url($post_category_list[$category_id].slug)}" class="art-category">{$post_category_list[$category_id].name}</a>
+                            {/foreach}
+                        </div>
+                    {/if}
+                    {if !empty($is_show_datetime)}
                         <div class="d-inline-block art-time">
                             {time_ago($article_info.publish_date)}
                         </div>

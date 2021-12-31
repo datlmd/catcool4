@@ -49,12 +49,9 @@ class PostModel extends MyModel
     protected $useSoftDeletes = true;
     protected $deletedField = 'deleted';
 
-    const POST_CACHE_EXPIRE = HOUR;
+    const POST_CACHE_EXPIRE = YEAR;
     const POST_CACHE_DETAIL = 'post_detail_id_%s';
-
-    const FORMAT_post_id = '%sc%s';
-    const SOURCE_TYPE_ROBOT = 1;
-    const POST_FORMAT_NORMAL = 1;
+    const POST_CACHE_LATEST_LIST = 'post_latest_list';
 
     const POST_DETAIL_FORMAT = "%s-post%s.html";
 
@@ -156,7 +153,7 @@ class PostModel extends MyModel
             cache()->delete(sprintf(self::POST_CACHE_DETAIL, $post_id));
         }
 
-//        cache()->delete(self::NEWS_CACHE_CATEGORY_HOME);
+        cache()->delete(self::POST_CACHE_LATEST_LIST);
 //        cache()->delete(self::NEWS_CACHE_SLIDE_HOME);
 //        cache()->delete(self::NEWS_CACHE_COUNTER_LIST);
 //        cache()->delete(self::NEWS_CACHE_HOT_LIST);
@@ -249,19 +246,36 @@ class PostModel extends MyModel
         return $list;
     }
 
-    public function getListTheSameCategory($category_id, $post_id, $limit = 10)
+    public function getListTheSameCategory($category_ids, $post_id, $limit = 10)
     {
-        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images'])
+        $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images'])
             ->orderBy('publish_date', 'DESC')
             ->where([
                 'published' => STATUS_ON,
                 'publish_date <=' => get_date(),
                 'post_id !=' => $post_id
-            ])
-            ->like("category_ids", $category_id)
-            ->findAll($limit);
+            ]);
 
+        if (!empty($category_ids)) {
 
+            $this->groupStart();
+            foreach ($category_ids as $category_id) {
+                //format like: 1 or 10, 11
+                // {"0":1} or {"0":1,"1":4}
+                $category_id_1 = ":$category_id}";
+                $category_id_2 = ":\"$category_id\"}";
+                $category_id_3 = ":$category_id,";
+                $category_id_4 = ":\"$category_id\",";
+
+                $this->orLike('category_ids', $category_id_1)
+                    ->orLike('category_ids', $category_id_2)
+                    ->orLike('category_ids', $category_id_3)
+                    ->orLike('category_ids', $category_id_4);
+            }
+            $this->groupEnd();
+        }
+
+        $result = $this->findAll($limit);
         if (empty($result)) {
             return [];
         }
@@ -367,5 +381,55 @@ class PostModel extends MyModel
         }
 
         return $list;
+    }
+
+    public function getListPostLatest($limit = 20, $is_cache = true)
+    {
+        $result = $is_cache ? cache()->get(self::POST_CACHE_LATEST_LIST) : null;
+        if (empty($result)) {
+
+            $where = [
+                'published' => STATUS_ON,
+                'publish_date <=' => get_date(),
+            ];
+
+            $list = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+                ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
+            if (empty($list)) {
+                return [];
+            }
+
+            foreach ($list as $key_news => $value) {
+                $result[] = $this->formatDetail($value);
+            }
+
+            if ($is_cache) {
+                // Save into the cache for $expire_time 1 month
+                cache()->save(self::POST_CACHE_LATEST_LIST, $result, self::POST_CACHE_EXPIRE);
+            }
+        }
+
+        return $result;
+    }
+
+    public function getListCounter($limit = 20)
+    {
+        $where = [
+            'published' => STATUS_ON,
+            'publish_date <=' => get_date(),
+        ];
+
+        $list = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+            ->orderBy('counter_view', 'DESC')->where($where)->findAll($limit);
+        if (empty($list)) {
+            return [];
+        }
+
+        $result = [];
+        foreach ($list as $key_news => $value) {
+            $result[] = $this->formatDetail($value);
+        }
+
+        return $result;
     }
 }

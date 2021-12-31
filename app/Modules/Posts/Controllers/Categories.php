@@ -43,10 +43,10 @@ class Categories extends MyController
             'pager'              => $pager,
             'post_category_list' => $post_category_list,
             'post_category_tree' => get_list_tree_selected($post_category_list, $id, 'category_id'),
+            'post_latest_list'   => $this->post_model->getListPostLatest(6),
+            'post_counter_list'  => $this->post_model->getListCounter(5),
             'news_category_list' => $news_category_model->getListPublished(),
-            'slide_list'         => $news_model->getSlideHome(5),
-            'new_list'           => $news_model->getListNew(5),
-            'counter_list'       => $news_model->getListCounter(6),
+            'news_counter_list'  => $news_model->getListCounter(6),
         ];
 
         $this->_setMeta($detail);

@@ -11,7 +11,7 @@
             </div>
 
             <h2>{$detail.name}</h2>
-            <div class="post-meta padding fs-small py-1">
+            <div class="post-meta padding fs-small py-1 d-none">
                 <span>{if !empty($detail.author)}{$detail.author}{else}Ryan Lee{/if},</span>
                 {if !empty($detail.source)}
                     <span>
@@ -89,9 +89,12 @@
             </div>
             <aside class="col-md-4 col-12 d-none d-lg-block">
                 <div class="position-sticky">
-                    {if !empty($slide_list)}
-                        {foreach $slide_list as $news}
-                            {include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3" is_show_category=true is_hide_description=true}
+                    {if !empty($post_counter_list)}
+                        {foreach $post_counter_list as $news}
+                            {if $news.post_id eq $detail.post_id}
+                                {continue}
+                            {/if}
+                            {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3" is_show_category=true is_hide_description=true}
                         {/foreach}
                     {/if}
                 </div>
@@ -102,17 +105,42 @@
     <section class="container-xxl bg-white px-5 pb-3">
         <div class="row">
             <div class="col">
+                {if !empty($related_list)}
+                    <div class="category-name d-block mt-2 mb-4">
+                        <span>{lang('News.text_related')}</span>
+                    </div>
+                    {foreach $related_list as $news}
+                        {if $news.post_id eq $detail.post_id}
+                            {continue}
+                        {/if}
+
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='small' article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
+                    {/foreach}
+                {/if}
 
                 {if !empty($post_same_category_list)}
                     <div class="category-name d-block mt-2 mb-4">
                         <span>{lang('News.text_same_category')}</span>
                     </div>
                     {foreach $post_same_category_list as $news}
-                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
+                        {if $news.post_id eq $detail.post_id}
+                            {continue}
+                        {/if}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
                     {/foreach}
                 {/if}
 
-                {include file=get_theme_path('views/modules/news/inc/list_new.tpl')}
+                {if !empty($post_latest_list)}
+                    <div class="category-name d-block mt-2 mb-4">
+                        <span>{lang('News.text_new_post')}</span>
+                    </div>
+                    {foreach $post_latest_list as $news}
+                        {if $news.post_id eq $detail.post_id}
+                            {continue}
+                        {/if}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
+                    {/foreach}
+                {/if}
 
             </div>
             <div class="col-md-4 col-12">
@@ -121,7 +149,7 @@
         </div>
     </section>
 
-    {include file=get_theme_path('views/modules/news/inc/counter_view.tpl')}
+    {include file=get_theme_path('views/modules/news/inc/counter_view.tpl') counter_list=$news_counter_list text_title=lang('News.text_news')}
 
     {literal}
         <style>

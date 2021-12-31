@@ -76,27 +76,58 @@
     </article>
 
     <section class="bg-white padding-x pb-3">
-        <div class="row">
-            <div class="col">
 
-                {if !empty($post_same_category_list)}
-                    <div class="category-name d-block mt-2 mb-4">
-                        <span>{lang('News.text_same_category')}</span>
-                    </div>
-                    {foreach $post_same_category_list as $news}
-                        {include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$news article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
-                    {/foreach}
+        {if !empty($related_list)}
+            <div class="category-name d-block mt-2 mb-4">
+                <span>{lang('News.text_related')}</span>
+            </div>
+            {foreach $related_list as $news}
+                {if $news.post_id eq $detail.post_id}
+                    {continue}
                 {/if}
 
-                {include file=get_theme_path('views/modules/news/inc/list_new.tpl')}
+                {include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$news article_type='small' article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
+            {/foreach}
+        {/if}
 
+        {if !empty($post_same_category_list)}
+            <div class="category-name d-block mt-2 mb-4">
+                <span>{lang('News.text_same_category')}</span>
             </div>
-            <div class="col-md-4 col-12">
+            {foreach $post_same_category_list as $news}
+                {if $news.post_id eq $detail.post_id}
+                    {continue}
+                {/if}
+                {include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$news article_type='middle_left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
+            {/foreach}
+        {/if}
 
+        {if !empty($post_counter_list)}
+            <div class="category-name d-block mt-2 mb-4">
+                <span>{lang('News.text_popular_post')}</span>
             </div>
-        </div>
+            {foreach $post_counter_list as $news}
+                {if $news.post_id eq $detail.post_id}
+                    {continue}
+                {/if}
+                {include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$news article_type='middle_left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
+            {/foreach}
+        {/if}
+
+        {if !empty($post_latest_list)}
+            <div class="category-name d-block mt-2 mb-4">
+                <span>{lang('News.text_new_post')}</span>
+            </div>
+            {foreach $post_latest_list as $news}
+                {if $news.post_id eq $detail.post_id}
+                    {continue}
+                {/if}
+                {include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$news article_type='middle_left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
+            {/foreach}
+        {/if}
+
     </section>
 
-    {include file=get_theme_path('views/modules/news/inc/counter_view.tpl')}
+    {include file=get_theme_path('views/modules/news/inc/counter_view.tpl') counter_list=$news_counter_list text_title=lang('News.text_news')}
 
 {/strip}

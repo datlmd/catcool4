@@ -5,7 +5,7 @@
             <div class="col">
 
                 <div class="category-tree">
-                    <a class="dropdown-item" href="{site_url()}">
+                    <a class="me-2" href="{site_url()}">
                         <i class="fas fa-home"></i>
                     </a>
                     <i class="fas fa-angle-right me-2"></i>
@@ -41,9 +41,9 @@
             </div>
             <aside class="col-md-4 col-12 d-none d-lg-block pt-3 ps-4">
 
-                {if !empty(slide_list)}
-                    {foreach $slide_list as $news}
-                        {include file=get_theme_path('views/modules/news/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3" is_show_category=true is_hide_description=true}
+                {if !empty($post_counter_list)}
+                    {foreach $post_counter_list as $news}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3" is_show_category=true is_hide_description=true}
                     {/foreach}
                 {/if}
 
@@ -55,7 +55,14 @@
         <div class="row">
             <div class="col">
 
-                {include file=get_theme_path('views/modules/news/inc/list_new.tpl')}
+                {if !empty($post_latest_list)}
+                    <div class="category-name d-block mt-2 mb-4">
+                        <span>{lang('News.text_new_post')}</span>
+                    </div>
+                    {foreach $post_latest_list as $news}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
+                    {/foreach}
+                {/if}
 
             </div>
             <div class="col-md-4 col-12">
@@ -65,6 +72,6 @@
     </section>
 
 
-    {include file=get_theme_path('views/modules/news/inc/counter_view.tpl')}
+    {include file=get_theme_path('views/modules/news/inc/counter_view.tpl') counter_list=$news_counter_list text_title=lang('News.text_news')}
 
 {/strip}

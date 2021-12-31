@@ -1,7 +1,7 @@
 {strip}
 	{if !empty($counter_list)}
 		<div class="container-xxl section-counter-title bg-white">
-			<h3 class="m-0 p-0">{lang('News.text_popular_post')}</h3>
+			<h3 class="m-0 p-0">{if !empty($text_title)}{$text_title}{else}{lang('News.text_popular_post')}{/if}</h3>
 		</div>
 		<section class="section-counter text-white border-top pt-4 pb-2">
 

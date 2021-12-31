@@ -40,10 +40,10 @@ class Tag extends MyController
             'list'               => $list,
             'pager'              => $pager,
             'post_category_list' => $post_category_list,
+            'post_latest_list'   => $this->model->getListPostLatest(6),
+            'post_counter_list'  => $this->model->getListCounter(5),
             'news_category_list' => $news_category_model->getListPublished(),
-            'slide_list'         => $news_model->getSlideHome(5),
-            'new_list'           => $news_model->getListNew(5),
-            'counter_list'       => $news_model->getListCounter(6),
+            'news_counter_list'  => $news_model->getListCounter(6),
         ];
 
         add_meta(['title' => $tag, 'url' => current_url()], $this->themes);
