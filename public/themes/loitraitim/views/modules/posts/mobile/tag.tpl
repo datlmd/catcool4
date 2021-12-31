@@ -37,7 +37,7 @@
     </div>
 
 
-    {include file=get_theme_path('views/modules/news/inc/counter_view.tpl')}
+    {include file=get_theme_path('views/modules/news/inc/counter_view.tpl') counter_list=$news_counter_list text_title=lang('News.text_news')}
 
 
 {/strip}
