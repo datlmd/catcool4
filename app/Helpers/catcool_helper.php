@@ -1704,6 +1704,8 @@ if(!function_exists('add_meta'))
                         $theme->addMeta('og:image:type', $image_data['mime']);
                         $theme->addMeta('og:image:width', $image_data[0]);
                         $theme->addMeta('og:image:height', $image_data[1]);
+                    } else {
+                        log_message('error', 'add_meta - image fb null' . implode('||', $data));
                     }
                 } else {
                     $image_fb_info = get_upload_path($image_fb);
@@ -1713,6 +1715,8 @@ if(!function_exists('add_meta'))
                             $theme->addMeta('og:image:type', $image_data['mime']);
                             $theme->addMeta('og:image:width', $image_data[0]);
                             $theme->addMeta('og:image:height', $image_data[1]);
+                        } else {
+                            log_message('error', 'add_meta - image fb null' . implode('||', $data));
                         }
                     }
                 }
@@ -1821,6 +1825,8 @@ if(!function_exists('script_google_search'))
                         }
                     }
                 </script>';
+            } else {
+                log_message('error', 'script_google_search - image data null' . implode('||', $detail));
             }
         }
 
