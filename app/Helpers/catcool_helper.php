@@ -1698,13 +1698,22 @@ if(!function_exists('add_meta'))
             if (!empty($image_fb)) {
                 $theme->addMeta('og:image', image_thumb_url($image_fb, 600, 315));
 
-                $image_fb_info = get_upload_path($image_fb);
-                if (is_file($image_fb_info)) {
-                    $image_data = getimagesize($image_fb_info);
+                if (strpos($image_fb, 'http://') !== false || strpos($image_fb, 'https://') !== false) {
+                    $image_data = getimagesize($image_fb);
                     if (!empty($image_data['mime']) && !empty($image_data[0]) && !empty($image_data[1])) {
                         $theme->addMeta('og:image:type', $image_data['mime']);
                         $theme->addMeta('og:image:width', $image_data[0]);
                         $theme->addMeta('og:image:height', $image_data[1]);
+                    }
+                } else {
+                    $image_fb_info = get_upload_path($image_fb);
+                    if (is_file($image_fb_info)) {
+                        $image_data = getimagesize($image_fb_info);
+                        if (!empty($image_data['mime']) && !empty($image_data[0]) && !empty($image_data[1])) {
+                            $theme->addMeta('og:image:type', $image_data['mime']);
+                            $theme->addMeta('og:image:width', $image_data[0]);
+                            $theme->addMeta('og:image:height', $image_data[1]);
+                        }
                     }
                 }
 
@@ -1760,9 +1769,15 @@ if(!function_exists('script_google_search'))
         if (!empty($detail)) {
 
             $image = $detail['image'];
-            $image_info = get_upload_path($image);
-            if (is_file($image_info)) {
-                $image_data = getimagesize($image_info);
+            if (strpos($image, 'http://') !== false || strpos($image, 'https://') !== false) {
+                $image_data = getimagesize($detail['image']);
+            } else {
+                $image_info = get_upload_path($image);
+                if (is_file($image_info)) {
+                    $image_data = getimagesize($image_info);
+                }
+
+                $image = image_thumb_url($image, 300, 190);
             }
 
             $name = $detail['name'] ?? null;
@@ -1784,7 +1799,7 @@ if(!function_exists('script_google_search'))
                         "description": "' . htmlspecialchars($description, ENT_QUOTES) . '",
                         "image": {
                             "@type": "ImageObject",
-                            "url": "' . image_thumb_url($image) . '",
+                            "url": "' . $image . '",
                             "width": ' . $image_data[0] . ',
                             "height": ' . $image_data[1] . '
                         },
@@ -1799,7 +1814,7 @@ if(!function_exists('script_google_search'))
                             "name": "' . str_ireplace('www.', '', base_url()) . '",
                             "logo": {
                             "@type": "ImageObject",
-                                "url": "https://kenh14cdn.com/zoom/60_60/k14-logo.png",
+                                "url": "' . img_url('favicon/favicon-16x16.png') . '",
                                 "width": 60,
                                 "height": 60
                             }

@@ -79,7 +79,7 @@ class News extends MyController
             foreach ($category_list as $category) {
                 $script_breadcrumb[] = [
                     'name' => $category['name'],
-                    'url'  => sprintf('%s/%s.html',  base_url(), $category['slug'])
+                    'url'  => sprintf('%s/%s',  base_url(), $category['slug'])
                 ];
             }
         }

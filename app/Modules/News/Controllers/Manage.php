@@ -88,7 +88,7 @@ class Manage extends AdminController
 
             $value['preview_url'] = $value['detail_url'];
             if (empty($value['published'])) {
-                $value['preview_url'] = str_ireplace('.html', '.preview', $value['detail_url']);
+                $value['preview_url'] = str_ireplace(get_seo_extension(), '.preview', $value['detail_url']);
             }
 
             $news_list[$key_news] = $value;
