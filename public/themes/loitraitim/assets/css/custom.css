@@ -461,6 +461,7 @@ article.post-detail .post-content-end {
 	position: relative;
 	padding-left: 75px;
 	z-index: 2;
+	overflow: hidden;
 }
 
 article.post-detail .post-content > p, article.post-detail .post-content div > p {
@@ -475,6 +476,11 @@ article.post-detail .post-content img {
 	text-align: center;
 	display: block;
 	margin: 10px auto 5px auto;
+}
+
+article.post-detail .post-content figure {
+	width: 100% !important;
+	height: 100% !important;
 }
 
 article.post-detail .post-content video {
