@@ -461,7 +461,6 @@ article.post-detail .post-content-end {
 	position: relative;
 	padding-left: 75px;
 	z-index: 2;
-	overflow: hidden;
 }
 
 article.post-detail .post-content > p, article.post-detail .post-content div > p {
