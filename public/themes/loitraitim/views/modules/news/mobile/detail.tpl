@@ -82,7 +82,7 @@
     <section class="bg-white padding-x pb-3">
 
         {if !empty($news_the_same_list)}
-            <div class="category-name d-block mt-2 mb-4">
+            <div class="category-name d-block pt-3 mt-2 mb-4">
                 <span>{lang('News.text_same_category')}</span>
             </div>
             {foreach $news_the_same_list as $news}

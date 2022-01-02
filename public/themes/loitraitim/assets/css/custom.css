@@ -45,7 +45,6 @@ a:hover {
 header.header {
     border-bottom: 2px solid rgb(223 48 98 / 60%);
     background-color: #fff;
-    overflow: hidden;
     /*background: linear-gradient(0deg, #ffb8e6 0%, #ffd5ef 10%, #ffffff 80%);*/
 }
 
@@ -61,6 +60,43 @@ header.header .navbar-light .navbar-brand img {
 header.header #menu_main li a:hover {
 	background: none;
 	color: #DF3062;
+}
+
+header.header .nav-link {
+	color: #424242;
+	padding: .5rem 1.6rem;
+}
+
+header.header .nav-item .dropdown-menu {
+	min-width: 250px;
+	padding: 10px 0 10px 30px;
+	text-align: left;
+	border: 1px solid #cb1682;
+	left: auto !important;
+	right: 0;
+}
+
+header.header .nav-item .dropdown-menu .dropdown-item {
+	padding: 10px 0;
+}
+
+header.header .nav-item .dropdown-toggle::after {
+	margin-left: 0.7em;
+}
+
+header.header .nav-item .dropdown-menu.show {
+	display: none;
+}
+
+header.header .nav-item:hover .dropdown-menu {
+	display: block;
+	margin-top: 0;
+	animation: fadeIn;
+	-webkit-animation: fadeIn;
+	-moz-animation: fadeIn;
+	-ms-animation: fadeIn;
+	-o-animation: fadeIn;
+	animation-duration: 700ms;
 }
 
 header.header.fixed {
@@ -603,13 +639,48 @@ article.post-detail .post-related a::before {
 	height: 20px;
 }
 
+#menu_main_mobile {
+	overflow-y: auto;
+}
+
+#menu_main_mobile li {
+	padding-left: 40px;
+	color: #248aa2;
+}
+
 #menu_main_mobile li a {
-	padding-left: 20px;
+	color: #248aa2;
+	text-align: left;
+}
+
+#menu_main_mobile li span i {
+	color: #c1c1c1;
+	font-size: 12px;
+	margin-top: 7px;
+}
+
+#menu_main_mobile li:hover span i, #menu_main_mobile .item-sub li:hover a i {
+	animation: heartBeat;
+	-webkit-animation: heartBeat;
+	-moz-animation: heartBeat;
+	-ms-animation: heartBeat;
+	-o-animation: heartBeat;
+	animation-duration: 1s;
 }
 
 #menu_main_mobile li:hover, #menu_main_mobile li a:hover {
 	background: none;
 	color: #DF3062;
+}
+
+#menu_main_mobile .item-sub li a {
+	color: #424242;
+	text-align: left;
+}
+
+#menu_main_mobile .item-sub li a i {
+	color: #c1c1c1;
+	font-size: 13px;
 }
 
 #btn_scroll_to_top {
