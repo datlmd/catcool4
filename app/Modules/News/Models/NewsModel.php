@@ -735,39 +735,42 @@ class NewsModel extends FarmModel
 
     public function getListHome($limit = 200, $is_cache = true)
     {
-        $category_list = $is_cache ? cache()->get(self::NEWS_CACHE_CATEGORY_HOME) : null;
+        $category_model = new CategoryModel();
+        $category_list = $category_model->getListPublished();
 
-        if (empty($category_list)) {
-            $category_model = new CategoryModel();
-            $category_list = $category_model->getListPublished();
+        $this->deleteCache();
+        $list = $is_cache ? cache()->get(self::NEWS_CACHE_CATEGORY_HOME) : null;
+        if (empty($list)) {
 
             $from_date = date('Y-m-d H:i:s', strtotime('-' . $this->_news_date_from . ' day', time()));
 
             $where = [
-                'published' => STATUS_ON,
+                'published'       => STATUS_ON,
                 'publish_date <=' => get_date(),
                 'publish_date >=' => $from_date,
             ];
 
             $list = $this->select(['news_id', 'name', 'slug', 'description', 'publish_date', 'images', 'category_ids', 'ctime'])
-                ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
-     
-            foreach ($category_list as $key => $category) {
-                foreach ($list as $key_news => $value) {
-                    $value = $this->formatDetail($value);
-
-                    if (in_array($category['category_id'], $value['category_ids'])) {
-                        $category_list[$key]['list'][] = $value;
-                        if (count($category_list[$key]['list']) >= 5) {
-                            break;
-                        }
-                    }
-                }
-            }
+                ->orderBy('publish_date', 'DESC')
+                ->where($where)
+                ->findAll($limit);
 
             if ($is_cache) {
                 // Save into the cache for $expire_time 1 month
-                cache()->save(self::NEWS_CACHE_CATEGORY_HOME, $category_list, self::NEWS_CACHE_EXPIRE);
+                cache()->save(self::NEWS_CACHE_CATEGORY_HOME, $list, self::NEWS_CACHE_EXPIRE);
+            }
+        }
+
+        foreach ($category_list as $key => $category) {
+            foreach ($list as $key_news => $value) {
+                $value = $this->formatDetail($value);
+
+                if (in_array($category['category_id'], $value['category_ids'])) {
+                    $category_list[$key]['list'][] = $value;
+                    if (count($category_list[$key]['list']) >= 5) {
+                        break;
+                    }
+                }
             }
         }
 
