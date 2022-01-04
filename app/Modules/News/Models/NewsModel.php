@@ -737,8 +737,7 @@ class NewsModel extends FarmModel
     {
         $category_model = new CategoryModel();
         $category_list = $category_model->getListPublished();
-
-        $this->deleteCache();
+        
         $list = $is_cache ? cache()->get(self::NEWS_CACHE_CATEGORY_HOME) : null;
         if (empty($list)) {
 
