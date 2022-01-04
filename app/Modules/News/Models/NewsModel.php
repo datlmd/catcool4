@@ -736,6 +736,7 @@ class NewsModel extends FarmModel
     public function getListHome($limit = 200, $is_cache = true)
     {
         $category_list = $is_cache ? cache()->get(self::NEWS_CACHE_CATEGORY_HOME) : null;
+        cc_debug($category_list, false);
         if (empty($category_list)) {
             $category_model = new CategoryModel();
             $category_list = $category_model->getListPublished();
@@ -750,7 +751,8 @@ class NewsModel extends FarmModel
 
             $list = $this->select(['news_id', 'name', 'slug', 'description', 'publish_date', 'images', 'category_ids', 'ctime'])
                 ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
-
+            cc_debug(2, false);
+            cc_debug($list, false);
             foreach ($category_list as $key => $category) {
                 foreach ($list as $key_news => $value) {
                     $value = $this->formatDetail($value);
