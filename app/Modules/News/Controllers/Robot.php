@@ -53,6 +53,8 @@ class Robot extends MyController
                 $total += count($value['list_news']);
             }
 
+            $model->deleteCache();
+
             echo "Đã thêm được {$total} tin!" . PHP_EOL;
         } catch (\Exception $e)
         {
