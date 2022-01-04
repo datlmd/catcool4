@@ -49,7 +49,7 @@ class NewsModel extends FarmModel
     protected $useSoftDeletes = true;
     protected $deletedField   = 'deleted';
 
-    const NEWS_CACHE_EXPIRE = HOUR;
+    const NEWS_CACHE_EXPIRE = 10 * MINUTE; //10 phut
     const NEWS_CACHE_DETAIL = 'news_detail_id_%s_%s';
     const NEWS_CACHE_CATEGORY_HOME = 'news_category_home_list';
     const NEWS_CACHE_SLIDE_HOME = 'news_slide_home_list';
