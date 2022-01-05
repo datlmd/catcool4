@@ -4,13 +4,13 @@
 	<div class="container-fluid  dashboard-content">
 		<div class="row">
 			<div class="col-sm-7 col-12">
-				{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('LayoutAdmin.heading_title')}
+				{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('LayoutActionAdmin.heading_title')}
 			</div>
 			<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
 				<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
 				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" data-bs-toggle="tooltip" title="{lang('Admin.button_add')}"><i class="fas fa-plus"></i></a>
 				<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" data-bs-toggle="tooltip" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
-				{include file=get_theme_path('views/inc/button_translate.tpl') translate_frontend=lang('LayoutAdmin.translate_frontend_id') translate_admin=lang('LayoutAdmin.translate_admin_id')}
+				{include file=get_theme_path('views/inc/button_translate.tpl') translate_frontend=lang('LayoutActionAdmin.translate_frontend_id') translate_admin=lang('LayoutActionAdmin.translate_admin_id')}
 			</div>
 		</div>
 		<div class="row collapse {if !empty($filter.active)}show{/if}" id="filter_manage">
@@ -26,7 +26,7 @@
 								</div>
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.filter_id')}
-									{form_input('layout_id', set_value('layout_id', $filter.layout_id), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
+									{form_input('layout_action_id', set_value('layout_action_id', $filter.layout_action_id), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
 								</div>
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.text_limit')}
@@ -44,7 +44,7 @@
 		<div class="row">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 				<div class="card">
-					<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('LayoutAdmin.text_list')}</h5>
+					<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('LayoutActionAdmin.text_list')}</h5>
 					<div class="card-body">
 						{if !empty($list)}
 							<div class="table-responsive">
@@ -52,9 +52,9 @@
 									<thead>
 										<tr class="text-center">
 											<th width="50">
-												<a href="{site_url($manage_url)}?sort=layout_id&order={$order}{$url}" class="text-dark">
+												<a href="{site_url($manage_url)}?sort=layout_action_id&order={$order}{$url}" class="text-dark">
 													{lang('Admin.column_id')}
-													{if $sort eq 'layout_id'}
+													{if $sort eq 'layout_action_id'}
 														<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 													{/if}
 												</a>
@@ -67,24 +67,26 @@
 													{/if}
 												</a>
 											</th>
-											<th>{lang('Admin.column_description')}</th>
+											<th>{lang('LayoutActionAdmin.text_controller')}</th>
+											<th>{lang('LayoutActionAdmin.text_action')}</th>
 											<th width="160">{lang('Admin.column_function')}</th>
 											<th width="50">{form_checkbox('manage_check_all')}</th>
 										</tr>
 									</thead>
 									<tbody>
 									{foreach $list as $item}
-										<tr id="item_id_{$item.layout_id}">
-											<td class="text-center">{anchor("$manage_url/edit/`$item.layout_id`", $item.layout_id, 'class="text-primary"')}</td>
-											<td>{anchor("$manage_url/edit/`$item.layout_id`", htmlspecialchars($item.name, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}</td>
-											<td>{$item.description}</td>
+										<tr id="item_id_{$item.layout_action_id}">
+											<td class="text-center">{anchor("$manage_url/edit/`$item.layout_action_id`", $item.layout_action_id, 'class="text-primary"')}</td>
+											<td>{anchor("$manage_url/edit/`$item.layout_action_id`", htmlspecialchars($item.name, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}</td>
+											<td>{$item.controller}</td>
+											<td>{$item.action}</td>
 											<td class="text-center">
 												<div class="btn-group ms-auto">
-													<a href="{site_url($manage_url)}/edit/{$item.layout_id}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
-													<button type="button" data-id="{$item.layout_id}" class="btn btn-sm btn-light text-danger btn_delete_single" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
+													<a href="{site_url($manage_url)}/edit/{$item.layout_action_id}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
+													<button type="button" data-id="{$item.layout_action_id}" class="btn btn-sm btn-light text-danger btn_delete_single" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>
-											<td class="text-center">{form_checkbox('manage_ids[]', $item.layout_id)}</td>
+											<td class="text-center">{form_checkbox('manage_ids[]', $item.layout_action_id)}</td>
 										</tr>
 									{/foreach}
 									</tbody>
