@@ -93,6 +93,8 @@ class ActionsManage extends AdminController
                 return redirect()->back()->withInput();
             }
 
+            $this->model->deleteCache();
+
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
@@ -123,6 +125,8 @@ class ActionsManage extends AdminController
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
             }
 
+            $this->model->deleteCache();
+
             set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->back();
         }
@@ -149,6 +153,8 @@ class ActionsManage extends AdminController
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
             $this->model->delete($ids);
+
+            $this->model->deleteCache();
 
             json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
         }

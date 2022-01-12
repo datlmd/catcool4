@@ -1,0 +1,65 @@
+<?php namespace App\Modules\Layouts\Models;
+
+use App\Models\MyModel;
+
+class ModuleModel extends MyModel
+{
+    protected $table      = 'layout_module';
+    protected $primaryKey = 'layout_module_id';
+
+    protected $allowedFields = [
+        'layout_id',
+        'layout_action_id',
+        'position',
+        'sort_order',
+    ];
+
+    const CACHE_NAME_LIST = 'layout_module_list';
+    const CACHE_EXPIRE = YEAR;
+
+    function __construct()
+    {
+        parent::__construct();
+    }
+
+    public function getList($is_cache = true)
+    {
+        $result = $is_cache ? cache()->get(self::CACHE_NAME_LIST) : null;
+        if (empty($result)) {
+            $result = $this->findAll();
+            if (empty($result)) {
+                return [];
+            }
+
+            if ($is_cache) {
+                cache()->save(self::CACHE_NAME_LIST, $result, self::CACHE_EXPIRE);
+            }
+        }
+
+        return $result;
+    }
+
+    public function getListByLayout($layout_id, $is_cache = true)
+    {
+        $list = $this->getList($is_cache);
+        if (empty($list)) {
+            return [];
+        }
+
+        $layouts = [];
+        foreach ($list as $value) {
+            if ($value['layout_id'] != $layout_id) {
+                continue;
+            }
+            $layouts[] = $value;
+        }
+
+        return $layouts;
+    }
+
+    public function deleteCache()
+    {
+        cache()->delete(self::CACHE_NAME_LIST);
+        return true;
+    }
+}

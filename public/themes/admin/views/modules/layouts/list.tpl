@@ -67,7 +67,6 @@
 													{/if}
 												</a>
 											</th>
-											<th>{lang('Admin.column_description')}</th>
 											<th width="160">{lang('Admin.column_function')}</th>
 											<th width="50">{form_checkbox('manage_check_all')}</th>
 										</tr>
@@ -77,7 +76,6 @@
 										<tr id="item_id_{$item.layout_id}">
 											<td class="text-center">{anchor("$manage_url/edit/`$item.layout_id`", $item.layout_id, 'class="text-primary"')}</td>
 											<td>{anchor("$manage_url/edit/`$item.layout_id`", htmlspecialchars($item.name, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}</td>
-											<td>{$item.description}</td>
 											<td class="text-center">
 												<div class="btn-group ms-auto">
 													<a href="{site_url($manage_url)}/edit/{$item.layout_id}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>

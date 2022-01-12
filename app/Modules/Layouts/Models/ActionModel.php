@@ -14,6 +14,9 @@ class ActionModel extends MyModel
         'action',
     ];
 
+    const CACHE_NAME_LIST = 'layout_action_list';
+    const CACHE_EXPIRE = YEAR;
+
     function __construct()
     {
         parent::__construct();
@@ -35,5 +38,34 @@ class ActionModel extends MyModel
         }
 
         return $this->orderBy($sort, $order);
+    }
+
+    public function getList($is_cache = true)
+    {
+        $result = $is_cache ? cache()->get(self::CACHE_NAME_LIST) : null;
+        if (empty($result)) {
+            $result = $this->findAll();
+            if (empty($result)) {
+                return [];
+            }
+
+            $list = [];
+            foreach ($result as $value) {
+                $list[$value['layout_action_id']] = $value;
+            }
+
+            $result = $list;
+            if ($is_cache) {
+                cache()->save(self::CACHE_NAME_LIST, $result, self::CACHE_EXPIRE);
+            }
+        }
+
+        return $result;
+    }
+
+    public function deleteCache()
+    {
+        cache()->delete(self::CACHE_NAME_LIST);
+        return true;
     }
 }

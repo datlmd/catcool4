@@ -2,6 +2,9 @@
 
 use App\Controllers\AdminController;
 use App\Modules\Layouts\Models\LayoutModel;
+use App\Modules\Layouts\Models\ActionModel;
+use App\Modules\Layouts\Models\RouteModel;
+use App\Modules\Layouts\Models\ModuleModel;
 
 class Manage extends AdminController
 {
@@ -20,6 +23,9 @@ class Manage extends AdminController
             ->addPartial('sidebar');
 
         $this->model = new LayoutModel();
+        $this->route_model = new RouteModel();
+        $this->module_model = new ModuleModel();
+        $this->model_action = new ActionModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -75,24 +81,58 @@ class Manage extends AdminController
 
     public function add()
     {
-
-        if (!empty($this->request->getPost()))
-        {
+        if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
 
             $add_data = [
-                'name'        => $this->request->getPost('name'),
-                'description' => $this->request->getPost('description'),
-                
+                'name' => $this->request->getPost('name'),
             ];
 
-            if (!$this->model->insert($add_data)) {
+            $id = $this->model->insert($add_data);
+            if (!$id) {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->back()->withInput();
             }
+
+            $routes = $this->request->getPost('routes');
+            if (!empty($routes)) {
+                $data_routes = [];
+                foreach ($routes as $route) {
+                    $data_routes[] = [
+                        'layout_id' => $id,
+                        'route'     => $route,
+                    ];
+                }
+                $this->route_model->ignore(true)->insertBatch($data_routes);
+            }
+
+            $modules = $this->request->getPost('modules');
+            if (!empty($modules)) {
+                $actions = $this->model_action->getList();
+
+                $data_modules = [];
+                foreach ($modules as $position => $value) {
+                    $sort_order = count($value);
+                    foreach ($value as $action_id) {
+                        if (empty($actions[$action_id])) {
+                            continue;
+                        }
+                        $data_modules[] = [
+                            'layout_id'        => $id,
+                            'layout_action_id' => $action_id,
+                            'position'         => $position,
+                            'sort_order'       => $sort_order,
+                        ];
+                        $sort_order--;
+                    }
+                }
+                $this->module_model->ignore(true)->insertBatch($data_modules);
+            }
+
+            $this->model->deleteCache();
 
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
@@ -115,14 +155,51 @@ class Manage extends AdminController
             }
 
             $edit_data = [
-                'description' => $this->request->getPost('description'),
-                'name'        => $this->request->getPost('name'),
-                
+                'name' => $this->request->getPost('name'),
             ];
 
             if (!$this->model->update($id, $edit_data)) {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
             }
+
+            $this->route_model->where('layout_id', $id)->delete();
+            $routes = $this->request->getPost('routes');
+            if (!empty($routes)) {
+                $data_routes = [];
+                foreach ($routes as $route) {
+                    $data_routes[] = [
+                        'layout_id' => $id,
+                        'route'     => $route,
+                    ];
+                }
+                $this->route_model->ignore(true)->insertBatch($data_routes);
+            }
+
+            $this->module_model->where('layout_id', $id)->delete();
+            $modules = $this->request->getPost('modules');
+            if (!empty($modules)) {
+                $actions = $this->model_action->getList();
+
+                $data_modules = [];
+                foreach ($modules as $position => $value) {
+                    $sort_order = count($value);
+                    foreach ($value as $action_id) {
+                        if (empty($actions[$action_id])) {
+                            continue;
+                        }
+                        $data_modules[] = [
+                            'layout_id'        => $id,
+                            'layout_action_id' => $action_id,
+                            'position'         => $position,
+                            'sort_order'       => $sort_order,
+                        ];
+                        $sort_order--;
+                    }
+                }
+                $this->module_model->ignore(true)->insertBatch($data_modules);
+            }
+
+            $this->model->deleteCache();
 
             set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->back();
@@ -140,8 +217,7 @@ class Manage extends AdminController
         $token = csrf_hash();
 
         //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
@@ -150,6 +226,8 @@ class Manage extends AdminController
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
             $this->model->delete($ids);
+
+            $this->model->deleteCache();
 
             json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
         }
@@ -179,11 +257,13 @@ class Manage extends AdminController
 
     private function _getForm($id = null)
     {
+        $data['actions'] = $this->model_action->getList();
+
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form']   = lang('LayoutAdmin.text_edit');
 
-            $data_form = $this->model->find($id);
+            $data_form = $this->model->getInfo($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->to(site_url(self::MANAGE_URL));
@@ -191,7 +271,7 @@ class Manage extends AdminController
 
             $data['edit_data'] = $data_form;
         } else {
-            $data['text_form']   = lang('LayoutAdmin.text_add');
+            $data['text_form'] = lang('LayoutAdmin.text_add');
         }
 
         $data['errors'] = $this->errors;
