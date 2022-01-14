@@ -464,4 +464,32 @@ class Manage extends AdminController
 
         json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')]);
     }
+
+    public function config()
+    {
+        $allow = [
+            'dark_mode'     => 'enable_dark_mode',
+            'collapse_menu' => 'enable_scroll_menu_admin',
+            'style_menu'    => 'enable_icon_menu_admin',
+        ];
+
+        $key = $this->request->getGet('k');
+        $value = $this->request->getGet('v');
+
+        if (empty($allow[$key]) || !isset($value)) {
+            return redirect()->back();
+        }
+
+        $config = $this->model->where('config_key', $allow[$key])->first();
+        if (empty($config)) {
+            return redirect()->back();
+        }
+
+        $config['config_value'] = !empty($value) ? true : false;
+
+        if ($this->model->update($config['id'], $config)) {
+            $this->model->writeFile();
+        }
+        return redirect()->back();
+    }
 }
