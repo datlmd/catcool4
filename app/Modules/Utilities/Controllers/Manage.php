@@ -220,6 +220,10 @@ class Manage extends AdminController
             $detail['content'] = file_get_contents(WRITEPATH . $date_key);
         }
 
+        foreach ($list as $key => $value) {
+            $list[$key]['is_active'] =  ($value['name'] == $date_key) ? true : false;
+        }
+
         $data = [
             'list'   => $list,
             'detail' => $detail,

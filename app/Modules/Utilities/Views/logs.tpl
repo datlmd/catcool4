@@ -71,7 +71,11 @@
 										{foreach $list as $item}
 											<tr>
 												<td>
-													{anchor("$manage_url/logs?name=`$item.name`&dir={$dir}", $item.name, 'class="text-primary"')} <small>({$item.permission})</small>
+													{if !empty($item.is_active)}
+														{anchor("$manage_url/logs?name=`$item.name`&dir={$dir}", $item.name, 'class="text-danger"')} <small>({$item.permission})</small>
+													{else}
+														{anchor("$manage_url/logs?name=`$item.name`&dir={$dir}", $item.name, 'class="text-primary"')} <small>({$item.permission})</small>
+													{/if}
 												</td>
 												<td class="text-center">{$item.size}</td>
 												<td class="text-center">{$item.modify}</td>
