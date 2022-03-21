@@ -6,33 +6,38 @@ use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
 use CodeIgniter\Filters\Honeypot;
+use CodeIgniter\Filters\InvalidChars;
+use CodeIgniter\Filters\SecureHeaders;
 
 class Filters extends BaseConfig
 {
-	/**
-	 * Configures aliases for Filter classes to
-	 * make reading things nicer and simpler.
-	 *
-	 * @var array
-	 */
-	public $aliases = [
-		'csrf'       => CSRF::class,
-		'toolbar'    => DebugToolbar::class,
-		'honeypot'   => Honeypot::class,
-        'auth_admin' => \App\Filters\AuthAdminFilter::class,
-	];
+    /**
+     * Configures aliases for Filter classes to
+     * make reading things nicer and simpler.
+     *
+     * @var array
+     */
+    public $aliases = [
+        'csrf'          => CSRF::class,
+        'toolbar'       => DebugToolbar::class,
+        'honeypot'      => Honeypot::class,
+        'invalidchars'  => InvalidChars::class,
+        'secureheaders' => SecureHeaders::class,
+        'auth_admin' => \App\Filters\AuthAdminFilter::class, //datlm
+    ];
 
-	/**
-	 * List of filter aliases that are always
-	 * applied before and after every request.
-	 *
-	 * @var array
-	 */
-	public $globals = [
-		'before' => [
-			// 'honeypot',
-			'csrf'       => [
-			    'except' => [
+    /**
+     * List of filter aliases that are always
+     * applied before and after every request.
+     *
+     * @var array
+     */
+    public $globals = [
+        'before' => [
+            // 'honeypot',
+            //datlm
+            'csrf' => [
+                'except' => [
                     'users/auth/recaptcha',
                     '*/manage/index',
                     'img/*',
@@ -43,43 +48,46 @@ class Filters extends BaseConfig
                     'countries/wards',
                     'utilities/manage/load_fba',
                     'users/social_login',
-					'*/manage/related',
-					'manage/backup/upload',
+                    '*/manage/related',
+                    'manage/backup/upload',
                 ]
             ],
+            //datlm
             'auth_admin' => [
-				'except' => [
-					'*/login',
-					'*/logout',
-					'permissions/manage/not_allowed',
-				]
-			],
-		],
-		'after'  => [
-			'toolbar',
-			// 'honeypot',
-		],
-	];
+                'except' => [
+                    '*/login',
+                    '*/logout',
+                    'permissions/manage/not_allowed',
+                ]
+            ],
+            // 'invalidchars',
+        ],
+        'after' => [
+            'toolbar',
+            // 'honeypot',
+            // 'secureheaders',
+        ],
+    ];
 
-	/**
-	 * List of filter aliases that works on a
-	 * particular HTTP method (GET, POST, etc.).
-	 *
-	 * Example:
-	 * 'post' => ['csrf', 'throttle']
-	 *
-	 * @var array
-	 */
-	public $methods = [];
+    /**
+     * List of filter aliases that works on a
+     * particular HTTP method (GET, POST, etc.).
+     *
+     * Example:
+     * 'post' => ['csrf', 'throttle']
+     *
+     * @var array
+     */
+    public $methods = [];
 
-	/**
-	 * List of filter aliases that should run on any
-	 * before or after URI patterns.
-	 *
-	 * Example:
-	 * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
-	 *
-	 * @var array
-	 */
-	public $filters = [];
+    /**
+     * List of filter aliases that should run on any
+     * before or after URI patterns.
+     *
+     * Example:
+     * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
+     *
+     * @var array
+     */
+    public $filters = [];
 }
