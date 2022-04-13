@@ -236,6 +236,7 @@
 			3 - Composer
 		</h2>
 		<ul class="list collapse" id="collapse_composer">
+            <li>Install <a href="https://tecadmin.net/install-composer-on-macos/" target="_blank">https://tecadmin.net/install-composer-on-macos/</a></li>
 			<li>
 				<b>Di chuyển đến thư mục root và chạy lệnh sau</b><br/>
 				<small>Whenever there is a new release, then from the command line in your project root</small>
