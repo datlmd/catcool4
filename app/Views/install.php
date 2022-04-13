@@ -8,12 +8,12 @@
 	<link rel="shortcut icon" type="image/png" href="/favicon.ico"/>
 
 	<!-- STYLES -->
-	<link rel="stylesheet" type="text/css" href="<?= base_url('common/plugin/bootstrap/css/bootstrap.min.css') ?>">
-	<link rel="stylesheet" type="text/css" href="<?= base_url('common/plugin/bootstrap/css/bootstrap-utilities.min.css') ?>">
-	<link rel="stylesheet" type="text/css" href="<?= base_url('common/plugin/fonts/fontawesome/css/fontawesome-all.css') ?>">
+	<link rel="stylesheet" type="text/css" href="./common/plugin/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./common/plugin/bootstrap/css/bootstrap-utilities.min.css">
+	<link rel="stylesheet" type="text/css" href="./common/plugin/fonts/fontawesome/css/fontawesome-all.css">
 
-	<script src="<?= base_url('common/plugin/bootstrap/js/bootstrap.bundle.min.js') ?>" type="text/javascript"></script>
-	<script src="<?= base_url('common/plugin/jquery/jquery.min.js') ?>" type="text/javascript"></script>
+	<script src="./common/plugin/bootstrap/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+	<script src="./common/plugin/jquery/jquery.min.js" type="text/javascript"></script>
 </head>
 <body>
 <div class="container my-5" style="max-width: 800px;">
