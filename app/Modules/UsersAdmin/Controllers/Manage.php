@@ -693,7 +693,8 @@ class Manage extends AdminController
             if (!empty($user_info)) {
                 $data = [
                     'username' => $user_info['username'],
-                    'forgotten_password_code' => $user_info['user_code']
+                    'forgotten_password_code' => $user_info['user_code'],
+                    'is_admin' => true,
                 ];
 
                 $message       = $this->themes::view('email/forgot_password', $data);

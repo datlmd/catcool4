@@ -24,7 +24,7 @@
 					<input type="password" name="new_password_confirm" value='{set_value("new_password_confirm")}' id="new_password_confirm" class="form-control">
 				</div>
 				{form_hidden('id', $user.id)}
-				{form_hidden($csrf)}
+
 				<button type="submit" class="btn btn-primary btn-lg btn-block mt-4">{lang('button_reset_password')}</button>
 			{form_close()}
 		</div>
