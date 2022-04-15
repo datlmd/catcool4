@@ -1,7 +1,7 @@
 
 <style>
 	body {
-		background: url({img_url('assets/images/auth-bg.jpg')}) no-repeat center center;
+		background: url({img_url(config_item('background_image_admin_path'))}) no-repeat center center;
 	}
 </style>
 <div class="splash-container">
@@ -31,10 +31,10 @@
 		<div class="card-footer bg-white text-center p-0">
 			<div class="row m-0 p-0">
 				<div class="card-footer-item card-footer-item-bordered col-6">
-					{anchor("users/manage/forgot_password", lang('text_login'), 'class="footer-link"')}
+					{anchor("users_admin/manage/forgot_password", lang('text_login'), 'class="footer-link"')}
 				</div>
 				<div class="card-footer-item card-footer-item-bordered col-6">
-					{anchor("users/manage/forgot_password", lang('text_forgot_password'), 'class="footer-link"')}
+					{anchor("users_admin/manage/forgot_password", lang('text_forgot_password'), 'class="footer-link"')}
 				</div>
 			</div>
 		</div>

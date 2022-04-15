@@ -1,7 +1,7 @@
 {strip}
 <style>
     body {
-        background: url({img_url('auth-bg.jpg')}) no-repeat center center;
+        background: url({img_url(config_item('background_image_admin_path'))}) no-repeat center center;
     }
 </style>
 <div class="splash-container">
@@ -29,7 +29,7 @@
         </div>
         <div class="card-footer bg-white text-center p-0">
             <div class="card-footer-item card-footer-item-bordered">
-                {anchor("users/manage/login", lang('UserAdmin.text_login_back'), 'class="footer-link"')}
+                {anchor("users_admin/manage/login", lang('UserAdmin.text_login_back'), 'class="footer-link"')}
             </div>
         </div>
     </div>

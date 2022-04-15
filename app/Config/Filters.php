@@ -57,6 +57,8 @@ class Filters extends BaseConfig
                 'except' => [
                     '*/login',
                     '*/logout',
+                    '*/forgot_password',
+                    '*/reset_password/*',
                     'permissions/manage/not_allowed',
                 ]
             ],

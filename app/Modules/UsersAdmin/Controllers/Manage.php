@@ -30,10 +30,7 @@ class Manage extends AdminController
     {
         parent::__construct();
 
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'));
 
         $this->model                 = new UserModel();
         $this->group_model           = new GroupModel();
@@ -93,7 +90,10 @@ class Manage extends AdminController
         ];
 
         add_meta(['title' => lang("UserAdmin.heading_title")], $this->themes);
-        $this->themes::load('list', $data);
+        $this->themes->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('list', $data);
     }
 
     public function add()
@@ -242,7 +242,10 @@ class Manage extends AdminController
 
         add_meta(['title' => $data['text_form']], $this->themes);
 
-        $this->themes::load('form', $data);
+        $this->themes->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('form', $data);
     }
 
     private function _validateForm($id = null)
@@ -444,7 +447,10 @@ class Manage extends AdminController
 
         add_meta(['title' => lang('UserAdmin.text_change_password')], $this->themes);
 
-        $this->themes::load('change_password', $data);
+        $this->themes->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('change_password', $data);
     }
 
     public function permission($id = null)
@@ -497,7 +503,10 @@ class Manage extends AdminController
 
         add_meta(['title' => lang('UserAdmin.text_permission_select')], $this->themes);
 
-        $this->themes::load('permission', $data);
+        $this->themes->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('permission', $data);
     }
 
     public function delete($id = null)
