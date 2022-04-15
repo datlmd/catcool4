@@ -21,9 +21,6 @@ class AdminController extends UserController
 
         $method_name =  service('router')->methodName();
         if (!in_array($method_name, ['login', 'logout', 'forgotPassword', 'resetPassword'])) {
-            echo '<pre>';
-            print_r($method_name);
-            echo '</pre>';
             //get menu
             $menu_model = new \App\Modules\Menus\Models\MenuModel();
             $menu_admin = $menu_model->getMenuActive(['is_admin' => STATUS_ON]);
