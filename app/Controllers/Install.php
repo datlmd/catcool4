@@ -23,20 +23,20 @@ class Install extends BaseController
 		];
 
 		$permission_info = [
-			WRITEPATH 						      => 'writable',
-			WRITEPATH . 'cache' 			      => 'writable/cache',
-			WRITEPATH . 'cache/html' 		      => 'writable/cache/html',
-            WRITEPATH . 'cache/smarty/cache'   	  => 'cache/smarty/cache',
-            WRITEPATH . 'cache/smarty/template_c' => 'cache/smarty/template_c',
-			WRITEPATH . 'logs'			          => 'writable/logs',
-			WRITEPATH . 'config'		          => 'writable/config',
-			WRITEPATH . 'config/Config.php'       => 'writable/config/Config.php',
-			WRITEPATH . 'config/Routes.php'       => 'writable/config/Routes.php',
-			ROOTPATH . 'public/uploads' 	      => 'public/uploads',
-			APPPATH . 'Modules' 			      => 'app/Modules',
-			APPPATH . 'Language' 			      => 'app/Language',
-			APPPATH . 'Language/vi' 		      => 'app/Language/vi',
-			APPPATH . 'Language/en'	 		      => 'app/Language/en',
+			WRITEPATH 						       => 'writable',
+			WRITEPATH . 'cache' 			       => 'writable/cache',
+			WRITEPATH . 'cache/html' 		       => 'writable/cache/html',
+            WRITEPATH . 'cache/smarty/cache'   	   => 'cache/smarty/cache',
+            WRITEPATH . 'cache/smarty/templates_c' => 'cache/smarty/templates_c',
+			WRITEPATH . 'logs'			           => 'writable/logs',
+			WRITEPATH . 'config'		           => 'writable/config',
+			WRITEPATH . 'config/Config.php'        => 'writable/config/Config.php',
+			WRITEPATH . 'config/Routes.php'        => 'writable/config/Routes.php',
+			ROOTPATH . 'public/uploads' 	       => 'public/uploads',
+			APPPATH . 'Modules' 			       => 'app/Modules',
+			APPPATH . 'Language' 			       => 'app/Language',
+			APPPATH . 'Language/vi' 		       => 'app/Language/vi',
+			APPPATH . 'Language/en'	 		       => 'app/Language/en',
 		];
 
 		$permission_list = [];
