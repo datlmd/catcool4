@@ -24,3 +24,6 @@ $routes->group('users_admin', ['namespace' => 'App\Modules\UsersAdmin\Controller
     $subroutes->add('groups_manage/delete', 'GroupsManage::delete');
     $subroutes->add('groups_manage/publish', 'GroupsManage::publish');
 });
+
+$routes->add('manage/login', 'Manage::login', ['namespace' => 'App\Modules\UsersAdmin\Controllers']);
+$routes->add('root', 'Manage::login', ['namespace' => 'App\Modules\UsersAdmin\Controllers']);
