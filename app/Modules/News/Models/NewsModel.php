@@ -447,6 +447,17 @@ class NewsModel extends FarmModel
                 $status = STATUS_OFF;
             }
 
+            $is_homepage = STATUS_OFF;
+            if (!empty($image) && (strpos($image, 'http://') !== false || strpos($image, 'https://') !== false)) {
+                $image_data = getimagesize($image);
+                if (!empty($image_data[0]) && !empty($image_data[1])
+                    && $image_data[0] >= 460 && $image_data[1] > 300
+                    && !empty($value['category_id']) && in_array($value['category_id'], [1, 7, 4, 3])
+                ) {
+                    $is_homepage = STATUS_ON;
+                }
+            }
+
             $is_except = false;
             $except_list = ['quiz'];
 
@@ -510,7 +521,7 @@ class NewsModel extends FarmModel
                 'is_ads'            => STATUS_ON,
                 'is_fb_ia'          => STATUS_ON,
                 'is_hot'            => STATUS_OFF,
-                'is_homepage'       => STATUS_OFF,
+                'is_homepage'       => $is_homepage,
                 'is_disable_follow' => STATUS_OFF,
                 'is_disable_robot'  => STATUS_OFF,
                 'ip'                => get_client_ip(), //\CodeIgniter\HTTP\Request::getIPAddress()
