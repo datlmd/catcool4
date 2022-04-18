@@ -452,7 +452,7 @@ class NewsModel extends FarmModel
                 $image_data = getimagesize($image);
                 if (!empty($image_data[0]) && !empty($image_data[1])
                     && $image_data[0] >= 460 && $image_data[1] > 300
-                    && !empty($value['category_id']) && in_array($value['category_id'], [1, 7, 4, 3])
+                    && isset($value['category_id']) && empty(array_diff($value['category_id'], [1, 7, 4, 3]))
                 ) {
                     $is_homepage = STATUS_ON;
                 }
@@ -722,7 +722,6 @@ class NewsModel extends FarmModel
         //check video
         $content = $robot->convertVideoData($content);
 
-
         $name = !empty($meta['title']) ? $meta['title'] : (!empty($meta['title_fb']) ? $meta['title_fb'] : "");
         $description = !empty($meta['description']) ? $meta['description'] : (!empty($meta['description_fb']) ? $meta['description_fb'] : "");
         $keyword = !empty($meta['keywords']) ? $meta['keywords'] : "";
@@ -739,7 +738,6 @@ class NewsModel extends FarmModel
             'source_type'      => 2,
             'source'           => $url
         ];
-
 
         return $data;
     }
