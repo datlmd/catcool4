@@ -11,4 +11,5 @@ $routes->group('utilities', ['namespace' => 'App\Modules\Utilities\Controllers']
     $subroutes->add('manage/list_file', 'Manage::listFile');
     $subroutes->add('manage/load_fba', 'Manage::loadFba');
     $subroutes->add('manage/logs', 'Manage::logs');
+    $subroutes->add('manage/email', 'Manage::email');
 });

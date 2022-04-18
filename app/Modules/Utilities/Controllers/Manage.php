@@ -13,10 +13,7 @@ class Manage extends AdminController
     {
         parent::__construct();
 
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'));
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -31,6 +28,10 @@ class Manage extends AdminController
         $data = [];
 
         add_meta(['title' => lang("UtilityAdmin.heading_title")], $this->themes);
+
+        $this->themes->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar');
         theme_load('list', $data);
     }
 
@@ -44,6 +45,10 @@ class Manage extends AdminController
         $data['breadcrumb'] = $this->breadcrumb->render();
 
         add_meta(['title' => "PHP Info"], $this->themes);
+        $this->themes->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar');
+
         theme_load('php_info', $data);
     }
 
@@ -103,7 +108,10 @@ class Manage extends AdminController
         $data['breadcrumb'] = $this->breadcrumb->render();
 
         add_meta(['title' => lang("File Browser")], $this->themes);
-        $this->themes::load('list_file', $data);
+        $this->themes->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('list_file', $data);
     }
 
     public function loadFba()
@@ -237,6 +245,83 @@ class Manage extends AdminController
         $data['breadcrumb'] = $this->breadcrumb->render();
 
         add_meta(['title' => lang("Logs")], $this->themes);
-        $this->themes::load('logs', $data);
+        $this->themes->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('logs', $data);
+    }
+
+    public function email()
+    {
+        $directory = APPPATH . "Views/email";
+        $directory_admin = APPPATH . "Views/email/admin";
+
+        $email_templates = glob($directory . '/*.tpl', GLOB_BRACE);
+        $email_templates_admin = glob($directory_admin . '/*.tpl', GLOB_BRACE);
+
+        $email_templates = array_merge($email_templates, $email_templates_admin);
+        foreach ($email_templates as $key => $email_template) {
+            $email_templates[$key] = str_ireplace([APPPATH . "Views/email/", ".tpl"], ["", ""], $email_template);
+        }
+
+        $template = $this->request->getPost('template') ?? "";
+        $content = "";
+        if ($this->request->getPost() && !empty($template)) {
+            $subject_title = config_item('email_subject_title');
+            $data_email = [];
+            switch ($template) {
+                case 'admin/forgot_password' || 'forgot_password':
+                    $data_email = [
+                        'username' => 'UserTest',
+                        'forgotten_password_code' => 'CodeTest',
+                    ];
+                    $subject = lang('UserAdmin.email_forgotten_password_subject');
+                    break;
+                case 'activate':
+                    $data_email = [
+                        'full_name'  => sprintf('%s %s', "Dat", "Le"),
+                        'id'         => 9999,
+                        'email'      => "email_test@gmail.com",
+                        'activation' => "code_active",
+                    ];
+                    $subject = lang('Email.activation_subject');
+                    break;
+            }
+            $content = $this->themes::view("email/$template", $data_email);
+
+            $email = $this->request->getPost('email') ?? "";
+
+            $this->validator->setRules([
+                'email' => [lang('Email.text_email'), 'rules' => 'required|valid_email'],
+                'template' => [lang("Email.text_template"), 'rules' => 'required']
+            ]);
+
+            if ($this->validator->withRequest($this->request)->run()) {
+                $send_email = send_email($email, config_item('email_from'), $subject_title, $subject, $content);
+                if (!$send_email) {
+                    $data['errors'] = lang('Email.error_sent_unsuccessful');
+                } else {
+                    set_alert(lang('Email.text_sent_successful'), ALERT_SUCCESS);;
+                }
+            }
+
+            if (isset($_POST['email']) && !empty($this->validator->getErrors())) {
+                $data['errors'] = $this->validator->getErrors();
+            }
+        }
+
+        $data['email_templates'] = $email_templates;
+        $data['template']        = $template;
+        $data['content']         = $content;
+
+        $this->breadcrumb->add(lang("UtilityAdmin.heading_title"), site_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang("Email.text_email"), site_url(self::MANAGE_URL) . 'email');
+        $data['breadcrumb'] = $this->breadcrumb->render();
+
+        add_meta(['title' => lang("Email.text_email")], $this->themes);
+        $this->themes->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('email', $data);
     }
 }

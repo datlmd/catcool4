@@ -14,6 +14,7 @@
 			<li><a href="/dev/template" target="_blank">Template</a></li>
 			<li><a href="{site_url('utilities/manage/list_file')}" {if !empty($active) && $active eq 'file_browser'}class="active"{/if}>File Browser</a></li>
 			<li><a href="{site_url('utilities/manage/logs')}" {if !empty($active) && $active eq 'logs'}class="active"{/if}>Logs</a></li>
+			<li><a href="{site_url('utilities/manage/email')}" {if !empty($active) && $active eq 'email'}class="active"{/if}>Email</a>
 			<li><a href="{site_url('utilities/manage/php_info')}" {if !empty($active) && $active eq 'php_info'}class="active"{/if}>PHP Info</a></li>
 		</ul>
 	</div>
