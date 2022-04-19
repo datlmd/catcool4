@@ -266,14 +266,17 @@ class Manage extends AdminController
 
         $template = $this->request->getPost('template') ?? "";
         $content = "";
+        $subject = "";
         if ($this->request->getPost() && !empty($template)) {
             $subject_title = config_item('email_subject_title');
             $data_email = [];
             switch ($template) {
                 case 'admin/forgot_password' || 'forgot_password':
                     $data_email = [
+                        'full_name' => sprintf('%s %s', "Dat", "Le"),
                         'username' => 'UserTest',
                         'forgotten_password_code' => 'CodeTest',
+                        'new_password' => 12345667,
                     ];
                     $subject = lang('UserAdmin.email_forgotten_password_subject');
                     break;
@@ -313,6 +316,7 @@ class Manage extends AdminController
         $data['email_templates'] = $email_templates;
         $data['template']        = $template;
         $data['content']         = $content;
+        $data['subject']         = $subject;
 
         $this->breadcrumb->add(lang("UtilityAdmin.heading_title"), site_url(self::MANAGE_URL));
         $this->breadcrumb->add(lang("Email.text_email"), site_url(self::MANAGE_URL) . 'email');

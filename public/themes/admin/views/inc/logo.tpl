@@ -14,11 +14,11 @@
     {else}
         {if !empty($is_disable_link)}
             <p class="navbar-brand logo-img">
-                <img src="{image_url(config_item('image_logo_url'))}" alt="logo">
+                <img src="{image_url(config_item('image_logo_url'))}" alt="{config_item('site_name')}">
             </p>
         {else}
             <a class="navbar-brand logo-img" href="{site_url(CATCOOL_DASHBOARD)}">
-                <img src="{image_url(config_item('image_logo_url'))}" alt="logo">
+                <img src="{image_url(config_item('image_logo_url'))}" alt="{config_item('site_name')}">
             </a>
         {/if}
     {/if}

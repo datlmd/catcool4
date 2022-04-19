@@ -41,7 +41,8 @@
 					{/if}
 
 					{form_open(uri_string())}
-						<div class="border rounded p-5 mb-4">{$content}</div>
+						<h2>Subject: {$subject}</h2>
+						<div class="border rounded p-4 mb-4 mt-3">{$content}</div>
 						<div class="form-group row">
 							<label class="col-12 col-sm-3 col-form-label text-sm-end">
 								{lang('Email.text_email')}
