@@ -273,12 +273,11 @@ class Manage extends AdminController
             switch ($template) {
                 case 'admin/forgot_password' || 'forgot_password':
                     $data_email = [
-                        'full_name' => sprintf('%s %s', "Dat", "Le"),
-                        'username' => 'UserTest',
+                        'full_name'               => sprintf('%s %s', "Dat", "Le"),
+                        'username'                => 'UserTest',
                         'forgotten_password_code' => 'CodeTest',
-                        'new_password' => 12345667,
                     ];
-                    $subject = lang('UserAdmin.email_forgotten_password_subject');
+                    $subject = lang('Email.forgot_password_subject', ["UserTest"]);
                     break;
                 case 'activate':
                     $data_email = [

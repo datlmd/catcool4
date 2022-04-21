@@ -100,6 +100,14 @@ if ( ! function_exists('get_module_path'))
     }
 }
 
+if ( ! function_exists('get_view_path'))
+{
+    function get_view_path($path = null)
+    {
+        return APPPATH . 'Views/' . (is_string($path) ? $path : '');
+    }
+}
+
 if (! function_exists('plugin_url'))
 {
 // @codeCoverageIgnoreEnd
