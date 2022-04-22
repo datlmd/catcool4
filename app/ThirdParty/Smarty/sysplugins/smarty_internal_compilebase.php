@@ -6,6 +6,7 @@
  * @subpackage Compiler
  * @author     Uwe Tews
  */
+
 /**
  * This class does extend all internal compile plugins
  *
@@ -20,6 +21,7 @@ abstract class Smarty_Internal_CompileBase
      * @var array
      */
     public $required_attributes = array();
+
     /**
      * Array of names of optional attribute required by tag
      * use array('_any') if there is no restriction of attributes names
@@ -27,30 +29,35 @@ abstract class Smarty_Internal_CompileBase
      * @var array
      */
     public $optional_attributes = array();
+
     /**
      * Shorttag attribute order defined by its names
      *
      * @var array
      */
     public $shorttag_order = array();
+
     /**
      * Array of names of valid option flags
      *
      * @var array
      */
     public $option_flags = array('nocache');
+
     /**
      * Mapping array for boolean option value
      *
      * @var array
      */
     public $optionMap = array(1 => true, 0 => false, 'true' => true, 'false' => false);
+
     /**
      * Mapping array with attributes as key
      *
      * @var array
      */
     public $mapCache = array();
+
     /**
      * This function checks if the attributes passed are valid
      * The attributes passed for the tag to compile are checked against the list of required and
@@ -147,6 +154,7 @@ abstract class Smarty_Internal_CompileBase
         }
         return $_indexed_attr;
     }
+
     /**
      * Push opening tag name on stack
      * Optionally additional data can be saved on stack
@@ -159,6 +167,7 @@ abstract class Smarty_Internal_CompileBase
     {
         array_push($compiler->_tag_stack, array($openTag, $data));
     }
+
     /**
      * Pop closing tag
      * Raise an error if this stack-top doesn't match with expected opening tags

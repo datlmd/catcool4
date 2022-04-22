@@ -64,11 +64,10 @@ if ( ! function_exists('build_path'))
     function build_path()
     {
         // We build the path only if arguments are passed
-        if ( ! empty($args = func_get_args()))
-        {
+        if ( ! empty($args = func_get_args())) {
             // Make sure arguments are an array but not a mutidimensional one
             isset($args[0]) && is_array($args[0]) && $args = $args[0];
-            return implode(DS, array_map('rtrim', $args, array(DS))).DS;
+            return implode(DIRECTORY_SEPARATOR, array_map('rtrim', $args, [DIRECTORY_SEPARATOR])) . DIRECTORY_SEPARATOR;
         }
         return null;
     }
