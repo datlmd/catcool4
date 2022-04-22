@@ -14,10 +14,7 @@ class GroupsManage extends AdminController
     {
         parent::__construct();
 
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'));
 
         $this->model = new GroupModel();
 
@@ -34,27 +31,18 @@ class GroupsManage extends AdminController
     {
         add_meta(['title' => lang('Dummy.heading_title')], $this->themes);
 
-        $dummy_id = $this->request->getGet('dummy_id');
-        $name     = $this->request->getGet('name');
-        $limit    = $this->request->getGet('limit');
-        $sort     = $this->request->getGet('sort');
-        $order    = $this->request->getGet('order');
+        $limit = $this->request->getGet('limit');
+        $sort  = $this->request->getGet('sort');
+        $order = $this->request->getGet('order');
 
-        $filter = [
-            'active'   => count(array_filter($this->request->getGet(['dummy_id', 'name', 'limit']))) > 0,
-            'dummy_id' => $dummy_id ?? "",
-            'name'     => $name ?? "",
-            'limit'    => $limit,
-        ];
-
-        $list = $this->model->getAllByFilter($filter, $sort, $order);
+        $list = $this->model->getAllByFilter($this->request->getGet(['name', 'dummy_id', 'limit']), $sort, $order);
 
         $url = "";
-        if (!empty($dummy_id)) {
-            $url .= '&dummy_id=' . $dummy_id;
+        if (!empty($this->request->getGet('dummy_id'))) {
+            $url .= '&dummy_id=' . $this->request->getGet('dummy_id');
         }
-        if (!empty($name)) {
-            $url .= '&name=' . urlencode(html_entity_decode($name, ENT_QUOTES, 'UTF-8'));
+        if (!empty($this->request->getGet('name'))) {
+            $url .= '&name=' . urlencode(html_entity_decode($this->request->getGet('name'), ENT_QUOTES, 'UTF-8'));
         }
         if (!empty($limit)) {
             $url .= '&limit=' . $limit;
@@ -64,18 +52,20 @@ class GroupsManage extends AdminController
             'breadcrumb' => $this->breadcrumb->render(),
             'list'       => $list->paginate($limit),
             'pager'      => $list->pager,
-            'filter'     => $filter,
             'sort'       => empty($sort) ? 'dummy_id' : $sort,
             'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'        => $url,
         ];
 
-        $this->themes::load('groups/list', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('groups/list', $data);
     }
 
     public function add()
     {
-
         if (!empty($this->request->getPost()))
         {
             if (!$this->_validateForm()) {
@@ -201,7 +191,11 @@ class GroupsManage extends AdminController
 
         add_meta(['title' => $data['text_form']], $this->themes);
 
-        $this->themes::load('groups/form', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('groups/form', $data);
     }
 
     private function _validateForm($id = null)

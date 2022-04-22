@@ -17,10 +17,7 @@ class Manage extends AdminController
     {
         parent::__construct();
 
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'));
 
         $this->model = new DummyModel();
         $this->model_lang = new DummyLangModel();
@@ -38,27 +35,18 @@ class Manage extends AdminController
 	{
         add_meta(['title' => lang('Dummy.heading_title')], $this->themes);
 
-        $dummy_id = $this->request->getGet('dummy_id');
-        $name     = $this->request->getGet('name');
-        $limit    = $this->request->getGet('limit');
-        $sort     = $this->request->getGet('sort');
-        $order    = $this->request->getGet('order');
+        $limit = $this->request->getGet('limit');
+        $sort  = $this->request->getGet('sort');
+        $order = $this->request->getGet('order');
 
-        $filter = [
-            'active'   => count(array_filter($this->request->getGet(['dummy_id', 'name', 'limit']))) > 0,
-            'dummy_id' => $dummy_id ?? "",
-            'name'     => $name ?? "",
-            'limit'    => $limit,
-        ];
-
-        $list = $this->model->getAllByFilter($filter, $sort, $this->request->getGet('order'));
+        $list = $this->model->getAllByFilter($this->request->getGet(['name', 'dummy_id', 'limit']), $sort, $this->request->getGet('order'));
 
         $url = "";
-        if (!empty($dummy_id)) {
-            $url .= '&dummy_id=' . $dummy_id;
+        if (!empty($this->request->getGet('dummy_id'))) {
+            $url .= '&dummy_id=' . $this->request->getGet('dummy_id');
         }
-        if (!empty($name)) {
-            $url .= '&name=' . urlencode(html_entity_decode($name, ENT_QUOTES, 'UTF-8'));
+        if (!empty($this->request->getGet('name'))) {
+            $url .= '&name=' . urlencode(html_entity_decode($this->request->getGet('name'), ENT_QUOTES, 'UTF-8'));
         }
         if (!empty($limit)) {
             $url .= '&limit=' . $limit;
@@ -68,13 +56,16 @@ class Manage extends AdminController
             'breadcrumb' => $this->breadcrumb->render(),
             'list'       => $list->paginate($limit),
             'pager'      => $list->pager,
-            'filter'     => $filter,
             'sort'       => empty($sort) ? 'dummy_id' : $sort,
             'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'        => $url,
         ];
 
-        $this->themes::load('manage/list', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('manage/list', $data);
 	}
 
     public function add()
@@ -180,7 +171,11 @@ class Manage extends AdminController
 
         $data['breadcrumb'] = $this->breadcrumb->render();
 
-        $this->themes::load('manage/form', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('manage/form', $data);
     }
 
     private function _validateForm()

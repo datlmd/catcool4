@@ -37,14 +37,9 @@
                                                     {lang('Admin.text_name')}
                                                 </label>
                                                 <div class="col-12 col-sm-8 col-lg-7">
-                                                    {if !empty($edit_data.lang[$language.id].name)}
-                                                        {assign var="name" value="`$edit_data.lang[$language.id].name`"}
-                                                    {else}
-                                                        {assign var="name" value=""}
-                                                    {/if}
-                                                    <input type="text" name="lang[{$language.id}][name]" value='{old("lang.{$language.id}.name", $name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang.{$language.id}.name")}is-invalid{/if}">
+                                                    <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang.`$language.id`.name")}is-invalid{/if}">
                                                     <div class="invalid-feedback">
-                                                        {$validator->getError("lang.{$language.id}.name")}
+                                                        {$validator->getError("lang.`$language.id`.name")}
                                                     </div>
                                                 </div>
                                             </div>
@@ -53,12 +48,7 @@
                                                     {lang('Admin.text_description')}
                                                 </label>
                                                 <div class="col-12 col-sm-8 col-lg-7">
-                                                    {if !empty($edit_data.lang[$language.id].description)}
-                                                        {assign var="description" value="`$edit_data.lang[$language.id].description`"}
-                                                    {else}
-                                                        {assign var="description" value=""}
-                                                    {/if}
-                                                    <textarea name="lang[{$language.id}][description]" cols="40" rows="2" id="input_description_{$language.id}" type="textarea" class="form-control">{old("lang.{$language.id}.description", $description)}</textarea>
+                                                    <textarea name="lang[{$language.id}][description]" cols="40" rows="2" id="input_description_{$language.id}" type="textarea" class="form-control">{old("lang.`$language.id`.description", $edit_data.lang[$language.id].description)}</textarea>
                                                 </div>
                                             </div>
                                             {*TPL_DUMMY_DESCRIPTION*}
@@ -75,29 +65,19 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label class="form-label">{lang('Admin.text_published')}</label>
-                                {if isset($edit_data.published)}
-                                    {assign var="published" value="`$edit_data.published`"}
-                                {else}
-                                    {assign var="published" value="1"}
-                                {/if}
                                 <label class="form-check form-check-inline ms-2">
-                                    <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $published) eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
+                                    <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $edit_data.published)|default:1 eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
                                     <label class="form-check-label" for="published_on">ON</label>
                                 </label>
                                 <label class="form-check form-check-inline me-2">
-                                    <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $published) eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
+                                    <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $edit_data.published) eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
                                     <label class="form-check-label" for="published_off">OFF</label>
                                 </label>
                             </div>
                             {*TPL_DUMMY_ROOT*}
                             <div class="form-group">
                                 <label class="form-label">{lang('Admin.text_sort_order')}</label>
-                                {if !empty($edit_data.sort_order)}
-                                    {assign var="sort_order" value="`$edit_data.sort_order`"}
-                                {else}
-                                    {assign var="sort_order" value="0"}
-                                {/if}
-                                <input type="number" name="sort_order" value="{old('sort_order', $sort_order)}" id="sort_order" min="0" class="form-control">
+                                <input type="number" name="sort_order" value="{old('sort_order', $edit_data.sort_order)|default:0}" id="sort_order" min="0" class="form-control">
                             </div>
                         </div>
                     </div>

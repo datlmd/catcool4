@@ -107,12 +107,14 @@ class MyController extends Controller
 
         $this->site_lang = \Config\Services::language()->getLocale();
 
-        $this->themes = Themes::init();
+        $this->themes     = Themes::init();
         $this->breadcrumb = service('Breadcrumb');
-        $this->smarty = service('SmartyEngine');
+        $this->smarty     = service('SmartyEngine');
 
         $this->validator = \Config\Services::validation();
         $this->smarty->assign('validator', $this->validator);
+
+        $this->smarty->assign('request', \Config\Services::request());
 
         //check clear cache
         $this->clearCacheAuto();
