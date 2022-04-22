@@ -23,7 +23,7 @@ class CI4Smarty extends SmartyBC
 
         // Disable Smarty security policy
         parent::disableSecurity();
-        //parent::setErrorReporting(E_ALL & ~E_NOTICE);
+        parent::setErrorReporting(E_ALL & ~E_NOTICE);
 
         parent::muteExpectedErrors();
 
