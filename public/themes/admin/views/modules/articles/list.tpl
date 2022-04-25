@@ -13,7 +13,7 @@
 				{include file=get_theme_path('views/inc/button_translate.tpl') translate_frontend=lang('ArticleAdmin.translate_frontend_id') translate_admin=lang('ArticleAdmin.translate_admin_id')}
 			</div>
 		</div>
-		<div class="row collapse {if !empty($filter.active)}show{/if}" id="filter_manage">
+		<div class="row collapse {if !empty($filter_active)}show{/if}" id="filter_manage">
 			<div class="col-12">
 				<div class="card">
 					<h5 class="card-header"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
@@ -22,24 +22,23 @@
 							<div class="row">
 								<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.filter_name')}
-									{form_input('name', set_value('name', $filter.name), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_name')])}
+									{form_input('name', set_value('name', $request->getGet('name')|default:''), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_name')])}
 								</div>
 								<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.filter_id')}
-									{form_input('article_id]', set_value('article_id', $filter.article_id), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
-
+									{form_input('article_id', set_value('article_id', $request->getGet('article_id')|default:''), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
 								</div>
 								<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.text_category')}
 									{$output_html = '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>'}
 									<select name="category" id="category" class="form-control">
 										<option value="">{lang('Admin.text_select')}</option>
-										{draw_tree_output_name(['data' => $category_list, 'key_id' => 'category_id'], $output_html, 0, $filter.category)}
+										{draw_tree_output_name(['data' => $category_list, 'key_id' => 'category_id'], $output_html, 0, $request->getGet('category')|default:'')}
 									</select>
 								</div>
 								<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.text_limit')}
-									{form_dropdown('limit', get_list_limit(), set_value('limit', $filter.limit), ['class' => 'form-control form-control-sm'])}
+									{form_dropdown('limit', get_list_limit(), set_value('limit', $request->getGet('limit')), ['class' => 'form-control form-control-sm'])}
 								</div>
 								<div class="col-12 text-end">
 									<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('Admin.filter_submit')}</button>

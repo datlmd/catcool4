@@ -37,4 +37,30 @@ class AdminController extends UserController
             set_alert(lang('Admin.error_token'), ALERT_ERROR, ALERT_POPUP);
         }
     }
+
+    public function getUrlFilter($params = [], $is_post = false)
+    {
+        $url = "";
+
+        $param_list =  $is_post ? $this->request->getPost($params) : $this->request->getGet();
+        if (empty($param_list)) {
+            return $url;
+        }
+
+        foreach ($param_list as $key => $value) {
+            if (empty($value)) {
+                continue;
+            }
+
+            if (!empty($params) && !in_array($key, $params)) {
+                continue;
+            }
+
+            $value = trim($value);
+            $value = is_string($value) ? urlencode(html_entity_decode($value, ENT_QUOTES, 'UTF-8')) : $value;
+            $url .= "&$key=" . $value;
+        }
+
+        return $url;
+    }
 }
