@@ -32,12 +32,7 @@
                                 {lang('Admin.text_name')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                {if isset($edit_data.name)}
-                                    {assign var="name" value="`$edit_data.name`"}
-                                {else}
-                                    {assign var="name" value=""}
-                                {/if}
-                                <input type="text" name="name" value="{old('name', $name)}" id="name" class="form-control {if $validator->hasError('name')}is-invalid{/if}">
+                                <input type="text" name="name" value="{old('name', $edit_data.name)}" id="name" class="form-control {if $validator->hasError('name')}is-invalid{/if}">
                                 <div class="invalid-feedback">{$validator->getError("name")}</div>
                             </div>
                         </div>
@@ -46,12 +41,7 @@
                                 {lang('Admin.text_description')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                {if isset($edit_data.description)}
-                                    {assign var="description" value="`$edit_data.description`"}
-                                {else}
-                                    {assign var="description" value=""}
-                                {/if}
-                                <textarea name="description" cols="20" rows="2" id="description" type="textarea" class="form-control">{old("description", $description)}</textarea>
+                                <textarea name="description" cols="20" rows="2" id="description" type="textarea" class="form-control">{old("description", $edit_data.description)}</textarea>
                             </div>
                         </div>
                     </div>
