@@ -18,7 +18,7 @@
 		{if !empty($menu.subs)}
 			<ol class="dd-list">
 				{foreach $menu.subs as $sub}
-					{include file='./inc/list_item.tpl' menu=$sub}
+					{include file=get_theme_path('views/modules/menus/inc/list_item.tpl') menu=$sub}
 				{/foreach}
 			</ol>
 		{/if}

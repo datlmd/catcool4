@@ -27,7 +27,7 @@
 							<div class="dd" id="list_category_sort">
 								<ol class="dd-list">
 									{foreach $list as $item}
-										{include file='./inc/list_item.tpl' menu=$item}
+										{include file=get_theme_path('views/modules/menus/inc/list_item.tpl') menu=$item}
 									{/foreach}
 								</ol>
 							</div>
