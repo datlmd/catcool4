@@ -22,10 +22,7 @@ class CategoriesManage extends AdminController
     {
         parent::__construct();
 
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'));
 
         $this->model = new CategoryModel();
         $this->model_lang = new CategoryLangModel();
@@ -54,7 +51,11 @@ class CategoriesManage extends AdminController
             'list'       => format_tree(['data' => $list, 'key_id' => 'category_id']),
         ];
 
-        $this->themes::load('categories/list', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('categories/list', $data);
     }
 
     public function add()
@@ -254,7 +255,11 @@ class CategoriesManage extends AdminController
 
         add_meta(['title' => $data['text_form']], $this->themes);
 
-        $this->themes::load('categories/form', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('categories/form', $data);
     }
 
     private function _validateForm()
