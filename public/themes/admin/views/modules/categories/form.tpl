@@ -13,9 +13,6 @@
             </div>
             {if !empty($edit_data.category_id)}
                 {form_hidden('category_id', $edit_data.category_id)}
-                {assign var="category_id" value="`$edit_data.category_id`"}
-            {else}
-                {assign var="category_id" value=""}
             {/if}
             <div class="row">
                 {if !empty(print_flash_alert())}
@@ -40,14 +37,9 @@
                                                     {lang('Admin.text_name')}
                                                 </label>
                                                 <div class="col-12 col-sm-8 col-lg-8">
-                                                    {if !empty($edit_data.lang[$language.id].name)}
-                                                        {assign var="name" value="`$edit_data.lang[$language.id].name`"}
-                                                    {else}
-                                                        {assign var="name" value=""}
-                                                    {/if}
-                                                    <input type="text" name="lang[{$language.id}][name]" value='{old("lang.{$language.id}.name", $name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang.{$language.id}.name")}is-invalid{/if}">
+                                                    <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang.`$language.id`.name")}is-invalid{/if}">
                                                     <div class="invalid-feedback">
-                                                        {$validator->getError("lang.{$language.id}.name")}
+                                                        {$validator->getError("lang.`$language.id`.name")}
                                                     </div>
                                                 </div>
                                             </div>
@@ -56,12 +48,7 @@
                                                     {lang('Admin.text_description')}
                                                 </label>
                                                 <div class="col-12 col-sm-8 col-lg-8">
-                                                    {if !empty($edit_data.lang[$language.id].description)}
-                                                        {assign var="description" value="`$edit_data.lang[$language.id].description`"}
-                                                    {else}
-                                                        {assign var="description" value=""}
-                                                    {/if}
-                                                    <textarea name="lang[{$language.id}][description]" cols="40" rows="2" id="input_description_{$language.id}" type="textarea" class="form-control">{old("lang.{$language.id}.description", $description)}</textarea>
+                                                    <textarea name="lang[{$language.id}][description]" cols="40" rows="2" id="input_description_{$language.id}" type="textarea" class="form-control">{old("lang.`$language.id`.description", $edit_data.lang[$language.id].description)}</textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -86,64 +73,39 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label class="form-label">{lang('Admin.text_published')}</label>
-                                {if isset($edit_data.published)}
-                                    {assign var="published" value="`$edit_data.published`"}
-                                {else}
-                                    {assign var="published" value="1"}
-                                {/if}
                                 <label class="form-check form-check-inline ms-2">
-                                    <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $published) eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
+                                    <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $edit_data.published)|default:1 eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
                                     <label class="form-check-label" for="published_on">ON</label>
                                 </label>
                                 <label class="form-check form-check-inline me-2">
-                                    <input type="radio" name="published" value="{STATUS_OFF}" {if set_value('published', $published) eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
+                                    <input type="radio" name="published" value="{STATUS_OFF}" {if set_value('published', $edit_data.published)|default:1 eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
                                     <label class="form-check-label" for="published_off">OFF</label>
                                 </label>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{lang("Admin.text_image")}</label>
-                                {if isset($edit_data.image)}
-                                    {assign var="image" value="`$edit_data.image`"}
-                                {else}
-                                    {assign var="image" value=""}
-                                {/if}
                                 <!-- Drag and Drop container-->
                                 <a href="javascript:void(0);" id="thumb-image" data-target="input-image-path" data-thumb="load-thumb-image" data-bs-toggle="image">
-                                    <img src="{if !empty(old('image', $image))}{image_url(old('image', $image))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}"/>
+                                    <img src="{if !empty(old('image', $edit_data.image))}{image_url(old('image', $edit_data.image))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}"/>
                                     <button type="button" id="button-image" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-2"></i>{lang('Admin.text_photo_edit')}</button>
                                     <button type="button" id="button-clear" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-2"></i>{lang('Admin.text_photo_clear')}</button>
                                 </a>
-                                <input type="hidden" name="image" value="{old('image', $image)}" id="input-image-path" />
+                                <input type="hidden" name="image" value="{old('image', $edit_data.image)}" id="input-image-path" />
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{lang('Admin.text_context')}</label>
-                                {if !empty($edit_data.context)}
-                                    {assign var="context" value="`$edit_data.context`"}
-                                {else}
-                                    {assign var="context" value=""}
-                                {/if}
-                                <input type="text" name="context" value="{old('context', $context)}" id="context" class="form-control">
+                                <input type="text" name="context" value="{old('context', $edit_data.context)}" id="context" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{lang('Admin.text_sort_order')}</label>
-                                {if !empty($edit_data.sort_order)}
-                                    {assign var="sort_order" value="`$edit_data.sort_order`"}
-                                {else}
-                                    {assign var="sort_order" value="0"}
-                                {/if}
-                                <input type="number" name="sort_order" value="{old('sort_order', $sort_order)}" id="sort_order" min="0" class="form-control">
+                                <input type="number" name="sort_order" value="{old('sort_order', $edit_data.sort_order)|default:0}" id="sort_order" min="0" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{lang('Admin.text_parent')}</label>
-                                {if isset($edit_data.parent_id)}
-                                    {assign var="parent_id" value="`$edit_data.parent_id`"}
-                                {else}
-                                    {assign var="parent_id" value=""}
-                                {/if}
                                 <select name="parent_id" id="parent_id" class="form-control">
                                     <option value="">{lang('Admin.text_select')}</option>
                                     {$output_html = '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>'}
-                                    {draw_tree_output_name(['data' => $patent_list, 'key_id' => 'category_id', 'id_root' => $category_id], $output_html, 0, old('parent_id', $parent_id))}
+                                    {draw_tree_output_name(['data' => $patent_list, 'key_id' => 'category_id', 'id_root' => $edit_data.category_id], $output_html, 0, old('parent_id', $edit_data.parent_id))}
                                 </select>
                             </div>
                         </div>
