@@ -18,10 +18,7 @@ class Manage extends AdminController
     {
         parent::__construct();
 
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'));
 
         $this->model = new ConfigModel();
         $this->group_model = new GroupModel();
@@ -37,10 +34,10 @@ class Manage extends AdminController
 
     public function index()
     {
+        helper('filesystem');
+
         $sort  = $this->request->getGet('sort');
         $order = $this->request->getGet('order');
-
-        helper('filesystem');
 
         //check permissions
         $key_file = 'config/Config.php';
@@ -62,7 +59,12 @@ class Manage extends AdminController
         ];
 
         add_meta(['title' => lang("ConfigAdmin.heading_title")], $this->themes);
-        $this->themes::load('list', $data);
+
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('list', $data);
     }
 
     public function write()
@@ -236,6 +238,10 @@ class Manage extends AdminController
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), site_url(CATCOOL_DASHBOARD));
         $this->breadcrumb->add(lang("ConfigAdmin.heading_title"), site_url(CATCOOL_DASHBOARD . '/settings'));
 
+        $this->themes
+        ->addPartial('header')
+        ->addPartial('footer')
+        ->addPartial('sidebar');
         theme_load('setting', $data);
     }
 
@@ -409,7 +415,11 @@ class Manage extends AdminController
 
         add_meta(['title' => $data['text_form']], $this->themes);
 
-        $this->themes::load('form', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('form', $data);
     }
 
     private function _validateForm()
