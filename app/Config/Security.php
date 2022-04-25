@@ -15,7 +15,7 @@ class Security extends BaseConfig
      *
      * @var string 'cookie' or 'session'
      */
-    public $csrfProtection = 'session';
+    public $csrfProtection = 'session'; //datlm changed
 
     /**
      * --------------------------------------------------------------------------
@@ -37,7 +37,7 @@ class Security extends BaseConfig
      *
      * @var string
      */
-    public $tokenName = 'csrf_test_name';
+    public $tokenName = 'csrf_catcool_name'; //datlm changed
 
     /**
      * --------------------------------------------------------------------------
