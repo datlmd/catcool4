@@ -13,7 +13,7 @@
 				{include file=get_theme_path('views/inc/button_translate.tpl') translate_frontend=lang('Dummy.translate_frontend_id') translate_admin=lang('Dummy.translate_admin_id')}
 			</div>
 		</div>
-		<div class="row collapse {if count(array_filter($request->getGet(['dummy_id', 'name', 'limit']))) > 0}show{/if}" id="filter_manage">
+		<div class="row collapse {if !empty($filter_active)}show{/if}" id="filter_manage">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 				<div class="card">
 					<h5 class="card-header"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
