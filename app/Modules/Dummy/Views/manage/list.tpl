@@ -22,11 +22,11 @@
 							<div class="row">
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.filter_name')}
-									{form_input('name', set_value('name', $request->getGet('name')|default:''), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_name')])}
+									{form_input('name', set_value('name', $request->getGet('name'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_name')])}
 								</div>
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.filter_id')}
-									{form_input('dummy_id', set_value('dummy_id', $request->getGet('dummy_id')|default:''), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
+									{form_input('dummy_id', set_value('dummy_id', $request->getGet('dummy_id'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
 								</div>
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.text_limit')}
