@@ -19,7 +19,7 @@
 	<div class="row">
 
 		<div class="col-12">
-			<div class="collapse {if !empty($filter.active)}show{/if}" id="filter_manage">
+			<div class="row collapse {if !empty($filter_active)}show{/if}" id="filter_manage">
 				<div class="card">
 					<h5 class="card-header"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
 					{form_open(uri_string(), ['id' => 'filter_validationform', 'method' => 'get'])}
@@ -27,15 +27,15 @@
 							<div class="row">
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('ModuleAdmin.text_module')}
-									{form_input('module', old('module', $filter.module), ['class' => 'form-control form-control-sm', 'placeholder' => lang('ModuleAdmin.text_module')])}
+									{form_input('module', old('module', $request->getGet('module'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('ModuleAdmin.text_module')])}
 								</div>
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('ModuleAdmin.text_sub_module')}
-									{form_input('sub_module', old('sub_module', $filter.sub_module), ['class' => 'form-control form-control-sm', 'placeholder' => lang('ModuleAdmin.text_sub_module')])}
+									{form_input('sub_module', old('sub_module', $request->getGet('sub_module'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('ModuleAdmin.text_sub_module')])}
 								</div>
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.text_limit')}
-									{form_dropdown('limit', get_list_limit(), old('limit', $filter.limit), ['class' => 'form-control form-control-sm'])}
+									{form_dropdown('limit', get_list_limit(), old('limit', $request->getGet('limit')), ['class' => 'form-control form-control-sm'])}
 								</div>
 								<div class="col-12 text-end">
 									<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('Admin.filter_submit')}</button>

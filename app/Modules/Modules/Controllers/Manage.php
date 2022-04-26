@@ -14,10 +14,7 @@ class Manage extends AdminController
     {
         parent::__construct();
 
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'));
 
         $this->model = new ModuleModel();
 
@@ -32,44 +29,29 @@ class Manage extends AdminController
 
     public function index()
     {
-        $module     = $this->request->getGet('module');
-        $sub_module = $this->request->getGet('sub_module');
-        $limit      = $this->request->getGet('limit');
-        $sort       = $this->request->getGet('sort');
-        $order      = $this->request->getGet('order');
+        $limit       = $this->request->getGet('limit');
+        $sort        = $this->request->getGet('sort');
+        $order       = $this->request->getGet('order');
+        $filter_keys = ['module', 'sub_module', 'limit'];
 
-        $filter = [
-            'active'     => count(array_filter($this->request->getGet(['module', 'sub_module', 'limit']))) > 0,
-            'module'     => $module ?? "",
-            'sub_module' => $sub_module ?? "",
-            'limit'      => $limit,
-        ];
-
-        $list = $this->model->getAllByFilter($filter, $sort, $order);
-
-        $url = "";
-        if (!empty($module)) {
-            $url .= '&module=' . $module;
-        }
-        if (!empty($sub_module)) {
-            $url .= '&sub_module=' . $sub_module;
-        }
-        if (!empty($limit)) {
-            $url .= '&limit=' . $limit;
-        }
+        $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
         $data = [
-            'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($limit),
-            'pager'      => $list->pager,
-            'filter'     => $filter,
-            'sort'       => empty($sort) ? 'id' : $sort,
-            'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'        => $url,
+            'breadcrumb'    => $this->breadcrumb->render(),
+            'list'          => $list->paginate($limit),
+            'pager'         => $list->pager,
+            'sort'          => empty($sort) ? 'id' : $sort,
+            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url'           => $this->getUrlFilter($filter_keys),
+            'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
         add_meta(['title' => lang("ModuleAdmin.heading_title")], $this->themes);
-        $this->themes::load('list', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('list', $data);
     }
 
     public function add()
@@ -202,7 +184,11 @@ class Manage extends AdminController
 
         add_meta(['title' => $data['text_form']], $this->themes);
 
-        $this->themes::load('form', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('form', $data);
     }
 
     private function _validateForm()

@@ -36,12 +36,7 @@
                                 {lang('ModuleAdmin.text_module')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                {if isset($edit_data.module)}
-                                    {assign var="module" value="`$edit_data.module`"}
-                                {else}
-                                    {assign var="module" value=""}
-                                {/if}
-                                <input type="text" name="module" value="{old('module', $module)}" id="module" class="form-control {if $validator->hasError('module')}is-invalid{/if}">
+                                <input type="text" name="module" value="{old('module', $edit_data.module)}" id="module" class="form-control {if $validator->hasError('module')}is-invalid{/if}">
                                 <div class="invalid-feedback">{$validator->getError("module")}</div>
                             </div>
                         </div>
@@ -50,12 +45,7 @@
                                 {lang('ModuleAdmin.text_sub_module')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                {if isset($edit_data.sub_module)}
-                                    {assign var="sub_module" value="`$edit_data.sub_module`"}
-                                {else}
-                                    {assign var="sub_module" value=""}
-                                {/if}
-                                <input type="text" name="sub_module" value="{old('sub_module', $sub_module)}" id="sub_module" class="form-control">
+                                <input type="text" name="sub_module" value="{old('sub_module', $edit_data.sub_module)}" id="sub_module" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -63,17 +53,12 @@
                                 {lang('Admin.text_published')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                {if isset($edit_data.published)}
-                                    {assign var="published" value="`$edit_data.published`"}
-                                {else}
-                                    {assign var="published" value="1"}
-                                {/if}
                                 <label class="form-check form-check-inline ms-2 mt-2">
-                                    <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $published) eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
+                                    <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $edit_data.published)|default:1 eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
                                     <label class="form-check-label" for="published_on">ON</label>
                                 </label>
                                 <label class="form-check form-check-inline me-2 mt-2">
-                                    <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $published) eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
+                                    <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $edit_data.published)|default:1 eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
                                     <label class="form-check-label" for="published_off">OFF</label>
                                 </label>
                             </div>
