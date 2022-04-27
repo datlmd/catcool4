@@ -13,9 +13,6 @@
             </div>
             {if !empty($edit_data.page_id)}
                 {form_hidden('page_id', $edit_data.page_id)}
-                {assign var="page_id" value="`$edit_data.page_id`"}
-            {else}
-                {assign var="page_id" value=""}
             {/if}
             <div class="row">
                 {if !empty(print_flash_alert())}
@@ -38,26 +35,16 @@
                                             <div class="form-group row">
                                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                     <label class="form-label required-label">{lang('PageAdmin.text_name')}</label>
-                                                    {if !empty($edit_data.lang[$language.id].name)}
-                                                        {assign var="name" value="`$edit_data.lang[$language.id].name`"}
-                                                    {else}
-                                                        {assign var="name" value=""}
-                                                    {/if}
-                                                    <input type="text" name="lang[{$language.id}][name]" value='{old("lang.{$language.id}.name", $name)}' id="input_name_{$language.id}" data-preview-title="seo_meta_title_{$language.id}" data-title-id="input_meta_title_{$language.id}" data-preview-slug="seo_meta_url_{$language.id}" data-slug-id="input_slug_{$language.id}" class="form-control {if empty($edit_data.page_id)}make-slug{/if} {if $validator->hasError("lang.{$language.id}.name")}is-invalid{/if}">
+                                                    <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_name_{$language.id}" data-preview-title="seo_meta_title_{$language.id}" data-title-id="input_meta_title_{$language.id}" data-preview-slug="seo_meta_url_{$language.id}" data-slug-id="input_slug_{$language.id}" class="form-control {if empty($edit_data.page_id)}make-slug{/if} {if $validator->hasError("lang.`$language.id`.name")}is-invalid{/if}">
                                                     <div class="invalid-feedback">
-                                                        {$validator->getError("lang.{$language.id}.name")}
+                                                        {$validator->getError("lang.`$language.id`.name")}
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                     <label class="form-label required-label">{lang('PageAdmin.text_content')}</label>
-                                                    {if !empty($edit_data.lang[$language.id].content)}
-                                                        {assign var="content" value="`$edit_data.lang[$language.id].content`"}
-                                                    {else}
-                                                        {assign var="content" value=""}
-                                                    {/if}
-                                                    <textarea name="lang[{$language.id}][content]" cols="40" rows="5" data-bs-toggle="tinymce" id="input-content[{$language.id}]" type="textarea" class="form-control">{old("lang.{$language.id}.content", $content)}</textarea>
+                                                    <textarea name="lang[{$language.id}][content]" cols="40" rows="5" data-bs-toggle="tinymce" id="input-content[{$language.id}]" type="textarea" class="form-control">{old("lang.`$language.id`.content", $edit_data.lang[$language.id].content)}</textarea>
                                                 </div>
                                             </div>
                                             <div class="mt-3">
@@ -78,47 +65,27 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label class="form-label">{lang('Admin.text_published')}</label>
-                                {if isset($edit_data.published)}
-                                    {assign var="published" value="`$edit_data.published`"}
-                                {else}
-                                    {assign var="published" value="1"}
-                                {/if}
                                 <label class="form-check form-check-inline ms-2">
-                                    <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $published) eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
+                                    <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $edit_data.published)|default:1 eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
                                     <label class="form-check-label" for="published_on">ON</label>
                                 </label>
                                 <label class="form-check form-check-inline me-2">
-                                    <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $published) eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
+                                    <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $edit_data.published)|default:1 eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
                                     <label class="form-check-label" for="published_off">OFF</label>
                                 </label>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label">{lang('PageAdmin.text_layout')}</label>
-                                {if isset($edit_data.layout)}
-                                    {assign var="layout" value="`$edit_data.layout`"}
-                                {else}
-                                    {assign var="layout" value=""}
-                                {/if}
-                                <input type="text" name="layout" value="{old('layout', $layout)}" id="layout" class="form-control">
+                                <input type="text" name="layout" value="{old('layout', $edit_data.layout)}" id="layout" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{lang('PageAdmin.text_body_class')}</label>
-                                {if isset($edit_data.body_class)}
-                                    {assign var="body_class" value="`$edit_data.body_class`"}
-                                {else}
-                                    {assign var="body_class" value=""}
-                                {/if}
-                                <input type="text" name="body_class" value="{old('body_class', $body_class)}" id="author" class="form-control">
+                                <input type="text" name="body_class" value="{old('body_class', $edit_data.body_class)}" id="author" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{lang('Admin.text_sort_order')}</label>
-                                {if isset($edit_data.sort_order)}
-                                    {assign var="sort_order" value="`$edit_data.sort_order`"}
-                                {else}
-                                    {assign var="sort_order" value="0"}
-                                {/if}
-                                <input type="number" name="sort_order" value="{old('sort_order', $sort_order)}" id="sort_order" min="0" class="form-control">
+                                <input type="number" name="sort_order" value="{old('sort_order', $edit_data.sort_order)|default:0}" id="sort_order" min="0" class="form-control">
                             </div>
                         </div>
                     </div>

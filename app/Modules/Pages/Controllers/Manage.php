@@ -22,10 +22,7 @@ class Manage extends AdminController
     {
         parent::__construct();
 
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'));
 
         $this->model = new PageModel();
         $this->model_lang = new PageLangModel();
@@ -44,44 +41,28 @@ class Manage extends AdminController
     {
         add_meta(['title' => lang("PageAdmin.heading_title")], $this->themes);
 
-        $page_id = $this->request->getGet('page_id');
-        $name    = $this->request->getGet('name');
-        $limit   = $this->request->getGet('limit');
-        $sort    = $this->request->getGet('sort');
-        $order   = $this->request->getGet('order');
+        $limit       = $this->request->getGet('limit');
+        $sort        = $this->request->getGet('sort');
+        $order       = $this->request->getGet('order');
+        $filter_keys = ['page_id', 'name', 'limit'];
 
-        $filter = [
-            'active'     => count(array_filter($this->request->getGet(['page_id', 'name', 'limit']))) > 0,
-            'page_id' => $page_id ?? "",
-            'name'       => $name ?? "",
-            'limit'      => $limit,
-        ];
-
-        $list = $this->model->getAllByFilter($filter, $sort, $this->request->getGet('order'));
-
-        $url = "";
-        if (!empty($page_id)) {
-            $url .= '&page_id=' . $page_id;
-        }
-        if (!empty($name)) {
-            $url .= '&name=' . urlencode(html_entity_decode($name, ENT_QUOTES, 'UTF-8'));
-        }
-        if (!empty($limit)) {
-            $url .= '&limit=' . $limit;
-        }
-
+        $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
         $data = [
-            'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($limit),
-            'pager'      => $list->pager,
-            'filter'     => $filter,
-            'sort'       => empty($sort) ? 'page_id' : $sort,
-            'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'        => $url,
+            'breadcrumb'    => $this->breadcrumb->render(),
+            'list'          => $list->paginate($limit),
+            'pager'         => $list->pager,
+            'sort'          => empty($sort) ? 'page_id' : $sort,
+            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url'           => $this->getUrlFilter($filter_keys),
+            'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
-        $this->themes::load('list', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('list', $data);
     }
 
     public function add()
@@ -96,7 +77,7 @@ class Manage extends AdminController
                 'body_class' => $this->request->getPost('body_class'),
                 'layout'     => $this->request->getPost('layout'),
                 'sort_order' => $this->request->getPost('sort_order'),
-                'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
             $id = $this->model->insert($add_data);
@@ -112,7 +93,7 @@ class Manage extends AdminController
             $add_data_lang = $this->request->getPost('lang');
             foreach (get_list_lang(true) as $value) {
                 $add_data_lang[$value['id']]['language_id'] = $value['id'];
-                $add_data_lang[$value['id']]['page_id']  = $id;
+                $add_data_lang[$value['id']]['page_id']     = $id;
                 $add_data_lang[$value['id']]['slug']        = !empty($seo_urls[$value['id']]['route']) ? $seo_urls[$value['id']]['route'] : '';
 
                 $this->model_lang->insert($add_data_lang[$value['id']]);
@@ -279,7 +260,11 @@ class Manage extends AdminController
 
         add_meta(['title' => $data['text_form']], $this->themes);
 
-        $this->themes::load('form', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('form', $data);
     }
 
     private function _validateForm()
