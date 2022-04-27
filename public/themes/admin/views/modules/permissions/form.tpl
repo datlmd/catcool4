@@ -32,12 +32,7 @@
                                 {lang('PermissionAdmin.text_name')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                {if isset($edit_data.name)}
-                                    {assign var="name" value="`$edit_data.name`"}
-                                {else}
-                                    {assign var="name" value=""}
-                                {/if}
-                                <input type="text" name="name" value="{old('name', $name)}" id="name" class="form-control {if $validator->hasError('name')}is-invalid{/if}">
+                                <input type="text" name="name" value="{old('name', $edit_data.name)}" id="name" class="form-control {if $validator->hasError('name')}is-invalid{/if}">
                                 <div class="invalid-feedback">{$validator->getError("name")}</div>
                             </div>
                         </div>
@@ -46,12 +41,7 @@
                                 {lang('PermissionAdmin.text_description')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                {if isset($edit_data.description)}
-                                    {assign var="description" value="`$edit_data.description`"}
-                                {else}
-                                    {assign var="description" value=""}
-                                {/if}
-                                <input type="text" name="description" value="{old('description', $description)}" id="description" class="form-control">
+                                <input type="text" name="description" value="{old('description', $edit_data.description)}" id="description" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -59,17 +49,12 @@
                                 {lang('Admin.text_published')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                {if isset($edit_data.published)}
-                                    {assign var="published" value="`$edit_data.published`"}
-                                {else}
-                                    {assign var="published" value="1"}
-                                {/if}
                                 <label class="form-check form-check-inline mt-2">
-                                    <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $published) eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
+                                    <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $edit_data.published)|default:1 eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
                                     <label class="form-check-label" for="published_on">ON</label>
                                 </label>
                                 <label class="form-check form-check-inline mt-2 me-2">
-                                    <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $published) eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
+                                    <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $edit_data.published)|default:1 eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
                                     <label class="form-check-label" for="published_off">OFF</label>
                                 </label>
                             </div>
