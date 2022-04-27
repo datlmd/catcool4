@@ -18,10 +18,7 @@ class Manage extends AdminController
     {
         parent::__construct();
 
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'));
 
         $this->model = new TranslationModel();
 
@@ -41,18 +38,13 @@ class Manage extends AdminController
         $module_model = new ModuleModel();
         $language_model = new LanguageModel();
 
-        $module_id = $this->request->getGet('module_id') ?? self::FILTER_DEFAULT_FRONTEND;
-        $key       = $this->request->getGet('key');
-        $value     = $this->request->getGet('value');
-        $sort      = $this->request->getGet('sort');
-        $order     = $this->request->getGet('order');
+        $module_id   = $this->request->getGet('module_id') ?? self::FILTER_DEFAULT_FRONTEND;
+        $sort        = $this->request->getGet('sort');
+        $order       = $this->request->getGet('order');
+        $filter_keys = ['module_id', 'key', 'value'];
 
-        $filter = [
-            'active'    => count(array_filter($this->request->getGet(['module_id', 'key', 'value']))) > 0,
-            'module_id' => $module_id,
-            'key'       => $key ?? "",
-            'value'     => $value ?? "",
-        ];
+        $filter = $this->request->getGet($filter_keys);
+        $filter['module_id'] = $module_id;
 
         $list          = $this->model->getAllByFilter($filter, $sort, $order);
         $module_list   = $module_model->getListPublished();
@@ -72,26 +64,13 @@ class Manage extends AdminController
             }
         }
 
-        $url = "";
-        if (!empty($module_id)) {
-            $url .= '&module_id=' . $module_id;
-        }
-
-        if (!empty($key)) {
-            $url .= '&key=' . urlencode(html_entity_decode($key, ENT_QUOTES, 'UTF-8'));
-        }
-
-        if (!empty($value)) {
-            $url .= '&value=' . $value;
-        }
-
         $data = [
             'breadcrumb'    => $this->breadcrumb->render(),
             'list'          => $list,
-            'filter'        => $filter,
             'sort'          => empty($sort) ? 'id' : $sort,
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'           => $url,
+            'url'           => $this->getUrlFilter($filter_keys),
+            'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
             'language_list' => $language_list,
             'module_list'   => $module_list,
             'module'        => $module,
@@ -99,7 +78,11 @@ class Manage extends AdminController
         ];
 
         add_meta(['title' => lang("TranslationAdmin.heading_title")], $this->themes);
-        $this->themes::load('list', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('list', $data);
     }
 
     public function add()

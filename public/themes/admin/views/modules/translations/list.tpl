@@ -25,7 +25,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <div class="collapse {if !empty($filter.active)}show{/if}" id="filter_manage">
+                <div class="row collapse {if !empty($filter_active)}show{/if}" id="filter_manage">
                     <div class="card">
                         <h5 class="card-header"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
                         {form_open(uri_string(), ['id' => 'filter_validationform', 'method' => 'get'])}
@@ -33,11 +33,11 @@
                                 <div class="row">
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 mb-2">
                                         <label class="form-label">{lang('TranslationAdmin.text_key')}</label>
-                                        {form_input('key', old('key', $filter.key), ['class' => 'form-control form-control-sm', 'placeholder' => 'Enter key'])}
+                                        {form_input('key', old('key', $request->getGet('key'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => 'Enter key'])}
                                     </div>
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 mb-2">
                                         <label class="form-label">{lang('TranslationAdmin.text_value')}</label>
-                                        {form_input('value', old('value', $filter.value), ['class' => 'form-control form-control-sm', 'placeholder' => 'Enter text'])}
+                                        {form_input('value', old('value', $request->getGet('value'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => 'Enter text'])}
                                     </div>
                                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 mb-2">
                                         <label class="form-label">{lang('TranslationAdmin.text_modules')}</label>
@@ -45,7 +45,7 @@
                                             <select name="module_id" class="form-control form-control-sm">
                                                 <option value="">{lang('Admin.text_none')}</option>
                                                 {foreach $module_list as $value}
-                                                    <option value="{$value.id}" {if old('module_id', $filter.module_id) eq $value.id}selected="selected"{/if}>{$value.module}{if !empty($value.sub_module)} - Sub: {$value.sub_module}{/if}</option>
+                                                    <option value="{$value.id}" {if old('module_id', $request->getGet('module_id')) eq $value.id}selected="selected"{/if}>{$value.module}{if !empty($value.sub_module)} - Sub: {$value.sub_module}{/if}</option>
                                                 {/foreach}
                                             </select>
                                         {/if}
