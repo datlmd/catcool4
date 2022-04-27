@@ -14,7 +14,7 @@
 				{include file=get_theme_path('views/inc/button_translate.tpl') translate_frontend=lang('RouteAdmin.translate_frontend_id') translate_admin=lang('RouteAdmin.translate_admin_id')}
 			</div>
 		</div>
-		<div class="row collapse {if !empty($filter.active)}show{/if}" id="filter_manage">
+		<div class="row collapse {if !empty($filter_active)}show{/if}" id="filter_manage">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 				<div class="card">
 					<h5 class="card-header"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
@@ -23,15 +23,15 @@
 							<div class="row">
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									<label class="form-label">{lang('RouteAdmin.text_module')}</label>
-									{form_input('module', set_value('module', $filter.module), ['class' => 'form-control form-control-sm', 'placeholder' => lang('RouteAdmin.text_module')])}
+									{form_input('module', set_value('module', $request->getGet('module'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('RouteAdmin.text_module')])}
 								</div>
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									<label class="form-label">{lang('RouteAdmin.text_resource')}</label>
-									{form_input('resource', set_value('resource', $filter.resource), ['class' => 'form-control form-control-sm', 'placeholder' => lang('RouteAdmin.text_resource')])}
+									{form_input('resource', set_value('resource', $request->getGet('resource'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('RouteAdmin.text_resource')])}
 								</div>
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									<label class="form-label">{lang('Admin.text_limit')}</label>
-									{form_dropdown('limit', get_list_limit(), set_value('limit', $filter.limit), ['class' => 'form-control form-control-sm'])}
+									{form_dropdown('limit', get_list_limit(), set_value('limit', $request->getGet('limit')), ['class' => 'form-control form-control-sm'])}
 								</div>
 								<div class="col-12 text-end">
 									<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('Admin.filter_submit')}</button>

@@ -29,11 +29,9 @@ class Manage extends AdminController
 
     public function index()
     {
-        $sort   = $this->request->getGet('sort');
-        $order  = $this->request->getGet('order');
-        $candidate_table    = $this->request->getGet('candidate_table');
-        $foreign_table  = $this->request->getGet('foreign_table');
-        $limit = $this->request->getGet('limit');
+        $sort        = $this->request->getGet('sort');
+        $order       = $this->request->getGet('order');
+        $limit       = $this->request->getGet('limit');
         $filter_keys = ['candidate_table', 'foreign_table', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);

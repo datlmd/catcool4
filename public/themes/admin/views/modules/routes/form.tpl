@@ -32,12 +32,7 @@
                                     {lang('RouteAdmin.text_route')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.route)}
-                                        {assign var="route" value="`$edit_data.route`"}
-                                    {else}
-                                        {assign var="route" value=""}
-                                    {/if}
-                                    <input type="text" name="route" value="{old('route', $route)}" id="route" class="form-control {if $validator->hasError('route')}is-invalid{/if}">
+                                    <input type="text" name="route" value="{old('route', $edit_data.route)}" id="route" class="form-control {if $validator->hasError('route')}is-invalid{/if}">
                                     <div class="invalid-feedback">{$validator->getError("route")}</div>
                                 </div>
                             </div>
@@ -46,12 +41,7 @@
                                     {lang('RouteAdmin.text_module')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.module)}
-                                        {assign var="module" value="`$edit_data.module`"}
-                                    {else}
-                                        {assign var="module" value=""}
-                                    {/if}
-                                    <input type="text" name="module" value="{old('module', $module)}" id="module" class="form-control {if $validator->hasError('module')}is-invalid{/if}">
+                                    <input type="text" name="module" value="{old('module', $edit_data.route)}" id="module" class="form-control {if $validator->hasError('module')}is-invalid{/if}">
                                     <div class="invalid-feedback">{$validator->getError("module")}</div>
                                 </div>
                             </div>
@@ -60,12 +50,7 @@
                                     {lang('RouteAdmin.text_resource')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.resource)}
-                                        {assign var="resource" value="`$edit_data.resource`"}
-                                    {else}
-                                        {assign var="resource" value=""}
-                                    {/if}
-                                    <input type="text" name="resource" value="{old('resource', $resource)}" id="resource" class="form-control {if $validator->hasError('resource')}is-invalid{/if}">
+                                    <input type="text" name="resource" value="{old('resource', $edit_data.resource)}" id="resource" class="form-control {if $validator->hasError('resource')}is-invalid{/if}">
                                     <div class="invalid-feedback">{$validator->getError("resource")}</div>
                                 </div>
                             </div>
@@ -74,14 +59,9 @@
                                     {lang('Admin.text_language')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.language_id)}
-                                        {assign var="language_id" value="`$edit_data.language_id`"}
-                                    {else}
-                                        {assign var="language_id" value=""}
-                                    {/if}
                                     <select name="language_id" id="language_id" class="form-control">
                                         {foreach get_list_lang(true) as $language}
-                                            <option value="{$language.id}" {if $language_id eq $language.id}selected="selected"{/if}>{$language.name}</option>
+                                            <option value="{$language.id}" {if $edit_data.language_id eq $language.id}selected="selected"{/if}>{$language.name}</option>
                                         {/foreach}
                                     </select>
                                 </div>
@@ -91,17 +71,12 @@
                                     {lang('Admin.text_published')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.published)}
-                                        {assign var="published" value="`$edit_data.published`"}
-                                    {else}
-                                        {assign var="published" value="1"}
-                                    {/if}
                                     <label class="form-check form-check-inline ms-2 mt-2">
-                                        <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $published) eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
+                                        <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $edit_data.published)|default:1 eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
                                         <label class="form-check-label" for="published_on">ON</label>
                                     </label>
                                     <label class="form-check form-check-inline me-2 mt-2">
-                                        <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $published) eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
+                                        <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $edit_data.published)|default:1 eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
                                         <label class="form-check-label" for="published_off">OFF</label>
                                     </label>
                                 </div>
