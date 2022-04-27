@@ -36,45 +36,18 @@ class Manage extends AdminController
     {
         add_meta(['title' => lang("PostAdmin.heading_title")], $this->themes);
 
-        $post_id     = $this->request->getGet('post_id');
-        $name        = $this->request->getGet('name');
-        $category_id = $this->request->getGet('category_id');
         $limit       = $this->request->getGet('limit');
         $sort        = $this->request->getGet('sort');
         $order       = $this->request->getGet('order');
         $is_trash    = $this->request->getGet('is_trash');
-
-        $filter = [
-            'active'      => count(array_filter($this->request->getGet(['post_id', 'name', 'category_id', 'limit']))) > 0,
-            'post_id'     => $post_id ?? "",
-            'name'        => $name ?? "",
-            'category_id' => $category_id ?? "",
-            'limit'       => $limit,
-        ];
+        $filter_keys = ['post_id', 'name', 'category_id', 'limit'];
 
         $tpl_name = "list";
         if (!empty($is_trash) && $is_trash == 1) {
             $tpl_name = "list_trash";
-            $list = $this->model->onlyDeleted()->getAllByFilter($filter, $sort, $this->request->getGet('order'));
+            $list = $this->model->onlyDeleted()->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
         } else {
-            $list = $this->model->getAllByFilter($filter, $sort, $this->request->getGet('order'));
-        }
-
-        $url = "";
-        if (!empty($post_id)) {
-            $url .= '&post_id=' . $post_id;
-        }
-        if (!empty($name)) {
-            $url .= '&name=' . urlencode(html_entity_decode($name, ENT_QUOTES, 'UTF-8'));
-        }
-        if (!empty($category_id)) {
-            $url .= '&category_id=' . $category_id;
-        }
-        if (!empty($limit)) {
-            $url .= '&limit=' . $limit;
-        }
-        if (!empty($is_trash)) {
-            $url .= '&is_trash=' . $is_trash;
+            $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
         }
 
         $category_list = $this->model_category->getListPublished();
@@ -95,10 +68,10 @@ class Manage extends AdminController
             'breadcrumb'    => $this->breadcrumb->render(),
             'list'          => $post_list,
             'pager'         => $list->pager,
-            'filter'        => $filter,
             'sort'          => empty($sort) ? 'post_id' : $sort,
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'           => $url,
+            'url'           => $this->getUrlFilter(array_merge($filter_keys, ['is_trash'])),
+            'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
             'is_trash'      => $is_trash,
             'count_trash'   => $this->model->onlyDeleted()->countAllResults(),
             'category_list' => format_tree(['data' => $category_list, 'key_id' => 'category_id']),
