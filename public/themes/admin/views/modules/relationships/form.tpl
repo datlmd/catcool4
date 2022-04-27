@@ -36,12 +36,7 @@
                                 {lang('RelationshipAdmin.text_candidate_table')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                {if isset($edit_data.candidate_table)}
-                                    {assign var="candidate_table" value="`$edit_data.candidate_table`"}
-                                {else}
-                                    {assign var="candidate_table" value=""}
-                                {/if}
-                                <input type="text" name="candidate_table" value="{old('candidate_table', $candidate_table)}" id="candidate_table" class="form-control {if $validator->hasError('candidate_table')}is-invalid{/if}">
+                                <input type="text" name="candidate_table" value="{old('candidate_table', $edit_data.candidate_table)}" id="candidate_table" class="form-control {if $validator->hasError('candidate_table')}is-invalid{/if}">
                                 <div class="invalid-feedback">{$validator->getError("candidate_table")}</div>
                             </div>
                         </div>
@@ -50,12 +45,7 @@
                                 {lang('RelationshipAdmin.text_candidate_key')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                {if isset($edit_data.candidate_key)}
-                                    {assign var="candidate_key" value="`$edit_data.candidate_key`"}
-                                {else}
-                                    {assign var="candidate_key" value=""}
-                                {/if}
-                                <input type="text" name="candidate_key" value="{old('candidate_key', $candidate_key)}" id="candidate_key" class="form-control {if $validator->hasError('candidate_key')}is-invalid{/if}">
+                                <input type="text" name="candidate_key" value="{old('candidate_key', $edit_data.candidate_key)}" id="candidate_key" class="form-control {if $validator->hasError('candidate_key')}is-invalid{/if}">
                                 <div class="invalid-feedback">{$validator->getError("candidate_key")}</div>
                             </div>
                         </div>
@@ -64,12 +54,7 @@
                                 {lang('RelationshipAdmin.text_foreign_table')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                {if isset($edit_data.foreign_table)}
-                                    {assign var="foreign_table" value="`$edit_data.foreign_table`"}
-                                {else}
-                                    {assign var="foreign_table" value=""}
-                                {/if}
-                                <input type="text" name="foreign_table" value="{old('foreign_table', $foreign_table)}" id="foreign_table" class="form-control {if $validator->hasError('foreign_table')}is-invalid{/if}">
+                                <input type="text" name="foreign_table" value="{old('foreign_table', $edit_data.foreign_table)}" id="foreign_table" class="form-control {if $validator->hasError('foreign_table')}is-invalid{/if}">
                                 <div class="invalid-feedback">{$validator->getError("foreign_table")}</div>
                             </div>
                         </div>
@@ -78,12 +63,7 @@
                                 {lang('RelationshipAdmin.text_foreign_key')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                {if isset($edit_data.foreign_key)}
-                                    {assign var="foreign_key" value="`$edit_data.foreign_key`"}
-                                {else}
-                                    {assign var="foreign_key" value=""}
-                                {/if}
-                                <input type="text" name="foreign_key" value="{old('foreign_key', $foreign_key)}" id="foreign_key" class="form-control {if $validator->hasError('foreign_key')}is-invalid{/if}">
+                                <input type="text" name="foreign_key" value="{old('foreign_key', $edit_data.foreign_key)}" id="foreign_key" class="form-control {if $validator->hasError('foreign_key')}is-invalid{/if}">
                                 <div class="invalid-feedback">{$validator->getError("foreign_key")}</div>
                             </div>
                         </div>

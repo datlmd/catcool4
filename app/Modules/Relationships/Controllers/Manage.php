@@ -14,10 +14,7 @@ class Manage extends AdminController
     {
         parent::__construct();
 
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'));
 
         $this->model = new RelationshipModel();
 
@@ -37,39 +34,26 @@ class Manage extends AdminController
         $candidate_table    = $this->request->getGet('candidate_table');
         $foreign_table  = $this->request->getGet('foreign_table');
         $limit = $this->request->getGet('limit');
+        $filter_keys = ['candidate_table', 'foreign_table', 'limit'];
 
-        $filter = [
-            'active'          => count(array_filter($this->request->getGet(['candidate_table', 'foreign_table', 'limit']))) > 0,
-            'candidate_table' => $candidate_table ?? "",
-            'foreign_table'   => $foreign_table ?? "",
-            'limit'           => $limit,
-        ];
-
-        $list = $this->model->getAllByFilter($filter, $sort, $order);
-
-        $url = "";
-        if (!empty($candidate_table)) {
-            $url .= '&candidate_table=' . $candidate_table;
-        }
-        if (!empty($foreign_table)) {
-            $url .= '&foreign_table=' . $foreign_table;
-        }
-        if (!empty($limit)) {
-            $url .= '&limit=' . $limit;
-        }
+        $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
         $data = [
-            'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($limit),
-            'pager'      => $list->pager,
-            'filter'     => $filter,
-            'sort'       => empty($sort) ? 'id' : $sort,
-            'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'        => $url,
+            'breadcrumb'    => $this->breadcrumb->render(),
+            'list'          => $list->paginate($limit),
+            'pager'         => $list->pager,
+            'sort'          => empty($sort) ? 'id' : $sort,
+            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url'           => $this->getUrlFilter($filter_keys),
+            'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
         add_meta(['title' => lang("RelationshipAdmin.heading_title")], $this->themes);
-        $this->themes::load('list', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('list', $data);
     }
 
     public function add()
@@ -203,7 +187,11 @@ class Manage extends AdminController
 
         add_meta(['title' => $data['text_form']], $this->themes);
 
-        $this->themes::load('form', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('form', $data);
     }
 
     private function _validateForm()
