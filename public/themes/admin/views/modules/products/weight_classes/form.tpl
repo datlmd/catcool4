@@ -34,12 +34,7 @@
                                     {lang('ProductWeightClassAdmin.text_value')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
-                                    {if isset($edit_data.value)}
-                                        {assign var="value" value="`$edit_data.value`"}
-                                    {else}
-                                        {assign var="value" value=""}
-                                    {/if}
-                                    <input type="text" name="value" value="{old('value', $value)}" id="value" class="form-control {if $validator->hasError("value")}is-invalid{/if}">
+                                    <input type="text" name="value" value="{old('value', $edit_data.value)}" id="value" class="form-control {if $validator->hasError("value")}is-invalid{/if}">
                                     <div class="invalid-feedback">
                                         {$validator->getError("value")}
                                     </div>
@@ -58,14 +53,9 @@
                                                     {lang('Admin.text_name')}
                                                 </label>
                                                 <div class="col-12 col-sm-8 col-lg-7">
-                                                    {if !empty($edit_data.lang[$language.id].name)}
-                                                        {assign var="name" value="`$edit_data.lang[$language.id].name`"}
-                                                    {else}
-                                                        {assign var="name" value=""}
-                                                    {/if}
-                                                    <input type="text" name="lang[{$language.id}][name]" value='{old("lang.{$language.id}.name", $name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang.{$language.id}.name")}is-invalid{/if}">
+                                                    <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang.`$language.id`.name")}is-invalid{/if}">
                                                     <div class="invalid-feedback">
-                                                        {$validator->getError("lang.{$language.id}.name")}
+                                                        {$validator->getError("lang.`$language.id`.name")}
                                                     </div>
                                                 </div>
                                             </div>
@@ -75,14 +65,9 @@
                                                     {lang('ProductWeightClassAdmin.text_unit')}
                                                 </label>
                                                 <div class="col-12 col-sm-8 col-lg-7">
-                                                    {if !empty($edit_data.lang[$language.id].unit)}
-                                                        {assign var="unit" value="`$edit_data.lang[$language.id].unit`"}
-                                                    {else}
-                                                        {assign var="unit" value=""}
-                                                    {/if}
-                                                    <input type="text" name="lang[{$language.id}][unit]" value="{old("lang.{$language.id}.unit", $unit)}" id="input_unit_{$language.id}" class="form-control {if $validator->hasError("lang.{$language.id}.unit")}is-invalid{/if}">
+                                                    <input type="text" name="lang[{$language.id}][unit]" value="{old("lang.`$language.id`.unit", $edit_data.lang[$language.id].unit)}" id="input_unit_{$language.id}" class="form-control {if $validator->hasError("lang.`$language.id`.unit")}is-invalid{/if}">
                                                     <div class="invalid-feedback">
-                                                        {$validator->getError("lang.{$language.id}.unit")}
+                                                        {$validator->getError("lang.`$language.id`.unit")}
                                                     </div>
                                                 </div>
                                             </div>
