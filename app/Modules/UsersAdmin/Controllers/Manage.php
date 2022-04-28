@@ -53,40 +53,21 @@ class Manage extends AdminController
 
     public function index()
     {
-        $id    = $this->request->getGet('id');
-        $name  = $this->request->getGet('name');
-        $limit = $this->request->getGet('limit');
-        $sort  = $this->request->getGet('sort');
-        $order = $this->request->getGet('order');
+        $limit       = $this->request->getGet('limit');
+        $sort        = $this->request->getGet('sort');
+        $order       = $this->request->getGet('order');
+        $filter_keys = ['id', 'name', 'limit'];
 
-        $filter = [
-            'active' => count(array_filter($this->request->getGet(['id', 'name', 'limit']))) > 0,
-            'id'     => $id ?? "",
-            'name'   => $name ?? "",
-            'limit'  => $limit,
-        ];
-
-        $list = $this->model->getAllByFilter($filter, $sort, $order);
-
-        $url = "";
-        if (!empty($id)) {
-            $url .= '&id=' . $id;
-        }
-        if (!empty($name)) {
-            $url .= '&name=' . urlencode(html_entity_decode($name, ENT_QUOTES, 'UTF-8'));
-        }
-        if (!empty($limit)) {
-            $url .= '&limit=' . $limit;
-        }
+        $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
         $data = [
-            'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($limit),
-            'pager'      => $list->pager,
-            'filter'     => $filter,
-            'sort'       => empty($sort) ? 'id' : $sort,
-            'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'        => $url,
+            'breadcrumb'    => $this->breadcrumb->render(),
+            'list'          => $list->paginate($limit),
+            'pager'         => $list->pager,
+            'sort'          => empty($sort) ? 'id' : $sort,
+            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url'           => $this->getUrlFilter($filter_keys),
+            'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
         add_meta(['title' => lang("UserAdmin.heading_title")], $this->themes);
