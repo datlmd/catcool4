@@ -14,10 +14,7 @@ class GroupsManage extends AdminController
     {
         parent::__construct();
 
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'));
 
         $this->model = new GroupModel();
 
@@ -49,13 +46,16 @@ class GroupsManage extends AdminController
             'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
         ];
 
-        $this->themes::load('groups/list', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('groups/list', $data);
     }
 
     public function add()
     {
-        if (!empty($this->request->getPost()))
-        {
+        if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
@@ -179,7 +179,11 @@ class GroupsManage extends AdminController
 
         add_meta(['title' => $data['text_form']], $this->themes);
 
-        $this->themes::load('groups/form', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('groups/form', $data);
     }
 
     private function _validateForm()

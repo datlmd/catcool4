@@ -9,7 +9,7 @@
 		<div class="col-sm-6 col-12 mb-2 mb-sm-0 text-end">
 			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary btn-space" data-bs-toggle="tooltip" title="{lang('UserAdmin.button_add')}"><i class="fas fa-plus"></i></a>
 			<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" data-bs-toggle="tooltip" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
-			<a href="{site_url("users/groups_manage")}" class="btn btn-sm btn-primary btn-space"><i class="fas fa-list me-1"></i> {lang('Admin.module_group')}</a>
+			<a href="{site_url("users_admin/groups_manage")}" class="btn btn-sm btn-primary btn-space"><i class="fas fa-list me-1"></i> {lang('Admin.module_group')}</a>
 			{include file=get_theme_path('views/inc/button_translate.tpl') translate_frontend=lang('UserAdmin.translate_frontend_id') translate_admin=lang('UserAdmin.translate_admin_id')}
 		</div>
 	</div>
