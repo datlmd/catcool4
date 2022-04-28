@@ -29,7 +29,8 @@ class Manage extends AdminController
 
         add_meta(['title' => lang("UtilityAdmin.heading_title")], $this->themes);
 
-        $this->themes->addPartial('header')
+        $this->themes
+            ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar');
         theme_load('list', $data);
@@ -45,7 +46,8 @@ class Manage extends AdminController
         $data['breadcrumb'] = $this->breadcrumb->render();
 
         add_meta(['title' => "PHP Info"], $this->themes);
-        $this->themes->addPartial('header')
+        $this->themes
+            ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar');
 
@@ -108,7 +110,8 @@ class Manage extends AdminController
         $data['breadcrumb'] = $this->breadcrumb->render();
 
         add_meta(['title' => lang("File Browser")], $this->themes);
-        $this->themes->addPartial('header')
+        $this->themes
+            ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
             ::load('list_file', $data);
@@ -245,7 +248,8 @@ class Manage extends AdminController
         $data['breadcrumb'] = $this->breadcrumb->render();
 
         add_meta(['title' => lang("Logs")], $this->themes);
-        $this->themes->addPartial('header')
+        $this->themes
+            ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
             ::load('logs', $data);
@@ -322,7 +326,8 @@ class Manage extends AdminController
         $data['breadcrumb'] = $this->breadcrumb->render();
 
         add_meta(['title' => lang("Email.text_email")], $this->themes);
-        $this->themes->addPartial('header')
+        $this->themes
+            ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
             ::load('email', $data);
