@@ -32,12 +32,7 @@
                             {lang('Admin.text_username')}
                         </label>
                         <div class="col-12 col-sm-8 col-lg-7">
-                            {if isset($edit_data.username)}
-                                {assign var="username" value="`$edit_data.username`"}
-                            {else}
-                                {assign var="username" value=""}
-                            {/if}
-                            <input type="text" name="username" value='{old("username", $username)}' {if !empty($edit_data.id)}readonly{/if} id="username" class="form-control {if $validator->hasError('username')}is-invalid{/if}">
+                            <input type="text" name="username" value='{old("username", $edit_data.username)}' {if !empty($edit_data.id)}readonly{/if} id="username" class="form-control {if $validator->hasError('username')}is-invalid{/if}">
                             <div class="invalid-feedback">{$validator->getError("username")}</div>
                         </div>
                     </div>
@@ -73,12 +68,7 @@
                             {lang('Admin.text_full_name')}
                         </label>
                         <div class="col-12 col-sm-8 col-lg-7">
-                            {if isset($edit_data.first_name)}
-                                {assign var="first_name" value="`$edit_data.first_name`"}
-                            {else}
-                                {assign var="first_name" value=""}
-                            {/if}
-                            <input type="text" name="first_name" value='{old("first_name", $first_name)}' id="first_name" class="form-control {if $validator->hasError('first_name')}is-invalid{/if}">
+                            <input type="text" name="first_name" value='{old("first_name", $edit_data.first_name)}' id="first_name" class="form-control {if $validator->hasError('first_name')}is-invalid{/if}">
                             <div class="invalid-feedback">{$validator->getError("first_name")}</div>
                         </div>
                     </div>
@@ -87,12 +77,7 @@
                             {lang('UserAdmin.text_email')}
                         </label>
                         <div class="col-12 col-sm-8 col-lg-7">
-                            {if isset($edit_data.email)}
-                                {assign var="email" value="`$edit_data.email`"}
-                            {else}
-                                {assign var="email" value=""}
-                            {/if}
-                            <input type="text" name="email" value='{old("email", $email)}' id="email" class="form-control {if $validator->hasError('email')}is-invalid{/if}">
+                            <input type="text" name="email" value='{old("email", $edit_data.email)}' id="email" class="form-control {if $validator->hasError('email')}is-invalid{/if}">
                             <div class="invalid-feedback">{$validator->getError("email")}</div>
                         </div>
                     </div>
@@ -101,17 +86,12 @@
                             {lang('Admin.text_gender')}
                         </label>
                         <div class="col-12 col-sm-8 col-lg-7">
-                            {if isset($edit_data.gender)}
-                                {assign var="gender" value="`$edit_data.gender`"}
-                            {else}
-                                {assign var="gender" value="1"}
-                            {/if}
                             <label class="form-check form-check-inline mt-2">
-                                <input type="radio" name="gender" value="{GENDER_MALE}" {if old('gender', $gender) eq GENDER_MALE}checked="checked"{/if} id="gender_male" class="form-check-input">
+                                <input type="radio" name="gender" value="{GENDER_MALE}" {if old('gender', $edit_data.gender)|default:1 eq GENDER_MALE}checked="checked"{/if} id="gender_male" class="form-check-input">
                                 <label class="form-check-label" for="gender_male">{lang('Admin.text_gender_male')}</label>
                             </label>
                             <label class="form-check form-check-inline mt-2 me-2">
-                                <input type="radio" name="gender" value="{GENDER_FEMALE}" {if old('gender', $gender) eq GENDER_FEMALE}checked="checked"{/if} id="gender_female" class="form-check-input">
+                                <input type="radio" name="gender" value="{GENDER_FEMALE}" {if old('gender', $edit_data.gender)|default:1 eq GENDER_FEMALE}checked="checked"{/if} id="gender_female" class="form-check-input">
                                 <label class="form-check-label" for="gender_female">{lang('Admin.text_gender_female')}</label>
                             </label>
                         </div>
@@ -121,13 +101,8 @@
                             {lang('Admin.text_dob')}
                         </label>
                         <div class="col-sm-4 col-lg-3 mb-3 mb-sm-0">
-                            {if isset($edit_data.dob)}
-                                {assign var="dob" value="`$edit_data.dob`"}
-                            {else}
-                                {assign var="dob" value=""}
-                            {/if}
                             <div class="input-group date show-date-picker" id="show-date-picker" data-target-input="nearest" data-date-format="DD/MM/YYYY" data-date-locale="{get_lang(true)}">
-                                <input type="text" name="dob" id="dob" class="form-control datetimepicker-input" {if old('dob', $dob)}value="{old('dob', $dob)|date_format:'d/m/Y'}"{/if} placeholder="dd/mm/yyyy" data-target="#show-date-picker" />
+                                <input type="text" name="dob" id="dob" class="form-control datetimepicker-input" {if old('dob', $edit_data.dob)}value="{old('dob', $edit_data.dob)|date_format:'d/m/Y'}"{/if} placeholder="dd/mm/yyyy" data-target="#show-date-picker" />
                                 <div class="input-group-text" data-target="#show-date-picker" data-toggle="datetimepicker"><i class="fa fa-calendar-alt"></i></div>
                             </div>
                         </div>
@@ -137,12 +112,7 @@
                             {lang('UserAdmin.text_phone')}
                         </label>
                         <div class="col-12 col-sm-8 col-lg-7">
-                            {if isset($edit_data.phone)}
-                                {assign var="phone" value="`$edit_data.phone`"}
-                            {else}
-                                {assign var="phone" value=""}
-                            {/if}
-                            <input type="tel" name="phone" value="{old('phone', $phone)}" id="phone" class="form-control">
+                            <input type="tel" name="phone" value="{old('phone', $edit_data.phone)}" id="phone" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -150,12 +120,7 @@
                             {lang('Admin.text_address')}
                         </label>
                         <div class="col-12 col-sm-8 col-lg-7">
-                            {if isset($edit_data.address)}
-                                {assign var="address" value="`$edit_data.address`"}
-                            {else}
-                                {assign var="address" value=""}
-                            {/if}
-                            <textarea type="textarea" name="address" id="address" cols="40" rows="2" class="form-control">{old('address', $address)}</textarea>
+                            <textarea type="textarea" name="address" id="address" cols="40" rows="2" class="form-control">{old('address', $edit_data.address)}</textarea>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -163,12 +128,7 @@
                             {lang('UserAdmin.text_company')}
                         </label>
                         <div class="col-12 col-sm-8 col-lg-7">
-                            {if isset($edit_data.company)}
-                                {assign var="company" value="`$edit_data.company`"}
-                            {else}
-                                {assign var="company" value=""}
-                            {/if}
-                            <input type="text" name="company" value="{old('company', $company)}" id="company" class="form-control">
+                            <input type="text" name="company" value="{old('company', $edit_data.company)}" id="company" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -204,34 +164,24 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">{lang('Admin.text_active')}</label>
-                        {if isset($edit_data.active)}
-                            {assign var="active" value="`$edit_data.active`"}
-                        {else}
-                            {assign var="active" value="1"}
-                        {/if}
                         <label class="form-check form-check-inline ms-2 mt-2">
-                            <input type="radio" name="active" value="{STATUS_ON}" {if old('active', $active) eq STATUS_ON}checked="checked"{/if} id="active_on" class="form-check-input">
+                            <input type="radio" name="active" value="{STATUS_ON}" {if old('active', $edit_data.active)|default:0 eq STATUS_ON}checked="checked"{/if} id="active_on" class="form-check-input">
                             <label class="form-check-label" for="active_on">ON</label>
                         </label>
                         <label class="form-check form-check-inline mt-2 me-2">
-                            <input type="radio" name="active" value="{STATUS_OFF}" {if old('active', $active) eq STATUS_OFF}checked="checked"{/if} id="active_off" class="form-check-input">
+                            <input type="radio" name="active" value="{STATUS_OFF}" {if old('active', $edit_data.active)|default:0 eq STATUS_OFF}checked="checked"{/if} id="active_off" class="form-check-input">
                             <label class="form-check-label" for="active_off">OFF</label>
                         </label>
                     </div>
                     {if !empty($is_super_admin)}
                         <div class="form-group">
                             <label class="form-label">{lang('Admin.text_super_admin')}</label>
-                            {if isset($edit_data.super_admin)}
-                                {assign var="super_admin" value="`$edit_data.super_admin`"}
-                            {else}
-                                {assign var="super_admin" value="1"}
-                            {/if}
                             <label class="form-check form-check-inline ms-2 mt-2">
-                                <input type="radio" name="super_admin" value="{STATUS_ON}" {if old('super_admin', $super_admin) eq STATUS_ON}checked="checked"{/if} id="super_admin_on" class="form-check-input">
+                                <input type="radio" name="super_admin" value="{STATUS_ON}" {if old('super_admin', $edit_data.super_admin)|default:0 eq STATUS_ON}checked="checked"{/if} id="super_admin_on" class="form-check-input">
                                 <label class="form-check-label" for="super_admin_on">ON</label>
                             </label>
                             <label class="form-check form-check-inline mt-2 me-2">
-                                <input type="radio" name="super_admin" value="{STATUS_OFF}" {if old('super_admin', $super_admin) eq STATUS_OFF}checked="checked"{/if} id="super_admin_off" class="form-check-input">
+                                <input type="radio" name="super_admin" value="{STATUS_OFF}" {if old('super_admin', $edit_data.super_admin)|default:0 eq STATUS_OFF}checked="checked"{/if} id="super_admin_off" class="form-check-input">
                                 <label class="form-check-label" for="super_admin_off">OFF</label>
                             </label>
                         </div>
