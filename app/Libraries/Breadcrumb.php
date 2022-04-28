@@ -73,7 +73,9 @@ class Breadcrumb
 
             if ($index == $count) {
                 $output .= '<li class="breadcrumb-item active">';
+                $output .= '<a class="breadcrumb-link" href="' . $breadcrumb['href'] . '">';
                 $output .= $breadcrumb['title'];
+                $output .= '</a>';
                 $output .= '</li>';
             } else {
                 $output .= ($this->tags['itemOpen']) ? $this->tags['itemOpen'] : '<li class="breadcrumb-item">';

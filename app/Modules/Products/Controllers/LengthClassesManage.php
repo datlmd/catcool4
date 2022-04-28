@@ -145,6 +145,7 @@ class LengthClassesManage extends AdminController
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form'] = lang('Admin.text_edit');
+            $breadcrumb_url    = site_url(self::MANAGE_URL . "/edit/$id");
 
             $data_form = $this->model->getDetail($id);
             if (empty($data_form)) {
@@ -155,12 +156,13 @@ class LengthClassesManage extends AdminController
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('Admin.text_add');
+            $breadcrumb_url    = site_url(self::MANAGE_URL . "/add");
         }
 
         $data['errors'] = $this->errors;
 
         $this->breadcrumb->add(lang('ProductLengthClassAdmin.heading_title'), site_url(self::MANAGE_URL));
-        $this->breadcrumb->add($data['text_form'], base_url(self::MANAGE_URL));
+        $this->breadcrumb->add($data['text_form'], $breadcrumb_url);
         add_meta(['title' => $data['text_form']], $this->themes);
 
         $data['breadcrumb'] = $this->breadcrumb->render();

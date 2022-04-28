@@ -209,6 +209,7 @@ class ProvincesManage extends AdminController
         if (!empty($id) && is_numeric($id)) {
             $data['text_form']   = lang('CountryProvinceAdmin.text_edit');
             $data['text_submit'] = lang('CountryProvinceAdmin.button_save');
+            $breadcrumb_url      = site_url(self::MANAGE_URL . "/edit/$id");
 
             $data_form = $this->model->find($id);
             if (empty($data_form)) {
@@ -221,11 +222,12 @@ class ProvincesManage extends AdminController
         } else {
             $data['text_form']   = lang('CountryProvinceAdmin.text_add');
             $data['text_submit'] = lang('CountryProvinceAdmin.button_add');
+            $breadcrumb_url      = site_url(self::MANAGE_URL . "/add");
         }
 
         $data['errors'] = $this->errors;
 
-        $this->breadcrumb->add($data['text_form'], base_url(self::MANAGE_URL));
+        $this->breadcrumb->add($data['text_form'], $breadcrumb_url);
         $data['breadcrumb'] = $this->breadcrumb->render();
 
         add_meta(['title' => $data['text_form']], $this->themes);

@@ -406,6 +406,7 @@ class Manage extends AdminController
             }
 
             $data['text_form'] = lang('Admin.text_edit');
+            $breadcrumb_url    = site_url(self::MANAGE_URL . "/edit/$id");
 
             // display the edit user form
             $data['edit_data'] = $data_form;
@@ -417,12 +418,13 @@ class Manage extends AdminController
                 $data['url']       = $this->request->getGet('url');
             }
 
-            $data['text_form']   = lang('Admin.text_add');
+            $data['text_form'] = lang('Admin.text_add');
+            $breadcrumb_url    = site_url(self::MANAGE_URL . "/add");
         }
 
         $data['errors'] = $this->errors;
 
-        $this->breadcrumb->add($data['text_form'], base_url(self::MANAGE_URL));
+        $this->breadcrumb->add($data['text_form'], $breadcrumb_url);
         $data['breadcrumb'] = $this->breadcrumb->render();
 
         add_meta(['title' => $data['text_form']], $this->themes);
