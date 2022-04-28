@@ -17,10 +17,7 @@ class LengthClassesManage extends AdminController
     {
         parent::__construct();
 
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'));
 
         $this->model = new LengthClassModel();
         $this->model_lang = new LengthClassLangModel();
@@ -37,46 +34,31 @@ class LengthClassesManage extends AdminController
 	{
         add_meta(['title' => lang('ProductLengthClassAdmin.heading_title')], $this->themes);
 
-        $length_class_id = $this->request->getGet('length_class_id');
-        $name     = $this->request->getGet('name');
-        $limit    = $this->request->getGet('limit');
-        $sort     = $this->request->getGet('sort');
-        $order    = $this->request->getGet('order');
+        $limit       = $this->request->getGet('limit');
+        $sort        = $this->request->getGet('sort');
+        $order       = $this->request->getGet('order');
+        $filter_keys = ['length_class_id', 'name', 'limit'];
 
-        $filter = [
-            'active'   => count(array_filter($this->request->getGet(['length_class_id', 'name', 'limit']))) > 0,
-            'length_class_id' => $length_class_id ?? "",
-            'name'     => $name ?? "",
-            'limit'    => $limit,
-        ];
-
-        $list = $this->model->getAllByFilter($filter, $sort, $this->request->getGet('order'));
-
-        $url = "";
-        if (!empty($length_class_id)) {
-            $url .= '&length_class_id=' . $length_class_id;
-        }
-        if (!empty($name)) {
-            $url .= '&name=' . urlencode(html_entity_decode($name, ENT_QUOTES, 'UTF-8'));
-        }
-        if (!empty($limit)) {
-            $url .= '&limit=' . $limit;
-        }
+        $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
         $this->breadcrumb->add(lang('ProductAdmin.heading_title'), site_url('products/manage'));
         $this->breadcrumb->add(lang('ProductLengthClassAdmin.heading_title'), site_url(self::MANAGE_URL));
 
 	    $data = [
-            'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($limit),
-            'pager'      => $list->pager,
-            'filter'     => $filter,
-            'sort'       => empty($sort) ? 'length_class_id' : $sort,
-            'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'        => $url,
+            'breadcrumb'    => $this->breadcrumb->render(),
+            'list'          => $list->paginate($limit),
+            'pager'         => $list->pager,
+            'sort'          => empty($sort) ? 'length_class_id' : $sort,
+            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url'           => $this->getUrlFilter($filter_keys),
+            'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
-        $this->themes::load('length_classes/list', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('length_classes/list', $data);
 	}
 
     public function add()
@@ -183,7 +165,11 @@ class LengthClassesManage extends AdminController
 
         $data['breadcrumb'] = $this->breadcrumb->render();
 
-        $this->themes::load('length_classes/form', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('length_classes/form', $data);
     }
 
     private function _validateForm()
