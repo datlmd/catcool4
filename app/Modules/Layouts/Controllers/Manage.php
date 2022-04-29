@@ -17,10 +17,7 @@ class Manage extends AdminController
     {
         parent::__construct();
 
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'));
 
         $this->model = new LayoutModel();
         $this->route_model = new RouteModel();
@@ -40,43 +37,28 @@ class Manage extends AdminController
     {
         add_meta(['title' => lang('LayoutAdmin.heading_title')], $this->themes);
 
-        $layout_id = $this->request->getGet('layout_id');
-        $name     = $this->request->getGet('name');
-        $limit    = $this->request->getGet('limit');
-        $sort     = $this->request->getGet('sort');
-        $order    = $this->request->getGet('order');
+        $limit       = $this->request->getGet('limit');
+        $sort        = $this->request->getGet('sort');
+        $order       = $this->request->getGet('order');
+        $filter_keys = ['layout_id', 'name', 'limit'];
 
-        $filter = [
-            'active'   => count(array_filter($this->request->getGet(['layout_id', 'name', 'limit']))) > 0,
-            'layout_id' => $layout_id ?? "",
-            'name'     => $name ?? "",
-            'limit'    => $limit,
-        ];
-
-        $list = $this->model->getAllByFilter($filter, $sort, $order);
-
-        $url = "";
-        if (!empty($layout_id)) {
-            $url .= '&layout_id=' . $layout_id;
-        }
-        if (!empty($name)) {
-            $url .= '&name=' . urlencode(html_entity_decode($name, ENT_QUOTES, 'UTF-8'));
-        }
-        if (!empty($limit)) {
-            $url .= '&limit=' . $limit;
-        }
+        $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
         $data = [
-            'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($limit),
-            'pager'      => $list->pager,
-            'filter'     => $filter,
-            'sort'       => empty($sort) ? 'layout_id' : $sort,
-            'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'        => $url,
+            'breadcrumb'    => $this->breadcrumb->render(),
+            'list'          => $list->paginate($limit),
+            'pager'         => $list->pager,
+            'sort'          => empty($sort) ? 'layout_id' : $sort,
+            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url'           => $this->getUrlFilter($filter_keys),
+            'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
-        $this->themes::load('/list', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('/list', $data);
     }
 
     public function add()
@@ -283,7 +265,11 @@ class Manage extends AdminController
 
         add_meta(['title' => $data['text_form']], $this->themes);
 
-        $this->themes::load('/form', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('/form', $data);
     }
 
     private function _validateForm($id = null)

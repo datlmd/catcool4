@@ -32,12 +32,7 @@
                                     {lang('Admin.text_name')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.name)}
-                                        {assign var="name" value="`$edit_data.name`"}
-                                    {else}
-                                        {assign var="name" value=""}
-                                    {/if}
-                                    <input type="text" name="name" value="{old('name', $name)}" id="name" class="form-control {if $validator->hasError('name')}is-invalid{/if}">
+                                    <input type="text" name="name" value="{old('name', $edit_data.name)}" id="name" class="form-control {if $validator->hasError('name')}is-invalid{/if}">
                                     <div class="invalid-feedback">{$validator->getError("name")}</div>
                                 </div>
                             </div>
@@ -47,12 +42,7 @@
                                     {lang('LayoutActionAdmin.text_controller')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.controller)}
-                                        {assign var="controller" value="`$edit_data.controller`"}
-                                    {else}
-                                        {assign var="controller" value=""}
-                                    {/if}
-                                    <input type="text" name="controller" value="{old('controller', $controller)}" id="controller" class="form-control {if $validator->hasError('controller')}is-invalid{/if}">
+                                    <input type="text" name="controller" value="{old('controller', $edit_data.controller)}" id="controller" class="form-control {if $validator->hasError('controller')}is-invalid{/if}">
                                     <div class="invalid-feedback">{$validator->getError("controller")}</div>
                                 </div>
                             </div>
@@ -62,12 +52,7 @@
                                     {lang('LayoutActionAdmin.text_action')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.action)}
-                                        {assign var="action" value="`$edit_data.action`"}
-                                    {else}
-                                        {assign var="action" value=""}
-                                    {/if}
-                                    <input type="text" name="action" value="{old('action', $action)}" id="action" class="form-control {if $validator->hasError('action')}is-invalid{/if}">
+                                    <input type="text" name="action" value="{old('action', $edit_data.action)}" id="action" class="form-control {if $validator->hasError('action')}is-invalid{/if}">
                                     <div class="invalid-feedback">{$validator->getError("action")}</div>
                                 </div>
                             </div>

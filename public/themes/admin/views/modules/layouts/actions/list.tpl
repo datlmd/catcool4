@@ -13,7 +13,7 @@
 				{include file=get_theme_path('views/inc/button_translate.tpl') translate_frontend=lang('LayoutActionAdmin.translate_frontend_id') translate_admin=lang('LayoutActionAdmin.translate_admin_id')}
 			</div>
 		</div>
-		<div class="row collapse {if !empty($filter.active)}show{/if}" id="filter_manage">
+		<div class="row collapse {if !empty($filter_active)}show{/if}" id="filter_manage">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 				<div class="card">
 					<h5 class="card-header"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
@@ -22,15 +22,15 @@
 							<div class="row">
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.filter_name')}
-									{form_input('name', set_value('name', $filter.name), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_name')])}
+									{form_input('name', set_value('name', $request->getGet('name'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_name')])}
 								</div>
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.filter_id')}
-									{form_input('layout_action_id', set_value('layout_action_id', $filter.layout_action_id), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
+									{form_input('layout_action_id', set_value('layout_action_id', $request->getGet('layout_action_id'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
 								</div>
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.text_limit')}
-									{form_dropdown('limit', get_list_limit(), set_value('limit', $filter.limit), ['class' => 'form-control form-control-sm'])}
+									{form_dropdown('limit', get_list_limit(), set_value('limit', $request->getGet('limit')), ['class' => 'form-control form-control-sm'])}
 								</div>
 								<div class="col-12 text-end">
 									<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('Admin.filter_submit')}</button>
