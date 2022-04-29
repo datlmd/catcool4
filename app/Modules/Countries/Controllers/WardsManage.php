@@ -17,10 +17,7 @@ class WardsManage extends AdminController
     {
         parent::__construct();
 
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'));
 
         $this->model = new WardModel();
 
@@ -38,39 +35,20 @@ class WardsManage extends AdminController
     {
         $sort        = $this->request->getGet('sort');
         $order       = $this->request->getGet('order');
-        $district_id = $this->request->getGet('district_id');
-        $name        = $this->request->getGet('name');
         $limit       = $this->request->getGet('limit');
+        $filter_keys = ['district_id', 'name', 'limit'];
 
-        $filter = [
-            'active'     => count(array_filter($this->request->getGet(['district_id', 'name', 'limit']))) > 0,
-            'district_id' => $district_id ?? "",
-            'name'       => $name ?? "",
-            'limit'      => $limit,
-        ];
-
-        $list = $this->model->getAllByFilter($filter, $sort, $order);
-
-        $url = "";
-        if (!empty($district_id)) {
-            $url .= '&district_id=' . $district_id;
-        }
-        if (!empty($name)) {
-            $url .= '&name=' . urlencode(html_entity_decode($name, ENT_QUOTES, 'UTF-8'));
-        }
-        if (!empty($limit)) {
-            $url .= '&limit=' . $limit;
-        }
+        $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
         $data = [
-            'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($limit),
-            'pager'      => $list->pager,
-            'total'      => $list->pager->getPerPage(),
-            'filter'     => $filter,
-            'sort'       => $sort ?? 'district_id',
-            'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'        => $url,
+            'breadcrumb'    => $this->breadcrumb->render(),
+            'list'          => $list->paginate($limit),
+            'pager'         => $list->pager,
+            'total'         => $list->pager->getPerPage(),
+            'sort'          => $sort ?? 'district_id',
+            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url'           => $this->getUrlFilter($filter_keys),
+            'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
         $province_model = new ProvinceModel();
@@ -80,7 +58,11 @@ class WardsManage extends AdminController
         $data['district_list'] = $district_model->getListDisplay();
 
         add_meta(['title' => lang("CountryWardAdmin.heading_title")], $this->themes);
-        $this->themes::load('wards/list', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('wards/list', $data);
     }
 
     public function add()
@@ -255,7 +237,11 @@ class WardsManage extends AdminController
 
         add_meta(['title' => $data['text_form']], $this->themes);
 
-        $this->themes::load('wards/form', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('wards/form', $data);
     }
 
     private function _validateForm()

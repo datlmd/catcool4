@@ -33,12 +33,7 @@
                                     {lang('Admin.text_name')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.name)}
-                                        {assign var="name" value="`$edit_data.name`"}
-                                    {else}
-                                        {assign var="name" value=""}
-                                    {/if}
-                                    <input type="text" name="name" value="{old('name', $name)}" id="name" class="form-control {if $validator->hasError('name')}is-invalid{/if}">
+                                    <input type="text" name="name" value="{old('name', $edit_data.name)}" id="name" class="form-control {if $validator->hasError('name')}is-invalid{/if}">
                                     <div class="invalid-feedback">{$validator->getError("name")}</div>
                                 </div>
                             </div>
@@ -47,12 +42,7 @@
                                     {lang('CountryAdmin.text_formal_name')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.formal_name)}
-                                        {assign var="formal_name" value="`$edit_data.formal_name`"}
-                                    {else}
-                                        {assign var="formal_name" value=""}
-                                    {/if}
-                                    <input type="text" name="formal_name" value="{old('formal_name', $formal_name)}" id="formal_name" class="form-control">
+                                    <input type="text" name="formal_name" value="{old('formal_name', $edit_data.formal_name)}" id="formal_name" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -60,12 +50,7 @@
                                     {lang('CountryAdmin.text_country_code')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.country_code)}
-                                        {assign var="country_code" value="`$edit_data.country_code`"}
-                                    {else}
-                                        {assign var="country_code" value=""}
-                                    {/if}
-                                    <input type="text" name="country_code" value="{old('country_code', $country_code)}" id="country_code" class="form-control">
+                                    <input type="text" name="country_code" value="{old('country_code', $edit_data.country_code)}" id="country_code" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -73,12 +58,7 @@
                                     {lang('CountryAdmin.text_country_code3')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.country_code3)}
-                                        {assign var="country_code3" value="`$edit_data.country_code3`"}
-                                    {else}
-                                        {assign var="country_code3" value=""}
-                                    {/if}
-                                    <input type="text" name="country_code3" value="{old('country_code3', $country_code3)}" id="country_code3" class="form-control">
+                                    <input type="text" name="country_code3" value="{old('country_code3', $edit_data.country_code3)}" id="country_code3" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -86,12 +66,7 @@
                                     {lang('CountryAdmin.text_country_type')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.country_type)}
-                                        {assign var="country_type" value="`$edit_data.country_type`"}
-                                    {else}
-                                        {assign var="country_type" value=""}
-                                    {/if}
-                                    <input type="text" name="country_type" value="{old('country_type', $country_type)}" id="country_type" class="form-control">
+                                    <input type="text" name="country_type" value="{old('country_type', $edit_data.country_type)}" id="country_type" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -99,12 +74,7 @@
                                     {lang('CountryAdmin.text_country_sub_type')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.country_sub_type)}
-                                        {assign var="country_sub_type" value="`$edit_data.country_sub_type`"}
-                                    {else}
-                                        {assign var="country_sub_type" value=""}
-                                    {/if}
-                                    <input type="text" name="country_sub_type" value="{old('country_sub_type', $country_sub_type)}" id="country_sub_type" class="form-control">
+                                    <input type="text" name="country_sub_type" value="{old('country_sub_type', $edit_data.country_sub_type)}" id="country_sub_type" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -112,12 +82,7 @@
                                     {lang('CountryAdmin.text_sovereignty')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.sovereignty)}
-                                        {assign var="sovereignty" value="`$edit_data.sovereignty`"}
-                                    {else}
-                                        {assign var="sovereignty" value=""}
-                                    {/if}
-                                    <input type="text" name="sovereignty" value="{old('sovereignty', $sovereignty)}" id="sovereignty" class="form-control">
+                                    <input type="text" name="sovereignty" value="{old('sovereignty', $edit_data.sovereignty)}" id="sovereignty" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -125,12 +90,7 @@
                                     {lang('CountryAdmin.text_capital')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.capital)}
-                                        {assign var="capital" value="`$edit_data.capital`"}
-                                    {else}
-                                        {assign var="capital" value=""}
-                                    {/if}
-                                    <input type="text" name="capital" value="{old('capital', $capital)}" id="capital" class="form-control">
+                                    <input type="text" name="capital" value="{old('capital', $edit_data.capital)}" id="capital" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -138,12 +98,7 @@
                                     {lang('CountryAdmin.text_currency_code')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.currency_code)}
-                                        {assign var="currency_code" value="`$edit_data.currency_code`"}
-                                    {else}
-                                        {assign var="currency_code" value=""}
-                                    {/if}
-                                    <input type="text" name="currency_code" value="{old('currency_code', $currency_code)}" id="currency_code" class="form-control">
+                                    <input type="text" name="currency_code" value="{old('currency_code', $edit_data.currency_code)}" id="currency_code" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -151,12 +106,7 @@
                                     {lang('CountryAdmin.text_currency_name')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.currency_name)}
-                                        {assign var="currency_name" value="`$edit_data.currency_name`"}
-                                    {else}
-                                        {assign var="currency_name" value=""}
-                                    {/if}
-                                    <input type="text" name="currency_name" value="{old('currency_name', $currency_name)}" id="currency_name" class="form-control">
+                                    <input type="text" name="currency_name" value="{old('currency_name', $edit_data.currency_name)}" id="currency_name" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -164,12 +114,7 @@
                                     {lang('CountryAdmin.text_telephone_code')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.telephone_code)}
-                                        {assign var="telephone_code" value="`$edit_data.telephone_code`"}
-                                    {else}
-                                        {assign var="telephone_code" value=""}
-                                    {/if}
-                                    <input type="text" name="telephone_code" value="{old('telephone_code', $telephone_code)}" id="telephone_code" class="form-control">
+                                    <input type="text" name="telephone_code" value="{old('telephone_code', $edit_data.telephone_code)}" id="telephone_code" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -177,12 +122,7 @@
                                     {lang('CountryAdmin.text_country_number')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.country_number)}
-                                        {assign var="country_number" value="`$edit_data.country_number`"}
-                                    {else}
-                                        {assign var="country_number" value=""}
-                                    {/if}
-                                    <input type="text" name="country_number" value="{old('country_number', $country_number)}" id="country_number" class="form-control">
+                                    <input type="text" name="country_number" value="{old('country_number', $edit_data.country_number)}" id="country_number" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -190,12 +130,7 @@
                                     {lang('CountryAdmin.text_internet_country_code')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.internet_country_code)}
-                                        {assign var="internet_country_code" value="`$edit_data.internet_country_code`"}
-                                    {else}
-                                        {assign var="internet_country_code" value=""}
-                                    {/if}
-                                    <input type="text" name="internet_country_code" value="{old('internet_country_code', $internet_country_code)}" id="internet_country_code" class="form-control">
+                                    <input type="text" name="internet_country_code" value="{old('internet_country_code', $edit_data.internet_country_code)}" id="internet_country_code" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -203,12 +138,7 @@
                                     {lang('CountryAdmin.text_flags')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.flags)}
-                                        {assign var="flags" value="`$edit_data.flags`"}
-                                    {else}
-                                        {assign var="flags" value=""}
-                                    {/if}
-                                    <input type="text" name="flags" value="{old('flags', $flags)}" id="flags" class="form-control">
+                                    <input type="text" name="flags" value="{old('flags', $edit_data.flags)}" id="flags" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -216,12 +146,7 @@
                                     {lang('Admin.text_sort_order')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.sort_order)}
-                                        {assign var="sort_order" value="`$edit_data.sort_order`"}
-                                    {else}
-                                        {assign var="sort_order" value="0"}
-                                    {/if}
-                                    <input type="number" name="sort_order" value="{old('sort_order', $sort_order)}" id="sort_order" class="form-control">
+                                    <input type="number" name="sort_order" value="{old('sort_order', $edit_data.sort_order)|default:0}" id="sort_order" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -229,17 +154,12 @@
                                     {lang('Admin.text_published')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.published)}
-                                        {assign var="published" value="`$edit_data.published`"}
-                                    {else}
-                                        {assign var="published" value="1"}
-                                    {/if}
                                     <label class="form-check form-check-inline ms-2 mt-2">
-                                        <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $published) eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
+                                        <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $edit_data.published)|default:1 eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
                                         <label class="form-check-label" for="published_on">ON</label>
                                     </label>
                                     <label class="form-check form-check-inline me-2 mt-2">
-                                        <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $published) eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
+                                        <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $edit_data.published)|default:1 eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
                                         <label class="form-check-label" for="published_off">OFF</label>
                                     </label>
                                 </div>

@@ -16,10 +16,7 @@ class DistrictsManage extends AdminController
     {
         parent::__construct();
 
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'));
 
         $this->model = new DistrictModel();
 
@@ -35,48 +32,33 @@ class DistrictsManage extends AdminController
 
     public function index()
     {
-        $sort       = $this->request->getGet('sort');
-        $order      = $this->request->getGet('order');
-        $province_id = $this->request->getGet('province_id');
-        $name       = $this->request->getGet('name');
-        $limit      = $this->request->getGet('limit');
+        $sort        = $this->request->getGet('sort');
+        $order       = $this->request->getGet('order');
+        $limit       = $this->request->getGet('limit');
+        $filter_keys = ['province_id', 'name', 'limit'];
 
-        $filter = [
-            'active'     => count(array_filter($this->request->getGet(['province_id', 'name', 'limit']))) > 0,
-            'province_id' => $province_id ?? "",
-            'name'       => $name ?? "",
-            'limit'      => $limit,
-        ];
-
-        $list = $this->model->getAllByFilter($filter, $sort, $order);
-
-        $url = "";
-        if (!empty($province_id)) {
-            $url .= '&province_id=' . $province_id;
-        }
-        if (!empty($name)) {
-            $url .= '&name=' . urlencode(html_entity_decode($name, ENT_QUOTES, 'UTF-8'));
-        }
-        if (!empty($limit)) {
-            $url .= '&limit=' . $limit;
-        }
+        $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
         $data = [
-            'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($limit),
-            'pager'      => $list->pager,
-            'total'      => $list->pager->getPerPage(),
-            'filter'     => $filter,
-            'sort'       => $sort ?? 'district_id',
-            'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'        => $url,
+            'breadcrumb'    => $this->breadcrumb->render(),
+            'list'          => $list->paginate($limit),
+            'pager'         => $list->pager,
+            'total'         => $list->pager->getPerPage(),
+            'sort'          => $sort ?? 'district_id',
+            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url'           => $this->getUrlFilter($filter_keys),
+            'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
         $province_model = new ProvinceModel();
         $data['province_list'] = $province_model->getListDisplay();
 
         add_meta(['title' => lang("CountryDistrictAdmin.heading_title")], $this->themes);
-        $this->themes::load('districts/list', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('districts/list', $data);
     }
 
     public function add()
@@ -241,7 +223,11 @@ class DistrictsManage extends AdminController
 
         add_meta(['title' => $data['text_form']], $this->themes);
 
-        $this->themes::load('districts/form', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('districts/form', $data);
     }
 
     private function _validateForm()

@@ -13,7 +13,7 @@
 				{include file=get_theme_path('views/inc/button_translate.tpl') translate_admin=lang('CountryProvinceAdmin.translate_admin_id')}
 			</div>
 		</div>
-		<div class="row collapse {if !empty($filter.active)}show{/if}" id="filter_manage">
+		<div class="row collapse {if !empty($filter_active)}show{/if}" id="filter_manage">
 			<div class="col-12">
 				<div class="card">
 					<h5 class="card-header"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
@@ -22,16 +22,16 @@
 							<div class="row">
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.filter_name')}
-									{form_input('name', old('name', $filter.name), ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_name')])}
+									{form_input('name', old('name', $request->getGet('name'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_name')])}
 								</div>
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('CountryProvinceAdmin.text_country')}
-									{form_dropdown('country_id', $country_list, old('country_id', $filter.country_id), ['class' => 'form-control'])}
+									{form_dropdown('country_id', $country_list, old('country_id', $request->getGet('country_id'))|default:'', ['class' => 'form-control'])}
 								</div>
 
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 									{lang('Admin.text_limit')}
-									{form_dropdown('limit', get_list_limit(), old('limit', $filter.limit), ['class' => 'form-control form-control-sm'])}
+									{form_dropdown('limit', get_list_limit(), old('limit', $request->getGet('limit')), ['class' => 'form-control form-control-sm'])}
 								</div>
 								<div class="col-12 text-end">
 									<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('Admin.filter_submit')}</button>

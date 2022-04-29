@@ -32,12 +32,7 @@
                                     {lang('Admin.text_name')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.name)}
-                                        {assign var="name" value="`$edit_data.name`"}
-                                    {else}
-                                        {assign var="name" value=""}
-                                    {/if}
-                                    <input type="text" name="name" value="{old('name', $name)}" id="name" class="form-control {if $validator->hasError('name')}is-invalid{/if}">
+                                    <input type="text" name="name" value="{old('name', $edit_data.name)}" id="name" class="form-control {if $validator->hasError('name')}is-invalid{/if}">
                                     <div class="invalid-feedback">{$validator->getError("name")}</div>
                                 </div>
                             </div>
@@ -46,12 +41,7 @@
                                     {lang('CountryDistrictAdmin.text_type')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.type)}
-                                        {assign var="type" value="`$edit_data.type`"}
-                                    {else}
-                                        {assign var="type" value=""}
-                                    {/if}
-                                    <input type="text" name="type" value="{old('type', $type)}" id="type" class="form-control">
+                                    <input type="text" name="type" value="{old('type', $edit_data.type)}" id="type" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -59,12 +49,7 @@
                                     {lang('CountryDistrictAdmin.text_lati_long_tude')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.lati_long_tude)}
-                                        {assign var="lati_long_tude" value="`$edit_data.lati_long_tude`"}
-                                    {else}
-                                        {assign var="lati_long_tude" value=""}
-                                    {/if}
-                                    <input type="text" name="lati_long_tude" value="{old('lati_long_tude', $lati_long_tude)}" id="lati_long_tude" class="form-control">
+                                    <input type="text" name="lati_long_tude" value="{old('lati_long_tude', $edit_data.lati_long_tude)}" id="lati_long_tude" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -72,12 +57,7 @@
                                     {lang('Admin.text_sort_order')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.sort_order)}
-                                        {assign var="sort_order" value="`$edit_data.sort_order`"}
-                                    {else}
-                                        {assign var="sort_order" value="0"}
-                                    {/if}
-                                    <input type="number" name="sort_order" value="{old('sort_order', $sort_order)}" id="sort_order" class="form-control">
+                                    <input type="number" name="sort_order" value="{old('sort_order', $edit_data.sort_order)|default:0}" id="sort_order" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -85,12 +65,7 @@
                                     {lang('CountryDistrictAdmin.text_country')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.country_id)}
-                                        {assign var="country_id" value="{old('country_id', $edit_data.country_id)}"}
-                                    {else}
-                                        {assign var="country_id" value=""}
-                                    {/if}
-                                    {form_dropdown('country_id', $country_list, $country_id, ['class' => 'form-control country-changed'])}
+                                    {form_dropdown('country_id', $country_list, old('country_id', $edit_data.country_id), ['class' => 'form-control country-changed'])}
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -98,12 +73,7 @@
                                     {lang('CountryDistrictAdmin.text_province')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.province_id)}
-                                        {assign var="province_id" value="{old('province_id', $edit_data.province_id)}"}
-                                    {else}
-                                        {assign var="province_id" value=""}
-                                    {/if}
-                                    {form_dropdown('province_id', $province_list, $province_id, ['class' => 'form-control province-changed'])}
+                                    {form_dropdown('province_id', $province_list, old('province_id', $edit_data.province_id), ['class' => 'form-control province-changed'])}
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -111,17 +81,12 @@
                                     {lang('Admin.text_published')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {if isset($edit_data.published)}
-                                        {assign var="published" value="`$edit_data.published`"}
-                                    {else}
-                                        {assign var="published" value="1"}
-                                    {/if}
                                     <label class="form-check form-check-inline ms-2 mt-2">
-                                        <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $published) eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
+                                        <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $edit_data.published)|default:1 eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
                                         <label class="form-check-label" for="published_on">ON</label>
                                     </label>
                                     <label class="form-check form-check-inline me-2 mt-2">
-                                        <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $published) eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
+                                        <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $edit_data.published)|default:1 eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
                                         <label class="form-check-label" for="published_off">OFF</label>
                                     </label>
                                 </div>

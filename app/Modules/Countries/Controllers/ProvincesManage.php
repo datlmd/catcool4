@@ -15,10 +15,7 @@ class ProvincesManage extends AdminController
     {
         parent::__construct();
 
-        $this->themes->setTheme(config_item('theme_admin'))
-            ->addPartial('header')
-            ->addPartial('footer')
-            ->addPartial('sidebar');
+        $this->themes->setTheme(config_item('theme_admin'));
 
         $this->model = new ProvinceModel();
 
@@ -34,48 +31,33 @@ class ProvincesManage extends AdminController
 
     public function index()
     {
-        $sort       = $this->request->getGet('sort');
-        $order      = $this->request->getGet('order');
-        $country_id = $this->request->getGet('country_id');
-        $name       = $this->request->getGet('name');
-        $limit      = $this->request->getGet('limit');
+        $sort        = $this->request->getGet('sort');
+        $order       = $this->request->getGet('order');
+        $limit       = $this->request->getGet('limit');
+        $filter_keys = ['country_id', 'name', 'limit'];
 
-        $filter = [
-            'active'     => count(array_filter($this->request->getGet(['country_id', 'name', 'limit']))) > 0,
-            'country_id' => $country_id ?? "",
-            'name'       => $name ?? "",
-            'limit'      => $limit,
-        ];
-
-        $list = $this->model->getAllByFilter($filter, $sort, $order);
-
-        $url = "";
-        if (!empty($country_id)) {
-            $url .= '&country_id=' . $country_id;
-        }
-        if (!empty($name)) {
-            $url .= '&name=' . urlencode(html_entity_decode($name, ENT_QUOTES, 'UTF-8'));
-        }
-        if (!empty($limit)) {
-            $url .= '&limit=' . $limit;
-        }
+        $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
         $data = [
-            'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($limit),
-            'pager'      => $list->pager,
-            'total'      => $list->pager->getPerPage(),
-            'filter'     => $filter,
-            'sort'       => $sort ?? 'province_id',
-            'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'        => $url,
+            'breadcrumb'    => $this->breadcrumb->render(),
+            'list'          => $list->paginate($limit),
+            'pager'         => $list->pager,
+            'total'         => $list->pager->getPerPage(),
+            'sort'          => $sort ?? 'province_id',
+            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url'           => $this->getUrlFilter($filter_keys),
+            'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
         $country_model = new CountryModel();
         $data['country_list'] = $country_model->getListDisplay();
 
         add_meta(['title' => lang("CountryProvinceAdmin.heading_title")], $this->themes);
-        $this->themes::load('provinces/list', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('provinces/list', $data);
     }
 
     public function add()
@@ -232,7 +214,11 @@ class ProvincesManage extends AdminController
 
         add_meta(['title' => $data['text_form']], $this->themes);
 
-        $this->themes::load('provinces/form', $data);
+        $this->themes
+            ->addPartial('header')
+            ->addPartial('footer')
+            ->addPartial('sidebar')
+            ::load('provinces/form', $data);
     }
 
     private function _validateForm()
