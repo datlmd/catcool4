@@ -13,9 +13,6 @@
             </div>
             {if !empty($edit_data.article_id)}
                 {form_hidden('article_id', $edit_data.article_id)}
-                {assign var="article_id" value="`$edit_data.article_id`"}
-            {else}
-                {assign var="article_id" value=""}
             {/if}
             <div class="row">
                 {if !empty(print_flash_alert())}

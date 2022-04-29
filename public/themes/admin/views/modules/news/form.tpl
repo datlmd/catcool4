@@ -104,11 +104,6 @@
                                         </div>
                                         <div class="col-md-4 col-sm-4 col-6">
                                             Thumbnail Robot Facebook<br/>
-                                            {if isset($edit_data.images.robot_fb)}
-                                                {assign var="images_robot_fb" value="`$edit_data.images.robot_fb`"}
-                                            {else}
-                                                {assign var="images_robot_fb" value=""}
-                                            {/if}
                                             <a href="{$edit_data.images.robot_fb}" data-lightbox="photos">
                                                 <img src="{old('images.robot_fb', $edit_data.images.robot_fb)}" class="img-thumbnail me-1 img-fluid" alt="" title="" />
                                             </a>
