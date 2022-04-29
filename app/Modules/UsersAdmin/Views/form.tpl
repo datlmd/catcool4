@@ -65,11 +65,22 @@
                             {/if}
                             <div class="form-group row border-top mt-2 pt-3">
                                 <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
-                                    {lang('Admin.text_full_name')}
+                                    {lang('Admin.text_first_name')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
                                     <input type="text" name="first_name" value='{old("first_name", $edit_data.first_name)}' id="first_name" class="form-control {if $validator->hasError('first_name')}is-invalid{/if}">
+                                    <small>{lang('Admin.help_first_name')}</small>
                                     <div class="invalid-feedback">{$validator->getError("first_name")}</div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 col-form-label text-sm-end">
+                                    {lang('Admin.text_last_name')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-7">
+                                    <input type="text" name="last_name" value='{old("last_name", $edit_data.last_name)}' id="last_name" class="form-control {if $validator->hasError('last_name')}is-invalid{/if}">
+                                    <small>{lang('Admin.help_last_name')}</small>
+                                    <div class="invalid-feedback">{$validator->getError("last_name")}</div>
                                 </div>
                             </div>
                             <div class="form-group row">

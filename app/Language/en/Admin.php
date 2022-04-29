@@ -128,6 +128,8 @@ return [
 	"filter_id" => "ID",
 	"filter_name" => "Name",
 	"filter_submit" => "Filter",
+	"help_first_name" => "Example: John Smith - First name: John",
+	"help_last_name" => "Example: John Smith - Last name: Smith",
 	"login_heading" => "Login",
 	"module_album" => "Albums",
 	"module_article" => "Articles",

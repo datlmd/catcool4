@@ -123,6 +123,7 @@ class Manage extends AdminController
                 'email'      => strtolower($this->request->getPost('email')),
                 'password'   => $this->auth_model->hashPassword($this->request->getPost('password')),
                 'first_name' => $this->request->getPost('first_name'),
+                'last_name'  => $this->request->getPost('last_name'),
                 'company'    => $this->request->getPost('company'),
                 'phone'      => $this->request->getPost('phone'),
                 'address'    => $this->request->getPost('address'),
@@ -322,6 +323,7 @@ class Manage extends AdminController
             $edit_data = [
                 'email'      => strtolower($this->request->getPost('email')),
                 'first_name' => $this->request->getPost('first_name'),
+                'last_name'  => $this->request->getPost('last_name'),
                 'company'    => $this->request->getPost('company'),
                 'phone'      => $this->request->getPost('phone'),
                 'address'    => $this->request->getPost('address'),
