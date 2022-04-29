@@ -625,13 +625,13 @@ $(function () {
 
     if ($("form").length) {
         //stop enter in form
-        $("form").on("keypress", function (e) {
-            var keyPressed = e.keyCode || e.which;
-            if (keyPressed === 13) {
-                e.preventDefault();
-                return false;
-            }
-        });
+        // $("form").on("keypress", function (e) {
+        //     var keyPressed = e.keyCode || e.which;
+        //     if (keyPressed === 13) {
+        //         e.preventDefault();
+        //         return false;
+        //     }
+        // });
     }
 
     //khong cho leave page khi dang edit
