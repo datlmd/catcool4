@@ -80,7 +80,7 @@
 											{/if}
 											{anchor("$manage_url/edit/`$item.customer_id`", htmlspecialchars($item.username, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}
 										</td>
-										<td class="text-center">{$item.first_name} {$item.last_name}</td>
+										<td class="text-center">{full_name($item.first_name, $item.last_name)}</td>
 										<td>{htmlspecialchars($item.email, ENT_QUOTES,'UTF-8')}</td>
 										<td>{htmlspecialchars($item.phone, ENT_QUOTES,'UTF-8')}</td>
 										<td>

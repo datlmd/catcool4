@@ -11,7 +11,7 @@
                 {if !empty($list_delete)}
                     <ul class="list-unstyled bullet-check ms-5">
                         {foreach $list_delete as $item}
-                            <li class="text-danger">#{$item.customer_id}: {$item.username} ({$item.first_name})</li>
+                            <li class="text-danger">#{$item.customer_id}: {$item.username} ({full_name($item.first_name, $item.last_name)})</li>
                         {/foreach}
                     </ul>
                     <div class="form-group text-center clearfix">
@@ -27,7 +27,7 @@
                 <div class="text-primary">{lang('error_permission_super_admin')}</div>
                 <ul class="list-unstyled bullet-check font-14">
                     {foreach $list_undelete as $item}
-                        <li class="text-muted">#{$item.customer_id}: {$item.username} ({$item.first_name})</li>
+                        <li class="text-muted">#{$item.customer_id}: {$item.username} ({full_name($item.first_name, $item.last_name)})</li>
                     {/foreach}
                 </ul>
                 {if empty($list_delete)}

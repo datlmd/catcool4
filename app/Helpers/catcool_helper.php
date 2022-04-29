@@ -259,7 +259,7 @@ if (!function_exists('format_lang_form'))
     }
 }
 
-if(!function_exists('http_get_query'))
+if (!function_exists('http_get_query'))
 {
     function http_get_query()
     {
@@ -341,7 +341,7 @@ if (!function_exists('fetch_tree'))
     }
 }
 
-if(!function_exists('draw_tree_output'))
+if (!function_exists('draw_tree_output'))
 {
     /**
      * <select name="parent_id" id="parent_id" size="8" class="form-control">
@@ -437,7 +437,7 @@ if(!function_exists('draw_tree_output'))
     }
 }
 
-if(!function_exists('draw_tree_output_name'))
+if (!function_exists('draw_tree_output_name'))
 {
     /**
      * @param $list_data
@@ -631,7 +631,7 @@ if (!function_exists('get_list_limit'))
     }
 }
 
-if(!function_exists('image_domain'))
+if (!function_exists('image_domain'))
 {
     function image_domain($path = null)
     {
@@ -643,7 +643,7 @@ if(!function_exists('image_domain'))
     }
 }
 
-if(!function_exists('image_default_url'))
+if (!function_exists('image_default_url'))
 {
     function image_default_url()
     {
@@ -655,7 +655,7 @@ if(!function_exists('image_default_url'))
     }
 }
 
-if(!function_exists('image_default_path'))
+if (!function_exists('image_default_path'))
 {
     function image_default_path()
     {
@@ -667,7 +667,7 @@ if(!function_exists('image_default_path'))
     }
 }
 
-if(!function_exists('get_image_resize_info'))
+if (!function_exists('get_image_resize_info'))
 {
     function get_image_resize_info($width, $height)
     {
@@ -708,7 +708,7 @@ if(!function_exists('get_image_resize_info'))
     }
 }
 
-if(!function_exists('image_action'))
+if (!function_exists('image_action'))
 {
     /**
      * Load hinh tu action image
@@ -736,7 +736,7 @@ if(!function_exists('image_action'))
     }
 }
 
-if(!function_exists('image_url'))
+if (!function_exists('image_url'))
 {
     function image_url($image = null, $width = null, $height = null)
     {
@@ -765,7 +765,7 @@ if(!function_exists('image_url'))
     }
 }
 
-if(!function_exists('image_root'))
+if (!function_exists('image_root'))
 {
     function image_root($image = null)
     {
@@ -780,7 +780,7 @@ if(!function_exists('image_root'))
     }
 }
 
-if(!function_exists('image_thumb_url'))
+if (!function_exists('image_thumb_url'))
 {
     /**
      * @param null $image
@@ -931,7 +931,7 @@ if ( ! function_exists('save_image_from_url'))
     }
 }
 
-if(!function_exists('move_file_tmp'))
+if (!function_exists('move_file_tmp'))
 {
     /**
      * copy file den thu muc moi va xoa file cu
@@ -982,7 +982,7 @@ if(!function_exists('move_file_tmp'))
     }
 }
 
-if(!function_exists('delete_cache'))
+if (!function_exists('delete_cache'))
 {
     function delete_cache($is_all = false)
     {
@@ -1006,7 +1006,7 @@ if(!function_exists('delete_cache'))
 }
 
 
-if(!function_exists('delete_file_upload_tmp'))
+if (!function_exists('delete_file_upload_tmp'))
 {
     function delete_file_upload_tmp($field_name_tmp = null, $expired_time = 7200)
     {
@@ -1039,7 +1039,7 @@ if(!function_exists('delete_file_upload_tmp'))
     }
 }
 
-if(!function_exists('delete_file_upload'))
+if (!function_exists('delete_file_upload'))
 {
     function delete_file_upload($file_name)
     {
@@ -1060,7 +1060,7 @@ if(!function_exists('delete_file_upload'))
  * @param string $sub_link_file return
  * @return array 'dir' full path, 'sub_dir' path yymmdd
  */
-if(!function_exists('get_folder_upload'))
+if (!function_exists('get_folder_upload'))
 {
     function get_folder_upload($folder_uri, $is_make_ymd_folder = TRUE)
     {
@@ -1097,7 +1097,7 @@ if(!function_exists('get_folder_upload'))
     }
 }
 
-if(!function_exists('get_upload_path'))
+if (!function_exists('get_upload_path'))
 {
     function get_upload_path($upload_uri = NULL)
     {
@@ -1109,7 +1109,7 @@ if(!function_exists('get_upload_path'))
     }
 }
 
-if(!function_exists('get_upload_url'))
+if (!function_exists('get_upload_url'))
 {
     function get_upload_url($upload_uri = NULL)
     {
@@ -1122,7 +1122,7 @@ if(!function_exists('get_upload_url'))
 }
 
 //check field data is image or not
-if(!function_exists('is_image_link'))
+if (!function_exists('is_image_link'))
 {
     function is_image_link($field, $extension = null)
     {
@@ -1145,7 +1145,7 @@ if(!function_exists('is_image_link'))
  *
  * @param type $var
  */
-if(!function_exists('cc_debug'))
+if (!function_exists('cc_debug'))
 {
     function cc_debug($var, $is_die = TRUE)
     {
@@ -1159,7 +1159,7 @@ if(!function_exists('cc_debug'))
     }
 }
 
-if(!function_exists('standar_date'))
+if (!function_exists('standar_date'))
 {
     function get_date($format = 'Y-m-d H:i:s')
     {
@@ -1174,7 +1174,7 @@ if(!function_exists('standar_date'))
  * @param string $char Dấu phân cách dạng hiện tại
  * @return string yyyy-mm-dd
  */
-if(!function_exists('standar_date'))
+if (!function_exists('standar_date'))
 {
     function standar_date($date, $char_standar = '-', $char = '/', $show = FALSE)
     {
@@ -1222,7 +1222,7 @@ if(!function_exists('standar_date'))
     }
 }
 
-if(!function_exists('format_date'))
+if (!function_exists('format_date'))
 {
     function format_date($date, $format = FALSE, $style = FALSE)
     {
@@ -1252,7 +1252,7 @@ if(!function_exists('format_date'))
     }
 }
 
-if(!function_exists('time_ago'))
+if (!function_exists('time_ago'))
 {
     function time_ago($date, $format = 'd/m/Y, H:i')
     {
@@ -1286,7 +1286,7 @@ if(!function_exists('time_ago'))
     }
 }
 
-if(!function_exists('get_today'))
+if (!function_exists('get_today'))
 {
     function get_today($format = 'd/m/Y')
     {
@@ -1336,7 +1336,7 @@ if(!function_exists('get_today'))
  * @param int $time time add
  * @param boolean $is_add
  */
-if(!function_exists('add_time'))
+if (!function_exists('add_time'))
 {
     function add_time($date, $time, $is_add = TRUE)
     {
@@ -1353,7 +1353,7 @@ if(!function_exists('add_time'))
     }
 }
 
-if(!function_exists('get_client_ip'))
+if (!function_exists('get_client_ip'))
 {
     function get_client_ip()
     {
@@ -1378,7 +1378,7 @@ if(!function_exists('get_client_ip'))
     }
 }
 
-if(!function_exists('filter_bad_word_comment_content'))
+if (!function_exists('filter_bad_word_comment_content'))
 {
     function filter_bad_word_comment_content($content)
     {
@@ -1407,7 +1407,7 @@ if(!function_exists('filter_bad_word_comment_content'))
  *
  * @return string js global
  */
-if(!function_exists('script_global'))
+if (!function_exists('script_global'))
 {
     function script_global()
     {
@@ -1438,7 +1438,7 @@ if (!function_exists('json_output'))
     }
 }
 
-if(!function_exists('send_email'))
+if (!function_exists('send_email'))
 {
     function send_email($email_to, $email_from, $subject_title = null, $subject, $content, $reply_to = null, $bcc = null, $config = null)
     {
@@ -1506,7 +1506,7 @@ if(!function_exists('send_email'))
     }
 }
 
-if(!function_exists('get_avatar'))
+if (!function_exists('get_avatar'))
 {
     function get_avatar($avatar = null, $width = 32, $height = 32)
     {
@@ -1529,7 +1529,7 @@ if(!function_exists('get_avatar'))
     }
 }
 
-if(!function_exists('filter_sort_array'))
+if (!function_exists('filter_sort_array'))
 {
     function filter_sort_array($list, $parent_id = 0, $key_name = "id")
     {
@@ -1558,7 +1558,7 @@ if(!function_exists('filter_sort_array'))
     }
 }
 
-if(!function_exists('get_menu_by_position'))
+if (!function_exists('get_menu_by_position'))
 {
     function get_menu_by_position($position = MENU_POSITION_MAIN)
     {
@@ -1574,7 +1574,7 @@ if(!function_exists('get_menu_by_position'))
     }
 }
 
-if(!function_exists('file_get_contents_ssl'))
+if (!function_exists('file_get_contents_ssl'))
 {
     function file_get_contents_ssl($url)
     {
@@ -1593,7 +1593,7 @@ if(!function_exists('file_get_contents_ssl'))
     }
 }
 
-if(!function_exists('get_pagination_limit'))
+if (!function_exists('get_pagination_limit'))
 {
     function get_pagination_limit($is_admin = false)
     {
@@ -1614,7 +1614,7 @@ if(!function_exists('get_pagination_limit'))
     }
 }
 
-if(!function_exists('get_fonts'))
+if (!function_exists('get_fonts'))
 {
     function get_fonts()
     {
@@ -1638,7 +1638,7 @@ if(!function_exists('get_fonts'))
     }
 }
 
-if(!function_exists('add_meta'))
+if (!function_exists('add_meta'))
 {
     function add_meta($data = null, $theme, $is_admin = false)
     {
@@ -1764,7 +1764,7 @@ if(!function_exists('add_meta'))
     }
 }
 
-if(!function_exists('script_google_search'))
+if (!function_exists('script_google_search'))
 {
     function script_google_search($detail = null, $breadcrumb_list = null)
     {
@@ -1871,7 +1871,7 @@ if(!function_exists('script_google_search'))
     }
 }
 
-if(!function_exists('config_item'))
+if (!function_exists('config_item'))
 {
     function config_item($key)
     {
@@ -1884,7 +1884,7 @@ if(!function_exists('config_item'))
     }
 }
 
-if(!function_exists('pager_string'))
+if (!function_exists('pager_string'))
 {
     function pager_string($total, $limit, $offset)
     {
@@ -1901,7 +1901,7 @@ if(!function_exists('pager_string'))
     }
 }
 
-if(!function_exists('breadcrumb'))
+if (!function_exists('breadcrumb'))
 {
     function breadcrumb($breadcrumb, $theme, $title = null, $is_admin = false)
     {
@@ -1919,7 +1919,7 @@ if(!function_exists('breadcrumb'))
     }
 }
 
-if(!function_exists('page_not_found'))
+if (!function_exists('page_not_found'))
 {
     function page_not_found()
     {
@@ -1927,7 +1927,7 @@ if(!function_exists('page_not_found'))
     }
 }
 
-if(!function_exists('get_seo_extension'))
+if (!function_exists('get_seo_extension'))
 {
     function get_seo_extension($url = null)
     {
@@ -1944,5 +1944,17 @@ if(!function_exists('get_seo_extension'))
 
         $url = slugify($url);
         return sprintf("$url.%s", SEO_EXTENSION);
+    }
+}
+
+if (!function_exists('full_name'))
+{
+    function full_name($first_name, $last_name)
+    {
+        if (empty(config_item('display_full_name'))) {
+            return trim(sprintf("%s %s", $last_name, $first_name));
+        }
+
+        return trim(sprintf("%s %s", $first_name, $last_name));
     }
 }

@@ -112,7 +112,7 @@ class AuthModel extends MyModel
             'user_email'     => $user_info['email'] ?? null,
             'user_id'        => $user_info['id'], //everyone likes to overwrite id so we'll use user_id
             'user_gender'    => $user_info['gender'] ?? null,
-            'full_name'      => empty($user_info['last_name']) ? $user_info['first_name'] : $user_info['first_name'] . ' ' . $user_info['last_name'],
+            'full_name'      => full_name($user_info['first_name'], $user_info['last_name']),
             'old_last_login' => $user_info['last_login'] ?? null,
             'super_admin'    => false,
             'last_login'     => time(),

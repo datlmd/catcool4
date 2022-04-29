@@ -60,7 +60,7 @@ class Register extends UserController
             $activation_code = $this->model->activation_code;
 
             $data = [
-                'full_name'  => sprintf('%s %s', $user_info['first_name'], $user_info['last_name']),
+                'full_name'  => full_name($user_info['first_name'], $user_info['last_name']),
                 'id'         => $user_info['id'],
                 'email'      => $user_info['email'],
                 'activation' => $activation_code,

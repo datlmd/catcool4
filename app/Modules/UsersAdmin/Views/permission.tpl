@@ -25,7 +25,7 @@
                     <div class="card">
                         <h5 class="card-header"><i class="fas fa-lock-open me-2"></i>{lang('UserAdmin.text_permission_select')}</h5>
                         <div class="card-body">
-                            <h3 class="text-primary">ID#{$item_edit.id} - {$item_edit.username} ({$item_edit.first_name})</h3>
+                            <h3 class="text-primary">ID#{$item_edit.id} - {$item_edit.username} ({full_name($item_edit.first_name, $item_edit.last_name)})</h3>
                             {if !empty($permissions)}
                                 <div class="border-bottom pb-2">
                                     <div class="form-check form-check-inline">

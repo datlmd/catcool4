@@ -41,7 +41,8 @@
 					{/if}
 
 					{form_open(uri_string())}
-						<h2>Subject: {$subject}</h2>
+						<h2>Subject: [{config_item('email_subject_title')}] {$subject}</h2>
+						From: {config_item('email_from')}
 						<div class="border rounded p-4 mb-4 mt-3">{$content}</div>
 						<div class="form-group row">
 							<label class="col-12 col-sm-3 col-form-label text-sm-end">

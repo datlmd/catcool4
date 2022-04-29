@@ -675,7 +675,7 @@ class Manage extends AdminController
             $user_info = $this->model->forgotPassword($this->request->getPost('email'));
             if (!empty($user_info)) {
                 $data = [
-                    'full_name'               => $user_info['first_name'],
+                    'full_name'               => full_name($user_info['first_name'], $user_info['last_name']),
                     'username'                => $user_info['username'],
                     'forgotten_password_code' => $user_info['user_code'],
                 ];
