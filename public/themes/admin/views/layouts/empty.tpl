@@ -14,4 +14,4 @@
     }
 </style>
 {$content}
-{print_flash_alert()}
+{print_flash_alert('alert_popup')}

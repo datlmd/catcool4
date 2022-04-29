@@ -13,6 +13,9 @@
                 {if !empty($errors)}
                     {include file=get_theme_path('views/inc/alert.tpl') message=$errors type='danger'}
                 {/if}
+                {if !empty(print_flash_alert())}
+                    {print_flash_alert()}
+                {/if}
                 {form_open(uri_string())}
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="username" name="username" value="{old('username', $username)}" placeholder="{lang('Admin.text_username')}" autocomplete="off">

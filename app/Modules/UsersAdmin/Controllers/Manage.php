@@ -762,7 +762,7 @@ class Manage extends AdminController
         $data['user'] = $user;
         $data['code'] = $code;
 
-        add_meta(['title' => lang('UserAdmin.reset_password_heading')], $this->themes);
+        add_meta(['title' => lang('UserAdmin.text_reset_password_heading')], $this->themes);
 
         $this->themes->setLayout('empty')::load('reset_password', $data);
     }

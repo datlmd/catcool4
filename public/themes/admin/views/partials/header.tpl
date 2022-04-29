@@ -95,7 +95,7 @@
 					<div class="dropdown-menu dropdown-menu-end nav-user-dropdown" aria-labelledby="navbar_dropdown_user_info">
 						<div class="nav-user-info">
 							<h5 class="mb-0 text-white nav-user-name">{session('admin.full_name')}</h5>
-							<span class="status"></span><span class="ms-2">{session('admin.username')}</span>
+							<span class="status"></span><span class="text-dark">{session('admin.username')}</span>
 						</div>
 						<a class="dropdown-item" href="{site_url('users_admin/manage/edit/'|cat:session('admin.user_id'))}"><i class="fas fa-user-circle me-2"></i>{lang('Admin.text_profile')}</a>
 						{if !empty(config_item('enable_dark_mode'))}
