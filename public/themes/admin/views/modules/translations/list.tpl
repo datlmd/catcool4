@@ -1,9 +1,4 @@
 {strip}
-    {if isset($module.id)}
-        {assign var="module_id" value="`$module.id`"}
-    {else}
-        {assign var="module_id" value=""}
-    {/if}
     {form_hidden('manage_url', site_url($manage_url))}
     {csrf_field()}
     <div class="container-fluid  dashboard-content">
@@ -12,10 +7,10 @@
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('TranslationAdmin.heading_title')}
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                {if !empty($module_id)}
+                {if !empty($module.id)}
                     <button type="button" class="btn btn-sm btn-primary btn-space" data-bs-toggle="tooltip" title="{lang('TranslationAdmin.text_add')}" onclick="openPopup();"><i class="fas fa-plus"></i></button>
                     <button type="button" id="btn_save_translate" onclick="saveTranslate()" class="btn btn-sm btn-secondary btn-space" data-bs-toggle="tooltip" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
-                    <button type="button" id="btn_write_translate" onclick="writeTranslate({$module_id})" class="btn btn-sm btn-light btn-space" data-bs-toggle="tooltip" title="{lang('Admin.button_write')}"><i class="fas fa-sync me-1"></i>{lang('Admin.button_write')}</button>
+                    <button type="button" id="btn_write_translate" onclick="writeTranslate({$module.id})" class="btn btn-sm btn-light btn-space" data-bs-toggle="tooltip" title="{lang('Admin.button_write')}"><i class="fas fa-sync me-1"></i>{lang('Admin.button_write')}</button>
                 {/if}
                 <button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space me-0" data-bs-toggle="tooltip" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
                 {if strpos(previous_url(), 'translations') === false}
@@ -67,7 +62,7 @@
                                 {if !empty($module.sub_module)} <br/>{lang("TranslationAdmin.text_sub_module")}: <strong class="text-secondary">{$module.sub_module|capitalize}</strong>{/if}
                             </h5>
                         {/if}
-                        <input type="hidden" name="module_id" value="{$module_id}">
+                        <input type="hidden" name="module_id" value="{$module.id}">
                         <ul class="text-danger mb-3">
                             {foreach $file_list as $file => $permissions}
                                 <li>{$file}: <strong>{$permissions}</strong></li>
@@ -78,7 +73,7 @@
                             <div class="mb-2">{lang("TranslationAdmin.text_total")}: {count($list)}</div>
 
                             {form_open('translations/manage/save', ['id' => 'save_validationform'])}
-                                {form_hidden('module_id', $module_id)}
+                                {form_hidden('module_id', $module.id)}
                                 <div class="table-responsive">
                                     <table class="table table-striped table-hover table-bordered second">
                                         <thead>
@@ -163,16 +158,16 @@
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     {if !empty($module_list)}
-                                        {if empty($module_id)}
+                                        {if empty($module.id)}
                                             <select name="module_id" class="form-control form-control-sm">
                                                 {foreach $module_list as $value}
-                                                    <option value="{$value.id}" {if old('module_id', $module_id) eq $value.id}selected="selected"{/if}>{$value.module}{if !empty($value.sub_module)} - Sub: {$value.sub_module}{/if}</option>
+                                                    <option value="{$value.id}" {if old('module_id', $module.id) eq $value.id}selected="selected"{/if}>{$value.module}{if !empty($value.sub_module)} - Sub: {$value.sub_module}{/if}</option>
                                                 {/foreach}
                                             </select>
-                                        {elseif !empty($module_list[$module_id])}
-                                            {form_hidden('module_id', $module_id)}
+                                        {elseif !empty($module_list[$module.id])}
+                                            {form_hidden('module_id', $module.id)}
                                             <label class="col-12 col-sm-3 col-form-label">
-                                                {$module_list[$module_id].module}/{$module_list[$module_id].sub_module}
+                                                {$module_list[$module.id].module}/{$module_list[$module.id].sub_module}
                                             </label>
                                         {/if}
                                     {/if}

@@ -94,12 +94,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{lang('Admin.text_sort_order')}</label>
-                                {if !empty($edit_data.sort_order)}
-                                    {assign var="sort_order" value="`$edit_data.sort_order`"}
-                                {else}
-                                    {assign var="sort_order" value="0"}
-                                {/if}
-                                <input type="number" name="sort_order" value="{old('sort_order', $sort_order)}" id="sort_order" min="0" class="form-control">
+                                <input type="number" name="sort_order" value="{old('sort_order', $edit_data.sort_order)|default:0}" id="sort_order" min="0" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">{lang('Admin.text_parent')}</label>
