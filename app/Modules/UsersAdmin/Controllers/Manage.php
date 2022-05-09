@@ -676,15 +676,17 @@ class Manage extends AdminController
             // Generate code
             $user_info = $this->model->forgotPassword($this->request->getPost('email'));
             if (!empty($user_info)) {
+                $language = $user_info['language'];
                 $data = [
                     'full_name'               => full_name($user_info['first_name'], $user_info['last_name']),
                     'username'                => $user_info['username'],
                     'forgotten_password_code' => $user_info['user_code'],
+                    'language'                => $language
                 ];
 
                 $message       = $this->themes::view('email/admin/forgot_password', $data);
                 $subject_title = config_item('email_subject_title');
-                $subject       = lang('Email.forgot_password_subject', [$user_info['username']]);
+                $subject       = lang('Email.forgot_password_subject', [$user_info['username']], $language);
 
                 $send_email = send_email($user_info['email'], config_item('email_from'), $subject_title, $subject, $message);
                 if (!$send_email) {

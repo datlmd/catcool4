@@ -20,12 +20,12 @@
 								<span style="font-family:Helvetica Neue,Helvetica,Lucida Grande,tahoma,verdana,arial,sans-serif;font-size:16px;line-height:21px;color:#141823">
 									<span style="font-size:15px">
 										<p></p>
-										<div style="margin-top:16px;margin-bottom:20px">{lang('Email.text_dear', [ucwords($full_name)])}</div>
-										<div>{lang("Email.forgot_password_content_1")}</div>
+										<div style="margin-top:16px;margin-bottom:20px">{lang('Email.text_dear', [ucwords($full_name)], $language)}</div>
+										<div>{lang("Email.forgot_password_content_1", [], $language)}</div>
 										<p></p>
-										{lang("Email.forgot_password_content_2", [anchor('users_admin/manage/reset_password/'|cat:$forgotten_password_code, lang('Email.forgot_password_link'), 'style="color:#3b7b98"')])}
+										{lang("Email.forgot_password_content_2", [anchor('users_admin/manage/reset_password/'|cat:$forgotten_password_code, lang('Email.forgot_password_link', [], $language), 'style="color:#3b7b98"')], $language)}
 										<p></p>
-										{lang("Email.forgot_password_content_3")}
+										{lang("Email.forgot_password_content_3", [], $language)}
 										<table border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse">
 											<tbody>
 											<tr>
@@ -42,7 +42,7 @@
 																		<center>
 																			<font size="3">
 																				<span style="font-family:Helvetica Neue,Helvetica,Lucida Grande,tahoma,verdana,arial,sans-serif;white-space:nowrap;font-weight:bold;vertical-align:middle;color:#ffffff;font-weight:500;font-family:Roboto-Medium,Roboto,-apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,Lucida Grande,tahoma,verdana,arial,sans-serif;font-size:17px">
-																					{lang("Email.button_change_password")}
+																					{lang("Email.button_change_password", [], $language)}
 																				</span>
 																			</font>
 																		</center>
@@ -61,10 +61,10 @@
 										</table>
 										<br>
 										<div>
-											<span style="color:#333333;font-weight:bold">{lang("Email.forgot_password_content_4")}</span>
+											<span style="color:#333333;font-weight:bold">{lang("Email.forgot_password_content_4", [], $language)}</span>
 										</div>
-										{lang("Email.forgot_password_content_5")}<br/><br/>
-										<p style="padding-top: 10px; color: #76808f;">{lang("Email.text_signature", [ucwords(config_item('site_name'))])}</p>
+										{lang("Email.forgot_password_content_5", [], $language)}<br/><br/>
+										<p style="padding-top: 10px; color: #76808f;">{lang("Email.text_signature", [ucwords(config_item('site_name'))], $language)}</p>
 									</span>
 								</span>
 							</td>
