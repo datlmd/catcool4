@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
                     <button type="submit" class="btn btn-sm btn-space btn-primary" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
-                    <a href="{if previous_url() eq current_url() || strpos(previous_url(), $manage_url) === false}{site_url($manage_url)}{else}{previous_url()}{/if}" class="btn btn-sm btn-secondary btn-space {if !empty($edit_data.post_id)}me-0{/if}" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_cancel')}</a>
+                    <a href="{back_to($manage_url)}" class="btn btn-sm btn-secondary btn-space {if !empty($edit_data.post_id)}me-0{/if}" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_cancel')}</a>
                     {if empty($edit_data.post_id)}
                         <button type="button" class="btn btn-sm btn-light btn-space me-0" data-bs-toggle="modal" data-bs-target="#robot_news"><i class="far fa-newspaper me-1"></i>{lang('NewsAdmin.text_robot_news')}</button>
                     {/if}

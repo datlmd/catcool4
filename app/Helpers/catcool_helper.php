@@ -1958,3 +1958,38 @@ if (!function_exists('full_name'))
         return trim(sprintf("%s %s", $first_name, $last_name));
     }
 }
+
+if (!function_exists('back_to'))
+{
+    function back_to($manage_url = null)
+    {
+        $previous_url = previous_url();
+        $current_url  = current_url();
+
+        if (is_null($manage_url)) {
+            return $previous_url;
+        }
+
+        if (strpos($previous_url, $manage_url) === false || (!empty(session('cc_back_to')) && strpos(session('cc_back_to'), $manage_url) === false)) {
+            unset($_SESSION['cc_back_to']);
+        }
+
+        if (!empty(session('cc_back_to'))) {
+            $previous_url = session('cc_back_to');
+            return $previous_url;
+        }
+
+        if (previous_url() == $current_url || strpos($previous_url, $manage_url) === false
+            || strpos($previous_url, 'add') !== false
+            || strpos($previous_url, 'edit') !== false
+            || strpos($previous_url, 'delete') !== false
+            || strpos($previous_url, 'publish') !== false
+        ) {
+            return site_url($manage_url);
+        }
+
+        session()->set('cc_back_to', $previous_url);
+
+        return $previous_url;
+    }
+}
