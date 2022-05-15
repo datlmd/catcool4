@@ -1971,10 +1971,10 @@ if (!function_exists('back_to'))
         }
 
         if (strpos($previous_url, $manage_url) === false || (!empty(session('cc_back_to')) && strpos(session('cc_back_to'), $manage_url) === false)) {
-            unset($_SESSION['cc_back_to']);
+            session()->remove('cc_back_to');
         }
 
-        if (!empty(session('cc_back_to'))) {
+        if (!empty(session('cc_back_to')) && session('cc_back_to') != site_url($manage_url) && $previous_url != site_url($manage_url)) {
             $previous_url = session('cc_back_to');
             return $previous_url;
         }
@@ -1985,6 +1985,7 @@ if (!function_exists('back_to'))
             || strpos($previous_url, 'delete') !== false
             || strpos($previous_url, 'publish') !== false
         ) {
+            session()->remove('cc_back_to');
             return site_url($manage_url);
         }
 
