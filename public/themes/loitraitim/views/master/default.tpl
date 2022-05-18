@@ -45,7 +45,8 @@
 
 	{if !empty(config_item('google_adsend_enabled')) && !empty(config_item('google_adsend_client'))}
 		<!--- google adsend -->
-		<script data-ad-client="{config_item('google_adsend_client')}" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={config_item('google_adsend_client')}"
+				crossorigin="anonymous"></script>
 		<!--- end google adsend -->
 	{/if}
 
