@@ -21,4 +21,10 @@ $routes->group('products', ['namespace' => 'App\Modules\Products\Controllers'], 
     $subroutes->add('length_classes_manage/add', 'LengthClassesManage::add');
     $subroutes->add('length_classes_manage/edit/(:num)', 'LengthClassesManage::edit/$1');
     $subroutes->add('length_classes_manage/delete', 'LengthClassesManage::delete');
+
+    $subroutes->add('stock_statuses_manage', 'StockStatusesManage::index');
+    $subroutes->add('stock_statuses_manage/add', 'StockStatusesManage::add');
+    $subroutes->add('stock_statuses_manage/edit/(:num)', 'StockStatusesManage::edit/$1');
+    $subroutes->add('stock_statuses_manage/delete', 'StockStatusesManage::delete');
+    $subroutes->add('stock_statuses_manage/publish', 'StockStatusesManage::publish');
 });
