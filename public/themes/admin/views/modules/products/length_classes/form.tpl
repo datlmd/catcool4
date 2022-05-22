@@ -2,28 +2,34 @@
     {form_hidden('manage_url', site_url($manage_url))}
     <div class="container-fluid  dashboard-content">
         {form_open(uri_string(), ['id' => 'validationform'])}
-            <div class="row">
-                <div class="col-sm-7 col-12">
-                    {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('ProductLengthClassAdmin.heading_title')}
-                </div>
-                <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                    <button type="submit" class="btn btn-sm btn-space btn-primary mb-0" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
-                    <a href="{back_to($manage_url)}" class="btn btn-sm btn-space btn-secondary mb-0 me-0" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_cancel')}</a>
-                </div>
-            </div>
+
             {if !empty($edit_data.length_class_id)}
                 {form_hidden('length_class_id', $edit_data.length_class_id)}
             {/if}
             <div class="row">
-                {if !empty(print_flash_alert())}
-                    <div class="col-12">{print_flash_alert()}</div>
-                {/if}
-                {if !empty($errors)}
-                    <div class="col-12">
-                        {include file=get_theme_path('views/inc/alert.tpl') message=$errors type='danger'}
+                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12">
+                    {include file=get_theme_path('views/inc/menu_localisation.inc.tpl') active="length_classes"}
+                </div>
+
+                <div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12">
+
+                    <div class="row">
+                        <div class="col-sm-7 col-12">
+                            {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('ProductLengthClassAdmin.heading_title')}
+                        </div>
+                        <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
+                            <button type="submit" class="btn btn-sm btn-space btn-primary mb-0" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
+                            <a href="{back_to($manage_url)}" class="btn btn-sm btn-space btn-secondary mb-0 me-0" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_cancel')}</a>
+                        </div>
                     </div>
-                {/if}
-                <div class="col-12">
+
+                    {if !empty(print_flash_alert())}
+                        {print_flash_alert()}
+                    {/if}
+                    {if !empty($errors)}
+                        {include file=get_theme_path('views/inc/alert.tpl') message=$errors type='danger'}
+                    {/if}
+
                     <div class="card">
                         <h5 class="card-header"><i class="fas {if !empty($edit_data.length_class_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
 
@@ -79,24 +85,7 @@
                         </div>
                     </div>
                 </div>
-                {*<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">*}
-                    {*<div class="card">*}
-                        {*<h5 class="card-header">{lang('Admin.text_manage_more')}</h5>*}
-                        {*<div class="card-body">*}
 
-                            {*<div class="form-group">*}
-                                {*<label class="form-label">{lang('ProductLengthClassAdmin.text_value')}</label>*}
-                                {*{if isset($edit_data.value)}*}
-                                    {*{assign var="value" value="`$edit_data.value`"}*}
-                                {*{else}*}
-                                    {*{assign var="value" value=""}*}
-                                {*{/if}*}
-                                {*<input type="text" name="value" value="{old('value', $value)}" id="value" class="form-control">*}
-                            {*</div>*}
-
-                        {*</div>*}
-                    {*</div>*}
-                {*</div>*}
             </div>
         {form_close()}
     </div>

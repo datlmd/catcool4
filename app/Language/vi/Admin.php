@@ -239,6 +239,8 @@ return [
 	"text_manage_validation" => "Vui lòng nhập thông tin cho %s",
 	"text_manage_validation_number" => "Vui lòng nhập kiểu số nguyên cho %s",
 	"text_maximum_upload" => "Kích thuớc tối đa",
+	"text_menu_localisation" => "Localisation",
+	"text_menu_utilities" => "Tiện ích",
 	"text_minus" => "-",
 	"text_module" => "Module",
 	"text_move_to_trash" => "Chuyển vào thùng rác",

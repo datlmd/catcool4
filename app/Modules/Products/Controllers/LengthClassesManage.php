@@ -41,7 +41,6 @@ class LengthClassesManage extends AdminController
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
-        $this->breadcrumb->add(lang('ProductAdmin.heading_title'), site_url('products/manage'));
         $this->breadcrumb->add(lang('ProductLengthClassAdmin.heading_title'), site_url(self::MANAGE_URL));
 
 	    $data = [

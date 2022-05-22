@@ -1,7 +1,9 @@
 {strip}
 	{if !empty($active) && $active neq 'list'}
 		<div class="mb-2">
-			<button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#menu_utilities" aria-expanded="false" aria-controls="menu_utilities">Menu Utilities</button>
+			<button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#menu_utilities" aria-expanded="false" aria-controls="menu_utilities">
+				{lang('Admin.text_menu_utilities')}
+			</button>
 		</div>
 	{/if}
 	<div class="sidebar-nav-fixed {if !empty($active) && $active neq 'list'}collapse{/if}" id="menu_utilities">
