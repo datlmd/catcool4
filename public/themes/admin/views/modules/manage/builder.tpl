@@ -1,12 +1,16 @@
 {form_hidden('manage_url', site_url($manage_url))}
 <div class="container-fluid  dashboard-content">
 
-	{include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active=create_module}
-
-	{include file=get_theme_path('views/inc/breadcrumb.inc.tpl')  heading_title=lang('Builder.heading_title')}
 	<div class="row">
 
-		<div class="col-12">
+		<div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12">
+			{include file=get_theme_path('views/inc/menu_utilities.inc.tpl') active="create_module"}
+		</div>
+
+		<div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12">
+
+			{include file=get_theme_path('views/inc/breadcrumb.inc.tpl')  heading_title=lang('Builder.heading_title')}
+
 			<div class="card">
 				<h5 class="card-header">{lang('Builder.heading_title')}</h5>
 				<div class="card-body">

@@ -1,21 +1,26 @@
 {strip}
 	{form_hidden('manage_url', $manage_url)}
 	<div class="container-fluid  dashboard-content">
-		{include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active="logs"}
-		<div class="row">
-			<div class="col-sm-7 col-12">
-				{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('UtilityAdmin.heading_title')}
-			</div>
-			<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-				<a href="{site_url($manage_url)}/logs" class="btn btn-sm btn-primary me-2" title="Log Access">System Logs</a>
-				<a href="{site_url($manage_url)}/logs?dir=access" class="btn btn-sm btn-primary me-2" title="Log Access">Access Logs</a>
-				<a href="{site_url($manage_url)}/logs?dir={$dir}&type=2" class="btn btn-sm btn-secondary me-0 mb-0" title="Clear">Clear</a>
-			</div>
-		</div>
 
 		<div class="row">
 
-			<div class="col-12">
+			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12">
+				{include file=get_theme_path('views/inc/menu_utilities.inc.tpl') active="logs"}
+			</div>
+
+			<div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12">
+
+				<div class="row">
+					<div class="col-sm-7 col-12">
+						{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('UtilityAdmin.heading_title')}
+					</div>
+					<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
+						<a href="{site_url($manage_url)}/logs" class="btn btn-sm btn-primary me-2" title="Log Access">System Logs</a>
+						<a href="{site_url($manage_url)}/logs?dir=access" class="btn btn-sm btn-primary me-2" title="Log Access">Access Logs</a>
+						<a href="{site_url($manage_url)}/logs?dir={$dir}&type=2" class="btn btn-sm btn-secondary me-0 mb-0" title="Clear">Clear</a>
+					</div>
+				</div>
+
 				<div class="card">
 					<h5 class="card-header"><i class="fas fa-history me-2"></i>Logs {if !empty($detail)}<strong>: {$detail.name} ({$detail.size})</strong>{/if}</h5>
 					<div class="card-body">

@@ -2,28 +2,33 @@
 {form_hidden('manage_url', site_url($manage_url))}
 {csrf_field()}
 <div class="container-fluid  dashboard-content">
-	{include file=get_theme_path('views/inc/utilities_menu.inc.tpl') active=configs}
-	<div class="row">
-		<div class="col-sm-7 col-12">
-            {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('ConfigAdmin.heading_title')}
-		</div>
-		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-			<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
-			<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" title="{lang('ConfigAdmin.text_add')}"><i class="fas fa-plus me-1"></i>{lang('ConfigAdmin.text_add')}</a>
-			<a href="{$manage_url}/write" class="btn btn-sm btn-light btn-space" title="{lang('Admin.button_write')}"><i class="fas fa-sync me-1"></i>{lang('Admin.button_write')}</a>
-			<button id="btn_group_drop_setting" type="button" class="btn btn-sm btn-light btn-space me-0" data-bs-toggle="dropdown" aria-expanded="false">
-				<i class="fas fa-cog"></i>
-			</button>
-			<ul class="dropdown-menu" aria-labelledby="btn_group_drop_setting">
-				<li><a class="dropdown-item" href="{site_url('configs/groups_manage')}">{lang('Admin.text_group')}</a></li>
-				<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('ConfigAdmin.translate_frontend_id')}">{lang("Admin.text_translate")}</a></li>
-				<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('ConfigAdmin.translate_admin_id')}">{lang("Admin.text_translate_admin")}</a></li>
-			</ul>
-		</div>
-	</div>
-	<div class="row">
 
-		<div class="col-12">
+	<div class="row">
+		<div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12">
+			{include file=get_theme_path('views/inc/menu_utilities.inc.tpl') active="configs"}
+		</div>
+
+		<div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12">
+
+			<div class="row">
+				<div class="col-sm-7 col-12">
+					{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('ConfigAdmin.heading_title')}
+				</div>
+				<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
+					<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
+					<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" title="{lang('ConfigAdmin.text_add')}"><i class="fas fa-plus me-1"></i>{lang('ConfigAdmin.text_add')}</a>
+					<a href="{$manage_url}/write" class="btn btn-sm btn-light btn-space" title="{lang('Admin.button_write')}"><i class="fas fa-sync me-1"></i>{lang('Admin.button_write')}</a>
+					<button id="btn_group_drop_setting" type="button" class="btn btn-sm btn-light btn-space me-0" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="fas fa-cog"></i>
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="btn_group_drop_setting">
+						<li><a class="dropdown-item" href="{site_url('configs/groups_manage')}">{lang('Admin.text_group')}</a></li>
+						<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('ConfigAdmin.translate_frontend_id')}">{lang("Admin.text_translate")}</a></li>
+						<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('ConfigAdmin.translate_admin_id')}">{lang("Admin.text_translate_admin")}</a></li>
+					</ul>
+				</div>
+			</div>
+
 			<div class="card">
 				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('ConfigAdmin.text_list')} {if !empty($file_permissions)}(<small>{$file_permissions}</small>){/if}</h5>
 				<div class="card-body">
