@@ -1,7 +1,7 @@
 {strip}
     {form_hidden('manage_url', site_url($manage_url))}
     {csrf_field()}
-    <div class="container-fluid  dashboard-content">
+    <div class="container-fluid dashboard-content">
         <div class="row">
             <div class="col-sm-7 col-12">
                 {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('TranslationAdmin.heading_title')}
@@ -18,41 +18,44 @@
                 {/if}
             </div>
         </div>
+        <div class="row collapse {if !empty($filter_active)}show{/if}" id="filter_manage">
+            <div class="row-12">
+                <div class="card">
+                    <h5 class="card-header"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
+                    {form_open(uri_string(), ['id' => 'filter_validationform', 'method' => 'get'])}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 mb-2">
+                                <label class="form-label">{lang('TranslationAdmin.text_key')}</label>
+                                {form_input('key', old('key', $request->getGet('key'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => 'Enter key'])}
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 mb-2">
+                                <label class="form-label">{lang('TranslationAdmin.text_value')}</label>
+                                {form_input('value', old('value', $request->getGet('value'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => 'Enter text'])}
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 mb-2">
+                                <label class="form-label">{lang('TranslationAdmin.text_modules')}</label>
+                                {if !empty($module_list)}
+                                    <select name="module_id" class="form-control form-control-sm">
+                                        <option value="">{lang('Admin.text_none')}</option>
+                                        {foreach $module_list as $value}
+                                            <option value="{$value.id}" {if old('module_id', $request->getGet('module_id')) eq $value.id}selected="selected"{/if}>{$value.module}{if !empty($value.sub_module)} - Sub: {$value.sub_module}{/if}</option>
+                                        {/foreach}
+                                    </select>
+                                {/if}
+                            </div>
+                            <div class="col-12 text-end">
+                                <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('Admin.filter_submit')}</button>
+                            </div>
+                        </div>
+                    </div>
+                    {form_close()}
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-12">
-                <div class="row collapse {if !empty($filter_active)}show{/if}" id="filter_manage">
-                    <div class="card">
-                        <h5 class="card-header"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
-                        {form_open(uri_string(), ['id' => 'filter_validationform', 'method' => 'get'])}
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 mb-2">
-                                        <label class="form-label">{lang('TranslationAdmin.text_key')}</label>
-                                        {form_input('key', old('key', $request->getGet('key'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => 'Enter key'])}
-                                    </div>
-                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 mb-2">
-                                        <label class="form-label">{lang('TranslationAdmin.text_value')}</label>
-                                        {form_input('value', old('value', $request->getGet('value'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => 'Enter text'])}
-                                    </div>
-                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 mb-2">
-                                        <label class="form-label">{lang('TranslationAdmin.text_modules')}</label>
-                                        {if !empty($module_list)}
-                                            <select name="module_id" class="form-control form-control-sm">
-                                                <option value="">{lang('Admin.text_none')}</option>
-                                                {foreach $module_list as $value}
-                                                    <option value="{$value.id}" {if old('module_id', $request->getGet('module_id')) eq $value.id}selected="selected"{/if}>{$value.module}{if !empty($value.sub_module)} - Sub: {$value.sub_module}{/if}</option>
-                                                {/foreach}
-                                            </select>
-                                        {/if}
-                                    </div>
-                                    <div class="col-12 text-end">
-                                        <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('Admin.filter_submit')}</button>
-                                    </div>
-                                </div>
-                            </div>
-                        {form_close()}
-                    </div>
-                </div>
+
                 <div class="card">
                     <h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('TranslationAdmin.text_list')}</h5>
                     <div class="card-body">
@@ -137,6 +140,7 @@
                         {/if}
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
