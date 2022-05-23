@@ -2,18 +2,25 @@
 {form_hidden('manage_url', site_url($manage_url))}
 {csrf_field()}
 <div class="container-fluid  dashboard-content">
+
 	<div class="row">
-		<div class="col-sm-7 col-12">
-            {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('CurrencyAdmin.heading_title')}
+		<div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12">
+			{include file=get_theme_path('views/inc/menu_localisation.inc.tpl') active="currencies"}
 		</div>
-		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-			<a href="{site_url($manage_url)}/refresh" class="btn btn-sm btn-success btn-space" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('CurrencyAdmin.button_refresh')}"><i class="fas fa-sync me-1"></i>{lang('CurrencyAdmin.button_refresh')}</a>
-			<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
-			<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space me-0" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_add')}"><i class="fas fa-plus me-1"></i>{lang('CurrencyAdmin.text_add')}</a>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+		<div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12">
+
+			<div class="row">
+				<div class="col-sm-7 col-12">
+					{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('CurrencyAdmin.heading_title')}
+				</div>
+				<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
+					<a href="{site_url($manage_url)}/refresh" class="btn btn-sm btn-success btn-space" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('CurrencyAdmin.button_refresh')}"><i class="fas fa-sync me-1"></i>{lang('CurrencyAdmin.button_refresh')}</a>
+					<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
+					<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space me-0" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_add')}"><i class="fas fa-plus me-1"></i>{lang('CurrencyAdmin.text_add')}</a>
+				</div>
+			</div>
+
 			<div class="card">
 				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('CurrencyAdmin.text_list')}</h5>
 				<div class="card-body">
