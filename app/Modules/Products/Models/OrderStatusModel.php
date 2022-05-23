@@ -11,6 +11,7 @@ class OrderStatusModel extends MyModel
 
     protected $allowedFields = [
         'order_status_id',
+        'published',
     ];
 
     protected $validationRules    = [];

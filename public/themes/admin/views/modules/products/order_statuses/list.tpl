@@ -30,9 +30,9 @@
 									<thead>
 										<tr class="text-center">
 											<th width="50">
-												<a href="{site_url($manage_url)}?sort=stock_status_id&order={$order}{$url}" class="text-dark">
+												<a href="{site_url($manage_url)}?sort=order_status_id&order={$order}{$url}" class="text-dark">
 													{lang('Admin.column_id')}
-													{if $sort eq 'stock_status_id'}
+													{if $sort eq 'order_status_id'}
 														<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 													{/if}
 												</a>
@@ -52,22 +52,22 @@
 									</thead>
 									<tbody>
 									{foreach $list as $item}
-										<tr id="item_id_{$item.stock_status_id}">
-											<td class="text-center">{anchor("$manage_url/edit/`$item.stock_status_id`", $item.stock_status_id, 'class="text-primary"')}</td>
-											<td>{anchor("$manage_url/edit/`$item.stock_status_id`", $item.name, 'class="text-primary"')}</td>
+										<tr id="item_id_{$item.order_status_id}">
+											<td class="text-center">{anchor("$manage_url/edit/`$item.order_status_id`", $item.order_status_id, 'class="text-primary"')}</td>
+											<td>{anchor("$manage_url/edit/`$item.order_status_id`", $item.name, 'class="text-primary"')}</td>
 											<td>
 												<div class="switch-button switch-button-xs catcool-center">
-													{form_checkbox("published_`$item.stock_status_id`", ($item.published eq STATUS_ON) ? true : false, ($item.published eq STATUS_ON) ? true : false, ['id' => 'published_'|cat:$item.stock_status_id, 'data-id' => $item.stock_status_id, 'data-published' => $item.published, 'class' => 'change_publish'])}
-													<span><label for="published_{$item.stock_status_id}"></label></span>
+													{form_checkbox("published_`$item.order_status_id`", ($item.published eq STATUS_ON) ? true : false, ($item.published eq STATUS_ON) ? true : false, ['id' => 'published_'|cat:$item.order_status_id, 'data-id' => $item.order_status_id, 'data-published' => $item.published, 'class' => 'change_publish'])}
+													<span><label for="published_{$item.order_status_id}"></label></span>
 												</div>
 											</td>
 											<td class="text-center">
 												<div class="btn-group ms-auto">
-													<a href="{site_url($manage_url)}/edit/{$item.stock_status_id}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
-													<button type="button" data-id="{$item.stock_status_id}" class="btn btn-sm btn-light text-danger btn_delete_single" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
+													<a href="{site_url($manage_url)}/edit/{$item.order_status_id}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
+													<button type="button" data-id="{$item.order_status_id}" class="btn btn-sm btn-light text-danger btn_delete_single" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>
-											<td class="text-center">{form_checkbox('manage_ids[]', $item.stock_status_id)}</td>
+											<td class="text-center">{form_checkbox('manage_ids[]', $item.order_status_id)}</td>
 										</tr>
 									{/foreach}
 									</tbody>

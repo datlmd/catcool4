@@ -1,10 +1,8 @@
 <?php
 
 return [
-	"column_name" => "Trạng thái tồn kho",
-	"heading_title" => "Trạng thái tồn kho",
-	"text_list" => "Trạng thái tồn kho",
-	"text_name" => "Tên Trạng thái tồn kho",
-	"translate_admin_id" => "58",
-	"translate_frontend_id" => "57",
+	"heading_title" => "Trạng thái Đơn hàng",
+	"text_list" => "Danh sách Trạng thái Đơn hàng",
+	"translate_admin_id" => "79",
+	"translate_frontend_id" => "79",
 ];

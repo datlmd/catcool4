@@ -3,8 +3,8 @@
     <div class="container-fluid  dashboard-content">
         {form_open(uri_string(), ['id' => 'validationform'])}
 
-            {if !empty($edit_data.stock_status_id)}
-                {form_hidden('stock_status_id', $edit_data.stock_status_id)}
+            {if !empty($edit_data.order_status_id)}
+                {form_hidden('order_status_id', $edit_data.order_status_id)}
             {/if}
             <div class="row">
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12">
@@ -30,29 +30,26 @@
                     {/if}
 
                     <div class="card">
-                        <h5 class="card-header"><i class="fas {if !empty($edit_data.stock_status_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
-                        <div class="card-body p-0 pt-3">
+                        <h5 class="card-header"><i class="fas {if !empty($edit_data.order_status_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
+                        <div class="card-body">
 
-                            <div class="tab-regular">
-                                {include file=get_theme_path('views/inc/tab_language.inc.tpl') languages=$language_list}
-                                <div class="tab-content border-0 p-3" id="dummy_tab_content">
-                                    {foreach $language_list as $language}
-                                        <div class="tab-pane fade {if !empty($language.active)}show active{/if}" role="tabpanel" id="lanuage_content_{$language.id}"  aria-labelledby="language_tab_{$language.id}">
-                                            <div class="form-group row required has-error">
-                                                <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
-                                                    {lang('Admin.text_name')}
-                                                </label>
-                                                <div class="col-12 col-sm-8 col-lg-7">
-                                                    <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang.`$language.id`.name")}is-invalid{/if}">
-                                                    <div class="invalid-feedback">
-                                                        {$validator->getError("lang.`$language.id`.name")}
-                                                    </div>
-                                                </div>
-                                            </div>
+                            {foreach $language_list as $language}
+                                <div class="form-group row required has-error">
+                                    <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
+                                        {lang('Admin.text_name')} ({$language.name})
+                                    </label>
+                                    <div class="col-12 col-sm-8 col-lg-7">
+                                        <div class="input-group {if $validator->hasError("lang.`$language.id`.name")}is-invalid{/if}">
+                                            <span class="input-group-text">{$language.icon}</span>
+                                            <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_name_{$language.id}" class="form-control">
                                         </div>
-                                    {/foreach}
+
+                                        <div class="invalid-feedback">
+                                            {$validator->getError("lang.`$language.id`.name")}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            {/foreach}
 
                             <div class="form-group row pb-3">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-end">

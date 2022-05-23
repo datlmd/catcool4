@@ -32,4 +32,5 @@ $routes->group('products', ['namespace' => 'App\Modules\Products\Controllers'], 
     $subroutes->add('order_statuses_manage/add', 'OrderStatusesManage::add');
     $subroutes->add('order_statuses_manage/edit/(:num)', 'OrderStatusesManage::edit/$1');
     $subroutes->add('order_statuses_manage/delete', 'OrderStatusesManage::delete');
+    $subroutes->add('order_statuses_manage/publish', 'OrderStatusesManage::publish');
 });
