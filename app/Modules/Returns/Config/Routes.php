@@ -23,4 +23,10 @@ $routes->group('returns', ['namespace' => 'App\Modules\Returns\Controllers'], fu
     $subroutes->add('statuses_manage/edit/(:num)', 'StatusesManage::edit/$1');
     $subroutes->add('statuses_manage/delete', 'StatusesManage::delete');
     $subroutes->add('statuses_manage/publish', 'StatusesManage::publish');
+
+    $subroutes->add('reasons_manage', 'ReasonsManage::index');
+    $subroutes->add('reasons_manage/add', 'ReasonsManage::add');
+    $subroutes->add('reasons_manage/edit/(:num)', 'ReasonsManage::edit/$1');
+    $subroutes->add('reasons_manage/delete', 'ReasonsManage::delete');
+    $subroutes->add('reasons_manage/publish', 'ReasonsManage::publish');
 });
