@@ -68,7 +68,7 @@
 										</th>
 										<th>
 											<a href="{site_url($manage_url)}?sort=module&order={$order}{$url}" class="text-dark">
-												{lang('Admin.text_name')}
+												{lang('ModuleAdmin.text_module')}
 												{if $sort eq 'module'}
 													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 												{/if}
@@ -76,7 +76,7 @@
 										</th>
 										<th>
 											<a href="{site_url($manage_url)}?sort=module&order={$order}{$url}" class="text-dark">
-												{lang('ModuleAdmin.text_module')}
+												{lang('Admin.text_sub_module')}
 												{if $sort eq 'module'}
 													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 												{/if}
@@ -92,14 +92,10 @@
 								{foreach $list as $item}
 									<tr id="item_id_{$item.id}">
 										<td class="text-center">{$item.id}</td>
+										<td>{anchor("$manage_url/edit/`$item.id`", $item.module, 'class="text-primary"')}</td>
 										<td>
-											{if !empty($item.sub_module)}
-												{anchor("$manage_url/edit/`$item.id`", $item.sub_module, 'class="text-primary"')}
-											{else}
-												{anchor("$manage_url/edit/`$item.id`", $item.module, 'class="text-primary"')}
-											{/if}
+											{$item.sub_module}
 										</td>
-										<td><strong>{$item.module}</strong>/{$item.sub_module}</td>
 										<td class="text-center">{anchor("translations/manage?module_id=`$item.id`", 'Translation')}</td>
 										<td>
 											<div class="switch-button switch-button-xs catcool-center">
