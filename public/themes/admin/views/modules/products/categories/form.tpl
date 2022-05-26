@@ -78,7 +78,7 @@
                                     <label class="form-check-label" for="published_on">ON</label>
                                 </label>
                                 <label class="form-check form-check-inline me-2">
-                                    <input type="radio" name="published" value="{STATUS_OFF}" {if set_value('published', $edit_data.published)|default:1 eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
+                                    <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $edit_data.published)|default:1 eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
                                     <label class="form-check-label" for="published_off">OFF</label>
                                 </label>
                             </div>
