@@ -1,13 +1,12 @@
 <?php
 
 return [
-	"column_name" => "Categories",
-	"delete_heading" => "Xoá Categories",
-	"heading_title" => "Categories",
-	"text_add" => "Tạo Categories",
-	"text_edit" => "Cập nhật Categories",
-	"text_list" => "Danh sách Categories",
-	"text_name" => "Tên Categories",
-	"translate_admin_id" => "70",
-	"translate_frontend_id" => "70",
+	"heading_title" => "Danh mục",
+	"help_column" => "Số thứ tự cột để sử dụng cho 3 danh mục phía dưới. Chỉ có tác dụng đối với các danh mục cấp cao nhất.",
+	"help_top" => "Hiển thị lên Menu. Chỉ có tác dụng với Menu ngang cấp cao nhất.",
+	"text_column" => "Column",
+	"text_list" => "Danh sách Danh mục",
+	"text_top" => "Top",
+	"translate_admin_id" => "90",
+	"translate_frontend_id" => "89",
 ];

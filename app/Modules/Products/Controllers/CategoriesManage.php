@@ -33,23 +33,16 @@ class CategoriesManage extends AdminController
 
 	public function index()
 	{
+        $this->themes->addJS('common/plugin/shortable-nestable/jquery.nestable.js');
+        $this->themes->addJS('common/js/admin/category.js');
+
         add_meta(['title' => lang('ProductCategoryAdmin.heading_title')], $this->themes);
 
-        $limit       = $this->request->getGet('limit');
-        $sort        = $this->request->getGet('sort');
-        $order       = $this->request->getGet('order');
-        $filter_keys = ['category_id', 'name', 'limit'];
+        $list = $this->model->getAllByFilter();
 
-        $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
-
-	    $data = [
-            'breadcrumb'    => $this->breadcrumb->render(),
-            'list'          => $list->paginate($limit),
-            'pager'         => $list->pager,
-            'sort'          => empty($sort) ? 'category_id' : $sort,
-            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'           => $this->getUrlFilter($filter_keys),
-            'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
+        $data = [
+            'breadcrumb' => $this->breadcrumb->render(),
+            'list'       => format_tree(['data' => $list, 'key_id' => 'category_id']),
         ];
 
         $this->themes
@@ -126,7 +119,7 @@ class CategoriesManage extends AdminController
             $edit_data = [
                 'category_id' => $id,
                 'image'       => $this->request->getPost('image'),
-                'parent_id'   => $this->request->getPost('parent_id'),
+                'parent_id'   => !empty($this->request->getPost('parent_id')) ? $this->request->getPost('parent_id') : null,
                 'top'         => $this->request->getPost('top'),
                 'column'      => $this->request->getPost('column'),
                 'sort_order'  => $this->request->getPost('sort_order'),
@@ -149,7 +142,16 @@ class CategoriesManage extends AdminController
 
     private function _getForm($id = null)
     {
+        $this->themes->addJS('common/js/admin/filemanager');
+
+        //add tags
+        $this->themes->addCSS('common/js/tags/tagsinput');
+        $this->themes->addJS('common/js/tags/tagsinput');
+
         $data['language_list'] = get_list_lang(true);
+
+        $list_all = $this->model->getAllByFilter();
+        $data['patent_list'] = format_tree(['data' => $list_all, 'key_id' => 'category_id']);
 
         //edit
         if (!empty($id) && is_numeric($id)) {
@@ -184,6 +186,7 @@ class CategoriesManage extends AdminController
 
     private function _validateForm()
     {
+        $this->validator->setRule('column', lang('ProductCategoryAdmin.text_column'), 'is_natural|required');
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         foreach(get_list_lang(true) as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name'] . ')', 'required');

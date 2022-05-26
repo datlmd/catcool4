@@ -51,12 +51,16 @@ class CategoryModel extends MyModel
             $this->like("$this->table_lang.name", $filter["name"]);
         }
 
-        $this->select("$this->table.*, $this->table_lang.*")
+        $result = $this->select("$this->table.*, $this->table_lang.*")
             ->with(false)
             ->join($this->table_lang, "$this->table_lang.category_id = $this->table.category_id")
-            ->orderBy($sort, $order);
+            ->orderBy($sort, $order)->findAll();
 
-        return $this;
+        if (empty($result)) {
+            return null;
+        }
+
+        return $result;
     }
 
     public function getListPublished($is_cache = true)

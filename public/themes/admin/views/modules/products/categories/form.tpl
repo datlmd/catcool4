@@ -4,7 +4,7 @@
         {form_open(uri_string(), ['id' => 'validationform'])}
             <div class="row">
                 <div class="col-sm-7 col-12">
-                    {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('CategoryAdmin.heading_title')}
+                    {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('ProductCategoryAdmin.heading_title')}
                 </div>
                 <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
                     <button type="submit" class="btn btn-sm btn-space btn-primary mb-0" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
@@ -26,7 +26,7 @@
                 <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
                     <div class="card">
                         <h5 class="card-header"><i class="fas {if !empty($edit_data.category_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
-                        <div class="card-body p-0 pt-3 bg-light">
+                        <div class="card-body px-0">
                             <div class="tab-regular">
                                 {include file=get_theme_path('views/inc/tab_language.inc.tpl') languages=$language_list}
                                 <div class="tab-content border-0 p-3" id="cate_tab_content">
@@ -92,11 +92,29 @@
                                 </a>
                                 <input type="hidden" name="image" value="{old('image', $edit_data.image)}" id="input-image-path" />
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mt-4">
+                                <label class="form-label">{lang('ProductCategoryAdmin.text_top')}</label>
+                                <label class="form-check form-check-inline ms-2">
+                                    <input type="radio" name="top" value="{STATUS_ON}" {if old('top', $edit_data.top)|default:1 eq STATUS_ON}checked="checked"{/if} id="top_on" class="form-check-input">
+                                    <label class="form-check-label" for="top_on">ON</label>
+                                </label>
+                                <label class="form-check form-check-inline me-2">
+                                    <input type="radio" name="top" value="{STATUS_OFF}" {if old('top', $edit_data.top)|default:1 eq STATUS_OFF}checked="checked"{/if} id="top_off" class="form-check-input">
+                                    <label class="form-check-label" for="top_off">OFF</label>
+                                </label>
+                                <br/>
+                                <small>{lang('ProductCategoryAdmin.help_top')}</small>
+                            </div>
+                            <div class="form-group mt-4">
+                                <label class="form-label">{lang('ProductCategoryAdmin.text_column')}</label>
+                                <input type="number" name="column" value="{old('column', $edit_data.column)|default:1}" id="column" class="form-control">
+                                <small>{lang('ProductCategoryAdmin.help_column')}</small>
+                            </div>
+                            <div class="form-group mt-4">
                                 <label class="form-label">{lang('Admin.text_sort_order')}</label>
                                 <input type="number" name="sort_order" value="{old('sort_order', $edit_data.sort_order)|default:0}" id="sort_order" min="0" class="form-control">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mt-4">
                                 <label class="form-label">{lang('Admin.text_parent')}</label>
                                 <select name="parent_id" id="parent_id" class="form-control">
                                     <option value="">{lang('Admin.text_select')}</option>
