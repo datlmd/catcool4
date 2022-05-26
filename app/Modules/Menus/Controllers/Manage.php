@@ -144,14 +144,11 @@ class Manage extends AdminController
                 'selected'   => $this->request->getPost('selected'),
                 'user_id'    => $this->getUserIdAdmin(),
                 'sort_order' => $this->request->getPost('sort_order'),
+                'parent_id'  => !empty($this->request->getPost('parent_id')) ? $this->request->getPost('parent_id') : null,
                 'is_admin'   => !empty(session('is_menu_admin')) ? STATUS_ON : STATUS_OFF,
                 'hidden'     => !empty($this->request->getPost('hidden')) ? STATUS_ON : STATUS_OFF,
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
-
-            if (!empty($this->request->getPost('parent_id'))) {
-                $edit_data['parent_id'] = $this->request->getPost('parent_id');
-            }
 
             if (!$this->model->update($id, $edit_data)) {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);

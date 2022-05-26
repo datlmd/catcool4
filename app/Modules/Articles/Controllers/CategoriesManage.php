@@ -139,12 +139,9 @@ class CategoriesManage extends AdminController
             $edit_data = [
                 'sort_order' => $this->request->getPost('sort_order'),
                 'image'      => $this->request->getPost('image'),
+                'parent_id'  => !empty($this->request->getPost('parent_id')) ? $this->request->getPost('parent_id') : null,
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
-
-            if (!empty($this->request->getPost('parent_id'))) {
-                $edit_data['parent_id'] = $this->request->getPost('parent_id');
-            }
 
             if (!$this->model->update($id, $edit_data)) {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
