@@ -68,7 +68,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
 												{lang('Admin.text_name')}
 												{if $sort eq 'name'}
@@ -76,7 +76,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=type&order={$order}{$url}" class="text-dark">
 												{lang('CountryProvinceAdmin.text_type')}
 												{if $sort eq 'type'}
@@ -92,14 +92,14 @@
 												{/if}
 											</a>
 										</th>
-										<th>
-											<a href="{site_url($manage_url)}?sort=zip_code&order={$order}{$url}" class="text-dark">
-												{lang('CountryProvinceAdmin.text_code')}
-												{if $sort eq 'zip_code'}
-													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
-												{/if}
-											</a>
-										</th>
+{*										<th>*}
+{*											<a href="{site_url($manage_url)}?sort=zip_code&order={$order}{$url}" class="text-dark">*}
+{*												{lang('CountryProvinceAdmin.text_code')}*}
+{*												{if $sort eq 'zip_code'}*}
+{*													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>*}
+{*												{/if}*}
+{*											</a>*}
+{*										</th>*}
 										<th>
 											<a href="{site_url($manage_url)}?sort=country_code&order={$order}{$url}" class="text-dark">
 												{lang('CountryProvinceAdmin.text_country_code')}
@@ -124,8 +124,8 @@
 												{/if}
 											</a>
 										</th>
-										<th>{lang('Admin.column_published')}</th>
-										<th width="160">{lang('Admin.column_function')}</th>
+										<th width="120">{lang('Admin.column_published')}</th>
+										<th width="130">{lang('Admin.column_function')}</th>
 										<th width="50">{form_checkbox('manage_check_all')}</th>
 									</tr>
 									</thead>
@@ -134,9 +134,9 @@
 										<tr>
 											<td class="text-center">{$item.province_id}</td>
 											<td>{anchor("$manage_url/edit/`$item.province_id`", htmlspecialchars($item.name, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}</td>
-											<td class="text-center">{$item.type}</td>
+											<td>{$item.type}</td>
 											<td class="text-center">{$item.telephone_code}</td>
-											<td class="text-center">{$item.zip_code}</td>
+{*											<td class="text-center">{$item.zip_code}</td>*}
 											<td class="text-center">{$item.country_code}</td>
 											<td class="text-center">{$country_list[$item.country_id]}</td>
 											<td class="text-center">{$item.sort_order}</td>

@@ -55,7 +55,7 @@
 											</a>
 										</th>
 										<th>{lang('Admin.column_description')}</th>
-										<th width="160">{lang('Admin.column_function')}</th>
+										<th width="130">{lang('Admin.column_function')}</th>
 										<th width="50">{form_checkbox('manage_check_all')}</th>
 									</tr>
 								</thead>

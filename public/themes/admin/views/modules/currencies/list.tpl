@@ -57,8 +57,8 @@
 										<th>{lang('CurrencyAdmin.text_symbol_left')}</th>
 										<th>{lang('CurrencyAdmin.text_symbol_right')}</th>
 										<th>{lang('CurrencyAdmin.text_decimal_place')}</th>
-										<th>{lang('Admin.column_published')}</th>
-										<th width="160">{lang('Admin.column_function')}</th>
+										<th width="120">{lang('Admin.column_published')}</th>
+										<th width="130">{lang('Admin.column_function')}</th>
 										<th width="50">{form_checkbox('manage_check_all')}</th>
 									</tr>
 								</thead>

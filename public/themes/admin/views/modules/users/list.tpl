@@ -86,7 +86,7 @@
 										</th>
 										<th>{lang('UserAdmin.text_phone')}</th>
 										<th>{lang('Admin.text_active')}</th>
-										<th width="160">{lang('Admin.column_function')}</th>
+										<th width="130">{lang('Admin.column_function')}</th>
 										<th width="50">{form_checkbox('manage_check_all')}</th>
 									</tr>
 								</thead>

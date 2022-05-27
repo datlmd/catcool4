@@ -67,7 +67,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
 												{lang('CountryAdmin.text_country')}
 												{if $sort eq 'name'}
@@ -75,7 +75,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=formal_name&order={$order}{$url}" class="text-dark">
 												{lang('CountryAdmin.text_formal_name')}
 												{if $sort eq 'formal_name'}
@@ -180,8 +180,8 @@
 												{/if}
 											</a>
 										</th>
-										<th>{lang('Admin.column_published')}</th>
-										<th width="160">{lang('Admin.column_function')}</th>
+										<th width="120">{lang('Admin.column_published')}</th>
+										<th width="130">{lang('Admin.column_function')}</th>
 										<th width="50">{form_checkbox('manage_check_all')}</th>
 									</tr>
 									</thead>
@@ -190,7 +190,7 @@
 										<tr>
 											<td class="text-center">{anchor("$manage_url/edit/`$item.country_id`", $item.country_id, 'class="text-primary"')}</td>
 											<td>{anchor("$manage_url/edit/`$item.country_id`", $item.name, 'class="text-primary"')}</td>
-											<td class="text-center">{$item.formal_name}</td>
+											<td>{$item.formal_name}</td>
 											<td class="text-center">{$item.country_code}</td>
 											<td class="text-center">{$item.country_code3}</td>
 {*											<td class="text-center">{$item.country_type}</td>*}

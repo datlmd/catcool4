@@ -20,7 +20,7 @@
 							<th>
 								{lang('Backup.column_date_added')}
 							</th>
-							<th width="160">{lang('Admin.column_function')}</th>
+							<th width="130">{lang('Admin.column_function')}</th>
 						</tr>
 						</thead>
 						<tbody>

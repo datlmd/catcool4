@@ -68,7 +68,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
 												{lang('Admin.text_name')}
 												{if $sort eq 'name'}
@@ -76,10 +76,18 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=type&order={$order}{$url}" class="text-dark">
 												{lang('CountryDistrictAdmin.text_type')}
 												{if $sort eq 'type'}
+													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+												{/if}
+											</a>
+										</th>
+										<th class="text-start">
+											<a href="{site_url($manage_url)}?sort=province_id&order={$order}{$url}" class="text-dark">
+												{lang('CountryDistrictAdmin.text_province')}
+												{if $sort eq 'province_id'}
 													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 												{/if}
 											</a>
@@ -100,16 +108,8 @@
 												{/if}
 											</a>
 										</th>
-										<th>
-											<a href="{site_url($manage_url)}?sort=province_id&order={$order}{$url}" class="text-dark">
-												{lang('CountryDistrictAdmin.text_province')}
-												{if $sort eq 'province_id'}
-													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
-												{/if}
-											</a>
-										</th>
-										<th>{lang('Admin.column_published')}</th>
-										<th width="160">{lang('Admin.column_function')}</th>
+										<th width="120">{lang('Admin.column_published')}</th>
+										<th width="130">{lang('Admin.column_function')}</th>
 										<th width="50">{form_checkbox('manage_check_all')}</th>
 									</tr>
 									</thead>
@@ -118,10 +118,10 @@
 										<tr>
 											<td class="text-center">{$item.district_id}</td>
 											<td>{anchor("$manage_url/edit/`$item.district_id`", htmlspecialchars($item.name, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}</td>
-											<td class="text-center">{$item.type}</td>
+											<td>{$item.type}</td>
+											<td>{if !empty($province_list[$item.province_id])}{$province_list[$item.province_id]}{/if}</td>
 											<td class="text-center">{$item.lati_long_tude}</td>
 											<td class="text-center">{$item.sort_order}</td>
-											<td class="text-center">{if !empty($province_list[$item.province_id])}{$province_list[$item.province_id]}{/if}</td>
 											<td>
 												<div class="switch-button switch-button-xs catcool-center">
 													{form_checkbox("published_`$item.district_id`", ($item.published eq STATUS_ON) ? true : false, ($item.published eq STATUS_ON) ? true : false, ['id' => 'published_'|cat:$item.district_id, 'data-id' => $item.district_id, 'data-published' => $item.published, 'class' => 'change_publish'])}

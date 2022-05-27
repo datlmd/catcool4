@@ -67,8 +67,8 @@
 													{/if}
 												</a>
 											</th>
-											<th>{lang('Admin.text_image')}</th>
-											<th>
+											<th width="120">{lang('Admin.text_image')}</th>
+											<th class="text-start">
 												<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
 													{lang('ArticleAdmin.text_name')}
 													{if $sort eq 'name'}
@@ -76,8 +76,8 @@
 													{/if}
 												</a>
 											</th>
-											<th>{lang('Admin.column_published')}</th>
-											<th width="160">{lang('Admin.column_function')}</th>
+											<th width="120">{lang('Admin.column_published')}</th>
+											<th width="130">{lang('Admin.column_function')}</th>
 											<th width="50">{form_checkbox('manage_check_all')}</th>
 										</tr>
 									</thead>

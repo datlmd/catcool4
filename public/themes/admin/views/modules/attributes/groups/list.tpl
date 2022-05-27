@@ -40,7 +40,7 @@
 												</a>
 											</th>
 											<th width="100">{lang('Admin.column_sort_order')}</th>
-											<th width="160">{lang('Admin.column_function')}</th>
+											<th width="130">{lang('Admin.column_function')}</th>
 											<th width="50">{form_checkbox('manage_check_all')}</th>
 										</tr>
 									</thead>

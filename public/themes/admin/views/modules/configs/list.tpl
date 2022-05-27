@@ -58,7 +58,7 @@
 														{/if}
 													</a>
 												</th>
-												<th>
+												<th class="text-start">
 													<a href="{site_url($manage_url)}?sort=config_key&order={$order}" class="text-dark">
 														{lang('ConfigAdmin.column_config_key')}
 														{if $sort eq 'config_key'}
@@ -66,7 +66,7 @@
 														{/if}
 													</a>
 												</th>
-												<th>
+												<th class="text-start">
 													<a href="{site_url($manage_url)}?sort=config_value&order={$order}" class="text-dark">
 														{lang('ConfigAdmin.column_config_value')}
 														{if $sort eq 'config_value'}
@@ -74,9 +74,9 @@
 														{/if}
 													</a>
 												</th>
-												<th>{lang('Admin.column_description')}</th>
-												<th>{lang('Admin.column_published')}</th>
-												<th width="160">{lang('Admin.column_function')}</th>
+												<th class="text-start">{lang('Admin.column_description')}</th>
+												<th width="120">{lang('Admin.column_published')}</th>
+												<th width="130">{lang('Admin.column_function')}</th>
 												<th width="50">{form_checkbox('manage_check_all')}</th>
 											</tr>
 											</thead>
@@ -124,7 +124,7 @@
 															{/if}
 														</a>
 													</th>
-													<th>
+													<th class="text-start">
 														<a href="{site_url($manage_url)}?sort=config_key&order={$order}" class="text-dark">
 															{lang('ConfigAdmin.column_config_key')}
 															{if $sort eq 'config_key'}
@@ -132,7 +132,7 @@
 															{/if}
 														</a>
 													</th>
-													<th>
+													<th class="text-start">
 														<a href="{site_url($manage_url)}?sort=config_value&order={$order}" class="text-dark">
 															{lang('ConfigAdmin.column_config_value')}
 															{if $sort eq 'config_value'}
@@ -140,9 +140,9 @@
 															{/if}
 														</a>
 													</th>
-													<th>{lang('Admin.column_description')}</th>
-													<th>{lang('Admin.column_published')}</th>
-													<th width="160">{lang('Admin.column_function')}</th>
+													<th class="text-start">{lang('Admin.column_description')}</th>
+													<th width="120">{lang('Admin.column_published')}</th>
+													<th width="130">{lang('Admin.column_function')}</th>
 													<th width="50">{form_checkbox('manage_check_all')}</th>
 												</tr>
 												</thead>
