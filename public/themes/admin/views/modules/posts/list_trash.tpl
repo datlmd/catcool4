@@ -60,7 +60,7 @@
 													{/if}
 												</a>
 											</th>
-											<th style="min-width: 450px;">
+											<th class="text-start" style="min-width: 450px;">
 												<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
 													{lang('NewsAdmin.text_name')}
 													{if $sort eq 'name'}

@@ -2,12 +2,14 @@
 
 return [
 	"created_routes_success" => "Đã ghi file thành công!",
-	"heading_title" => "Định tuyến",
-	"text_add" => "Thêm mới định tuyến",
-	"text_edit" => "Cập nhật định tuyến",
+	"heading_title" => "SEO Urls",
+	"text_add" => "Thêm mới SEO Url",
+	"text_edit" => "Cập nhật SEO Url",
 	"text_example" => "Ví dụ",
-	"text_list" => "Danh sách đường dẫn định tuyến",
+	"text_list" => "Danh sách SEO Url",
 	"text_module" => "Module",
 	"text_resource" => "Controller",
-	"text_route" => "Route",
+	"text_route" => "SEO Url",
+	"translate_admin_id" => "10",
+	"translate_frontend_id" => "9",
 ];

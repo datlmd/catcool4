@@ -10,7 +10,7 @@
 				<div class="table-responsive">
 					<table class="table table-striped table-hover table-bordered second">
 						<thead>
-						<tr class="text-center">
+						<tr>
 							<th>
 								{lang('Backup.column_filename')}
 							</th>
@@ -19,7 +19,7 @@
 							</th>
 							<th>
 								{lang('Backup.column_date_added')}
-							</th>
+							</th class="text-center">
 							<th width="130">{lang('Admin.column_function')}</th>
 						</tr>
 						</thead>
@@ -29,8 +29,8 @@
 								<td>
 									{$item.name}
 								</td>
-								<td class="text-center">{$item.size}</td>
-								<td class="text-center">{$item.modify}</td>
+								<td>{$item.size}</td>
+								<td>{$item.modify}</td>
 								<td class="text-center">
 									<div class="btn-group ms-auto">
 										<a href="{site_url($manage_url)}/restore?filename={$item.name}" data-id="{$key}" class="btn btn-sm btn-light restore" data-bs-toggle="tooltip" title="{lang('Admin.button_restore')}"><i class="fas fa-sync text-primary"></i></a>

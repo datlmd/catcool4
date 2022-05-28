@@ -2,55 +2,68 @@
 	{form_hidden('manage_url', $manage_url)}
 	{csrf_field()}
 	<div class="container-fluid  dashboard-content">
-		{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('Backup.heading_title')}
 
-		<div class="card">
-			<h5 class="card-header"><i class="fas fa-exchange-alt me-2"></i>{lang('Backup.heading_title')}</h5>
-			<div class="card-body py-2">
+		<div class="row">
 
-				<div class="form-group row my-3">
-					<label class="col-12 col-sm-3 col-form-label text-end">
-						{lang('Admin.button_import')}
-					</label>
-					<div class="col-12 col-sm-8 col-lg-6">
-						<button id="btn_upload" class="btn btn-sm btn-secondary"><i class="fa fa-upload me-1"></i>{lang('Admin.button_import')}</button>
-					</div>
-				</div>
-				<div class="form-group row">
-					<label class="col-12 col-sm-3 col-form-label text-end">
-						{lang('Admin.button_export')}
-					</label>
-					<div class="col-12 col-sm-8 col-lg-6">
-						<button id="btn_backup" class="btn btn-sm btn-light text-dark"><i class="fa fa-download me-1"></i>{lang('Admin.button_export')}</button>
-					</div>
-				</div>
-				<div class="form-group row mb-3">
-					<label class="col-12 col-sm-3 col-form-label text-end"></label>
-					<div class="col-12 col-sm-8 col-lg-6">
-						<div id="tables" class="bg-light p-2" style="max-height: 250px; overflow-y: scroll;">
-							{foreach $tables as $table}
-								<div class="form-check">
-									<input type="checkbox" name="cb_backup[]" id="cb_backup_{$table}" value="{$table}" checked="checked" class="form-check-input">
-									<label class="form-check-label text-dark" for="cb_backup_{$table}">{$table}</label>
+			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12">
+				{include file=get_theme_path('views/inc/menu_tool.inc.tpl') active="backup"}
+			</div>
+
+			<div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12">
+
+				{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('Backup.heading_title')}
+
+				<div class="card">
+					<h5 class="card-header"><i class="fas fa-exchange-alt me-2"></i>{lang('Backup.heading_title')}</h5>
+					<div class="card-body py-2">
+
+						<div class="form-group row my-3">
+							<label class="col-12 col-sm-3 col-form-label text-end">
+								{lang('Admin.button_import')}
+							</label>
+							<div class="col-12 col-sm-8 col-lg-6">
+								<button id="btn_upload" class="btn btn-sm btn-secondary"><i class="fa fa-upload me-1"></i>{lang('Admin.button_import')}</button>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-12 col-sm-3 col-form-label text-end">
+								{lang('Admin.button_export')}
+							</label>
+							<div class="col-12 col-sm-8 col-lg-6">
+								<button id="btn_backup" class="btn btn-sm btn-light text-dark"><i class="fa fa-download me-1"></i>{lang('Admin.button_export')}</button>
+							</div>
+						</div>
+						<div class="form-group row mb-3">
+							<label class="col-12 col-sm-3 col-form-label text-end"></label>
+							<div class="col-12 col-sm-8 col-lg-6">
+								<div id="tables" class="bg-light p-2" style="max-height: 250px; overflow-y: scroll;">
+									{foreach $tables as $table}
+										<div class="form-check">
+											<input type="checkbox" name="cb_backup[]" id="cb_backup_{$table}" value="{$table}" checked="checked" class="form-check-input">
+											<label class="form-check-label text-dark" for="cb_backup_{$table}">{$table}</label>
+										</div>
+									{/foreach}
 								</div>
-							{/foreach}
+								<div class="form-check ms-2 mt-2">
+									<input type="checkbox" name="cb_backup_all" id="cb_backup_all" value="all" checked="checked" class="form-check-input">
+									<label class="form-check-label me-3 text-secondary" for="cb_backup_all">{lang('Admin.text_select_all')}</label>
+								</div>
+							</div>
 						</div>
-						<div class="form-check ms-2 mt-2">
-							<input type="checkbox" name="cb_backup_all" id="cb_backup_all" value="all" checked="checked" class="form-check-input">
-							<label class="form-check-label me-3 text-secondary" for="cb_backup_all">{lang('Admin.text_select_all')}</label>
+
+						<div id="progress_backup" class="progress" style="display: none;">
+							<div id="progress_bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
 						</div>
+						<div id="progress_text" class="mb-3"></div>
+
 					</div>
 				</div>
 
-				<div id="progress_backup" class="progress" style="display: none;">
-					<div id="progress_bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-				</div>
-				<div id="progress_text" class="mb-3"></div>
+				<div id="backup_history"></div>
 
 			</div>
-		</div>
 
-		<div id="backup_history"></div>
+		</div>
 
 	</div>
 
