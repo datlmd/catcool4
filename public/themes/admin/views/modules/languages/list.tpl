@@ -37,7 +37,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=name&order={$order}" class="text-dark">
 												{lang('LanguageAdmin.column_name')}
 												{if $sort eq 'name'}
@@ -45,7 +45,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>{lang('LanguageAdmin.column_code')}</th>
+										<th class="text-start">{lang('LanguageAdmin.column_code')}</th>
 										<th>{lang('LanguageAdmin.column_icon')}</th>
 										<th width="120">{lang('Admin.column_published')}</th>
 										<th width="130">{lang('Admin.column_function')}</th>

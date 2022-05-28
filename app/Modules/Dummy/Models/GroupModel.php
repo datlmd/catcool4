@@ -8,9 +8,9 @@ class GroupModel extends MyModel
     protected $primaryKey = 'dummy_id';
 
     protected $allowedFields = [
-        'dummy_id',
-        'name',
-        'description',
+        "dummy_id",
+        "name",
+        "description",
         //FIELD_ROOT
     ];
 

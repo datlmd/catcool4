@@ -89,7 +89,7 @@
                                                         {/if}
                                                     </a>
                                                 </th>
-                                                <th>
+                                                <th class="text-start">
                                                     <a href="{site_url($manage_url)}?sort=lang_key&order={$order}{$url}" class="text-dark">
                                                         {lang('TranslationAdmin.text_key')}
                                                         {if $sort eq 'lang_key'}
@@ -98,7 +98,7 @@
                                                     </a>
                                                 </th>
                                                 {foreach $language_list as $lang}
-                                                    <th>{$lang.name|capitalize}</th>
+                                                    <th class="text-start">{$lang.name|capitalize}</th>
                                                 {/foreach}
                                                 <th width="80"></th>
                                             </tr>

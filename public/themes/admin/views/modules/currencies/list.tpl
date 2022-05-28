@@ -37,7 +37,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=name&order={$order}" class="text-dark">
 												{lang('Admin.column_name')}
 												{if $sort eq 'name'}
@@ -45,7 +45,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=value&order={$order}" class="text-dark">
 												{lang('CurrencyAdmin.text_value')}
 												{if $sort eq 'value'}
@@ -70,7 +70,7 @@
 											{anchor("$manage_url/edit/`$item.currency_id`", htmlspecialchars($item.name, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}
 											{if $item.code == config_item('currency')} <strong>({lang('Admin.text_default')})</strong>{/if}
 										</td>
-										<td class="text-center">{$item.value}</td>
+										<td>{$item.value}</td>
 										<td class="text-center">{$item.code}</td>
 										<td class="text-center">{$item.symbol_left}</td>
 										<td class="text-center">{$item.symbol_right}</td>

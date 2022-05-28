@@ -60,7 +60,7 @@
 													{/if}
 												</a>
 											</th>
-											<th>
+											<th class="text-start">
 												<a href="{site_url($manage_url)}?sort=route&order={$order}{$url}" class="text-dark">
 													{lang('RouteAdmin.text_route')}
 													{if $sort eq 'route'}
@@ -68,7 +68,7 @@
 													{/if}
 												</a>
 											</th>
-											<th>
+											<th class="text-start">
 												<a href="{site_url($manage_url)}?sort=module&order={$order}{$url}" class="text-dark">
 													{lang('RouteAdmin.text_module')}
 													{if $sort eq 'module'}
@@ -76,7 +76,7 @@
 													{/if}
 												</a>
 											</th>
-											<th>
+											<th class="text-start">
 												<a href="{site_url($manage_url)}?sort=resource&order={$order}{$url}" class="text-dark">
 													{lang('RouteAdmin.text_resource')}
 													{if $sort eq 'resource'}
@@ -84,7 +84,7 @@
 													{/if}
 												</a>
 											</th>
-											<th>{lang('Admin.text_language')}</th>
+											<th class="text-end">{lang('Admin.text_language')}</th>
 											<th width="120">{lang('Admin.column_published')}</th>
 											<th width="130">{lang('Admin.column_function')}</th>
 											<th width="50">{form_checkbox('manage_check_all')}</th>
@@ -95,9 +95,9 @@
 										<tr id="item_id_{$item.id}">
 											<td class="text-center">{anchor("$manage_url/edit/`$item.id`", $item.id, 'class="text-primary"')}</td>
 											<td>{anchor("$manage_url/edit/`$item.id`", $item.route, 'class="text-primary"')}</td>
-											<td class="text-center">{anchor("$manage_url/edit/`$item.id`", $item.module, 'class="text-primary"')}</td>
-											<td class="text-center">{$item.resource}</td>
-											<td class="text-center">{$languages[$item.language_id]}</td>
+											<td class="text-start">{anchor("$manage_url/edit/`$item.id`", $item.module, 'class="text-primary"')}</td>
+											<td class="text-start">{$item.resource}</td>
+											<td class="text-end">{$languages[$item.language_id]}</td>
 											<td>
 												<div class="switch-button switch-button-xs catcool-center">
 													{form_checkbox("published_`$item.id`", ($item.published eq STATUS_ON) ? true : false, ($item.published eq STATUS_ON) ? true : false, ['id' => 'published_'|cat:$item.id, 'data-id' => $item.id, 'data-published' => $item.published, 'class' => 'change_publish'])}

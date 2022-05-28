@@ -66,7 +66,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=module&order={$order}{$url}" class="text-dark">
 												{lang('ModuleAdmin.text_module')}
 												{if $sort eq 'module'}
@@ -74,7 +74,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=module&order={$order}{$url}" class="text-dark">
 												{lang('Admin.text_sub_module')}
 												{if $sort eq 'module'}

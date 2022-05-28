@@ -45,7 +45,7 @@
 								<table class="table table-striped table-hover table-bordered second">
 									<thead>
 									<tr class="text-center">
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}/logs?sort=name&order={$order}&dir={$dir}" class="text-dark">
 												{lang('Admin.text_name')}
 												{if $sort eq 'name'}
@@ -53,7 +53,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}/logs?sort=size&order={$order}&dir={$dir}" class="text-dark">
 												Size
 												{if $sort eq 'size'}
@@ -61,7 +61,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-end">
 											<a href="{site_url($manage_url)}/logs?sort=modify&order={$order}&dir={$dir}" class="text-dark">
 												Last Modified
 												{if $sort eq 'modify'}
@@ -82,8 +82,8 @@
 														{anchor("$manage_url/logs?name=`$item.name`&dir={$dir}", $item.name, 'class="text-primary"')} <small>({$item.permission})</small>
 													{/if}
 												</td>
-												<td class="text-center">{$item.size}</td>
-												<td class="text-center">{$item.modify}</td>
+												<td class="text-start">{$item.size}</td>
+												<td class="text-end">{$item.modify}</td>
 												<td class="text-center">
 													<div class="btn-group ms-auto">
 														<a href="{site_url($manage_url)}/logs?name={$item.name}&dir={$dir}&type=1" class="btn btn-sm btn-light" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></a>

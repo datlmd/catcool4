@@ -59,7 +59,7 @@
 													{/if}
 												</a>
 											</th>
-											<th>
+											<th class="text-start">
 												<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
 													{lang('Admin.column_name')}
 													{if $sort eq 'name'}
@@ -67,7 +67,7 @@
 													{/if}
 												</a>
 											</th>
-											<th>
+											<th class="text-start">
 												<a href="{site_url($manage_url)}?sort=description&order={$order}{$url}" class="text-dark">
 													{lang('Admin.column_description')}
 													{if $sort eq 'description'}
@@ -75,7 +75,7 @@
 													{/if}
 												</a>
 											</th>
-											<th>
+											<th class="text-end">
 												<a href="{site_url($manage_url)}?sort=sort_order&order={$order}{$url}" class="text-dark">
 													{lang('Admin.column_sort_order')}
 													{if $sort eq 'sort_order'}
@@ -94,7 +94,7 @@
 											<td class="text-center">{anchor("$manage_url/edit/`$item.dummy_id`", $item.dummy_id, 'class="text-primary"')}</td>
 											<td>{anchor("$manage_url/edit/`$item.dummy_id`", $item.name, 'class="text-primary"')}</td>
 											<td>{$item.description}</td>
-											<td class="text-center">{$item.sort_order}</td>
+											<td class="text-end">{$item.sort_order}</td>
 											<td>
 												<div class="switch-button switch-button-xs catcool-center">
 													{form_checkbox("published_`$item.dummy_id`", ($item.published eq STATUS_ON) ? true : false, ($item.published eq STATUS_ON) ? true : false, ['id' => 'published_'|cat:$item.dummy_id, 'data-id' => $item.dummy_id, 'data-published' => $item.published, 'class' => 'change_publish'])}

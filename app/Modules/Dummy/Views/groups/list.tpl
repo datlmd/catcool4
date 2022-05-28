@@ -59,7 +59,7 @@
 													{/if}
 												</a>
 											</th>
-											<th>
+											<th class="text-start">
 												<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
 													{lang('Admin.column_name')}
 													{if $sort eq 'name'}
@@ -67,7 +67,7 @@
 													{/if}
 												</a>
 											</th>
-											<th>{lang('Admin.column_description')}</th>
+											<th class="text-start">{lang('Admin.column_description')}</th>
 											<th width="130">{lang('Admin.column_function')}</th>
 											<th width="50">{form_checkbox('manage_check_all')}</th>
 										</tr>

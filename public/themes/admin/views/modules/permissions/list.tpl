@@ -60,7 +60,7 @@
 											{/if}
 										</a>
 									</th>
-									<th>
+									<th class="text-start">
 										<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
 											{lang('PermissionAdmin.column_name')}
 											{if $sort eq 'name'}

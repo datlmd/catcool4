@@ -37,7 +37,7 @@
 													{/if}
 												</a>
 											</th>
-											<th>
+											<th class="text-start">
 												<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
 													{lang('Admin.column_name')}
 													{if $sort eq 'name'}
@@ -45,10 +45,10 @@
 													{/if}
 												</a>
 											</th>
-											<th>
+											<th class="text-start">
 												{lang('ProductLengthClassAdmin.text_unit')}
 											</th>
-											<th>
+											<th class="text-start">
 												{lang('ProductLengthClassAdmin.text_value')}
 											</th>
 											<th width="130">{lang('Admin.column_function')}</th>
@@ -65,8 +65,8 @@
 														&nbsp{lang('Admin.text_default')}
 													{/if}
 												</td>
-												<td class="text-center">{$item.unit}</td>
-												<td class="text-center">{$item.value}</td>
+												<td class="text-start">{$item.unit}</td>
+												<td class="text-start">{$item.value}</td>
 												<td class="text-center">
 													<div class="btn-group ms-auto">
 														<a href="{site_url($manage_url)}/edit/{$item.length_class_id}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>

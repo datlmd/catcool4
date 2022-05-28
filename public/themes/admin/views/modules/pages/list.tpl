@@ -60,7 +60,7 @@
 													{/if}
 												</a>
 											</th>
-											<th>
+											<th class="text-start">
 												<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
 													{lang('PageAdmin.text_name')}
 													{if $sort eq 'name'}
@@ -68,7 +68,7 @@
 													{/if}
 												</a>
 											</th>
-											<th>
+											<th class="text-end">
 												<a href="{site_url($manage_url)}?sort=ctime&order={$order}{$url}" class="text-dark">
 													{lang('Admin.text_ctime')}
 													{if $sort eq 'ctime'}
@@ -76,7 +76,7 @@
 													{/if}
 												</a>
 											</th>
-											<th>
+											<th class="text-end">
 												<a href="{site_url($manage_url)}?sort=sort_order&order={$order}{$url}" class="text-dark">
 													{lang('Admin.text_sort_order')}
 													{if $sort eq 'sort_order'}
@@ -96,8 +96,8 @@
 											<td>
 												{anchor("$manage_url/edit/`$item.page_id`", htmlspecialchars($item.name, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}<br/>
 											</td>
-											<td class="text-center">{$item.ctime}</td>
-											<td class="text-center">{$item.sort_order}</td>
+											<td class="text-end">{$item.ctime}</td>
+											<td class="text-end">{$item.sort_order}</td>
 											<td>
 												<div class="switch-button switch-button-xs catcool-center">
 													{form_checkbox("published_`$item.page_id`", ($item.published eq STATUS_ON) ? true : false, ($item.published eq STATUS_ON) ? true : false, ['id' => 'published_'|cat:$item.page_id, 'data-id' => $item.page_id, 'data-published' => $item.published, 'class' => 'change_publish'])}

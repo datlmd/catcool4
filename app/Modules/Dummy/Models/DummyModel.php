@@ -10,11 +10,11 @@ class DummyModel extends MyModel
     protected $returnType = 'array';
 
     protected $allowedFields = [
-        'dummy_id',
-        'sort_order',
-        'published',
-        'ctime',
-        'mtime',
+        "dummy_id",
+        "sort_order",
+        "published",
+        "ctime",
+        "mtime",
         //FIELD_ROOT
     ];
 

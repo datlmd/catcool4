@@ -59,7 +59,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=username&order={$order}{$url}" class="text-dark">
 												{lang('Admin.text_username')}
 												{if $sort eq 'username'}
@@ -67,7 +67,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=first_name&order={$order}{$url}" class="text-dark">
 												{lang('Admin.text_full_name')}
 												{if $sort eq 'first_name'}
@@ -75,7 +75,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=email&order={$order}{$url}" class="text-dark">
 												{lang('UserAdmin.text_email')}
 												{if $sort eq 'email'}
@@ -83,7 +83,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>{lang('UserAdmin.text_phone')}</th>
+										<th class="text-end">{lang('UserAdmin.text_phone')}</th>
 										<th>{lang('Admin.text_active')}</th>
 										<th width="130">{lang('Admin.column_function')}</th>
 									</tr>
@@ -103,9 +103,9 @@
 											{/if}
 											{anchor("$manage_url/edit/`$item.id`", htmlspecialchars($item.username, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}
 										</td>
-										<td class="text-center">{full_name($item.first_name, $item.last_name)}</td>
+										<td class="text-start">{full_name($item.first_name, $item.last_name)}</td>
 										<td>{htmlspecialchars($item.email, ENT_QUOTES,'UTF-8')}</td>
-										<td>{htmlspecialchars($item.phone, ENT_QUOTES,'UTF-8')}</td>
+										<td class="text-end">{htmlspecialchars($item.phone, ENT_QUOTES,'UTF-8')}</td>
 										<td>
 											<div class="switch-button switch-button-xs catcool-center">
 												{form_checkbox("published_`$item.id`", $item.active, $item.active, ['id' => 'published_'|cat:$item.id, 'data-id' => $item.id, 'data-published' => $item.active, 'class' => 'change_publish'])}

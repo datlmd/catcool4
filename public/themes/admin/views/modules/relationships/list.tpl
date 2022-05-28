@@ -67,7 +67,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=candidate_table&order={$order}{$url}" class="text-dark">
 												{lang('RelationshipAdmin.text_candidate_table')}
 												{if $sort eq 'candidate_table'}
@@ -75,7 +75,7 @@
 												{/if}
 											</a>
 										</th>
-										<th>
+										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=foreign_table&order={$order}{$url}" class="text-dark">
 												{lang('RelationshipAdmin.text_foreign_table')}
 												{if $sort eq 'foreign_table'}
@@ -91,10 +91,10 @@
 								{foreach $list as $item}
 									<tr>
 										<td class="text-center">{anchor("$manage_url/edit/`$item.id`", $item.id, 'class="text-primary"')}</td>
-										<td class="text-center">
+										<td class="text-start">
 											{$item.candidate_table} - ID: {$item.candidate_key}
 										</td>
-										<td class="text-center">{$item.foreign_table} - ID: {$item.foreign_key}</td>
+										<td class="text-start">{$item.foreign_table} - ID: {$item.foreign_key}</td>
 										<td class="text-center">
 											<div class="btn-group ms-auto">
 												<a href="{site_url($manage_url)}/edit/{$item.id}" class="btn btn-sm btn-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="{lang('Admin.button_edit')}" data-original-title="{lang('Admin.button_edit')}"{/if}><i class="fas fa-edit"></i></a>
