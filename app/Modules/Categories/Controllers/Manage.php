@@ -16,7 +16,7 @@ class Manage extends AdminController
     CONST MANAGE_URL  = 'categories/manage';
 
     CONST SEO_URL_MODULE   = 'categories';
-    CONST SEO_URL_RESOURCE = 'detail/%s';
+    CONST SEO_URL_RESOURCE = 'Categories::Detail/%s';
 
     public function __construct()
     {

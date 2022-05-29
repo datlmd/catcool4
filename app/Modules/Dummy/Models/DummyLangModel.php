@@ -10,10 +10,10 @@ class DummyLangModel extends MyModel
     protected $returnType = 'array';
 
     protected $allowedFields = [
-        'dummy_id',
-        'language_id',
-        'name',
-        'description',
+        "dummy_id",
+        "language_id",
+        "name",
+        "description",
         //FIELD_DESCRIPTION
     ];
 

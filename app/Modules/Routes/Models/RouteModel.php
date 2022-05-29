@@ -175,6 +175,7 @@ class RouteModel extends MyModel
         }
 
         if (!empty($urls['route'])) {
+            $urls['route'] = get_seo_extension($urls['route']);
             if (!empty($urls['id'])) {
                 $this->update($urls['id'], $urls);
             } else {
@@ -194,6 +195,9 @@ class RouteModel extends MyModel
                 if (empty($urls[$key]['route'])) {
                     continue;
                 }
+
+                $urls[$key]['route'] = get_seo_extension($urls[$key]['route']);
+
                 if (!empty($urls[$key]['id'])) {
                     $this->update($urls[$key]['id'], $urls[$key]);
                 } else {

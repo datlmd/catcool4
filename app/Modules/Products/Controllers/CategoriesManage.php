@@ -3,6 +3,7 @@
 use App\Controllers\AdminController;
 use App\Modules\Products\Models\CategoryModel;
 use App\Modules\Products\Models\CategoryLangModel;
+use App\Modules\Routes\Models\RouteModel;
 
 class CategoriesManage extends AdminController
 {
@@ -13,6 +14,9 @@ class CategoriesManage extends AdminController
     CONST MANAGE_ROOT = 'products/categories_manage';
     CONST MANAGE_URL  = 'products/categories_manage';
 
+    CONST SEO_URL_MODULE   = 'products';
+    CONST SEO_URL_RESOURCE = 'Categories::Detail/%s';
+
     public function __construct()
     {
         parent::__construct();
@@ -21,6 +25,7 @@ class CategoriesManage extends AdminController
 
         $this->model = new CategoryModel();
         $this->model_lang = new CategoryLangModel();
+        $this->model_route = new RouteModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -74,10 +79,15 @@ class CategoriesManage extends AdminController
                 return redirect()->back()->withInput();
             }
 
+            //save route url
+            $seo_urls = $this->request->getPost('seo_urls');
+            $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
+
             $add_data_lang = $this->request->getPost('lang');
             foreach (get_list_lang(true) as $language) {
                 $add_data_lang[$language['id']]['language_id'] = $language['id'];
                 $add_data_lang[$language['id']]['category_id'] = $id;
+                $add_data_lang[$language['id']]['slug']        = !empty($seo_urls[$language['id']]['route']) ? $seo_urls[$language['id']]['route'] : '';
                 $this->model_lang->insert($add_data_lang[$language['id']]);
             }
 
@@ -104,10 +114,15 @@ class CategoriesManage extends AdminController
                 return redirect()->back()->withInput();
             }
 
+            //save route url
+            $seo_urls = $this->request->getPost('seo_urls');
+            $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
+
             $edit_data_lang = $this->request->getPost('lang');
             foreach (get_list_lang(true) as $language) {
                 $edit_data_lang[$language['id']]['language_id'] = $language['id'];
                 $edit_data_lang[$language['id']]['category_id'] = $id;
+                $edit_data_lang[$language['id']]['slug']        = !empty($seo_urls[$language['id']]['route']) ? $seo_urls[$language['id']]['route'] : '';
 
                 if (!empty($this->model_lang->where(['category_id' => $id, 'language_id' => $language['id']])->find())) {
                     $this->model_lang->where('language_id', $language['id'])->update($id,$edit_data_lang[$language['id']]);
@@ -163,6 +178,9 @@ class CategoriesManage extends AdminController
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR);
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
+
+            //lay danh sach seo url tu route
+            $data['seo_urls'] = $this->model_route->getListByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
 
             $data['edit_data'] = $data_form;
         } else {
@@ -221,6 +239,11 @@ class CategoriesManage extends AdminController
 
             //reset cache
             $this->model->deleteCache();
+
+            //xoa slug ra khoi route
+            foreach($list_delete as $value) {
+                $this->model_route->deleteByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $value['category_id']));
+            }
 
             json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
         }
