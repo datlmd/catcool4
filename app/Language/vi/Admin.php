@@ -114,7 +114,7 @@ return [
 	"error_permission_read" => "Bạn không có quyền thực thi thao tác này.  Vui lòng kiểm tra lại quyền hạn với người quản lý.",
 	"error_permission_super_admin" => "Bạn không có quyền cập nhật hoặc xoá những User có quyền cao hơn. Vui lòng kiểm tra lại quyền hạn với người quản lý.",
 	"error_select_photos" => "Vui lòng chọn hình ảnh trước khi thao tác",
-	"error_slug_exists" => "SEO Url đã tồn tại. Vui lòng đảm bảo SEO Url là duy nhât!",
+	"error_slug_exists" => "SEO Url đã tồn tại. Vui lòng đảm bảo SEO Url là duy nhât! {0}",
 	"error_token" => "Có lỗi xảy ra trong quá trình thực thi. Vui lòng thử lại!",
 	"error_upload_1" => "Tập tin được tải lên vượt quá qui định trong tệp  php.ini!",
 	"error_upload_2" => "Tập tin được tải lên vượt quá qui định đã được xác định trong mã HTML!",

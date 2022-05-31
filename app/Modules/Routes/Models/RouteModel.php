@@ -130,19 +130,13 @@ class RouteModel extends MyModel
         return true;
     }
 
-    public function getListAvailable($url, $id = null)
+    public function getListAvailable($where)
     {
-        if (empty($url)) {
+        if (empty($where)) {
             return false;
         }
 
-        if (!empty($id)) {
-            $route = $this->where(['route' => $url, 'id !=', $id])->findAll();
-        } else {
-            $route = $this->where('route', $url)->findAll();
-        }
-
-        return $route;
+        return $this->where($where)->findAll();
     }
 
     public function writeFile()

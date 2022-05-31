@@ -199,7 +199,11 @@ class Manage extends AdminController
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         foreach(get_list_lang(true) as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
-            $this->validator->setRule(sprintf('seo_urls.%s.route', $value['id']), lang('Admin.text_slug') . ' (' . $value['name']  . ')', 'checkRoute[' . ($this->request->getPost('seo_urls[' . $value['id'] . '][id]') ?? "") . ',[22]');
+            $this->validator->setRule(
+                sprintf('seo_urls.%s.route', $value['id']),
+                sprintf("%s (%s)", lang('Admin.text_slug'), $value['name']),
+                sprintf('checkRoute[%s,%s,%s,%s]', $this->request->getPost('seo_urls[' . $value['id'] . '][id]'), self::SEO_URL_MODULE, $value['id'], $value['name'])
+            );
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();

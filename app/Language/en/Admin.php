@@ -114,7 +114,7 @@ return [
 	"error_permission_read" => "You do not have permission to read. Please refer to your system administrator.",
 	"error_permission_super_admin" => "You do not have permission to modify users. Please refer to your system administrator.",
 	"error_select_photos" => "Please select images before execution",
-	"error_slug_exists" => "SEO URL must be unique!",
+	"error_slug_exists" => "SEO URL must be unique! {0}",
 	"error_token" => "An error occurred during execution. Please try again!",
 	"error_upload_1" => "The uploaded file exceeds the upload_max_filesize directive in php.ini!",
 	"error_upload_2" => "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form!",
