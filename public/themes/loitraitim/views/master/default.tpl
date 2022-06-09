@@ -93,6 +93,7 @@
 			fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));</script>
 
+	<script data-cfasync="false" type="text/javascript" data-adel="atag" src="//ashcdn.com/script/atg.js" czid="43cdgawysm"></script>
 </body>
 </html>
 {/strip}
