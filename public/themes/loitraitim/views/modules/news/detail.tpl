@@ -89,6 +89,9 @@
                     {include file=get_theme_path('views/inc/facebook_comment.tpl') fb_url=base_url($detail.detail_url)}
                 {/if}
 
+                <script data-cfasync="false" type="text/javascript" src="//greatdexchange.com/a/display.php?r=5979702"></script>
+                <script data-cfasync="false" type="text/javascript" src="//greatdexchange.com/a/display.php?r=5979754"></script>
+
             </div>
             <aside class="col-md-4 col-12 d-none d-lg-block">
                 <div class="position-sticky">
@@ -122,7 +125,7 @@
 
             </div>
             <div class="col-md-4 col-12">
-
+                <script data-cfasync="false" type="text/javascript" src="//greatdexchange.com/a/display.php?r=5979758"></script>
             </div>
         </div>
     </section>

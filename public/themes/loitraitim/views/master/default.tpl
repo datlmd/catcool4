@@ -94,7 +94,6 @@
 		}(document, 'script', 'facebook-jssdk'));</script>
 
 {*	<script data-cfasync="false" type="text/javascript" data-adel="atag" src="//ashcdn.com/script/atg.js" czid="43cdgawysm"></script>*}
-	<script data-cfasync="false" type="text/javascript" src="//greatdexchange.com/a/display.php?r=5979702"></script>
 	<script data-cfasync="false" src="//acacdn.com/script/ippg.js" data-adel="inpage" zid="5979706" rr="0" mads="2"></script>
 </body>
 </html>
