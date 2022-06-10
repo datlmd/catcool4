@@ -127,7 +127,7 @@
 
 				{include file=get_theme_path('views/modules/news/inc/list_hot.tpl')}
 
-				<div class="w-100 mt-3 text-end">
+				<div class="w-100 mt-3 text-center">
 					<script data-cfasync="false" type="text/javascript" src="//greatdexchange.com/a/display.php?r=5979758"></script>
 				</div>
 
