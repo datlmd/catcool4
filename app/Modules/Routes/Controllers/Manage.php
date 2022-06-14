@@ -43,7 +43,7 @@ class Manage extends AdminController
             'breadcrumb'    => $this->breadcrumb->render(),
             'list'          => $list->paginate($limit),
             'pager'         => $list->pager,
-            'sort'          => empty($sort) ? 'id' : $sort,
+            'sort'          => empty($sort) ? 'ctime' : $sort,
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'           => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
@@ -99,15 +99,15 @@ class Manage extends AdminController
         return $this->_getForm();
     }
 
-    public function edit($id = null)
+    public function edit($route = null, $language_id = null)
     {
-        if (is_null($id)) {
+        if (is_null($route) || is_null($language_id)) {
             set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()) && $id == $this->request->getPost('id')) {
-            if (!$this->_validateForm($id)) {
+        if (!empty($this->request->getPost())) {
+            if (!$this->_validateForm($route, $language_id)) {
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
@@ -121,7 +121,7 @@ class Manage extends AdminController
                 'published'   => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
-            if (!$this->model->update($id, $edit_data)) {
+            if (!$this->model->update(['route' => $this->request->getPost('route'), 'language_id' => $this->request->getPost('language_id')], $edit_data)) {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
             }
 
@@ -129,7 +129,7 @@ class Manage extends AdminController
             return redirect()->back();
         }
 
-        return $this->_getForm($id);
+        return $this->_getForm($route, $language_id);
     }
 
     public function delete($id = null)
@@ -140,52 +140,45 @@ class Manage extends AdminController
 
         $token = csrf_hash();
 
-        //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
-            $ids = $this->request->getPost('ids');
-            $ids = (is_array($ids)) ? $ids : explode(",", $ids);
+        $data_delete = $this->request->getPost('data');
 
-            $list_delete = $this->model->find($ids);
-            if (empty($list_delete)) {
+        //delete
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('route'))) {
+            $route = $this->request->getPost('route');
+            $language_id = $this->request->getPost('language_id');
+
+            $item_info = $this->model->where(['route' => $route, 'language_id' => $language_id])->first();
+            if (empty($item_info)) {
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
-            $this->model->delete($ids);
+            $this->model->where(['route' => $route, 'language_id' => $language_id])->delete();
 
-            json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
+            json_output(['token' => $token, 'status' => 'ok', 'ids' => ["$route" . "$language_id"], 'msg' => lang('Admin.text_delete_success')]);
         }
 
-        $delete_ids = $id;
-
-        //truong hop chon xoa nhieu muc
-        if (!empty($this->request->getPost('delete_ids'))) {
-            $delete_ids = $this->request->getPost('delete_ids');
-        }
-
-        if (empty($delete_ids)) {
+        if (empty($data_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->find($delete_ids);
-        if (empty($list_delete)) {
+        $item_info = $this->model->where(['route' => $data_delete['route'], 'language_id' => $data_delete['language_id']])->first();
+        if (empty($item_info)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $data['list_delete'] = $list_delete;
-        $data['ids']         = $delete_ids;
+        $data['item_info'] = $item_info;
+        $data['languages'] = format_dropdown(get_list_lang(true));
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }
 
-    private function _getForm($id = null)
+    private function _getForm($route = null, $language_id = null)
     {
         //edit
-        if (!empty($id) && is_numeric($id)) {
+        if (!empty($route) && !empty($language_id)) {
             $data['text_form'] = lang('RouteAdmin.text_edit');
-            $breadcrumb_url    = site_url(self::MANAGE_URL . "/edit/$id");
+            $breadcrumb_url    = site_url(self::MANAGE_URL . "/edit/$route/$language_id");
 
-            $data_form = $this->model->find($id);
+            $data_form = $this->model->where(['route' => $route, 'language_id' => $language_id])->first();
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->to(site_url(self::MANAGE_URL));
@@ -211,15 +204,15 @@ class Manage extends AdminController
             ::load('form', $data);
     }
 
-    private function _validateForm($id = null)
+    private function _validateForm($route = null, $language_id = null)
     {
         $this->validator->setRule('module', lang('RouteAdmin.text_module'), 'required');
         $this->validator->setRule('resource', lang('RouteAdmin.text_resource'), 'required');
 
-        if (empty($id)) {
+        if (is_null($route) && is_null($language_id)) {
             $this->validator->setRule('route', lang('RouteAdmin.text_route'), 'required|is_unique[route.route]');
         } else {
-            $this->validator->setRule('route', lang('RouteAdmin.text_route'), 'required|is_unique[route.route,id,' . $id . ']');
+            $this->validator->setRule('route', lang('RouteAdmin.text_route'), 'required|is_unique[route.route,language_id,' . $language_id . ']');
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
@@ -236,18 +229,20 @@ class Manage extends AdminController
 
         $token = csrf_hash();
 
-        if (empty($this->request->getPost())) {
+        if (empty($this->request->getPost('data'))) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        $id        = $this->request->getPost('id');
-        $item_edit = $this->model->find($id);
+        $data = $this->request->getPost('data');
+
+        $item_edit = $this->model->where(['route' => $data['route'], 'language_id' => $data['language_id']])->first();
         if (empty($item_edit)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $item_edit['published'] = !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF;
-        if (!$this->model->update($id, $item_edit)) {
+
+        if (!$this->model->where(['route' => $data['route'], 'language_id' => $data['language_id']])->save($item_edit)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 

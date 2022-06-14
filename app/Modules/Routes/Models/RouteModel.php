@@ -6,14 +6,13 @@ use App\Modules\Users\Models\UserPermissionModel;
 class RouteModel extends MyModel
 {
     protected $table      = 'route';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'route';
 
     protected $allowedFields = [
-        'id',
+        'language_id',
+        'route',
         'module',
         'resource',
-        'route',
-        'language_id',
         'user_id',
         'published',
         'ctime',
@@ -27,11 +26,11 @@ class RouteModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? $sort : 'id';
+        $sort  = in_array($sort, $this->allowedFields) ? $sort : 'ctime';
         $order = empty($order) ? 'DESC' : $order;
 
-        if (!empty($filter["id"])) {
-            $this->whereIn('id', (!is_array($filter["id"]) ? explode(',', $filter["id"]) : $filter["id"]));
+        if (!empty($filter["route"])) {
+            $this->whereIn('route', $filter["route"]);
         }
 
         if (!empty($filter["module"])) {
@@ -68,7 +67,7 @@ class RouteModel extends MyModel
             'resource' => $resource
         ];
 
-        $result = $this->orderBy('id', 'DESC')->where($data)->findAll();
+        $result = $this->orderBy('ctime', 'DESC')->where($data)->findAll();
         if (empty($result)) {
             return false;
         }
@@ -170,8 +169,8 @@ class RouteModel extends MyModel
 
         if (!empty($urls['route'])) {
             $urls['route'] = get_seo_extension($urls['route']);
-            if (!empty($urls['id'])) {
-                $this->update($urls['id'], $urls);
+            if (!empty($urls['language_id'])) {
+                $this->where(['language_id' => $urls['language_id'], 'route' => $urls['route']])->update();
             } else {
                 $route_data = [
                     'module'      => $module,
@@ -186,14 +185,14 @@ class RouteModel extends MyModel
             }
         } else {
             foreach (get_list_lang(true) as $key => $value) {
-                if (empty($urls[$key]['route'])) {
+                if (!isset($urls[$key]['route'])) {
                     continue;
                 }
 
                 $urls[$key]['route'] = get_seo_extension($urls[$key]['route']);
 
-                if (!empty($urls[$key]['id'])) {
-                    $this->update($urls[$key]['id'], $urls[$key]);
+                if (!empty($urls[$key]['language_id'])) {
+                    $this->where(['route' => $urls[$key]['route'], 'language_id' => $key])->delete();
                 } else {
                     $route_data = [
                         'module'      => $module,

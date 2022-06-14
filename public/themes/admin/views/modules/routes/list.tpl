@@ -52,14 +52,6 @@
 								<table class="table table-striped table-hover table-bordered second">
 									<thead>
 										<tr class="text-center">
-											<th width="50">
-												<a href="{site_url($manage_url)}?sort=id&order={$order}{$url}" class="text-dark">
-													{lang('Admin.column_id')}
-													{if $sort eq 'id'}
-														<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
-													{/if}
-												</a>
-											</th>
 											<th class="text-start">
 												<a href="{site_url($manage_url)}?sort=route&order={$order}{$url}" class="text-dark">
 													{lang('RouteAdmin.text_route')}
@@ -68,6 +60,7 @@
 													{/if}
 												</a>
 											</th>
+											<th class="text-start">{lang('Admin.text_language')}</th>
 											<th class="text-start">
 												<a href="{site_url($manage_url)}?sort=module&order={$order}{$url}" class="text-dark">
 													{lang('RouteAdmin.text_module')}
@@ -84,33 +77,38 @@
 													{/if}
 												</a>
 											</th>
-											<th class="text-end">{lang('Admin.text_language')}</th>
+											<th width="200">
+												<a href="{site_url($manage_url)}?sort=ctime&order={$order}{$url}" class="text-dark">
+													{lang('Admin.text_ctime')}
+													{if $sort eq 'ctime'}
+														<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+													{/if}
+												</a>
+											</th>
 											<th width="120">{lang('Admin.column_published')}</th>
 											<th width="130">{lang('Admin.column_function')}</th>
-											<th width="50">{form_checkbox('manage_check_all')}</th>
 										</tr>
 									</thead>
 									<tbody>
 									{foreach $list as $item}
-										<tr id="item_id_{$item.id}">
-											<td class="text-center">{anchor("$manage_url/edit/`$item.id`", $item.id, 'class="text-primary"')}</td>
-											<td>{anchor("$manage_url/edit/`$item.id`", $item.route, 'class="text-primary"')}</td>
-											<td class="text-start">{anchor("$manage_url/edit/`$item.id`", $item.module, 'class="text-primary"')}</td>
+										<tr id="item_id_{$item.route}_{$item.language_id}">
+											<td>{anchor("$manage_url/edit/`$item.route`/`$item.language_id`", $item.route, 'class="text-primary"')}</td>
+											<td class="text-start">{$languages[$item.language_id]}</td>
+											<td class="text-start">{$item.module}</td>
 											<td class="text-start">{$item.resource}</td>
-											<td class="text-end">{$languages[$item.language_id]}</td>
+											<td class="text-center">{$item.ctime}</td>
 											<td>
 												<div class="switch-button switch-button-xs catcool-center">
-													{form_checkbox("published_`$item.id`", ($item.published eq STATUS_ON) ? true : false, ($item.published eq STATUS_ON) ? true : false, ['id' => 'published_'|cat:$item.id, 'data-id' => $item.id, 'data-published' => $item.published, 'class' => 'change_publish'])}
-													<span><label for="published_{$item.id}"></label></span>
+													{form_checkbox("published_`$item.route`_`$item.language_id`", ($item.published eq STATUS_ON) ? true : false, ($item.published eq STATUS_ON) ? true : false, ['id' => 'published_'|cat:$item.route|cat:"_"|cat:$item.language_id, 'data-route' => $item.route, 'data-language_id' => $item.language_id, 'data-published' => $item.published, 'class' => 'change_publish'])}
+													<span><label for="published_{$item.route}_{$item.language_id}"></label></span>
 												</div>
 											</td>
 											<td class="text-center">
 												<div class="btn-group ms-auto">
-													<a href="{site_url($manage_url)}/edit/{$item.id}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
-													<button type="button" data-id="{$item.id}" class="btn btn-sm btn-light text-danger btn_delete_single" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
+													<a href="{site_url($manage_url)}/edit/{$item.route}/{$item.language_id}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
+													<button type="button" data-route="{$item.route}" data-language_id="{$item.language_id}" class="btn btn-sm btn-light text-danger btn_delete_single" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>
-											<td class="text-center">{form_checkbox('manage_ids[]', $item.id)}</td>
 										</tr>
 									{/foreach}
 									</tbody>

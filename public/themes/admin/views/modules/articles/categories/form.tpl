@@ -33,7 +33,7 @@
                                     {foreach $language_list as $language}
                                         <div class="tab-pane fade {if $language.active}show active{/if}" role="tabpanel" id="lanuage_content_{$language.id}"  aria-labelledby="language_tab_{$language.id}">
                                             <div class="form-group row required has-error">
-                                                <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
+                                                <label class="col-12 col-sm-2 col-form-label required-label text-sm-end">
                                                     {lang('Admin.text_name')}
                                                 </label>
                                                 <div class="col-12 col-sm-8 col-lg-8">
@@ -44,7 +44,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-12 col-sm-3 col-form-label text-sm-end">
+                                                <label class="col-12 col-sm-2 col-form-label text-sm-end">
                                                     {lang('Admin.text_description')}
                                                 </label>
                                                 <div class="col-12 col-sm-8 col-lg-8">
@@ -52,7 +52,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-12 col-sm-3 col-form-label text-sm-end">
+                                                <label class="col-12 col-sm-2 col-form-label text-sm-end">
                                                     {lang('Admin.tab_seo')}
                                                 </label>
                                                 <div class="col-12 col-sm-8 col-lg-8 mt-2">

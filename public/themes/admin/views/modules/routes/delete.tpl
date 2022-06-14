@@ -7,15 +7,12 @@
             </div>
             <div class="modal-body">
                 {form_open(uri_string(), ['id' => 'delete_validationform'])}
-                {if !empty($list_delete)}
-                    <ul class="list-unstyled bullet-check font-14 ms-5">
-                        {foreach $list_delete as $item}
-                            <li class="text-danger">{$item.module} - {$item.resource} (ID={$item.id})</li>
-                        {/foreach}
-                    </ul>
-                {/if}
+                <ul class="list-unstyled bullet-check font-14 ms-5">
+                    <li class="text-danger">{$item_info.route} ({$languages[$item_info.language_id]})</li>
+                </ul>
                 <div class="form-group text-center clearfix">
-                    {form_hidden('ids', $ids)}
+                    {form_hidden('route', $item_info.route)}
+                    {form_hidden('language_id', $item_info.language_id)}
                     {form_hidden('is_delete', true)}
                     <button type="button" id="submit_delete" onclick="Catcool.submitDelete('delete_validationform');" class="btn btn-sm btn-space btn-danger"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete')}</button>
                     <button type="button" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</button>

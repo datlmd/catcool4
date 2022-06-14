@@ -134,6 +134,7 @@ var Catcool = {
             data: {
                 'id' : id,
                 'published': is_check,
+                'data': $(obj).data(),
                 [$("input[name*='" + csrf_token + "']").attr('name')] : $("input[name*='" + csrf_token + "']").val()
             },
             type:'POST',
@@ -242,6 +243,7 @@ var Catcool = {
             url: url,
             data: {
                 delete_ids: delete_data,
+                data: obj.data(),
                 [$("input[name*='" + csrf_token + "']").attr('name')] : $("input[name*='" + csrf_token + "']").val()
             },
             type: 'POST',

@@ -11,9 +11,7 @@
                     <a href="{back_to($manage_url)}" class="btn btn-sm btn-space btn-secondary me-0 mb-0" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_cancel')}</a>
                 </div>
             </div>
-            {if !empty($edit_data.id)}
-                {form_hidden('id', $edit_data.id)}
-            {/if}
+
             <div class="row">
                 {if !empty(print_flash_alert())}
                     <div class="col-12">{print_flash_alert()}</div>
