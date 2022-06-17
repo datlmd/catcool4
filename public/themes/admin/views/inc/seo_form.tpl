@@ -35,7 +35,8 @@
 					{lang('Admin.text_slug')}
 					<div class="input-group">
 						<span class="input-group-text bg-linght pe-1" id="input_group_slug">{if !empty($name_seo_url)}{site_url($name_seo_url)}{else}{site_url()}{/if}</span>
-						<input type="hidden" name="seo_urls[{$language.id}][id]" value="{$seo_urls[$language.id].id}">
+						<input type="hidden" name="seo_urls[{$language.id}][route_old]" value="{$seo_urls[$language.id].route}">
+						<input type="hidden" name="seo_urls[{$language.id}][language_id]" value="{$seo_urls[$language.id].language_id}">
 						<input type="text" name="seo_urls[{$language.id}][route]" data-is-slug="false" data-seo-id="seo_meta_url_{$language.id}" onkeyup="Catcool.setContentSeo(this);"  value='{old("seo_urls.`$language.id`.route", $seo_urls[$language.id].route)}' placeholder="{$seo_urls[$language.id].route}" id="input_slug_{$language.id}" aria-describedby="input_group_slug" class="form-control {if $validator->hasError("seo_urls.`$language.id`.route")}is-invalid{/if}">
 						<div class="invalid-feedback">
 							{$validator->getError("seo_urls.`$language.id`.route")}

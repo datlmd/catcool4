@@ -12,21 +12,26 @@ class CustomRules
         $seo_url = $str;
 
         if (!is_null($seo_url)) {
-            $model_route = new RouteModel();
-
             $params = explode(',', $params);
-            $where  = sprintf(
-                "route = '%s' AND module = '%s' AND language_id = %s",
-                get_seo_extension($seo_url),
-                $params[1] ?? null,
-                $params[2] ?? null
-            );
-
-            if (!empty($params[0])) {
-                $where .= " AND id != $params[0]";
+            if (empty($params[0])) {
+                return true;
             }
 
-            $seo_data = $model_route->getListAvailable($where);
+            $where  = null;
+            if (count($params) >= 3) {
+                $where = [
+                    'route' => get_seo_extension($params[0]),
+                    'language_id' => $params[2],
+                ];
+
+                if (!empty($params[1])) {
+                    $where['route !='] = get_seo_extension($params[1]);
+                }
+            }
+
+            $model_route = new RouteModel();
+            $seo_data    = $model_route->getListAvailable($where);
+
             if (empty($seo_data)) {
                 return true;
             }
