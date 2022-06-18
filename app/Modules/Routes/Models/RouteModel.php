@@ -116,9 +116,7 @@ class RouteModel extends MyModel
                 return false;
             }
 
-            $ids = array_column($routes, 'id');
-
-            $this->delete($ids);
+            $this->where($data)->delete();
         } catch (\Exception $ex) {
             log_message('error', $ex->getMessage());
             return false;
@@ -163,7 +161,6 @@ class RouteModel extends MyModel
 
     public function saveRoute($urls, $module, $resource)
     {
-
         if (empty($urls) || empty($module) || empty($resource)) {
             return false;
         }

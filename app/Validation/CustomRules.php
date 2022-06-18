@@ -12,6 +12,9 @@ class CustomRules
         $seo_url = $str;
 
         if (!is_null($seo_url)) {
+            /**
+             * $params: route, route_old, language_id, language_name
+             */
             $params = explode(',', $params);
             if (empty($params[0])) {
                 return true;
@@ -31,7 +34,6 @@ class CustomRules
 
             $model_route = new RouteModel();
             $seo_data    = $model_route->getListAvailable($where);
-
             if (empty($seo_data)) {
                 return true;
             }
