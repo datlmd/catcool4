@@ -166,7 +166,7 @@ class RouteModel extends MyModel
         }
 
         if (!empty($urls['route'])) {
-            if (!is_null($urls['language_id']) && !is_null($urls['route_old'])) {
+            if (!empty($urls['language_id']) && !empty($urls['route_old'])) {
                 $this->where(['language_id' => $urls['language_id'], 'route' => $urls['route_old']])->delete();
             }
 
@@ -187,7 +187,7 @@ class RouteModel extends MyModel
             $this->insert($route_data);
         } else {
             foreach (get_list_lang(true) as $key => $value) {
-                if (!is_null($urls[$key]['language_id']) && !is_null($urls[$key]['route_old'])) {
+                if (!empty($urls[$key]['language_id']) && !empty($urls[$key]['route_old'])) {
                     $this->where(['route' => $urls[$key]['route_old'], 'language_id' => $key])->delete();
                 }
 

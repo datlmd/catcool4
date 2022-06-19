@@ -16,7 +16,7 @@ class CustomRules
              * $params: route, route_old, language_id, language_name
              */
             $params = explode(',', $params);
-            if (empty($params[0])) {
+            if (empty($params)) {
                 return true;
             }
 
