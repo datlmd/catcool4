@@ -269,7 +269,7 @@ class CategoriesManage extends AdminController
             $this->validator->setRule(
                 sprintf('seo_urls.%s.route', $value['id']),
                 sprintf("%s (%s)", lang('Admin.text_slug'), $value['name']),
-                sprintf('checkRoute[%s,%s,%s]', $this->request->getPost('seo_urls[' . $value['id'] . '][id]'), $value['id'], $value['name'])
+                sprintf('checkRoute[%s,%s,%s,%s]', $this->request->getPost('seo_urls[' . $value['id'] . '][route]'), $this->request->getPost('seo_urls[' . $value['id'] . '][route_old]'), $value['id'], $value['name'])
             );
         }
 
