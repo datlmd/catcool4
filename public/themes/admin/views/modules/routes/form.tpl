@@ -39,7 +39,7 @@
                                     {lang('RouteAdmin.text_module')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="module" value="{old('module', $edit_data.route)}" id="module" class="form-control {if $validator->hasError('module')}is-invalid{/if}">
+                                    <input type="text" name="module" value="{old('module', $edit_data.module)}" id="module" class="form-control {if $validator->hasError('module')}is-invalid{/if}">
                                     <div class="invalid-feedback">{$validator->getError("module")}</div>
                                 </div>
                             </div>
