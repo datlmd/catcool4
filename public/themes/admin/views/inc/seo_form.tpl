@@ -42,6 +42,8 @@
 							{$validator->getError("seo_urls.`$language.id`.route")}
 						</div>
 					</div>
+					<small>Extension: {get_seo_extension()}</small><br/>
+					<small>Example: {get_seo_extension('seo-url')}</small>
 				</div>
 			</div>
 			<div class="form-group row">
