@@ -93,8 +93,9 @@ class CategoriesManage extends AdminController
 
             //save route url
             $seo_urls = [
-                'id'    => $this->request->getPost('seo_id'),
+                'language_id' => get_lang_id(true),
                 'route' => $add_data['slug'],
+                'route_old' => $this->request->getPost('route_old'),
             ];
             $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
 
@@ -141,8 +142,9 @@ class CategoriesManage extends AdminController
 
             //save route url
             $seo_urls = [
-                'id'    => $this->request->getPost('seo_id'),
+                'language_id' => get_lang_id(true),
                 'route' => $edit_data['slug'],
+                'route_old' => $this->request->getPost('route_old'),
             ];
             $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
 
@@ -265,6 +267,11 @@ class CategoriesManage extends AdminController
 
         $this->validator->setRule('name', lang('Admin.text_name'), 'required');
         $this->validator->setRule('slug', lang('Admin.text_slug'), 'checkRoute[' . ($this->request->getPost('seo_id') ?? "") . ']');
+        $this->validator->setRule(
+            'slug',
+            lang('Admin.text_slug'),
+            sprintf('checkRoute[%s,%s,%s]', $this->request->getPost('slug'), $this->request->getPost('route_old'), get_lang_id(true))
+        );
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();

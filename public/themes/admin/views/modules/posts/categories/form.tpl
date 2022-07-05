@@ -51,8 +51,11 @@
                             </div>
                             <div class="form-group mt-3">
                                 <label class="form-label">{lang('Admin.text_slug')}</label>
-                                {form_hidden('seo_id', $seo_url.id|default:'')}
-                                <input type="text" name="slug" value='{old("slug", $edit_data.slug)}' id="input_slug" class="form-control">
+                                <input type="hidden" name="route_old" value="{$seo_url.route}">
+                                <input type="text" name="slug" value='{old("slug", $seo_url.route)}' id="input_slug" class="form-control {if $validator->hasError("slug")}is-invalid{/if}">
+                                <div class="invalid-feedback">
+                                    {$validator->getError("slug")}
+                                </div>
                                 <small>Extension: {get_seo_extension()}</small><br/>
                                 <small>Example: {get_seo_extension('seo-url')}</small>
                             </div>

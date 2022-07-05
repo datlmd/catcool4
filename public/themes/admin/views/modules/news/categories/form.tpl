@@ -51,7 +51,6 @@
                             </div>
                             <div class="form-group mt-3">
                                 <label class="form-label">{lang('Admin.text_slug')}</label>
-                                {form_hidden('seo_id', $seo_url.id|default:"")}
                                 <input type="hidden" name="route_old" value="{$seo_url.route}">
                                 <input type="text" name="slug" value='{old("slug", $seo_url.route)}' id="input_slug" class="form-control {if $validator->hasError("slug")}is-invalid{/if}">
                                 <div class="invalid-feedback">

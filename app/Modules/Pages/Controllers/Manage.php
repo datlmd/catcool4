@@ -94,7 +94,7 @@ class Manage extends AdminController
             foreach (get_list_lang(true) as $value) {
                 $add_data_lang[$value['id']]['language_id'] = $value['id'];
                 $add_data_lang[$value['id']]['page_id']     = $id;
-                $add_data_lang[$value['id']]['slug']        = !empty($seo_urls[$value['id']]['route']) ? $seo_urls[$value['id']]['route'] : '';
+                $add_data_lang[$value['id']]['slug']        = !empty($seo_urls[$value['id']]['route']) ? get_seo_extension($seo_urls[$value['id']]['route']) : '';
 
                 $this->model_lang->insert($add_data_lang[$value['id']]);
             }
@@ -122,7 +122,6 @@ class Manage extends AdminController
                 return redirect()->back()->withInput();
             }
             try {
-
                 //save route url
                 $seo_urls = $this->request->getPost('seo_urls');
                 $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
@@ -131,7 +130,7 @@ class Manage extends AdminController
                 foreach (get_list_lang(true) as $value) {
                     $edit_data_lang[$value['id']]['language_id'] = $value['id'];
                     $edit_data_lang[$value['id']]['page_id'] = $id;
-                    $edit_data_lang[$value['id']]['slug'] = !empty($seo_urls[$value['id']]['route']) ? $seo_urls[$value['id']]['route'] : '';
+                    $edit_data_lang[$value['id']]['slug'] = !empty($seo_urls[$value['id']]['route']) ? get_seo_extension($seo_urls[$value['id']]['route']) : '';
 
                     if (!empty($this->model_lang->where(['page_id' => $id, 'language_id' => $value['id']])->find())) {
                         $this->model_lang->where('language_id', $value['id'])->update($id, $edit_data_lang[$value['id']]);
@@ -275,7 +274,11 @@ class Manage extends AdminController
         foreach(get_list_lang(true) as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('PageAdmin.text_name') . ' (' . $value['name'] . ')', 'required');
             $this->validator->setRule(sprintf('lang.%s.content', $value['id']), lang('PageAdmin.text_content') . ' (' . $value['name'] . ')', 'required');
-            $this->validator->setRule(sprintf('seo_urls.%s.route', $value['id']), lang('Admin.text_slug'), 'checkRoute[' . ($this->request->getPost('seo_urls[' . $value['id'] . '][id]') ?? "") . ']');
+            $this->validator->setRule(
+                sprintf('seo_urls.%s.route', $value['id']),
+                sprintf("%s (%s)", lang('Admin.text_slug'), $value['name']),
+                sprintf('checkRoute[%s,%s,%s,%s]', $this->request->getPost('seo_urls[' . $value['id'] . '][route]'), $this->request->getPost('seo_urls[' . $value['id'] . '][route_old]'), $value['id'], $value['name'])
+            );
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();

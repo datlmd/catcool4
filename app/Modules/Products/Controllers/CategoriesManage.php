@@ -87,7 +87,7 @@ class CategoriesManage extends AdminController
             foreach (get_list_lang(true) as $language) {
                 $add_data_lang[$language['id']]['language_id'] = $language['id'];
                 $add_data_lang[$language['id']]['category_id'] = $id;
-                $add_data_lang[$language['id']]['slug']        = !empty($seo_urls[$language['id']]['route']) ? $seo_urls[$language['id']]['route'] : '';
+                $add_data_lang[$language['id']]['slug']        = !empty($seo_urls[$language['id']]['route']) ? get_seo_extension($seo_urls[$language['id']]['route']) : '';
                 $this->model_lang->insert($add_data_lang[$language['id']]);
             }
 
@@ -122,7 +122,7 @@ class CategoriesManage extends AdminController
             foreach (get_list_lang(true) as $language) {
                 $edit_data_lang[$language['id']]['language_id'] = $language['id'];
                 $edit_data_lang[$language['id']]['category_id'] = $id;
-                $edit_data_lang[$language['id']]['slug']        = !empty($seo_urls[$language['id']]['route']) ? $seo_urls[$language['id']]['route'] : '';
+                $edit_data_lang[$language['id']]['slug']        = !empty($seo_urls[$language['id']]['route']) ? get_seo_extension($seo_urls[$language['id']]['route']) : '';
 
                 if (!empty($this->model_lang->where(['category_id' => $id, 'language_id' => $language['id']])->find())) {
                     $this->model_lang->where('language_id', $language['id'])->update($id,$edit_data_lang[$language['id']]);
@@ -208,7 +208,11 @@ class CategoriesManage extends AdminController
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         foreach(get_list_lang(true) as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name'] . ')', 'required');
-            $this->validator->setRule(sprintf('seo_urls.%s.route', $value['id']), lang('Admin.text_slug'), 'checkRoute[' . ($this->request->getPost('seo_urls[' . $value['id'] . '][id]') ?? "") . ']');
+            $this->validator->setRule(
+                sprintf('seo_urls.%s.route', $value['id']),
+                sprintf("%s (%s)", lang('Admin.text_slug'), $value['name']),
+                sprintf('checkRoute[%s,%s,%s,%s]', $this->request->getPost('seo_urls[' . $value['id'] . '][route]'), $this->request->getPost('seo_urls[' . $value['id'] . '][route_old]'), $value['id'], $value['name'])
+            );
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
