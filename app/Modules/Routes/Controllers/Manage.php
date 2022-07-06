@@ -34,7 +34,7 @@ class Manage extends AdminController
         $limit       = $this->request->getGet('limit');
         $sort        = $this->request->getGet('sort');
         $order       = $this->request->getGet('order');
-        $filter_keys = ['module', 'resource', 'limit'];
+        $filter_keys = ['route', 'module', 'resource', 'limit'];
 
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
@@ -47,7 +47,7 @@ class Manage extends AdminController
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'           => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
-            'languages'     => format_dropdown(get_list_lang(true)),
+            'languages'     => get_list_lang(true),
         ];
 
         $this->themes

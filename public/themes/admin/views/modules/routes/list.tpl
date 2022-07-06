@@ -21,15 +21,19 @@
 					{form_open(uri_string(), ['id' => 'filter_validationform', 'method' => 'get'])}
 						<div class="card-body">
 							<div class="row">
-								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
+								<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
+									<label class="form-label">{lang('RouteAdmin.text_route')}</label>
+									{form_input('route', set_value('route', $request->getGet('route'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('RouteAdmin.text_route')])}
+								</div>
+								<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
 									<label class="form-label">{lang('RouteAdmin.text_module')}</label>
 									{form_input('module', set_value('module', $request->getGet('module'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('RouteAdmin.text_module')])}
 								</div>
-								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
+								<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
 									<label class="form-label">{lang('RouteAdmin.text_resource')}</label>
 									{form_input('resource', set_value('resource', $request->getGet('resource'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('RouteAdmin.text_resource')])}
 								</div>
-								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
+								<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
 									<label class="form-label">{lang('Admin.text_limit')}</label>
 									{form_dropdown('limit', get_list_limit(), set_value('limit', $request->getGet('limit')), ['class' => 'form-control form-control-sm'])}
 								</div>
@@ -77,7 +81,7 @@
 													{/if}
 												</a>
 											</th>
-											<th width="200">
+											<th width="200" class="text-end">
 												<a href="{site_url($manage_url)}?sort=ctime&order={$order}{$url}" class="text-dark">
 													{lang('Admin.text_ctime')}
 													{if $sort eq 'ctime'}
@@ -93,10 +97,12 @@
 									{foreach $list as $item}
 										<tr id="item_id_{$item.route}_{$item.language_id}">
 											<td>{anchor("$manage_url/edit/`$item.route`/`$item.language_id`", $item.route, 'class="text-primary"')}</td>
-											<td class="text-start">{$languages[$item.language_id]}</td>
+											<td class="text-start">
+												{if !empty($languages[$item.language_id].icon)}{$languages[$item.language_id].icon}{/if}{$languages[$item.language_id].name}
+											</td>
 											<td class="text-start">{$item.module}</td>
 											<td class="text-start">{$item.resource}</td>
-											<td class="text-center">{$item.ctime}</td>
+											<td class="text-end">{$item.ctime}</td>
 											<td>
 												<div class="switch-button switch-button-xs catcool-center">
 													{form_checkbox("published_`$item.route`_`$item.language_id`", ($item.published eq STATUS_ON) ? true : false, ($item.published eq STATUS_ON) ? true : false, ['id' => 'published_'|cat:$item.route|cat:"_"|cat:$item.language_id, 'data-route' => $item.route, 'data-language_id' => $item.language_id, 'data-published' => $item.published, 'class' => 'change_publish'])}

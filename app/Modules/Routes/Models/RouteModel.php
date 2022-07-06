@@ -30,7 +30,7 @@ class RouteModel extends MyModel
         $order = empty($order) ? 'DESC' : $order;
 
         if (!empty($filter["route"])) {
-            $this->whereIn('route', $filter["route"]);
+            $this->like('route', $filter["route"]);
         }
 
         if (!empty($filter["module"])) {
