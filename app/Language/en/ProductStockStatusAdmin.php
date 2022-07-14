@@ -2,7 +2,7 @@
 
 return [
 	"column_name" => "Stock Status",
-	"heading_title" => "Stock Status",
+	"heading_title" => "Stock Statuses",
 	"text_list" => "Stock Status list",
 	"text_name" => "Stock Status Name",
 	"translate_admin_id" => "58",
