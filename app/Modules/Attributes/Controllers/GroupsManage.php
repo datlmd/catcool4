@@ -28,6 +28,7 @@ class GroupsManage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), site_url(CATCOOL_DASHBOARD));
+        $this->breadcrumb->add(lang('AttributeAdmin.heading_title'), site_url('attributes/manage'));
         $this->breadcrumb->add(lang('AttributeGroupAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
