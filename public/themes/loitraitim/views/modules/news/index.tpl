@@ -86,9 +86,6 @@
 		<div class="row">
 
 			<div class="col-lg-7 col-md-8 col-12">
-				<div class="w-100">
-					<script data-cfasync="false" type="text/javascript" src="//greatdexchange.com/a/display.php?r=5979702"></script>
-				</div>
 
 				{if !empty($news_category_list)}
 					{foreach $news_category_list as $category}
@@ -119,17 +116,11 @@
 					{/foreach}
 				{/if}
 
-				<script data-cfasync="false" type="text/javascript" src="//greatdexchange.com/a/display.php?r=5979754"></script>
-
 			</div>
 
 			<aside class="col-lg-5 col-md-4 col-12 ps-lg-4">
 
 				{include file=get_theme_path('views/modules/news/inc/list_hot.tpl')}
-
-				<div class="w-100 mt-3 text-center">
-					<script data-cfasync="false" type="text/javascript" src="//greatdexchange.com/a/display.php?r=5979758"></script>
-				</div>
 
 			</aside>
 

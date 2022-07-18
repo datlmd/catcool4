@@ -92,9 +92,6 @@
 			js.src = 'https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v3.1';
 			fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));</script>
-
-{*	<script data-cfasync="false" type="text/javascript" data-adel="atag" src="//ashcdn.com/script/atg.js" czid="43cdgawysm"></script>*}
-	<script data-cfasync="false" src="//acacdn.com/script/ippg.js" data-adel="inpage" zid="5979706" rr="0" mads="2"></script>
 </body>
 </html>
 {/strip}
