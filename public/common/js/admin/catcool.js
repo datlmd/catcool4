@@ -585,6 +585,138 @@ var Catcool = {
         }
         $($(obj).data("target")).html($(obj).val());
     },
+    submitFormAjax: function (e) {
+
+        if (is_processing) {
+            return false;
+        }
+        is_processing = true;
+
+        e.preventDefault();
+
+        var element = this;
+
+        var form = e.target;
+
+        var action = $(form).attr('action');
+
+        if (e.originalEvent !== undefined && e.originalEvent.submitter !== undefined) {
+            var button = e.originalEvent.submitter;
+        } else {
+            var button = '';
+        }
+
+        var method = $(form).attr('method');
+
+        if (method === undefined) {
+            method = 'post';
+        }
+
+        var enctype = $(element).attr('enctype');
+
+        if (enctype === undefined) {
+            enctype = 'application/x-www-form-urlencoded';
+        }
+
+        // https://github.com/opencart/opencart/issues/9690
+        // if (typeof CKEDITOR != 'undefined') {
+        //     for (instance in CKEDITOR.instances) {
+        //         CKEDITOR.instances[instance].updateElement();
+        //     }
+        // }
+
+        console.log(e);
+        console.log('element ' + element);
+        console.log('action ' + action);
+        console.log('button ' + button);
+        console.log('method ' + method);
+        console.log('enctype ' + enctype);
+
+        $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
+
+        $.ajax({
+            url: action,
+            type: method,
+            data: $(form).serialize(),
+            dataType: 'post',
+            cache: false,
+            contentType: enctype,
+            processData: false,
+            beforeSend: function () {
+                //$(button).prop('disabled', true).addClass('loading');
+                $(button).find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
+            },
+            complete: function () {
+                $(button).find('i').replaceWith('<i class="fas fa-save me-1"></i>');
+                //$(button).prop('disabled', false).removeClass('loading');
+            },
+            success: function (json) {
+                $('.loading').remove().fadeOut();
+                is_processing = false;
+
+                $('.alert-dismissible').remove();
+                $(form).find('.is-invalid').removeClass('is-invalid');
+                $(form).find('.invalid-feedback').removeClass('d-block');
+
+                console.log(json);
+
+                if (json['token']) {
+                    // Update CSRF hash
+                    $("input[name*='" + csrf_token + "']").val(response.token);
+                }
+
+                // var response = JSON.stringify(json);
+                // response = JSON.parse(response);
+                // if (response.status == 'ng') {
+                //     $.notify(response.msg, {'type': 'danger'});
+                //     return false;
+                // }
+
+                if (json['redirect']) {
+                    location = json['redirect'].replaceAll('&amp;', '&');
+                }
+
+                if (typeof json['error'] == 'string') {
+                    $('#alert').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> ' + json['error'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+                }
+
+                if (typeof json['error'] == 'object') {
+                    if (json['error']['warning']) {
+                        $('#alert').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> ' + json['error']['warning'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+                    }
+
+                    for (key in json['error']) {
+                        $('#input-' + key.replaceAll('_', '-')).addClass('is-invalid').find('.form-control, .form-select, .form-check-input, .form-check-label').addClass('is-invalid');
+                        $('#error-' + key.replaceAll('_', '-')).html(json['error'][key]).addClass('d-block');
+                    }
+                }
+
+                if (json['success']) {
+                    $('#alert').prepend('<div class="alert alert-success alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> ' + json['success'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+
+                    // Refresh
+                    var url = $(form).attr('data-cc-load');
+                    var target = $(form).attr('data-cc-target');
+
+                    if (url !== undefined && target !== undefined) {
+                        $(target).load(url);
+                    }
+                }
+
+                // Replace any form values that correspond to form names.
+                for (key in json) {
+                    $(form).find('[name=\'' + key + '\']').val(json[key]);
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $('.loading').remove().fadeOut();
+                is_processing = false;
+                console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+
+        return false;
+    },
 };
 
 /* action - event */
@@ -619,6 +751,10 @@ $(function () {
         e.preventDefault();
         Catcool.showMenuFileManager();
         return false;
+    });
+
+    $(document).on('submit', 'form[data-cc-toggle=\'ajax\']', function (e) {
+        Catcool.submitFormAjax(e);
     });
 
     $(document).on('hidden.bs.modal, hide.bs.modal','#modal_image', function () {
@@ -805,11 +941,11 @@ $(function () {
     }
 
     //check double click form
-    $("form#validationform").submit(function() {
-        $(this).submit(function() {
-            return false;
-        });
-        $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
-        return true;
-    });
+    // $("form#validationform").submit(function() {
+    //     $(this).submit(function() {
+    //         return false;
+    //     });
+    //     $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
+    //     return true;
+    // });
 });

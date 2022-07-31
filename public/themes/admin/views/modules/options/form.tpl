@@ -1,7 +1,7 @@
 {strip}
     {form_hidden('manage_url', site_url($manage_url))}
     <div class="container-fluid  dashboard-content">
-        {form_open(uri_string(), ['id' => 'validationform'])}
+        {form_open(uri_string(), ["id" => "validationform", "method" => "post", "data-cc-toggle" => "ajax"])}
 
             {if !empty($edit_data.option_id)}
                 {form_hidden('option_id', $edit_data.option_id)}

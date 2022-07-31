@@ -104,37 +104,45 @@ class Manage extends AdminController
         }
 
         if (!empty($this->request->getPost()) && $id == $this->request->getPost('option_id')) {
-
-            if (!$this->_validateForm()) {
-                set_alert($this->errors, ALERT_ERROR);
-                return redirect()->back()->withInput();
+            if (!$this->request->isAJAX()) {
+                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             }
 
-            $edit_data_lang = $this->request->getPost('lang');
-            foreach (get_list_lang(true) as $language) {
-                $edit_data_lang[$language['id']]['language_id'] = $language['id'];
-                $edit_data_lang[$language['id']]['option_id']   = $id;
+            $json = [];
 
-                if (!empty($this->model_lang->where(['option_id' => $id, 'language_id' => $language['id']])->find())) {
-                    $this->model_lang->where('language_id', $language['id'])->update($id,$edit_data_lang[$language['id']]);
+            if (!$this->_validateForm()) {
+                $json['error'] = $this->errors;
+            }
+
+            if (!$json) {
+                $edit_data_lang = $this->request->getPost('lang');
+                foreach (get_list_lang(true) as $language) {
+                    $edit_data_lang[$language['id']]['language_id'] = $language['id'];
+                    $edit_data_lang[$language['id']]['option_id'] = $id;
+
+                    if (!empty($this->model_lang->where(['option_id' => $id, 'language_id' => $language['id']])->find())) {
+                        $this->model_lang->where('language_id', $language['id'])->update($id, $edit_data_lang[$language['id']]);
+                    } else {
+                        $this->model_lang->insert($edit_data_lang[$language['id']]);
+                    }
+                }
+
+                $edit_data = [
+                    'option_id' => $id,
+                    'type' => $this->request->getPost('type'),
+                    'sort_order' => $this->request->getPost('sort_order'),
+
+                ];
+                if ($this->model->save($edit_data) !== FALSE) {
+                    $json['success'] = lang('Admin.text_edit_success');
                 } else {
-                    $this->model_lang->insert($edit_data_lang[$language['id']]);
+                    $json['error'] = lang('Admin.error');
                 }
             }
 
-            $edit_data = [
-                'option_id'  => $id,
-                'type'       => $this->request->getPost('type'),
-                'sort_order' => $this->request->getPost('sort_order'),
-                
-            ];
-            if ($this->model->save($edit_data) !== FALSE) {
-                set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
-            } else {
-                set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
-            }
-
-            return redirect()->back();
+            $json['token'] = csrf_hash();
+            cc_debug($json);
+            json_output($json);
         }
 
         return $this->_getForm($id);
