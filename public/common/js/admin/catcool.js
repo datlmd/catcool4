@@ -638,7 +638,7 @@ var Catcool = {
             url: action,
             type: method,
             data: $(form).serialize(),
-            dataType: 'post',
+            dataType: 'json',
             cache: false,
             contentType: enctype,
             processData: false,
@@ -654,15 +654,13 @@ var Catcool = {
                 $('.loading').remove().fadeOut();
                 is_processing = false;
 
-                $('.alert-dismissible').remove();
+               // $('.alert-dismissible').remove();
                 $(form).find('.is-invalid').removeClass('is-invalid');
                 $(form).find('.invalid-feedback').removeClass('d-block');
 
-                console.log(json);
-
                 if (json['token']) {
                     // Update CSRF hash
-                    $("input[name*='" + csrf_token + "']").val(response.token);
+                    $("input[name*='" + csrf_token + "']").val(json['token']);
                 }
 
                 // var response = JSON.stringify(json);
@@ -677,22 +675,23 @@ var Catcool = {
                 }
 
                 if (typeof json['error'] == 'string') {
-                    $('#alert').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> ' + json['error'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+                    $.notify(json['error'], {'type': 'danger'});
+                    // $('#alert').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> ' + json['error'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
                 }
 
                 if (typeof json['error'] == 'object') {
                     if (json['error']['warning']) {
-                        $('#alert').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> ' + json['error']['warning'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+                        $.notify(json['error']['warning'], {'type': 'danger'});
                     }
 
                     for (key in json['error']) {
-                        $('#input-' + key.replaceAll('_', '-')).addClass('is-invalid').find('.form-control, .form-select, .form-check-input, .form-check-label').addClass('is-invalid');
-                        $('#error-' + key.replaceAll('_', '-')).html(json['error'][key]).addClass('d-block');
+                        $('#input_' + key.replaceAll('.', '_')).addClass('is-invalid').find('.form-control, .form-select, .form-check-input, .form-check-label').addClass('is-invalid');
+                        $('#error_' + key.replaceAll('.', '_')).html(json['error'][key]).addClass('d-block');
                     }
                 }
 
                 if (json['success']) {
-                    $('#alert').prepend('<div class="alert alert-success alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> ' + json['success'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+                    $.notify(json['success']);
 
                     // Refresh
                     var url = $(form).attr('data-cc-load');
@@ -712,6 +711,13 @@ var Catcool = {
                 $('.loading').remove().fadeOut();
                 is_processing = false;
                 console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                $.notify({
+                        message: xhr.responseJSON.message + " Please reload the page!!!",
+                        url: window.location.href,
+                        target: "_self",
+                    },
+                    {'type': 'danger'},
+                );
             }
         });
 
@@ -794,8 +800,9 @@ $(function () {
         type: 'success',
         placement: {
             from: 'top',
-            align: 'center'
-        }
+            align: 'right'
+        },
+        template: '<div data-notify="container" class="col-11 col-sm-5 alert alert-{0} alert-dismissible" role="alert"><span data-notify="icon"></span> <span data-notify="title">{1}</span> <span data-notify="message">{2}</span><div class="progress" data-notify="progressbar"><div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div></div><a href="{3}" target="{4}" data-notify="url"></a><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
     });
     /* load alert neu ton tai session */
     if ($('input[name="alert_msg[]"]').length) {
@@ -941,11 +948,14 @@ $(function () {
     }
 
     //check double click form
-    // $("form#validationform").submit(function() {
-    //     $(this).submit(function() {
-    //         return false;
-    //     });
-    //     $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
-    //     return true;
-    // });
+    if (!$("form[data-cc-toggle=\'ajax\']").length) {
+        $("form#validationform").submit(function() {
+            $(this).submit(function() {
+                return false;
+            });
+            $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
+            return true;
+        });
+    }
+
 });

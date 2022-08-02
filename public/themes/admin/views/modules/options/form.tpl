@@ -37,8 +37,8 @@
                                     <div class="col-12 col-sm-8 col-lg-7">
                                         <div class="input-group">
                                             <span class="input-group-text">{$language.icon}</span>
-                                            <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang.`$language.id`.name")}is-invalid{/if}">
-                                            <div class="invalid-feedback">
+                                            <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_lang_{$language.id}_name" class="form-control {if $validator->hasError("lang.`$language.id`.name")}is-invalid{/if}">
+                                            <div id="error_lang_{$language.id}_name" class="invalid-feedback">
                                                 {$validator->getError("lang.`$language.id`.name")}
                                             </div>
                                         </div>
@@ -166,11 +166,12 @@
             <tbody>
                 <tr id="option-value-row-">
                     <td class="text-start">
-                        <input type="hidden" name="option_value[][option_value_id]" value="" />
+                        <input type="hidden" name="option_value[option_value_row][option_value_id]" value="" />
                         {foreach $language_list as $language}
                             <div class="input-group">
                                 <span class="input-group-text">{$language.icon}</span>
-                                <input type="text" name="option_value[][lang][{$language.id}][name]" value='{old("option_value[][lang][{$language.id}][name]")}' id="input_option_value_lang_{$language.id}" class="form-control">
+                                <input type="text" name="option_value[option_value_row][lang][{$language.id}][name]" value='{old("option_value[option_value_row][lang][{$language.id}][name]")}' id="input_option_value_option_value_row_lang_{$language.id}_name" class="form-control">
+                                <div id="error_option_value_option_value_row_lang_{$language.id}_name" class="invalid-feedback"></div>
                             </div>
                         {/foreach}
                     </td>
@@ -179,7 +180,7 @@
                         </div>
                     </td>
                     <td class="text-end">
-                        <input type="text" name="option_value[][sort_order]" value="" placeholder="{lang('Admin.text_sort_order')}" class="form-control"/>
+                        <input type="text" name="option_value[option_value_row][sort_order]" value="" placeholder="{lang('Admin.text_sort_order')}" class="form-control"/>
                     </td>
                     <td class="text-end">
                         <button type="button" onclick="$('#option-value-row-' + option_value_row).remove();" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
@@ -188,9 +189,9 @@
             </tbody>
         </table>
     </div>
-    <input type="hidden" name="option_value_row" value="">
+    <input type="hidden" name="option_value_row" id="option_value_row" value="0">
 {/strip}
-<script type="text/javascript"><!--
+<script type="text/javascript">
     $('#input-type').on('change', function() {
         if (this.value == 'select' || this.value == 'radio' || this.value == 'checkbox' || this.value == 'image') {
             $('#option-value').parent().show();
@@ -227,9 +228,14 @@
         {*html += '  <td class="text-end"><input type="text" name="option_value[' + option_value_row + '][sort_order]" value="" placeholder="{{ entry_sort_order }}" class="form-control"/></td>';*}
         {*html += '  <td class="text-end"><button type="button" onclick="$(\'#option-value-row-' + option_value_row + '\').remove();" data-bs-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa-solid fa-minus-circle"></i></button></td>';*}
         {*html += '</tr>';*}
-        html = $('#html_option_value table tbody').html();
+        var option_value_row = $('#option_value_row').val();
+        option_value_row = parseInt(option_value_row) + 1;
+        $('#option_value_row').val(option_value_row);
+
+        var html = $('#html_option_value table tbody').html().replaceAll('option_value_row', option_value_row);
         $('#option-value tbody').append(html);
+
 
         //option_value_row++;
     }
-    //--></script>
+</script>

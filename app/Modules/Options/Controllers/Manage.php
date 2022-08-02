@@ -141,7 +141,7 @@ class Manage extends AdminController
             }
 
             $json['token'] = csrf_hash();
-            cc_debug($json);
+
             json_output($json);
         }
 
@@ -187,6 +187,17 @@ class Manage extends AdminController
     {
         foreach(get_list_lang(true) as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
+        }
+
+        if (!empty($this->request->getPost('option_value'))) {
+            foreach ($this->request->getPost('option_value') as $key => $value) {
+                if (empty($value['lang'])) {
+                    continue;
+                }
+                foreach(get_list_lang(true) as $lang_value) {
+                    $this->validator->setRule(sprintf('option_value.%s.lang.%s.name', $key, $lang_value['id']), lang('Admin.text_name') . ' (' . $lang_value['name']  . ')', 'required');
+                }
+            }
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
