@@ -151,9 +151,9 @@ if (!function_exists('get_list_lang'))
         $language_active = [];
         foreach ($language_list as $key => $value) {
             if (empty($value['icon'])) {
-                $language_list[$key]['icon'] = '<i class="flag-icon flag-icon-' . (($value['code'] == 'vi') ? 'vn' : $value['code']) . ' me-2"></i>';
+                $language_list[$key]['icon'] = '<i class="flag-icon flag-icon-' . (($value['code'] == 'vi') ? 'vn' : $value['code']) . '"></i>';
             } else {
-                $language_list[$key]['icon'] = '<i class="' . $value['icon'] . ' me-2"></i>';
+                $language_list[$key]['icon'] = '<i class="' . $value['icon'] . '"></i>';
             }
 
             $language_list[$key]['active'] = false;

@@ -33,22 +33,22 @@
                         <h5 class="card-header"><i class="fas {if !empty($edit_data.return_reason_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                         <div class="card-body">
 
-                            {foreach $language_list as $language}
-                                <div class="form-group row required has-error">
-                                    <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
-                                        {lang('Admin.text_name')} ({$language.name})
-                                    </label>
-                                    <div class="col-12 col-sm-8 col-lg-7">
-                                        <div class="input-group">
-                                            <span class="input-group-text">{$language.icon}</span>
+                            <div class="form-group row required has-error">
+                                <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
+                                    {lang('Admin.text_name')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-7">
+                                    {foreach $language_list as $language}
+                                        <div class="input-group {if !$language@last}mb-2{/if}">
+                                            <span class="input-group-text" title="{$language.name}">{$language.icon}</span>
                                             <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang.`$language.id`.name")}is-invalid{/if}">
                                             <div class="invalid-feedback">
                                                 {$validator->getError("lang.`$language.id`.name")}
                                             </div>
                                         </div>
-                                    </div>
+                                    {/foreach}
                                 </div>
-                            {/foreach}
+                            </div>
 
                             <div class="form-group row pb-3">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-end">
