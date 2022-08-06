@@ -3,6 +3,8 @@ namespace App\Controllers;
 
 use App\Controllers\UserController;
 
+defined('IS_ADMIN') || define('IS_ADMIN', true);
+
 class AdminController extends UserController
 {
     public function initController(\CodeIgniter\HTTP\RequestInterface $request, \CodeIgniter\HTTP\ResponseInterface $response, \Psr\Log\LoggerInterface $logger)

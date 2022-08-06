@@ -1,0 +1,25 @@
+<?php
+
+return [
+	"error_type" => "Warning: Option Values required!",
+	"heading_title" => "Options",
+	"text_checkbox" => "Checkbok",
+	"text_choose" => "Choose",
+	"text_date" => "Date",
+	"text_datetime" => "Datetime",
+	"text_file" => "File",
+	"text_input" => "Input",
+	"text_list" => "Option List",
+	"text_option_name" => "Option Name",
+	"text_option_value_add" => "Add Option Value",
+	"text_option_value_name" => "Option Value Name",
+	"text_radio" => "Radio",
+	"text_select" => "Select",
+	"text_text" => "Text",
+	"text_textarea" => "Textarea",
+	"text_time" => "Time",
+	"text_type" => "Type",
+	"text_value" => "Option Values",
+	"translate_admin_id" => "102",
+	"translate_frontend_id" => "101",
+];

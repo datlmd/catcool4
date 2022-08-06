@@ -11,6 +11,8 @@ use Psr\Log\LoggerInterface;
 
 use App\Libraries\Themes;
 
+defined('IS_ADMIN') || define('IS_ADMIN', false);
+
 class MyController extends Controller
 {
     /**

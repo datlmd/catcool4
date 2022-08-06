@@ -17,13 +17,13 @@ $(function () {
 
             var element = $(this);
             $.ajax({
-                url: 'common/filemanager?target=' + encodeURIComponent(element.parent().data('target')) + '&thumb=' + encodeURIComponent(element.parent().data('thumb')) + '&type=' + encodeURIComponent(element.parent().data('type')),
+                url: 'common/filemanager?target=' + encodeURIComponent(element.parent().parent().data('target')) + '&thumb=' + encodeURIComponent(element.parent().parent().data('thumb')) + '&type=' + encodeURIComponent(element.parent().parent().data('type')),
                 dataType: 'html',
                 beforeSend: function () {
-                    element.find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
+                    element.find('i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
                 },
                 complete: function () {
-                    element.find('i').replaceWith('<i class="fas fa-pencil-alt me-1"></i>');
+                    element.find('i').replaceWith('<i class="fas fa-pencil-alt"></i>');
                 },
                 success: function (html) {
                     is_processing = false;
@@ -43,8 +43,8 @@ $(function () {
     if ($('a[data-bs-toggle=\'image\'] .button-clear').length) {
         $(document).on('click', 'a[data-bs-toggle=\'image\'] .button-clear', function (e) {
             e.preventDefault();
-            $("#" + $(this).parent().data('target')).val('');
-            $(this).parent().find('img').attr('src', $(this).parent().find('img').data('placeholder'));
+            $("#" + $(this).parent().parent().data('target')).val('');
+            $(this).parent().parent().find('img').attr('src', $(this).parent().parent().find('img').data('placeholder'));
             //$($(this).parent()).parent().find('input').val('');
         });
     }

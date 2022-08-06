@@ -65,34 +65,6 @@ class Manage extends AdminController
 
     public function add()
     {
-        if (!empty($this->request->getPost())) {
-            if (!$this->_validateForm()) {
-                set_alert($this->errors, ALERT_ERROR);
-                return redirect()->back()->withInput();
-            }
-
-            $add_data = [
-                'type'       => $this->request->getPost('type'),
-                'sort_order' => $this->request->getPost('sort_order'),
-            ];
-            $id = $this->model->insert($add_data);
-            if ($id === FALSE) {
-                set_alert(lang('Admin.error'), ALERT_ERROR);
-                return redirect()->back()->withInput();
-            }
-
-            $add_data_lang = $this->request->getPost('lang');
-            foreach (get_list_lang(true) as $language) {
-                $add_data_lang[$language['id']]['language_id'] = $language['id'];
-                $add_data_lang[$language['id']]['option_id']   = $id;
-
-                $this->model_lang->insert($add_data_lang[$language['id']]);
-            }
-
-            set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
-            return redirect()->to(site_url(self::MANAGE_URL));
-        }
-
         return $this->_getForm();
     }
 
@@ -103,49 +75,111 @@ class Manage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()) && $id == $this->request->getPost('option_id')) {
-            if (!$this->request->isAJAX()) {
-                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-            }
+        return $this->_getForm($id);
+    }
 
-            $json = [];
+    public function save()
+    {
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
 
-            if (!$this->_validateForm()) {
-                $json['error'] = $this->errors;
-            }
+        $json = [];
 
-            if (!$json) {
-                $edit_data_lang = $this->request->getPost('lang');
-                foreach (get_list_lang(true) as $language) {
-                    $edit_data_lang[$language['id']]['language_id'] = $language['id'];
-                    $edit_data_lang[$language['id']]['option_id'] = $id;
+        if (!$this->_validateForm()) {
+            $json['error'] = $this->errors;
+        }
 
-                    if (!empty($this->model_lang->where(['option_id' => $id, 'language_id' => $language['id']])->find())) {
-                        $this->model_lang->where('language_id', $language['id'])->update($id, $edit_data_lang[$language['id']]);
-                    } else {
-                        $this->model_lang->insert($edit_data_lang[$language['id']]);
-                    }
-                }
+        $type = $this->request->getPost('type');
+        if (($type == 'select' || $type == 'radio' || $type == 'checkbox') && empty($this->request->getPost('option_value'))) {
+            $json['error']['warning'] = lang('OptionAdmin.error_type');
+        }
 
-                $edit_data = [
-                    'option_id' => $id,
-                    'type' => $this->request->getPost('type'),
-                    'sort_order' => $this->request->getPost('sort_order'),
+        //@todo check product co su dung option_id & option_value_id khong
 
-                ];
-                if ($this->model->save($edit_data) !== FALSE) {
-                    $json['success'] = lang('Admin.text_edit_success');
-                } else {
-                    $json['error'] = lang('Admin.error');
-                }
-            }
+        $json['token'] = csrf_hash();
 
-            $json['token'] = csrf_hash();
-
+        if (!empty($json['error'])) {
             json_output($json);
         }
 
-        return $this->_getForm($id);
+        $option_id   = $this->request->getPost('option_id');
+        $data_option = [
+            'type'       => $this->request->getPost('type'),
+            'sort_order' => $this->request->getPost('sort_order'),
+
+        ];
+
+        if (empty($option_id)) {
+            //Them moi
+            $option_id = $this->model->insert($data_option);
+            if (empty($option_id)) {
+                $json['error'] = lang('Admin.error');
+            }
+        } else {
+            //cap nhat
+            $data_option['option_id'] = $option_id;
+            if (!$this->model->save($data_option)) {
+                $json['error'] = lang('Admin.error');
+            }
+        }
+
+        if (!empty($json['error'])) {
+            json_output($json);
+        }
+
+        if (!empty($this->request->getPost('option_id'))) {
+            $this->model_lang->where(['option_id' => $option_id])->delete();
+        }
+
+        $edit_data_lang = $this->request->getPost('lang');
+        foreach (get_list_lang(true) as $language) {
+            $edit_data_lang[$language['id']]['language_id'] = $language['id'];
+            $edit_data_lang[$language['id']]['option_id']   = $option_id;
+
+            $this->model_lang->insert($edit_data_lang[$language['id']]);
+        }
+
+        //option value
+        if (!empty($this->request->getPost('option_id'))) {
+            $this->model_value->where(['option_id' => $option_id])->delete();
+        }
+
+        if (($type == 'select' || $type == 'radio' || $type == 'checkbox') && !empty($this->request->getPost('option_value'))) {
+            $option_value = $this->request->getPost('option_value');
+            foreach ($option_value as $value) {
+
+                $data_option_value = [
+                    'option_id'  => $option_id,
+                    'image'      => $value['image'],
+                    'sort_order' => $value['sort_order'],
+                ];
+
+                if (!empty($value['option_value_id'])) {
+                    $data_option_value['option_value_id'] = $value['option_value_id'];
+                }
+
+                $option_value_id = $this->model_value->insert($data_option_value);
+
+                $data_option_value_lang = $value['lang'];
+                foreach (get_list_lang(true) as $language) {
+                    $data_option_value_lang[$language['id']]['language_id']     = $language['id'];
+                    $data_option_value_lang[$language['id']]['option_value_id'] = $option_value_id;
+                    $data_option_value_lang[$language['id']]['option_id']       = $option_id;
+
+                    $this->model_value_lang->insert($data_option_value_lang[$language['id']]);
+                }
+            }
+        }
+
+        $json['option_id'] = $option_id;
+
+        $json['success'] = lang('Admin.text_add_success');
+        if (!empty($this->request->getPost('option_id'))) {
+            $json['success'] = lang('Admin.text_edit_success');
+        }
+
+        json_output($json);
     }
 
     private function _getForm($id = null)
@@ -162,6 +196,8 @@ class Manage extends AdminController
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR);
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
+
+            $data_form['option_value'] = $this->model_value->getListByOptionId($id);
 
             $data['edit_data'] = $data_form;
         } else {
@@ -185,18 +221,22 @@ class Manage extends AdminController
 
     private function _validateForm()
     {
+        $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         foreach(get_list_lang(true) as $value) {
-            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
+            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('OptionAdmin.text_option_name') . ' (' . $value['name']  . ')', 'required');
         }
 
         if (!empty($this->request->getPost('option_value'))) {
             foreach ($this->request->getPost('option_value') as $key => $value) {
+                $this->validator->setRule(sprintf('option_value.%s.sort_order', $key), lang('Admin.text_sort_order'), 'is_natural');
+
                 if (empty($value['lang'])) {
                     continue;
                 }
                 foreach(get_list_lang(true) as $lang_value) {
-                    $this->validator->setRule(sprintf('option_value.%s.lang.%s.name', $key, $lang_value['id']), lang('Admin.text_name') . ' (' . $lang_value['name']  . ')', 'required');
+                    $this->validator->setRule(sprintf('option_value.%s.lang.%s.name', $key, $lang_value['id']), lang('OptionAdmin.text_option_value_name') . ' (' . $lang_value['name']  . ')', 'required');
                 }
+
             }
         }
 
@@ -224,7 +264,10 @@ class Manage extends AdminController
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
 
+            //@todo check product co su dung option_id & option_value_id khong
+
             $this->model->delete($ids);
+            $this->model_value->whereIn('option_id', $ids)->delete();
 
             json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
         }
@@ -250,31 +293,5 @@ class Manage extends AdminController
         $data['ids']         = $delete_ids;
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
-    }
-
-    public function publish()
-    {
-        if (!$this->request->isAJAX()) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        }
-
-        $token = csrf_hash();
-
-        if (empty($this->request->getPost())) {
-            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
-        }
-
-        $id        = $this->request->getPost('id');
-        $item_edit = $this->model->find($id);
-        if (empty($item_edit)) {
-            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
-        }
-
-        $item_edit['published'] = !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF;
-        if (!$this->model->update($id, $item_edit)) {
-            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
-        }
-
-        json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')]);
     }
 }

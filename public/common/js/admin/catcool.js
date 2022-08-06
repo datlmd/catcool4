@@ -663,13 +663,6 @@ var Catcool = {
                     $("input[name*='" + csrf_token + "']").val(json['token']);
                 }
 
-                // var response = JSON.stringify(json);
-                // response = JSON.parse(response);
-                // if (response.status == 'ng') {
-                //     $.notify(response.msg, {'type': 'danger'});
-                //     return false;
-                // }
-
                 if (json['redirect']) {
                     location = json['redirect'].replaceAll('&amp;', '&');
                 }
@@ -680,13 +673,15 @@ var Catcool = {
                 }
 
                 if (typeof json['error'] == 'object') {
-                    if (json['error']['warning']) {
-                        $.notify(json['error']['warning'], {'type': 'danger'});
-                    }
+                    // if (json['error']['warning']) {
+                    //     $.notify(json['error']['warning'], {'type': 'danger'});
+                    // }
 
                     for (key in json['error']) {
                         $('#input_' + key.replaceAll('.', '_')).addClass('is-invalid').find('.form-control, .form-select, .form-check-input, .form-check-label').addClass('is-invalid');
                         $('#error_' + key.replaceAll('.', '_')).html(json['error'][key]).addClass('d-block');
+
+                        $.notify(json['error'][key], {'type': 'danger'});
                     }
                 }
 
@@ -802,7 +797,7 @@ $(function () {
             from: 'top',
             align: 'right'
         },
-        template: '<div data-notify="container" class="col-11 col-sm-5 alert alert-{0} alert-dismissible" role="alert"><span data-notify="icon"></span> <span data-notify="title">{1}</span> <span data-notify="message">{2}</span><div class="progress" data-notify="progressbar"><div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div></div><a href="{3}" target="{4}" data-notify="url"></a><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+        template: '<div data-notify="container" class="mx-2 alert alert-{0} alert-dismissible" role="alert"><span data-notify="icon"></span> <span data-notify="title">{1}</span> <span data-notify="message">{2}</span><div class="progress" data-notify="progressbar"><div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div></div><a href="{3}" target="{4}" data-notify="url"></a><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
     });
     /* load alert neu ton tai session */
     if ($('input[name="alert_msg[]"]').length) {
@@ -828,10 +823,24 @@ $(function () {
         $('[data-bs-toggle=\'popover\']').popover();
     }
 
+    // Tooltip
+    var oc_tooltip = function () {
+        // Apply to all on current page
+        tooltip = bootstrap.Tooltip.getOrCreateInstance(this);
+        tooltip.show();
+    }
+
+    $(document).on('mouseenter', '[data-bs-toggle=\'tooltip\']', oc_tooltip);
+
+    $(document).on('click', 'button', function () {
+        $('.tooltip').remove();
+    });
+
     if ($('[data-bs-toggle=\'tooltip\']').length) {
         $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
         $('[data-bs-toggle=\'tooltip\']').tooltip();
     }
+    // end Tooltip
 
     if ($('#btn_search').length) {
         $(document).on('click','#btn_search', function () {
