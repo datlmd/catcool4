@@ -19,7 +19,7 @@
 							<a class="icon-animation nav-link p-0" href="#" id="navbar_dropdown_menu_language" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 14px !important;">
 								{foreach get_list_lang(true) as $key => $value}
 									{if $value.code == session(get_name_session_lang(true))}
-										{$value.icon}{lang("General.`$value.code`")}
+										{$value.icon} {lang("General.`$value.code`")}
 									{/if}
 								{/foreach}
 							</a>
@@ -27,7 +27,7 @@
 								<div class="px-3 py-1">
 									{foreach get_list_lang(true) as $key => $value}
 										<a href="{site_url("languages/manage/switch/`$value.code`")}" class="overflow-hidden d-block my-2">
-											{$value.icon}{lang("General.`$value.code`")}
+											{$value.icon} {lang("General.`$value.code`")}
 										</a>
 									{/foreach}
 								</div>

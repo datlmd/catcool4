@@ -98,7 +98,7 @@
 										<tr id="item_id_{$item.route}_{$item.language_id}">
 											<td>{anchor("$manage_url/edit/`$item.route`/`$item.language_id`", $item.route, 'class="text-primary"')}</td>
 											<td class="text-start">
-												{if !empty($languages[$item.language_id].icon)}{$languages[$item.language_id].icon}{/if}{$languages[$item.language_id].name}
+												{if !empty($languages[$item.language_id].icon)}{$languages[$item.language_id].icon} {/if}{$languages[$item.language_id].name}
 											</td>
 											<td class="text-start">{$item.module}</td>
 											<td class="text-start">{$item.resource}</td>
