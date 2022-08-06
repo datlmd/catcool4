@@ -55,8 +55,10 @@
                                     Thumbnail Small<br/>
                                     <a href="javascript:void(0);" id="thumb_image_root" data-target="input_image_root_path" data-thumb="load_thumb_image_root" data-bs-toggle="image" class="my-1">
                                         <img src="{if !empty(old('images.thumb', $edit_data.images.thumb))}{image_root(old('images.thumb.', $edit_data.images.thumb))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_root" data-placeholder="{image_default_url()}"/>
-                                        <button type="button" id="button_image_root" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
-                                        <button type="button" id="button_clear_root" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
+                                        <div class="btn-group w-100 mt-1" role="group">
+                                            <button type="button" id="button-image-logo" class="button-image btn btn-xs btn-primary" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
+                                            <button type="button" id="button-clear-logo" class="button-clear btn btn-xs btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>
+                                        </div>
                                     </a>
                                     <input type="hidden" name="images[thumb]" value="{old('images.thumb', $edit_data.images.thumb)}" id="input_image_root_path" />
                                     <small>{lang('NewsAdmin.help_thumb_small')}</small>
@@ -65,8 +67,10 @@
                                     Thumbnail Large<br/>
                                     <a href="javascript:void(0);" id="thumb_image_thumb_large" data-target="input_image_thumb_large_path" data-thumb="load_thumb_image_thumb_large" data-bs-toggle="image" class="my-1">
                                         <img src="{if !empty(old('images.thumb_large', $edit_data.images.thumb_large))}{image_root(old('images.thumb_large', $edit_data.images.thumb_large))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_thumb_large" data-placeholder="{image_default_url()}"/>
-                                        <button type="button" id="button_image_thumb_large" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
-                                        <button type="button" id="button_clear_thumb_large" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
+                                        <div class="btn-group w-100 mt-1" role="group">
+                                            <button type="button" id="button-image-logo" class="button-image btn btn-xs btn-primary" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
+                                            <button type="button" id="button-clear-logo" class="button-clear btn btn-xs btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>
+                                        </div>
                                     </a>
                                     <input type="hidden" name="images[thumb_large]" value="{old('images.thumb_large', $edit_data.images.thumb_large)}" id="input_image_thumb_large_path" />
                                     <small>{lang('NewsAdmin.help_thumb_large')}</small>
@@ -75,8 +79,10 @@
                                     Thumbnail Facebook<br/>
                                     <a href="javascript:void(0);" id="thumb_image_robot_fb" data-target="input_image_robot_fb_path" data-thumb="load_thumb_image_robot_fb" data-bs-toggle="image" class="my-1">
                                         <img src="{if !empty(old('images.fb', $edit_data.images.fb))}{image_root(old('images.fb', $edit_data.images.fb))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_thumb_image_robot_fb" data-placeholder="{image_default_url()}"/>
-                                        <button type="button" id="button_image_robot_fb" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
-                                        <button type="button" id="button_clear_robot_fb" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
+                                        <div class="btn-group w-100 mt-1" role="group">
+                                            <button type="button" id="button-image-logo" class="button-image btn btn-xs btn-primary" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
+                                            <button type="button" id="button-clear-logo" class="button-clear btn btn-xs btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>
+                                        </div>
                                     </a>
                                     <input type="hidden" name="images[fb]" value="{old('images.fb', $edit_data.images.fb)}" id="input_image_robot_fb_path" />
                                     <small>{lang('NewsAdmin.help_thumb_fp')}</small>

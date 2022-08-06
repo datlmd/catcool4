@@ -74,8 +74,10 @@
 		<div class="col-12 col-sm-8 col-lg-6">
 			<a href="javascript:void(0);" id="image_none" data-target="input_image_none" data-thumb="load_image_none" data-bs-toggle="image" data-type="image" class="mx-0 mt-1">
 				<img src="{if !empty(old('image_none', $settings.image_none))}{image_thumb_url(old('image_none', $settings.image_none))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1" alt="" title="" id="load_image_none" data-placeholder="{image_default_url()}"/>
-				<button type="button" id="button-image-none" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
-				<button type="button" id="button-clear-none" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
+				<div class="btn-group w-100 mt-1" role="group">
+					<button type="button" id="button-image-logo" class="button-image btn btn-xs btn-primary" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
+					<button type="button" id="button-clear-logo" class="button-clear btn btn-xs btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>
+				</div>
 			</a>
 			<input type="hidden" name="image_none" value="{old('image_none', $settings.image_none)}" id="input_image_none" />
 		</div>
@@ -162,8 +164,10 @@
 					</label>
 					<a href="javascript:void(0);" id="image_watermark_path" data-target="input_image_watermark_path" data-thumb="load_image_watermark_path" data-bs-toggle="image" data-type="image" class="mx-0 mt-1">
 						<img src="{if !empty(old('image_watermark_path', $settings.image_watermark_path))}{image_thumb_url(old('image_watermark_path', $settings.image_watermark_path))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1" alt="" title="" id="load_image_watermark_path" data-placeholder="{image_default_url()}"/>
-						<button type="button" id="button-image-watemark" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('Admin.text_photo_edit')}</button>
-						<button type="button" id="button-clear-watemark" class="button-clear btn btn-xs btn-danger w-100 mt-1 mb-1"><i class="fas fa-trash me-1"></i>{lang('Admin.text_photo_clear')}</button>
+						<div class="btn-group w-100 mt-1" role="group">
+							<button type="button" id="button-image-logo" class="button-image btn btn-xs btn-primary" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
+							<button type="button" id="button-clear-logo" class="button-clear btn btn-xs btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>
+						</div>
 					</a>
 					<input type="hidden" name="image_watermark_path" value="{old('image_watermark_path', $settings.image_watermark_path)}" id="input_image_watermark_path" />
 				</div>
@@ -219,7 +223,9 @@
 		<div class="col-12 col-sm-8 col-lg-6">
 			<input type="text" name="file_pdf" value="{old('file_pdf', $settings.file_pdf)}" id="input_file_pdf" class="form-control" />
 			<a href="javascript:void(0);" id="file_pdf" data-target="input_file_pdf" data-bs-toggle="image" class="mx-0 mt-1">
-				<button type="button" id="button-image-pdf" class="button-image btn btn-xs btn-primary w-100 mt-1"><i class="fas fa-pencil-alt me-1"></i>{lang('ConfigAdmin.text_photo_edit')}</button>
+				<div class="btn-group w-100 mt-1" role="group">
+					<button type="button" id="button-image-pdf" class="button-image btn btn-xs btn-primary w-100" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i> {lang('Admin.text_photo_edit')}</button>
+				</div>
 			</a>
 		</div>
 	</div>
