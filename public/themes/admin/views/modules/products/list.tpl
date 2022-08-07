@@ -48,18 +48,19 @@
 							<table class="table table-striped table-hover table-bordered second">
 								<thead>
 									<tr class="text-center">
+										<th width="50">{form_checkbox('manage_check_all')}</th>
 										<th width="50">{lang('column_id')}</th>
 										<th>{lang('column_name')}</th>
 										<th>{lang('column_description')}</th>
 										<th>{lang('column_sort_order')}</th>
 										<th>{lang('column_published')}</th>
 										<th width="160">{lang('column_function')}</th>
-										<th width="50">{form_checkbox('manage_check_all')}</th>
 									</tr>
 								</thead>
 								<tbody>
 								{foreach $list as $item}
 									<tr>
+										<td class="text-center">{form_checkbox('manage_ids[]', $item.product_id)}</td>
 										<td class="text-center">{anchor("$manage_url/edit/`$item.product_id`", $item.product_id, 'class="text-primary"')}</td>
 										<td>{anchor("$manage_url/edit/`$item.product_id`", $item.detail.name, 'class="text-primary"')}</td>
 										<td>{$item.detail.description}</td>
@@ -76,7 +77,6 @@
 												<button type="button" data-id="{$item.product_id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 											</div>
 										</td>
-										<td class="text-center">{form_checkbox('manage_ids[]', $item.product_id)}</td>
 									</tr>
 								{/foreach}
 								</tbody>

@@ -50,6 +50,7 @@
 										<table class="table table-striped table-hover table-bordered second">
 											<thead>
 											<tr class="text-center">
+												<th width="50">{form_checkbox('manage_check_all')}</th>
 												<th width="50">
 													<a href="{site_url($manage_url)}?sort=id&order={$order}" class="text-dark">
 														{lang('Admin.column_id')}
@@ -77,12 +78,12 @@
 												<th class="text-start">{lang('Admin.column_description')}</th>
 												<th width="120">{lang('Admin.column_published')}</th>
 												<th width="130">{lang('Admin.column_function')}</th>
-												<th width="50">{form_checkbox('manage_check_all')}</th>
 											</tr>
 											</thead>
 											<tbody>
 											{foreach $list as $item}
 												<tr>
+													<td class="text-center">{form_checkbox('manage_ids[]', $item.id)}</td>
 													<td class="text-center">{$item.id}</td>
 													<td>{anchor("$manage_url/edit/`$item.id`?tab_group_id=0", $item.config_key, 'class="text-primary"')}</td>
 													<td title="{$item.config_value|escape}">{$item.config_value|truncate:40|escape}</td>
@@ -96,10 +97,9 @@
 													<td class="text-center">
 														<div class="btn-group ms-auto">
 															<a href="{$manage_url}/edit/{$item.id}?tab_group_id=0" class="btn btn-sm btn-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
-															<button type="button" data-id="{$item.id}" class="btn btn-sm btn-light btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
+															<button type="button" data-id="{$item.id}" class="btn btn-sm btn-light text-danger btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 														</div>
 													</td>
-													<td class="text-center">{form_checkbox('manage_ids[]', $item.id)}</td>
 												</tr>
 											{/foreach}
 											</tbody>
@@ -116,6 +116,7 @@
 											<table class="table table-striped table-hover table-bordered second">
 												<thead>
 												<tr class="text-center">
+													<th width="50">{form_checkbox('manage_check_all')}</th>
 													<th width="50">
 														<a href="{site_url($manage_url)}?sort=id&order={$order}" class="text-dark">
 															{lang('Admin.column_id')}
@@ -143,13 +144,13 @@
 													<th class="text-start">{lang('Admin.column_description')}</th>
 													<th width="120">{lang('Admin.column_published')}</th>
 													<th width="130">{lang('Admin.column_function')}</th>
-													<th width="50">{form_checkbox('manage_check_all')}</th>
 												</tr>
 												</thead>
 												<tbody>
 													{foreach $list as $item}
 														{if $item.group_id eq $group.id}
 															<tr>
+																<td class="text-center">{form_checkbox('manage_ids[]', $item.id)}</td>
 																<td class="text-center">{$item.id}</td>
 																<td>{anchor("$manage_url/edit/`$item.id`?tab_group_id=`$group.id`", $item.config_key, 'class="text-primary"')}</td>
 																<td title="{$item.config_value|escape}">{$item.config_value|truncate:40|escape}</td>
@@ -163,10 +164,9 @@
 																<td class="text-center">
 																	<div class="btn-group ms-auto">
 																		<a href="{$manage_url}/edit/{$item.id}?tab_group_id={$group.id}" class="btn btn-sm btn-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_edit')}"{/if}><i class="fas fa-edit"></i></a>
-																		<button type="button" data-id="{$item.id}" class="btn btn-sm btn-light btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
+																		<button type="button" data-id="{$item.id}" class="btn btn-sm btn-light text-danger btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('Admin.button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 																	</div>
 																</td>
-																<td class="text-center">{form_checkbox('manage_ids[]', $item.id)}</td>
 															</tr>
 														{/if}
 													{/foreach}

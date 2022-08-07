@@ -55,6 +55,7 @@
 							<table class="table table-striped table-hover table-bordered second">
 								<thead>
 									<tr class="text-center">
+										<th width="50">{form_checkbox('manage_check_all')}</th>
 										<th width="50">{lang('column_id')}</th>
 										<th>{lang('text_username')}</th>
 										<th>{lang('text_full_name')}</th>
@@ -62,12 +63,12 @@
 										<th>{lang('text_phone')}</th>
 										<th>{lang('text_active')}</th>
 										<th width="160">{lang('column_function')}</th>
-										<th width="50">{form_checkbox('manage_check_all')}</th>
 									</tr>
 								</thead>
 								<tbody>
 								{foreach $list as $item}
 									<tr>
+										<td class="text-center">{form_checkbox('manage_ids[]', $item.customer_id)}</td>
 										<td class="text-center">{$item.customer_id}</td>
 										<td>
 											{if !empty($item.image)}
@@ -97,7 +98,6 @@
 												<button type="button" data-id="{$item.customer_id}" class="btn btn-sm btn-outline-light btn_delete_single text-danger" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 											</div>
 										</td>
-										<td class="text-center">{form_checkbox('manage_ids[]', $item.customer_id)}</td>
 									</tr>
 								{/foreach}
 								</tbody>

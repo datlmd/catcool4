@@ -38,6 +38,7 @@
 							<table class="table table-striped table-hover table-bordered second">
 								<thead>
 									<tr class="text-center">
+										<th width="50">{form_checkbox('manage_check_all')}</th>
 										<th width="50">
 											<a href="{site_url($manage_url)}?sort=id&order={$order}" class="text-dark">
 												{lang('Admin.column_id')}
@@ -56,12 +57,12 @@
 										</th>
 										<th>{lang('Admin.column_description')}</th>
 										<th width="130">{lang('Admin.column_function')}</th>
-										<th width="50">{form_checkbox('manage_check_all')}</th>
 									</tr>
 								</thead>
 								<tbody>
 								{foreach $list as $item}
 									<tr>
+										<td class="text-center">{form_checkbox('manage_ids[]', $item.id)}</td>
 										<td class="text-center">{$item.id}</td>
 										<td>{anchor("$manage_url/edit/`$item.id`", htmlspecialchars($item.name, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}</td>
 										<td>{$item.description}</td>
@@ -71,7 +72,6 @@
 												<button type="button" data-id="{$item.id}" class="btn btn-sm btn-light text-danger btn_delete_single" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
 											</div>
 										</td>
-										<td class="text-center">{form_checkbox('manage_ids[]', $item.id)}</td>
 									</tr>
 								{/foreach}
 								</tbody>

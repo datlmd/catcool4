@@ -87,17 +87,18 @@
 									<table class="table table-striped table-hover table-bordered second">
 										<thead>
 										<tr class="text-center">
+											<th width="50">{form_checkbox('manage_check_all')}</th>
 											<th width="50">{lang('column_id')}</th>
 											<th>Thumb</th>
 											<th>{lang('column_name')}</th>
 											<th>{lang('column_published')}</th>
 											<th width="160">{lang('column_function')}</th>
-											<th width="50">{form_checkbox('manage_check_all')}</th>
 										</tr>
 										</thead>
 										<tbody>
 											{foreach $list as $item}
 												<tr>
+													<td class="text-center">{form_checkbox('manage_ids[]', $item.photo_id)}</td>
 													<td class="text-center">{$item.photo_id}</td>
 													<td>
 														<a href="{image_url($item.image)}" data-lightbox="photos">
@@ -126,7 +127,6 @@
 															<button type="button" data-id="{$item.photo_id}" class="btn btn-sm btn-outline-light text-danger btn_delete_single" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
 														</div>
 													</td>
-													<td class="text-center">{form_checkbox('manage_ids[]', $item.photo_id)}</td>
 												</tr>
 											{/foreach}
 										</tbody>

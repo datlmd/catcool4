@@ -48,6 +48,7 @@
 								<table class="table table-striped table-hover table-bordered second">
 									<thead>
 										<tr class="text-center">
+											<th width="50">{form_checkbox('manage_check_all')}</th>
 											<th width="150">
 												<a href="{site_url($manage_url)}?sort=news_id&order={$order}{$url}" class="text-dark">
 													{lang('Admin.text_image')}
@@ -66,12 +67,12 @@
 											</th>
 											<th width="120">{lang('Admin.column_published')}</th>
 											<th width="130">{lang('Admin.column_function')}</th>
-											<th width="50">{form_checkbox('manage_check_all')}</th>
 										</tr>
 									</thead>
 									<tbody>
 									{foreach $list as $item}
 										<tr id="item_id_{$item.news_id}">
+											<td class="text-center">{form_checkbox('manage_ids[]', $item.news_id)}</td>
 											<td class="text-center">
 												{anchor("$manage_url/edit/`$item.news_id`", $item.news_id, 'class="text-primary"')}
 												<div class="thumbnail">
@@ -123,7 +124,6 @@
 													<button type="button" data-id="{$item.news_id}" data-is-trash="1" class="btn btn-sm btn-light text-danger btn_delete_single" data-bs-toggle="tooltip" title="{lang('Admin.text_move_to_trash')}"><i class="fas fa-trash-alt"></i></button>
 												</div>
 											</td>
-											<td class="text-center">{form_checkbox('manage_ids[]', $item.news_id)}</td>
 										</tr>
 									{/foreach}
 									</tbody>
