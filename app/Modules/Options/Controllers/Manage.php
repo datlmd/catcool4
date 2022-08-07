@@ -56,11 +56,15 @@ class Manage extends AdminController
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
+        if ($this->request->isAJAX()) {
+            return $this->themes::view('list', $data);
+        }
+
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
-            ::load('list', $data);
+            ::load('option', $data);
 	}
 
     public function add()
