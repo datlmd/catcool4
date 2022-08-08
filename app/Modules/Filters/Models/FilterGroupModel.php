@@ -48,19 +48,4 @@ class FilterGroupModel extends MyModel
 
         return $this;
     }
-
-    public function getListByOptionId($option_id)
-    {
-        $result = $this->orderBy('sort_order', 'DESC')->where('option_id', $option_id)->findAll();
-        if (empty($result)) {
-            return [];
-        }
-
-        $language_id = get_lang_id(IS_ADMIN);
-        foreach ($result as $key => $value) {
-            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
-        }
-
-        return $result;
-    }
 }

@@ -12,8 +12,8 @@ class Manage extends AdminController
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'options/manage';
-    CONST MANAGE_URL  = 'options/manage';
+    CONST MANAGE_ROOT = 'filters/manage';
+    CONST MANAGE_URL  = 'filters/manage';
 
     public function __construct()
     {
@@ -21,10 +21,10 @@ class Manage extends AdminController
 
         $this->themes->setTheme(config_item('theme_admin'));
 
-        $this->model = new OptionModel();
-        $this->model_lang = new OptionLangModel();
-        $this->model_value = new OptionValueModel();
-        $this->model_value_lang = new OptionValueLangModel();
+        $this->model = new FilterGroupModel();
+        $this->model_lang = new FilterGroupLangModel();
+        $this->model_filter = new FilterModel();
+        $this->model_filter_lang = new FilterLangModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -32,17 +32,17 @@ class Manage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), site_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('OptionAdmin.heading_title'), site_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang('FilterAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
 	public function index()
 	{
-        add_meta(['title' => lang('OptionAdmin.heading_title')], $this->themes);
+        add_meta(['title' => lang('FilterAdmin.heading_title')], $this->themes);
 
         $limit       = $this->request->getGet('limit');
         $sort        = $this->request->getGet('sort');
         $order       = $this->request->getGet('order');
-        $filter_keys = ['option_id', 'name', 'limit'];
+        $filter_keys = ['filter_group_id', 'name', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
@@ -50,7 +50,7 @@ class Manage extends AdminController
             'breadcrumb'    => $this->breadcrumb->render(),
             'list'          => $list->paginate($limit),
             'pager'         => $list->pager,
-            'sort'          => empty($sort) ? 'option_id' : $sort,
+            'sort'          => empty($sort) ? 'filter_group_id' : $sort,
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'           => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
@@ -64,7 +64,7 @@ class Manage extends AdminController
             ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
-            ::load('option', $data);
+            ::load('filter', $data);
 	}
 
     public function add()
@@ -94,36 +94,25 @@ class Manage extends AdminController
             $json['error'] = $this->errors;
         }
 
-        $type = $this->request->getPost('type');
-        if (($type == 'select' || $type == 'radio' || $type == 'checkbox') && empty($this->request->getPost('option_value'))) {
-            $json['error']['warning'] = lang('OptionAdmin.error_type');
-        }
-
-        //@todo check product co su dung option_id & option_value_id khong
-
         $json['token'] = csrf_hash();
 
         if (!empty($json['error'])) {
             json_output($json);
         }
 
-        $option_id   = $this->request->getPost('option_id');
-        $data_option = [
-            'type'       => $this->request->getPost('type'),
-            'sort_order' => $this->request->getPost('sort_order'),
+        $data_filter['sort_order'] = $this->request->getPost('sort_order');
 
-        ];
-
-        if (empty($option_id)) {
+        $filter_group_id = $this->request->getPost('filter_group_id');
+        if (empty($filter_group_id)) {
             //Them moi
-            $option_id = $this->model->insert($data_option);
-            if (empty($option_id)) {
+            $filter_group_id = $this->model->insert($data_filter);
+            if (empty($filter_group_id)) {
                 $json['error'] = lang('Admin.error');
             }
         } else {
             //cap nhat
-            $data_option['option_id'] = $option_id;
-            if (!$this->model->save($data_option)) {
+            $data_filter['filter_group_id'] = $filter_group_id;
+            if (!$this->model->save($data_filter)) {
                 $json['error'] = lang('Admin.error');
             }
         }
@@ -132,54 +121,53 @@ class Manage extends AdminController
             json_output($json);
         }
 
-        if (!empty($this->request->getPost('option_id'))) {
-            $this->model_lang->where(['option_id' => $option_id])->delete();
+        if (!empty($this->request->getPost('filter_group_id'))) {
+            $this->model_lang->where(['filter_group_id' => $filter_group_id])->delete();
         }
 
         $edit_data_lang = $this->request->getPost('lang');
         foreach (get_list_lang(true) as $language) {
             $edit_data_lang[$language['id']]['language_id'] = $language['id'];
-            $edit_data_lang[$language['id']]['option_id']   = $option_id;
+            $edit_data_lang[$language['id']]['filter_group_id']   = $filter_group_id;
 
             $this->model_lang->insert($edit_data_lang[$language['id']]);
         }
 
-        //option value
-        if (!empty($this->request->getPost('option_id'))) {
-            $this->model_value->where(['option_id' => $option_id])->delete();
+        //filter
+        if (!empty($this->request->getPost('filter_group_id'))) {
+            $this->model_filter->where(['filter_group_id' => $filter_group_id])->delete();
         }
 
-        if (($type == 'select' || $type == 'radio' || $type == 'checkbox') && !empty($this->request->getPost('option_value'))) {
-            $option_value = $this->request->getPost('option_value');
-            foreach ($option_value as $value) {
+        if (!empty($this->request->getPost('filters'))) {
+            $filters = $this->request->getPost('filters');
+            foreach ($filters as $value) {
 
-                $data_option_value = [
-                    'option_id'  => $option_id,
-                    'image'      => $value['image'],
+                $data_filter_value = [
+                    'filter_group_id' => $filter_group_id,
                     'sort_order' => $value['sort_order'],
                 ];
 
-                if (!empty($value['option_value_id'])) {
-                    $data_option_value['option_value_id'] = $value['option_value_id'];
+                if (!empty($value['filter_id'])) {
+                    $data_filter_value['filter_id'] = $value['filter_id'];
                 }
 
-                $option_value_id = $this->model_value->insert($data_option_value);
+                $filter_id = $this->model_filter->insert($data_filter_value);
 
-                $data_option_value_lang = $value['lang'];
+                $data_filter_value_lang = $value['lang'];
                 foreach (get_list_lang(true) as $language) {
-                    $data_option_value_lang[$language['id']]['language_id']     = $language['id'];
-                    $data_option_value_lang[$language['id']]['option_value_id'] = $option_value_id;
-                    $data_option_value_lang[$language['id']]['option_id']       = $option_id;
+                    $data_filter_value_lang[$language['id']]['language_id']     = $language['id'];
+                    $data_filter_value_lang[$language['id']]['filter_id']       = $filter_id;
+                    $data_filter_value_lang[$language['id']]['filter_group_id'] = $filter_group_id;
 
-                    $this->model_value_lang->insert($data_option_value_lang[$language['id']]);
+                    $this->model_filter_lang->insert($data_filter_value_lang[$language['id']]);
                 }
             }
         }
 
-        $json['option_id'] = $option_id;
+        $json['filter_group_id'] = $filter_group_id;
 
         $json['success'] = lang('Admin.text_add_success');
-        if (!empty($this->request->getPost('option_id'))) {
+        if (!empty($this->request->getPost('filter_group_id'))) {
             $json['success'] = lang('Admin.text_edit_success');
         }
 
@@ -201,7 +189,7 @@ class Manage extends AdminController
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
-            $data_form['option_value'] = $this->model_value->getListByOptionId($id);
+            $data_form['filters'] = $this->model_filter->getListByFilterGroupId($id);
 
             $data['edit_data'] = $data_form;
         } else {
@@ -227,18 +215,18 @@ class Manage extends AdminController
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         foreach(get_list_lang(true) as $value) {
-            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('OptionAdmin.text_option_name') . ' (' . $value['name']  . ')', 'required');
+            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('FilterAdmin.text_filter_group_name') . ' (' . $value['name']  . ')', 'required');
         }
 
-        if (!empty($this->request->getPost('option_value'))) {
-            foreach ($this->request->getPost('option_value') as $key => $value) {
-                $this->validator->setRule(sprintf('option_value.%s.sort_order', $key), lang('Admin.text_sort_order'), 'is_natural');
+        if (!empty($this->request->getPost('filters'))) {
+            foreach ($this->request->getPost('filters') as $key => $value) {
+                $this->validator->setRule(sprintf('filters.%s.sort_order', $key), lang('Admin.text_sort_order'), 'is_natural');
 
                 if (empty($value['lang'])) {
                     continue;
                 }
                 foreach(get_list_lang(true) as $lang_value) {
-                    $this->validator->setRule(sprintf('option_value.%s.lang.%s.name', $key, $lang_value['id']), lang('OptionAdmin.text_option_value_name') . ' (' . $lang_value['name']  . ')', 'required');
+                    $this->validator->setRule(sprintf('filters.%s.lang.%s.name', $key, $lang_value['id']), lang('FilterAdmin.text_filter_name') . ' (' . $lang_value['name']  . ')', 'required');
                 }
 
             }
@@ -268,10 +256,8 @@ class Manage extends AdminController
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
 
-            //@todo check product co su dung option_id & option_value_id khong
-
             $this->model->delete($ids);
-            $this->model_value->whereIn('option_id', $ids)->delete();
+            $this->model_filter->whereIn('filter_group_id', $ids)->delete();
 
             json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
         }
