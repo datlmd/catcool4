@@ -94,6 +94,10 @@ class Manage extends AdminController
             $json['error'] = $this->errors;
         }
 
+        if (empty($this->request->getPost('filters'))) {
+            $json['error']['warning'] = lang('FilterAdmin.error_filter');
+        }
+
         $json['token'] = csrf_hash();
 
         if (!empty($json['error'])) {
