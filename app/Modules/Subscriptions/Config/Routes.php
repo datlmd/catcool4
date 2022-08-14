@@ -17,4 +17,11 @@ $routes->group('subscriptions', ['namespace' => 'App\Modules\Subscriptions\Contr
     $subroutes->add('statuses_manage/edit/(:num)', 'StatusesManage::edit/$1');
     $subroutes->add('statuses_manage/delete', 'StatusesManage::delete');
     $subroutes->add('statuses_manage/publish', 'StatusesManage::publish');
+
+    $subroutes->add('plans_manage', 'PlansManage::index');
+    $subroutes->add('plans_manage/add', 'PlansManage::add');
+    $subroutes->add('plans_manage/save', 'PlansManage::save');
+    $subroutes->add('plans_manage/edit/(:num)', 'PlansManage::edit/$1');
+    $subroutes->add('plans_manage/delete', 'PlansManage::delete');
+    $subroutes->add('plans_manage/publish', 'PlansManage::publish');
 });

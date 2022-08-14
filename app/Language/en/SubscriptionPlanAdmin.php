@@ -1,0 +1,28 @@
+<?php
+
+return [
+	"heading_title" => "Subscription Plans",
+	"help_cycle" => "Subscription amounts are calculated by the frequency and cycles.",
+	"help_duration" => "The duration is the number of times the user will make a payment, set this to 0 if you want payments until they are cancelled.",
+	"help_frequency" => "If you use a frequency of 'week' and a cycle of '2', then the user will be billed every 2 weeks.",
+	"text_cycle" => "Cycle",
+	"text_day" => "Day",
+	"text_duration" => "Duration",
+	"text_frequency" => "Frequency",
+	"text_list" => "Subscription Plan List",
+	"text_month" => "Month",
+	"text_plan_name" => "Subscription Plan Name",
+	"text_price" => "Price",
+	"text_semi_month" => "Semi Month",
+	"text_subscription" => "Subscription",
+	"text_trial" => "Trial",
+	"text_trial_cycle" => "Trial Cycle",
+	"text_trial_duration" => "Trial Duration",
+	"text_trial_frequency" => "Trial Frequency",
+	"text_trial_price" => "Trial Price",
+	"text_trial_published" => "Trial Status",
+	"text_week" => "Week",
+	"text_year" => "Year",
+	"translate_admin_id" => "106",
+	"translate_frontend_id" => "105",
+];
