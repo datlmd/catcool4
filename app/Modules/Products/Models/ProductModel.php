@@ -77,44 +77,11 @@ class ProductModel extends MyModel
             $this->like("$this->table_lang.name", $filter["name"]);
         }
 
-        $result = $this->select("$this->table.*, $this->table_lang.*")
+        $this->select("$this->table.*, $this->table_lang.*")
             ->with(false)
             ->join($this->table_lang, "$this->table_lang.product_id = $this->table.product_id")
-            ->orderBy($sort, $order)->findAll();
+            ->orderBy($sort, $order);
 
-        if (empty($result)) {
-            return null;
-        }
-
-        return $result;
-    }
-
-    public function getListPublished($is_cache = true)
-    {
-        $result = $is_cache ? cache()->get(self::CATEGORY_CACHE_NAME) : null;
-        if (empty($result)) {
-            $result = $this->orderBy('sort_order', 'DESC')->where(['published' => STATUS_ON])->findAll();
-            if (empty($result)) {
-                return false;
-            }
-
-            $language_id = get_lang_id(true);
-            foreach ($result as $key => $value) {
-                $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
-            }
-
-            if ($is_cache) {
-                // Save into the cache for $expire_time 1 month
-                cache()->save(self::CATEGORY_CACHE_NAME, $result, self::CATEGORY_CACHE_EXPIRE);
-            }
-        }
-
-        return $result;
-    }
-
-    public function deleteCache()
-    {
-        cache()->delete(self::CATEGORY_CACHE_NAME);
-        return true;
+        return $this;
     }
 }
