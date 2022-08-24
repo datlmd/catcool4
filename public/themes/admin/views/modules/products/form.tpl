@@ -32,40 +32,18 @@
                                         <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_general'}active{/if}" id="tab_general" data-bs-toggle="tab" href="#tab_general_content" role="tab" aria-controls="tab_general" aria-selected="{if old('tab_type', $tab_type) eq 'tab_general'}true{else}false{/if}">{lang('Admin.tab_general')}</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_image'}active{/if}" id="tab_image" data-bs-toggle="tab" href="#tab_content_image" role="tab" aria-controls="tab_image" aria-selected="{if old('tab_type', $tab_type) eq 'tab_image'}true{else}false{/if}">{lang('Admin.tab_image')}</a>
+                                        <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_data'}active{/if}" id="tab_data" data-bs-toggle="tab" href="#tab_data_content" role="tab" aria-controls="tab_data" aria-selected="{if old('tab_type', $tab_type) eq 'tab_data'}true{else}false{/if}">{lang('Admin.tab_data')}</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_local'}active{/if}" id="tab_local" data-bs-toggle="tab" href="#tab_content_local" role="tab" aria-controls="tab_local" aria-selected="{if old('tab_type', $tab_type) eq 'tab_local'}true{else}false{/if}">{lang('Admin.tab_local')}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_option'}active{/if}" id="tab_option" data-bs-toggle="tab" href="#tab_content_option" role="tab" aria-controls="tab_option" aria-selected="{if old('tab_type', $tab_type) eq 'tab_option'}true{else}false{/if}">{lang('Admin.tab_option')}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_mail'}active{/if}" id="tab_mail" data-bs-toggle="tab" href="#tab_content_mail" role="tab" aria-controls="tab_mail" aria-selected="{if old('tab_type', $tab_type) eq 'tab_mail'}true{else}false{/if}">{lang('Admin.tab_mail')}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_server'}active{/if}" id="tab_server" data-bs-toggle="tab" href="#tab_content_server" role="tab" aria-controls="tab_server" aria-selected="{if old('tab_type', $tab_type) eq 'tab_server'}true{else}false{/if}">{lang('Admin.tab_server')}</a>
-                                    </li>
+
                                 </ul>
                                 <div class="tab-content border-0 p-3" id="tab_content">
                                     <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_general'}show active{/if}" role="tabpanel" id="tab_general_content"  aria-labelledby="tab_general">
                                         {include file=get_theme_path('views/modules/products/inc/tab_general.tpl')}
                                     </div>
-                                    <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_image'}show active{/if}" role="tabpanel" id="tab_content_image"  aria-labelledby="tab_image">
-                                        {include file=get_theme_path('views/modules/configs/inc/tab_image.tpl')}
+                                    <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_data'}show active{/if}" role="tabpanel" id="tab_data_content"  aria-labelledby="tab_data">
+                                        {include file=get_theme_path('views/modules/products/inc/tab_data.tpl')}
                                     </div>
-                                    <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_local'}show active{/if}" role="tabpanel" id="tab_content_local"  aria-labelledby="tab_local">
-                                        {include file=get_theme_path('views/modules/configs/inc/tab_local.tpl')}
-                                    </div>
-                                    <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_option'}show active{/if}" role="tabpanel" id="tab_content_option"  aria-labelledby="tab_option">
-                                        {include file=get_theme_path('views/modules/configs/inc/tab_option.tpl')}
-                                    </div>
-                                    <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_mail'}show active{/if}" role="tabpanel" id="tab_content_mail"  aria-labelledby="tab_mail">
-                                        {include file=get_theme_path('views/modules/configs/inc/tab_mail.tpl')}
-                                    </div>
-                                    <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_server'}show active{/if}" role="tabpanel" id="tab_content_server"  aria-labelledby="tab_server">
-                                        {include file=get_theme_path('views/modules/configs/inc/tab_server.tpl')}
-                                    </div>
+
                                 </div>
 
                             </div>
@@ -79,3 +57,8 @@
         {form_close()}
     </div>
 {/strip}
+<script>
+    $(function () {
+        Tiny_content.loadTiny(500);
+    });
+</script>

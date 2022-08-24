@@ -213,6 +213,9 @@ class Manage extends AdminController
 
     private function _getForm($id = null)
     {
+        $this->themes->addJS('common/js/tinymce/tinymce.min');
+        $this->themes->addJS('common/js/admin/tiny_content');
+
         $data['language_list'] = get_list_lang(true);
 
         //edit
