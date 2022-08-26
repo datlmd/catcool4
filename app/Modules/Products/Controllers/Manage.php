@@ -3,6 +3,9 @@
 use App\Controllers\AdminController;
 use App\Modules\Products\Models\ProductModel;
 use App\Modules\Products\Models\ProductLangModel;
+use App\Modules\Products\Models\StockStatusModel;
+use App\Modules\Products\Models\WeightClassModel;
+use App\Modules\Products\Models\LengthClassModel;
 
 class Manage extends AdminController
 {
@@ -216,11 +219,23 @@ class Manage extends AdminController
         $this->themes->addJS('common/js/tinymce/tinymce.min');
         $this->themes->addJS('common/js/admin/tiny_content');
 
+        //add datetimepicker
+        $this->themes->addCSS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
+        $this->themes->addJS('common/plugin/datepicker/moment.min');
+        $this->themes->addJS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
+        if (get_lang(true) == 'vi') {
+            $this->themes->addJS('common/plugin/datepicker/locale/vi');
+        }
+
+        //add tags
+        $this->themes->addCSS('common/js/tags/tagsinput');
+        $this->themes->addJS('common/js/tags/tagsinput');
+
         $data['language_list'] = get_list_lang(true);
 
         //edit
         if (!empty($id) && is_numeric($id)) {
-            $data['text_form'] = lang('Admin.text_edit');
+            $data['text_form'] = lang('ProductAdmin.text_edit');
             $breadcrumb_url = site_url(self::MANAGE_URL . "/edit/$id");
 
             $data_form = $this->model->getDetail($id);
@@ -233,9 +248,18 @@ class Manage extends AdminController
 
             $data['edit_data'] = $data_form;
         } else {
-            $data['text_form'] = lang('Admin.text_add');
+            $data['text_form'] = lang('ProductAdmin.text_add');
             $breadcrumb_url = site_url(self::MANAGE_URL . "/add");
         }
+
+        $stock_status_model = new StockStatusModel();
+        $data['stock_status_list'] = $stock_status_model->getListAll();
+
+        $weight_class_model = new WeightClassModel();
+        $data['weight_class_list'] = $weight_class_model->getListAll();
+
+        $length_class_model = new LengthClassModel();
+        $data['length_class_list'] = $length_class_model->getListAll();
 
         $data['errors'] = $this->errors;
 
