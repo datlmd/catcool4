@@ -1,7 +1,7 @@
 <?php
 
 return [
-	"column_name" => "Product name",
+	"column_name" => "Product Name",
 	"delete_heading" => "Delete Product",
 	"heading_title" => "Products",
 	"help_ean" => "European Article Numbe",
@@ -30,7 +30,7 @@ return [
 	"text_minimum" => "Minimum Quantity",
 	"text_model" => "Model",
 	"text_mpn" => "MPN",
-	"text_name" => "Product name",
+	"text_name" => "Product Name",
 	"text_override" => "Override",
 	"text_points" => "Points",
 	"text_price" => "Price",

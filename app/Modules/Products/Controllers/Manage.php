@@ -104,6 +104,11 @@ class Manage extends AdminController
             json_output($json);
         }
 
+        $date_available = $this->request->getPost('date_available');
+        if (!empty($date_available)) {
+            $date_available = date("Y-m-d", strtotime($date_available));
+        }
+
         $product_id   = $this->request->getPost('product_id');
         $data_product = [
             'master_id'       => $this->request->getPost('master_id'),
@@ -120,12 +125,12 @@ class Manage extends AdminController
             'quantity'        => $this->request->getPost('quantity'),
             'stock_status_id' => $this->request->getPost('stock_status_id'),
             'image'           => $this->request->getPost('image'),
-            'manufacturer_id' => $this->request->getPost('manufacturer_id'),
+            'manufacturer_id' => 0,//$this->request->getPost('manufacturer_id'),
             'shipping'        => $this->request->getPost('shipping'),
             'price'           => $this->request->getPost('price'),
-            'points'          => $this->request->getPost('points'),
+            'points'          => 0,//$this->request->getPost('points'),
             'tax_class_id'    => $this->request->getPost('tax_class_id'),
-            'date_available'  => $this->request->getPost('date_available'),
+            'date_available'  => $date_available,
             'weight'          => $this->request->getPost('weight'),
             'weight_class_id' => $this->request->getPost('weight_class_id'),
             'length'          => $this->request->getPost('length'),
@@ -266,6 +271,7 @@ class Manage extends AdminController
         $this->breadcrumb->add($data['text_form'], $breadcrumb_url);
         add_meta(['title' => $data['text_form']], $this->themes);
 
+        $data['tab_type']   = 'tab_general';
         $data['breadcrumb'] = $this->breadcrumb->render();
 
         $this->themes
@@ -279,8 +285,10 @@ class Manage extends AdminController
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         foreach(get_list_lang(true) as $value) {
-            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('ProductAdmin.text_product_name') . ' (' . $value['name']  . ')', 'required');
+            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('ProductAdmin.text_name') . ' (' . $value['name']  . ')', 'required');
         }
+
+        $this->validator->setRule('model', lang('ProductAdmin.text_model'), 'required');
 
 //        if (!empty($this->request->getPost('option_value'))) {
 //            foreach ($this->request->getPost('option_value') as $key => $value) {

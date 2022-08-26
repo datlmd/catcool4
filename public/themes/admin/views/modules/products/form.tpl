@@ -2,7 +2,12 @@
     {form_hidden('manage_url', site_url($manage_url))}
     <div class="container-fluid  dashboard-content">
         {form_open(site_url("$manage_url/save"), ["id" => "validationform", "method" => "post", "data-cc-toggle" => "ajax"])}
+
             <input type="hidden" name="product_id" value="{$edit_data.product_id}">
+            <input type="hidden" name="master_id" value="{$edit_data.master_id|default:0}">
+            <input type="hidden" name="variant" value="{$edit_data.variant|default:""}">
+            <input type="hidden" name="override" value="{$edit_data.override|default:""}">
+
             <div class="row">
                 <div class="col-12">
                     <div class="row">
@@ -34,7 +39,9 @@
                                     <li class="nav-item">
                                         <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_data'}active{/if}" id="tab_data" data-bs-toggle="tab" href="#tab_data_content" role="tab" aria-controls="tab_data" aria-selected="{if old('tab_type', $tab_type) eq 'tab_data'}true{else}false{/if}">{lang('Admin.tab_data')}</a>
                                     </li>
-
+                                    <li class="nav-item">
+                                        <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_links'}active{/if}" id="tab_links" data-bs-toggle="tab" href="#tab_links_content" role="tab" aria-controls="tab_links" aria-selected="{if old('tab_type', $tab_type) eq 'tab_links'}true{else}false{/if}">{lang('Admin.tab_links')}</a>
+                                    </li>
                                 </ul>
                                 <div class="tab-content border-0 p-3" id="tab_content">
                                     <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_general'}show active{/if}" role="tabpanel" id="tab_general_content"  aria-labelledby="tab_general">
@@ -43,7 +50,9 @@
                                     <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_data'}show active{/if}" role="tabpanel" id="tab_data_content"  aria-labelledby="tab_data">
                                         {include file=get_theme_path('views/modules/products/inc/tab_data.tpl')}
                                     </div>
-
+                                    <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_links'}show active{/if}" role="tabpanel" id="tab_links_content"  aria-labelledby="tab_links">
+                                        {include file=get_theme_path('views/modules/products/inc/tab_links.tpl')}
+                                    </div>
                                 </div>
 
                             </div>

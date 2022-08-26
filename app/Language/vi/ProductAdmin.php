@@ -30,7 +30,7 @@ return [
 	"text_minimum" => "Số lượng tối thiểu",
 	"text_model" => "Model",
 	"text_mpn" => "MPN",
-	"text_name" => "Sản phẩm",
+	"text_name" => "Tên Sản phẩm",
 	"text_override" => "Override",
 	"text_points" => "Mua bằng điểm",
 	"text_price" => "Giá",

@@ -7,7 +7,7 @@
                 <div class="tab-pane fade {if $language.active}show active{/if}" role="tabpanel" id="lanuage_content_{$language.id}"  aria-labelledby="language_tab_{$language.id}">
                     <div class="form-group row">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <label class="form-label required-label">{lang('ArticleAdmin.text_name')}</label>
+                            <label class="form-label required-label">{lang('ProductAdmin.text_name')}</label>
                             <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_lang_{$language.id}_name" data-preview-title="seo_meta_title_{$language.id}" data-title-id="input_meta_title_{$language.id}" data-preview-slug="seo_meta_url_{$language.id}" data-slug-id="input_slug_{$language.id}" class="form-control {if empty($edit_data.article_id)}make-slug{/if} {if $validator->hasError("lang.`$language.id`.name")}is-invalid{/if}">
                             <div id="error_lang_{$language.id}_name" class="invalid-feedback">
                                 {$validator->getError("lang.`$language.id`.name")}
