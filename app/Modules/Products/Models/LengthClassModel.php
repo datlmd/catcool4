@@ -52,7 +52,7 @@ class LengthClassModel extends MyModel
         return $this;
     }
 
-    public function getListALL($is_cache = true)
+    public function getListAll($is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::LENGTH_CLASS_CACHE_NAME) : null;
         if (empty($result)) {

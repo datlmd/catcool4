@@ -83,6 +83,8 @@ class StockStatusesManage extends AdminController
                 $this->model_lang->insert($add_data_lang[$language['id']]);
             }
 
+            $this->model->deleteCache();
+
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
@@ -121,6 +123,7 @@ class StockStatusesManage extends AdminController
                 
             ];
             if ($this->model->save($edit_data) !== FALSE) {
+                $this->model->deleteCache();
                 set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
             } else {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
@@ -199,6 +202,8 @@ class StockStatusesManage extends AdminController
 
             $this->model->delete($ids);
 
+            $this->model->deleteCache();
+
             json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
         }
 
@@ -247,6 +252,8 @@ class StockStatusesManage extends AdminController
         if (!$this->model->update($id, $item_edit)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
+
+        $this->model->deleteCache();
 
         json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')]);
     }

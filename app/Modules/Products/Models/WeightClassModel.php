@@ -52,7 +52,7 @@ class WeightClassModel extends MyModel
         return $this;
     }
 
-    public function getListALL($is_cache = true)
+    public function getListAll($is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::WEIGHT_CLASS_CACHE_NAME) : null;
         if (empty($result)) {
