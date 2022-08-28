@@ -26,7 +26,7 @@ return [
 	"text_length_class_id" => "Length Class",
 	"text_list" => "Product List",
 	"text_location" => "Location",
-	"text_manufacturer_id" => "Manufacturer",
+	"text_manufacturer" => "Manufacturer",
 	"text_minimum" => "Minimum Quantity",
 	"text_model" => "Model",
 	"text_mpn" => "MPN",

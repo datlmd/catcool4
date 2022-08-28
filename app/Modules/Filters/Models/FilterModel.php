@@ -22,6 +22,9 @@ class FilterModel extends MyModel
     protected $table_lang = 'filter_lang';
     protected $with = ['filter_lang'];
 
+    const FILTER_CACHE_NAME   = 'filter_list';
+    const FILTER_CACHE_EXPIRE = YEAR;
+
     public function __construct()
     {
         parent::__construct();
@@ -63,5 +66,34 @@ class FilterModel extends MyModel
         }
 
         return $result;
+    }
+
+    public function getListAll($is_cache = true)
+    {
+        $result = $is_cache ? cache()->get(self::FILTER_CACHE_NAME) : null;
+        if (empty($result)) {
+            $result = $this->orderBy('sort_order', 'DESC')->findAll();
+            if (empty($result)) {
+                return false;
+            }
+
+            $language_id = get_lang_id(true);
+            foreach ($result as $key => $value) {
+                $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
+            }
+
+            if ($is_cache) {
+                // Save into the cache for $expire_time 1 month
+                cache()->save(self::FILTER_CACHE_NAME, $result, self::FILTER_CACHE_EXPIRE);
+            }
+        }
+
+        return $result;
+    }
+
+    public function deleteCache()
+    {
+        cache()->delete(self::FILTER_CACHE_NAME);
+        return true;
     }
 }

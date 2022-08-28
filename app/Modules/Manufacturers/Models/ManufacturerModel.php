@@ -23,8 +23,8 @@ class ManufacturerModel extends MyModel
     protected $table_lang = 'manufacturer_lang';
     protected $with = ['manufacturer_lang'];
 
-    const CATEGORY_CACHE_NAME   = 'manufacturer_list';
-    const CATEGORY_CACHE_EXPIRE = YEAR;
+    const MANUFACTURER_CACHE_NAME   = 'manufacturer_list';
+    const MANUFACTURER_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {
@@ -54,9 +54,9 @@ class ManufacturerModel extends MyModel
         return $this;
     }
 
-    public function getListPublished($is_cache = true)
+    public function getListAll($is_cache = true)
     {
-        $result = $is_cache ? cache()->get(self::CATEGORY_CACHE_NAME) : null;
+        $result = $is_cache ? cache()->get(self::MANUFACTURER_CACHE_NAME) : null;
         if (empty($result)) {
             $result = $this->orderBy('sort_order', 'DESC')->where(['published' => STATUS_ON])->findAll();
             if (empty($result)) {
@@ -70,7 +70,7 @@ class ManufacturerModel extends MyModel
 
             if ($is_cache) {
                 // Save into the cache for $expire_time 1 month
-                cache()->save(self::CATEGORY_CACHE_NAME, $result, self::CATEGORY_CACHE_EXPIRE);
+                cache()->save(self::MANUFACTURER_CACHE_NAME, $result, self::MANUFACTURER_CACHE_EXPIRE);
             }
         }
 
@@ -79,7 +79,7 @@ class ManufacturerModel extends MyModel
 
     public function deleteCache()
     {
-        cache()->delete(self::CATEGORY_CACHE_NAME);
+        cache()->delete(self::MANUFACTURER_CACHE_NAME);
         return true;
     }
 }

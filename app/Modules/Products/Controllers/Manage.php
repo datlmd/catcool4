@@ -3,9 +3,6 @@
 use App\Controllers\AdminController;
 use App\Modules\Products\Models\ProductModel;
 use App\Modules\Products\Models\ProductLangModel;
-use App\Modules\Products\Models\StockStatusModel;
-use App\Modules\Products\Models\WeightClassModel;
-use App\Modules\Products\Models\LengthClassModel;
 
 class Manage extends AdminController
 {
@@ -125,7 +122,7 @@ class Manage extends AdminController
             'quantity'        => $this->request->getPost('quantity'),
             'stock_status_id' => $this->request->getPost('stock_status_id'),
             'image'           => $this->request->getPost('image'),
-            'manufacturer_id' => 0,//$this->request->getPost('manufacturer_id'),
+            'manufacturer_id' => $this->request->getPost('manufacturer_id'),
             'shipping'        => $this->request->getPost('shipping'),
             'price'           => $this->request->getPost('price'),
             'points'          => 0,//$this->request->getPost('points'),
@@ -236,6 +233,9 @@ class Manage extends AdminController
         $this->themes->addCSS('common/js/tags/tagsinput');
         $this->themes->addJS('common/js/tags/tagsinput');
 
+        $this->themes->addCSS('common/plugin/multi-select/css/bootstrap-multiselect.min');
+        $this->themes->addJS('common/plugin/multi-select/js/bootstrap-multiselect.min');
+
         $data['language_list'] = get_list_lang(true);
 
         //edit
@@ -250,6 +250,7 @@ class Manage extends AdminController
             }
 
             //$data_form['option_value'] = $this->model_value->getListByOptionId($id);
+            $data_form['filter_ids'] = [];
 
             $data['edit_data'] = $data_form;
         } else {
@@ -257,14 +258,24 @@ class Manage extends AdminController
             $breadcrumb_url = site_url(self::MANAGE_URL . "/add");
         }
 
-        $stock_status_model = new StockStatusModel();
+        $stock_status_model = new \App\Modules\Products\Models\StockStatusModel();
         $data['stock_status_list'] = $stock_status_model->getListAll();
 
-        $weight_class_model = new WeightClassModel();
+        $weight_class_model = new \App\Modules\Products\Models\WeightClassModel();
         $data['weight_class_list'] = $weight_class_model->getListAll();
 
-        $length_class_model = new LengthClassModel();
+        $length_class_model = new \App\Modules\Products\Models\LengthClassModel();
         $data['length_class_list'] = $length_class_model->getListAll();
+
+        $manufacturer_model = new \App\Modules\Manufacturers\Models\ManufacturerModel();
+        $data['manufacturer_list'] = $manufacturer_model->getListAll();
+
+        $category_model = new \App\Modules\Products\Models\CategoryModel();
+        $category_list = $category_model->getListAll();
+        $data['categories_tree'] = format_tree(['data' => $category_list, 'key_id' => 'category_id']);
+
+        $filter_model = new \App\Modules\Filters\Models\FilterModel();
+        $data['filter_list'] = $filter_model->getListAll();
 
         $data['errors'] = $this->errors;
 

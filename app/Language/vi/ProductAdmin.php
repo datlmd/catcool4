@@ -26,7 +26,7 @@ return [
 	"text_length_class_id" => "Loại chiều dài",
 	"text_list" => "Danh sách Sản phẩm",
 	"text_location" => "Địa điểm kho hàng",
-	"text_manufacturer_id" => "Hãng sản xuất",
+	"text_manufacturer" => "Hãng sản xuất",
 	"text_minimum" => "Số lượng tối thiểu",
 	"text_model" => "Model",
 	"text_mpn" => "MPN",

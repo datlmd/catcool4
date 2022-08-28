@@ -854,36 +854,49 @@ $(function () {
             buttonClass: 'btn btn-sm border text-start',
             buttonWidth: '100%',
         });
-        if ($('#category_review').length) {
-            $('.multiselect').change(function () {
-                var selected_text = $(this).find('option:selected').map(function () {
-                    return $(this).text();
-                }).get().join(',');
 
-                $('#category_review ul').remove();
+
+
+
+        $('.multiselect').change(function () {
+
+            var review_id = '#category_review';
+            if ($(this).data('target')) {
+                review_id = $(this).data('target');
+            }
+
+            if (!$(review_id).length) {
+                return false;
+            }
+
+            var selected_text = $(this).find('option:selected').map(function () {
+                return $(this).text();
+            }).get().join(',');
+
+            $(review_id + ' ul').remove();
+            $(review_id).append('<ul class="list-unstyled bullet-check mb-0"></ul>');
+            var text_select_array = selected_text.split(',');
+            if (text_select_array.length && text_select_array != "") {
+                for (i = 0; i < text_select_array.length; i++) {
+                    $(review_id +' ul').append('<li>' + text_select_array[i] + '</li>');
+                }
+            }
+            $(review_id).show();
+        });
+
+        setTimeout(function() {
+            if ($('.multiselect').val()) {
+                $('#category_review').html('');
                 $('#category_review').append('<ul class="list-unstyled bullet-check mb-0"></ul>');
-                var text_select_array = selected_text.split(',');
-                if (text_select_array.length && text_select_array != "") {
-                    for (i = 0; i < text_select_array.length; i++) {
-                        $('#category_review ul').append('<li>' + text_select_array[i] + '</li>');
-                    }
-                }
+                $('.multiselect :selected').each(function(){
+                    $('#category_review ul').append('<li>' + $(this).text() + '</li>');
+                });
                 $('#category_review').show();
-            });
+            } else {
+                $('#category_review').hide();
+            }
+        }, 500);
 
-            setTimeout(function() {
-                if ($('.multiselect').val()) {
-                    $('#category_review').append('<ul class="list-unstyled bullet-check mb-0"></ul>');
-                    $('.multiselect :selected').each(function(){
-                        $('#category_review ul').append('<li>' + $(this).text() + '</li>');
-                    });
-                    $('#category_review').show();
-                } else {
-                    $('#category_review').hide();
-                }
-            }, 500);
-
-        }
     }
 
     // ==============================================================

@@ -63,7 +63,7 @@ class CategoryModel extends MyModel
         return $result;
     }
 
-    public function getListPublished($is_cache = true)
+    public function getListAll($is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::CATEGORY_CACHE_NAME) : null;
         if (empty($result)) {
