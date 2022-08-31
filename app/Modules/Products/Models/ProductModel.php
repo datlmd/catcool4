@@ -84,4 +84,29 @@ class ProductModel extends MyModel
 
         return $this;
     }
+
+    public function findRelated($related, $limit = 20)
+    {
+        $result = $this->select("$this->table.*, $this->table_lang.*")
+            ->with(false)
+            ->join($this->table_lang, "$this->table_lang.product_id = $this->table.product_id")
+            ->orderBy("$this->table.product_id", 'DESC')
+            ->groupStart()
+            ->like("$this->table_lang.name", trim($related))
+            ->orLike("$this->table_lang.tag", trim($related))
+            ->groupEnd()
+            ->where("$this->table_lang.language_id", get_lang_id(true))
+            ->findAll($limit);
+
+        if (empty($result)) {
+            return false;
+        }
+
+        $language_id = get_lang_id(true);
+        foreach ($result as $key => $value) {
+            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
+        }
+
+        return $result;
+    }
 }

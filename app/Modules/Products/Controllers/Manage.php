@@ -236,6 +236,8 @@ class Manage extends AdminController
         $this->themes->addCSS('common/plugin/multi-select/css/bootstrap-multiselect.min');
         $this->themes->addJS('common/plugin/multi-select/js/bootstrap-multiselect.min');
 
+        $this->themes->addJS('common/js/admin/related');
+
         $data['language_list'] = get_list_lang(true);
 
         //edit
@@ -366,5 +368,23 @@ class Manage extends AdminController
         $data['ids']         = $delete_ids;
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
+    }
+
+    public function related()
+    {
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        if (empty($this->request->getPost())) {
+            json_output(['status' => 'ng', 'msg' => lang('Admin.error_json')]);
+        }
+
+        $data = [
+            'status' => 'ok',
+            'view' => $this->themes::view('inc/related_list', ['related_list' => $this->model->findRelated($this->request->getPost('related'))], true)
+        ];
+
+        json_output($data);
     }
 }

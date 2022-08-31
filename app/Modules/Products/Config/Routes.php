@@ -12,6 +12,7 @@ $routes->group('products', ['namespace' => 'App\Modules\Products\Controllers'], 
     $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
     $subroutes->add('manage/delete', 'Manage::delete');
     $subroutes->add('manage/publish', 'Manage::publish');
+    $subroutes->add('manage/related', 'Manage::related');
 
     $subroutes->add('weight_classes_manage', 'WeightClassesManage::index');
     $subroutes->add('weight_classes_manage/add', 'WeightClassesManage::add');

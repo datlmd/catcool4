@@ -68,7 +68,7 @@
 	<div class="form-group row">
 		<div class="col-12 col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_related')}</div>
 		<div class="col-12 col-sm-10 col-lg-10">
-
+			{include file=get_theme_path('views/inc/related.tpl') related_input_name="related" related_url='products/manage/related' related_list_html=$edit_data.related_list_html}
 		</div>
 	</div>
 
