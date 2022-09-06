@@ -13,6 +13,9 @@ class Manage extends AdminController
     CONST MANAGE_ROOT = 'products/manage';
     CONST MANAGE_URL  = 'products/manage';
 
+    CONST SEO_URL_MODULE   = 'products';
+    CONST SEO_URL_RESOURCE = 'Products::Detail/%s';
+
     public function __construct()
     {
         parent::__construct();
@@ -168,8 +171,42 @@ class Manage extends AdminController
         foreach (get_list_lang(true) as $language) {
             $edit_data_lang[$language['id']]['language_id'] = $language['id'];
             $edit_data_lang[$language['id']]['product_id']  = $product_id;
+            $edit_data_lang[$language['id']]['slug']        = !empty($seo_urls[$language['id']]['route']) ? get_seo_extension($seo_urls[$language['id']]['route']) : '';
 
             $this->model_lang->insert($edit_data_lang[$language['id']]);
+        }
+
+        //product category
+        $product_category_model  = new \App\Modules\Products\Models\ProductCategoryModel();
+        $product_category_model->where(['product_id' => $product_id])->delete();
+
+        $category_ids = $this->request->getPost('category_ids');
+        if (!empty($category_ids)) {
+            foreach ($category_ids as $category_id) {
+                $product_category_model->insert(['product_id' => $product_id, 'category_id' => $category_id]);
+            }
+        }
+
+        //product filter
+        $product_filter_model  = new \App\Modules\Products\Models\ProductFilterModel();
+        $product_filter_model->where(['product_id' => $product_id])->delete();
+
+        $filter_ids = $this->request->getPost('filter_ids');
+        if (!empty($filter_ids)) {
+            foreach ($filter_ids as $filter_id) {
+                $product_filter_model->insert(['product_id' => $product_id, 'filter_id' => $filter_id]);
+            }
+        }
+
+        //product related
+        $product_related_model  = new \App\Modules\Products\Models\ProductRelatedModel();
+        $product_related_model->where(['product_id' => $product_id])->delete();
+
+        $related_ids = $this->request->getPost('related_ids');
+        if (!empty($related_ids)) {
+            foreach ($related_ids as $related_id) {
+                $product_related_model->insert(['product_id' => $product_id, 'related_id' => $related_id]);
+            }
         }
 
         //option value
@@ -206,6 +243,11 @@ class Manage extends AdminController
         }
         */
 
+        //save route url
+        $route_model = new \App\Modules\Routes\Models\RouteModel();
+        $seo_urls    = $this->request->getPost('seo_urls');
+        $route_model->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $product_id));
+
         $json['product_id'] = $product_id;
 
         $json['success'] = lang('Admin.text_add_success');
@@ -216,7 +258,7 @@ class Manage extends AdminController
         json_output($json);
     }
 
-    private function _getForm($id = null)
+    private function _getForm($product_id = null)
     {
         $this->themes->addJS('common/js/tinymce/tinymce.min');
         $this->themes->addJS('common/js/admin/tiny_content');
@@ -241,18 +283,42 @@ class Manage extends AdminController
         $data['language_list'] = get_list_lang(true);
 
         //edit
-        if (!empty($id) && is_numeric($id)) {
+        if (!empty($product_id) && is_numeric($product_id)) {
             $data['text_form'] = lang('ProductAdmin.text_edit');
-            $breadcrumb_url = site_url(self::MANAGE_URL . "/edit/$id");
+            $breadcrumb_url = site_url(self::MANAGE_URL . "/edit/$product_id");
 
-            $data_form = $this->model->getDetail($id);
+            $data_form = $this->model->getDetail($product_id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR);
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
-            //$data_form['option_value'] = $this->model_value->getListByOptionId($id);
-            $data_form['filter_ids'] = [];
+            //product filters
+            $product_filter_model  = new \App\Modules\Products\Models\ProductFilterModel();
+            $filter_ids = $product_filter_model->where(['product_id' => $product_id])->findAll();
+            $data_form['filter_ids'] = array_column($filter_ids, 'filter_id');
+
+            //product categories
+            $product_category_model  = new \App\Modules\Products\Models\ProductCategoryModel();
+            $category_ids = $product_category_model->where(['product_id' => $product_id])->findAll();
+            $data_form['category_ids'] = array_column($category_ids, 'category_id');
+
+            //product related
+            $product_related_model  = new \App\Modules\Products\Models\ProductRelatedModel();
+            $related_ids = $product_related_model->where(['product_id' => $product_id])->findAll();
+            $data_form['related_ids'] = array_column($related_ids, 'related_id');
+
+            if (!empty($data_form['related_ids'])) {
+                $related_list = $this->model->getListByRelatedIds($data_form['related_ids']);
+
+                if (!empty($related_list)) {
+                    $data_form['related_list_html'] = $this->themes::view('inc/related_list', ['related_list' => $related_list, 'is_checked' => true], true);
+                }
+            }
+
+            //lay danh sach seo url tu route
+            $route_model = new \App\Modules\Routes\Models\RouteModel();
+            $data['seo_urls'] = $route_model->getListByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $product_id));
 
             $data['edit_data'] = $data_form;
         } else {
@@ -380,9 +446,11 @@ class Manage extends AdminController
             json_output(['status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
+        $related_list = $this->model->findRelated($this->request->getPost('related'), $this->request->getPost('id'));
+
         $data = [
             'status' => 'ok',
-            'view' => $this->themes::view('inc/related_list', ['related_list' => $this->model->findRelated($this->request->getPost('related'))], true)
+            'view' => $this->themes::view('inc/related_list', ['related_list' => $related_list], true)
         ];
 
         json_output($data);

@@ -1,5 +1,5 @@
 {strip}
-	<div id="div_{$related_input_name}" data-url="{$related_url}">
+	<div id="div_{$related_input_name}" data-url="{$related_url}" data-id="{$id}">
 		<div class="input-group related-form">
 			<input type="text" name="{$related_input_name}" id="input_{$related_input_name}" class="form-control" onkeypress="relatedKeypress(this);" />
 			<button type="button" class="input-group-text" onclick="searchRelated(this);"><i class="fa fa-search"></i></button>

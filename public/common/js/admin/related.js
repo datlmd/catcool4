@@ -28,6 +28,7 @@ function searchRelated(obj) {
         type: 'POST',
         data: {
             related: related_div.find('input').val(),
+            id: related_div.data('id'),
         },
         beforeSend: function () {
             related_div.find('.related-form').find('i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');

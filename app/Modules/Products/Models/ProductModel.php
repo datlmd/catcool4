@@ -85,9 +85,9 @@ class ProductModel extends MyModel
         return $this;
     }
 
-    public function findRelated($related, $limit = 20)
+    public function findRelated($related, $id = null, $limit = 20)
     {
-        $result = $this->select("$this->table.*, $this->table_lang.*")
+        $this->select("$this->table.*, $this->table_lang.*")
             ->with(false)
             ->join($this->table_lang, "$this->table_lang.product_id = $this->table.product_id")
             ->orderBy("$this->table.product_id", 'DESC')
@@ -95,8 +95,39 @@ class ProductModel extends MyModel
             ->like("$this->table_lang.name", trim($related))
             ->orLike("$this->table_lang.tag", trim($related))
             ->groupEnd()
-            ->where("$this->table_lang.language_id", get_lang_id(true))
-            ->findAll($limit);
+            ->where("$this->table_lang.language_id", get_lang_id(true));
+
+        if (!empty($id)) {
+            $this->where("$this->table.product_id !=", $id);
+        }
+
+        $result = $this->findAll($limit);
+
+        if (empty($result)) {
+            return false;
+        }
+
+        $language_id = get_lang_id(true);
+        foreach ($result as $key => $value) {
+            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
+        }
+
+        return $result;
+    }
+
+    public function getListByRelatedIds($related_ids, $limit = 10)
+    {
+        if (empty($related_ids)) {
+            return null;
+        }
+
+        $related_ids = is_array($related_ids) ? $related_ids : explode(',', $related_ids);
+
+        $result = $this
+                ->orderBy('product_id', 'DESC')
+                //->where(['published' => STATUS_ON])
+                ->whereIn("product_id", $related_ids)
+                ->findAll($limit);
 
         if (empty($result)) {
             return false;

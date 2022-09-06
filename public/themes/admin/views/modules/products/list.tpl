@@ -16,7 +16,7 @@
 						</th>
 						<th class="text-start">
 							<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
-								{lang('ProductAdmin.text_product_name')}
+								{lang('ProductAdmin.text_name')}
 								{if $sort eq 'name'}
 									<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 								{/if}
