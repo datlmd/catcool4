@@ -23,6 +23,8 @@ return [
 	"text_edit" => "Cập nhật Sản phẩm",
 	"text_filter" => "Bộ lọc",
 	"text_height" => "Cao",
+	"text_images" => "Hình ảnh bổ sung",
+	"text_image_add" => "Thêm Hình",
 	"text_isbn" => "ISBN",
 	"text_jan" => "JAN",
 	"text_length" => "Dài",

@@ -23,6 +23,8 @@ return [
 	"text_edit" => "Edit Product",
 	"text_filter" => "Filters",
 	"text_height" => "Height",
+	"text_images" => "Additional Images",
+	"text_image_add" => "Add Image",
 	"text_isbn" => "ISBN",
 	"text_jan" => "JAN",
 	"text_length" => "Length",

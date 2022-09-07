@@ -209,39 +209,22 @@ class Manage extends AdminController
             }
         }
 
-        //option value
-        /*
-        if (!empty($this->request->getPost('product_id'))) {
-            $this->model_value->where(['product_id' => $product_id])->delete();
-        }
+        //product image
+        $product_image_model  = new \App\Modules\Products\Models\ProductImageModel();
+        $product_image_model->where(['product_id' => $product_id])->delete();
 
-        if (($type == 'select' || $type == 'radio' || $type == 'checkbox') && !empty($this->request->getPost('option_value'))) {
-            $option_value = $this->request->getPost('option_value');
-            foreach ($option_value as $value) {
-
-                $data_option_value = [
-                    'product_id'  => $product_id,
-                    'image'      => $value['image'],
-                    'sort_order' => $value['sort_order'],
-                ];
-
-                if (!empty($value['option_value_id'])) {
-                    $data_option_value['option_value_id'] = $value['option_value_id'];
+        $product_image_list = $this->request->getPost('product_image');
+        if (!empty($product_image_list)) {
+            foreach ($product_image_list as $value) {
+                $product_image_data               = $value;
+                $product_image_data['product_id'] = $product_id;
+                if (!empty($value['product_image_id'])) {
+                    $product_image_data['product_image_id'] = $value['product_image_id'];
                 }
-
-                $option_value_id = $this->model_value->insert($data_option_value);
-
-                $data_option_value_lang = $value['lang'];
-                foreach (get_list_lang(true) as $language) {
-                    $data_option_value_lang[$language['id']]['language_id']     = $language['id'];
-                    $data_option_value_lang[$language['id']]['option_value_id'] = $option_value_id;
-                    $data_option_value_lang[$language['id']]['product_id']       = $product_id;
-
-                    $this->model_value_lang->insert($data_option_value_lang[$language['id']]);
-                }
+                $product_image_model->insert($product_image_data);
             }
         }
-        */
+
 
         //save route url
         $route_model = new \App\Modules\Routes\Models\RouteModel();
@@ -315,6 +298,10 @@ class Manage extends AdminController
                     $data_form['related_list_html'] = $this->themes::view('inc/related_list', ['related_list' => $related_list, 'is_checked' => true], true);
                 }
             }
+
+            //product image
+            $product_image_model  = new \App\Modules\Products\Models\ProductImageModel();
+            $data_form['image_list'] = $product_image_model->getListByProductId($product_id);
 
             //lay danh sach seo url tu route
             $route_model = new \App\Modules\Routes\Models\RouteModel();
@@ -409,6 +396,12 @@ class Manage extends AdminController
 
             $this->model->delete($ids);
             //$this->model_value->whereIn('product_id', $ids)->delete();
+
+            //xoa slug ra khoi route
+            $route_model = new \App\Modules\Routes\Models\RouteModel();
+            foreach($list_delete as $value) {
+                $route_model->deleteByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $value['product_id']));
+            }
 
             json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
         }
