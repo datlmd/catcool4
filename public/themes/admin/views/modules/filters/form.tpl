@@ -116,23 +116,23 @@
     <div id="html_filter" style="display: none">
         <table>
             <tbody>
-                <tr id="filters_row_{'filter_row'}">
+                <tr id="filters_row_{'filter_row_value'}">
                     <td class="text-start">
-                        <input type="hidden" name="filters[{'filter_row'}][filter_id]" value="" />
+                        <input type="hidden" name="filters[{'filter_row_value'}][filter_id]" value="" />
                         {foreach $language_list as $language}
                             <div class="input-group {if !$language@last}mb-2{/if}">
                                 <span class="input-group-text">{$language.icon}</span>
-                                <input type="text" name="filters[{'filter_row'}][lang][{$language.id}][name]" value='{old("filters[filter_row][lang][{$language.id}][name]")}' id="input_filters_{'filter_row'}_lang_{$language.id}_name" class="form-control">
-                                <div id="error_filters_{'filter_row'}_lang_{$language.id}_name" class="invalid-feedback"></div>
+                                <input type="text" name="filters[{'filter_row_value'}][lang][{$language.id}][name]" value='{old("filters[filter_row][lang][{$language.id}][name]")}' id="input_filters_{'filter_row_value'}_lang_{$language.id}_name" class="form-control">
+                                <div id="error_filters_{'filter_row_value'}_lang_{$language.id}_name" class="invalid-feedback"></div>
                             </div>
                         {/foreach}
                     </td>
                     <td class="text-end">
-                        <input type="number" name="filters[{'filter_row'}][sort_order]" value="0" id="input_filters_{'filter_row'}_sort_order" min="0" placeholder="{lang('Admin.text_sort_order')}" class="form-control"/>
-                        <div id="error_filters_{'filter_row'}_sort_order" class="invalid-feedback"></div>
+                        <input type="number" name="filters[{'filter_row_value'}][sort_order]" value="0" id="input_filters_{'filter_row_value'}_sort_order" min="0" placeholder="{lang('Admin.text_sort_order')}" class="form-control"/>
+                        <div id="error_filters_{'filter_row_value'}_sort_order" class="invalid-feedback"></div>
                     </td>
                     <td class="text-end">
-                        <button type="button" onclick="$('#filters_row_{'filter_row'}').remove();" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
+                        <button type="button" onclick="$('#filters_row_{'filter_row_value'}').remove();" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
                     </td>
                 </tr>
             </tbody>
@@ -147,7 +147,7 @@
         filter_row = parseInt(filter_row) + 1;
         $('#filter_row').val(filter_row);
 
-        var html = $('#html_filter table tbody').html().replaceAll('filter_row', filter_row);
+        var html = $('#html_filter table tbody').html().replaceAll('filter_row_value', filter_row);
         $('#filter_list table tbody').append(html);
     }
 </script>

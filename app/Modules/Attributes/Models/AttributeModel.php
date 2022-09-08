@@ -22,6 +22,9 @@ class AttributeModel extends MyModel
     protected $table_lang = 'attribute_lang';
     protected $with = ['attribute_lang'];
 
+    const ATTRIBUTE_CACHE_NAME = 'attribute_list_all';
+    const ATTRIBUTE_CACHE_EXPIRE = YEAR;
+
     public function __construct()
     {
         parent::__construct();
@@ -48,5 +51,43 @@ class AttributeModel extends MyModel
             ->orderBy($sort, $order);
 
         return $this;
+    }
+
+    public function getListAll($is_cache = true)
+    {
+        $result = $is_cache ? cache()->get(self::ATTRIBUTE_CACHE_NAME) : null;
+        if (empty($result)) {
+            $result = $this->orderBy('sort_order', 'DESC')->findAll();
+            if (empty($result)) {
+                return false;
+            }
+
+            $language_id = get_lang_id(true);
+            foreach ($result as $key => $value) {
+                $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
+            }
+
+            if ($is_cache) {
+                // Save into the cache for $expire_time 1 month
+                cache()->save(self::ATTRIBUTE_CACHE_NAME, $result, self::ATTRIBUTE_CACHE_EXPIRE);
+            }
+        }
+
+        if (empty($result)) {
+            return [];
+        }
+
+        $length_list = [];
+        foreach ($result as $value) {
+            $length_list[$value['attribute_id']] = $value;
+        }
+
+        return $length_list;
+    }
+
+    public function deleteCache()
+    {
+        cache()->delete(self::ATTRIBUTE_CACHE_NAME);
+        return true;
     }
 }

@@ -177,7 +177,7 @@ class Manage extends AdminController
         }
 
         //product category
-        $product_category_model  = new \App\Modules\Products\Models\ProductCategoryModel();
+        $product_category_model = new \App\Modules\Products\Models\ProductCategoryModel();
         $product_category_model->where(['product_id' => $product_id])->delete();
 
         $category_ids = $this->request->getPost('category_ids');
@@ -188,7 +188,7 @@ class Manage extends AdminController
         }
 
         //product filter
-        $product_filter_model  = new \App\Modules\Products\Models\ProductFilterModel();
+        $product_filter_model = new \App\Modules\Products\Models\ProductFilterModel();
         $product_filter_model->where(['product_id' => $product_id])->delete();
 
         $filter_ids = $this->request->getPost('filter_ids');
@@ -199,7 +199,7 @@ class Manage extends AdminController
         }
 
         //product related
-        $product_related_model  = new \App\Modules\Products\Models\ProductRelatedModel();
+        $product_related_model = new \App\Modules\Products\Models\ProductRelatedModel();
         $product_related_model->where(['product_id' => $product_id])->delete();
 
         $related_ids = $this->request->getPost('related_ids');
@@ -210,7 +210,7 @@ class Manage extends AdminController
         }
 
         //product image
-        $product_image_model  = new \App\Modules\Products\Models\ProductImageModel();
+        $product_image_model = new \App\Modules\Products\Models\ProductImageModel();
         $product_image_model->where(['product_id' => $product_id])->delete();
 
         $product_image_list = $this->request->getPost('product_image');
@@ -225,6 +225,27 @@ class Manage extends AdminController
             }
         }
 
+        //product attribute
+        $product_attribute_model = new \App\Modules\Products\Models\ProductAttributeModel();
+        $product_attribute_model->where(['product_id' => $product_id])->delete();
+
+        $product_attribute_list = $this->request->getPost('product_attribute');
+        if (!empty($product_attribute_list)) {
+            $data_attribute = [];
+            foreach ($product_attribute_list as $value) {
+                foreach (get_list_lang(true) as $language) {
+                    $data_attribute[] = [
+                        'product_id'   => $product_id,
+                        'language_id'  => $language['id'],
+                        'attribute_id' => $value['attribute_id'],
+                        'text'         => $value['lang'][$language['id']]['text'],
+                    ];
+
+                    //$product_attribute_model->insert($data_attribute);
+                }
+            }
+            $product_attribute_model->insertBatch($data_attribute);
+        }
 
         //save route url
         $route_model = new \App\Modules\Routes\Models\RouteModel();
@@ -303,6 +324,10 @@ class Manage extends AdminController
             $product_image_model  = new \App\Modules\Products\Models\ProductImageModel();
             $data_form['image_list'] = $product_image_model->getListByProductId($product_id);
 
+            //product attribute
+            $product_attribute_model  = new \App\Modules\Products\Models\ProductAttributeModel();
+            $data_form['product_attribute_list'] = $product_attribute_model->getListByProductId($product_id);
+
             //lay danh sach seo url tu route
             $route_model = new \App\Modules\Routes\Models\RouteModel();
             $data['seo_urls'] = $route_model->getListByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $product_id));
@@ -332,6 +357,9 @@ class Manage extends AdminController
         $filter_model = new \App\Modules\Filters\Models\FilterModel();
         $data['filter_list'] = $filter_model->getListAll();
 
+        $attribute_model = new \App\Modules\Attributes\Models\AttributeModel();
+        $data['attribute_list'] = $attribute_model->getListAll();
+
         $data['errors'] = $this->errors;
 
         $this->breadcrumb->add($data['text_form'], $breadcrumb_url);
@@ -356,19 +384,16 @@ class Manage extends AdminController
 
         $this->validator->setRule('model', lang('ProductAdmin.text_model'), 'required');
 
-//        if (!empty($this->request->getPost('option_value'))) {
-//            foreach ($this->request->getPost('option_value') as $key => $value) {
-//                $this->validator->setRule(sprintf('option_value.%s.sort_order', $key), lang('Admin.text_sort_order'), 'is_natural');
-//
-//                if (empty($value['lang'])) {
-//                    continue;
-//                }
-//                foreach(get_list_lang(true) as $lang_value) {
-//                    $this->validator->setRule(sprintf('option_value.%s.lang.%s.name', $key, $lang_value['id']), lang('ProductAdmin.text_option_value_name') . ' (' . $lang_value['name']  . ')', 'required');
-//                }
-//
-//            }
-//        }
+        if (!empty($this->request->getPost('product_attribute'))) {
+            foreach ($this->request->getPost('product_attribute') as $key => $value) {
+                if (empty($value['lang'])) {
+                    continue;
+                }
+                foreach(get_list_lang(true) as $lang_value) {
+                    $this->validator->setRule(sprintf('product_attribute.%s.lang.%s.text', $key, $lang_value['id']), lang('ProductAdmin.text_text') . ' (' . $lang_value['name']  . ')', 'required');
+                }
+            }
+        }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();

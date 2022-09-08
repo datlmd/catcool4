@@ -156,35 +156,35 @@
     <div id="html_option_value" style="display: none">
         <table>
             <tbody>
-                <tr id="option_value_row_{'option_value_row'}">
+                <tr id="option_value_row_{'option_value_row_value'}">
                     <td class="text-start">
-                        <input type="hidden" name="option_value[{'option_value_row'}][option_value_id]" value="" />
+                        <input type="hidden" name="option_value[{'option_value_row_value'}][option_value_id]" value="" />
                         {foreach $language_list as $language}
                             <div class="input-group {if !$language@last}mb-2{/if}">
                                 <span class="input-group-text">{$language.icon}</span>
-                                <input type="text" name="option_value[{'option_value_row'}][lang][{$language.id}][name]" value='{old("option_value[option_value_row][lang][{$language.id}][name]")}' id="input_option_value_{'option_value_row'}_lang_{$language.id}_name" class="form-control">
-                                <div id="error_option_value_{'option_value_row'}_lang_{$language.id}_name" class="invalid-feedback"></div>
+                                <input type="text" name="option_value[{'option_value_row_value'}][lang][{$language.id}][name]" value='{old("option_value[option_value_row][lang][{$language.id}][name]")}' id="input_option_value_{'option_value_row_value'}_lang_{$language.id}_name" class="form-control">
+                                <div id="error_option_value_{'option_value_row_value'}_lang_{$language.id}_name" class="invalid-feedback"></div>
                             </div>
                         {/foreach}
                     </td>
                     <td class="text-center">
 
-                        <a href="javascript:void(0);" id="option_value_{'option_value_row'}_image" data-target="input_option_value_{'option_value_row'}_image" data-thumb="option_value_{'option_value_row'}_load_image_url" data-type="image" data-bs-toggle="image">
-                            <img src="{image_default_url()}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="option_value_{'option_value_row'}_load_image_url" data-placeholder="{image_default_url()}"/>
+                        <a href="javascript:void(0);" id="option_value_{'option_value_row_value'}_image" data-target="input_option_value_{'option_value_row_value'}_image" data-thumb="option_value_{'option_value_row_value'}_load_image_url" data-type="image" data-bs-toggle="image">
+                            <img src="{image_default_url()}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="option_value_{'option_value_row_value'}_load_image_url" data-placeholder="{image_default_url()}"/>
                             <div class="btn-group w-100 mt-1" role="group">
                                 <button type="button" id="button-image-logo" class="button-image btn btn-xs btn-primary" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
                                 <button type="button" id="button-clear-logo" class="button-clear btn btn-xs btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>
                             </div>
                         </a>
-                        <input type="hidden" name="option_value[{'option_value_row'}][image]" value="" id="input_option_value_{'option_value_row'}_image" />
+                        <input type="hidden" name="option_value[{'option_value_row_value'}][image]" value="" id="input_option_value_{'option_value_row_value'}_image" />
 
                     </td>
                     <td class="text-end">
-                        <input type="number" name="option_value[{'option_value_row'}][sort_order]" value="0" id="input_option_value_{'option_value_row'}_sort_order" min="0" placeholder="{lang('Admin.text_sort_order')}" class="form-control"/>
-                        <div id="error_option_value_{'option_value_row'}_sort_order" class="invalid-feedback"></div>
+                        <input type="number" name="option_value[{'option_value_row_value'}][sort_order]" value="0" id="input_option_value_{'option_value_row_value'}_sort_order" min="0" placeholder="{lang('Admin.text_sort_order')}" class="form-control"/>
+                        <div id="error_option_value_{'option_value_row_value'}_sort_order" class="invalid-feedback"></div>
                     </td>
                     <td class="text-end">
-                        <button type="button" onclick="$('#option_value_row_{'option_value_row'}').remove();" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
+                        <button type="button" onclick="$('#option_value_row_{'option_value_row_value'}').remove();" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
                     </td>
                 </tr>
             </tbody>
@@ -209,7 +209,7 @@
         option_value_row = parseInt(option_value_row) + 1;
         $('#option_value_row').val(option_value_row);
 
-        var html = $('#html_option_value table tbody').html().replaceAll('option_value_row', option_value_row);
+        var html = $('#html_option_value table tbody').html().replaceAll('option_value_row_value', option_value_row);
         $('#option-value tbody').append(html);
     }
 </script>

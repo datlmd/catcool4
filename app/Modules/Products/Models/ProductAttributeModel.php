@@ -20,4 +20,25 @@ class ProductAttributeModel extends MyModel
     {
         parent::__construct();
     }
+
+    public function getListByProductId($product_id)
+    {
+        if (empty($product_id)) {
+            return [];
+        }
+
+        $result = $this->where(['product_id' => $product_id])->findAll();
+        if (empty($result)) {
+            return [];
+        }
+
+        $list = [];
+        foreach ($result as $value) {
+            $list[$value['attribute_id']]['product_id'] = $value['product_id'];
+            $list[$value['attribute_id']]['attribute_id'] = $value['attribute_id'];
+            $list[$value['attribute_id']]['lang'][$value['language_id']]['text'] = $value['text'];
+        }
+
+        return $list;
+    }
 }
