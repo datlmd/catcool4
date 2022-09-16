@@ -46,6 +46,9 @@
                                         <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_attributes'}active{/if}" id="tab_attributes" data-bs-toggle="tab" href="#tab_attributes_content" role="tab" aria-controls="tab_attributes" aria-selected="{if old('tab_type', $tab_type) eq 'tab_attributes'}true{else}false{/if}">{lang('Admin.tab_attribute')}</a>
                                     </li>
                                     <li class="nav-item">
+                                        <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_options'}active{/if}" id="tab_options" data-bs-toggle="tab" href="#tab_options_content" role="tab" aria-controls="tab_options" aria-selected="{if old('tab_type', $tab_type) eq 'tab_options'}true{else}false{/if}">{lang('Admin.tab_option')}</a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_images'}active{/if}" id="tab_images" data-bs-toggle="tab" href="#tab_images_content" role="tab" aria-controls="tab_images" aria-selected="{if old('tab_type', $tab_type) eq 'tab_images'}true{else}false{/if}">{lang('Admin.tab_image')}</a>
                                     </li>
                                 </ul>
@@ -61,6 +64,9 @@
                                     </div>
                                     <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_attributes'}show active{/if}" role="tabpanel" id="tab_attributes_content"  aria-labelledby="tab_attributes">
                                         {include file=get_theme_path('views/modules/products/inc/tab_attributes.tpl')}
+                                    </div>
+                                    <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_options'}show active{/if}" role="tabpanel" id="tab_options_content"  aria-labelledby="tab_options">
+                                        {include file=get_theme_path('views/modules/products/inc/tab_options.tpl')}
                                     </div>
                                     <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_images'}show active{/if}" role="tabpanel" id="tab_images_content"  aria-labelledby="tab_images">
                                         {include file=get_theme_path('views/modules/products/inc/tab_images.tpl')}
