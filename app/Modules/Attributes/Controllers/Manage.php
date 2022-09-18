@@ -88,6 +88,8 @@ class Manage extends AdminController
                 $this->model_lang->insert($add_data_lang[$language['id']]);
             }
 
+            $this->model->deleteCache();
+
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
@@ -126,6 +128,9 @@ class Manage extends AdminController
                 'attribute_group_id' => $this->request->getPost('attribute_group_id'),
             ];
             if ($this->model->save($edit_data) !== FALSE) {
+
+                $this->model->deleteCache();
+
                 set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
             } else {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
@@ -207,6 +212,8 @@ class Manage extends AdminController
             }
 
             $this->model->delete($ids);
+
+            $this->model->deleteCache();
 
             json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
         }

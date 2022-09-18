@@ -22,6 +22,9 @@ class OptionModel extends MyModel
     protected $table_lang = 'option_lang';
     protected $with = ['option_lang'];
 
+    const OPTION_CACHE_NAME = 'option_list_all';
+    const OPTION_CACHE_EXPIRE = YEAR;
+
     public function __construct()
     {
         parent::__construct();
@@ -48,5 +51,43 @@ class OptionModel extends MyModel
             ->orderBy($sort, $order);
 
         return $this;
+    }
+
+    public function getListAll($is_cache = true)
+    {
+        $result = $is_cache ? cache()->get(self::OPTION_CACHE_NAME) : null;
+        if (empty($result)) {
+            $result = $this->orderBy('sort_order', 'ASC')->findAll();
+            if (empty($result)) {
+                return false;
+            }
+
+            $language_id = get_lang_id(true);
+            foreach ($result as $key => $value) {
+                $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
+            }
+
+            if ($is_cache) {
+                // Save into the cache for $expire_time 1 month
+                cache()->save(self::OPTION_CACHE_NAME, $result, self::OPTION_CACHE_EXPIRE);
+            }
+        }
+
+        if (empty($result)) {
+            return [];
+        }
+
+        $length_list = [];
+        foreach ($result as $value) {
+            $length_list[$value['option_id']] = $value;
+        }
+
+        return $length_list;
+    }
+
+    public function deleteCache()
+    {
+        cache()->delete(self::OPTION_CACHE_NAME);
+        return true;
     }
 }

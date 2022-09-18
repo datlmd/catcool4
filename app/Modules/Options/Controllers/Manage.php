@@ -183,6 +183,8 @@ class Manage extends AdminController
             $json['success'] = lang('Admin.text_edit_success');
         }
 
+        $this->model->deleteCache();
+
         json_output($json);
     }
 
@@ -272,6 +274,8 @@ class Manage extends AdminController
 
             $this->model->delete($ids);
             $this->model_value->whereIn('option_id', $ids)->delete();
+
+            $this->model->deleteCache();
 
             json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
         }

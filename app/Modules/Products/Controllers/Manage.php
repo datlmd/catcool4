@@ -360,6 +360,9 @@ class Manage extends AdminController
         $attribute_model = new \App\Modules\Attributes\Models\AttributeModel();
         $data['attribute_list'] = $attribute_model->getListAll();
 
+        $option_model = new \App\Modules\Options\Models\OptionModel();
+        $data['option_list'] = $option_model->getListAll();
+
         $data['errors'] = $this->errors;
 
         $this->breadcrumb->add($data['text_form'], $breadcrumb_url);
