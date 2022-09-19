@@ -59,16 +59,11 @@ class OptionModel extends MyModel
         if (empty($result)) {
             $result = $this->orderBy('sort_order', 'ASC')->findAll();
             if (empty($result)) {
-                return false;
-            }
-
-            $language_id = get_lang_id(true);
-            foreach ($result as $key => $value) {
-                $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
+                return [];
             }
 
             if ($is_cache) {
-                // Save into the cache for $expire_time 1 month
+                // Save into the cache for $expire_time 1 year
                 cache()->save(self::OPTION_CACHE_NAME, $result, self::OPTION_CACHE_EXPIRE);
             }
         }
@@ -77,17 +72,32 @@ class OptionModel extends MyModel
             return [];
         }
 
-        $length_list = [];
+        $list = [];
+
+        $language_id = get_lang_id(true);
         foreach ($result as $value) {
-            $length_list[$value['option_id']] = $value;
+            $list[$value['option_id']] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
 
-        return $length_list;
+        //get list option value
+        $option_value_model = new OptionValueModel();
+        $option_value_list = $option_value_model->getListAll();
+        if (!empty($option_value_list)) {
+            foreach ($option_value_list as $value) {
+                $list[$value['option_id']]['option_value_list'][] = $value;
+            }
+        }
+
+        return $list;
     }
 
     public function deleteCache()
     {
         cache()->delete(self::OPTION_CACHE_NAME);
+
+        $option_value_model = new OptionValueModel();
+        $option_value_model->deleteCache();
+
         return true;
     }
 }

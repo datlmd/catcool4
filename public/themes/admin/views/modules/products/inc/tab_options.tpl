@@ -283,43 +283,43 @@
 	}
 
 	$(document).on('change', '#option', function(e) {
-		$.ajax({
-			url: url_api,
-			data: {
-				'id' : id,
-				'published': is_check,
-				'data': $(obj).data(),
-				[$("input[name*='" + csrf_token + "']").attr('name')] : $("input[name*='" + csrf_token + "']").val()
-			},
-			type:'POST',
-			success: function (data) {
-				is_processing = false;
+		{*$.ajax({*}
+		{*	url: url_api,*}
+		{*	data: {*}
+		{*		'id' : id,*}
+		{*		'published': is_check,*}
+		{*		'data': $(obj).data(),*}
+		{*		[$("input[name*='" + csrf_token + "']").attr('name')] : $("input[name*='" + csrf_token + "']").val()*}
+		{*	},*}
+		{*	type:'POST',*}
+		{*	success: function (data) {*}
+		{*		is_processing = false;*}
 
-				var response = JSON.stringify(data);
-				response = JSON.parse(response);
+		{*		var response = JSON.stringify(data);*}
+		{*		response = JSON.parse(response);*}
 
-				if (response.token) {
-					// Update CSRF hash
-					$("input[name*='" + csrf_token + "']").val(response.token);
-				}
+		{*		if (response.token) {*}
+		{*			// Update CSRF hash*}
+		{*			$("input[name*='" + csrf_token + "']").val(response.token);*}
+		{*		}*}
 
-				if (response.status == 'ng') {
-					$.notify(response.msg, {'type':'danger'});
-					$(obj).prop("checked", $(obj).attr("value"));
-					return false;
-				}
-				$.notify(response.msg);
-			},
-			error: function (xhr, errorType, error) {
-				is_processing = false;
-				$.notify({
-							message: xhr.responseJSON.message + " Please reload the page!!!",
-							url: window.location.href,
-							target: "_self",
-						},
-						{'type': 'danger'},
-				);
-			}
-		});
+		{*		if (response.status == 'ng') {*}
+		{*			$.notify(response.msg, {'type':'danger'});*}
+		{*			$(obj).prop("checked", $(obj).attr("value"));*}
+		{*			return false;*}
+		{*		}*}
+		{*		$.notify(response.msg);*}
+		{*	},*}
+		{*	error: function (xhr, errorType, error) {*}
+		{*		is_processing = false;*}
+		{*		$.notify({*}
+		{*					message: xhr.responseJSON.message + " Please reload the page!!!",*}
+		{*					url: window.location.href,*}
+		{*					target: "_self",*}
+		{*				},*}
+		{*				{'type': 'danger'},*}
+		{*		);*}
+		{*	}*}
+		{*});*}
 	});
 </script>
