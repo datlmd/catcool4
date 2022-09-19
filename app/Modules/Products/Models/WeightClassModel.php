@@ -58,12 +58,7 @@ class WeightClassModel extends MyModel
         if (empty($result)) {
             $result = $this->orderBy('value', 'ASC')->findAll();
             if (empty($result)) {
-                return false;
-            }
-
-            $language_id = get_lang_id(true);
-            foreach ($result as $key => $value) {
-                $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
+                return [];
             }
 
             if ($is_cache) {
@@ -76,12 +71,14 @@ class WeightClassModel extends MyModel
             return [];
         }
 
-        $weight_list = [];
+        $list = [];
+
+        $language_id = get_lang_id(true);
         foreach ($result as $value) {
-            $weight_list[$value['weight_class_id']] = $value;
+            $list[$value['weight_class_id']] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
-        
-        return $weight_list;
+
+        return $list;
     }
 
     public function deleteCache()

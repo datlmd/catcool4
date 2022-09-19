@@ -58,18 +58,22 @@ class StockStatusModel extends MyModel
         if (empty($result)) {
             $result = $this->orderBy('stock_status_id', 'DESC')->where(['published' => STATUS_ON])->findAll();
             if (empty($result)) {
-                return false;
-            }
-
-            $language_id = get_lang_id(true);
-            foreach ($result as $key => $value) {
-                $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
+                return [];
             }
 
             if ($is_cache) {
                 // Save into the cache for $expire_time 1 month
                 cache()->save(self::STOCK_STATUS_CACHE_NAME, $result, self::STOCK_STATUS_CACHE_EXPIRE);
             }
+        }
+
+        if (empty($result)) {
+            return [];
+        }
+
+        $language_id = get_lang_id(true);
+        foreach ($result as $key => $value) {
+            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
 
         return $result;
