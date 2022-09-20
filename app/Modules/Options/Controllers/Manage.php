@@ -302,4 +302,25 @@ class Manage extends AdminController
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }
+
+    public function getList()
+    {
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $token = csrf_hash();
+
+        $option_id = $this->request->getPost('option_id');
+        if (empty($option_id)) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+        }
+
+        $option_list = $this->model->getListAll();
+        if (empty($option_list[$option_id])) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+        }
+
+        json_output(['token' => $token, 'status' => 'ok', 'option' => $option_list[$option_id]]);
+    }
 }

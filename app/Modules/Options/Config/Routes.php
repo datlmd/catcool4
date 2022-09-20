@@ -11,4 +11,5 @@ $routes->group('options', ['namespace' => 'App\Modules\Options\Controllers'], fu
     $subroutes->add('manage/save', 'Manage::save');
     $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
     $subroutes->add('manage/delete', 'Manage::delete');
+    $subroutes->add('manage/get_list', 'Manage::getList');
 });
