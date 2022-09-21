@@ -1,6 +1,6 @@
 {strip}
 
-	{form_hidden('tab_type', 'tab_attributes')}
+	{form_hidden('tab_type', 'tab_options')}
 
 	<div id="option">
 		{if !empty($edit_data.product_option_list)}
@@ -8,8 +8,8 @@
 			{counter assign=product_option_value_row start=1 print=false}
 
 			{foreach $edit_data.product_option_list as $product_option_data}
-				<div id="product_option_row_{$product_option_row}">
-					<legend class="float-none">
+				<div id="product_option_row_{$product_option_row}" class="mb-4">
+					<legend class="float-none text-dark border-bottom pb-1 mt-2 mb-3">
 						{$product_option_data.name}
 						<button type="button" class="btn btn-danger btn-sm float-end" onclick="$('#product_option_row_{$product_option_row}').remove();">
 							<i class="fas fa-trash-alt"></i>
@@ -131,8 +131,8 @@
 											<input type="hidden" name="product_option[{$product_option_row}][product_option_value][{$product_option_value_row}][weight]" value="{$product_option_value.weight}"/>
 										</td>
 										<td class="text-end">
-											<button type="button" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}" data-product_option_row="{$product_option_row}" data-product_option_value_row="{$product_option_value_row}" class="btn btn-primary"><i class="fas fa-edit"></i></button>
-											<button type="button" onclick="$('#option-value-row-{$product_option_value_row}').remove();" data-bs-toggle="tooltip" title="{lang('Admin.button_remove')}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+											<button type="button" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}" data-product_option_row="{$product_option_row}" data-product_option_value_row="{$product_option_value_row}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+											<button type="button" onclick="$('#product_option_value_row_{$product_option_value_row}').remove();" data-bs-toggle="tooltip" title="{lang('Admin.button_remove')}" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
 										</td>
 									</tr>
 								{/foreach}
@@ -140,12 +140,12 @@
 								<tfoot>
 									<tr>
 										<td colspan="6"></td>
-										<td class="text-end"><button type="button" data-bs-toggle="tooltip" title="{lang('Admin.button_option_value_add')}" data-product_option_row="{$product_option_row}" class="btn btn-primary"><i class="fas fa-plus"></i></button>
+										<td class="text-end"><button type="button" data-bs-toggle="tooltip" title="{lang('Admin.button_option_value_add')}" data-product_option_row="{$product_option_row}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></button>
 										</td>
 									</tr>
 								</tfoot>
 							</table>
-							<select id="product-option-values-{$product_option_row}" class="d-none">
+							<select id="product_option_values_{$product_option_row}" class="d-none">
 								<option value="{$option_value.option_value_id}">{$option_value.name}</option>
 							</select>
 						</div>
@@ -174,138 +174,143 @@
 	</fieldset>
 
 	<input type="hidden" name="product_option_row" id="product_option_row" value="{if !empty($edit_data.product_option_list)}{$edit_data.product_option_list|@count}{else}0{/if}">
-	<input type="hidden" name="product_option_value_row" id="product_option_row" value="{if !empty($edit_data.product_option_list)}{$edit_data.product_option_list|@count}{else}0{/if}">
+	<input type="hidden" name="product_option_value_row" id="product_option_value_row" value="{if !empty($edit_data.product_option_list)}{$edit_data.product_option_list|@count}{else}0{/if}">
 {/strip}
 <script type="text/javascript">
 
-	$('#option').on('click', '.btn-primary', function () {
-		var product_option_value_row = $('#product_option_value_row').val();
 
+
+	$('#option').on('click', '.btn-primary', function () {
 		var element = this;
-		if ($(element).attr('data-product_option_value_row')) {
-			element.product_option_value_row = $(element).attr('data-product_option_value_row');
+
+		var product_option_value_row = $('#product_option_value_row').val();
+		if ($(element).data('product_option_value_row')) {
+			product_option_value_row = $(element).data('product_option_value_row');
 		} else {
-			element.product_option_value_row = product_option_value_row;
+			product_option_value_row = parseInt(product_option_value_row) + 1;
 		}
+
+		element.product_option_value_row = product_option_value_row;
+
 		$('.modal').remove();
-		html = '<div id="modal-option" class="modal fade">';
+		html = '<div id="modal_option" class="modal fade">';
 		html += '  <div class="modal-dialog">';
 		html += '    <div class="modal-content">';
 		html += '      <div class="modal-header">';
-		html += '        <h5 class="modal-title"><i class="fas fa-pencil"></i> {{lang('text_option_value')}}</h5> <button type="button" class="btn-close" data-bs-dismiss="modal"></button>';
+		html += '        <h5 class="modal-title"><i class="fas fa-pencil"></i>{{lang('ProductAdmin.text_option_value')}}</h5> <button type="button" class="btn-close" data-bs-dismiss="modal"></button>';
 		html += '      </div>';
 		html += '      <div class="modal-body">';
 		html += '        <div class="mb-3">';
-		html += '      	   <label for="input-modal-option-value" class="form-label">{{ entry_option_value }}</label>';
-		html += '      	   <select name="option_value_id" id="input-modal-option-value" class="form-select">';
-		option_value = $('#product-option-values-' + $(element).attr('data-option-row') + ' option');
+		html += '      	   <label for="input-modal-option-value" class="form-label">{{lang('ProductAdmin.text_option_value')}}</label>';
+		html += '      	   <select name="option_value_id" id="input_modal_option_value" class="form-select">';
+		option_value = $('#product_option_values_' + $(element).data('product_option_row') + ' option');
 		for (i = 0; i < option_value.length; i++) {
-			if ($(element).attr('data-option-value-row') && $(option_value[i]).val() == $('input[name=\'product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][option_value_id]\']').val()) {
+			if ($(element).data('product_option_value_row') && $(option_value[i]).val() == $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][option_value_id]\']').val()) {
 				html += '<option value="' + $(option_value[i]).val() + '" selected="selected">' + $(option_value[i]).text() + '</option>';
 			} else {
 				html += '<option value="' + $(option_value[i]).val() + '">' + $(option_value[i]).text() + '</option>';
 			}
 		}
 		html += '      	   </select>';
-		html += '          <input type="hidden" name="product_option_value_id" value="' + ($(element).attr('data-option-value-row') ? $('input[name=\'product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][product_option_value_id]\']').val() : '') + '"/>';
+		html += '          <input type="hidden" name="product_option_value_id" value="' + ($(element).data('product_option_value_row') ? $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][product_option_value_id]\']').val() : '') + '"/>';
 		html += '        </div>';
 		html += '        <div class="mb-3">';
-		html += '          <input type="hidden" name="product_option_value_id" value="' + ($(element).attr('data-option-value-row') ? $('input[name=\'product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][product_option_value_id]\']').val() : '') + '"/>';
-		html += '      	   <label for="input-modal-quantity" class="form-label">{{ entry_quantity }}</label>';
-		html += '      	   <input type="text" name="quantity" value="' + ($(element).attr('data-option-value-row') ? $('input[name=\'product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][quantity]\']').val() : '1') + '" placeholder="{{ entry_quantity }}" id="input-modal-quantity" class="form-control"/>';
+		html += '      	   <label for="input-modal-quantity" class="form-label">{{lang('ProductAdmin.text_quantity')}}</label>';
+		html += '      	   <input type="text" name="quantity" value="' + ($(element).data('product_option_value_row') ? $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][quantity]\']').val() : '1') + '" placeholder="{{lang('ProductAdmin.text_quantity') }}" id="input-modal-quantity" class="form-control"/>';
 		html += '        </div>';
 		html += '        <div class="mb-3">';
-		html += '      	   <label for="input-modal-subtract" class="form-label">{{ entry_subtract }}</label>';
+		html += '      	   <label for="input-modal-subtract" class="form-label">{{lang('ProductAdmin.text_subtract') }}</label>';
 		html += '      	   <select name="subtract" id="input-modal-subtract" class="form-select">';
-		if ($(element).attr('data-option-value-row') && $('input[name=\'product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][subtract]\']').val() == '1') {
-			html += '        <option value="1" selected="selected">{{ text_yes }}</option>';
-			html += '      	 <option value="0">{{ text_no }}</option>';
+		if ($(element).data('product_option_value_row') && $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][subtract]\']').val() == '1') {
+			html += '        <option value="1" selected="selected">{{lang('Admin.text_yes')}}</option>';
+			html += '      	 <option value="0">{{lang('Admin.text_no')}}</option>';
 		} else {
-			html += '      	 <option value="1">{{ text_yes }}</option>';
-			html += '      	 <option value="0" selected="selected">{{ text_no }}</option>';
+			html += '      	 <option value="1">{{lang('Admin.text_yes')}}</option>';
+			html += '      	 <option value="0" selected="selected">{{lang('Admin.text_no')}}</option>';
 		}
 		html += '      	   </select>';
 		html += '        </div>';
 		html += '        <div class="mb-3">';
-		html += '      	   <label for="input-modal-price" class="form-label">{{ entry_price }}</label>';
+		html += '      	   <label for="input-modal-price" class="form-label">{{lang('ProductAdmin.text_price')}}</label>';
 		html += '          <div class="input-group">';
 		html += '            <select name="price_prefix" class="form-select">';
-		if ($(element).attr('data-option-value-row') && $('input[name=\'product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][price_prefix]\']').val() == '+') {
+		if ($(element).data('product_option_value_row') && $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][price_prefix]\']').val() == '+') {
 			html += '      	   <option value="+" selected="selected">+</option>';
 		} else {
 			html += '      	   <option value="+">+</option>';
 		}
-		if ($(element).attr('data-option-value-row') && $('input[name=\'product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][price_prefix]\']').val() == '-') {
+		if ($(element).data('product_option_value_row') && $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][price_prefix]\']').val() == '-') {
 			html += '      	       <option value="-" selected="selected">-</option>';
 		} else {
 			html += '      	       <option value="-">-</option>';
 		}
 		html += '      	     </select>';
-		html += '      	     <input type="text" name="price" value="' + ($(element).attr('data-option-value-row') ? $('input[name=\'product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][price]\']').val() : '0') + '" placeholder="{{ entry_price }}" id="input-modal-price" class="form-control"/>';
+		html += '      	     <input type="text" name="price" value="' + ($(element).data('product_option_value_row') ? $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][price]\']').val() : '0') + '" placeholder="{{lang('ProductAdmin.text_price')}}" id="input-modal-price" class="form-control"/>';
 		html += '          </div>';
 		html += '        </div>';
 		html += '        <div class="mb-3">';
-		html += '      	   <label for="input-modal-points" class="form-label">{{ entry_points }}</label>';
+		html += '      	   <label for="input-modal-points" class="form-label">{{lang('ProductAdmin.text_points')}}</label>';
 		html += '          <div class="input-group">';
 		html += '      	     <select name="points_prefix" class="form-select">';
-		if ($(element).attr('data-option-value-row') && $('input[name=\'product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][points_prefix]\']').val() == '+') {
+		if ($(element).data('product_option_value_row') && $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][points_prefix]\']').val() == '+') {
 			html += '      	       <option value="+" selected>+</option>';
 		} else {
 			html += '      	       <option value="+">+</option>';
 		}
-		if ($(element).attr('data-option-value-row') && $('input[name=\'product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][points_prefix]\']').val() == '-') {
+		if ($(element).data('product_option_value_row') && $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][points_prefix]\']').val() == '-') {
 			html += '      	       <option value="-" selected>-</option>';
 		} else {
 			html += '      	       <option value="-">-</option>';
 		}
 		html += '      	     </select>';
-		html += '      	     <input type="text" name="points" value="' + ($(element).attr('data-option-value-row') ? $('input[name=\'product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][points]\']').val() : '0') + '" placeholder="{{ entry_points }}" id="input-modal-points" class="form-control"/>';
+		html += '      	     <input type="text" name="points" value="' + ($(element).data('product_option_value_row') ? $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][points]\']').val() : '0') + '" placeholder="{{lang('ProductAdmin.text_points')}}" id="input-modal-points" class="form-control"/>';
 		html += '          </div>';
 		html += '        </div>';
 		html += '        <div class="mb-3">';
-		html += '      	   <label for="input-modal-weight" class="form-label">{{ entry_weight }}</label>';
+		html += '      	   <label for="input-modal-weight" class="form-label">{{lang('ProductAdmin.text_weight')}}</label>';
 		html += '          <div class="input-group">';
 		html += '      	     <select name="weight_prefix" class="form-select">';
-		if ($(element).attr('data-option-value-row') && $('input[name=\'product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][weight_prefix]\']').val() == '+') {
+		if ($(element).data('product_option_value_row') && $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][weight_prefix]\']').val() == '+') {
 			html += '      	       <option value="+" selected>+</option>';
 		} else {
 			html += '      	       <option value="+">+</option>';
 		}
-		if ($(element).attr('data-option-value-row') && $('input[name=\'product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][weight_prefix]\']').val() == '-') {
+		if ($(element).data('product_option_value_row') && $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][weight_prefix]\']').val() == '-') {
 			html += '      	       <option value="-" selected>-</option>';
 		} else {
 			html += '      	       <option value="-">-</option>';
 		}
 		html += '      	     </select>';
-		html += '      	     <input type="text" name="weight" value="' + ($(element).attr('data-option-value-row') ? $('input[name=\'product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][weight]\']').val() : '0') + '" placeholder="{{ entry_weight }}" id="input-modal-weight" class="form-control"/>';
+		html += '      	     <input type="text" name="weight" value="' + ($(element).data('product_option_value_row') ? $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][weight]\']').val() : '0') + '" placeholder="{{lang('ProductAdmin.text_weight')}}" id="input-modal-weight" class="form-control"/>';
 		html += '          </div>';
 		html += '        </div>';
 		html += '      </div>';
 		html += '      <div class="modal-footer">';
-		html += '	     <button type="button" id="button-save" data-option-row="' + $(element).attr('data-option-row') + '" data-option-value-row="' + element.option_value_row + '" class="btn btn-primary">{{ button_save }}</button> <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{ button_cancel }}</button>';
+		html += '	     <button type="button" id="button_save" data-product_option_row="' + $(element).data('product_option_row') + '" data-product_option_value_row="' + product_option_value_row + '" class="btn btn-primary">{{lang('Admin.button_save')}}</button> <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{lang('Admin.button_cancel')}}</button>';
 		html += '      </div>';
 		html += '    </div>';
 		html += '  </div>';
 		html += '</div>';
 		$('body').append(html);
-		$('#modal-option').modal('show');
-		$('#modal-option #button-save').on('click', function () {
-			html = '<tr id="option-value-row-' + element.option_value_row + '">';
-			html += '  <td class="text-start">' + $('#modal-option select[name=\'option_value_id\'] option:selected').text() + '<input type="hidden" name="product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][option_value_id]" value="' + $('#modal-option select[name=\'option_value_id\']').val() + '"/><input type="hidden" name="product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][product_option_value_id]" value="' + $('#modal-option input[name=\'product_option_value_id\']').val() + '"/></td>';
-			html += '  <td class="text-end">' + $('#modal-option input[name=\'quantity\']').val() + '<input type="hidden" name="product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][quantity]" value="' + $('#modal-option input[name=\'quantity\']').val() + '"/></td>';
-			html += '  <td class="text-start">' + ($('#modal-option select[name=\'subtract\'] option:selected').val() == '1' ? '{{ text_yes }}' : '{{ text_no }}') + '<input type="hidden" name="product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][subtract]" value="' + $('#modal-option select[name=\'subtract\'] option:selected').val() + '"/></td>';
-			html += '  <td class="text-end">' + $('#modal-option select[name=\'price_prefix\'] option:selected').val() + $('#modal-option input[name=\'price\']').val() + '<input type="hidden" name="product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][price_prefix]" value="' + $('#modal-option select[name=\'price_prefix\'] option:selected').val() + '"/><input type="hidden" name="product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][price]" value="' + $('#modal-option input[name=\'price\']').val() + '"/></td>';
-			html += '  <td class="text-end"> ' + $('#modal-option select[name=\'points_prefix\'] option:selected').val() + $('#modal-option input[name=\'points\']').val() + '<input type="hidden" name="product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][points_prefix]" value="' + $('#modal-option select[name=\'points_prefix\'] option:selected').val() + '"/><input type="hidden" name="product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][points]" value="' + $('#modal-option input[name=\'points\']').val() + '"/></td>';
-			html += '  <td class="text-end">' + $('#modal-option select[name=\'weight_prefix\'] option:selected').val() + $('#modal-option input[name=\'weight\']').val() + '<input type="hidden" name="product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][weight_prefix]" value="' + $('#modal-option select[name=\'weight_prefix\'] option:selected').val() + '"/><input type="hidden" name="product_option[' + $(element).attr('data-option-row') + '][product_option_value][' + element.option_value_row + '][weight]" value="' + $('#modal-option input[name=\'weight\']').val() + '"/></td>';
-			html += '  <td class="text-end"><button type="button" data-bs-toggle="tooltip" title="{{ button_edit }}" data-option-row="' + $(element).attr('data-option-row') + '" data-option-value-row="' + element.option_value_row + '"class="btn btn-primary"><i class="fa-solid fa-pencil"></i></button> <button type="button" onclick="$(\'#option-value-row-' + element.option_value_row + '\').remove();" data-bs-toggle="tooltip" rel="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa-solid fa-minus-circle"></i></button></td>';
+		$('#modal_option').modal('show');
+		$('#modal_option #button_save').on('click', function () {
+			html = '<tr id="product_option_value_row_' + product_option_value_row + '">';
+			html += '  <td class="text-start">' + $('#modal_option select[name=\'option_value_id\'] option:selected').text() + '<input type="hidden" name="product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][option_value_id]" value="' + $('#modal_option select[name=\'option_value_id\']').val() + '"/><input type="hidden" name="product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][product_option_value_id]" value="' + $('#modal_option input[name=\'product_option_value_id\']').val() + '"/></td>';
+			html += '  <td class="text-end">' + $('#modal_option input[name=\'quantity\']').val() + '<input type="hidden" name="product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][quantity]" value="' + $('#modal_option input[name=\'quantity\']').val() + '"/></td>';
+			html += '  <td class="text-start">' + ($('#modal_option select[name=\'subtract\'] option:selected').val() == '1' ? '{{lang('Admin.text_yes')}}' : '{{lang('Admin.text_no')}}') + '<input type="hidden" name="product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][subtract]" value="' + $('#modal_option select[name=\'subtract\'] option:selected').val() + '"/></td>';
+			html += '  <td class="text-end">' + $('#modal_option select[name=\'price_prefix\'] option:selected').val() + $('#modal_option input[name=\'price\']').val() + '<input type="hidden" name="product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][price_prefix]" value="' + $('#modal_option select[name=\'price_prefix\'] option:selected').val() + '"/><input type="hidden" name="product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][price]" value="' + $('#modal_option input[name=\'price\']').val() + '"/></td>';
+			html += '  <td class="text-end"> ' + $('#modal_option select[name=\'points_prefix\'] option:selected').val() + $('#modal_option input[name=\'points\']').val() + '<input type="hidden" name="product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][points_prefix]" value="' + $('#modal_option select[name=\'points_prefix\'] option:selected').val() + '"/><input type="hidden" name="product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][points]" value="' + $('#modal_option input[name=\'points\']').val() + '"/></td>';
+			html += '  <td class="text-end">' + $('#modal_option select[name=\'weight_prefix\'] option:selected').val() + $('#modal_option input[name=\'weight\']').val() + '<input type="hidden" name="product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][weight_prefix]" value="' + $('#modal_option select[name=\'weight_prefix\'] option:selected').val() + '"/><input type="hidden" name="product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][weight]" value="' + $('#modal_option input[name=\'weight\']').val() + '"/></td>';
+			html += '  <td class="text-end"><button type="button" data-bs-toggle="tooltip" title="{{lang('Admin.button_edit')}}" data-product_option_row="' + $(element).data('product_option_row') + '" data-product_option_value_row="' + product_option_value_row + '"class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button> <button type="button" onclick="$(\'#product_option_value_row_' + product_option_value_row + '\').remove();" data-bs-toggle="tooltip" rel="tooltip" title="{{lang('Admin.button_remove')}}" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button></td>';
 			html += '</tr>';
-			if ($(element).attr('data-option-value-row')) {
-				$('#option-value-row-' + element.option_value_row).replaceWith(html);
+
+			if ($(element).attr('data-product_option_value_row')) {
+				$('#product_option_value_row_' + product_option_value_row).replaceWith(html);
 			} else {
-				$('#option-value-' + $(element).attr('data-option-row')).append(html);
-				option_value_row++;
+				$('#product_option_value_' + $(element).data('product_option_row')).append(html);
+				$('#product_option_value_row').val(product_option_value_row);
 			}
-			$('#modal-option').modal('hide');
+			$('#modal_option').modal('hide');
 		});
 	});
 
@@ -315,8 +320,8 @@
 		product_option_row = parseInt(product_option_row) + 1;
 		$('#product_option_row').val(product_option_row);
 
-		html  = '<div id="product_option_row_' + product_option_row + '">';
-		html += '	<legend class=\"float-none\">' + item.name;
+		html  = '<div id="product_option_row_' + product_option_row + '" class="mb-4">';
+		html += '	<legend class="float-none text-dark border-bottom pb-1 mt-2 mb-3">' + item.name;
 		html += '		<button type="button" class="btn btn-danger btn-sm float-end" onclick="$(\'#product_option_row_' + product_option_row + '\').remove();"><i class="fas fa-trash-alt"></i></button>';
 		html += '	</legend>';
 		html += '	<input type="hidden" name="product_option[' + product_option_row + '][product_option_id]" value=""/>';
@@ -324,6 +329,14 @@
 		html += '	<input type="hidden" name="product_option[' + product_option_row + '][option_id]" value="' + item.option_id + '"/>';
 		html += '	<input type="hidden" name="product_option[' + product_option_row + '][type]" value="' + item.type + '"/>';
 
+
+		html += '  <div class="row mb-3">';
+		html += '    <label for="input-required-' + product_option_row + '" class="col-sm-2 col-form-label">{{lang('ProductAdmin.text_required')}}</label>';
+		html += '	   <div class="col-sm-10"><select name="product_option[' + product_option_row + '][required]" id="input-required-' + product_option_row + '" class="form-select">';
+		html += '	     <option value="1">{{lang('Admin.text_yes')}}</option>';
+		html += '	     <option value="0">{{lang('Admin.text_no')}}</option>';
+		html += '	 </select></div>';
+		html += '  </div>';
 
 		if (item.type == 'text') {
 			html += '<div class="row mb-3">';
@@ -400,17 +413,19 @@
 			html +=	'				<td></td>';
 			html +=	'			</tr>';
 			html +=	'		</thead>';
-			html +=	'	<tbody></tbody>';
+			html +=	'	<tbody id="product_option_value_' + product_option_row + '"></tbody>';
 			html +=	'	<tfoot>';
 			html +=	'		<tr>';
 			html +=	'			<td colspan="6"></td>';
-			html +=	'			<td class="text-end"><button type="button" data-bs-toggle="tooltip" title="{{lang('Admin.button_option_value_add')}}" data-product_option_row="' + product_option_row + '" class="btn btn-primary"><i class="fas fa-plus"></i></button></td>';
+			html +=	'			<td class="text-end"><button type="button" data-bs-toggle="tooltip" title="{{lang('Admin.button_option_value_add')}}" data-product_option_row="' + product_option_row + '" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></button></td>';
 			html +=	'		</tr>';
 			html +=	'	</tfoot>';
 			html +=	'</table>';
-			{*html +=	'<select id="product-option-values-{$product_option_row}" class="d-none">';*}
-			{*html +=	'<option value="{$option_value.option_value_id}">{$option_value.name}</option>;*}
-			{*html +=	'</select>';*}
+			html +=	'<select id="product_option_values_' + product_option_row + '" class="d-none">';
+			for (i = 0; i < item.option_value_list.length; i++) {
+				html += '<option value="' + item.option_value_list[i].option_value_id + '">' + item.option_value_list[i].name + '</option>';
+			}
+			html +=	'</select>';
 			html +=	'</div>';
 		}
 
