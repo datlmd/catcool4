@@ -84,7 +84,7 @@ class OptionModel extends MyModel
         $option_value_list = $option_value_model->getListAll();
         if (!empty($option_value_list)) {
             foreach ($option_value_list as $value) {
-                $list[$value['option_id']]['option_value_list'][] = $value;
+                $list[$value['option_id']]['option_value_list'][$value['option_value_id']] = $value;
             }
         }
 

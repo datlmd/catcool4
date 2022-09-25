@@ -20,6 +20,16 @@
 					<input type="hidden" name="product_option[{$product_option_row}][option_id]" value="{$product_option_data.option_id}"/>
 					<input type="hidden" name="product_option[{$product_option_row}][type]" value="{$product_option_data.type}"/>
 
+					<div class="row mb-3">
+						<label for="input_required_{$product_option_row}" class="col-sm-2 col-form-label">{lang('ProductAdmin.text_required')}</label>
+						<div class="col-sm-10">
+							<select name="product_option[{$product_option_row}][required]" id="input_required_{$product_option_row}" class="form-select">
+								<option value="1"{if $product_option_data.required} selected="selected"{/if}>{lang('Admin.text_enabled')}</option>
+								<option value="0"{if !$product_option_data.required} selected="selected"{/if}>{lang('Admin.text_disabled')}</option>
+							</select>
+						</div>
+					</div>
+
 					{if $product_option_data.type == 'text'}
 						<div class="row mb-3">
 							<label for="product_option_{$product_option_row}_value" class="col-sm-2 col-form-label">{lang('ProductAdmin.text_option_value')}</label>
@@ -131,7 +141,7 @@
 											<input type="hidden" name="product_option[{$product_option_row}][product_option_value][{$product_option_value_row}][weight]" value="{$product_option_value.weight}"/>
 										</td>
 										<td class="text-end">
-											<button type="button" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}" data-product_option_row="{$product_option_row}" data-product_option_value_row="{$product_option_value_row}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+											<button type="button" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}" data-product_option_row="{$product_option_row}" data-product_option_value_row="{$product_option_value_row}" class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></button>
 											<button type="button" onclick="$('#product_option_value_row_{$product_option_value_row}').remove();" data-bs-toggle="tooltip" title="{lang('Admin.button_remove')}" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
 										</td>
 									</tr>
@@ -146,7 +156,9 @@
 								</tfoot>
 							</table>
 							<select id="product_option_values_{$product_option_row}" class="d-none">
-								<option value="{$option_value.option_value_id}">{$option_value.name}</option>
+								{foreach $product_option_value.option_value_list as $option_value}
+									<option value="{$option_value.option_value_id}">{$option_value.name}</option>
+								{/foreach}
 							</select>
 						</div>
 					{/if}
@@ -331,8 +343,8 @@
 
 
 		html += '  <div class="row mb-3">';
-		html += '    <label for="input-required-' + product_option_row + '" class="col-sm-2 col-form-label">{{lang('ProductAdmin.text_required')}}</label>';
-		html += '	   <div class="col-sm-10"><select name="product_option[' + product_option_row + '][required]" id="input-required-' + product_option_row + '" class="form-select">';
+		html += '    <label for="input_required_' + product_option_row + '" class="col-sm-2 col-form-label">{{lang('ProductAdmin.text_required')}}</label>';
+		html += '	   <div class="col-sm-10"><select name="product_option[' + product_option_row + '][required]" id="input_required_' + product_option_row + '" class="form-select">';
 		html += '	     <option value="1">{{lang('Admin.text_yes')}}</option>';
 		html += '	     <option value="0">{{lang('Admin.text_no')}}</option>';
 		html += '	 </select></div>';
@@ -432,11 +444,15 @@
 
 		$('#option').append(html);
 	}
-
     {literal}
+
 	var is_product_processing = false;
 
 	$(document).on('change', '#option_select_add', function() {
+		if ($(this).val() == 0 || !$(this).val().length) {
+			return false;
+		}
+
 		$.ajax({
 			url: 'options/manage/get_list',
 			data: {

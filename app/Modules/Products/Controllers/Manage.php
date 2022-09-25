@@ -93,11 +93,6 @@ class Manage extends AdminController
             $json['error'] = $this->errors;
         }
 
-//        $type = $this->request->getPost('type');
-//        if (($type == 'select' || $type == 'radio' || $type == 'checkbox') && empty($this->request->getPost('option_value'))) {
-//            $json['error']['warning'] = lang('ProductAdmin.error_type');
-//        }
-
         $json['token'] = csrf_hash();
 
         if (!empty($json['error'])) {
@@ -252,6 +247,53 @@ class Manage extends AdminController
         $seo_urls    = $this->request->getPost('seo_urls');
         $route_model->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $product_id));
 
+        //product option
+        $product_option_model = new \App\Modules\Products\Models\ProductOptionModel();
+        $product_option_value_model = new \App\Modules\Products\Models\ProductOptionValueModel();
+        $product_option_model->where(['product_id' => $product_id])->delete();
+        $product_option_value_model->where(['product_id' => $product_id])->delete();
+
+        $product_option_list = $this->request->getPost('product_option');
+        if (!empty($product_option_list)) {
+            foreach ($product_option_list as $value) {
+                $product_option_data = [
+                    'product_id' => $product_id,
+                    'option_id'  => $value['option_id'],
+                    'required'   => $value['required'],
+                ];
+                if (!empty($value['product_option_id'])) {
+                    $product_option_data['product_option_id'] = $value['product_option_id'];
+                }
+                if ($value['type'] == 'select' || $value['type'] == 'radio' || $value['type'] == 'checkbox' || $value['type'] == 'image') {
+                    $product_option_id = $product_option_model->insert($product_option_data);
+
+                    foreach ($value['product_option_value'] as $option_value) {
+                        $product_option_value_data = [
+                            'product_option_id' => $product_option_id,
+                            'product_id'        => $product_id,
+                            'option_id'         => $value['option_id'],
+                            'option_value_id'   => $option_value['option_value_id'],
+                            'quantity'          => $option_value['quantity'],
+                            'subtract'          => $option_value['subtract'],
+                            'price'             => $option_value['price'],
+                            'price_prefix'      => $option_value['price_prefix'],
+                            'points'            => $option_value['points'],
+                            'points_prefix'     => $option_value['points_prefix'],
+                            'weight'            => $option_value['weight'],
+                            'weight_prefix'     => $option_value['weight_prefix'],
+                        ];
+                        if (!empty($option_value['product_option_value_id'])) {
+                            $product_option_value_data['product_option_value_id'] = $option_value['product_option_value_id'];
+                        }
+                        $product_option_value_model->insert($product_option_value_data);
+                    }
+                } else {
+                    $product_option_data['value'] = $value['value'];
+                    $product_option_model->insert($product_option_data);
+                }
+            }
+        }
+
         $json['product_id'] = $product_id;
 
         $json['success'] = lang('Admin.text_add_success');
@@ -331,6 +373,10 @@ class Manage extends AdminController
             //lay danh sach seo url tu route
             $route_model = new \App\Modules\Routes\Models\RouteModel();
             $data['seo_urls'] = $route_model->getListByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $product_id));
+
+            //product option
+            $product_option_model = new \App\Modules\Products\Models\ProductOptionModel();
+            $data_form['product_option_list'] = $product_option_model->getListByProductId($product_id);
 
             $data['edit_data'] = $data_form;
         } else {
