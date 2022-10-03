@@ -156,7 +156,7 @@
 								</tfoot>
 							</table>
 							<select id="product_option_values_{$product_option_row}" class="d-none">
-								{foreach $product_option_value.option_value_list as $option_value}
+								{foreach $product_option_data.option_value_list as $option_value}
 									<option value="{$option_value.option_value_id}">{$option_value.name}</option>
 								{/foreach}
 							</select>
