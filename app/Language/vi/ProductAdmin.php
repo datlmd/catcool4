@@ -1,6 +1,7 @@
 <?php
 
 return [
+	"button_option_value_add" => "Thêm Giá Trị Tùy Chọn",
 	"column_name" => "Tên Sản phẩm",
 	"delete_heading" => "Xóa Sản phẩm",
 	"heading_title" => "Sản phẩm",
@@ -9,6 +10,7 @@ return [
 	"help_jan" => "Japanese Article Number",
 	"help_minimum" => "Số lượng tối thiểu Khách phải Mua",
 	"help_mpn" => "Số Part của nhà sản xuất",
+	"help_option" => "(Tự động hoàn thành)",
 	"help_points" => "Số Điểm cần để Mua sản phẩm này. Nếu không muốn thanh toán bằng Điểm thì để trống",
 	"help_shipping" => "Được dùng để tính phí vận chuyển ở trang thanh toán",
 	"help_sku" => "Đơn vị bảo quản kho",
@@ -38,11 +40,15 @@ return [
 	"text_model" => "Model",
 	"text_mpn" => "MPN",
 	"text_name" => "Tên Sản phẩm",
+	"text_option" => "Tùy Chọn",
+	"text_option_add" => "Thêm Tùy Chọn",
+	"text_option_value" => "Giá Trị Tùy Chọn",
 	"text_override" => "Override",
 	"text_points" => "Mua bằng điểm",
 	"text_price" => "Giá",
 	"text_quantity" => "Số lượng",
 	"text_related" => "Sản phẩm liên quan",
+	"text_required" => "Bắt buộc",
 	"text_reward_points" => "Điểm thưởng",
 	"text_shipping" => "Yêu cầu Vận chuyển",
 	"text_shipping_title" => "Vận chuyển",

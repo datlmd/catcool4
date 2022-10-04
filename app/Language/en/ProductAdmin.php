@@ -1,6 +1,7 @@
 <?php
 
 return [
+	"button_option_value_add" => "Add Option Value",
 	"column_name" => "Product Name",
 	"delete_heading" => "Delete Product",
 	"heading_title" => "Products",
@@ -9,6 +10,7 @@ return [
 	"help_jan" => "Japanese Article Number",
 	"help_minimum" => "Force a minimum ordered amount",
 	"help_mpn" => "Manufacturer Part Number",
+	"help_option" => "(Autocomplete)",
 	"help_points" => "Number of points needed to buy this item. If you don\'t want this product to be purchased with points leave as 0",
 	"help_shipping" => "Used to calculate shipping charges at the checkout page",
 	"help_sku" => "Stock Keeping Unit",
@@ -38,11 +40,15 @@ return [
 	"text_model" => "Model",
 	"text_mpn" => "MPN",
 	"text_name" => "Product Name",
+	"text_option" => "Option",
+	"text_option_add" => "Add Option",
+	"text_option_value" => "Option Value",
 	"text_override" => "Override",
 	"text_points" => "Points",
 	"text_price" => "Price",
 	"text_quantity" => "Quantity",
 	"text_related" => "Related Products",
+	"text_required" => "Required",
 	"text_reward_points" => "Reward Point",
 	"text_shipping" => "Requires Shipping",
 	"text_shipping_title" => "Shipping",

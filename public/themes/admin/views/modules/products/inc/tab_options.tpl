@@ -2,12 +2,14 @@
 
 	{form_hidden('tab_type', 'tab_options')}
 
+	{$product_option_row = 0}
+	{$product_option_value_row = 0}
+
 	<div id="option">
 		{if !empty($edit_data.product_option_list)}
-			{counter assign=product_option_row start=1 print=false}
-			{counter assign=product_option_value_row start=1 print=false}
-
 			{foreach $edit_data.product_option_list as $product_option_data}
+				{$product_option_row = $product_option_row + 1}
+
 				<div id="product_option_row_{$product_option_row}" class="mb-4">
 					<legend class="float-none text-dark border-bottom pb-1 mt-2 mb-3">
 						{$product_option_data.name}
@@ -21,9 +23,9 @@
 					<input type="hidden" name="product_option[{$product_option_row}][type]" value="{$product_option_data.type}"/>
 
 					<div class="row mb-3">
-						<label for="input_required_{$product_option_row}" class="col-sm-2 col-form-label">{lang('ProductAdmin.text_required')}</label>
+						<label for="input_required_{$product_option_row}" class="col-sm-2 col-form-label text-end">{lang('ProductAdmin.text_required')}</label>
 						<div class="col-sm-10">
-							<select name="product_option[{$product_option_row}][required]" id="input_required_{$product_option_row}" class="form-select">
+							<select name="product_option[{$product_option_row}][required]" id="input_required_{$product_option_row}" class="form-select form-select-sm">
 								<option value="1"{if $product_option_data.required} selected="selected"{/if}>{lang('Admin.text_enabled')}</option>
 								<option value="0"{if !$product_option_data.required} selected="selected"{/if}>{lang('Admin.text_disabled')}</option>
 							</select>
@@ -32,7 +34,7 @@
 
 					{if $product_option_data.type == 'text'}
 						<div class="row mb-3">
-							<label for="product_option_{$product_option_row}_value" class="col-sm-2 col-form-label">{lang('ProductAdmin.text_option_value')}</label>
+							<label for="product_option_{$product_option_row}_value" class="col-sm-2 col-form-label text-end">{lang('ProductAdmin.text_option_value')}</label>
 							<div class="col-sm-10">
 								<input type="text" name="product_option[{$product_option_row}][value]" value="{$product_option_data.value}" placeholder="{lang('ProductAdmin.text_option_value')}" id="product_option_{$product_option_row}_value" class="form-control"/>
 							</div>
@@ -41,7 +43,7 @@
 
 					{if $product_option_data.type == 'textarea'}
 						<div class="row mb-3">
-							<label for="product_option_{$product_option_row}_value" class="col-sm-2 col-form-label">{lang('ProductAdmin.text_option_value')}</label>
+							<label for="product_option_{$product_option_row}_value" class="col-sm-2 col-form-label text-end">{lang('ProductAdmin.text_option_value')}</label>
 							<div class="col-sm-10">
 								<textarea name="product_option[{$product_option_row}][value]" rows="5" placeholder="{lang('ProductAdmin.text_option_value')}" id="product_option_{$product_option_row}_value" class="form-control">{$product_option_data.value}</textarea>
 							</div>
@@ -50,14 +52,14 @@
 
 					{if $product_option_data.type == 'file'}
 						<div class="row mb-3 d-none">
-							<label for="product_option_{$product_option_row}_value" class="col-sm-2 col-form-label">{lang('ProductAdmin.text_option_value')}</label>
+							<label for="product_option_{$product_option_row}_value" class="col-sm-2 col-form-label text-end">{lang('ProductAdmin.text_option_value')}</label>
 							<div class="col-sm-10"><input type="text" name="product_option[{$product_option_row}][value]" value="{$product_option_data.value}" placeholder="{lang('ProductAdmin.text_option_value')}" id="product_option_{$product_option_row}_value" class="form-control"/></div>
 						</div>
 					{/if}
 
 					{if $product_option_data.type == 'date'}
 						<div class="row mb-3">
-							<label for="product_option_{$product_option_row}_value" class="col-sm-2 col-form-label">{lang('ProductAdmin.text_option_value')}</label>
+							<label for="product_option_{$product_option_row}_value" class="col-sm-2 col-form-label text-end">{lang('ProductAdmin.text_option_value')}</label>
 							<div class="col-sm-10 col-md-4">
 								<div class="input-group">
 									<input type="text" name="product_option[{$product_option_row}][value]" value="{$product_option_data.value}" placeholder="{lang('ProductAdmin.text_option_value')}" id="product_option_{$product_option_row}_value" class="form-control date"/>
@@ -69,7 +71,7 @@
 
 					{if $product_option_data.type == 'time'}
 						<div class="row mb-3">
-							<label for="product_option_{$product_option_row}_value" class="col-sm-2 col-form-label">{lang('ProductAdmin.text_option_value')}</label>
+							<label for="product_option_{$product_option_row}_value" class="col-sm-2 col-form-label text-end">{lang('ProductAdmin.text_option_value')}</label>
 							<div class="col-sm-10 col-md-4">
 								<div class="input-group">
 									<input type="text" name="product_option[{$product_option_row}][value]" value="{$product_option_data.value}" placeholder="{lang('ProductAdmin.text_option_value')}" id="product_option_{$product_option_row}_value" class="form-control time"/>
@@ -93,20 +95,22 @@
 
 					{if $product_option_data.type == 'select' || $product_option_data.type == 'radio' || $product_option_data.type == 'checkbox' || $product_option_data.type == 'image'}
 						<div class="table-responsive">
-							<table class="table table-bordered table-hover">
+							<table class="table table-striped table-hover">
 								<thead>
 								<tr>
-									<td class="text-start">{lang('ProductAdmin.text_option_value')}</td>
-									<td class="text-end">{lang('ProductAdmin.text_quantity')}</td>
-									<td class="text-start">{lang('ProductAdmin.text_subtract')}</td>
-									<td class="text-end">{lang('ProductAdmin.text_price')}</td>
-									<td class="text-end">{lang('ProductAdmin.text_points')}</td>
-									<td class="text-end">{lang('ProductAdmin.text_weight')}</td>
-									<td></td>
+									<th class="text-start">{lang('ProductAdmin.text_option_value')}</th>
+									<th class="text-end">{lang('ProductAdmin.text_quantity')}</th>
+									<th class="text-start">{lang('ProductAdmin.text_subtract')}</th>
+									<th class="text-end">{lang('ProductAdmin.text_price')}</th>
+									<th class="text-end">{lang('ProductAdmin.text_points')}</th>
+									<th class="text-end">{lang('ProductAdmin.text_weight')}</th>
+									<th></th>
 								</tr>
 								</thead>
 								<tbody id="product_option_value_{$product_option_row}">
 								{foreach $product_option_data.product_option_value_list as $product_option_value}
+									{$product_option_value_row = $product_option_value_row + 1}
+
 									<tr id="product_option_value_row_{$product_option_value_row}">
 										<td class="text-start">
 											{$product_option_value.name}
@@ -145,12 +149,13 @@
 											<button type="button" onclick="$('#product_option_value_row_{$product_option_value_row}').remove();" data-bs-toggle="tooltip" title="{lang('Admin.button_remove')}" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
 										</td>
 									</tr>
+
 								{/foreach}
 								</tbody>
 								<tfoot>
 									<tr>
 										<td colspan="6"></td>
-										<td class="text-end"><button type="button" data-bs-toggle="tooltip" title="{lang('Admin.button_option_value_add')}" data-product_option_row="{$product_option_row}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></button>
+										<td class="text-end"><button type="button" data-bs-toggle="tooltip" title="{lang('ProductAdmin.button_option_value_add')}" data-product_option_row="{$product_option_row}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></button>
 										</td>
 									</tr>
 								</tfoot>
@@ -164,18 +169,18 @@
 					{/if}
 
 				</div>
-				{counter}
+
 			{/foreach}
 		{/if}
 	</div>
 
 	<fieldset>
-		<legend class="float-none">{lang('ProductAdmin.text_option_add')}</legend>
+		<legend class="float-none border-bottom mb-3 bg-light p-2">{lang('ProductAdmin.text_option_add')}</legend>
 		<div class="row mb-3">
-			<label for="input-option" class="col-sm-2 col-form-label">{lang('ProductAdmin.text_option')}</label>
+			<label for="input-option" class="col-sm-2 col-form-label text-end">{lang('ProductAdmin.text_option')}</label>
 			<div class="col-sm-10">
-				<select name="option_select_add" id="option_select_add" class="form-control form-control-sm">
-					<option value="0">{lang('Admin.text_select')}</option>
+				<select name="option_select_add" id="option_select_add" class="form-select form-select-sm">
+					<option value="0">{lang('Admin.text_none')}</option>
 					{foreach $option_list as $option}
 						<option value="{$option.option_id}">{$option.name}</option>
 					{/foreach}
@@ -185,13 +190,10 @@
 		</div>
 	</fieldset>
 
-	<input type="hidden" name="product_option_row" id="product_option_row" value="{if !empty($edit_data.product_option_list)}{$edit_data.product_option_list|@count}{else}0{/if}">
-	<input type="hidden" name="product_option_value_row" id="product_option_value_row" value="{if !empty($edit_data.product_option_list)}{$edit_data.product_option_list|@count}{else}0{/if}">
+	<input type="hidden" name="product_option_row" id="product_option_row" value="{$product_option_row}">
+	<input type="hidden" name="product_option_value_row" id="product_option_value_row" value="{$product_option_value_row}">
 {/strip}
 <script type="text/javascript">
-
-
-
 	$('#option').on('click', '.btn-primary', function () {
 		var element = this;
 
@@ -214,7 +216,7 @@
 		html += '      <div class="modal-body">';
 		html += '        <div class="mb-3">';
 		html += '      	   <label for="input-modal-option-value" class="form-label">{{lang('ProductAdmin.text_option_value')}}</label>';
-		html += '      	   <select name="option_value_id" id="input_modal_option_value" class="form-select">';
+		html += '      	   <select name="option_value_id" id="input_modal_option_value" class="form-select form-select-sm">';
 		option_value = $('#product_option_values_' + $(element).data('product_option_row') + ' option');
 		for (i = 0; i < option_value.length; i++) {
 			if ($(element).data('product_option_value_row') && $(option_value[i]).val() == $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][option_value_id]\']').val()) {
@@ -232,7 +234,7 @@
 		html += '        </div>';
 		html += '        <div class="mb-3">';
 		html += '      	   <label for="input-modal-subtract" class="form-label">{{lang('ProductAdmin.text_subtract') }}</label>';
-		html += '      	   <select name="subtract" id="input-modal-subtract" class="form-select">';
+		html += '      	   <select name="subtract" id="input-modal-subtract" class="form-select form-select-sm">';
 		if ($(element).data('product_option_value_row') && $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][subtract]\']').val() == '1') {
 			html += '        <option value="1" selected="selected">{{lang('Admin.text_yes')}}</option>';
 			html += '      	 <option value="0">{{lang('Admin.text_no')}}</option>';
@@ -245,7 +247,7 @@
 		html += '        <div class="mb-3">';
 		html += '      	   <label for="input-modal-price" class="form-label">{{lang('ProductAdmin.text_price')}}</label>';
 		html += '          <div class="input-group">';
-		html += '            <select name="price_prefix" class="form-select">';
+		html += '            <select name="price_prefix" class="form-select form-select-sm">';
 		if ($(element).data('product_option_value_row') && $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][price_prefix]\']').val() == '+') {
 			html += '      	   <option value="+" selected="selected">+</option>';
 		} else {
@@ -263,7 +265,7 @@
 		html += '        <div class="mb-3">';
 		html += '      	   <label for="input-modal-points" class="form-label">{{lang('ProductAdmin.text_points')}}</label>';
 		html += '          <div class="input-group">';
-		html += '      	     <select name="points_prefix" class="form-select">';
+		html += '      	     <select name="points_prefix" class="form-select form-select-sm">';
 		if ($(element).data('product_option_value_row') && $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][points_prefix]\']').val() == '+') {
 			html += '      	       <option value="+" selected>+</option>';
 		} else {
@@ -281,7 +283,7 @@
 		html += '        <div class="mb-3">';
 		html += '      	   <label for="input-modal-weight" class="form-label">{{lang('ProductAdmin.text_weight')}}</label>';
 		html += '          <div class="input-group">';
-		html += '      	     <select name="weight_prefix" class="form-select">';
+		html += '      	     <select name="weight_prefix" class="form-select form-select-sm">';
 		if ($(element).data('product_option_value_row') && $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][weight_prefix]\']').val() == '+') {
 			html += '      	       <option value="+" selected>+</option>';
 		} else {
@@ -343,8 +345,8 @@
 
 
 		html += '  <div class="row mb-3">';
-		html += '    <label for="input_required_' + product_option_row + '" class="col-sm-2 col-form-label">{{lang('ProductAdmin.text_required')}}</label>';
-		html += '	   <div class="col-sm-10"><select name="product_option[' + product_option_row + '][required]" id="input_required_' + product_option_row + '" class="form-select">';
+		html += '    <label for="input_required_' + product_option_row + '" class="col-sm-2 col-form-label text-end">{{lang('ProductAdmin.text_required')}}</label>';
+		html += '	   <div class="col-sm-10"><select name="product_option[' + product_option_row + '][required]" id="input_required_' + product_option_row + '" class="form-select form-select-sm">';
 		html += '	     <option value="1">{{lang('Admin.text_yes')}}</option>';
 		html += '	     <option value="0">{{lang('Admin.text_no')}}</option>';
 		html += '	 </select></div>';
@@ -352,7 +354,7 @@
 
 		if (item.type == 'text') {
 			html += '<div class="row mb-3">';
-			html +=	'	<label for="product_option_' + product_option_row + '_value" class="col-sm-2 col-form-label">{{lang('ProductAdmin.text_option_value')}}</label>';
+			html +=	'	<label for="product_option_' + product_option_row + '_value" class="col-sm-2 col-form-label text-end">{{lang('ProductAdmin.text_option_value')}}</label>';
 			html +=	'	<div class="col-sm-10">';
 			html += '		<input type="text" name="product_option[' + product_option_row + '][value]" value="" placeholder="{{lang('ProductAdmin.text_option_value')}}" id="product_option_' + product_option_row + '_value" class="form-control"/>';
 			html +=	'	</div>';
@@ -361,7 +363,7 @@
 
 		if (item.type == 'textarea') {
 			html += '<div class="row mb-3">';
-			html +=	'	<label for="product_option_' + product_option_row + '_value" class="col-sm-2 col-form-label">{{lang('ProductAdmin.text_option_value')}}</label>';
+			html +=	'	<label for="product_option_' + product_option_row + '_value" class="col-sm-2 col-form-label text-end">{{lang('ProductAdmin.text_option_value')}}</label>';
 			html +=	'	<div class="col-sm-10">';
 			html +=	'		<textarea name="product_option[' + product_option_row + '][value]" rows="5" placeholder="{{lang('ProductAdmin.text_option_value')}}" id="product_option_' + product_option_row + '_value" class="form-control"></textarea>';
 			html += '	</div>';
@@ -370,14 +372,14 @@
 
 		if (item.type == 'file') {
 			html +=	'<div class="row mb-3 d-none">';
-			html +=	'	<label for="product_option_' + product_option_row +'_value" class="col-sm-2 col-form-label">{{lang('ProductAdmin.text_option_value')}}</label>';
+			html +=	'	<label for="product_option_' + product_option_row +'_value" class="col-sm-2 col-form-label text-end">{{lang('ProductAdmin.text_option_value')}}</label>';
 			html +=	'	<div class="col-sm-10"><input type="text" name="product_option[' + product_option_row + '][value]" value="" placeholder="{{lang('ProductAdmin.text_option_value')}}" id="product_option_' + product_option_row + '_value" class="form-control"/></div>';
 			html +=	'</div>';
 		}
 
 		if (item.type == 'date') {
 			html +=	'<div class="row mb-3">';
-			html +=	'	<label for="product_option_' + product_option_row + '_value" class="col-sm-2 col-form-label">{{lang('ProductAdmin.text_option_value')}}</label>';
+			html +=	'	<label for="product_option_' + product_option_row + '_value" class="col-sm-2 col-form-label text-end">{{lang('ProductAdmin.text_option_value')}}</label>';
 			html +=	'	<div class="col-sm-10 col-md-4">';
 			html +=	'		<div class="input-group">';
 			html +=	'			<input type="text" name="product_option[' + product_option_row + '][value]" value="" placeholder="{lang('ProductAdmin.text_option_value')}" id="product_option_' + product_option_row + '_value" class="form-control date"/>';
@@ -389,7 +391,7 @@
 
 		if (item.type == 'time') {
 			html +=	'<div class="row mb-3">';
-			html +=	'	<label for="product_option_' + product_option_row + '_value" class="col-sm-2 col-form-label">{{lang('ProductAdmin.text_option_value')}}</label>';
+			html +=	'	<label for="product_option_' + product_option_row + '_value" class="col-sm-2 col-form-label text-end">{{lang('ProductAdmin.text_option_value')}}</label>';
 			html +=	'	<div class="col-sm-10 col-md-4">';
 			html +=	'		<div class="input-group">';
 			html +=	'			<input type="text" name="product_option[' + product_option_row + '][value]" value="" placeholder="{{lang('ProductAdmin.text_option_value')}}" id="product_option_' + product_option_row + '_value" class="form-control time"/>';
@@ -401,7 +403,7 @@
 
 		if (item.type == 'datetime') {
 			html +=	'<div class="row mb-3">';
-			html +=	'	<label for="product_option_' + product_option_row + '_value" class="col-sm-2 col-form-label">{{lang('ProductAdmin.text_option_value')}}</label>';
+			html +=	'	<label for="product_option_' + product_option_row + '_value" class="col-sm-2 col-form-label text-end">{{lang('ProductAdmin.text_option_value')}}</label>';
 			html +=	'	<div class="col-sm-10 col-md-4">';
 			html +=	'		<div class="input-group">';
 			html +=	'			<input type="text" name="product_option[' + product_option_row + '][value]" value="" placeholder="{{lang('ProductAdmin.text_option_value')}}" id="product_option_' + product_option_row + '_value" class="form-control datetime"/>';
@@ -413,30 +415,30 @@
 
 		if (item.type == 'select' || item.type == 'radio' || item.type == 'checkbox' || item.type == 'image') {
 			html +=	'<div class="table-responsive">';
-			html +=	'	<table class="table table-bordered table-hover">';
+			html +=	'	<table class="table table-striped table-hover">';
 			html +=	'		<thead>';
 			html +=	'			<tr>';
-			html +=	'				<td class="text-start">{{lang('ProductAdmin.text_option_value')}}</td>';
-			html +=	'				<td class="text-end">{{lang('ProductAdmin.text_quantity')}}</td>';
-			html +=	'				<td class="text-start">{{lang('ProductAdmin.text_subtract')}}</td>';
-			html +=	'				<td class="text-end">{{lang('ProductAdmin.text_price')}}</td>';
-			html +=	'				<td class="text-end">{{lang('ProductAdmin.text_points')}}</td>';
-			html +=	'				<td class="text-end">{{lang('ProductAdmin.text_weight')}}</td>';
-			html +=	'				<td></td>';
+			html +=	'				<th class="text-start">{{lang('ProductAdmin.text_option_value')}}</th>';
+			html +=	'				<th class="text-end">{{lang('ProductAdmin.text_quantity')}}</th>';
+			html +=	'				<th class="text-start">{{lang('ProductAdmin.text_subtract')}}</th>';
+			html +=	'				<th class="text-end">{{lang('ProductAdmin.text_price')}}</th>';
+			html +=	'				<th class="text-end">{{lang('ProductAdmin.text_points')}}</th>';
+			html +=	'				<th class="text-end">{{lang('ProductAdmin.text_weight')}}</th>';
+			html +=	'				<th></th>';
 			html +=	'			</tr>';
 			html +=	'		</thead>';
 			html +=	'	<tbody id="product_option_value_' + product_option_row + '"></tbody>';
 			html +=	'	<tfoot>';
 			html +=	'		<tr>';
 			html +=	'			<td colspan="6"></td>';
-			html +=	'			<td class="text-end"><button type="button" data-bs-toggle="tooltip" title="{{lang('Admin.button_option_value_add')}}" data-product_option_row="' + product_option_row + '" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></button></td>';
+			html +=	'			<td class="text-end"><button type="button" data-bs-toggle="tooltip" title="{{lang('ProductAdmin.button_option_value_add')}}" data-product_option_row="' + product_option_row + '" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></button></td>';
 			html +=	'		</tr>';
 			html +=	'	</tfoot>';
 			html +=	'</table>';
 			html +=	'<select id="product_option_values_' + product_option_row + '" class="d-none">';
-			for (i = 0; i < item.option_value_list.length; i++) {
-				html += '<option value="' + item.option_value_list[i].option_value_id + '">' + item.option_value_list[i].name + '</option>';
-			}
+			$.each( item.option_value_list, function( key, option_value ) {
+				html += '<option value="' + option_value.option_value_id + '">' + option_value.name + '</option>';
+			});
 			html +=	'</select>';
 			html +=	'</div>';
 		}
@@ -444,10 +446,8 @@
 
 		$('#option').append(html);
 	}
+
     {literal}
-
-	var is_product_processing = false;
-
 	$(document).on('change', '#option_select_add', function() {
 		if ($(this).val() == 0 || !$(this).val().length) {
 			return false;

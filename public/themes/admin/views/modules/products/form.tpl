@@ -159,7 +159,10 @@
         Tiny_content.loadTiny(500);
     });
 
-    function addProductImage() {
+    var is_product_processing = false;
+
+    function addProductImage()
+    {
         var product_image_row = $('#product_image_row').val();
         product_image_row = parseInt(product_image_row) + 1;
         $('#product_image_row').val(product_image_row);
@@ -168,7 +171,8 @@
         $('#product_image_list tbody').append(html);
     }
 
-    function addProductAttribute() {
+    function addProductAttribute()
+    {
         var product_attribute_row = $('#product_attribute_row').val();
         product_attribute_row = parseInt(product_attribute_row) + 1;
         $('#product_attribute_row').val(product_attribute_row);
