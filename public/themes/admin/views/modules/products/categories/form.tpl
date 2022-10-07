@@ -23,7 +23,7 @@
                         {include file=get_theme_path('views/inc/alert.tpl') message=$errors type='danger'}
                     </div>
                 {/if}
-                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
+                <div class="col-xl-8 col-lg-7 col-md-7 col-sm-12 col-12">
                     <div class="card">
                         <h5 class="card-header"><i class="fas {if !empty($edit_data.category_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                         <div class="card-body px-0">
@@ -33,10 +33,10 @@
                                     {foreach $language_list as $language}
                                         <div class="tab-pane fade {if $language.active}show active{/if}" role="tabpanel" id="lanuage_content_{$language.id}"  aria-labelledby="language_tab_{$language.id}">
                                             <div class="form-group row required has-error">
-                                                <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
+                                                <label class="col-12 col-sm-2 fw-bold col-form-label required-label text-sm-end">
                                                     {lang('Admin.text_name')}
                                                 </label>
-                                                <div class="col-12 col-sm-8 col-lg-8">
+                                                <div class="col-12 col-sm-9 col-lg-9">
                                                     <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang.`$language.id`.name")}is-invalid{/if}">
                                                     <div class="invalid-feedback">
                                                         {$validator->getError("lang.`$language.id`.name")}
@@ -44,18 +44,18 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-12 col-sm-3 col-form-label text-sm-end">
+                                                <label class="col-12 col-sm-2 fw-bold col-form-label text-sm-end">
                                                     {lang('Admin.text_description')}
                                                 </label>
-                                                <div class="col-12 col-sm-8 col-lg-8">
+                                                <div class="col-12 col-sm-9 col-lg-9">
                                                     <textarea name="lang[{$language.id}][description]" cols="40" rows="2" id="input_description_{$language.id}" type="textarea" class="form-control">{old("lang.`$language.id`.description", $edit_data.lang[$language.id].description)}</textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-12 col-sm-3 col-form-label text-sm-end">
+                                                <label class="col-12 col-sm-2 fw-bold col-form-label text-sm-end">
                                                     {lang('Admin.tab_seo')}
                                                 </label>
-                                                <div class="col-12 col-sm-8 col-lg-8 mt-2">
+                                                <div class="col-12 col-sm-9 col-lg-9 mt-2">
                                                     {include file=get_theme_path('views/inc/seo_form.tpl')}
                                                 </div>
                                             </div>
@@ -67,12 +67,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                <div class="col-xl-4 col-lg-5 col-md-5 col-sm-12 col-12">
                     <div class="card">
                         <h5 class="card-header">{lang('Admin.text_manage_more')}</h5>
                         <div class="card-body">
                             <div class="form-group">
-                                <label class="form-label">{lang('Admin.text_published')}</label>
+                                <label class="form-label fw-bold">{lang('Admin.text_published')}</label>
                                 <label class="form-check form-check-inline ms-2">
                                     <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $edit_data.published)|default:1 eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
                                     <label class="form-check-label" for="published_on">ON</label>
@@ -82,8 +82,8 @@
                                     <label class="form-check-label" for="published_off">OFF</label>
                                 </label>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">{lang("Admin.text_image")}</label>
+                            <div class="form-group border-top pt-3">
+                                <label class="form-label fw-bold">{lang("Admin.text_image")}</label>
                                 <!-- Drag and Drop container-->
                                 <a href="javascript:void(0);" id="thumb-image" data-target="input-image-path" data-thumb="load-thumb-image" data-bs-toggle="image">
                                     <img src="{if !empty(old('image', $edit_data.image))}{image_url(old('image', $edit_data.image))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}"/>
@@ -94,8 +94,8 @@
                                 </a>
                                 <input type="hidden" name="image" value="{old('image', $edit_data.image)}" id="input-image-path" />
                             </div>
-                            <div class="form-group mt-4">
-                                <label class="form-label">{lang('ProductCategoryAdmin.text_top')}</label>
+                            <div class="form-group mt-4 border-top pt-3">
+                                <label class="form-label fw-bold">{lang('ProductCategoryAdmin.text_top')}</label>
                                 <label class="form-check form-check-inline ms-2">
                                     <input type="radio" name="top" value="{STATUS_ON}" {if old('top', $edit_data.top)|default:1 eq STATUS_ON}checked="checked"{/if} id="top_on" class="form-check-input">
                                     <label class="form-check-label" for="top_on">ON</label>
@@ -107,17 +107,38 @@
                                 <br/>
                                 <small>{lang('ProductCategoryAdmin.help_top')}</small>
                             </div>
-                            <div class="form-group mt-4">
-                                <label class="form-label">{lang('ProductCategoryAdmin.text_column')}</label>
+                            <div class="form-group mt-4 border-top pt-3">
+                                <label class="form-label fw-bold">{lang('ProductCategoryAdmin.text_column')}</label>
                                 <input type="number" name="column" value="{old('column', $edit_data.column)|default:1}" id="column" class="form-control">
                                 <small>{lang('ProductCategoryAdmin.help_column')}</small>
                             </div>
-                            <div class="form-group mt-4">
-                                <label class="form-label">{lang('Admin.text_sort_order')}</label>
+                            <div class="form-group mt-4 border-top pt-3">
+                                <label class="form-label fw-bold">{lang('Admin.text_sort_order')}</label>
                                 <input type="number" name="sort_order" value="{old('sort_order', $edit_data.sort_order)|default:0}" id="sort_order" min="0" class="form-control">
                             </div>
-                            <div class="form-group mt-4">
-                                <label class="form-label">{lang('Admin.text_parent')}</label>
+                            <div class="form-group mt-4 border-top pt-3">
+                                <label class="form-label fw-bold">{lang('ProductCategoryAdmin.text_filter')}</label>
+                                {$filter_ids = old('filter_ids', $edit_data.filter_ids)|default:[]}
+                                <select name="filter_ids[]" id="input_filter_ids[]" data-target="#filter_review" class="form-control form-control-sm multiselect" multiple="multiple" title="{lang('Admin.text_select')}">
+                                    {foreach $filter_list as $value}
+                                        <option value="{$value.filter_id}" {if in_array($value.filter_id, $filter_ids)}selected="selected"{/if}>{$value.name}</option>
+                                    {/foreach}
+                                </select>
+                                <div id="filter_review" class="w-100 p-3 bg-light multiselect-review">
+                                    {if !empty($filter_list)}
+                                        <ul class="list-unstyled bullet-check mb-0">
+                                            {foreach $filter_list as $value}
+                                                {if !in_array($value.filter_id, $filter_ids)}
+                                                    {continue}
+                                                {/if}
+                                                <li>{$value.name}</li>
+                                            {/foreach}
+                                        </ul>
+                                    {/if}
+                                </div>
+                            </div>
+                            <div class="form-group mt-4 border-top pt-3">
+                                <label class="form-label fw-bold">{lang('Admin.text_parent')}</label>
                                 <select name="parent_id" id="parent_id" class="form-control">
                                     <option value="">{lang('Admin.text_select')}</option>
                                     {$output_html = '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>'}

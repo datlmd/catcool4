@@ -94,7 +94,7 @@ return [
 	"column_name" => "Tên",
 	"column_parent" => "Danh mục cha",
 	"column_published" => "Trạng thái",
-	"column_slug" => "Đưòng dẫn / Alias",
+	"column_slug" => "Đường dẫn SEO / Alias",
 	"column_sort_order" => "Sắp xếp",
 	"dashboard_heading" => "Trang chủ",
 	"error" => "Lỗi hệ thống!",

@@ -83,6 +83,16 @@ class CategoriesManage extends AdminController
             $seo_urls = $this->request->getPost('seo_urls');
             $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
 
+            // filters
+            $category_filter_model = new \App\Modules\Products\Models\CategoryFilterModel();
+            $filter_ids = $this->request->getPost('filter_ids');
+            if (!empty($filter_ids)) {
+                foreach ($filter_ids as $filter_id) {
+                    $category_filter_model->insert(['category_id' => $id, 'filter_id' => $filter_id]);
+                }
+            }
+
+
             $add_data_lang = $this->request->getPost('lang');
             foreach (get_list_lang(true) as $language) {
                 $add_data_lang[$language['id']]['language_id'] = $language['id'];
@@ -131,6 +141,17 @@ class CategoriesManage extends AdminController
                 }
             }
 
+            // filters
+            $category_filter_model = new \App\Modules\Products\Models\CategoryFilterModel();
+            $category_filter_model->where(['category_id' => $id])->delete();
+
+            $filter_ids = $this->request->getPost('filter_ids');
+            if (!empty($filter_ids)) {
+                foreach ($filter_ids as $filter_id) {
+                    $category_filter_model->insert(['category_id' => $id, 'filter_id' => $filter_id]);
+                }
+            }
+
             $edit_data = [
                 'category_id' => $id,
                 'image'       => $this->request->getPost('image'),
@@ -163,6 +184,9 @@ class CategoriesManage extends AdminController
         $this->themes->addCSS('common/js/tags/tagsinput');
         $this->themes->addJS('common/js/tags/tagsinput');
 
+        $this->themes->addCSS('common/plugin/multi-select/css/bootstrap-multiselect.min');
+        $this->themes->addJS('common/plugin/multi-select/js/bootstrap-multiselect.min');
+
         $data['language_list'] = get_list_lang(true);
 
         $list_all = $this->model->getAllByFilter();
@@ -182,11 +206,20 @@ class CategoriesManage extends AdminController
             //lay danh sach seo url tu route
             $data['seo_urls'] = $this->model_route->getListByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
 
+            // filters
+            $category_filter_model  = new \App\Modules\Products\Models\CategoryFilterModel();
+            $filter_ids = $category_filter_model->where(['category_id' => $id])->findAll();
+            $data_form['filter_ids'] = array_column($filter_ids, 'filter_id');
+
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('Admin.text_add');
             $breadcrumb_url = site_url(self::MANAGE_URL . "/add");
         }
+
+        //filter
+        $filter_model = new \App\Modules\Filters\Models\FilterModel();
+        $data['filter_list'] = $filter_model->getListAll();
 
         $data['errors'] = $this->errors;
 
