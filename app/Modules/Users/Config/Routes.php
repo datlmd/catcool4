@@ -22,7 +22,7 @@ $routes->group('users', ['namespace' => 'App\Modules\Users\Controllers'], functi
     $subroutes->add('groups_manage/add', 'GroupsManage::add');
     $subroutes->add('groups_manage/edit/(:num)', 'GroupsManage::edit/$1');
     $subroutes->add('groups_manage/delete', 'GroupsManage::delete');
-    $subroutes->add('groups_manage/publish', 'GroupsManage::publish');
+    $subroutes->add('groups_manage/save', 'GroupsManage::save');
 
     $subroutes->add('post_register', 'Register::postRegister');
     $subroutes->add('register', 'Register::index');
