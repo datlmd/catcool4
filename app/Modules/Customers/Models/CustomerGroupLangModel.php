@@ -1,16 +1,16 @@
-<?php namespace App\Modules\Users\Models;
+<?php namespace App\Modules\Customers\Models;
 
 use App\Models\MyModel;
 
-class UserGroupLangModel extends MyModel
+class CustomerGroupLangModel extends MyModel
 {
-    protected $table      = 'user_group_lang';
-    protected $primaryKey = 'user_group_id';
+    protected $table      = 'customer_group_lang';
+    protected $primaryKey = 'customer_group_id';
 
     protected $returnType = 'array';
 
     protected $allowedFields = [
-        'user_group_id',
+        'customer_group_id',
         'language_id',
         'name',
         "description",

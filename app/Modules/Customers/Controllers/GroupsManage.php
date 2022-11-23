@@ -1,8 +1,8 @@
-<?php namespace App\Modules\Users\Controllers;
+<?php namespace App\Modules\Customers\Controllers;
 
 use App\Controllers\AdminController;
-use App\Modules\Users\Models\UserGroupModel;
-use App\Modules\Users\Models\UserGroupLangModel;
+use App\Modules\Customers\Models\CustomerGroupModel;
+use App\Modules\Customers\Models\CustomerGroupLangModel;
 
 class GroupsManage extends AdminController
 {
@@ -10,8 +10,8 @@ class GroupsManage extends AdminController
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'users/groups_manage';
-    CONST MANAGE_URL  = 'users/groups_manage';
+    CONST MANAGE_ROOT = 'customers/groups_manage';
+    CONST MANAGE_URL  = 'customers/groups_manage';
 
     public function __construct()
     {
@@ -19,8 +19,8 @@ class GroupsManage extends AdminController
 
         $this->themes->setTheme(config_item('theme_admin'));
 
-        $this->model = new UserGroupModel();
-        $this->model_lang = new UserGroupLangModel();
+        $this->model = new CustomerGroupModel();
+        $this->model_lang = new CustomerGroupLangModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -28,17 +28,17 @@ class GroupsManage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), site_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('UserGroupAdmin.heading_title'), site_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang('CustomerGroupAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
 	public function index()
 	{
-        add_meta(['title' => lang('UserGroupAdmin.heading_title')], $this->themes);
+        add_meta(['title' => lang('CustomerGroupAdmin.heading_title')], $this->themes);
 
         $limit       = $this->request->getGet('limit');
         $sort        = $this->request->getGet('sort');
         $order       = $this->request->getGet('order');
-        $filter_keys = ['user_group_id', 'name', 'limit'];
+        $filter_keys = ['customer_group_id', 'name', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
@@ -46,7 +46,7 @@ class GroupsManage extends AdminController
             'breadcrumb'    => $this->breadcrumb->render(),
             'list'          => $list->paginate($limit),
             'pager'         => $list->pager,
-            'sort'          => empty($sort) ? 'user_group_id' : $sort,
+            'sort'          => empty($sort) ? 'customer_group_id' : $sort,
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'           => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
@@ -96,21 +96,21 @@ class GroupsManage extends AdminController
             json_output($json);
         }
 
-        $user_group_id = $this->request->getPost('user_group_id');
+        $customer_group_id = $this->request->getPost('customer_group_id');
         $data_group = [
             'approval'   => !empty($this->request->getPost('approval')) ? STATUS_ON : STATUS_OFF,
             'sort_order' => $this->request->getPost('sort_order'),
         ];
 
-        if (empty($user_group_id)) {
+        if (empty($customer_group_id)) {
             //Them moi
-            $user_group_id = $this->model->insert($data_group);
-            if (empty($user_group_id)) {
+            $customer_group_id = $this->model->insert($data_group);
+            if (empty($customer_group_id)) {
                 $json['error'] = lang('Admin.error');
             }
         } else {
             //cap nhat
-            $data_group['user_group_id'] = $user_group_id;
+            $data_group['customer_group_id'] = $customer_group_id;
             if (!$this->model->save($data_group)) {
                 $json['error'] = lang('Admin.error');
             }
@@ -120,22 +120,22 @@ class GroupsManage extends AdminController
             json_output($json);
         }
 
-        if (!empty($this->request->getPost('user_group_id'))) {
-            $this->model_lang->where(['user_group_id' => $user_group_id])->delete();
+        if (!empty($this->request->getPost('customer_group_id'))) {
+            $this->model_lang->where(['customer_group_id' => $customer_group_id])->delete();
         }
 
         $edit_data_lang = $this->request->getPost('lang');
         foreach (get_list_lang(true) as $language) {
             $edit_data_lang[$language['id']]['language_id']   = $language['id'];
-            $edit_data_lang[$language['id']]['user_group_id'] = $user_group_id;
+            $edit_data_lang[$language['id']]['customer_group_id'] = $customer_group_id;
 
             $this->model_lang->insert($edit_data_lang[$language['id']]);
         }
 
-        $json['user_group_id'] = $user_group_id;
+        $json['customer_group_id'] = $customer_group_id;
 
         $json['success'] = lang('Admin.text_add_success');
-        if (!empty($this->request->getPost('user_group_id'))) {
+        if (!empty($this->request->getPost('customer_group_id'))) {
             $json['success'] = lang('Admin.text_edit_success');
         }
 
@@ -181,7 +181,7 @@ class GroupsManage extends AdminController
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         foreach(get_list_lang(true) as $value) {
-            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('UserGroupAdmin.text_name') . ' (' . $value['name']  . ')', 'required|min_length[3]|max_length[32]');
+            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('CustomerGroupAdmin.text_name') . ' (' . $value['name']  . ')', 'required|min_length[3]|max_length[32]');
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();

@@ -2,12 +2,12 @@
     {form_hidden('manage_url', site_url($manage_url))}
     <div class="container-fluid  dashboard-content">
         {form_open(site_url("$manage_url/save"), ["id" => "validationform", "method" => "post", "data-cc-toggle" => "ajax"])}
-            <input type="hidden" name="user_group_id" value="{$edit_data.user_group_id}">
+            <input type="hidden" name="customer_group_id" value="{$edit_data.customer_group_id}">
             <div class="row">
                 <div class="col-12">
                     <div class="row">
                         <div class="col-sm-7 col-12">
-                            {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('UserGroupAdmin.heading_title')}
+                            {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('CustomerGroupAdmin.heading_title')}
                         </div>
                         <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
                             <button type="submit" class="btn btn-sm btn-space btn-primary mb-0" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
@@ -23,11 +23,11 @@
                     {/if}
 
                     <div class="card">
-                        <h5 class="card-header"><i class="fas {if !empty($edit_data.user_group_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
+                        <h5 class="card-header"><i class="fas {if !empty($edit_data.customer_group_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                         <div class="card-body">
                             <div class="form-group row required has-error pb-3">
                                 <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
-                                    {lang('UserGroupAdmin.text_name')}
+                                    {lang('CustomerGroupAdmin.text_name')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
                                     {foreach $language_list as $language}
@@ -68,7 +68,7 @@
 
                             <div class="form-group row border-top">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-end">
-                                    {lang('UserGroupAdmin.text_approval')}
+                                    {lang('CustomerGroupAdmin.text_approval')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
                                     <label class="form-check form-check-inline col-form-label ms-2">
@@ -79,7 +79,7 @@
                                         <input type="radio" name="approval" value="{STATUS_OFF}" {if old('approval', $edit_data.approval)|default:0 eq STATUS_OFF}checked="checked"{/if} id="approval_off" class="form-check-input">
                                         <label class="form-check-label" for="approval_off">OFF</label>
                                     </label>
-                                    <div class="form-text">{lang('UserGroupAdmin.help_approval')}</div>
+                                    <div class="form-text">{lang('CustomerGroupAdmin.help_approval')}</div>
                                 </div>
                             </div>
 

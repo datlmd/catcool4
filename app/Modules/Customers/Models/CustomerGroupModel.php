@@ -1,16 +1,16 @@
-<?php namespace App\Modules\Users\Models;
+<?php namespace App\Modules\Customers\Models;
 
 use App\Models\MyModel;
 
-class UserGroupModel extends MyModel
+class CustomerGroupModel extends MyModel
 {
-    protected $table      = 'user_group';
-    protected $primaryKey = 'user_group_id';
+    protected $table      = 'customer_group';
+    protected $primaryKey = 'customer_group_id';
 
     protected $returnType = 'array';
 
     protected $allowedFields = [
-        'user_group_id',
+        'customer_group_id',
         'approval',
         'sort_order',
     ];
@@ -19,11 +19,11 @@ class UserGroupModel extends MyModel
     protected $validationMessages = [];
     protected $skipValidation     = false;
 
-    protected $table_lang = 'user_group_lang';
-    protected $with = ['user_group_lang'];
+    protected $table_lang = 'customer_group_lang';
+    protected $with = ['customer_group_lang'];
 
-    const USER_GROUP_CACHE_NAME = 'user_group_list_all';
-    const USER_GROUP_CACHE_EXPIRE = YEAR;
+    const CUSTOMER_GROUP_CACHE_NAME = 'customer_group_list_all';
+    const CUSTOMER_GROUP_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {
@@ -33,12 +33,12 @@ class UserGroupModel extends MyModel
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
         $sort  = in_array($sort, $this->allowedFields) ? "$this->table.$sort" : (in_array($sort, ['name']) ? "$this->table_lang.$sort" : "");
-        $sort  = !empty($sort) ? $sort : "$this->table.user_group_id";
+        $sort  = !empty($sort) ? $sort : "$this->table.customer_group_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
         $this->where("$this->table_lang.language_id", get_lang_id(true));
-        if (!empty($filter["user_group_id"])) {
-            $this->whereIn("$this->table.user_group_id", (!is_array($filter["user_group_id"]) ? explode(',', $filter["user_group_id"]) : $filter["user_group_id"]));
+        if (!empty($filter["customer_group_id"])) {
+            $this->whereIn("$this->table.customer_group_id", (!is_array($filter["customer_group_id"]) ? explode(',', $filter["customer_group_id"]) : $filter["customer_group_id"]));
         }
 
         if (!empty($filter["name"])) {
@@ -47,7 +47,7 @@ class UserGroupModel extends MyModel
 
         $this->select("$this->table.*, $this->table_lang.*")
             ->with(false)
-            ->join($this->table_lang, "$this->table_lang.user_group_id = $this->table.user_group_id")
+            ->join($this->table_lang, "$this->table_lang.customer_group_id = $this->table.customer_group_id")
             ->orderBy($sort, $order);
 
         return $this;
@@ -55,7 +55,7 @@ class UserGroupModel extends MyModel
 
     public function getListAll($is_cache = true)
     {
-        $result = $is_cache ? cache()->get(self::USER_GROUP_CACHE_NAME) : null;
+        $result = $is_cache ? cache()->get(self::CUSTOMER_GROUP_CACHE_NAME) : null;
         if (empty($result)) {
             $result = $this->orderBy('value', 'ASC')->findAll();
             if (empty($result)) {
@@ -64,7 +64,7 @@ class UserGroupModel extends MyModel
 
             if ($is_cache) {
                 // Save into the cache for $expire_time 1 month
-                cache()->save(self::USER_GROUP_CACHE_NAME, $result, self::USER_GROUP_CACHE_EXPIRE);
+                cache()->save(self::CUSTOMER_GROUP_CACHE_NAME, $result, self::CUSTOMER_GROUP_CACHE_EXPIRE);
             }
         }
 
@@ -76,7 +76,7 @@ class UserGroupModel extends MyModel
 
         $language_id = get_lang_id(true);
         foreach ($result as $value) {
-            $list[$value['user_group_id']] = format_data_lang_id($value, $this->table_lang, $language_id);
+            $list[$value['customer_group_id']] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
 
         return $list;
@@ -84,7 +84,7 @@ class UserGroupModel extends MyModel
 
     public function deleteCache()
     {
-        cache()->delete(self::USER_GROUP_CACHE_NAME);
+        cache()->delete(self::CUSTOMER_GROUP_CACHE_NAME);
         return true;
     }
 }
