@@ -1,114 +1,90 @@
-{form_hidden('manage_url', site_url($manage_url))}
-<div class="container-fluid  dashboard-content">
-	<div class="row">
-		<div class="col-sm-7 col-12">
-            {include file=get_theme_path('views/inc/breadcrumb.inc.tpl')}
-		</div>
-		<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-			<span id="delete_multiple" class="btn btn-sm btn-danger" style="display: none;" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete_all')}"><i class="fas fa-trash-alt"></i></span>
-			<a href="{$manage_url}/add{http_get_query()}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_add')}"><i class="fas fa-plus"></i></a>
-			<button type="button" id="btn_search" class="btn btn-sm btn-brand" data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
-			<a href="{site_url("users/groups_manage")}" class="btn btn-sm btn-primary"><i class="fas fa-list me-1"></i> {lang('module_group')}</a>
-		</div>
-	</div>
-	<div class="row collapse {if $filter_active}show{/if}" id="filter_manage">
-		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-			<div class="card">
-				{form_open(uri_string(), ['id' => 'filter_validationform', 'method' => 'get'])}
-				<div class="card-header">
-					<div class="row">
-						<div class="col-6">
-							<h5 class="mb-0 mt-1 ms-2"><i class="fas fa-filter me-2"></i>{lang('filter_header')}</h5>
-						</div>
-						<div class="col-6 text-end">
-							<button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{lang('filter_submit')}</button>
-						</div>
-					</div>
-				</div>
-				<div class="card-body">
-					<div class="row">
-						<div class="col-xl-6 col-lg-6 col-md-4 col-sm-6 col-12 mb-2">
-							{lang('filter_search_user')}
-							{form_input('filter[search_user]', $this->input->get('filter[search_user]'), ['class' => 'form-control form-control-sm', 'placeholder' => lang('text_search_user')])}
-						</div>
-						<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
-							{lang('filter_id')}
-							{form_input('filter[id]', $this->input->get('filter[id]'), ['class' => 'form-control form-control-sm', 'placeholder' => lang('filter_id')])}
-						</div>
-						<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
-							{lang('text_limit')}
-							{form_dropdown('filter_limit', get_list_limit(), $this->input->get('filter_limit'), ['class' => 'form-control form-control-sm'])}
-						</div>
-					</div>
-				</div>
-				{form_close()}
+{strip}
+	{if !empty($list)}
+		<form id="form_customer_list" method="post" data-cc-toggle="ajax" data-cc-load="{site_url("$manage_url")}" data-cc-target="#customer_list">
+			<div class="table-responsive">
+				<table class="table table-striped table-hover table-bordered second">
+					<thead>
+					<tr class="text-center">
+						<th width="50">
+							<a href="{site_url($manage_url)}?sort=id&order={$order}{$url}" class="text-dark">
+								{lang('Admin.column_id')}
+								{if $sort eq 'id'}
+									<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+								{/if}
+							</a>
+						</th>
+						<th></th>
+						<th class="text-start">
+							<a href="{site_url($manage_url)}?sort=username&order={$order}{$url}" class="text-dark">
+								{lang('Admin.text_username')}
+								{if $sort eq 'username'}
+									<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+								{/if}
+							</a>
+						</th>
+						<th class="text-start">
+							<a href="{site_url($manage_url)}?sort=first_name&order={$order}{$url}" class="text-dark">
+								{lang('Admin.text_full_name')}
+								{if $sort eq 'first_name'}
+									<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+								{/if}
+							</a>
+						</th>
+						<th class="text-start">
+							<a href="{site_url($manage_url)}?sort=email&order={$order}{$url}" class="text-dark">
+								{lang('CustomerAdmin.text_email')}
+								{if $sort eq 'email'}
+									<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+								{/if}
+							</a>
+						</th>
+						<th class="text-end">{lang('CustomerAdmin.text_phone')}</th>
+						<th>{lang('Admin.text_active')}</th>
+						<th width="130">{lang('Admin.column_function')}</th>
+					</tr>
+					</thead>
+					<tbody>
+					{foreach $list as $item}
+						<tr id="item_id_{$item.customer_id}">
+							<td class="text-center">
+								<a href="{$manage_url}/edit/{$item.customer_id}" class="text-primary">{$item.customer_id}</a>
+							</td>
+							<td>
+								{if !empty($item.image)}
+									<a href="{image_url($item.image)}" data-lightbox="users"><img src="{image_url($item.image)}" class="avatar"></a>
+								{/if}
+							</td>
+							<td>
+								{if $item.active eq true}
+									<span class="badge-dot badge-success mx-1"></span>
+								{else}
+									<span class="badge-dot border border-dark mx-1"></span>
+								{/if}
+								{$item.username}
+							</td>
+							<td class="text-start">{full_name($item.first_name, $item.last_name)}</td>
+							<td>{htmlspecialchars($item.email, ENT_QUOTES,'UTF-8')}</td>
+							<td class="text-end">{htmlspecialchars($item.phone, ENT_QUOTES,'UTF-8')}</td>
+							<td>
+								<div class="switch-button switch-button-xs catcool-center">
+									{form_checkbox("published_`$item.customer_id`", $item.active, $item.active, ['id' => 'published_'|cat:$item.customer_id, 'data-id' => $item.customer_id, 'data-published' => $item.active, 'class' => 'change_publish'])}
+									<span><label for="published_{$item.customer_id}"></label></span>
+								</div>
+							</td>
+							<td class="text-center">
+								<div class="btn-group ms-auto">
+									<a href="{$manage_url}/edit/{$item.customer_id}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
+									<button type="button" data-id="{$item.customer_id}" class="btn btn-sm btn-light btn_delete_single text-danger" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
+								</div>
+							</td>
+						</tr>
+					{/foreach}
+					</tbody>
+				</table>
 			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-			<div class="card">
-				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('text_list')}</h5>
-				<div class="card-body">
-					{if !empty($list)}
-						<div class="table-responsive">
-							<table class="table table-striped table-hover table-bordered second">
-								<thead>
-									<tr class="text-center">
-										<th width="50">{form_checkbox('manage_check_all')}</th>
-										<th width="50">{lang('column_id')}</th>
-										<th>{lang('text_username')}</th>
-										<th>{lang('text_full_name')}</th>
-										<th>{lang('text_email')}</th>
-										<th>{lang('text_phone')}</th>
-										<th>{lang('text_active')}</th>
-										<th width="160">{lang('column_function')}</th>
-									</tr>
-								</thead>
-								<tbody>
-								{foreach $list as $item}
-									<tr>
-										<td class="text-center">{form_checkbox('manage_ids[]', $item.customer_id)}</td>
-										<td class="text-center">{$item.customer_id}</td>
-										<td>
-											{if !empty($item.image)}
-												<a href="{image_url($item.image)}" data-lightbox="users"><img src="{image_url($item.image)}" class="avatar"></a>
-											{/if}
-											{if $item.active eq true}
-												<span class="badge-dot badge-success mx-1"></span>
-											{else}
-												<span class="badge-dot border border-dark mx-1"></span>
-											{/if}
-											{anchor("$manage_url/edit/`$item.customer_id`", htmlspecialchars($item.username, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}
-										</td>
-										<td class="text-center">{full_name($item.first_name, $item.last_name)}</td>
-										<td>{htmlspecialchars($item.email, ENT_QUOTES,'UTF-8')}</td>
-										<td>{htmlspecialchars($item.phone, ENT_QUOTES,'UTF-8')}</td>
-										<td>
-											<div class="switch-button switch-button-xs catcool-center">
-												{form_checkbox("published_`$item.customer_id`", $item.active, $item.active, ['id' => 'published_'|cat:$item.customer_id, 'data-id' => $item.customer_id, 'data-published' => $item.active, 'class' => 'change_publish'])}
-												<span><label for="published_{$item.customer_id}"></label></span>
-											</div>
-										</td>
-										<td class="text-center">
-											<div class="btn-group ms-auto">
-												<a href="{$manage_url}/edit/{$item.customer_id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_edit')}"{/if}><i class="fas fa-edit"></i></a>
-												<a href="{$manage_url}/change_password/{$item.customer_id}" class="btn btn-sm btn-outline-light" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('text_change_password')}"{/if}><i class="fas fa-key"></i></a>
-												<a href="{$manage_url}/permission/{$item.customer_id}" class="btn btn-sm btn-outline-light text-brand" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('text_permission_select')}"{/if}><i class="fas fa-lock-open"></i></a>
-												<button type="button" data-id="{$item.customer_id}" class="btn btn-sm btn-outline-light btn_delete_single text-danger" {if count($list) > 1}data-bs-toggle="tooltip" data-placement="top" title="" data-original-title="{lang('button_delete')}"{/if}><i class="fas fa-trash-alt"></i></button>
-											</div>
-										</td>
-									</tr>
-								{/foreach}
-								</tbody>
-							</table>
-						</div>
-						{include file=get_theme_path('views/inc/paging.inc.tpl')}
-					{else}
-						{lang('text_no_results')}
-					{/if}
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+			{include file=get_theme_path('views/inc/paging.tpl') pager_name='default'}
+	</form>
+	{else}
+		{lang('Admin.text_no_results')}
+	{/if}
+{/strip}

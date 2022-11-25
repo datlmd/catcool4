@@ -1,6 +1,6 @@
 {strip}
 	{if !empty($list)}
-		<form id="form_plan" method="post" data-cc-toggle="ajax" data-cc-load="{site_url("$manage_url")}" data-cc-target="#plan">
+		<form id="form_customer_group" method="post" data-cc-toggle="ajax" data-cc-load="{site_url("$manage_url")}" data-cc-target="#customer_group">
 			<div class="table-responsive">
 				<table class="table table-striped table-hover table-bordered second">
 					<thead>

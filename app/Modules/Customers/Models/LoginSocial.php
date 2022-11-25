@@ -1,15 +1,15 @@
-<?php namespace App\Modules\Users\Models;
+<?php namespace App\Modules\Customers\Models;
 
 use App\Models\MyModel;
 
-class UserLoginSocial extends MyModel
+class LoginSocial extends MyModel
 {
-    protected $table      = 'user_login_social';
+    protected $table      = 'customer_login_social';
     protected $primaryKey = 'social_id';
 
     protected $allowedFields = [
         'social_id',
-        'user_id',
+        'customer_id',
         'type',
         'access_token',
         'ctime',

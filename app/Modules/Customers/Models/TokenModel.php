@@ -1,14 +1,14 @@
-<?php namespace App\Modules\Users\Models;
+<?php namespace App\Modules\Customers\Models;
 
 use App\Models\MyModel;
 
-class UserTokenModel extends MyModel
+class TokenModel extends MyModel
 {
-    protected $table      = 'user_token';
-    protected $primaryKey = 'user_id';
+    protected $table      = 'customer_token';
+    protected $primaryKey = 'customer_id';
 
     protected $allowedFields = [
-        'user_id',
+        'customer_id',
         'remember_selector',
         'remember_code',
         'user_ip',
@@ -25,9 +25,9 @@ class UserTokenModel extends MyModel
         parent::__construct();
     }
 
-    public function addToken($user_id, $token)
+    public function addToken($customer_id, $token)
     {
-        if (empty($user_id) || empty($token)) {
+        if (empty($customer_id) || empty($token)) {
             return false;
         }
         try {
@@ -38,7 +38,7 @@ class UserTokenModel extends MyModel
             $getloc = json_decode(file_get_contents("http://ipinfo.io/"));
 
             $data_token = [
-                'user_id'           => $user_id,
+                'customer_id'           => $customer_id,
                 'remember_selector' => $token['selector'],
                 'remember_code'     => $token['validator_hashed'],
                 'user_ip'           => get_client_ip(),
@@ -48,12 +48,12 @@ class UserTokenModel extends MyModel
                 'location'          => sprintf("%s, %s, %s", $getloc->city, $getloc->region, $getloc->country) ,
             ];
 
-            $user_token = $this->where(['user_id' => $user_id, 'remember_selector' => $token['selector']])->first();
+            $user_token = $this->where(['customer_id' => $customer_id, 'remember_selector' => $token['selector']])->first();
             if (empty($user_token)) {
                 $data_token['ctime'] = get_date();
                 $this->insert($data_token);
             } else {
-                $this->where(['remember_selector' => $user_token['remember_selector']])->update($user_id, $data_token);
+                $this->where(['remember_selector' => $user_token['remember_selector']])->update($customer_id, $data_token);
             }
         } catch (\Exception $ex) {
             error_log($ex->getMessage());

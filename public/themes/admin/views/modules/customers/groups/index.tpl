@@ -19,7 +19,7 @@
 
 				<div class="card">
 					<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('CustomerGroupAdmin.text_list')}</h5>
-					<div id="plan" class="card-body">
+					<div id="customer_group" class="card-body">
 
 						{include file=get_theme_path('views/modules/customers/groups/list.tpl')}
 
@@ -30,10 +30,10 @@
 	</div>
 {/strip}
 <script type="text/javascript">
-	$('#plan').on('click', 'thead a, .pagination a', function (e) {
+	$('#customer_group').on('click', 'thead a, .pagination a', function (e) {
 		e.preventDefault();
 
-		$('#plan').load(this.href);
+		$('#customer_group').load(this.href);
 	});
 </script>
 

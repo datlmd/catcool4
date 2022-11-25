@@ -2,7 +2,7 @@
 
 use App\Models\MyModel;
 
-class CustomerGroupLangModel extends MyModel
+class GroupLangModel extends MyModel
 {
     protected $table      = 'customer_group_lang';
     protected $primaryKey = 'customer_group_id';

@@ -1,13 +1,14 @@
-<?php namespace App\Modules\Users\Models;
+<?php namespace App\Modules\Customers\Models;
 
 use App\Models\MyModel;
+use App\Modules\Users\Models\AuthModel;
 
-class UserModel extends MyModel
+class CustomerModel extends MyModel
 {
-    protected $table      = 'user';
-    protected $primaryKey = 'id';
+    protected $table      = 'customer';
+    protected $primaryKey = 'customer_id';
     protected $allowedFields = [
-        'id',
+        'customer_id',
         'username',
         'password',
         'email',
@@ -61,11 +62,11 @@ class UserModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = empty($sort) ? 'id' : $sort;
+        $sort  = empty($sort) ? 'customer_id' : $sort;
         $order = empty($order) ? 'DESC' : $order;
 
         if (!empty($filter["id"])) {
-            $this->whereIn('id', (!is_array($filter["id"]) ? explode(',', $filter["id"]) : $filter["id"]));
+            $this->whereIn('customer_id', (!is_array($filter["id"]) ? explode(',', $filter["id"]) : $filter["id"]));
         }
 
         if (!empty($filter["name"])) {
@@ -106,7 +107,7 @@ class UserModel extends MyModel
             return FALSE;
         }
 
-        if ($attempt_model->isMaxLoginAttemptsExceeded($user_info['id'])) {
+        if ($attempt_model->isMaxLoginAttemptsExceeded($user_info['customer_id'])) {
             $this->errors[] = lang('User.text_login_timeout');
 
             return FALSE;
@@ -118,7 +119,7 @@ class UserModel extends MyModel
         }
 
         if ($this->auth_model->checkPassword($password, $user_info['password']) === FALSE) {
-            $attempt_model->increaseLoginAttempts($user_info['id']);
+            $attempt_model->increaseLoginAttempts($user_info['customer_id']);
 
             $this->errors[] = lang('User.error_login_password_incorrect');
             return FALSE;
@@ -135,7 +136,7 @@ class UserModel extends MyModel
                 $this->auth_model->setCookie($token);
 
                 $user_token_model = new UserTokenModel();
-                $user_token_model->addToken($user_info['id'], $token);
+                $user_token_model->addToken($user_info['customer_id'], $token);
             }
         }
 
@@ -145,10 +146,10 @@ class UserModel extends MyModel
         $data_login['forgotten_password_time']     = NULL;
         $data_login['last_login']                  = time(); // last login
 
-        $this->update($user_info['id'], $data_login);
+        $this->update($user_info['customer_id'], $data_login);
 
         //Clear attemt
-        $attempt_model->clearLoginAttempts($user_info['id']);
+        $attempt_model->clearLoginAttempts($user_info['customer_id']);
 
         return TRUE;
     }
@@ -173,7 +174,7 @@ class UserModel extends MyModel
             return FALSE;
         }
 
-        $user_info = $this->where(['id' => $user_token['user_id']])->first();
+        $user_info = $this->where(['customer_id' => $user_token['user_id']])->first();
         if (empty($user_info)) {
             $this->errors[] = lang('User.text_login_unsuccessful');
             return FALSE;
@@ -198,14 +199,14 @@ class UserModel extends MyModel
             'forgotten_password_time'     => NULL,
             'last_login'                  => time(), // last login
         ];
-        $this->update($user_info['id'], $data_login);
+        $this->update($user_info['customer_id'], $data_login);
 
         return TRUE;
     }
 
     public function loginSocial($social_type, $data)
     {
-        if (empty($data) || empty($data['id'])) {
+        if (empty($data) || empty($data['customer_id'])) {
             return false;
         }
 
@@ -224,7 +225,7 @@ class UserModel extends MyModel
         }
         $data['gender'] = $gender; //unisex
 
-        $social_info = $social_model->where(['social_id' => $data['id'], 'type' => $social_type])->first();
+        $social_info = $social_model->where(['social_id' => $data['customer_id'], 'type' => $social_type])->first();
         if (empty($social_info)) {
             $email = $data['email'] ?? null;
             
@@ -245,22 +246,22 @@ class UserModel extends MyModel
             }
 
             $user_id         = $this->insert($user_info);
-            $user_info['id'] = $user_id;
+            $user_info['customer_id'] = $user_id;
 
             $social_info = [
-                'social_id'    => $data['id'],
+                'social_id'    => $data['customer_id'],
                 'user_id'      => $user_id,
                 'type'         => $social_type,
                 'access_token' => $data['access_token'] ?? null,
             ];
             $social_model->insert($social_info);
         } else {
-            $social_model->update($data['id'], ['access_token' => $data['access_token'] ?? null]);
+            $social_model->update($data['customer_id'], ['access_token' => $data['access_token'] ?? null]);
         }
 
 
         if (empty($user_info)) {
-            $user_info = $this->where('id', $social_info['user_id'])->first();
+            $user_info = $this->where('customer_id', $social_info['user_id'])->first();
         }
 
         $user_info['access_token'] = $data['access_token'];
@@ -343,7 +344,7 @@ class UserModel extends MyModel
             'forgotten_password_code'     => $token['validator_hashed'],
             'forgotten_password_time'     => time()
         ];
-        $id = $this->update($user_info['id'], $update);
+        $id = $this->update($user_info['customer_id'], $update);
         if (empty($id)) {
             return false;
         }
@@ -387,7 +388,7 @@ class UserModel extends MyModel
             $expiration = config_item('forgot_password_expiration');
             if (time() - $user['forgotten_password_time'] > $expiration) {
                 //it has expired, clear_forgotten_password_code
-                $this->clearForgottenPasswordCode($user['id']);
+                $this->clearForgottenPasswordCode($user['customer_id']);
                 $this->errors[] = '[005] ' . lang('error_password_code');
                 return FALSE;
             }
@@ -465,7 +466,7 @@ class UserModel extends MyModel
 
         $id = $this->insert($add_data);
 
-        $add_data['id'] = $id;
+        $add_data['customer_id'] = $id;
 
         return (!empty($id)) ? $add_data : false;
     }
@@ -514,7 +515,7 @@ class UserModel extends MyModel
         }
 
         $user_info = $this->where('activation_selector', $token['selector'])->first();
-        if (empty($user_info) || $user_info['id'] != $user_id) {
+        if (empty($user_info) || $user_info['customer_id'] != $user_id) {
             $this->errors[] = lang('User.activate_unsuccessful');
             return false;
         }

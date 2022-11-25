@@ -1,16 +1,16 @@
-<?php namespace App\Modules\Users\Models;
+<?php namespace App\Modules\Customers\Models;
 
 use App\Models\MyModel;
 
-class UserLoginAttemptModel extends MyModel
+class LoginAttemptModel extends MyModel
 {
-    protected $table      = 'user_login_attempt';
+    protected $table      = 'customer_login_attempt';
     protected $primaryKey = 'id';
 
     protected $allowedFields = [
         'id',
         'ip',
-        'user_id',
+        'customer_id',
         'time'
     ];
 
@@ -19,10 +19,10 @@ class UserLoginAttemptModel extends MyModel
         parent::__construct();
     }
 
-    public function getTotalAttempts($user_id, $ip_address = NULL)
+    public function getTotalAttempts($customer_id, $ip_address = NULL)
     {
         if (!empty(config_item('track_login_attempts'))) {
-            $this->where('user_id', $user_id);
+            $this->where('customer_id', $customer_id);
             if (!empty(config_item('track_login_ip_address'))) {
 
                 if (empty($ip_address)) {
@@ -39,12 +39,12 @@ class UserLoginAttemptModel extends MyModel
         return 0;
     }
 
-    public function isMaxLoginAttemptsExceeded($user_id, $ip_address = NULL)
+    public function isMaxLoginAttemptsExceeded($customer_id, $ip_address = NULL)
     {
         if (!empty(config_item('track_login_attempts'))) {
             $max_attempts = config_item('maximum_login_attempts');
             if ($max_attempts > 0) {
-                $attempts = $this->getTotalAttempts($user_id, $ip_address);
+                $attempts = $this->getTotalAttempts($customer_id, $ip_address);
                 return $attempts >= $max_attempts;
             }
         }
@@ -52,13 +52,13 @@ class UserLoginAttemptModel extends MyModel
         return false;
     }
 
-    public function clearLoginAttempts($user_id, $old_attempts_expire_period = 86400, $ip_address = NULL)
+    public function clearLoginAttempts($customer_id, $old_attempts_expire_period = 86400, $ip_address = NULL)
     {
         if (!empty(config_item('track_login_attempts'))) {
             // Make sure $old_attempts_expire_period is at least equals to lockout_time
             $old_attempts_expire_period = max($old_attempts_expire_period, config_item('lockout_time'));
 
-            $this->where('user_id', $user_id);
+            $this->where('customer_id', $customer_id);
             if (!empty(config_item('track_login_ip_address'))) {
                 if (empty($ip_address)) {
                     $ip_address = get_client_ip();
@@ -73,12 +73,12 @@ class UserLoginAttemptModel extends MyModel
         return FALSE;
     }
 
-    public function increaseLoginAttempts($user_id)
+    public function increaseLoginAttempts($customer_id)
     {
         if (!empty(config_item('track_login_attempts'))) {
             $data = [
                 'ip'      => '',
-                'user_id' => $user_id,
+                'customer_id' => $customer_id,
                 'time'    => time()
             ];
             if (!empty(config_item('track_login_ip_address'))) {

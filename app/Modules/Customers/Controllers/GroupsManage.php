@@ -1,8 +1,8 @@
 <?php namespace App\Modules\Customers\Controllers;
 
 use App\Controllers\AdminController;
-use App\Modules\Customers\Models\CustomerGroupModel;
-use App\Modules\Customers\Models\CustomerGroupLangModel;
+use App\Modules\Customers\Models\GroupModel;
+use App\Modules\Customers\Models\GroupLangModel;
 
 class GroupsManage extends AdminController
 {
@@ -19,8 +19,8 @@ class GroupsManage extends AdminController
 
         $this->themes->setTheme(config_item('theme_admin'));
 
-        $this->model = new CustomerGroupModel();
-        $this->model_lang = new CustomerGroupLangModel();
+        $this->model = new GroupModel();
+        $this->model_lang = new GroupLangModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
