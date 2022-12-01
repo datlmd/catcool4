@@ -11,9 +11,9 @@
                     <a href="{back_to($manage_url)}" class="btn btn-sm btn-secondary me-0 mb-0" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_cancel')}</a>
                 </div>
             </div>
-            {if !empty($edit_data.customer_id)}
-                {form_hidden('customer_id', $edit_data.customer_id)}
-            {/if}
+
+            <input type="hidden" name="customer_id" value="{$edit_data.customer_id}">
+
             <div class="row">
                 {if !empty(print_flash_alert())}
                     <div class="col-12">{print_flash_alert()}</div>
@@ -27,9 +27,7 @@
                     <div class="card">
                         <h5 class="card-header"><i class="fas {if !empty($edit_data.customer_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                         <div class="card-body">
-
-
-
+                            <h3 class="border-bottom pb-2">{lang('Admin.text_customer_detail')}</h3>
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
                                     {lang('Admin.text_password')}
@@ -50,7 +48,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row border-top mt-2 pt-3">
+                            <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
                                     {lang('Admin.text_first_name')}
                                 </label>
@@ -90,28 +88,22 @@
                                     <div id="error_email" class="invalid-feedback">{$validator->getError("email")}</div>
                                 </div>
                             </div>
-                            {if !empty($edit_data.customer_id)}
-                                <div class="form-group row">
-                                    <label class="col-12 col-sm-3 col-form-label text-sm-end">
-                                        {lang('Admin.text_permission')}
-                                    </label>
-                                    <div class="col-12 col-sm-8 col-lg-7 col-form-label">
-                                        <a href='{site_url("`$manage_url`/permission/`$edit_data.customer_id`")}'>{lang('UserAdmin.text_permission_select')}</a>
-                                    </div>
-                                </div>
-                            {/if}
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-end">
                                     {lang('Admin.text_gender')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
                                     <label class="form-check form-check-inline mt-2">
-                                        <input type="radio" name="gender" value="{GENDER_MALE}" {if old('gender', $edit_data.gender)|default:1 eq GENDER_MALE}checked="checked"{/if} id="gender_male" class="form-check-input">
+                                        <input type="radio" name="gender" value="{GENDER_MALE}" {if old('gender', $edit_data.gender)|default:3 eq GENDER_MALE}checked="checked"{/if} id="gender_male" class="form-check-input">
                                         <label class="form-check-label" for="gender_male">{lang('Admin.text_gender_male')}</label>
                                     </label>
                                     <label class="form-check form-check-inline mt-2 me-2">
-                                        <input type="radio" name="gender" value="{GENDER_FEMALE}" {if old('gender', $edit_data.gender)|default:1 eq GENDER_FEMALE}checked="checked"{/if} id="gender_female" class="form-check-input">
+                                        <input type="radio" name="gender" value="{GENDER_FEMALE}" {if old('gender', $edit_data.gender)|default:3 eq GENDER_FEMALE}checked="checked"{/if} id="gender_female" class="form-check-input">
                                         <label class="form-check-label" for="gender_female">{lang('Admin.text_gender_female')}</label>
+                                    </label>
+                                    <label class="form-check form-check-inline mt-2 me-2">
+                                        <input type="radio" name="gender" value="{GENDER_OTHER}" {if old('gender', $edit_data.gender)|default:3 eq GENDER_OTHER}checked="checked"{/if} id="gender_other" class="form-check-input">
+                                        <label class="form-check-label" for="gender_other">{lang('Admin.text_gender_other')}</label>
                                     </label>
                                 </div>
                             </div>
@@ -120,9 +112,9 @@
                                     {lang('Admin.text_dob')}
                                 </label>
                                 <div class="col-sm-4 col-lg-3 mb-3 mb-sm-0">
-                                    <div class="input-group date show-date-picker" id="show-date-picker" data-target-input="nearest" data-date-format="DD/MM/YYYY" data-date-locale="{get_lang(true)}">
-                                        <input type="text" name="dob" id="dob" class="form-control datetimepicker-input" {if old('dob', $edit_data.dob)}value="{old('dob', $edit_data.dob)|date_format:'d/m/Y'}"{/if} placeholder="dd/mm/yyyy" data-target="#show-date-picker" />
-                                        <div class="input-group-text" data-target="#show-date-picker" data-toggle="datetimepicker"><i class="fa fa-calendar-alt"></i></div>
+                                    <div class="input-group date show-date-picker" id="show_date_picker" data-target-input="nearest" data-date-format="DD/MM/YYYY" data-date-locale="{get_lang(true)}">
+                                        <input type="text" name="dob" id="input_dob" class="form-control datetimepicker-input" {if old('dob', $edit_data.dob)}value="{old('dob', $edit_data.dob)|date_format:'d/m/Y'}"{/if} placeholder="dd/mm/yyyy" data-target="#show_date_picker" />
+                                        <div class="input-group-text" data-target="#show_date_picker" data-toggle="datetimepicker"><i class="fa fa-calendar-alt"></i></div>
                                     </div>
                                 </div>
                             </div>
@@ -131,7 +123,7 @@
                                     {lang('UserAdmin.text_phone')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
-                                    <input type="tel" name="phone" value="{old('phone', $edit_data.phone)}" id="phone" class="form-control">
+                                    <input type="tel" name="phone" value="{old('phone', $edit_data.phone)}" id="input_phone" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -139,7 +131,7 @@
                                     {lang('Admin.text_address')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
-                                    <textarea type="textarea" name="address" id="address" cols="40" rows="2" class="form-control">{old('address', $edit_data.address)}</textarea>
+                                    <textarea type="textarea" name="address" id="input_address" cols="40" rows="2" class="form-control">{old('address', $edit_data.address)}</textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -147,7 +139,7 @@
                                     {lang('UserAdmin.text_company')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
-                                    <input type="text" name="company" value="{old('company', $edit_data.company)}" id="company" class="form-control">
+                                    <input type="text" name="company" value="{old('company', $edit_data.company)}" id="input_company" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -156,7 +148,7 @@
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
                                     {if !empty($groups)}
-                                        <select name="groups[]" id="groups[]" class="form-control form-control-sm multiselect" multiple="multiple" title="{lang('text_select')}">
+                                        <select name="groups[]" id="input_groups[]" class="form-control form-control-sm multiselect" multiple="multiple" title="{lang('text_select')}">
                                             {foreach $groups as $key => $group}
                                                 <option value="{$key}" {if !empty($user_groups) && in_array($key, array_column($user_groups, 'group_id'))}selected{/if}>{$group.name}</option>
                                             {/foreach}
@@ -207,19 +199,6 @@
                                     <label class="form-check-label" for="active_off">OFF</label>
                                 </label>
                             </div>
-                            {if !empty($is_super_admin)}
-                                <div class="form-group">
-                                    <label class="form-label">{lang('Admin.text_super_admin')}</label>
-                                    <label class="form-check form-check-inline ms-2 mt-2">
-                                        <input type="radio" name="super_admin" value="{STATUS_ON}" {if old('super_admin', $edit_data.super_admin)|default:0 eq STATUS_ON}checked="checked"{/if} id="super_admin_on" class="form-check-input">
-                                        <label class="form-check-label" for="super_admin_on">ON</label>
-                                    </label>
-                                    <label class="form-check form-check-inline mt-2 me-2">
-                                        <input type="radio" name="super_admin" value="{STATUS_OFF}" {if old('super_admin', $edit_data.super_admin)|default:0 eq STATUS_OFF}checked="checked"{/if} id="super_admin_off" class="form-check-input">
-                                        <label class="form-check-label" for="super_admin_off">OFF</label>
-                                    </label>
-                                </div>
-                            {/if}
                         </div>
                     </div>
                     {if !empty($edit_data.customer_id)}
