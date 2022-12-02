@@ -27,47 +27,8 @@
                     <div class="card">
                         <h5 class="card-header"><i class="fas {if !empty($edit_data.customer_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                         <div class="card-body">
-                            <h3 class="border-bottom pb-2">{lang('Admin.text_customer_detail')}</h3>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
-                                    {lang('Admin.text_password')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-7">
-                                    <input type="password" name="password" value="" id="input_password" class="form-control {if $validator->hasError('password')}is-invalid{/if}">
-                                    <div id="error_password" class="invalid-feedback">{$validator->getError("password")}</div>
-                                </div>
-                            </div>
 
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
-                                    {lang('Admin.text_confirm_password')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-7">
-                                    <input type="password" name="password_confirm" value="" id="input_password_confirm" class="form-control {if $validator->hasError('password_confirm')}is-invalid{/if}">
-                                    <div id="error_password_confirm" class="invalid-feedback">{$validator->getError("password_confirm")}</div>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
-                                    {lang('Admin.text_first_name')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-7">
-                                    <input type="text" name="first_name" value='{old("first_name", $edit_data.first_name)}' id="input_first_name" class="form-control {if $validator->hasError('first_name')}is-invalid{/if}">
-                                    <small>{lang('Admin.help_first_name')}</small>
-                                    <div id="error_first_name" class="invalid-feedback">{$validator->getError("first_name")}</div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-end">
-                                    {lang('Admin.text_last_name')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-7">
-                                    <input type="text" name="last_name" value='{old("last_name", $edit_data.last_name)}' id="input_last_name" class="form-control {if $validator->hasError('last_name')}is-invalid{/if}">
-                                    <small>{lang('Admin.help_last_name')}</small>
-                                    <div id="error_last_name" class="invalid-feedback">{$validator->getError("last_name")}</div>
-                                </div>
-                            </div>
+                            <h3 class="border-bottom pb-3">{lang('Admin.text_customer_detail')}</h3>
 
                             <div class="form-group row required has-error">
                                 <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
@@ -80,6 +41,15 @@
                             </div>
 
                             <div class="form-group row">
+                                <label class="col-12 col-sm-3 col-form-label text-sm-end">
+                                    {lang('UserAdmin.text_phone')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-7">
+                                    <input type="tel" name="phone" value="{old('phone', $edit_data.phone)}" id="input_phone" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
                                     {lang('UserAdmin.text_email')}
                                 </label>
@@ -88,6 +58,46 @@
                                     <div id="error_email" class="invalid-feedback">{$validator->getError("email")}</div>
                                 </div>
                             </div>
+
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 col-form-label text-sm-end">
+                                    {lang('Admin.text_group')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-7">
+                                    {if !empty($groups)}
+                                        <select name="group_id" id="input_group_id" class="form-control form-control-sm">
+                                            {foreach $groups as $key => $group}
+                                                <option value="{$key}" {if $key eq $edit_data.group_id}selected{/if}>{$group.name}</option>
+                                            {/foreach}
+                                        </select>
+                                    {/if}
+                                </div>
+                            </div>
+
+                            <h3 class="border-bottom pb-3"></h3>
+
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
+                                    {lang('Admin.text_first_name')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-7">
+                                    <input type="text" name="first_name" value='{old("first_name", $edit_data.first_name)}' id="input_first_name" class="form-control {if $validator->hasError('first_name')}is-invalid{/if}">
+                                    <small>{lang('Admin.help_first_name')}</small>
+                                    <div id="error_first_name" class="invalid-feedback">{$validator->getError("first_name")}</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 col-form-label text-sm-end">
+                                    {lang('Admin.text_last_name')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-7">
+                                    <input type="text" name="last_name" value='{old("last_name", $edit_data.last_name)}' id="input_last_name" class="form-control {if $validator->hasError('last_name')}is-invalid{/if}">
+                                    <small>{lang('Admin.help_last_name')}</small>
+                                    <div id="error_last_name" class="invalid-feedback">{$validator->getError("last_name")}</div>
+                                </div>
+                            </div>
+
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-end">
                                     {lang('Admin.text_gender')}
@@ -120,14 +130,6 @@
                             </div>
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label text-sm-end">
-                                    {lang('UserAdmin.text_phone')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-7">
-                                    <input type="tel" name="phone" value="{old('phone', $edit_data.phone)}" id="input_phone" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-end">
                                     {lang('Admin.text_address')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
@@ -142,21 +144,28 @@
                                     <input type="text" name="company" value="{old('company', $edit_data.company)}" id="input_company" class="form-control">
                                 </div>
                             </div>
+
+                            <h3 class="border-bottom pb-3">{lang('Admin.text_password')}</h3>
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-end">
-                                    {lang('Admin.text_group')}
+                                <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
+                                    {lang('Admin.text_password')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
-                                    {if !empty($groups)}
-                                        <select name="groups[]" id="input_groups[]" class="form-control form-control-sm multiselect" multiple="multiple" title="{lang('text_select')}">
-                                            {foreach $groups as $key => $group}
-                                                <option value="{$key}" {if !empty($user_groups) && in_array($key, array_column($user_groups, 'group_id'))}selected{/if}>{$group.name}</option>
-                                            {/foreach}
-                                        </select>
-                                        <div id="category_review" class="w-100 p-3 bg-light"></div>
-                                    {/if}
+                                    <input type="password" name="password" value="" id="input_password" class="form-control {if $validator->hasError('password')}is-invalid{/if}">
+                                    <div id="error_password" class="invalid-feedback">{$validator->getError("password")}</div>
                                 </div>
                             </div>
+
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
+                                    {lang('Admin.text_confirm_password')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-7">
+                                    <input type="password" name="password_confirm" value="" id="input_password_confirm" class="form-control {if $validator->hasError('password_confirm')}is-invalid{/if}">
+                                    <div id="error_password_confirm" class="invalid-feedback">{$validator->getError("password_confirm")}</div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
