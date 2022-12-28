@@ -18,11 +18,12 @@ use Config\App;
 use Config\Services;
 use InvalidArgumentException;
 use Locale;
+use stdClass;
 
 /**
  * Class IncomingRequest
  *
- * Represents an incoming, getServer-side HTTP request.
+ * Represents an incoming, server-side HTTP request.
  *
  * Per the HTTP specification, this interface includes properties for
  * each of the following:
@@ -153,8 +154,16 @@ class IncomingRequest extends Request
             throw new InvalidArgumentException('You must supply the parameters: uri, userAgent.');
         }
 
-        // Get our body from php://input
-        if ($body === 'php://input') {
+        $this->populateHeaders();
+
+        if (
+            $body === 'php://input'
+            // php://input is not available with enctype="multipart/form-data".
+            // See https://www.php.net/manual/en/wrappers.php.php#wrappers.php.input
+            && strpos($this->getHeaderLine('Content-Type'), 'multipart/form-data') === false
+            && (int) $this->getHeaderLine('Content-Length') <= $this->getPostMaxSize()
+        ) {
+            // Get our body from php://input
             $body = file_get_contents('php://input');
         }
 
@@ -166,9 +175,32 @@ class IncomingRequest extends Request
 
         parent::__construct($config);
 
-        $this->populateHeaders();
         $this->detectURI($config->uriProtocol, $config->baseURL);
         $this->detectLocale($config);
+    }
+
+    private function getPostMaxSize(): int
+    {
+        $postMaxSize = ini_get('post_max_size');
+
+        switch (strtoupper(substr($postMaxSize, -1))) {
+            case 'G':
+                $postMaxSize = (int) str_replace('G', '', $postMaxSize) * 1024 ** 3;
+                break;
+
+            case 'M':
+                $postMaxSize = (int) str_replace('M', '', $postMaxSize) * 1024 ** 2;
+                break;
+
+            case 'K':
+                $postMaxSize = (int) str_replace('K', '', $postMaxSize) * 1024;
+                break;
+
+            default:
+                $postMaxSize = (int) $postMaxSize;
+        }
+
+        return $postMaxSize;
     }
 
     /**
@@ -347,7 +379,7 @@ class IncomingRequest extends Request
      */
     public function isCLI(): bool
     {
-        return is_cli();
+        return false;
     }
 
     /**
@@ -391,7 +423,7 @@ class IncomingRequest extends Request
         $this->path = $path;
         $this->uri->setPath($path);
 
-        $config = $config ?? $this->config;
+        $config ??= $this->config;
 
         // It's possible the user forgot a trailing slash on their
         // baseURL, so let's help them out.
@@ -478,7 +510,7 @@ class IncomingRequest extends Request
      * @param int|null          $filter Filter constant
      * @param mixed             $flags
      *
-     * @return mixed
+     * @return array|bool|float|int|stdClass|string|null
      */
     public function getVar($index = null, $filter = null, $flags = null)
     {
@@ -516,7 +548,7 @@ class IncomingRequest extends Request
      *
      * @see http://php.net/manual/en/function.json-decode.php
      *
-     * @return mixed
+     * @return array|bool|float|int|stdClass|null
      */
     public function getJSON(bool $assoc = false, int $depth = 512, int $options = 0)
     {
@@ -531,7 +563,7 @@ class IncomingRequest extends Request
      * @param int|null       $filter Filter Constant
      * @param array|int|null $flags  Option
      *
-     * @return mixed
+     * @return array|bool|float|int|stdClass|string|null
      */
     public function getJsonVar(string $index, bool $assoc = false, ?int $filter = null, $flags = null)
     {
@@ -548,8 +580,8 @@ class IncomingRequest extends Request
         }
 
         if (! is_array($data)) {
-            $filter = $filter ?? FILTER_DEFAULT;
-            $flags  = is_array($flags) ? $flags : (is_numeric($flags) ? (int) $flags : 0);
+            $filter ??= FILTER_DEFAULT;
+            $flags = is_array($flags) ? $flags : (is_numeric($flags) ? (int) $flags : 0);
 
             return filter_var($data, $filter, $flags);
         }
@@ -565,7 +597,7 @@ class IncomingRequest extends Request
      * A convenience method that grabs the raw input stream(send method in PUT, PATCH, DELETE) and decodes
      * the String into an array.
      *
-     * @return mixed
+     * @return array
      */
     public function getRawInput()
     {
@@ -613,6 +645,9 @@ class IncomingRequest extends Request
      */
     public function getPostGet($index = null, $filter = null, $flags = null)
     {
+        if ($index === null) {
+            return array_merge($this->getGet($index, $filter, $flags), $this->getPost($index, $filter, $flags));
+        }
         // Use $_POST directly here, since filter_has_var only
         // checks the initial POST data, not anything that might
         // have been added since.
@@ -630,6 +665,9 @@ class IncomingRequest extends Request
      */
     public function getGetPost($index = null, $filter = null, $flags = null)
     {
+        if ($index === null) {
+            return array_merge($this->getPost($index, $filter, $flags), $this->getGet($index, $filter, $flags));
+        }
         // Use $_GET directly here, since filter_has_var only
         // checks the initial GET data, not anything that might
         // have been added since.
@@ -665,7 +703,7 @@ class IncomingRequest extends Request
      * with redirect_with_input(). It first checks for the data in the old
      * POST data, then the old GET data and finally check for dot arrays
      *
-     * @return mixed
+     * @return array|string|null
      */
     public function getOldInput(string $key)
     {

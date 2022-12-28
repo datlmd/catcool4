@@ -79,20 +79,16 @@ class CURLRequest extends Request
 
     /**
      * The default options from the constructor. Applied to all requests.
-     *
-     * @var array
      */
-    private $defaultOptions;
+    private array $defaultOptions;
 
     /**
      * Whether share options between requests or not.
      *
      * If true, all the options won't be reset between requests.
      * It may cause an error request with unnecessary headers.
-     *
-     * @var bool
      */
-    private $shareOptions;
+    private bool $shareOptions;
 
     /**
      * Takes an array of options to set the following possible class properties:
@@ -154,6 +150,9 @@ class CURLRequest extends Request
         // Reset headers
         $this->headers   = [];
         $this->headerMap = [];
+
+        // Reset body
+        $this->body = null;
 
         // Reset configs
         $this->config = $this->defaultConfig;
@@ -294,6 +293,11 @@ class CURLRequest extends Request
             unset($options['delay']);
         }
 
+        if (array_key_exists('body', $options)) {
+            $this->setBody($options['body']);
+            unset($options['body']);
+        }
+
         foreach ($options as $key => $value) {
             $this->config[$key] = $value;
         }
@@ -358,7 +362,7 @@ class CURLRequest extends Request
 
         // Do we need to delay this request?
         if ($this->delay > 0) {
-            sleep($this->delay);
+            usleep((int) $this->delay * 1_000_000);
         }
 
         $output = $this->sendRequest($curlOptions);
@@ -475,7 +479,7 @@ class CURLRequest extends Request
                 }
 
                 if (isset($matches[2])) {
-                    $this->response->setStatusCode($matches[2], $matches[3] ?? null);
+                    $this->response->setStatusCode((int) $matches[2], $matches[3] ?? null);
                 }
             }
         }
@@ -484,9 +488,9 @@ class CURLRequest extends Request
     /**
      * Set CURL options
      *
-     * @throws InvalidArgumentException
-     *
      * @return array
+     *
+     * @throws InvalidArgumentException
      */
     protected function setCURLOptions(array $curlOptions = [], array $config = [])
     {

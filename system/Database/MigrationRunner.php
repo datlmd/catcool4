@@ -14,6 +14,7 @@ namespace CodeIgniter\Database;
 use CodeIgniter\CLI\CLI;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Exceptions\ConfigException;
+use CodeIgniter\I18n\Time;
 use Config\Database;
 use Config\Migrations as MigrationsConfig;
 use Config\Services;
@@ -40,7 +41,8 @@ class MigrationRunner
     protected $table;
 
     /**
-     * The Namespace  where migrations can be found.
+     * The Namespace where migrations can be found.
+     * `null` is all namespaces.
      *
      * @var string|null
      */
@@ -152,10 +154,10 @@ class MigrationRunner
     /**
      * Locate and run all new migrations
      *
+     * @return bool
+     *
      * @throws ConfigException
      * @throws RuntimeException
-     *
-     * @return bool
      */
     public function latest(?string $group = null)
     {
@@ -220,10 +222,10 @@ class MigrationRunner
      *
      * @param int $targetBatch Target batch number, or negative for a relative batch, 0 for all
      *
+     * @return mixed Current batch number on success, FALSE on failure or no migrations are found
+     *
      * @throws ConfigException
      * @throws RuntimeException
-     *
-     * @return mixed Current batch number on success, FALSE on failure or no migrations are found
      */
     public function regress(int $targetBatch = 0, ?string $group = null)
     {
@@ -401,6 +403,10 @@ class MigrationRunner
         $migrations = [];
 
         foreach ($namespaces as $namespace) {
+            if (ENVIRONMENT !== 'testing' && $namespace === 'Tests\Support') {
+                continue;
+            }
+
             foreach ($this->findNamespaceMigrations($namespace) as $migration) {
                 $migrations[$migration->uid] = $migration;
             }
@@ -423,7 +429,7 @@ class MigrationRunner
         if (! empty($this->path)) {
             helper('filesystem');
             $dir   = rtrim($this->path, DIRECTORY_SEPARATOR) . '/';
-            $files = get_filenames($dir, true);
+            $files = get_filenames($dir, true, false, false);
         } else {
             $files = $locator->listNamespaceFiles($namespace, '/Database/Migrations/');
         }
@@ -591,7 +597,7 @@ class MigrationRunner
             'class'     => $migration->class,
             'group'     => $this->group,
             'namespace' => $migration->namespace,
-            'time'      => time(),
+            'time'      => Time::now()->getTimestamp(),
             'batch'     => $batch,
         ]);
 

@@ -22,6 +22,7 @@ use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\I18n\Time;
 use Config\Services;
 use Config\Toolbar as ToolbarConfig;
 use Kint\Kint;
@@ -53,8 +54,11 @@ class Toolbar
 
         foreach ($config->collectors as $collector) {
             if (! class_exists($collector)) {
-                log_message('critical', 'Toolbar collector does not exists(' . $collector . ').' .
-                        'please check $collectors in the Config\Toolbar.php file.');
+                log_message(
+                    'critical',
+                    'Toolbar collector does not exist (' . $collector . ').'
+                    . ' Please check $collectors in the app/Config/Toolbar.php file.'
+                );
 
                 continue;
             }
@@ -76,7 +80,7 @@ class Toolbar
     {
         // Data items used within the view.
         $data['url']             = current_url();
-        $data['method']          = $request->getMethod(true);
+        $data['method']          = strtoupper($request->getMethod());
         $data['isAJAX']          = $request->isAJAX();
         $data['startTime']       = $startTime;
         $data['totalTime']       = $totalTime * 1000;
@@ -151,7 +155,12 @@ class Toolbar
             'statusCode'  => $response->getStatusCode(),
             'reason'      => esc($response->getReasonPhrase()),
             'contentType' => esc($response->getHeaderLine('content-type')),
+            'headers'     => [],
         ];
+
+        foreach ($response->headers() as $header) {
+            $data['vars']['response']['headers'][esc($header->getName())] = esc($header->getValueLine());
+        }
 
         $data['config'] = Config::display();
 
@@ -342,20 +351,18 @@ class Toolbar
      *
      * @param RequestInterface  $request
      * @param ResponseInterface $response
-     *
-     * @global \CodeIgniter\CodeIgniter $app
      */
     public function prepare(?RequestInterface $request = null, ?ResponseInterface $response = null)
     {
         /**
-         * @var IncomingRequest $request
-         * @var Response        $response
+         * @var IncomingRequest|null $request
+         * @var Response|null        $response
          */
         if (CI_DEBUG && ! is_cli()) {
-            global $app;
+            $app = Services::codeigniter();
 
-            $request  = $request ?? Services::request();
-            $response = $response ?? Services::response();
+            $request ??= Services::request();
+            $response ??= Services::response();
 
             // Disable the toolbar for downloads
             if ($response instanceof DownloadResponse) {
@@ -373,14 +380,14 @@ class Toolbar
 
             helper('filesystem');
 
-            // Updated to time() so we can get history
-            $time = time();
+            // Updated to microtime() so we can get history
+            $time = sprintf('%.6f', Time::now()->format('U.u'));
 
             if (! is_dir(WRITEPATH . 'debugbar')) {
                 mkdir(WRITEPATH . 'debugbar', 0777);
             }
 
-            write_file(WRITEPATH . 'debugbar/' . 'debugbar_' . $time . '.json', $data, 'w+');
+            write_file(WRITEPATH . 'debugbar/debugbar_' . $time . '.json', $data, 'w+');
 
             $format = $response->getHeaderLine('content-type');
 
@@ -389,8 +396,7 @@ class Toolbar
             // for this response
             if ($request->isAJAX() || strpos($format, 'html') === false) {
                 $response->setHeader('Debugbar-Time', "{$time}")
-                    ->setHeader('Debugbar-Link', site_url("?debugbar_time={$time}"))
-                    ->getBody();
+                    ->setHeader('Debugbar-Link', site_url("?debugbar_time={$time}"));
 
                 return;
             }
@@ -400,18 +406,26 @@ class Toolbar
             $kintScript         = @Kint::dump('');
             Kint::$mode_default = $oldKintMode;
             $kintScript         = substr($kintScript, 0, strpos($kintScript, '</style>') + 8);
+            $kintScript         = ($kintScript === '0') ? '' : $kintScript;
 
             $script = PHP_EOL
-                . '<script type="text/javascript" {csp-script-nonce} id="debugbar_loader" '
+                . '<script type="text/javascript" ' . csp_script_nonce() . ' id="debugbar_loader" '
                 . 'data-time="' . $time . '" '
                 . 'src="' . site_url() . '?debugbar"></script>'
-                . '<script type="text/javascript" {csp-script-nonce} id="debugbar_dynamic_script"></script>'
-                . '<style type="text/css" {csp-style-nonce} id="debugbar_dynamic_style"></style>'
+                . '<script type="text/javascript" ' . csp_script_nonce() . ' id="debugbar_dynamic_script"></script>'
+                . '<style type="text/css" ' . csp_style_nonce() . ' id="debugbar_dynamic_style"></style>'
                 . $kintScript
                 . PHP_EOL;
 
             if (strpos($response->getBody(), '<head>') !== false) {
-                $response->setBody(preg_replace('/<head>/', '<head>' . $script, $response->getBody(), 1));
+                $response->setBody(
+                    preg_replace(
+                        '/<head>/',
+                        '<head>' . $script,
+                        $response->getBody(),
+                        1
+                    )
+                );
 
                 return;
             }
@@ -480,10 +494,10 @@ class Toolbar
     {
         $data = json_decode($data, true);
 
-        if ($this->config->maxHistory !== 0) {
+        if ($this->config->maxHistory !== 0 && preg_match('/\d+\.\d{6}/s', (string) Services::request()->getGet('debugbar_time'), $debugbarTime)) {
             $history = new History();
             $history->setFiles(
-                (int) Services::request()->getGet('debugbar_time'),
+                $debugbarTime[0],
                 $this->config->maxHistory
             );
 

@@ -19,6 +19,7 @@ use CodeIgniter\Database\ConnectionInterface;
 use CodeIgniter\Debug\Timer;
 use CodeIgniter\Files\Exceptions\FileNotFoundException;
 use CodeIgniter\HTTP\Exceptions\HTTPException;
+use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -44,6 +45,7 @@ if (! function_exists('app_timezone')) {
      */
     function app_timezone(): string
     {
+        /** @var App $config */
         $config = config(App::class);
 
         return $config->appTimezone;
@@ -61,6 +63,7 @@ if (! function_exists('cache')) {
      *    $foo = cache('bar');
      *
      * @return CacheInterface|mixed
+     * @phpstan-return ($key is null ? CacheInterface : mixed)
      */
     function cache(?string $key = null)
     {
@@ -143,7 +146,10 @@ if (! function_exists('command')) {
                 $args[] = stripcslashes($match[1]);
             } else {
                 // @codeCoverageIgnoreStart
-                throw new InvalidArgumentException(sprintf('Unable to parse input near "... %s ...".', substr($command, $cursor, 10)));
+                throw new InvalidArgumentException(sprintf(
+                    'Unable to parse input near "... %s ...".',
+                    substr($command, $cursor, 10)
+                ));
                 // @codeCoverageIgnoreEnd
             }
 
@@ -191,7 +197,7 @@ if (! function_exists('config')) {
     /**
      * More simple way of getting config instances from Factories
      *
-     * @return mixed
+     * @return object|null
      */
     function config(string $name, bool $getShared = true)
     {
@@ -288,6 +294,38 @@ if (! function_exists('csrf_meta')) {
     }
 }
 
+if (! function_exists('csp_style_nonce')) {
+    /**
+     * Generates a nonce attribute for style tag.
+     */
+    function csp_style_nonce(): string
+    {
+        $csp = Services::csp();
+
+        if (! $csp->enabled()) {
+            return '';
+        }
+
+        return 'nonce="' . $csp->getStyleNonce() . '"';
+    }
+}
+
+if (! function_exists('csp_script_nonce')) {
+    /**
+     * Generates a nonce attribute for script tag.
+     */
+    function csp_script_nonce(): string
+    {
+        $csp = Services::csp();
+
+        if (! $csp->enabled()) {
+            return '';
+        }
+
+        return 'nonce="' . $csp->getScriptNonce() . '"';
+    }
+}
+
 if (! function_exists('db_connect')) {
     /**
      * Grabs a database connection and returns it to the user.
@@ -323,12 +361,10 @@ if (! function_exists('dd')) {
      */
     function dd(...$vars)
     {
-        // @codeCoverageIgnoreStart
         Kint::$aliases[] = 'dd';
         Kint::dump(...$vars);
 
         exit;
-        // @codeCoverageIgnoreEnd
     }
 }
 
@@ -341,7 +377,7 @@ if (! function_exists('env')) {
      *
      * @param string|null $default
      *
-     * @return mixed
+     * @return bool|string|null
      */
     function env(string $key, $default = null)
     {
@@ -380,14 +416,15 @@ if (! function_exists('esc')) {
      * If $data is an array, then it loops over it, escaping each
      * 'value' of the key/value pairs.
      *
-     * Valid context values: html, js, css, url, attr, raw
-     *
      * @param array|string $data
-     * @param string       $encoding
-     *
-     * @throws InvalidArgumentException
+     * @phpstan-param 'html'|'js'|'css'|'url'|'attr'|'raw' $context
+     * @param string|null $encoding Current encoding for escaping.
+     *                              If not UTF-8, we convert strings from this encoding
+     *                              pre-escaping and back to this encoding post-escaping.
      *
      * @return array|string
+     *
+     * @throws InvalidArgumentException
      */
     function esc($data, string $context = 'html', ?string $encoding = null)
     {
@@ -403,7 +440,7 @@ if (! function_exists('esc')) {
             // Provide a way to NOT escape data since
             // this could be called automatically by
             // the View library.
-            if (empty($context) || $context === 'raw') {
+            if ($context === 'raw') {
                 return $data;
             }
 
@@ -445,7 +482,7 @@ if (! function_exists('force_https')) {
      *
      * @throws HTTPException
      */
-    function force_https(int $duration = 31536000, ?RequestInterface $request = null, ?ResponseInterface $response = null)
+    function force_https(int $duration = 31_536_000, ?RequestInterface $request = null, ?ResponseInterface $response = null)
     {
         if ($request === null) {
             $request = Services::request(null, true);
@@ -454,19 +491,18 @@ if (! function_exists('force_https')) {
             $response = Services::response(null, true);
         }
 
-        if ((ENVIRONMENT !== 'testing' && (is_cli() || $request->isSecure())) || (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'test')) {
-            // @codeCoverageIgnoreStart
+        if (! $request instanceof IncomingRequest) {
             return;
-            // @codeCoverageIgnoreEnd
+        }
+
+        if ((ENVIRONMENT !== 'testing' && (is_cli() || $request->isSecure())) || (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'test')) {
+            return; // @codeCoverageIgnore
         }
 
         // If the session status is active, we should regenerate
         // the session ID for safety sake.
         if (ENVIRONMENT !== 'testing' && session_status() === PHP_SESSION_ACTIVE) {
-            // @codeCoverageIgnoreStart
-            Services::session(null, true)
-                ->regenerate();
-            // @codeCoverageIgnoreEnd
+            Services::session(null, true)->regenerate(); // @codeCoverageIgnore
         }
 
         $baseURL = config(App::class)->baseURL;
@@ -491,9 +527,7 @@ if (! function_exists('force_https')) {
         $response->sendHeaders();
 
         if (ENVIRONMENT !== 'testing') {
-            // @codeCoverageIgnoreStart
-            exit();
-            // @codeCoverageIgnoreEnd
+            exit(); // @codeCoverageIgnore
         }
     }
 }
@@ -618,7 +652,7 @@ if (! function_exists('helper')) {
                 }
 
                 // All namespaced files get added in next
-                $includes = array_merge($includes, $localIncludes);
+                $includes = [...$includes, ...$localIncludes];
 
                 // And the system default one should be added in last.
                 if (! empty($systemHelper)) {
@@ -744,7 +778,7 @@ if (! function_exists('log_message')) {
      *  - info
      *  - debug
      *
-     * @return mixed
+     * @return bool
      */
     function log_message(string $level, string $message, array $context = [])
     {
@@ -757,10 +791,7 @@ if (! function_exists('log_message')) {
             return $logger->log($level, $message, $context);
         }
 
-        // @codeCoverageIgnoreStart
-        return Services::logger(true)
-            ->log($level, $message, $context);
-        // @codeCoverageIgnoreEnd
+        return Services::logger(true)->log($level, $message, $context); // @codeCoverageIgnore
     }
 }
 
@@ -773,7 +804,6 @@ if (! function_exists('model')) {
      * @param class-string<T> $name
      *
      * @return T
-     * @phpstan-return Model
      */
     function model(string $name, bool $getShared = true, ?ConnectionInterface &$conn = null)
     {
@@ -786,18 +816,17 @@ if (! function_exists('old')) {
      * Provides access to "old input" that was set in the session
      * during a redirect()->withInput().
      *
-     * @param null        $default
-     * @param bool|string $escape
+     * @param string|null  $default
+     * @param false|string $escape
+     * @phpstan-param false|'attr'|'css'|'html'|'js'|'raw'|'url' $escape
      *
-     * @return mixed|null
+     * @return array|string|null
      */
     function old(string $key, $default = null, $escape = 'html')
     {
         // Ensure the session is loaded
         if (session_status() === PHP_SESSION_NONE && ENVIRONMENT !== 'testing') {
-            // @codeCoverageIgnoreStart
-            session();
-            // @codeCoverageIgnoreEnd
+            session(); // @codeCoverageIgnore
         }
 
         $request = Services::request();
@@ -873,7 +902,8 @@ if (! function_exists('route_to')) {
      * NOTE: This requires the controller/method to
      * have a route defined in the routes Config file.
      *
-     * @param mixed ...$params
+     * @param string     $method    Named route or Controller::method
+     * @param int|string ...$params One or more parameters to be passed to the route
      *
      * @return false|string
      */
@@ -894,7 +924,8 @@ if (! function_exists('session')) {
      *
      * @param string $val
      *
-     * @return mixed|Session|null
+     * @return array|bool|float|int|object|Session|string|null
+     * @phpstan-return ($val is null ? Session : array|bool|float|int|object|string|null)
      */
     function session(?string $val = null)
     {
@@ -922,7 +953,7 @@ if (! function_exists('service')) {
      *
      * @param mixed ...$params
      *
-     * @return mixed
+     * @return object
      */
     function service(string $name, ...$params)
     {
@@ -936,7 +967,7 @@ if (! function_exists('single_service')) {
      *
      * @param mixed ...$params
      *
-     * @return mixed
+     * @return object|null
      */
     function single_service(string $name, ...$params)
     {
@@ -950,7 +981,6 @@ if (! function_exists('single_service')) {
         $method = new ReflectionMethod($service, $name);
         $count  = $method->getNumberOfParameters();
         $mParam = $method->getParameters();
-        $params = $params ?? [];
 
         if ($count === 1) {
             // This service needs only one argument, which is the shared
@@ -983,10 +1013,26 @@ if (! function_exists('slash_item')) {
      */
     function slash_item(string $item): ?string
     {
-        $config     = config(App::class);
+        $config = config(App::class);
+
+        if (! property_exists($config, $item)) {
+            return null;
+        }
+
         $configItem = $config->{$item};
 
-        if (! isset($configItem) || empty(trim($configItem))) {
+        if (! is_scalar($configItem)) {
+            throw new RuntimeException(sprintf(
+                'Cannot convert "%s::$%s" of type "%s" to type "string".',
+                App::class,
+                $item,
+                gettype($configItem)
+            ));
+        }
+
+        $configItem = trim((string) $configItem);
+
+        if ($configItem === '') {
             return $configItem;
         }
 
@@ -1001,7 +1047,7 @@ if (! function_exists('stringify_attributes')) {
      * Helper function used to convert a string, array, or object
      * of attributes to a string.
      *
-     * @param mixed $attributes string, array, object
+     * @param array|object|string $attributes string, array, object that can be cast to array
      */
     function stringify_attributes($attributes, bool $js = false): string
     {
@@ -1031,7 +1077,7 @@ if (! function_exists('timer')) {
      * If no parameter is passed, it will return the timer instance,
      * otherwise will start or stop the timer intelligently.
      *
-     * @return mixed|Timer
+     * @return Timer
      */
     function timer(?string $name = null)
     {
@@ -1070,16 +1116,16 @@ if (! function_exists('view')) {
      * NOTE: Does not provide any escaping of the data, so that must
      * all be handled manually by the developer.
      *
-     * @param array $options Unused - reserved for third-party extensions.
+     * @param array $options Options for saveData or third-party extensions.
      */
     function view(string $name, array $data = [], array $options = []): string
     {
-        /**
-         * @var CodeIgniter\View\View $renderer
-         */
+        /** @var CodeIgniter\View\View $renderer */
         $renderer = Services::renderer();
 
-        $saveData = config(View::class)->saveData;
+        /** @var \CodeIgniter\Config\View $config */
+        $config   = config(View::class);
+        $saveData = $config->saveData;
 
         if (array_key_exists('saveData', $options)) {
             $saveData = (bool) $options['saveData'];
@@ -1095,7 +1141,7 @@ if (! function_exists('view_cell')) {
      * View cells are used within views to insert HTML chunks that are managed
      * by other classes.
      *
-     * @param null $params
+     * @param array|string|null $params
      *
      * @throws ReflectionException
      */
