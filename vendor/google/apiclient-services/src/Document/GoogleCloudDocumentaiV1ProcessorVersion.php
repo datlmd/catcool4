@@ -23,10 +23,14 @@ class GoogleCloudDocumentaiV1ProcessorVersion extends \Google\Model
    * @var string
    */
   public $createTime;
+  protected $deprecationInfoType = GoogleCloudDocumentaiV1ProcessorVersionDeprecationInfo::class;
+  protected $deprecationInfoDataType = '';
   /**
    * @var string
    */
   public $displayName;
+  protected $documentSchemaType = GoogleCloudDocumentaiV1DocumentSchema::class;
+  protected $documentSchemaDataType = '';
   /**
    * @var bool
    */
@@ -39,6 +43,8 @@ class GoogleCloudDocumentaiV1ProcessorVersion extends \Google\Model
    * @var string
    */
   public $kmsKeyVersionName;
+  protected $latestEvaluationType = GoogleCloudDocumentaiV1EvaluationReference::class;
+  protected $latestEvaluationDataType = '';
   /**
    * @var string
    */
@@ -63,6 +69,20 @@ class GoogleCloudDocumentaiV1ProcessorVersion extends \Google\Model
     return $this->createTime;
   }
   /**
+   * @param GoogleCloudDocumentaiV1ProcessorVersionDeprecationInfo
+   */
+  public function setDeprecationInfo(GoogleCloudDocumentaiV1ProcessorVersionDeprecationInfo $deprecationInfo)
+  {
+    $this->deprecationInfo = $deprecationInfo;
+  }
+  /**
+   * @return GoogleCloudDocumentaiV1ProcessorVersionDeprecationInfo
+   */
+  public function getDeprecationInfo()
+  {
+    return $this->deprecationInfo;
+  }
+  /**
    * @param string
    */
   public function setDisplayName($displayName)
@@ -75,6 +95,20 @@ class GoogleCloudDocumentaiV1ProcessorVersion extends \Google\Model
   public function getDisplayName()
   {
     return $this->displayName;
+  }
+  /**
+   * @param GoogleCloudDocumentaiV1DocumentSchema
+   */
+  public function setDocumentSchema(GoogleCloudDocumentaiV1DocumentSchema $documentSchema)
+  {
+    $this->documentSchema = $documentSchema;
+  }
+  /**
+   * @return GoogleCloudDocumentaiV1DocumentSchema
+   */
+  public function getDocumentSchema()
+  {
+    return $this->documentSchema;
   }
   /**
    * @param bool
@@ -117,6 +151,20 @@ class GoogleCloudDocumentaiV1ProcessorVersion extends \Google\Model
   public function getKmsKeyVersionName()
   {
     return $this->kmsKeyVersionName;
+  }
+  /**
+   * @param GoogleCloudDocumentaiV1EvaluationReference
+   */
+  public function setLatestEvaluation(GoogleCloudDocumentaiV1EvaluationReference $latestEvaluation)
+  {
+    $this->latestEvaluation = $latestEvaluation;
+  }
+  /**
+   * @return GoogleCloudDocumentaiV1EvaluationReference
+   */
+  public function getLatestEvaluation()
+  {
+    return $this->latestEvaluation;
   }
   /**
    * @param string

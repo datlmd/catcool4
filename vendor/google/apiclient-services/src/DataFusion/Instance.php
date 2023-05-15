@@ -63,6 +63,12 @@ class Instance extends \Google\Collection
    */
   public $enableStackdriverMonitoring;
   /**
+   * @var bool
+   */
+  public $enableZoneSeparation;
+  protected $eventPublishConfigType = EventPublishConfig::class;
+  protected $eventPublishConfigDataType = '';
+  /**
    * @var string
    */
   public $gcsBucket;
@@ -88,6 +94,10 @@ class Instance extends \Google\Collection
    * @var bool
    */
   public $privateInstance;
+  /**
+   * @var bool
+   */
+  public $satisfiesPzs;
   /**
    * @var string
    */
@@ -294,6 +304,34 @@ class Instance extends \Google\Collection
     return $this->enableStackdriverMonitoring;
   }
   /**
+   * @param bool
+   */
+  public function setEnableZoneSeparation($enableZoneSeparation)
+  {
+    $this->enableZoneSeparation = $enableZoneSeparation;
+  }
+  /**
+   * @return bool
+   */
+  public function getEnableZoneSeparation()
+  {
+    return $this->enableZoneSeparation;
+  }
+  /**
+   * @param EventPublishConfig
+   */
+  public function setEventPublishConfig(EventPublishConfig $eventPublishConfig)
+  {
+    $this->eventPublishConfig = $eventPublishConfig;
+  }
+  /**
+   * @return EventPublishConfig
+   */
+  public function getEventPublishConfig()
+  {
+    return $this->eventPublishConfig;
+  }
+  /**
    * @param string
    */
   public function setGcsBucket($gcsBucket)
@@ -390,6 +428,20 @@ class Instance extends \Google\Collection
   public function getPrivateInstance()
   {
     return $this->privateInstance;
+  }
+  /**
+   * @param bool
+   */
+  public function setSatisfiesPzs($satisfiesPzs)
+  {
+    $this->satisfiesPzs = $satisfiesPzs;
+  }
+  /**
+   * @return bool
+   */
+  public function getSatisfiesPzs()
+  {
+    return $this->satisfiesPzs;
   }
   /**
    * @param string

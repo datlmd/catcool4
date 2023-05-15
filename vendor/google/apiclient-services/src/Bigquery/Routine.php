@@ -54,6 +54,8 @@ class Routine extends \Google\Collection
    * @var string
    */
   public $lastModifiedTime;
+  protected $remoteFunctionOptionsType = RemoteFunctionOptions::class;
+  protected $remoteFunctionOptionsDataType = '';
   protected $returnTableTypeType = StandardSqlTableType::class;
   protected $returnTableTypeDataType = '';
   protected $returnTypeType = StandardSqlDataType::class;
@@ -64,6 +66,8 @@ class Routine extends \Google\Collection
    * @var string
    */
   public $routineType;
+  protected $sparkOptionsType = SparkOptions::class;
+  protected $sparkOptionsDataType = '';
   /**
    * @var bool
    */
@@ -196,6 +200,20 @@ class Routine extends \Google\Collection
     return $this->lastModifiedTime;
   }
   /**
+   * @param RemoteFunctionOptions
+   */
+  public function setRemoteFunctionOptions(RemoteFunctionOptions $remoteFunctionOptions)
+  {
+    $this->remoteFunctionOptions = $remoteFunctionOptions;
+  }
+  /**
+   * @return RemoteFunctionOptions
+   */
+  public function getRemoteFunctionOptions()
+  {
+    return $this->remoteFunctionOptions;
+  }
+  /**
    * @param StandardSqlTableType
    */
   public function setReturnTableType(StandardSqlTableType $returnTableType)
@@ -250,6 +268,20 @@ class Routine extends \Google\Collection
   public function getRoutineType()
   {
     return $this->routineType;
+  }
+  /**
+   * @param SparkOptions
+   */
+  public function setSparkOptions(SparkOptions $sparkOptions)
+  {
+    $this->sparkOptions = $sparkOptions;
+  }
+  /**
+   * @return SparkOptions
+   */
+  public function getSparkOptions()
+  {
+    return $this->sparkOptions;
   }
   /**
    * @param bool

@@ -26,7 +26,6 @@ use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
-use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @author Adam Marczuk <adam@marczuk.info>
@@ -43,16 +42,15 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements
             [
                 new CodeSample("<?php \$x = array(1 , \"2\");\n"),
                 new VersionSpecificCodeSample(
-                    <<<'SAMPLE'
-<?php
-    $x = [<<<EOD
-foo
-EOD
-        , 'bar'
-    ];
+                    <<<'PHP'
+                        <?php
+                            $x = [<<<EOD
+                        foo
+                        EOD
+                                , 'bar'
+                            ];
 
-SAMPLE
-                    ,
+                        PHP,
                     new VersionSpecification(70300),
                     ['after_heredoc' => true]
                 ),
@@ -73,7 +71,7 @@ SAMPLE
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+        for ($index = $tokens->count() - 1; $index > 0; --$index) {
             if ($tokens[$index]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                 $this->fixSpacing($index, $tokens);
             }
@@ -89,9 +87,6 @@ SAMPLE
             (new FixerOptionBuilder('after_heredoc', 'Whether the whitespace between heredoc end and comma should be removed.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
-                ->setNormalizer(static function (Options $options, $value) {
-                    return $value;
-                })
                 ->getOption(),
         ]);
     }
@@ -125,8 +120,6 @@ SAMPLE
 
     /**
      * Method to move index over the non-array elements like function calls or function declarations.
-     *
-     * @return int New index
      */
     private function skipNonArrayElements(int $index, Tokens $tokens): int
     {
@@ -142,6 +135,21 @@ SAMPLE
             }
         }
 
+        if ($tokens[$index]->equals(',') && $this->commaIsPartOfImplementsList($index, $tokens)) {
+            --$index;
+        }
+
         return $index;
+    }
+
+    private function commaIsPartOfImplementsList(int $index, Tokens $tokens): bool
+    {
+        do {
+            $index = $tokens->getPrevMeaningfulToken($index);
+
+            $current = $tokens[$index];
+        } while ($current->isGivenKind(T_STRING) || $current->equals(','));
+
+        return $current->isGivenKind(T_IMPLEMENTS);
     }
 }

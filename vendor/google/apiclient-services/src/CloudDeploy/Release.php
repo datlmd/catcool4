@@ -21,11 +21,17 @@ class Release extends \Google\Collection
 {
   protected $collection_key = 'targetSnapshots';
   /**
+   * @var bool
+   */
+  public $abandoned;
+  /**
    * @var string[]
    */
   public $annotations;
   protected $buildArtifactsType = BuildArtifact::class;
   protected $buildArtifactsDataType = 'array';
+  protected $conditionType = ReleaseCondition::class;
+  protected $conditionDataType = '';
   /**
    * @var string
    */
@@ -84,6 +90,20 @@ class Release extends \Google\Collection
   public $uid;
 
   /**
+   * @param bool
+   */
+  public function setAbandoned($abandoned)
+  {
+    $this->abandoned = $abandoned;
+  }
+  /**
+   * @return bool
+   */
+  public function getAbandoned()
+  {
+    return $this->abandoned;
+  }
+  /**
    * @param string[]
    */
   public function setAnnotations($annotations)
@@ -110,6 +130,20 @@ class Release extends \Google\Collection
   public function getBuildArtifacts()
   {
     return $this->buildArtifacts;
+  }
+  /**
+   * @param ReleaseCondition
+   */
+  public function setCondition(ReleaseCondition $condition)
+  {
+    $this->condition = $condition;
+  }
+  /**
+   * @return ReleaseCondition
+   */
+  public function getCondition()
+  {
+    return $this->condition;
   }
   /**
    * @param string

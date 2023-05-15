@@ -34,7 +34,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var array<string,array|true>
+     * @var array<string, array<string, bool|int|string>|true>
      */
     private static array $fixMap = [
         'array_key_exists' => [
@@ -281,6 +281,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
+    /**
+     * @param array{
+     *     index: int,
+     *     loweredName: string,
+     *     openBraceIndex: int,
+     *     closeBraceIndex: int,
+     * } $assertCall
+     */
     private function fixAssertTrueFalse(Tokens $tokens, ArgumentsAnalyzer $argumentsAnalyzer, array $assertCall): void
     {
         $testDefaultNamespaceTokenIndex = null;
@@ -375,6 +383,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @param array{
+     *     index: int,
+     *     loweredName: string,
+     *     openBraceIndex: int,
+     *     closeBraceIndex: int,
+     * } $assertCall
+     */
     private function fixAssertTrueFalseInstanceof(Tokens $tokens, array $assertCall, int $testIndex): bool
     {
         if ($tokens[$testIndex]->equals('!')) {
@@ -405,7 +421,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
         if ($tokens[$classEndIndex]->equalsAny([',', ')'])) { // do the fixing
             array_pop($classPartTokens);
-            $isInstanceOfVar = (reset($classPartTokens))->isGivenKind(T_VARIABLE);
+            $isInstanceOfVar = reset($classPartTokens)->isGivenKind(T_VARIABLE);
             $insertIndex = $testIndex - 1;
             $newTokens = [];
 
@@ -435,6 +451,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         return true;
     }
 
+    /**
+     * @param array{
+     *     index: int,
+     *     loweredName: string,
+     *     openBraceIndex: int,
+     *     closeBraceIndex: int,
+     * } $assertCall
+     */
     private function fixAssertSameEquals(Tokens $tokens, array $assertCall): void
     {
         // @ $this->/self::assertEquals/Same([$nextIndex])
@@ -507,6 +531,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
+    /**
+     * @return iterable<array{
+     *     index: int,
+     *     loweredName: string,
+     *     openBraceIndex: int,
+     *     closeBraceIndex: int,
+     * }>
+     */
     private function getPreviousAssertCall(Tokens $tokens, int $startIndex, int $endIndex): iterable
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
@@ -564,6 +596,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $tokens->clearTokenAndMergeSurroundingWhitespace($closeIndex);
     }
 
+    /**
+     * @param array<int, int> $argumentsIndices
+     */
     private function swapArguments(Tokens $tokens, array $argumentsIndices): void
     {
         [$firstArgumentIndex, $secondArgumentIndex] = array_keys($argumentsIndices);
@@ -587,6 +622,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $tokens->insertAt($firstArgumentIndex, $secondClone);
     }
 
+    /**
+     * @return list<Token>
+     */
     private function cloneAndClearTokens(Tokens $tokens, int $start, int $end): array
     {
         $clone = [];

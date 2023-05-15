@@ -31,9 +31,9 @@ class Config implements ConfigInterface
     private array $customFixers = [];
 
     /**
-     * @var null|iterable
+     * @var null|iterable<\SplFileInfo>
      */
-    private $finder;
+    private ?iterable $finder = null;
 
     private string $format = 'txt';
 
@@ -52,6 +52,11 @@ class Config implements ConfigInterface
      */
     private $phpExecutable;
 
+    /**
+     * @TODO: 4.0 - update to @PER
+     *
+     * @var array<string, array<string, mixed>|bool>
+     */
     private array $rules = ['@PSR12' => true];
 
     private bool $usingCache = true;

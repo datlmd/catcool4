@@ -53,6 +53,10 @@ class ResourceSearchResult extends \Google\Collection
   /**
    * @var string[]
    */
+  public $kmsKeys;
+  /**
+   * @var string[]
+   */
   public $labels;
   /**
    * @var string
@@ -88,6 +92,18 @@ class ResourceSearchResult extends \Google\Collection
    * @var string
    */
   public $state;
+  /**
+   * @var string[]
+   */
+  public $tagKeys;
+  /**
+   * @var string[]
+   */
+  public $tagValueIds;
+  /**
+   * @var string[]
+   */
+  public $tagValues;
   /**
    * @var string
    */
@@ -206,6 +222,20 @@ class ResourceSearchResult extends \Google\Collection
   public function getKmsKey()
   {
     return $this->kmsKey;
+  }
+  /**
+   * @param string[]
+   */
+  public function setKmsKeys($kmsKeys)
+  {
+    $this->kmsKeys = $kmsKeys;
+  }
+  /**
+   * @return string[]
+   */
+  public function getKmsKeys()
+  {
+    return $this->kmsKeys;
   }
   /**
    * @param string[]
@@ -346,6 +376,48 @@ class ResourceSearchResult extends \Google\Collection
   public function getState()
   {
     return $this->state;
+  }
+  /**
+   * @param string[]
+   */
+  public function setTagKeys($tagKeys)
+  {
+    $this->tagKeys = $tagKeys;
+  }
+  /**
+   * @return string[]
+   */
+  public function getTagKeys()
+  {
+    return $this->tagKeys;
+  }
+  /**
+   * @param string[]
+   */
+  public function setTagValueIds($tagValueIds)
+  {
+    $this->tagValueIds = $tagValueIds;
+  }
+  /**
+   * @return string[]
+   */
+  public function getTagValueIds()
+  {
+    return $this->tagValueIds;
+  }
+  /**
+   * @param string[]
+   */
+  public function setTagValues($tagValues)
+  {
+    $this->tagValues = $tagValues;
+  }
+  /**
+   * @return string[]
+   */
+  public function getTagValues()
+  {
+    return $this->tagValues;
   }
   /**
    * @param string

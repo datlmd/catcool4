@@ -87,7 +87,7 @@ final class TypeExpression
                 (?<constant> # single constant value (case insensitive), e.g.: 1, `\'a\'`
                     (?i)
                     null | true | false
-                    | [\d.]+
+                    | -?(?:\d+(?:\.\d*)?|\.\d+) # all sorts of numbers with or without minus, e.g.: 1, 1.1, 1., .1, -1
                     | \'[^\']+?\' | "[^"]+?"
                     | [@$]?(?:this | self | static)
                     (?-i)
@@ -105,10 +105,7 @@ final class TypeExpression
     )
     ';
 
-    /**
-     * @var string
-     */
-    private $value;
+    private string $value;
 
     private bool $isUnionType = false;
 
@@ -119,15 +116,12 @@ final class TypeExpression
 
     private string $typesGlue = '|';
 
-    /**
-     * @var null|NamespaceAnalysis
-     */
-    private $namespace;
+    private ?NamespaceAnalysis $namespace;
 
     /**
      * @var NamespaceUseAnalysis[]
      */
-    private $namespaceUses;
+    private array $namespaceUses;
 
     /**
      * @param NamespaceUseAnalysis[] $namespaceUses
@@ -153,8 +147,8 @@ final class TypeExpression
     {
         if ($this->isUnionType) {
             return array_map(
-                static function (array $type) { return $type['expression']->toString(); },
-                $this->innerTypeExpressions
+                static fn (array $type) => $type['expression']->toString(),
+                $this->innerTypeExpressions,
             );
         }
 
@@ -185,8 +179,8 @@ final class TypeExpression
         if ($this->isUnionType) {
             $this->innerTypeExpressions = Utils::stableSort(
                 $this->innerTypeExpressions,
-                static function (array $type): self { return $type['expression']; },
-                $compareCallback
+                static fn (array $type): self => $type['expression'],
+                $compareCallback,
             );
 
             $this->value = implode($this->getTypesGlue(), $this->getTypes());

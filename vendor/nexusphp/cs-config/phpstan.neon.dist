@@ -1,4 +1,5 @@
 includes:
+  - phpstan-baseline.neon.dist
   - vendor/phpstan/phpstan/conf/bleedingEdge.neon
 
 parameters:
@@ -23,3 +24,5 @@ parameters:
   reportMaybesInMethodSignatures: true
   reportStaticMethodSignatures: true
   checkTooWideReturnTypesInProtectedAndPublicMethods: true
+  featureToggles:
+    disableCheckMissingIterableValueType: false

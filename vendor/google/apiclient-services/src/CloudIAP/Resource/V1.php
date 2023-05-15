@@ -41,8 +41,9 @@ class V1 extends \Google\Service\Resource
    * (v1.getIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
-   * requested. See the operation documentation for the appropriate value for this
-   * field.
+   * requested. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param GetIamPolicyRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Policy
@@ -76,8 +77,9 @@ class V1 extends \Google\Service\Resource
    * access#managing_access_via_the_api (v1.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
-   * specified. See the operation documentation for the appropriate value for this
-   * field.
+   * specified. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param SetIamPolicyRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Policy
@@ -95,8 +97,9 @@ class V1 extends \Google\Service\Resource
    * (v1.testIamPermissions)
    *
    * @param string $resource REQUIRED: The resource for which the policy detail is
-   * being requested. See the operation documentation for the appropriate value
-   * for this field.
+   * being requested. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param TestIamPermissionsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return TestIamPermissionsResponse
@@ -117,9 +120,11 @@ class V1 extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask The field mask specifying which IAP settings
-   * should be updated. If omitted, the all of the settings are updated. See
+   * should be updated. If omitted, then all of the settings are updated. See
    * https://developers.google.com/protocol-
-   * buffers/docs/reference/google.protobuf#fieldmask
+   * buffers/docs/reference/google.protobuf#fieldmask. Note: All IAP reauth
+   * settings must always be set together, using the field mask:
+   * `iapSettings.accessSettings.reauthSettings`.
    * @return IapSettings
    */
   public function updateIapSettings($name, IapSettings $postBody, $optParams = [])

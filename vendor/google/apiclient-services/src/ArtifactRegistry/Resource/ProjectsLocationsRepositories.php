@@ -30,7 +30,7 @@ use Google\Service\ArtifactRegistry\TestIamPermissionsResponse;
  * Typical usage is:
  *  <code>
  *   $artifactregistryService = new Google\Service\ArtifactRegistry(...);
- *   $repositories = $artifactregistryService->repositories;
+ *   $repositories = $artifactregistryService->projects_locations_repositories;
  *  </code>
  */
 class ProjectsLocationsRepositories extends \Google\Service\Resource
@@ -87,8 +87,9 @@ class ProjectsLocationsRepositories extends \Google\Service\Resource
    * Gets the IAM policy for a given resource. (repositories.getIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
-   * requested. See the operation documentation for the appropriate value for this
-   * field.
+   * requested. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int options.requestedPolicyVersion Optional. The maximum policy
@@ -153,8 +154,9 @@ class ProjectsLocationsRepositories extends \Google\Service\Resource
    * Updates the IAM policy for a given resource. (repositories.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
-   * specified. See the operation documentation for the appropriate value for this
-   * field.
+   * specified. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param SetIamPolicyRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Policy
@@ -170,8 +172,9 @@ class ProjectsLocationsRepositories extends \Google\Service\Resource
    * (repositories.testIamPermissions)
    *
    * @param string $resource REQUIRED: The resource for which the policy detail is
-   * being requested. See the operation documentation for the appropriate value
-   * for this field.
+   * being requested. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param TestIamPermissionsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return TestIamPermissionsResponse

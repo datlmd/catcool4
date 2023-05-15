@@ -19,22 +19,32 @@ namespace Google\Service\Datastream;
 
 class OracleSourceConfig extends \Google\Model
 {
-  protected $dropLargeObjectsType = OracleDropLargeObjects::class;
+  protected $dropLargeObjectsType = DropLargeObjects::class;
   protected $dropLargeObjectsDataType = '';
   protected $excludeObjectsType = OracleRdbms::class;
   protected $excludeObjectsDataType = '';
   protected $includeObjectsType = OracleRdbms::class;
   protected $includeObjectsDataType = '';
+  /**
+   * @var int
+   */
+  public $maxConcurrentBackfillTasks;
+  /**
+   * @var int
+   */
+  public $maxConcurrentCdcTasks;
+  protected $streamLargeObjectsType = StreamLargeObjects::class;
+  protected $streamLargeObjectsDataType = '';
 
   /**
-   * @param OracleDropLargeObjects
+   * @param DropLargeObjects
    */
-  public function setDropLargeObjects(OracleDropLargeObjects $dropLargeObjects)
+  public function setDropLargeObjects(DropLargeObjects $dropLargeObjects)
   {
     $this->dropLargeObjects = $dropLargeObjects;
   }
   /**
-   * @return OracleDropLargeObjects
+   * @return DropLargeObjects
    */
   public function getDropLargeObjects()
   {
@@ -67,6 +77,48 @@ class OracleSourceConfig extends \Google\Model
   public function getIncludeObjects()
   {
     return $this->includeObjects;
+  }
+  /**
+   * @param int
+   */
+  public function setMaxConcurrentBackfillTasks($maxConcurrentBackfillTasks)
+  {
+    $this->maxConcurrentBackfillTasks = $maxConcurrentBackfillTasks;
+  }
+  /**
+   * @return int
+   */
+  public function getMaxConcurrentBackfillTasks()
+  {
+    return $this->maxConcurrentBackfillTasks;
+  }
+  /**
+   * @param int
+   */
+  public function setMaxConcurrentCdcTasks($maxConcurrentCdcTasks)
+  {
+    $this->maxConcurrentCdcTasks = $maxConcurrentCdcTasks;
+  }
+  /**
+   * @return int
+   */
+  public function getMaxConcurrentCdcTasks()
+  {
+    return $this->maxConcurrentCdcTasks;
+  }
+  /**
+   * @param StreamLargeObjects
+   */
+  public function setStreamLargeObjects(StreamLargeObjects $streamLargeObjects)
+  {
+    $this->streamLargeObjects = $streamLargeObjects;
+  }
+  /**
+   * @return StreamLargeObjects
+   */
+  public function getStreamLargeObjects()
+  {
+    return $this->streamLargeObjects;
   }
 }
 

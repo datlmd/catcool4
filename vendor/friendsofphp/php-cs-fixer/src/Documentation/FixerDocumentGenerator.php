@@ -105,11 +105,9 @@ RST;
 
         if ($deprecationDescription || $riskyDescription) {
             $warningsHeader = 'Warning';
-            $warningsSeparator = '';
 
             if ($deprecationDescription && $riskyDescription) {
                 $warningsHeader = 'Warnings';
-                $warningsSeparator = "\n";
             }
 
             $warningsHeaderLine = str_repeat('-', \strlen($warningsHeader));
@@ -150,19 +148,17 @@ RST;
 
                 if (null === $allowed) {
                     $allowedKind = 'Allowed types';
-                    $allowed = array_map(static function ($value): string {
-                        return '``'.$value.'``';
-                    }, $option->getAllowedTypes());
+                    $allowed = array_map(
+                        static fn ($value): string => '``'.$value.'``',
+                        $option->getAllowedTypes(),
+                    );
                 } else {
                     $allowedKind = 'Allowed values';
-
-                    foreach ($allowed as &$value) {
-                        if ($value instanceof AllowedValueSubset) {
-                            $value = 'a subset of ``'.HelpCommand::toString($value->getAllowedValues()).'``';
-                        } else {
-                            $value = '``'.HelpCommand::toString($value).'``';
-                        }
-                    }
+                    $allowed = array_map(static function ($value): string {
+                        return $value instanceof AllowedValueSubset
+                            ? 'a subset of ``'.HelpCommand::toString($value->getAllowedValues()).'``'
+                            : '``'.HelpCommand::toString($value).'``';
+                    }, $allowed);
                 }
 
                 $allowed = implode(', ', $allowed);

@@ -30,7 +30,7 @@ use Google\Service\BigQueryDataTransfer\TransferConfig;
  * Typical usage is:
  *  <code>
  *   $bigquerydatatransferService = new Google\Service\BigQueryDataTransfer(...);
- *   $transferConfigs = $bigquerydatatransferService->transferConfigs;
+ *   $transferConfigs = $bigquerydatatransferService->projects_locations_transferConfigs;
  *  </code>
  */
 class ProjectsLocationsTransferConfigs extends \Google\Service\Resource
@@ -50,29 +50,30 @@ class ProjectsLocationsTransferConfigs extends \Google\Service\Resource
    * with this transfer configuration. This is required only if
    * `transferConfig.dataSourceId` is 'youtube_channel' and new credentials are
    * needed, as indicated by `CheckValidCreds`. In order to obtain
-   * authorization_code, please make a request to https://www.gstatic.com/bigquery
-   * datatransfer/oauthz/auth?client_id==_uri=urn:ietf:wg:oauth:2.0:oob_type=autho
-   * rization_code * client_id should be OAuth client_id of BigQuery DTS API for
-   * the given data source returned by ListDataSources method. *
+   * authorization_code, make a request to the following URL: https://www.gstatic.
+   * com/bigquerydatatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob_t
+   * ype=authorization_code_id=client_id=data_source_scopes * The client_id is the
+   * OAuth client_id of the a data source as returned by ListDataSources method. *
    * data_source_scopes are the scopes returned by ListDataSources method. Note
    * that this should not be set when `service_account_name` is used to create the
    * transfer config.
-   * @opt_param string serviceAccountName Optional service account name. If this
-   * field is set, transfer config will be created with this service account
-   * credential. It requires that requesting user calling this API has permissions
-   * to act as this service account. Note that not all data sources support
-   * service account credentials when creating transfer config. Please refer to
-   * this public guide for the latest list of data sources with service account
-   * support: https://cloud.google.com/bigquery-transfer/docs/use-service-accounts
+   * @opt_param string serviceAccountName Optional service account email. If this
+   * field is set, the transfer config will be created with this service account's
+   * credentials. It requires that the requesting user calling this API has
+   * permissions to act as this service account. Note that not all data sources
+   * support service account credentials when creating a transfer config. For the
+   * latest list of data sources, read about [using service
+   * accounts](https://cloud.google.com/bigquery-transfer/docs/use-service-
+   * accounts).
    * @opt_param string versionInfo Optional version info. This is required only if
-   * `transferConfig.dataSourceId` is anything else but 'youtube_channel' and new
-   * credentials are needed, as indicated by `CheckValidCreds`. In order to obtain
-   * version info, please make a request to https://www.gstatic.com/bigquerydatatr
-   * ansfer/oauthz/auth?client_id==_uri=urn:ietf:wg:oauth:2.0:oob_type=version_inf
-   * o * client_id should be OAuth client_id of BigQuery DTS API for the given
-   * data source returned by ListDataSources method. * data_source_scopes are the
-   * scopes returned by ListDataSources method. Note that this should not be set
-   * when `service_account_name` is used to create the transfer config.
+   * `transferConfig.dataSourceId` is not 'youtube_channel' and new credentials
+   * are needed, as indicated by `CheckValidCreds`. In order to obtain version
+   * info, make a request to the following URL: https://www.gstatic.com/bigqueryda
+   * tatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob_type=version_in
+   * fo_id=client_id=data_source_scopes * The client_id is the OAuth client_id of
+   * the a data source as returned by ListDataSources method. * data_source_scopes
+   * are the scopes returned by ListDataSources method. Note that this should not
+   * be set when `service_account_name` is used to create the transfer config.
    * @return TransferConfig
    */
   public function create($parent, TransferConfig $postBody, $optParams = [])
@@ -155,32 +156,32 @@ class ProjectsLocationsTransferConfigs extends \Google\Service\Resource
    * with this transfer configuration. This is required only if
    * `transferConfig.dataSourceId` is 'youtube_channel' and new credentials are
    * needed, as indicated by `CheckValidCreds`. In order to obtain
-   * authorization_code, please make a request to https://www.gstatic.com/bigquery
-   * datatransfer/oauthz/auth?client_id==_uri=urn:ietf:wg:oauth:2.0:oob_type=autho
-   * rization_code * client_id should be OAuth client_id of BigQuery DTS API for
-   * the given data source returned by ListDataSources method. *
+   * authorization_code, make a request to the following URL: https://www.gstatic.
+   * com/bigquerydatatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob_t
+   * ype=authorization_code_id=client_id=data_source_scopes * The client_id is the
+   * OAuth client_id of the a data source as returned by ListDataSources method. *
    * data_source_scopes are the scopes returned by ListDataSources method. Note
-   * that this should not be set when `service_account_name` is used to create the
+   * that this should not be set when `service_account_name` is used to update the
    * transfer config.
-   * @opt_param string serviceAccountName Optional service account name. If this
-   * field is set and "service_account_name" is set in update_mask, transfer
-   * config will be created with this service account credential. It requires that
-   * requesting user calling this API has permissions to act as this service
-   * account. Note that not all data sources support service account credentials
-   * when creating transfer config. Please refer to this public guide for the
-   * latest list of data sources with service account support:
-   * https://cloud.google.com/bigquery-transfer/docs/use-service-accounts
+   * @opt_param string serviceAccountName Optional service account email. If this
+   * field is set, the transfer config will be created with this service account's
+   * credentials. It requires that the requesting user calling this API has
+   * permissions to act as this service account. Note that not all data sources
+   * support service account credentials when creating a transfer config. For the
+   * latest list of data sources, read about [using service
+   * accounts](https://cloud.google.com/bigquery-transfer/docs/use-service-
+   * accounts).
    * @opt_param string updateMask Required. Required list of fields to be updated
    * in this request.
    * @opt_param string versionInfo Optional version info. This is required only if
-   * `transferConfig.dataSourceId` is anything else but 'youtube_channel' and new
-   * credentials are needed, as indicated by `CheckValidCreds`. In order to obtain
-   * version info, please make a request to https://www.gstatic.com/bigquerydatatr
-   * ansfer/oauthz/auth?client_id==_uri=urn:ietf:wg:oauth:2.0:oob_type=version_inf
-   * o * client_id should be OAuth client_id of BigQuery DTS API for the given
-   * data source returned by ListDataSources method. * data_source_scopes are the
-   * scopes returned by ListDataSources method. Note that this should not be set
-   * when `service_account_name` is used to create the transfer config.
+   * `transferConfig.dataSourceId` is not 'youtube_channel' and new credentials
+   * are needed, as indicated by `CheckValidCreds`. In order to obtain version
+   * info, make a request to the following URL: https://www.gstatic.com/bigqueryda
+   * tatransfer/oauthz/auth?redirect_uri=urn:ietf:wg:oauth:2.0:oob_type=version_in
+   * fo_id=client_id=data_source_scopes * The client_id is the OAuth client_id of
+   * the a data source as returned by ListDataSources method. * data_source_scopes
+   * are the scopes returned by ListDataSources method. Note that this should not
+   * be set when `service_account_name` is used to update the transfer config.
    * @return TransferConfig
    */
   public function patch($name, TransferConfig $postBody, $optParams = [])

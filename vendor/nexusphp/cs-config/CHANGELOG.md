@@ -5,6 +5,41 @@ All notable changes to this library will be documented in this file:
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v3.8.0](https://github.com/NexusPHP/cs-config/compare/v3.7.0...v3.8.0) - 2022-11-01
+
+- Bump php-cs-fixer to v3.13
+- Add 'case_sensitive' option to 'general_phpdoc_annotation_remove'
+- Add 'closure_fn_spacing' option to 'function_declaration'
+
+## [v3.7.0](https://github.com/NexusPHP/cs-config/compare/v3.6.0...v3.7.0) - 2022-10-15
+
+- Use dependabot for updates
+- Bump php-cs-fixer version to v3.12
+- Use phpstan baseline
+- Update action workflows
+
+## [v3.6.0](https://github.com/NexusPHP/cs-config/compare/v3.5.0...v3.6.0) - 2022-09-02
+
+- Add new option to `phpdoc_separation`
+- Remove deprecated rules
+- Configure `no_trailing_comma_in_singleline`
+- Bump php-cs-fixer to ^3.11
+- Configure `whitespace_after_comma_in_array`
+- Use available option of `phpdoc_order`
+- Configure `no_multiple_statements_per_line` rule
+- Bump php-cs-fixer to v3.10
+- Fix PHPStan error
+
+## [v3.5.0](https://github.com/NexusPHP/cs-config/compare/v3.4.0...v3.5.0) - 2022-07-11
+
+- Change 'concat_space' to none
+- Configure new rules in v3.9.1
+- \[BC BREAK\] Drop Nexus73 ruleset
+- Suppress missing iterable value type hints
+- Remove use of deprecated rule
+- Deprecate `Nexus/space_after_comment_start`
+- Configure new rules in v3.8
+
 ## [v3.4.0](https://github.com/NexusPHP/cs-config/compare/v3.3.4...v3.4.0) - 2022-02-09
 
 - Fix code style lint

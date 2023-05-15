@@ -22,23 +22,17 @@ final class FixerDefinition implements FixerDefinitionInterface
     private string $summary;
 
     /**
-     * @var CodeSampleInterface[]
+     * @var list<CodeSampleInterface>
      */
     private array $codeSamples;
 
-    /**
-     * @var null|string
-     */
-    private $description;
+    private ?string $description;
+
+    private ?string $riskyDescription;
 
     /**
-     * @var null|string
-     */
-    private $riskyDescription;
-
-    /**
-     * @param CodeSampleInterface[] $codeSamples      array of samples, where single sample is [code, configuration]
-     * @param null|string           $riskyDescription null for non-risky fixer
+     * @param list<CodeSampleInterface> $codeSamples      array of samples, where single sample is [code, configuration]
+     * @param null|string               $riskyDescription null for non-risky fixer
      */
     public function __construct(
         string $summary,

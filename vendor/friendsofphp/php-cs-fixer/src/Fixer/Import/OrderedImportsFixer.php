@@ -172,6 +172,7 @@ use Bar;
     /**
      * {@inheritdoc}
      *
+     * Must run before BlankLineBetweenImportGroupsFixer.
      * Must run after GlobalNamespaceImportFixer, NoLeadingImportSlashFixer.
      */
     public function getPriority(): int
@@ -332,7 +333,7 @@ use Bar;
     }
 
     /**
-     * @param int[] $uses
+     * @param list<int> $uses
      */
     private function getNewOrder(array $uses, Tokens $tokens): array
     {
@@ -461,7 +462,7 @@ use Bar;
                     }
 
                     $namespaceTokens = [];
-                    $nextPartIndex = $tokens->getTokenNotOfKindSibling($index, 1, [[','], [T_WHITESPACE]]);
+                    $nextPartIndex = $tokens->getTokenNotOfKindSibling($index, 1, [',', [T_WHITESPACE]]);
                     $startIndex = $nextPartIndex;
                     $index = $nextPartIndex;
 
@@ -516,7 +517,27 @@ use Bar;
     }
 
     /**
-     * @param array[] $indices
+     * @param array<
+     *     int,
+     *     array{
+     *         namespace: string,
+     *         startIndex: int,
+     *         endIndex: int,
+     *         importType: string,
+     *         group: bool,
+     *     }
+     * > $indices
+     *
+     * @return array<
+     *     int,
+     *     array{
+     *         namespace: string,
+     *         startIndex: int,
+     *         endIndex: int,
+     *         importType: string,
+     *         group: bool,
+     *     }
+     * >
      */
     private function sortByAlgorithm(array $indices): array
     {

@@ -25,6 +25,7 @@ use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,6 +43,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
  *
  * @internal
  */
+#[AsCommand(name: 'fix')]
 final class FixCommand extends Command
 {
     /**
@@ -112,6 +114,8 @@ NOTE: if there is an error like "errors reported during linting after fixing", y
 The <comment>--rules</comment> option limits the rules to apply to the
 project:
 
+EOF. /* @TODO: 4.0 - change to @PER */ <<<'EOF'
+
     <info>$ php %command.full_name% /path/to/project --rules=@PSR12</info>
 
 By default the PSR-12 rules are used.
@@ -179,7 +183,7 @@ Exit code of the fix command is built using following bit flags:
 * 64 - Exception raised within the application.
 
 EOF
-            ;
+        ;
     }
 
     /**

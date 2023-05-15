@@ -26,6 +26,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class FunctionsAnalyzer
 {
+    /**
+     * @var array{tokens: string, imports: list<NamespaceUseAnalysis>, declarations: list<int>}
+     */
     private array $functionsAnalysis = ['tokens' => '', 'imports' => [], 'declarations' => []];
 
     /**
@@ -134,7 +137,7 @@ final class FunctionsAnalyzer
     }
 
     /**
-     * @return ArgumentAnalysis[]
+     * @return array<string, ArgumentAnalysis>
      */
     public function getFunctionArguments(Tokens $tokens, int $functionIndex): array
     {

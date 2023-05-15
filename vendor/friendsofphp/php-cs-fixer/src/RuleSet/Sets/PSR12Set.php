@@ -26,6 +26,7 @@ final class PSR12Set extends AbstractRuleSetDescription
         return [
             '@PSR2' => true,
             'blank_line_after_opening_tag' => true,
+            'blank_line_between_import_groups' => true,
             'braces' => [
                 'allow_single_line_anonymous_class_with_empty_body' => true,
             ],
@@ -57,6 +58,7 @@ final class PSR12Set extends AbstractRuleSetDescription
             'return_type_declaration' => true,
             'short_scalar_cast' => true,
             'single_blank_line_before_namespace' => true,
+            'single_import_per_statement' => ['group_to_single_imports' => false],
             'single_trait_insert_per_statement' => true,
             'ternary_operator_spaces' => true,
             'visibility_required' => true,

@@ -19,7 +19,7 @@ namespace Google\Service\Compute;
 
 class BackendService extends \Google\Collection
 {
-  protected $collection_key = 'localityLbPolicies';
+  protected $collection_key = 'serviceBindings';
   /**
    * @var int
    */
@@ -30,6 +30,10 @@ class BackendService extends \Google\Collection
   protected $cdnPolicyDataType = '';
   protected $circuitBreakersType = CircuitBreakers::class;
   protected $circuitBreakersDataType = '';
+  /**
+   * @var string
+   */
+  public $compressionMode;
   protected $connectionDrainingType = ConnectionDraining::class;
   protected $connectionDrainingDataType = '';
   protected $connectionTrackingPolicyType = BackendServiceConnectionTrackingPolicy::class;
@@ -95,6 +99,10 @@ class BackendService extends \Google\Collection
   protected $maxStreamDurationType = Duration::class;
   protected $maxStreamDurationDataType = '';
   /**
+   * @var string[]
+   */
+  public $metadatas;
+  /**
    * @var string
    */
   public $name;
@@ -130,6 +138,10 @@ class BackendService extends \Google\Collection
    * @var string
    */
   public $selfLink;
+  /**
+   * @var string[]
+   */
+  public $serviceBindings;
   /**
    * @var string
    */
@@ -196,6 +208,20 @@ class BackendService extends \Google\Collection
   public function getCircuitBreakers()
   {
     return $this->circuitBreakers;
+  }
+  /**
+   * @param string
+   */
+  public function setCompressionMode($compressionMode)
+  {
+    $this->compressionMode = $compressionMode;
+  }
+  /**
+   * @return string
+   */
+  public function getCompressionMode()
+  {
+    return $this->compressionMode;
   }
   /**
    * @param ConnectionDraining
@@ -478,6 +504,20 @@ class BackendService extends \Google\Collection
     return $this->maxStreamDuration;
   }
   /**
+   * @param string[]
+   */
+  public function setMetadatas($metadatas)
+  {
+    $this->metadatas = $metadatas;
+  }
+  /**
+   * @return string[]
+   */
+  public function getMetadatas()
+  {
+    return $this->metadatas;
+  }
+  /**
    * @param string
    */
   public function setName($name)
@@ -616,6 +656,20 @@ class BackendService extends \Google\Collection
   public function getSelfLink()
   {
     return $this->selfLink;
+  }
+  /**
+   * @param string[]
+   */
+  public function setServiceBindings($serviceBindings)
+  {
+    $this->serviceBindings = $serviceBindings;
+  }
+  /**
+   * @return string[]
+   */
+  public function getServiceBindings()
+  {
+    return $this->serviceBindings;
   }
   /**
    * @param string

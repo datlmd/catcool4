@@ -42,18 +42,18 @@ final class Error
 
     private string $filePath;
 
-    /**
-     * @var null|\Throwable
-     */
-    private $source;
+    private ?\Throwable $source;
 
+    /**
+     * @var list<string>
+     */
     private array $appliedFixers;
 
-    /**
-     * @var null|string
-     */
-    private $diff;
+    private ?string $diff;
 
+    /**
+     * @param list<string> $appliedFixers
+     */
     public function __construct(int $type, string $filePath, ?\Throwable $source = null, array $appliedFixers = [], ?string $diff = null)
     {
         $this->type = $type;
@@ -78,6 +78,9 @@ final class Error
         return $this->type;
     }
 
+    /**
+     * @return list<string>
+     */
     public function getAppliedFixers(): array
     {
         return $this->appliedFixers;

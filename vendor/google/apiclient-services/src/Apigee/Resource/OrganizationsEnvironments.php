@@ -17,6 +17,7 @@
 
 namespace Google\Service\Apigee\Resource;
 
+use Google\Service\Apigee\GoogleCloudApigeeV1ApiSecurityRuntimeConfig;
 use Google\Service\Apigee\GoogleCloudApigeeV1DebugMask;
 use Google\Service\Apigee\GoogleCloudApigeeV1Environment;
 use Google\Service\Apigee\GoogleCloudApigeeV1EnvironmentConfig;
@@ -34,7 +35,7 @@ use Google\Service\Apigee\GoogleProtobufEmpty;
  * Typical usage is:
  *  <code>
  *   $apigeeService = new Google\Service\Apigee(...);
- *   $environments = $apigeeService->environments;
+ *   $environments = $apigeeService->organizations_environments;
  *  </code>
  */
 class OrganizationsEnvironments extends \Google\Service\Resource
@@ -48,8 +49,7 @@ class OrganizationsEnvironments extends \Google\Service\Resource
    * @param GoogleCloudApigeeV1Environment $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string name Optional. Name of the environment. Alternatively, the
-   * name may be specified in the request body in the name field.
+   * @opt_param string name Optional. Name of the environment.
    * @return GoogleLongrunningOperation
    */
   public function create($parent, GoogleCloudApigeeV1Environment $postBody, $optParams = [])
@@ -59,7 +59,11 @@ class OrganizationsEnvironments extends \Google\Service\Resource
     return $this->call('create', [$params], GoogleLongrunningOperation::class);
   }
   /**
-   * Deletes an environment from an organization. (environments.delete)
+   * Deletes an environment from an organization. **Warning: You must delete all
+   * key value maps and key value entries before you delete an environment.**
+   * Otherwise, if you re-create the environment the key value map entry
+   * operations will encounter encryption/decryption discrepancies.
+   * (environments.delete)
    *
    * @param string $name Required. Name of the environment. Use the following
    * structure in your request: `organizations/{org}/environments/{env}`
@@ -85,6 +89,23 @@ class OrganizationsEnvironments extends \Google\Service\Resource
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
     return $this->call('get', [$params], GoogleCloudApigeeV1Environment::class);
+  }
+  /**
+   * Gets the API Security runtime configuration for an environment. This named
+   * ApiSecurityRuntimeConfig to prevent conflicts with ApiSecurityConfig from
+   * addon config. (environments.getApiSecurityRuntimeConfig)
+   *
+   * @param string $name Required. Name of the environment API Security Runtime
+   * configuration resource. Use the following structure in your request:
+   * `organizations/{org}/environments/{env}/apiSecurityRuntimeConfig`
+   * @param array $optParams Optional parameters.
+   * @return GoogleCloudApigeeV1ApiSecurityRuntimeConfig
+   */
+  public function getApiSecurityRuntimeConfig($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('getApiSecurityRuntimeConfig', [$params], GoogleCloudApigeeV1ApiSecurityRuntimeConfig::class);
   }
   /**
    * Gets the debug mask singleton resource for an environment.
@@ -126,8 +147,9 @@ class OrganizationsEnvironments extends \Google\Service\Resource
    * permission to call this API. (environments.getIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
-   * requested. See the operation documentation for the appropriate value for this
-   * field.
+   * requested. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int options.requestedPolicyVersion Optional. The maximum policy
@@ -167,6 +189,26 @@ class OrganizationsEnvironments extends \Google\Service\Resource
     return $this->call('getTraceConfig', [$params], GoogleCloudApigeeV1TraceConfig::class);
   }
   /**
+   * Updates properties for an Apigee environment with patch semantics using a
+   * field mask. **Note:** Not supported for Apigee hybrid.
+   * (environments.modifyEnvironment)
+   *
+   * @param string $name Required. Name of the environment. Use the following
+   * structure in your request: `organizations/{org}/environments/{environment}`.
+   * @param GoogleCloudApigeeV1Environment $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask List of fields to be updated. Fields that can be
+   * updated: node_config.
+   * @return GoogleLongrunningOperation
+   */
+  public function modifyEnvironment($name, GoogleCloudApigeeV1Environment $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('modifyEnvironment', [$params], GoogleLongrunningOperation::class);
+  }
+  /**
    * Sets the IAM policy on an environment, if the policy already exists it will
    * be replaced. For more information, see [Manage users, roles, and permissions
    * using the API](https://cloud.google.com/apigee/docs/api-platform/system-
@@ -175,8 +217,9 @@ class OrganizationsEnvironments extends \Google\Service\Resource
    * (environments.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
-   * specified. See the operation documentation for the appropriate value for this
-   * field.
+   * specified. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param GoogleIamV1SetIamPolicyRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleIamV1Policy
@@ -210,8 +253,9 @@ class OrganizationsEnvironments extends \Google\Service\Resource
    * returned). (environments.testIamPermissions)
    *
    * @param string $resource REQUIRED: The resource for which the policy detail is
-   * being requested. See the operation documentation for the appropriate value
-   * for this field.
+   * being requested. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param GoogleIamV1TestIamPermissionsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleIamV1TestIamPermissionsResponse

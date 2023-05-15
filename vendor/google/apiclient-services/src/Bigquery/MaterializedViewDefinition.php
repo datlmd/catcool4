@@ -19,6 +19,13 @@ namespace Google\Service\Bigquery;
 
 class MaterializedViewDefinition extends \Google\Model
 {
+  protected $internal_gapi_mappings = [
+        "allowNonIncrementalDefinition" => "allow_non_incremental_definition",
+  ];
+  /**
+   * @var bool
+   */
+  public $allowNonIncrementalDefinition;
   /**
    * @var bool
    */
@@ -30,12 +37,30 @@ class MaterializedViewDefinition extends \Google\Model
   /**
    * @var string
    */
+  public $maxStaleness;
+  /**
+   * @var string
+   */
   public $query;
   /**
    * @var string
    */
   public $refreshIntervalMs;
 
+  /**
+   * @param bool
+   */
+  public function setAllowNonIncrementalDefinition($allowNonIncrementalDefinition)
+  {
+    $this->allowNonIncrementalDefinition = $allowNonIncrementalDefinition;
+  }
+  /**
+   * @return bool
+   */
+  public function getAllowNonIncrementalDefinition()
+  {
+    return $this->allowNonIncrementalDefinition;
+  }
   /**
    * @param bool
    */
@@ -63,6 +88,20 @@ class MaterializedViewDefinition extends \Google\Model
   public function getLastRefreshTime()
   {
     return $this->lastRefreshTime;
+  }
+  /**
+   * @param string
+   */
+  public function setMaxStaleness($maxStaleness)
+  {
+    $this->maxStaleness = $maxStaleness;
+  }
+  /**
+   * @return string
+   */
+  public function getMaxStaleness()
+  {
+    return $this->maxStaleness;
   }
   /**
    * @param string
