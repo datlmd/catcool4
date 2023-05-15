@@ -37,6 +37,8 @@ use ReturnTypeWillChange;
  * $cookie2 = $cookie->withName('prod_cookie');
  * $cookie2->getName(); // prod_cookie
  * ```
+ *
+ * @template-implements ArrayAccess<string, bool|int|string>
  */
 class Cookie implements ArrayAccess, CloneableCookieInterface
 {
@@ -94,7 +96,7 @@ class Cookie implements ArrayAccess, CloneableCookieInterface
      * Default attributes for a Cookie object. The keys here are the
      * lowercase attribute names. Do not camelCase!
      *
-     * @var array<string, mixed>
+     * @var array<string, bool|int|string>
      */
     private static array $defaults = [
         'prefix'   => '',
@@ -122,7 +124,7 @@ class Cookie implements ArrayAccess, CloneableCookieInterface
      *
      * This method is called from Response::__construct().
      *
-     * @param array<string, mixed>|CookieConfig $config
+     * @param array<string, bool|int|string>|CookieConfig $config
      *
      * @return array<string, mixed> The old defaults array. Useful for resetting.
      */
@@ -193,9 +195,9 @@ class Cookie implements ArrayAccess, CloneableCookieInterface
     /**
      * Construct a new Cookie instance.
      *
-     * @param string               $name    The cookie's name
-     * @param string               $value   The cookie's value
-     * @param array<string, mixed> $options The cookie's options
+     * @param string                         $name    The cookie's name
+     * @param string                         $value   The cookie's value
+     * @param array<string, bool|int|string> $options The cookie's options
      *
      * @throws CookieException
      */
@@ -564,7 +566,7 @@ class Cookie implements ArrayAccess, CloneableCookieInterface
     /**
      * Whether an offset exists.
      *
-     * @param mixed $offset
+     * @param string $offset
      */
     public function offsetExists($offset): bool
     {
@@ -574,9 +576,9 @@ class Cookie implements ArrayAccess, CloneableCookieInterface
     /**
      * Offset to retrieve.
      *
-     * @param mixed $offset
+     * @param string $offset
      *
-     * @return mixed
+     * @return bool|int|string
      *
      * @throws InvalidArgumentException
      */
@@ -593,8 +595,8 @@ class Cookie implements ArrayAccess, CloneableCookieInterface
     /**
      * Offset to set.
      *
-     * @param mixed $offset
-     * @param mixed $value
+     * @param string          $offset
+     * @param bool|int|string $value
      *
      * @throws LogicException
      */
@@ -606,7 +608,7 @@ class Cookie implements ArrayAccess, CloneableCookieInterface
     /**
      * Offset to unset.
      *
-     * @param mixed $offset
+     * @param string $offset
      *
      * @throws LogicException
      */
