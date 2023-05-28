@@ -159,9 +159,9 @@ class DatabaseHandler extends BaseDrafter implements DrafterInterface
 
 					$pivot = [
 						$foreignKey->table_name,
-                        $column_name,
+						$column_name,
 						$foreignKey->foreign_table_name,
-                        $foreign_column_name,
+						$foreign_column_name,
 					];
 					$relation->pivots = [$pivot];
 				}
@@ -182,9 +182,9 @@ class DatabaseHandler extends BaseDrafter implements DrafterInterface
 
 					$pivot = [
 						$foreignKey->foreign_table_name,
-                        $foreign_column_name,
+						$foreign_column_name,
 						$foreignKey->table_name,
-                        $column_name,
+						$column_name,
 					];
 					$relation->pivots = [$pivot];
 				}
