@@ -75,7 +75,6 @@ class MenuModel extends MyModel
 
     public function getMenuActive($filter = null, $expire_time = MONTH, $is_cache = true)
     {
-        $cache = cache();
         $cache_name = SET_CACHE_NAME_MENU;
 
         $filter['published'] = isset($filter['published']) ? $filter['published'] : STATUS_ON;
@@ -89,7 +88,7 @@ class MenuModel extends MyModel
             $cache_name = $cache_name . '_lang_' . get_lang_id();
         }
 
-        $result = $is_cache ? $cache->get($cache_name) : null;
+        $result = $is_cache ? cache()->get($cache_name) : null;
         if (empty($result)) {
             $result = $this->orderBy('sort_order', 'DESC')->where($filter)->findAll();
             if (empty($result)) {
@@ -114,7 +113,7 @@ class MenuModel extends MyModel
 
             if ($is_cache) {
                 // Save into the cache for $expire_time 1 month
-                $cache->save($cache_name, $result, $expire_time);
+                cache()->save($cache_name, $result, $expire_time);
             }
         }
 
@@ -123,32 +122,33 @@ class MenuModel extends MyModel
 
     public function deleteCache($is_admin = false, $cache_name = null)
     {
-        $cache = cache();
-        if (!empty($cache_name) && !empty($this->cache->get($cache_name))) {
-            $cache->save($cache_name, [], 0);
+        if (!empty($cache_name) && !empty(cache()->get($cache_name))) {
+            cache()->save($cache_name, [], 0);
             return true;
         }
 
         if ($is_admin) {
             //clear cache all
-            $list_name = [
-                SET_CACHE_NAME_MENU . '_admin' . '_lang_' . get_lang_id(true),
-            ];
+//            $list_name = [
+//                SET_CACHE_NAME_MENU . '_admin' . '_lang_' . get_lang_id(true),
+//            ];
+            cache()->deleteMatching(SET_CACHE_NAME_MENU . '_admin_*');
         } else {
             //clear cache all
-            $list_name = [
-                SET_CACHE_NAME_MENU . '_frontend',
-                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_MAIN . '_lang_' . get_lang_id(),
-                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_FOOTER . '_lang_' . get_lang_id(),
-                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_TOP . '_lang_' . get_lang_id(),
-                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_BOTTOM . '_lang_' . get_lang_id(),
-                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_OTHER . '_lang_' . get_lang_id(),
-            ];
+//            $list_name = [
+//                SET_CACHE_NAME_MENU . '_frontend',
+//                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_MAIN . '_lang_' . get_lang_id(),
+//                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_FOOTER . '_lang_' . get_lang_id(),
+//                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_TOP . '_lang_' . get_lang_id(),
+//                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_BOTTOM . '_lang_' . get_lang_id(),
+//                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_OTHER . '_lang_' . get_lang_id(),
+//            ];
+            cache()->deleteMatching(SET_CACHE_NAME_MENU . '_frontend_*');
         }
 
-        foreach ($list_name as $name) {
-            $cache->delete($name);
-        }
+//        foreach ($list_name as $name) {
+//            cache()->delete($name);
+//        }
 
         return true;
     }
