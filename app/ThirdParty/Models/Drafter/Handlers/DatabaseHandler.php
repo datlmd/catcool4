@@ -154,11 +154,14 @@ class DatabaseHandler extends BaseDrafter implements DrafterInterface
 				// Not all drivers supply the column names
 				if (isset($foreignKey->column_name))
 				{
+                    $column_name = is_array($foreignKey->column_name) ? $foreignKey->column_name[0] : $foreignKey->column_name;
+                    $foreign_column_name = is_array($foreignKey->foreign_column_name) ? $foreignKey->foreign_column_name[0] : $foreignKey->foreign_column_name;
+
 					$pivot = [
 						$foreignKey->table_name,
-						$foreignKey->column_name,
+                        $column_name,
 						$foreignKey->foreign_table_name,
-						$foreignKey->foreign_column_name,
+                        $foreign_column_name,
 					];
 					$relation->pivots = [$pivot];
 				}
@@ -174,11 +177,14 @@ class DatabaseHandler extends BaseDrafter implements DrafterInterface
 				// Not all drivers supply the column names
 				if (isset($foreignKey->column_name))
 				{
+                    $column_name = is_array($foreignKey->column_name) ? $foreignKey->column_name[0] : $foreignKey->column_name;
+                    $foreign_column_name = is_array($foreignKey->foreign_column_name) ? $foreignKey->foreign_column_name[0] : $foreignKey->foreign_column_name;
+
 					$pivot = [
 						$foreignKey->foreign_table_name,
-						$foreignKey->foreign_column_name,
+                        $foreign_column_name,
 						$foreignKey->table_name,
-						$foreignKey->column_name,
+                        $column_name,
 					];
 					$relation->pivots = [$pivot];
 				}
