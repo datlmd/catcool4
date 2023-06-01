@@ -103,6 +103,10 @@
                     } else if ($(".image-crop-target").length) {
                         $(".image-crop-target a").attr("href", image_url + '/' + json['image']);
                         $(".image-crop-target img").attr("src", image_url + '/' + json['image']);
+
+                        if ($(".image-crop-target img.img-backgroud").length) {
+                            $(".image-crop-target img").attr("style", 'background-image: url(' + image_url + '/' + json['image'] + ')');
+                        }
                     }
                     $("#modal_image_crop").modal("hide");
                 }
