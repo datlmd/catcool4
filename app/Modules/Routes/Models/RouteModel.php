@@ -182,7 +182,6 @@ class RouteModel extends MyModel
                 'route'       => $urls['route'],
                 'user_id'     => session('admin.user_id'),
                 'published'   => STATUS_ON,
-                'ctime'       => get_date(),
             ];
             $this->insert($route_data);
         } else {
@@ -203,7 +202,6 @@ class RouteModel extends MyModel
                     'route'       => $urls[$key]['route'],
                     'user_id'     => session('admin.user_id'),
                     'published'   => STATUS_ON,
-                    'ctime'       => get_date(),
                 ];
                 $this->insert($route_data);
             }

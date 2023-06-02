@@ -66,7 +66,6 @@ class Manage extends AdminController
                 'decimal_place' => $this->request->getPost('decimal_place'),
                 'value'         => $this->request->getPost('value'),
                 'published'     => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-                'ctime'         => get_date(),
             ];
 
             if (!$this->model->insert($add_data)) {

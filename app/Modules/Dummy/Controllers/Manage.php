@@ -70,7 +70,6 @@ class Manage extends AdminController
             $add_data = [
                 'sort_order' => $this->request->getPost('sort_order'),
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-                'ctime'      => get_date(),
                 //ADD_DUMMY_ROOT
             ];
             $id = $this->model->insert($add_data);

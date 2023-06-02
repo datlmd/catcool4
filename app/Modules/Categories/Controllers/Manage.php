@@ -72,7 +72,6 @@ class Manage extends AdminController
                 'context'    => $this->request->getPost('context'),
                 'parent_id'  => $this->request->getPost('parent_id'),
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-                'ctime'      => get_date(),
             ];
 
             $id = $this->model->insert($add_data);

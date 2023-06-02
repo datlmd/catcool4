@@ -284,7 +284,6 @@ class Manage extends AdminController
                 'user_id'      => $this->getUserIdAdmin(),
                 'group_id'     => $this->request->getPost('group_id'),
                 'published'    => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-                'ctime'        => get_date(),
             ];
 
             if (!$this->model->insert($add_data)) {

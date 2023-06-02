@@ -128,7 +128,6 @@ class Manage extends AdminController
                 'lang_id'    => $lang['id'],
                 'module_id'  => $module_id,
                 'user_id'    => $this->getUserIdAdmin(),
-                'ctime'      => get_date(),
             ];
             $this->model->insert($data_add);
         }
@@ -186,7 +185,6 @@ class Manage extends AdminController
                     'lang_id'    => $lang['id'],
                     'module_id'  => $module_id,
                     'user_id'    => $this->getUserIdAdmin(),
-                    'ctime'      => get_date(),
                 ];
 
                 //add
@@ -246,7 +244,6 @@ class Manage extends AdminController
                         'lang_id'    => $lang['id'],
                         'module_id'  => $module_id,
                         'user_id'    => $this->getUserIdAdmin(),
-                        'ctime'      => get_date(),
                     ];
 
                     //add

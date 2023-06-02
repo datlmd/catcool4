@@ -79,7 +79,6 @@ class Manage extends AdminController
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
                 'is_admin'   => !empty(session('is_menu_admin')) ? STATUS_ON : STATUS_OFF,
                 'hidden'     => !empty($this->request->getPost('hidden')) ? STATUS_ON : STATUS_OFF,
-                'ctime'      => get_date(),
             ];
 
             if (!empty($this->request->getPost('parent_id'))) {

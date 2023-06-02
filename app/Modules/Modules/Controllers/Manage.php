@@ -68,7 +68,6 @@ class Manage extends AdminController
                 'sub_module' => $this->request->getPost('sub_module'),
                 'user_id'    => $this->getUserIdAdmin(),
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-                'ctime'      => get_date(),
             ];
 
             if (!$this->model->insert($add_data)) {
