@@ -57,7 +57,7 @@ class GroupModel extends MyModel
     {
         $result = $is_cache ? cache()->get(self::CUSTOMER_GROUP_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->orderBy('value', 'ASC')->findAll();
+            $result = $this->orderBy('sort_order', 'DESC')->findAll();
             if (empty($result)) {
                 return [];
             }

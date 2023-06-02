@@ -17,7 +17,8 @@ class Manage extends AdminController
     protected $group_model;
     protected $auth_model;
 
-    const DOB_DEFAULT = '1900-01-01';
+    const DOB_DEFAULT = '1970-01-01';
+    const FOLDER_UPLOAD = 'customers/';
 
     public function __construct()
     {
@@ -106,7 +107,7 @@ class Manage extends AdminController
     public function save()
     {
         if (!$this->request->isAJAX()) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            page_not_found();
         }
 
         $json = [];
@@ -124,7 +125,6 @@ class Manage extends AdminController
         $customer_id = $this->request->getPost('customer_id');
         $data_customer = [
             'username'   => strtolower($this->request->getPost('username')),
-            'password'   => $this->auth_model->hashPassword($this->request->getPost('password')),
             'email'      => strtolower($this->request->getPost('email')),
             'first_name' => $this->request->getPost('first_name'),
             'last_name'  => $this->request->getPost('last_name'),
@@ -135,9 +135,9 @@ class Manage extends AdminController
             'store_id'   => $this->request->getPost('store_id'),
             'dob'        => !empty($this->request->getPost('dob')) ? standar_date($this->request->getPost('dob')) : self::DOB_DEFAULT,
             'gender'     => $this->request->getPost('gender'),
-            'newsletter' => !empty($this->request->getPost('newsletter')) ? STATUS_ON : STATUS_OFF,
-            'status'     => !empty($this->request->getPost('status')) ? STATUS_ON : STATUS_OFF,
-            'safe'       => !empty($this->request->getPost('safe')) ? STATUS_ON : STATUS_OFF,
+            'newsletter' => $this->request->getPost('newsletter'),
+            'status'     => $this->request->getPost('status'),
+            'safe'       => $this->request->getPost('safe'),
             //'custom_field',
             //'active' => !empty($this->request->getPost('active')) ? STATUS_ON : STATUS_OFF,
             //'address_id',
@@ -148,8 +148,33 @@ class Manage extends AdminController
             //'deleted',
             //'language_id',
             //'ip',
-            'ctime'      => get_date(),
+            //'ctime'      => get_date(),
         ];
+
+        //avatar la hinh sau khi chon input file, avatar_root la hinh goc da luu
+        $avatar = $this->request->getPost('image');
+        if (!empty($avatar)) {
+            // create folder
+            if (!is_dir(get_upload_path() . self::FOLDER_UPLOAD)) {
+                mkdir(get_upload_path() . self::FOLDER_UPLOAD, 0777, true);
+            }
+
+            $avatar_name = self::FOLDER_UPLOAD . $data_customer['username'] . '.jpg'; //pathinfo($avatar, PATHINFO_EXTENSION);
+
+            $width  = !empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH;
+            $height = !empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT;
+
+            $image_tool = new \App\Libraries\ImageTool();
+            $image_tool->thumbFit($avatar, $avatar_name, $width, $height);
+
+            $data_customer['image'] = $avatar_name;
+        } elseif (!empty($this->request->getPost('image_root'))) {
+            $data_customer['image'] = $this->request->getPost('image_root');
+        }
+
+        if (!empty($this->request->getPost('password'))) {
+            $data_customer['password'] = $this->auth_model->hashPassword($this->request->getPost('password'));
+        }
 
         if (empty($customer_id)) {
             //Them moi
@@ -197,7 +222,7 @@ class Manage extends AdminController
 
         $data['list_lang'] = get_list_lang(true);
 
-        $group_list     = $this->group_model->findAll();
+        $group_list     = $this->group_model->getListAll();
         $data['groups'] = array_column($group_list, null, 'customer_group_id');
 
         //edit
@@ -230,10 +255,17 @@ class Manage extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('first_name', lang('Admin.text_full_name'), 'required');
-        $this->validator->setRule('email', lang('Admin.text_email'), 'required');
+        $this->validator->setRule('dob', lang('Admin.text_dob'), sprintf('valid_date[%s]', get_date_format(true)));
 
         if (empty($this->request->getPost('customer_id'))) {
-            $this->validator->setRule('username', lang('Admin.text_username'), 'required|is_unique[user.username]');
+            $this->validator->setRule('username', lang('Admin.text_username'), 'required|is_unique[customer.username]');
+            $this->validator->setRule('email', lang('CustomerAdmin.text_email'), 'required|valid_email|is_unique[customer.email]');
+        } else {
+            $this->validator->setRule('username', lang('Admin.text_username'), sprintf('required|is_unique[customer.username,customer_id,%d]', $this->request->getPost('customer_id')));
+            $this->validator->setRule('email', lang('Admin.text_email'), sprintf('required|valid_email|is_unique[customer.email,customer_id,%d]', $this->request->getPost('customer_id')));
+        }
+
+        if (!empty($this->request->getPost('password'))) {
             $this->validator->setRule('password', lang('Admin.text_password'), 'required|min_length[' . config_item('minPasswordLength') . ']|matches[password_confirm]');
             $this->validator->setRule('password_confirm', lang('Admin.text_confirm_password'), 'required');
         }
@@ -241,16 +273,16 @@ class Manage extends AdminController
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();
 
-        if (!empty($this->request->getPost('email'))) {
-            if (!empty($this->request->getPost('customer_id'))) {
-                $email = $this->model->where(['email' => $this->request->getPost('email'), 'customer_id !=' => $this->request->getPost('customer_id')])->findAll();
-            } else {
-                $email = $this->model->where('email', $this->request->getPost('email'))->findAll();
-            }
-            if (!empty($email)) {
-                $this->errors['email'] = lang('User.account_creation_duplicate_email');
-            }
-        }
+//        if (!empty($this->request->getPost('email'))) {
+//            if (!empty($this->request->getPost('customer_id'))) {
+//                $email = $this->model->where(['email' => $this->request->getPost('email'), 'customer_id !=' => $this->request->getPost('customer_id')])->findAll();
+//            } else {
+//                $email = $this->model->where('email', $this->request->getPost('email'))->findAll();
+//            }
+//            if (!empty($email)) {
+//                $this->errors['email'] = lang('CustomerAdmin.account_creation_duplicate_email');
+//            }
+//        }
 
         if (!empty($this->errors)) {
             return FALSE;
@@ -262,7 +294,7 @@ class Manage extends AdminController
     public function delete($id = null)
     {
         if (!$this->request->isAJAX()) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            page_not_found();
         }
 
         $token = csrf_hash();
@@ -334,7 +366,7 @@ class Manage extends AdminController
     public function publish()
     {
         if (!$this->request->isAJAX()) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            page_not_found();
         }
 
         $token = csrf_hash();
@@ -359,9 +391,9 @@ class Manage extends AdminController
         }
 
         if (!empty($_POST['published'])) {
-            $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('User.activate_successful')];
+            $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('CustomerAdmin.activate_successful')];
         } else {
-            $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('User.deactivate_successful')];
+            $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('CustomerAdmin.deactivate_successful')];
         }
 
         json_output($data);

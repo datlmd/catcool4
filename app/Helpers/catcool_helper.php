@@ -1286,6 +1286,49 @@ if (!function_exists('time_ago'))
     }
 }
 
+if (!function_exists('get_date_format'))
+{
+    function get_date_format($is_day = false)
+    {
+        $date_format = 'Y-m-d H:i:s';
+        if (!empty(config_item('date_format'))) {
+            $date_format = config_item('date_format');
+        }
+
+        if (empty($is_day)) {
+            return $date_format;
+        }
+
+        $date_format_tpm = explode(' ', $date_format);
+        $date_format = $date_format_tpm[0] ?? $date_format;
+
+        return $date_format;
+    }
+}
+
+if (!function_exists('get_date_format_ajax'))
+{
+    function get_date_format_ajax()
+    {
+        $date_format = get_date_format(true);
+        switch ($date_format) {
+            case 'Y/m/d':
+                $date_format = 'yyyy/mm/dd';
+                break;
+            case 'd-m-Y':
+                $date_format = 'dd-mm-yyyy';
+                break;
+            case 'd/m/Y':
+                $date_format = 'dd/mm/yyyy';
+                break;
+            default:
+                $date_format = 'yyyy-mm-dd';
+        }
+
+        return $date_format;
+    }
+}
+
 if (!function_exists('get_today'))
 {
     function get_today($format = 'd/m/Y')
