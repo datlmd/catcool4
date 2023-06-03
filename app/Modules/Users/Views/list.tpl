@@ -19,14 +19,14 @@
 				{form_open(uri_string(), ['id' => 'filter_validationform', 'method' => 'get'])}
 					<div class="card-body">
 						<div class="row">
-{*							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">*}
-{*								<label class="form-label">{lang('UserAdmin.filter_search_user')}</label>*}
-{*								{form_input('name', set_value('name', $request->getGet('name'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_name')])}*}
-{*							</div>*}
-{*							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">*}
-{*								<label class="form-label">{lang('Admin.filter_id')}</label>*}
-{*								{form_input('id', set_value('id', $request->getGet('id'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}*}
-{*							</div>*}
+							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
+								<label class="form-label">{lang('UserAdmin.filter_search_user')}</label>
+								{form_input('name', set_value('name', $request->getGet('name'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_name')])}
+							</div>
+							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
+								<label class="form-label">{lang('Admin.filter_id')}</label>
+								{form_input('id', set_value('id', $request->getGet('id'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
+							</div>
 							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 								<label class="form-label">{lang('Admin.text_limit')}</label>
 								{form_dropdown('limit', get_list_limit(), set_value('limit', $request->getGet('limit')), ['class' => 'form-control form-control-sm'])}

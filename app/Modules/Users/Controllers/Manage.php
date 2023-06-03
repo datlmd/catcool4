@@ -69,7 +69,7 @@ class Manage extends AdminController
             'url'           => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
-//cc_debug($data);
+
         add_meta(['title' => lang("UserAdmin.heading_title")], $this->themes);
         $this->themes
             ->addPartial('header')
