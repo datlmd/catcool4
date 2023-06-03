@@ -1,10 +1,10 @@
-<?php namespace App\Modules\UsersAdmin\Models;
+<?php namespace App\Modules\Users\Models;
 
 use App\Models\MyModel;
 
 class GroupModel extends MyModel
 {
-    protected $table      = 'user_admin_group';
+    protected $table      = 'user_group';
     protected $primaryKey = 'id';
 
     protected $allowedFields = [

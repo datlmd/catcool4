@@ -1,14 +1,14 @@
-<?php namespace App\Modules\UsersAdmin\Controllers;
+<?php namespace App\Modules\Users\Controllers;
 
 use App\Controllers\AdminController;
-use App\Modules\UsersAdmin\Models\GroupModel;
+use App\Modules\Users\Models\GroupModel;
 
 class GroupsManage extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'users_admin/groups_manage';
-    CONST MANAGE_URL  = 'users_admin/groups_manage';
+    CONST MANAGE_ROOT = 'users/groups_manage';
+    CONST MANAGE_URL  = 'users/groups_manage';
 
     public function __construct()
     {
