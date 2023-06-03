@@ -34,10 +34,10 @@
 		<div class="card-footer bg-white text-center p-0">
 			<div class="row m-0 p-0">
 				<div class="card-footer-item card-footer-item-bordered col-6">
-					{anchor("users_admin/manage/login", lang('UserAdmin.text_login'), 'class="footer-link"')}
+					{anchor("users/manage/login", lang('UserAdmin.text_login'), 'class="footer-link"')}
 				</div>
 				<div class="card-footer-item card-footer-item-bordered col-6">
-					{anchor("users_admin/manage/forgot_password", lang('Admin.text_forgot_password'), 'class="footer-link"')}
+					{anchor("users/manage/forgot_password", lang('Admin.text_forgot_password'), 'class="footer-link"')}
 				</div>
 			</div>
 		</div>

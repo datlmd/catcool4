@@ -1,10 +1,10 @@
-<?php namespace App\Modules\UsersAdmin\Models;
+<?php namespace App\Modules\Users\Models;
 
 use App\Models\MyModel;
 
 class UserTokenModel extends MyModel
 {
-    protected $table      = 'user_admin_token';
+    protected $table      = 'user_token';
     protected $primaryKey = 'user_id';
 
     protected $allowedFields = [

@@ -23,7 +23,7 @@
 										<div style="margin-top:16px;margin-bottom:20px">{lang('Email.text_dear', [ucwords($full_name)], $language)}</div>
 										<div>{lang("Email.forgot_password_content_1", [], $language)}</div>
 										<p></p>
-										{lang("Email.forgot_password_content_2", [anchor('users_admin/manage/reset_password/'|cat:$forgotten_password_code, lang('Email.forgot_password_link', [], $language), 'style="color:#3b7b98"')], $language)}
+										{lang("Email.forgot_password_content_2", [anchor('users/manage/reset_password/'|cat:$forgotten_password_code, lang('Email.forgot_password_link', [], $language), 'style="color:#3b7b98"')], $language)}
 										<p></p>
 										{lang("Email.forgot_password_content_3", [], $language)}
 										<table border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse">
@@ -38,7 +38,7 @@
 															<tbody>
 															<tr>
 																<td style="border-collapse:collapse;border-radius:6px;text-align:center;display:block;border:none;background:#3b7b98;padding:6px 20px 10px 20px">
-																	<a href="{site_url('users_admin/manage/reset_password/'|cat:$forgotten_password_code)}?redirect_from=button" style="color:#3b5998;text-decoration:none;display:block" target="_blank">
+																	<a href="{site_url('users/manage/reset_password/'|cat:$forgotten_password_code)}?redirect_from=button" style="color:#3b5998;text-decoration:none;display:block" target="_blank">
 																		<center>
 																			<font size="3">
 																				<span style="font-family:Helvetica Neue,Helvetica,Lucida Grande,tahoma,verdana,arial,sans-serif;white-space:nowrap;font-weight:bold;vertical-align:middle;color:#ffffff;font-weight:500;font-family:Roboto-Medium,Roboto,-apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,Lucida Grande,tahoma,verdana,arial,sans-serif;font-size:17px">

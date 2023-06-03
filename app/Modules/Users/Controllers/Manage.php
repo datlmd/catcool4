@@ -1,20 +1,20 @@
-<?php namespace App\Modules\UsersAdmin\Controllers;
+<?php namespace App\Modules\Users\Controllers;
 
 use App\Controllers\AdminController;
 use App\Modules\Permissions\Models\PermissionModel;
 use App\Modules\Users\Models\AuthModel;
-use App\Modules\UsersAdmin\Models\GroupModel;
-use App\Modules\UsersAdmin\Models\UserGroupModel;
-use App\Modules\UsersAdmin\Models\UserModel;
-use App\Modules\UsersAdmin\Models\UserPermissionModel;
-use App\Modules\UsersAdmin\Models\UserTokenModel;
+use App\Modules\Users\Models\GroupModel;
+use App\Modules\Users\Models\UserGroupModel;
+use App\Modules\Users\Models\UserModel;
+use App\Modules\Users\Models\UserPermissionModel;
+use App\Modules\Users\Models\UserTokenModel;
 
 class Manage extends AdminController
 {
     public $errors = [];
 
-    CONST MANAGE_ROOT = 'users_admin/manage';
-    CONST MANAGE_URL  = 'users_admin/manage';
+    CONST MANAGE_ROOT = 'users/manage';
+    CONST MANAGE_URL  = 'users/manage';
 
     protected $group_model;
     protected $user_group_model;
@@ -22,7 +22,7 @@ class Manage extends AdminController
     protected $user_permission_model;
     protected $auth_model;
 
-    const DOB_DEFAULT = '1900-01-01';
+    const DOB_DEFAULT = '1970-01-01';
 
     const FOLDER_UPLOAD = 'users/';
 
@@ -69,9 +69,10 @@ class Manage extends AdminController
             'url'           => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
-
+//cc_debug($data);
         add_meta(['title' => lang("UserAdmin.heading_title")], $this->themes);
-        $this->themes->addPartial('header')
+        $this->themes
+            ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
             ::load('list', $data);

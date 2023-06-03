@@ -48,8 +48,8 @@
 				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('PermissionAdmin.text_list')}</h5>
 				<div class="card-body">
 					<div class="w-100 text-end mb-2">
-						<a href="{site_url("users_admin/manage")}" class="btn btn-sm btn-primary btn-space ">{lang('UserAdmin.heading_title')}</a>
-						<a href="{site_url("users_admin/groups_manage")}" class="btn btn-sm btn-light btn-space me-0">{lang('UserGroupAdmin.text_list')}</a>
+						<a href="{site_url("users/manage")}" class="btn btn-sm btn-primary btn-space ">{lang('UserAdmin.heading_title')}</a>
+						<a href="{site_url("users/groups_manage")}" class="btn btn-sm btn-light btn-space me-0">{lang('UserGroupAdmin.text_list')}</a>
 					</div>
 					{if !empty($list)}
 						<div class="table-responsive">

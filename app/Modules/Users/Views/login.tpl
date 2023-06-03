@@ -45,7 +45,7 @@
             </div>
             <div class="card-footer bg-white text-center p-0">
               <div class="card-footer-item card-footer-item-bordered">
-                  {anchor("users_admin/manage/forgot_password", lang('Admin.text_forgot_password'), 'class="footer-link"')}
+                  {anchor("users/manage/forgot_password", lang('Admin.text_forgot_password'), 'class="footer-link"')}
               </div>
             </div>
         </div>

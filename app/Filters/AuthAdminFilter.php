@@ -1,6 +1,6 @@
 <?php namespace App\Filters;
 
-use App\Modules\UsersAdmin\Models\UserModel;
+use App\Modules\Users\Models\UserModel;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
@@ -27,7 +27,7 @@ class AuthAdminFilter implements FilterInterface
                     $query_string = (strpos(site_url(), '?') === FALSE) ? '?' : '&amp;';
                     $query_string = $query_string . http_build_query(\Config\Services::request()->getGet());
                 }
-                $redirect = 'users_admin/manage/login?redirect=' . urlencode(current_url() . $query_string);
+                $redirect = 'users/manage/login?redirect=' . urlencode(current_url() . $query_string);
 
                 return redirect()->to(site_url($redirect));
             }

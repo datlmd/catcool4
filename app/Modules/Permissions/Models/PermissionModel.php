@@ -138,7 +138,7 @@ class PermissionModel extends MyModel
                 }
             }
 
-            $user_permission_model = new \App\Modules\UsersAdmin\Models\UserPermissionModel();
+            $user_permission_model = new \App\Modules\Users\Models\UserPermissionModel();
 
             $relationships = $user_permission_model->getListPermissionByUserId($user_id);
             if (empty($permission) || empty($relationships)

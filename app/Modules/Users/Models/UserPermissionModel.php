@@ -1,10 +1,10 @@
-<?php namespace App\Modules\UsersAdmin\Models;
+<?php namespace App\Modules\Users\Models;
 
 use App\Models\MyModel;
 
 class UserPermissionModel extends MyModel
 {
-    protected $table      = 'user_admin_permissions';
+    protected $table      = 'user_permissions';
     protected $primaryKey = 'user_id';
 
     protected $allowedFields = [

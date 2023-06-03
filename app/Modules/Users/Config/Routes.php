@@ -35,5 +35,5 @@ $routes->group('users', ['namespace' => 'App\Modules\Users\Controllers'], functi
     $subroutes->add('activate/(:num)/(:any)', 'Activate::index/$1/$2');
 });
 
-$routes->add('manage/login', 'Manage::login', ['namespace' => 'App\Modules\UsersAdmin\Controllers']);
-$routes->add('root', 'Manage::login', ['namespace' => 'App\Modules\UsersAdmin\Controllers']);
+$routes->add('manage/login', 'Manage::login', ['namespace' => 'App\Modules\Users\Controllers']);
+$routes->add('root', 'Manage::login', ['namespace' => 'App\Modules\Users\Controllers']);

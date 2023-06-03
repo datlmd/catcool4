@@ -1,10 +1,10 @@
-<?php namespace App\Modules\UsersAdmin\Models;
+<?php namespace App\Modules\Users\Models;
 
 use App\Models\MyModel;
 
 class UserModel extends MyModel
 {
-    protected $table      = 'user_admin';
+    protected $table      = 'user';
     protected $primaryKey = 'id';
     protected $allowedFields = [
         'id',
