@@ -1,6 +1,6 @@
 {strip}
     {form_hidden('manage_url', site_url($manage_url))}
-    <div class="container-fluid  dashboard-content">
+    <div class="container-fluid dashboard-content">
         {form_open(site_url("$manage_url/save"), ['id' => 'customer_validationform', "method" => "post", "data-cc-toggle" => "ajax"])}
             <div class="row">
                 <div class="col-sm-7 col-12">
@@ -24,7 +24,7 @@
                     </div>
                 {/if}
                 <div class="col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12">
-                    <div class="card">
+                    <div id="customer_detail" class="card">
                         <h5 class="card-header"><i class="fas {if !empty($edit_data.customer_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                         <div class="card-body">
 
@@ -242,30 +242,23 @@
                     {/if}
                 </div>
             </div>
-            <div class="row d-none">
+            <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <h5 class="card-header"><i class="fas fa-lock-open me-2"></i>{lang('CustomerAdmin.text_permission_select')}</h5>
+                        <h5 class="card-header">{lang('CustomerAdmin.header_address')}</h5>
                         <div class="card-body">
-                            {if !empty($permissions)}
-                                <div class="form-check border-bottom pb-2">
-                                    <input type="checkbox" name="cb_permission_all" id="cb_permission_all" value="all" {if !empty($user_permissions) && count($user_permissions) == count($permissions)}checked{/if} class="form-check-input">
-                                    <label class="form-check-label" for="cb_permission_all">{lang('Admin.text_select_all')}</label>
-                                </div>
-                                <div id="list_permission" class="row">
-                                    {foreach $permissions as $key => $item}
-                                        <div class="col-lg-4 col-sm-6 col-12 mt-3">
-                                            <h4 class="text-capitalize text-dark">{$key}</h4>
-                                            {foreach $item as $value}
-                                                <div class="form-check">
-                                                    <input type="checkbox" name="permissions[]" id="permission_{$value.customer_id}" value="{$value.customer_id}" {if !empty($user_permissions) && in_array($value.customer_id, array_column($user_permissions, 'permission_id'))}checked{/if} class="form-check-input">
-                                                    <label class="form-check-label" for="permission_{$value.customer_id}">{$value.description} <b>[{$value.name}]</b></label>
-                                                </div>
-                                            {/foreach}
-                                        </div>
-                                    {/foreach}
-                                </div>
+                            {include file=get_theme_path('views/modules/customers/inc/address_form.tpl')}
+                            {if !empty($edit_data.address_list)}
+                                {counter assign=address_row start=1 print=false}
+
+                                {foreach $edit_data.address_list as $address_data}
+
+
+
+                                    {counter}
+                                {/foreach}
                             {/if}
+
                         </div>
                     </div>
                 </div>
@@ -273,3 +266,10 @@
         {form_close()}
     </div>
 {/strip}
+<script type="text/javascript">
+    $(function () {
+
+    });
+
+    var is_customer_processing = false;
+</script>

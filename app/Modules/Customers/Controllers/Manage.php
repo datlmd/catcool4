@@ -210,7 +210,6 @@ class Manage extends AdminController
         $this->themes->addCSS('common/js/dropzone/dropdrap');
         $this->themes->addCSS('common/plugin/multi-select/css/bootstrap-multiselect.min');
 
-
         $this->themes->addJS('common/plugin/datepicker/moment.min');
         $this->themes->addJS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
         if (get_lang(true) == 'vi') {
@@ -235,6 +234,10 @@ class Manage extends AdminController
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
+
+            //address
+            $address_model  = model('App\Modules\Customers\Models\AddressModel');
+            $data_form['address_list'] = $address_model->getListByCustomerId($customer_id);
             
             $data['edit_data'] = $data_form;
         } else {
