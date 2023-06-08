@@ -219,10 +219,18 @@ class Manage extends AdminController
         $this->themes->addJS('common/js/dropzone/dropdrap');
         $this->themes->addJS('common/plugin/multi-select/js/bootstrap-multiselect.min');
 
+        $this->themes->addJS('common/js/country/load');
+
         $data['list_lang'] = get_list_lang(true);
 
         $group_list     = $this->group_model->getListAll();
         $data['groups'] = array_column($group_list, null, 'customer_group_id');
+
+        $country_model  = model('App\Modules\Countries\Models\CountryModel');
+        $province_model = model('App\Modules\Countries\Models\ProvinceModel');
+
+        $data['country_list']  = $country_model->getListDisplay();
+        $data['province_list'] = $province_model->getListDisplay();
 
         //edit
         if (!empty($customer_id) && is_numeric($customer_id)) {
