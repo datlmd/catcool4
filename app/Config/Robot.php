@@ -131,6 +131,11 @@ class Robot extends BaseConfig
                 'title' => 'Sức khỏe',
                 'id'    => [1],
             ],
+            1 => [
+                'href'  => 'https://kenh14.vn/an-quay-di/di.chn',
+                'title' => 'Du lịch',
+                'id'    => [2],
+            ],
         ],
 
         'attribute_cate' => [
@@ -152,6 +157,15 @@ class Robot extends BaseConfig
                 //'datetime' => '/span class=\'kscliw-time\'(.*?)title=\'(.*?)\'/',
                 'image' => '/src=\"(.*?)\"/',
                 'href'  => '/href=\'(.*?)\'/',
+            ],
+            'attribute_cate_3' => [
+                'start' => 'li class="news-li',
+                'end'   => '</li',
+                'title' => '/title=\"(.*?)\"/',
+                'note'  => 'div.info-des',
+                //'datetime' => '/span class=\'kscliw-time\'(.*?)title=\'(.*?)\'/',
+                'image' => '/src=\"(.*?)\"/',
+                'href'  => '/href=\"(.*?)\"/',
             ],
         ],
 
