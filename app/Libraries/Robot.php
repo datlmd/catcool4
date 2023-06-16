@@ -168,7 +168,9 @@ class Robot {
             $attr = "";
             $content = str_ireplace("href =", "href=", $content);
             $content = str_ireplace("href= ", "href=", $content);
+            $content = str_ireplace(['background-image: url', 'background-image :url'], ['background-image:url', 'background-image:url'], $content);
             $content = str_ireplace("background-image:url(", "src=", $content);
+            $content = str_ireplace("ata-background-image=", "src=", $content);
 
             do {
                 if ($limit > 0 && $i == $limit)
