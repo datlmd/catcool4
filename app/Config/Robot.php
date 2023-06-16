@@ -36,7 +36,7 @@ class Robot extends BaseConfig
 			],
 			4 => [
 				'href'  => 'https://kenh14.vn/doi-song/tram-yeu.chn',
-				'title' => 'Gioi tinh',
+				'title' => 'Lời yêu',
 				'id'    => [5],
 			],
 			5 => [

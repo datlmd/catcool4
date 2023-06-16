@@ -197,7 +197,7 @@ class Robot {
                         }
 
                         $temp_image = str_ireplace("data-src", "none", $temp);
-                        $temp_image = str_ireplace("poster", "src=", $temp);
+                        $temp_image = str_ireplace("poster", "src=", $temp_image);
                         preg_match($arr_attribute['image'], $temp_image, $matches);
                         if ($matches)
                             $img = $matches[1];
