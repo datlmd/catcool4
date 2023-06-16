@@ -196,9 +196,18 @@ class Robot {
                             log_message('error', 'Lấy url lỗi:' . $arr_attribute['href']);
                         }
 
-                        preg_match($arr_attribute['image'], $temp, $matches);
+                        $temp_image = str_ireplace("data-src", "none", $temp);
+                        $temp_image = str_ireplace("poster", "src=", $temp);
+                        preg_match($arr_attribute['image'], $temp_image, $matches);
                         if ($matches)
                             $img = $matches[1];
+
+                        if (empty($img)) {
+                            $arr_attribute['image'] = str_replace('"', "'", $arr_attribute['image']);
+                            preg_match($arr_attribute['image'], $temp_image, $matches);
+                            if ($matches)
+                                $img = $matches[1];
+                        }
 
                         if (empty($img)) {
                             log_message('error', 'Lấy hình lỗi:' . $arr_attribute['image']);
