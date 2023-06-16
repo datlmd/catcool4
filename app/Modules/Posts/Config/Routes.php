@@ -16,6 +16,7 @@ $routes->group('posts', ['namespace' => 'App\Modules\Posts\Controllers'], functi
     $subroutes->add('manage/fix', 'Manage::fix');
     $subroutes->add('manage/restore/(:any)', 'Manage::restore/$1');
     $subroutes->add('manage/empty_trash', 'Manage::emptyTrash');
+    $subroutes->add('manage/robot', 'Manage::robot');
 
     $subroutes->add('categories_manage', 'CategoriesManage::index');
     $subroutes->add('categories_manage/add', 'CategoriesManage::add');

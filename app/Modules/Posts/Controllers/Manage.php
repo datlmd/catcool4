@@ -75,6 +75,7 @@ class Manage extends AdminController
             'is_trash'      => $is_trash,
             'count_trash'   => $this->model->onlyDeleted()->countAllResults(),
             'category_list' => format_tree(['data' => $category_list, 'key_id' => 'category_id']),
+            'kenh14_list'   => Config('Robot')->pageKenh14Post,
         ];
 
         $this->themes
@@ -572,5 +573,53 @@ class Manage extends AdminController
             set_alert($ex->getMessage(), ALERT_ERROR, ALERT_POPUP);
             return redirect()->back();
         }
+    }
+
+    public function robot()
+    {
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $robot = Config('Robot');
+
+        $token = csrf_hash();
+
+        if (empty($this->request->getPost())) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
+        }
+
+        $list       = [];
+        $robot_type = $this->request->getPost('robot_type');
+        $robot_href = $this->request->getPost('robot_href');
+
+        switch ($robot_type) {
+            case 'kenh14':
+                $kenh14 = $robot->pageKenh14Post;
+                if (!empty($robot_href)) {
+                    foreach ($kenh14['attribute_menu'] as $key => $value) {
+                        if (!in_array($value['href'], $robot_href)) {
+                            unset($kenh14['attribute_menu'][$key]);
+                        }
+                    }
+                }
+                $list = $this->model->robotGetNews($kenh14);
+                break;
+            default:
+                break;
+        }
+
+        $total = 0;
+        foreach ($list as $value) {
+            if (empty($value['list_news'])) {
+                continue;
+            }
+            $total += count($value['list_news']);
+        }
+
+        set_alert(lang('NewsAdmin.text_scanned', [$total]), ALERT_SUCCESS, ALERT_POPUP);
+        $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('NewsAdmin.text_scanned', [$total])];
+
+        json_output($data);
     }
 }

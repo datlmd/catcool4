@@ -37,6 +37,12 @@
 					<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('Admin.text_list')}</h5>
 					<div class="card-body">
 
+						<div class="row">
+							<div class="col-12 text-end mb-2">
+								<button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#robot_news"><i class="far fa-newspaper me-1"></i>{lang('NewsAdmin.text_robot_news')}</button>
+							</div>
+						</div>
+
 						{if !empty($list)}
 							{include file=get_theme_path('views/inc/paging.tpl') pager_name='default'}
 							<div class="table-responsive">
@@ -134,9 +140,112 @@
 		</div>
 	</div>
 
+	<!-- Modal add -->
+	<div class="modal fade" id="robot_news" tabindex="-1" role="dialog" aria-labelledby="robotNewsModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="addModalLabel">Robot- Scan News</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div id="robot_validation_error" class="text-danger mb-2"></div>
+
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+						{form_open('posts/manage/robot', ['id' => 'robot_news_form'])}
+
+						<div class="form-group mb-4">
+							<label class="form-label">Url</label>
+							<input type="text" name="url" value="" id="source" class="form-control">
+						</div>
+
+						<div class="form-group">
+							<label class="form-check">
+								<input type="radio" name="robot_type" value="kenh14" checked="checked" id="robot_type_kenh14" class="form-check-input">
+								<label class="form-check-label fw-bold" for="robot_type_kenh14">Kênh 14</label>
+							</label>
+							{if !empty($kenh14_list['attribute_menu'])}
+								{foreach $kenh14_list['attribute_menu'] as $key => $value}
+									<div class="form-check form-check-inline me-2">
+										<input class="form-check-input" type="checkbox" name="robot_href[]" value="{$value.href}" id="robot_href_{$key}">
+										<label class="form-check-label" for="robot_href_{$key}">
+											{$value.title}
+										</label>
+									</div>
+								{/foreach}
+							{/if}
+						</div>
+
+						<div class="form-group row text-center">
+							<div class="col-12 col-sm-3"></div>
+							<div class="col-12 col-sm-8 col-lg-6">
+								<button type="button" onclick="robotNewsScan()" class="btn btn-sm btn-space btn-primary btn-robot-news"><i class="far fa-newspaper me-1"></i>{lang('NewsAdmin.text_robot_news')}</button>
+								<a href="#" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</span>
+								</a>
+							</div>
+						</div>
+						{form_close()}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {literal}
 	<script>
-		var is_processing = false;
+		var is_robot_processing = false;
+
+		function robotNewsScan() {
+			if (is_robot_processing) {
+				return false;
+			}
+			is_robot_processing = true;
+
+			$("#robot_validation_error").html('');
+
+			if ($('#robot_news input[name="url"]').val() != "") {
+				window.location.href = 'posts/manage/add?url=' + $('#robot_news input[name="url"]').val();
+
+				return;
+			} else {
+
+				$.ajax({
+					url: $("#robot_news_form").attr('action'),
+					type: 'POST',
+					data: $("#robot_news_form").serialize(),
+					beforeSend: function () {
+						$('.btn-robot-news').find('i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
+					},
+					complete: function () {
+						$('.btn-robot-news').find('i').replaceWith('<i class="far fa-newspaper me-1"></i>');
+					},
+					success: function (data) {
+						is_robot_processing = false;
+
+						var response = JSON.stringify(data);
+						response = JSON.parse(response);
+
+						if (response.token) {
+							// Update CSRF hash
+							$("input[name*='" + csrf_token + "']").val(response.token);
+						}
+
+						if (response.status == 'ng') {
+							$("#robot_validation_error").html(response.msg);
+							return false;
+						}
+
+						if (response.status == 'ok') {
+							location.reload();
+						}
+					},
+					error: function (xhr, errorType, error) {
+						$("#robot_validation_error").html(xhr.responseJSON.message + " Please reload the page!!!");
+						is_robot_processing = false;
+					}
+				});
+			}
+		}
 
 		function changeStatus(obj, type) {
 			if (is_processing) {
