@@ -11,7 +11,7 @@
             </div>
 
             <h2>{$detail.name}</h2>
-            <div class="post-meta padding fs-small py-1 d-none">
+            <div class="post-meta padding fs-small py-1 {if !in_array($detail.source_type, [1, 2])}d-none{/if}">
                 <span>{if !empty($detail.author)}{$detail.author}{else}Ryan Lee{/if},</span>
                 {if !empty($detail.source)}
                     <span>
@@ -157,6 +157,9 @@
         <style>
             article.post-detail .post-content img {
                 max-width: 600px !important;
+            }
+            .VCSortableInPreviewMode {
+                display: none;
             }
         </style>
     {/literal}
