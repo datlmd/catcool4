@@ -136,6 +136,16 @@ class Robot extends BaseConfig
                 'title' => 'Du lịch',
                 'id'    => [2],
             ],
+            2 => [
+                'href'  => 'https://kenh14.vn/tek-life/how-to.chn',
+                'title' => 'Mẹo',
+                'id'    => [5],
+            ],
+            3 => [
+                'href'  => 'https://kenh14.vn/beauty-fashion/lam-dep.chn',
+                'title' => 'Review làm đẹp',
+                'id'    => [6],
+            ],
         ],
 
         'attribute_cate' => [
