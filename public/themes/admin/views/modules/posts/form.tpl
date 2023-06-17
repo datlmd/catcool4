@@ -99,6 +99,27 @@
                                     </div>
                                 {/if}
                             </div>
+                            {if !empty($edit_data.post_id)}
+                                {if !empty($edit_data.images.robot) || !empty($edit_data.images.robot_fb)}
+                                    <label class="form-label fw-bold mt-3">Image Robot</label>
+                                    <div class="row text-center">
+                                        <div class="col-md-4 col-sm-4 col-6">
+                                            Thumbnail Robot<br/>
+                                            <a href="{$edit_data.images.robot}" data-lightbox="photos">
+                                                <img src="{old('images.robot', $edit_data.images.robot)}" class="img-thumbnail me-1 img-fluid" alt="" title="" />
+                                            </a>
+                                            <input type="hidden" name="images[robot]" value="{old('images.robot', $edit_data.images.robot)}" />
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-6">
+                                            Thumbnail Robot Facebook<br/>
+                                            <a href="{$edit_data.images.robot_fb}" data-lightbox="photos">
+                                                <img src="{old('images.robot_fb', $edit_data.images.robot_fb)}" class="img-thumbnail me-1 img-fluid" alt="" title="" />
+                                            </a>
+                                            <input type="hidden" name="images[robot_fb]" value="{old('images.robot_fb', $edit_data.images.robot_fb)}" />
+                                        </div>
+                                    </div>
+                                {/if}
+                            {/if}
                         </div>
                     </div>
                     <div class="card">

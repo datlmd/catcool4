@@ -144,7 +144,7 @@ class Robot extends BaseConfig
             3 => [
                 'href'  => 'https://kenh14.vn/beauty-fashion/lam-dep.chn',
                 'title' => 'Review làm đẹp',
-                'id'    => [6],
+                'id'    => [3,6],
             ],
         ],
 
