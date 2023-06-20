@@ -1,5 +1,6 @@
 {strip}
 	<div class="border mt-4 p-3 bg-light">
+		<small class="text-primary">Quảng cáo</small>
 		<a target="_blank" href="https://shopee.vn/-Combo-3-%C3%81o-l%C3%B3t-nam-%C3%A1o-3-l%E1%BB%97-s%C3%A1t-n%C3%A1ch-c%E1%BB%95-ch%E1%BB%AF-V-v%E1%BA%A3i-l%E1%BB%A5a-l%E1%BA%A1nh-m%C3%A1t-kh%C3%B4ng-%C4%91%C6%B0%E1%BB%9Dng-may-cao-c%E1%BA%A5p-th%E1%BB%83-thao-co-gi%C3%A3n-TOBAA001-i.952684096.23735305731">
 			<article class="mb-3 overflow-hidden">
 				<div class="art-image">
