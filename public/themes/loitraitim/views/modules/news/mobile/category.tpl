@@ -29,6 +29,8 @@
             {/if}
         {/if}
 
+        {include file=get_theme_path('views/inc/shopee_ads.tpl')}
+
         {include file=get_theme_path('views/modules/news/inc/list_new.tpl')}
     </div>
 

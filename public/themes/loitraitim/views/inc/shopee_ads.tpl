@@ -31,7 +31,7 @@
 		<a target="_blank" href="https://shopee.vn/Combo-5-Qu%E1%BA%A7n-l%C3%B3t-nam-CK-Tam-Gi%C3%A1c-v%E1%BA%A3i-m%E1%BB%81m-m%E1%BB%8Bn-tho%C3%A1ng-kh%C3%AD-kh%C3%A1ng-khu%E1%BA%A9n-TOBA003-(C%C3%B3-che-t%C3%AAn-SP)-i.952684096.21075633100">
 			<article class="mb-3 overflow-hidden">
 				<div class="art-image">
-					<img src="https://down-vn.img.susercontent.com/file/vn-11134201-23030-4hx5x0bbe9nvca" class="img-fluid border-radius-0" width="100%" alt="Combo 5 Quần lót nam CK tam giác cao cấp vải mềm mịn">
+					<img src="https://down-vn.img.susercontent.com/file/vn-11134201-23030-kuuup7tv6fova1_tn" class="img-fluid border-radius-0" width="100%" alt="Combo 5 Quần lót nam CK tam giác cao cấp vải mềm mịn">
 				</div>
 				<header>
 					<h4 class="art-title">

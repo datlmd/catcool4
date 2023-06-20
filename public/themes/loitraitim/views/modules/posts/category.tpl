@@ -47,6 +47,8 @@
                     {/foreach}
                 {/if}
 
+                {include file=get_theme_path('views/inc/shopee_ads.tpl')}
+
             </aside>
         </div>
     </div>
@@ -66,7 +68,7 @@
 
             </div>
             <div class="col-md-4 col-12">
-                {include file=get_theme_path('views/inc/shopee_ads.tpl')}
+
             </div>
         </div>
     </section>

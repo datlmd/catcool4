@@ -99,6 +99,8 @@
                             {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3" is_show_category=true is_hide_description=true}
                         {/foreach}
                     {/if}
+
+                    {include file=get_theme_path('views/inc/shopee_ads.tpl')}
                 </div>
             </aside>
         </div>
@@ -146,7 +148,7 @@
 
             </div>
             <div class="col-md-4 col-12">
-                {include file=get_theme_path('views/inc/shopee_ads.tpl')}
+
             </div>
         </div>
     </section>
