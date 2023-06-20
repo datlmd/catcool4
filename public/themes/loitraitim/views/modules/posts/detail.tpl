@@ -158,9 +158,6 @@
             article.post-detail .post-content img {
                 max-width: 600px !important;
             }
-            .VCSortableInPreviewMode {
-                display: none;
-            }
         </style>
     {/literal}
 {/strip}
