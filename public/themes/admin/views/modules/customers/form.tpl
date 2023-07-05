@@ -247,18 +247,20 @@
                     <div class="card">
                         <h5 class="card-header">{lang('CustomerAdmin.header_address')}</h5>
                         <div class="card-body">
-                            {include file=get_theme_path('views/modules/customers/inc/address_form.tpl')}
                             {if !empty($edit_data.address_list)}
                                 {counter assign=address_row start=1 print=false}
 
                                 {foreach $edit_data.address_list as $address_data}
 
-
+                                    {include file=get_theme_path('views/modules/customers/inc/address_form.tpl') address=$address_data}
 
                                     {counter}
                                 {/foreach}
                             {/if}
 
+                            <div class="text-end">
+                                <button type="button" onclick="$('#product_attribute_row_{'product_attribute_row_value'}').remove();" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>

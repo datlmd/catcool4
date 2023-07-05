@@ -29,8 +29,8 @@
 			{form_dropdown("address[{$address_row}][country_id]", $country_list, old("address[{$address_row}][country_id]", $address.country_id|default:''), ["class" => "form-control country-changed", "id" => "address[{$address_row}][country_id]"])}
 		</div>
 		<div class="col-md-4">
-			<label for="address[{$address_row}][zone_id]" class="form-label">{lang('CustomerAdmin.text_zone')}</label>
-			{form_dropdown("address[{$address_row}][zone_id]", $province_list, old("address[{$address_row}][zone_id]", $address.zone_id), ["class" => "form-control province-changed", "id" => "address[{$address_row}][zone_id]"])}
+			<label for="address[{$address_row}][province_id]" class="form-label">{lang('CustomerAdmin.text_province')}</label>
+			{form_dropdown("address[{$address_row}][province_id]", $province_list, old("address[{$address_row}][province_id]", $address.province_id), ["class" => "form-control province-changed", "id" => "address[{$address_row}][province_id]"])}
 		</div>
 		<div class="col-md-4">
 			<label for="inputZip" class="form-label">Zip</label>
