@@ -1,10 +1,13 @@
 {strip}
-	<div id="address_row_row_{$address_row}" class="row g-3">
-		<div class="col-6">
-			{lang('CustomerAdmin.header_address')} {$address_row}
+	{if empty($address_row)}
+		{assign var="address_row" value="address_row_value"}
+	{/if}
+	<div id="address_row_{$address_row}" class="row g-3 mt-1 mb-3 p-2 border border-3">
+		<div class="col-6 mt-2">
+			<h4 class="text-primary fw-bold">{lang('CustomerAdmin.header_address')} {$address_row}</h4>
 		</div>
-		<div class="col-6 text-end">
-			<button type="button" onclick="$('#address_row_row_{$address_row}').remove();" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
+		<div class="col-6 mt-2 text-end">
+			<button type="button" onclick="$('#address_row_{$address_row}').remove();" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
 		</div>
 		<div class="col-md-6">
 			<label for="input_address_{$address_row}_firstname" class="form-label">{lang('Admin.text_first_name')}</label>

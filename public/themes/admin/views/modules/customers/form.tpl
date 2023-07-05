@@ -257,9 +257,9 @@
                                     {counter}
                                 {/foreach}
                             {/if}
-
+                            <div id="customer_address_content"></div>
                             <div class="text-end">
-                                <button type="button" onclick="$('#product_attribute_row_{'product_attribute_row_value'}').remove();" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
+                                <button type="button" onclick="addAddressForm();" data-bs-toggle="tooltip" title="{lang('ProductAdmin.text_image_add')}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></button>
                             </div>
                         </div>
                     </div>
@@ -267,6 +267,13 @@
             </div>
         {form_close()}
     </div>
+
+{* template address *}
+<div id="html_customer_address_row" style="display: none">
+    {include file=get_theme_path('views/modules/customers/inc/address_form.tpl')}
+</div>
+    <input type="hidden" name="customer_address_row" id="customer_address_row" value="{if !empty($edit_data.address_list)}{$edit_data.address_list|@count}{else}0{/if}">
+{* end template address *}
 {/strip}
 <script type="text/javascript">
     $(function () {
@@ -274,4 +281,14 @@
     });
 
     var is_customer_processing = false;
+
+    function addAddressForm()
+    {
+        var customer_address_row = $('#customer_address_row').val();
+        customer_address_row = parseInt(customer_address_row) + 1;
+        $('#customer_address_row').val(customer_address_row);
+
+        var html = $('#html_customer_address_row').html().replaceAll('address_row_value', customer_address_row);
+        $('#customer_address_content').append(html);
+    }
 </script>
