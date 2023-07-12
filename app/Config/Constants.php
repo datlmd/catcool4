@@ -125,6 +125,10 @@ defined('COMMENT_STATUS_OFF')  OR define('COMMENT_STATUS_OFF', 0); // tat binh l
 defined('COMMENT_STATUS_ON') OR define('COMMENT_STATUS_ON', 1); // tu dong duyet
 defined('COMMENT_STATUS_CONFIRM') OR define('COMMENT_STATUS_CONFIRM', 2); // cho duyet
 
+//address type
+defined('ADDRESS_TYPE_HOME')  OR define('ADDRESS_TYPE_HOME', 0);
+defined('ADDRESS_TYPE_OFFICE') OR define('ADDRESS_TYPE_OFFICE', 1);
+
 //gender
 defined('GENDER_MALE')   OR define('GENDER_MALE', 1);
 defined('GENDER_FEMALE') OR define('GENDER_FEMALE', 2);
