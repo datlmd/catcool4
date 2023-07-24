@@ -3,6 +3,7 @@
 use App\Controllers\MyController;
 use App\Modules\Countries\Models\DistrictModel;
 use App\Modules\Countries\Models\ProvinceModel;
+use App\Modules\Countries\Models\WardModel;
 
 class Countries extends MyController
 {

@@ -259,7 +259,7 @@
                             {/if}
                             <div id="customer_address_content"></div>
                             <div class="text-end">
-                                <button type="button" onclick="addAddressForm();" data-bs-toggle="tooltip" title="{lang('ProductAdmin.text_image_add')}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></button>
+                                <button type="button" onclick="addAddressForm();" data-bs-toggle="tooltip" title="{lang('CustomerAdmin.text_address_add')}" class="btn btn-sm btn-primary"><i class="fas fa-plus me-1"></i>{lang('CustomerAdmin.text_address_add')}</button>
                             </div>
                         </div>
                     </div>

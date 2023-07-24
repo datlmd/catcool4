@@ -190,6 +190,19 @@ class Manage extends AdminController
             }
         }
 
+        // address
+        $address_model = model('App\Modules\Customers\Models\AddressModel');
+        $address_model->where(['customer_id' => $customer_id])->delete();
+
+        $address = $this->request->getPost('address');
+        if (!empty($address)) {
+            foreach ($address as $key => $value) {
+                $value['customer_id'] = $customer_id;
+                $value['default'] = ($this->request->getPost('address_default') == $key);
+                $address_model->insert($value);
+            }
+        }
+
         if (!empty($json['error'])) {
             json_output($json);
         }
@@ -228,9 +241,10 @@ class Manage extends AdminController
 
         $country_model  = model('App\Modules\Countries\Models\CountryModel');
         $province_model = model('App\Modules\Countries\Models\ProvinceModel');
+        $district_model = model('App\Modules\Countries\Models\DistrictModel');
+        $ward_model     = model('App\Modules\Countries\Models\WardModel');
 
         $data['country_list']  = $country_model->getListDisplay();
-        $data['province_list'] = $province_model->getListDisplay();
 
         //edit
         if (!empty($customer_id) && is_numeric($customer_id)) {
@@ -244,9 +258,14 @@ class Manage extends AdminController
             }
 
             //address
-            $address_model  = model('App\Modules\Customers\Models\AddressModel');
+            $address_model = model('App\Modules\Customers\Models\AddressModel');
             $data_form['address_list'] = $address_model->getListByCustomerId($customer_id);
-            
+            foreach ($data_form['address_list'] as $key => $value) {
+                $data_form['address_list'][$key]['province_list'] = $province_model->getListDisplay($value['country_id']);
+                $data_form['address_list'][$key]['district_list'] = $district_model->getListDisplay($value['province_id']);
+                $data_form['address_list'][$key]['ward_list']     = $ward_model->getListDisplay($value['district_id']);
+            }
+
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('CustomerAdmin.text_add');
@@ -279,6 +298,17 @@ class Manage extends AdminController
         if (!empty($this->request->getPost('password'))) {
             $this->validator->setRule('password', lang('Admin.text_password'), 'required|min_length[' . config_item('minPasswordLength') . ']|matches[password_confirm]');
             $this->validator->setRule('password_confirm', lang('Admin.text_confirm_password'), 'required');
+        }
+
+        if (!empty($this->request->getPost('address'))) {
+            foreach ($this->request->getPost('address') as $key => $value) {
+                $this->validator->setRule(sprintf("address.%s.firstname", $key), lang('Admin.text_first_name'), 'required');
+                $this->validator->setRule(sprintf("address.%s.address_1", $key), lang('CustomerAdmin.text_address_1'), 'required');
+                $this->validator->setRule(sprintf("address.%s.country_id", $key), lang('CustomerAdmin.text_country'), 'required|is_natural_no_zero');
+                $this->validator->setRule(sprintf("address.%s.province_id", $key), lang('CustomerAdmin.text_province'), 'required|is_natural_no_zero');
+                $this->validator->setRule(sprintf("address.%s.district_id", $key), lang('CustomerAdmin.text_district'), 'required|is_natural_no_zero');
+                $this->validator->setRule(sprintf("address.%s.ward_id", $key), lang('CustomerAdmin.text_ward'), 'required|is_natural_no_zero');
+            }
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
