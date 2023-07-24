@@ -77,11 +77,11 @@
 		<div class="col-12 col-sm-8 col-lg-6 pt-2">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="enable_scroll_menu_admin" value="{STATUS_ON}" {if !empty(old('enable_scroll_menu_admin', $settings.enable_scroll_menu_admin))}checked="checked"{/if} id="enable_scroll_menu_admin_on" class="form-check-input">
-				<label class="form-check-label" for="enable_scroll_menu_admin_on">ON</label>
+				<label class="form-check-label" for="enable_scroll_menu_admin_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="enable_scroll_menu_admin" value="{STATUS_OFF}" {if empty(old('enable_scroll_menu_admin', $settings.enable_scroll_menu_admin))}checked="checked"{/if} id="enable_scroll_menu_admin_off" class="form-check-input">
-				<label class="form-check-label" for="enable_scroll_menu_admin_off">OFF</label>
+				<label class="form-check-label" for="enable_scroll_menu_admin_off">{lang('Admin.text_off')}</label>
 			</label>
 		</div>
 	</div>
@@ -90,11 +90,11 @@
 		<div class="col-12 col-sm-8 col-lg-6 pt-2">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="enable_icon_menu_admin" value="{STATUS_ON}" {if !empty(old('enable_icon_menu_admin', $settings.enable_icon_menu_admin))}checked="checked"{/if} id="enable_icon_menu_admin_on" class="form-check-input">
-				<label class="form-check-label" for="enable_icon_menu_admin_on">ON</label>
+				<label class="form-check-label" for="enable_icon_menu_admin_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="enable_icon_menu_admin" value="{STATUS_OFF}" {if empty(old('enable_icon_menu_admin', $settings.enable_icon_menu_admin))}checked="checked"{/if} id="enable_icon_menu_admin_off" class="form-check-input">
-				<label class="form-check-label" for="enable_icon_menu_admin_off">OFF</label>
+				<label class="form-check-label" for="enable_icon_menu_admin_off">{lang('Admin.text_off')}</label>
 			</label>
 		</div>
 	</div>
@@ -103,11 +103,11 @@
 		<div class="col-12 col-sm-8 col-lg-6 pt-2">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="enable_dark_mode" value="{STATUS_ON}" {if !empty(old('enable_dark_mode', $settings.enable_dark_mode))}checked="checked"{/if} id="enable_dark_mode_on" class="form-check-input">
-				<label class="form-check-label" for="enable_dark_mode_on">ON</label>
+				<label class="form-check-label" for="enable_dark_mode_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="enable_dark_mode" value="{STATUS_OFF}" {if empty(old('enable_dark_mode', $settings.enable_dark_mode))}checked="checked"{/if} id="enable_dark_mode_off" class="form-check-input">
-				<label class="form-check-label" for="enable_dark_mode_off">OFF</label>
+				<label class="form-check-label" for="enable_dark_mode_off">{lang('Admin.text_off')}</label>
 			</label>
 		</div>
 	</div>

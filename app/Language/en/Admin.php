@@ -249,6 +249,8 @@ return [
 	"text_no" => "No",
 	"text_none" => " --- None --- ",
 	"text_no_results" => "No results!",
+	"text_off" => "Off",
+	"text_on" => "On",
 	"text_parent" => "Parent",
 	"text_password" => "Password",
 	"text_permission" => "Permission",

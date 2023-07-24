@@ -211,11 +211,11 @@
                                 <label class="form-label">{lang('Admin.text_published')}</label>
                                 <label class="form-check form-check-inline ms-2">
                                     <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $edit_data.published)|default:1 eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
-                                    <label class="form-check-label" for="published_on">ON</label>
+                                    <label class="form-check-label" for="published_on">{lang('Admin.text_on')}</label>
                                 </label>
                                 <label class="form-check form-check-inline me-2">
                                     <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $edit_data.published)|default:1 eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
-                                    <label class="form-check-label" for="published_off">OFF</label>
+                                    <label class="form-check-label" for="published_off">{lang('Admin.text_off')}</label>
                                 </label>
                             </div>
                             <div class="form-group">
@@ -289,11 +289,11 @@
                                 <label class="form-label">{lang('NewsAdmin.text_is_ads')}</label><br/>
                                 <label class="form-check form-check-inline">
                                     <input type="radio" name="is_ads" value="{STATUS_ON}" {if old('is_ads', $edit_data.is_ads)|default:1 eq STATUS_ON}checked="checked"{/if} id="is_ads_on" class="form-check-input">
-                                    <label class="form-check-label" for="is_ads_on">ON</label>
+                                    <label class="form-check-label" for="is_ads_on">{lang('Admin.text_on')}</label>
                                 </label>
                                 <label class="form-check form-check-inline me-2">
                                     <input type="radio" name="is_ads" value="{STATUS_OFF}" {if old('is_ads', $edit_data.is_ads)|default:1 eq STATUS_OFF}checked="checked"{/if} id="is_ads_off" class="form-check-input">
-                                    <label class="form-check-label" for="is_ads_off">OFF</label>
+                                    <label class="form-check-label" for="is_ads_off">{lang('Admin.text_off')}</label>
                                 </label>
                                 <br/>
                                 <small>{lang('NewsAdmin.help_is_ads')}</small>
@@ -302,11 +302,11 @@
                                 <label class="form-label">{lang('NewsAdmin.text_is_fb_ia')}</label><br/>
                                 <label class="form-check form-check-inline">
                                     <input type="radio" name="is_fb_ia" value="{STATUS_ON}" {if old('is_fb_ia', $edit_data.is_fb_ia)|default:1 eq STATUS_ON}checked="checked"{/if} id="is_fb_ia_on" class="form-check-input">
-                                    <label class="form-check-label" for="is_fb_ia_on">ON</label>
+                                    <label class="form-check-label" for="is_fb_ia_on">{lang('Admin.text_on')}</label>
                                 </label>
                                 <label class="form-check form-check-inline me-2">
                                     <input type="radio" name="is_fb_ia" value="{STATUS_OFF}" {if old('is_fb_ia', $edit_data.is_fb_ia)|default:1 eq STATUS_OFF}checked="checked"{/if} id="is_fb_ia_off" class="form-check-input">
-                                    <label class="form-check-label" for="is_fb_ia_off">OFF</label>
+                                    <label class="form-check-label" for="is_fb_ia_off">{lang('Admin.text_off')}</label>
                                 </label>
                                 <br/>
                                 <small>{lang('NewsAdmin.help_is_fb_ia')}</small>
@@ -315,33 +315,33 @@
                                 <label class="form-label">{lang('NewsAdmin.text_is_hot')}</label><br/>
                                 <label class="form-check form-check-inline">
                                     <input type="radio" name="is_hot" value="{STATUS_ON}" {if old('is_hot', $edit_data.is_hot)|default:0 eq STATUS_ON}checked="checked"{/if} id="is_hot_on" class="form-check-input">
-                                    <label class="form-check-label" for="is_hot_on">ON</label>
+                                    <label class="form-check-label" for="is_hot_on">{lang('Admin.text_on')}</label>
                                 </label>
                                 <label class="form-check form-check-inline me-2">
                                     <input type="radio" name="is_hot" value="{STATUS_OFF}" {if old('is_hot', $edit_data.is_hot)|default:0 eq STATUS_OFF}checked="checked"{/if} id="is_hot_off" class="form-check-input">
-                                    <label class="form-check-label" for="is_hot_off">OFF</label>
+                                    <label class="form-check-label" for="is_hot_off">{lang('Admin.text_off')}</label>
                                 </label>
                             </div>
                             <div class="form-group mt-3">
                                 <label class="form-label">{lang('NewsAdmin.text_is_homepage')}</label><br/>
                                 <label class="form-check form-check-inline">
                                     <input type="radio" name="is_homepage" value="{STATUS_ON}" {if old('is_homepage', $edit_data.is_homepage)|default:0 eq STATUS_ON}checked="checked"{/if} id="is_homepage_on" class="form-check-input">
-                                    <label class="form-check-label" for="is_homepage_on">ON</label>
+                                    <label class="form-check-label" for="is_homepage_on">{lang('Admin.text_on')}</label>
                                 </label>
                                 <label class="form-check form-check-inline me-2">
                                     <input type="radio" name="is_homepage" value="{STATUS_OFF}" {if old('is_homepage', $edit_data.is_homepage)|default:0 eq STATUS_OFF}checked="checked"{/if} id="is_homepage_off" class="form-check-input">
-                                    <label class="form-check-label" for="is_homepage_off">OFF</label>
+                                    <label class="form-check-label" for="is_homepage_off">{lang('Admin.text_off')}</label>
                                 </label>
                             </div>
                             <div class="form-group mt-3">
                                 <label class="form-label">{lang('NewsAdmin.text_is_disable_follow')}</label><br/>
                                 <label class="form-check form-check-inline">
                                     <input type="radio" name="is_disable_follow" value="{STATUS_ON}" {if old('is_disable_follow', $edit_data.is_disable_follow)|default:0 eq STATUS_ON}checked="checked"{/if} id="is_disable_follow_on" class="form-check-input">
-                                    <label class="form-check-label" for="is_disable_follow_on">ON</label>
+                                    <label class="form-check-label" for="is_disable_follow_on">{lang('Admin.text_on')}</label>
                                 </label>
                                 <label class="form-check form-check-inline me-2">
                                     <input type="radio" name="is_disable_follow" value="{STATUS_OFF}" {if old('is_disable_follow', $edit_data.is_disable_follow)|default:0 eq STATUS_OFF}checked="checked"{/if} id="is_disable_follow_off" class="form-check-input">
-                                    <label class="form-check-label" for="is_disable_follow_off">OFF</label>
+                                    <label class="form-check-label" for="is_disable_follow_off">{lang('Admin.text_off')}</label>
                                 </label>
                                 <br/>
                                 <small>{lang('NewsAdmin.help_is_disable_follow')}</small>
@@ -350,11 +350,11 @@
                                 <label class="form-label">{lang('NewsAdmin.text_is_disable_robot')}</label><br/>
                                 <label class="form-check form-check-inline ms-2">
                                     <input type="radio" name="is_disable_robot" value="{STATUS_ON}" {if old('is_disable_robot', $edit_data.is_disable_robot)|default:0 eq STATUS_ON}checked="checked"{/if} id="is_disable_robot_on" class="form-check-input">
-                                    <label class="form-check-label" for="is_disable_robot_on">ON</label>
+                                    <label class="form-check-label" for="is_disable_robot_on">{lang('Admin.text_on')}</label>
                                 </label>
                                 <label class="form-check form-check-inline me-2">
                                     <input type="radio" name="is_disable_robot" value="{STATUS_OFF}" {if old('is_disable_robot', $edit_data.is_disable_robot)|default:0 eq STATUS_OFF}checked="checked"{/if} id="is_disable_robot_off" class="form-check-input">
-                                    <label class="form-check-label" for="is_disable_robot_off">OFF</label>
+                                    <label class="form-check-label" for="is_disable_robot_off">{lang('Admin.text_off')}</label>
                                 </label>
                                 <br/>
                                 <small>{lang('NewsAdmin.help_is_disable_robot')}</small>

@@ -202,11 +202,11 @@
                                 <label class="form-label">{lang('CustomerAdmin.text_status')}</label>
                                 <label class="form-check form-check-inline ms-2 mt-2">
                                     <input type="radio" name="status" value="{STATUS_ON}" {if old('status', $edit_data.status)|default:1 eq STATUS_ON}checked="checked"{/if} id="status_on" class="form-check-input">
-                                    <label class="form-check-label" for="status_on">ON</label>
+                                    <label class="form-check-label" for="status_on">{lang('Admin.text_on')}</label>
                                 </label>
                                 <label class="form-check form-check-inline mt-2 me-2">
                                     <input type="radio" name="status" value="{STATUS_OFF}" {if old('status', $edit_data.status)|default:1 eq STATUS_OFF}checked="checked"{/if} id="status_off" class="form-check-input">
-                                    <label class="form-check-label" for="status_off">OFF</label>
+                                    <label class="form-check-label" for="status_off">{lang('Admin.text_off')}</label>
                                 </label>
                             </div>
                             <h3 class="border-bottom pb-3"></h3>
@@ -214,11 +214,11 @@
                                 <label class="form-label">{lang('CustomerAdmin.text_newsletter')}</label>
                                 <label class="form-check form-check-inline ms-2 mt-2">
                                     <input type="radio" name="newsletter" value="{STATUS_ON}" {if old('newsletter', $edit_data.newsletter)|default:1 eq STATUS_ON}checked="checked"{/if} id="newsletter_on" class="form-check-input">
-                                    <label class="form-check-label" for="newsletter_on">ON</label>
+                                    <label class="form-check-label" for="newsletter_on">{lang('Admin.text_on')}</label>
                                 </label>
                                 <label class="form-check form-check-inline mt-2 me-2">
                                     <input type="radio" name="newsletter" value="{STATUS_OFF}" {if old('newsletter', $edit_data.newsletter)|default:1 eq STATUS_OFF}checked="checked"{/if} id="newsletter_off" class="form-check-input">
-                                    <label class="form-check-label" for="newsletter_off">OFF</label>
+                                    <label class="form-check-label" for="newsletter_off">{lang('Admin.text_off')}</label>
                                 </label>
                             </div>
                             <h3 class="border-bottom pb-3"></h3>
@@ -226,11 +226,11 @@
                                 <label class="form-label">{lang('CustomerAdmin.text_safe')}</label>
                                 <label class="form-check form-check-inline ms-2 mt-2">
                                     <input type="radio" name="safe" value="{STATUS_ON}" {if old('safe', $edit_data.safe)|default:1 eq STATUS_ON}checked="checked"{/if} id="safe_on" class="form-check-input">
-                                    <label class="form-check-label" for="safe_on">ON</label>
+                                    <label class="form-check-label" for="safe_on">{lang('Admin.text_on')}</label>
                                 </label>
                                 <label class="form-check form-check-inline mt-2 me-2">
                                     <input type="radio" name="safe" value="{STATUS_OFF}" {if old('safe', $edit_data.safe)|default:1 eq STATUS_OFF}checked="checked"{/if} id="safe_off" class="form-check-input">
-                                    <label class="form-check-label" for="safe_off">OFF</label>
+                                    <label class="form-check-label" for="safe_off">{lang('Admin.text_off')}</label>
                                 </label>
                                 <br/>
                                 <small>{lang('CustomerAdmin.help_safe')}</small>
@@ -245,7 +245,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <h5 class="card-header">{lang('CustomerAdmin.header_address')}</h5>
+                        <h5 class="card-header"><i class="fas fa-map me-2"></i>{lang('CustomerAdmin.header_address')}</h5>
                         <div class="card-body">
                             {if !empty($edit_data.address_list)}
                                 {counter assign=address_row start=1 print=false}

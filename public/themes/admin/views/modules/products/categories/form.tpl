@@ -75,11 +75,11 @@
                                 <label class="form-label fw-bold">{lang('Admin.text_published')}</label>
                                 <label class="form-check form-check-inline ms-2">
                                     <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $edit_data.published)|default:1 eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
-                                    <label class="form-check-label" for="published_on">ON</label>
+                                    <label class="form-check-label" for="published_on">{lang('Admin.text_on')}</label>
                                 </label>
                                 <label class="form-check form-check-inline me-2">
                                     <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $edit_data.published)|default:1 eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
-                                    <label class="form-check-label" for="published_off">OFF</label>
+                                    <label class="form-check-label" for="published_off">{lang('Admin.text_off')}</label>
                                 </label>
                             </div>
                             <div class="form-group border-top pt-3">
@@ -98,11 +98,11 @@
                                 <label class="form-label fw-bold">{lang('ProductCategoryAdmin.text_top')}</label>
                                 <label class="form-check form-check-inline ms-2">
                                     <input type="radio" name="top" value="{STATUS_ON}" {if old('top', $edit_data.top)|default:1 eq STATUS_ON}checked="checked"{/if} id="top_on" class="form-check-input">
-                                    <label class="form-check-label" for="top_on">ON</label>
+                                    <label class="form-check-label" for="top_on">{lang('Admin.text_on')}</label>
                                 </label>
                                 <label class="form-check form-check-inline me-2">
                                     <input type="radio" name="top" value="{STATUS_OFF}" {if old('top', $edit_data.top)|default:1 eq STATUS_OFF}checked="checked"{/if} id="top_off" class="form-check-input">
-                                    <label class="form-check-label" for="top_off">OFF</label>
+                                    <label class="form-check-label" for="top_off">{lang('Admin.text_off')}</label>
                                 </label>
                                 <br/>
                                 <small>{lang('ProductCategoryAdmin.help_top')}</small>

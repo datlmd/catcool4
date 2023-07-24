@@ -58,11 +58,11 @@
 		<div class="col-12 col-sm-8 col-lg-6 mt-2 mb-0">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="file_encrypt_name" value="{STATUS_ON}" {if !empty(old('file_encrypt_name', $settings.file_encrypt_name))}checked="checked"{/if} id="file_encrypt_name_on" class="form-check-input">
-				<label class="form-check-label" for="file_encrypt_name_on">ON</label>
+				<label class="form-check-label" for="file_encrypt_name_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="file_encrypt_name" value="{STATUS_OFF}" {if empty(old('file_encrypt_name', $settings.file_encrypt_name))}checked="checked"{/if} id="file_encrypt_name_off" class="form-check-input">
-				<label class="form-check-label" for="file_encrypt_name_off">OFF</label>
+				<label class="form-check-label" for="file_encrypt_name_off">{lang('Admin.text_off')}</label>
 			</label>
 			<br/>
 			<small>{lang('ConfigAdmin.help_file_encrypt_name')}</small>
@@ -94,11 +94,11 @@
 		<div class="col-12 col-sm-8 col-lg-6 mt-2 mb-0">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="enable_resize_image" value="{STATUS_ON}" {if !empty(old('enable_resize_image', $settings.enable_resize_image))}checked="checked"{/if} id="enable_resize_image_on" class="form-check-input">
-				<label class="form-check-label" for="enable_resize_image_on">ON</label>
+				<label class="form-check-label" for="enable_resize_image_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="enable_resize_image" value="{STATUS_OFF}" {if empty(old('enable_resize_image', $settings.enable_resize_image))}checked="checked"{/if} id="enable_resize_image_off" class="form-check-input">
-				<label class="form-check-label" for="enable_resize_image_off">OFF</label>
+				<label class="form-check-label" for="enable_resize_image_off">{lang('Admin.text_off')}</label>
 			</label>
 		</div>
 	</div>
@@ -128,11 +128,11 @@
 		<div class="col-12 col-sm-8 col-lg-6">
 			<label class="form-check form-check-inline mt-2">
 				<input type="radio" name="image_watermar_enable" value="{STATUS_ON}" {if !empty(old('image_watermar_enable', $settings.image_watermar_enable))}checked="checked"{/if} id="image_watermar_enable_on" class="form-check-input">
-				<label class="form-check-label" for="image_watermar_enable_on">ON</label>
+				<label class="form-check-label" for="image_watermar_enable_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2 mt-2">
 				<input type="radio" name="image_watermar_enable" value="{STATUS_OFF}" {if empty(old('image_watermar_enable', $settings.image_watermar_enable))}checked="checked"{/if} id="image_watermar_enable_off" class="form-check-input">
-				<label class="form-check-label" for="image_watermar_enable_off">OFF</label>
+				<label class="form-check-label" for="image_watermar_enable_off">{lang('Admin.text_off')}</label>
 			</label>
 			<div class="bg-light mt-2 p-2">
 				{if !empty(old('image_watermark_text', $settings.image_watermark_text)) || !empty(old('image_watermark_path', $settings.image_watermark_path))}
@@ -200,11 +200,11 @@
 					{lang('ConfigAdmin.text_image_watermark_is_shadow')}
 					<label class="form-check form-check-inline ms-2">
 						<input type="radio" name="image_watermark_is_shadow" value="{STATUS_ON}" {if !empty(old('image_watermark_is_shadow', $settings.image_watermark_is_shadow))}checked="checked"{/if} id="image_watermark_is_shadow_on" class="form-check-input">
-						<label class="form-check-label" for="image_watermark_is_shadow_on">ON</label>
+						<label class="form-check-label" for="image_watermark_is_shadow_on">{lang('Admin.text_on')}</label>
 					</label>
 					<label class="form-check form-check-inline me-2">
 						<input type="radio" name="image_watermark_is_shadow" value="{STATUS_OFF}" {if empty(old('image_watermark_is_shadow', $settings.image_watermark_is_shadow))}checked="checked"{/if} id="image_watermark_is_shadow_off" class="form-check-input">
-						<label class="form-check-label" for="image_watermark_is_shadow_off">OFF</label>
+						<label class="form-check-label" for="image_watermark_is_shadow_off">{lang('Admin.text_off')}</label>
 					</label>
 				</div>
 				<div class="form-group">

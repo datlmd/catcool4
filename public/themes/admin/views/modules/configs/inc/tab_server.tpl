@@ -7,11 +7,11 @@
         <div class="col-12 col-sm-8 col-lg-6 pt-2">
             <label class="form-check form-check-inline">
                 <input type="radio" name="maintenance" value="{STATUS_ON}" {if !empty(old('maintenance', $settings.maintenance))}checked="checked"{/if} id="maintenance_on" class="form-check-input">
-                <label class="form-check-label" for="maintenance_on">ON</label>
+                <label class="form-check-label" for="maintenance_on">{lang('Admin.text_on')}</label>
             </label>
             <label class="form-check form-check-inline me-2">
                 <input type="radio" name="maintenance" value="{STATUS_OFF}" {if empty(old('maintenance', $settings.maintenance))}checked="checked"{/if} id="maintenance_off" class="form-check-input">
-                <label class="form-check-label" for="maintenance_off">OFF</label>
+                <label class="form-check-label" for="maintenance_off">{lang('Admin.text_off')}</label>
             </label>
             <br/>
             <small>{lang('ConfigAdmin.help_maintenance')}</small>
@@ -22,11 +22,11 @@
         <div class="col-12 col-sm-8 col-lg-6 pt-2">
             <label class="form-check form-check-inline">
                 <input type="radio" name="seo_url" value="{STATUS_ON}" {if !empty(old('seo_url', $settings.seo_url))}checked="checked"{/if} id="seo_url_on" class="form-check-input">
-                <label class="form-check-label" for="seo_url_on">ON</label>
+                <label class="form-check-label" for="seo_url_on">{lang('Admin.text_on')}</label>
             </label>
             <label class="form-check form-check-inline me-2">
                 <input type="radio" name="seo_url" value="{STATUS_OFF}" {if empty(old('seo_url', $settings.seo_url))}checked="checked"{/if} id="seo_url_off" class="form-check-input">
-                <label class="form-check-label" for="seo_url_off">OFF</label>
+                <label class="form-check-label" for="seo_url_off">{lang('Admin.text_off')}</label>
             </label>
             <br/>
             <small>{lang('ConfigAdmin.help_seo_url')}</small>
@@ -56,11 +56,11 @@
         <div class="col-12 col-sm-8 col-lg-6 pt-2">
             <label class="form-check form-check-inline">
                 <input type="radio" name="force_global_secure_requests" value="{STATUS_ON}" {if !empty(old('force_global_secure_requests', $settings.force_global_secure_requests))}checked="checked"{/if} id="force_global_secure_requests_on" class="form-check-input">
-                <label class="form-check-label" for="force_global_secure_requests_on">ON</label>
+                <label class="form-check-label" for="force_global_secure_requests_on">{lang('Admin.text_on')}</label>
             </label>
             <label class="form-check form-check-inline me-2">
                 <input type="radio" name="force_global_secure_requests" value="{STATUS_OFF}" {if empty(old('force_global_secure_requests', $settings.force_global_secure_requests))}checked="checked"{/if} id="force_global_secure_requests_off" class="form-check-input">
-                <label class="form-check-label" for="force_global_secure_requests_off">OFF</label>
+                <label class="form-check-label" for="force_global_secure_requests_off">{lang('Admin.text_off')}</label>
             </label>
             <br/>
             <small>{lang('ConfigAdmin.help_enable_ssl')}</small>

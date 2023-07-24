@@ -7,11 +7,11 @@
 		<div class="col-12 col-sm-10 col-lg-10 mt-2 mb-0">
 			<label class="form-check form-check-inline ms-2">
 				<input type="radio" name="published" value="{STATUS_ON}" {if old('published', $edit_data.published)|default:1 eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
-				<label class="form-check-label" for="published_on">ON</label>
+				<label class="form-check-label" for="published_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $edit_data.published)|default:1 eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
-				<label class="form-check-label" for="published_off">OFF</label>
+				<label class="form-check-label" for="published_off">{lang('Admin.text_off')}</label>
 			</label>
 		</div>
 	</div>
@@ -159,11 +159,11 @@
 		<div class="col-12 col-sm-10 col-lg-10 mt-2 mb-0">
 			<label class="form-check form-check-inline ms-2">
 				<input type="radio" name="subtract" value="{STATUS_ON}" {if old('subtract', $edit_data.subtract)|default:1 eq STATUS_ON}checked="checked"{/if} id="subtract_on" class="form-check-input">
-				<label class="form-check-label" for="subtract_on">ON</label>
+				<label class="form-check-label" for="subtract_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="subtract" value="{STATUS_OFF}" {if old('subtract', $edit_data.subtract)|default:1 eq STATUS_OFF}checked="checked"{/if} id="subtract_off" class="form-check-input">
-				<label class="form-check-label" for="subtract_off">OFF</label>
+				<label class="form-check-label" for="subtract_off">{lang('Admin.text_off')}</label>
 			</label>
 		</div>
 	</div>
@@ -198,11 +198,11 @@
 		<div class="col-12 col-sm-10 col-lg-10 mt-2 mb-0">
 			<label class="form-check form-check-inline ms-2">
 				<input type="radio" name="shipping" value="{STATUS_ON}" {if old('shipping', $edit_data.shipping)|default:1 eq STATUS_ON}checked="checked"{/if} id="shipping_on" class="form-check-input">
-				<label class="form-check-label" for="shipping_on">ON</label>
+				<label class="form-check-label" for="shipping_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="shipping" value="{STATUS_OFF}" {if old('shipping', $edit_data.shipping)|default:1 eq STATUS_OFF}checked="checked"{/if} id="shipping_off" class="form-check-input">
-				<label class="form-check-label" for="shipping_off">OFF</label>
+				<label class="form-check-label" for="shipping_off">{lang('Admin.text_off')}</label>
 			</label>
 		</div>
 	</div>

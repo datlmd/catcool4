@@ -7,11 +7,11 @@
 		<div class="col-12 col-sm-8 col-lg-6">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="product_count" value="{STATUS_ON}" {if !empty(old('product_count', $settings.product_count))}checked="checked"{/if} id="product_count_on" class="form-check-input">
-				<label class="form-check-label" for="product_count_on">ON</label>
+				<label class="form-check-label" for="product_count_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="product_count" value="{STATUS_OFF}" {if empty(old('product_count', $settings.product_count))}checked="checked"{/if} id="product_count_off" class="form-check-input">
-				<label class="form-check-label" for="product_count_off">OFF</label>
+				<label class="form-check-label" for="product_count_off">{lang('Admin.text_off')}</label>
 			</label>
 			<br/>
 			<small>{lang('ConfigAdmin.help_product_count')}</small>
@@ -31,11 +31,11 @@
 		<div class="col-12 col-sm-8 col-lg-6">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="review_status" value="{STATUS_ON}" {if !empty(old('review_status', $settings.review_status))}checked="checked"{/if} id="review_status_on" class="form-check-input">
-				<label class="form-check-label" for="review_status_on">ON</label>
+				<label class="form-check-label" for="review_status_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="review_status" value="{STATUS_OFF}" {if empty(old('review_status', $settings.review_status))}checked="checked"{/if} id="review_status_off" class="form-check-input">
-				<label class="form-check-label" for="review_status_off">OFF</label>
+				<label class="form-check-label" for="review_status_off">{lang('Admin.text_off')}</label>
 			</label>
 			<br/>
 			<small>{lang('ConfigAdmin.help_review_status')}</small>
@@ -46,11 +46,11 @@
 		<div class="col-12 col-sm-8 col-lg-6">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="review_guest" value="{STATUS_ON}" {if !empty(old('review_guest', $settings.review_guest))}checked="checked"{/if} id="review_guest_on" class="form-check-input">
-				<label class="form-check-label" for="review_guest_on">ON</label>
+				<label class="form-check-label" for="review_guest_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="review_guest" value="{STATUS_OFF}" {if empty(old('review_guest', $settings.review_guest))}checked="checked"{/if} id="review_guest_off" class="form-check-input">
-				<label class="form-check-label" for="review_guest_off">OFF</label>
+				<label class="form-check-label" for="review_guest_off">{lang('Admin.text_off')}</label>
 			</label>
 			<br/>
 			<small>{lang('ConfigAdmin.help_review_guest')}</small>
@@ -79,11 +79,11 @@
 		<div class="col-12 col-sm-8 col-lg-6 pt-2">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="tax" value="{STATUS_ON}" {if !empty(old('tax', $settings.tax))}checked="checked"{/if} id="tax_on" class="form-check-input">
-				<label class="form-check-label" for="tax_on">ON</label>
+				<label class="form-check-label" for="tax_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="tax" value="{STATUS_OFF}" {if empty(old('tax', $settings.tax))}checked="checked"{/if} id="tax_off" class="form-check-input">
-				<label class="form-check-label" for="tax_off">OFF</label>
+				<label class="form-check-label" for="tax_off">{lang('Admin.text_off')}</label>
 			</label>
 		</div>
 	</div>
@@ -108,11 +108,11 @@
 		<div class="col-12 col-sm-8 col-lg-6 pt-2">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="customer_online" value="{STATUS_ON}" {if !empty(old('customer_online', $settings.customer_online))}checked="checked"{/if} id="customer_online_on" class="form-check-input">
-				<label class="form-check-label" for="customer_online_on">ON</label>
+				<label class="form-check-label" for="customer_online_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="customer_online" value="{STATUS_OFF}" {if empty(old('customer_online', $settings.customer_online))}checked="checked"{/if} id="customer_online_off" class="form-check-input">
-				<label class="form-check-label" for="customer_online_off">OFF</label>
+				<label class="form-check-label" for="customer_online_off">{lang('Admin.text_off')}</label>
 			</label>
 			<br/>
 			<small>{lang('ConfigAdmin.help_customer_online')}</small>
@@ -123,11 +123,11 @@
 		<div class="col-12 col-sm-8 col-lg-6 pt-2">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="customer_activity" value="{STATUS_ON}" {if !empty(old('customer_activity', $settings.customer_activity))}checked="checked"{/if} id="customer_activity_on" class="form-check-input">
-				<label class="form-check-label" for="customer_activity_on">ON</label>
+				<label class="form-check-label" for="customer_activity_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="customer_activity" value="{STATUS_OFF}" {if empty(old('customer_activity', $settings.customer_activity))}checked="checked"{/if} id="customer_activity_off" class="form-check-input">
-				<label class="form-check-label" for="customer_activity_off">OFF</label>
+				<label class="form-check-label" for="customer_activity_off">{lang('Admin.text_off')}</label>
 			</label>
 			<br/>
 			<small>{lang('ConfigAdmin.help_customer_activity')}</small>
@@ -138,11 +138,11 @@
 		<div class="col-12 col-sm-8 col-lg-6 pt-2">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="customer_search" value="{STATUS_ON}" {if !empty(old('customer_search', $settings.customer_search))}checked="checked"{/if} id="customer_search_on" class="form-check-input">
-				<label class="form-check-label" for="customer_search_on">ON</label>
+				<label class="form-check-label" for="customer_search_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="customer_search" value="{STATUS_OFF}" {if empty(old('customer_search', $settings.customer_search))}checked="checked"{/if} id="customer_search_off" class="form-check-input">
-				<label class="form-check-label" for="customer_search_off">OFF</label>
+				<label class="form-check-label" for="customer_search_off">{lang('Admin.text_off')}</label>
 			</label>
 		</div>
 	</div>
@@ -165,11 +165,11 @@
 		<div class="col-12 col-sm-8 col-lg-6">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="customer_price" value="{STATUS_ON}" {if !empty(old('customer_price', $settings.customer_price))}checked="checked"{/if} id="customer_price_on" class="form-check-input">
-				<label class="form-check-label" for="customer_price_on">ON</label>
+				<label class="form-check-label" for="customer_price_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="customer_price" value="{STATUS_OFF}" {if empty(old('customer_price', $settings.customer_price))}checked="checked"{/if} id="customer_price_off" class="form-check-input">
-				<label class="form-check-label" for="customer_price_off">OFF</label>
+				<label class="form-check-label" for="customer_price_off">{lang('Admin.text_off')}</label>
 			</label>
 			<br/>
 			<small>{lang('ConfigAdmin.help_customer_price')}</small>
@@ -203,11 +203,11 @@
 		<div class="col-12 col-sm-8 col-lg-6 pt-2">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="cart_weight" value="{STATUS_ON}" {if !empty(old('cart_weight', $settings.cart_weight))}checked="checked"{/if} id="cart_weight_on" class="form-check-input">
-				<label class="form-check-label" for="cart_weight_on">ON</label>
+				<label class="form-check-label" for="cart_weight_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="cart_weight" value="{STATUS_OFF}" {if empty(old('cart_weight', $settings.cart_weight))}checked="checked"{/if} id="cart_weight_off" class="form-check-input">
-				<label class="form-check-label" for="cart_weight_off">OFF</label>
+				<label class="form-check-label" for="cart_weight_off">{lang('Admin.text_off')}</label>
 			</label>
 			<br/>
 			<small>{lang('ConfigAdmin.help_cart_weight')}</small>
@@ -218,11 +218,11 @@
 		<div class="col-12 col-sm-8 col-lg-6">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="checkout_guest" value="{STATUS_ON}" {if !empty(old('checkout_guest', $settings.checkout_guest))}checked="checked"{/if} id="checkout_guest_on" class="form-check-input">
-				<label class="form-check-label" for="checkout_guest_on">ON</label>
+				<label class="form-check-label" for="checkout_guest_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="checkout_guest" value="{STATUS_OFF}" {if empty(old('checkout_guest', $settings.checkout_guest))}checked="checked"{/if} id="checkout_guest_off" class="form-check-input">
-				<label class="form-check-label" for="checkout_guest_off">OFF</label>
+				<label class="form-check-label" for="checkout_guest_off">{lang('Admin.text_off')}</label>
 			</label>
 			<br/>
 			<small>{lang('ConfigAdmin.help_checkout_guest')}</small>
@@ -277,11 +277,11 @@
 		<div class="col-12 col-sm-8 col-lg-6 pt-2">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="stock_display" value="{STATUS_ON}" {if !empty(old('stock_display', $settings.stock_display))}checked="checked"{/if} id="stock_display_on" class="form-check-input">
-				<label class="form-check-label" for="stock_display_on">ON</label>
+				<label class="form-check-label" for="stock_display_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="stock_display" value="{STATUS_OFF}" {if empty(old('stock_display', $settings.stock_display))}checked="checked"{/if} id="stock_display_off" class="form-check-input">
-				<label class="form-check-label" for="stock_display_off">OFF</label>
+				<label class="form-check-label" for="stock_display_off">{lang('Admin.text_off')}</label>
 			</label>
 			<br/>
 			<small>{lang('ConfigAdmin.help_stock_display')}</small>
@@ -292,11 +292,11 @@
 		<div class="col-12 col-sm-8 col-lg-6 pt-2">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="stock_warning" value="{STATUS_ON}" {if !empty(old('stock_warning', $settings.stock_warning))}checked="checked"{/if} id="stock_warning_on" class="form-check-input">
-				<label class="form-check-label" for="stock_warning_on">ON</label>
+				<label class="form-check-label" for="stock_warning_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="stock_warning" value="{STATUS_OFF}" {if empty(old('stock_warning', $settings.stock_warning))}checked="checked"{/if} id="stock_warning_off" class="form-check-input">
-				<label class="form-check-label" for="stock_warning_off">OFF</label>
+				<label class="form-check-label" for="stock_warning_off">{lang('Admin.text_off')}</label>
 			</label>
 			<br/>
 			<small>{lang('ConfigAdmin.help_stock_warning')}</small>
@@ -307,11 +307,11 @@
 		<div class="col-12 col-sm-8 col-lg-6 pt-2">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="stock_checkout" value="{STATUS_ON}" {if !empty(old('stock_checkout', $settings.stock_checkout))}checked="checked"{/if} id="stock_checkout_on" class="form-check-input">
-				<label class="form-check-label" for="stock_checkout_on">ON</label>
+				<label class="form-check-label" for="stock_checkout_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="stock_checkout" value="{STATUS_OFF}" {if empty(old('stock_checkout', $settings.stock_checkout))}checked="checked"{/if} id="stock_checkout_off" class="form-check-input">
-				<label class="form-check-label" for="stock_checkout_off">OFF</label>
+				<label class="form-check-label" for="stock_checkout_off">{lang('Admin.text_off')}</label>
 			</label>
 			<br/>
 			<small>{lang('ConfigAdmin.help_stock_checkout')}</small>
@@ -330,11 +330,11 @@
 		<div class="col-12 col-sm-8 col-lg-6 pt-2">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="affiliate_approval" value="{STATUS_ON}" {if !empty(old('affiliate_approval', $settings.affiliate_approval))}checked="checked"{/if} id="affiliate_approval_on" class="form-check-input">
-				<label class="form-check-label" for="affiliate_approval_on">ON</label>
+				<label class="form-check-label" for="affiliate_approval_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="affiliate_approval" value="{STATUS_OFF}" {if empty(old('affiliate_approval', $settings.affiliate_approval))}checked="checked"{/if} id="affiliate_approval_off" class="form-check-input">
-				<label class="form-check-label" for="affiliate_approval_off">OFF</label>
+				<label class="form-check-label" for="affiliate_approval_off">{lang('Admin.text_off')}</label>
 			</label>
 			<br/>
 			<small>{lang('ConfigAdmin.help_affiliate_approval')}</small>
@@ -345,11 +345,11 @@
 		<div class="col-12 col-sm-8 col-lg-6">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="affiliate_auto" value="{STATUS_ON}" {if !empty(old('affiliate_auto', $settings.affiliate_auto))}checked="checked"{/if} id="affiliate_auto_on" class="form-check-input">
-				<label class="form-check-label" for="affiliate_auto_on">ON</label>
+				<label class="form-check-label" for="affiliate_auto_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="affiliate_auto" value="{STATUS_OFF}" {if empty(old('affiliate_auto', $settings.affiliate_auto))}checked="checked"{/if} id="affiliate_auto_off" class="form-check-input">
-				<label class="form-check-label" for="affiliate_auto_off">OFF</label>
+				<label class="form-check-label" for="affiliate_auto_off">{lang('Admin.text_off')}</label>
 			</label>
 			<br/>
 			<small>{lang('ConfigAdmin.help_affiliate_auto')}</small>
@@ -392,11 +392,11 @@
 		<div class="col-12 col-sm-8 col-lg-6 pt-2">
 			<label class="form-check form-check-inline">
 				<input type="radio" name="is_captcha" value="{STATUS_ON}" {if !empty(old('is_captcha', $settings.is_captcha))}checked="checked"{/if} id="is_captcha_on" class="form-check-input">
-				<label class="form-check-label" for="is_captcha_on">ON</label>
+				<label class="form-check-label" for="is_captcha_on">{lang('Admin.text_on')}</label>
 			</label>
 			<label class="form-check form-check-inline me-2">
 				<input type="radio" name="is_captcha" value="{STATUS_OFF}" {if empty(old('is_captcha', $settings.is_captcha))}checked="checked"{/if} id="is_captcha_off" class="form-check-input">
-				<label class="form-check-label" for="is_captcha_off">OFF</label>
+				<label class="form-check-label" for="is_captcha_off">{lang('Admin.text_off')}</label>
 			</label>
 			<br/>
 			<small>{lang('ConfigAdmin.help_is_captcha')}</small>
