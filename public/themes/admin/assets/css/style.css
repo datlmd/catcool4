@@ -1667,7 +1667,7 @@ Left Navigation Sidebar
 .nav-left-sidebar .navbar-nav .nav-item {}
 
 .nav-left-sidebar .navbar-nav .nav-link {
-    font-size: 14px;
+    font-size: 16px;
     padding: 12px;
     /* margin-bottom: 2px; */
     color: #71789e;
@@ -1675,7 +1675,7 @@ Left Navigation Sidebar
 }
 
 .nav-left-sidebar .nav-link i {
-    font-size: 14px;
+    font-size: 16px;
     margin-right: 9px;
     text-align: center;
     vertical-align: middle;
@@ -2007,8 +2007,8 @@ Pageheader
     background-color: transparent;
     border-radius: 0px;
     /*border-top: 1px solid #e0e4ef;*/
-    padding-top: 10px;
-    font-size: 12px;
+    padding-top: 7px;
+    font-size: 14px;
 }
 
 .page-breadcrumb .breadcrumb .breadcrumb-item+.breadcrumb-item::before {

@@ -15,8 +15,10 @@
                             {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('ProductAdmin.heading_title')}
                         </div>
                         <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-                            <button type="submit" class="btn btn-sm btn-space btn-primary mb-0" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
-                            <a href="{back_to($manage_url)}" class="btn btn-sm btn-space btn-secondary mb-0 me-0" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_cancel')}</a>
+                            <div id="form_btn_save_fixed">
+                                <button type="submit" class="btn btn-sm btn-space btn-primary mb-0" title="{lang('Admin.button_save')}"><i class="fas fa-save me-1"></i>{lang('Admin.button_save')}</button>
+                                <a href="{back_to($manage_url)}" class="btn btn-sm btn-space btn-secondary mb-0 me-0" title="{lang('Admin.button_cancel')}"><i class="fas fa-reply me-1"></i>{lang('Admin.button_cancel')}</a>
+                            </div>
                         </div>
                     </div>
 
@@ -29,58 +31,58 @@
 
                     <div class="card">
                         <h5 class="card-header"><i class="fas {if !empty($edit_data.product_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
-
-                        <div class="card-body px-0 pb-0 pt-3 bg-light">
-                            <div class="tab-regular">
-                                <ul class="nav nav-tabs border-bottom ps-3" id="config_tab" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_general'}active{/if}" id="tab_general" data-bs-toggle="tab" href="#tab_general_content" role="tab" aria-controls="tab_general" aria-selected="{if old('tab_type', $tab_type) eq 'tab_general'}true{else}false{/if}">{lang('Admin.tab_general')}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_data'}active{/if}" id="tab_data" data-bs-toggle="tab" href="#tab_data_content" role="tab" aria-controls="tab_data" aria-selected="{if old('tab_type', $tab_type) eq 'tab_data'}true{else}false{/if}">{lang('Admin.tab_data')}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_links'}active{/if}" id="tab_links" data-bs-toggle="tab" href="#tab_links_content" role="tab" aria-controls="tab_links" aria-selected="{if old('tab_type', $tab_type) eq 'tab_links'}true{else}false{/if}">{lang('Admin.tab_links')}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_attributes'}active{/if}" id="tab_attributes" data-bs-toggle="tab" href="#tab_attributes_content" role="tab" aria-controls="tab_attributes" aria-selected="{if old('tab_type', $tab_type) eq 'tab_attributes'}true{else}false{/if}">{lang('Admin.tab_attribute')}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_options'}active{/if}" id="tab_options" data-bs-toggle="tab" href="#tab_options_content" role="tab" aria-controls="tab_options" aria-selected="{if old('tab_type', $tab_type) eq 'tab_options'}true{else}false{/if}">{lang('Admin.tab_option')}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_images'}active{/if}" id="tab_images" data-bs-toggle="tab" href="#tab_images_content" role="tab" aria-controls="tab_images" aria-selected="{if old('tab_type', $tab_type) eq 'tab_images'}true{else}false{/if}">{lang('Admin.tab_image')}</a>
-                                    </li>
-                                </ul>
-                                <div class="tab-content border-0 p-3" id="tab_content">
-                                    <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_general'}show active{/if}" role="tabpanel" id="tab_general_content"  aria-labelledby="tab_general">
-                                        {include file=get_theme_path('views/modules/products/inc/tab_general.tpl')}
-                                    </div>
-                                    <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_data'}show active{/if}" role="tabpanel" id="tab_data_content"  aria-labelledby="tab_data">
-                                        {include file=get_theme_path('views/modules/products/inc/tab_data.tpl')}
-                                    </div>
-                                    <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_links'}show active{/if}" role="tabpanel" id="tab_links_content"  aria-labelledby="tab_links">
-                                        {include file=get_theme_path('views/modules/products/inc/tab_links.tpl')}
-                                    </div>
-                                    <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_attributes'}show active{/if}" role="tabpanel" id="tab_attributes_content"  aria-labelledby="tab_attributes">
-                                        {include file=get_theme_path('views/modules/products/inc/tab_attributes.tpl')}
-                                    </div>
-                                    <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_options'}show active{/if}" role="tabpanel" id="tab_options_content"  aria-labelledby="tab_options">
-                                        {include file=get_theme_path('views/modules/products/inc/tab_options.tpl')}
-                                    </div>
-                                    <div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_images'}show active{/if}" role="tabpanel" id="tab_images_content"  aria-labelledby="tab_images">
-                                        {include file=get_theme_path('views/modules/products/inc/tab_images.tpl')}
-                                    </div>
-                                </div>
-
-                            </div>
+                        <div class="card-body px-0">
+                            {include file=get_theme_path('views/modules/products/inc/tab_general.tpl')}
                         </div>
-
                     </div>
 
+                    <div class="card">
+                        <h5 class="card-header">{lang('Admin.tab_image')}</h5>
+                        <div class="card-body">
+                            {include file=get_theme_path('views/modules/products/inc/tab_images.tpl')}
+                        </div>
+                    </div>
 
+                    <div class="card">
+                        <h5 class="card-header">{lang('Admin.tab_data')}</h5>
+                        <div class="card-body">
+                            {include file=get_theme_path('views/modules/products/inc/tab_data.tpl')}
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h5 class="card-header">{lang('Admin.tab_links')}</h5>
+                        <div class="card-body">
+                            {include file=get_theme_path('views/modules/products/inc/tab_links.tpl')}
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h5 class="card-header">{lang('Admin.tab_attribute')}</h5>
+
+                        <div class="card-body">
+                            {include file=get_theme_path('views/modules/products/inc/tab_attributes.tpl')}
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h5 class="card-header">{lang('Admin.tab_links')}</h5>
+
+                        <div class="card-body">
+                            {include file=get_theme_path('views/modules/products/inc/tab_links.tpl')}
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h5 class="card-header">{lang('Admin.tab_option')}</h5>
+
+                        <div class="card-body">
+                            {include file=get_theme_path('views/modules/products/inc/tab_options.tpl')}
+                        </div>
+                    </div>
                 </div>
             </div>
+
         {form_close()}
     </div>
 

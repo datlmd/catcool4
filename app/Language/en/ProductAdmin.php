@@ -21,6 +21,7 @@ return [
 	"text_attribute_add" => "Add Attribute",
 	"text_category" => "Categories",
 	"text_date_available" => "Date Available",
+	"text_description" => "Product Description",
 	"text_dimension" => "Dimensions (L x W x H)",
 	"text_download" => "Downloads",
 	"text_ean" => "EAN",

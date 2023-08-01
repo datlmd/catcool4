@@ -326,6 +326,8 @@ class Manage extends AdminController
 
         $this->themes->addJS('common/js/admin/related');
 
+        $this->themes->addJS('common/plugin/shortable-nestable/Sortable.min');
+
         $data['language_list'] = get_list_lang(true);
 
         //edit

@@ -980,4 +980,25 @@ $(function () {
         });
     }
 
+    //hien thi button save scroll
+    $(window).trigger('scroll');
+    $(window).bind('scroll', function () {
+        if ($(window).scrollTop() > 50) {
+            $('#form_btn_save_fixed').addClass('form-btn-save-fixed');
+        } else {
+            $('#form_btn_save_fixed').removeClass('form-btn-save-fixed');
+        }
+    });
+
+    //sort hình
+    if ($('.sortable_photos').length) {
+        var sortable = Sortable.create($('.sortable_photos')[0],{
+            //animation: 100,
+            onSort: function (/**Event*/evt) {
+                // same properties as onEnd
+                //alert(335);
+            },
+        });
+    }
+
 });

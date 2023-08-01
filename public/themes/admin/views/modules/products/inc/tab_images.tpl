@@ -14,6 +14,22 @@
 
 			</a>
 			<input type="hidden" name="image" value="{$edit_data.image}" id="input_image" />
+
+			<ul id="image_thumb" class="list-group list-group-horizontal sortable_photos mt-2">
+				{foreach $edit_data.image_list as $value_image}
+					<li class="list-group-item">
+						<a href="javascript:void(0);" class="ms-0" id="product_image_{$product_image_row}_image" data-target="input_product_image_{$product_image_row}_image" data-thumb="product_image_{$product_image_row}_load_image_url" data-type="image" data-bs-toggle="image">
+							<img src="{if !empty($value_image.image)}{image_thumb_url($value_image.image)}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="product_image_{$product_image_row}_load_image_url" data-placeholder="{image_default_url()}"/>
+							<div class="btn-group w-100 mt-1" role="group">
+								<button type="button" id="button-image-logo" class="button-image btn btn-xs btn-primary" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
+								<button type="button" id="button-clear-logo" class="button-clear btn btn-xs btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>
+							</div>
+
+						</a>
+						<input type="hidden" name="product_image[{$product_image_row}][image]" value="{$value_image.image}" id="input_product_image_{$product_image_row}_image" />
+					</li>
+				{/foreach}
+			</ul>
 		</div>
 	</div>
 
@@ -30,6 +46,7 @@
 				</thead>
 				<tbody>
 				{if !empty($edit_data.image_list)}
+
 					{counter assign=product_image_row start=1 print=false}
 
 					{foreach $edit_data.image_list as $value_image}
