@@ -48,5 +48,15 @@ $(function () {
             //$($(this).parent()).parent().find('input').val('');
         });
     }
+
+    $(document).on('click', 'a[data-bs-toggle=\'image\'] img', function(e) {
+        e.preventDefault();
+
+        $(this).find('a').remove();
+        var html_zoom = '<a href="' + $(this).parent().parent().find('img').attr('src') + '" data-lightbox="products" style="display: none"></a>'
+        $(this).append(html_zoom);
+
+        $(this).find('a').click();
+    });
 });
 

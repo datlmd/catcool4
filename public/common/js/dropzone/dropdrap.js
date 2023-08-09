@@ -185,15 +185,15 @@ function addThumbnail(data) {
         image_class = 'img-fluid';
     }
 
-    var name = data.file.name;
-    var size = convertSize(data.file.size);
-    var src = image_url + '/' + data.image;
+    var name = data.file_name;
+    var size = convertSize(data.file_size);
+    var src = image_url + '/' + data.image_url;
 
     var image_html = '<a href="' + src + '" data-lightbox="photos"><img src="' + src + '" style="background-image: url(' + src + ');" class="' + image_class + '"></a>';
-    image_html += '<input type="hidden" name="' + input_name + '" value="' + data.image + '">';
+    image_html += '<input type="hidden" name="' + input_name + '" value="' + data.image_url + '">';
 
     if ($("#button-image-crop").length) {
-        $("#button-image-crop").attr("onclick", "Catcool.cropImage('" + data.image  + "', 1);");
+        $("#button-image-crop").attr("onclick", "Catcool.cropImage('" + data.image_url  + "', 1, this);");
         $("#button-image-crop").show();
     }
 

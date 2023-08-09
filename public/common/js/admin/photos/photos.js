@@ -128,7 +128,7 @@ var Photo = {
                     }
 
                     if ($(image_form_id + " #button-image-crop").length) {
-                        $(image_form_id + " #button-image-crop").attr("onclick", "Catcool.cropImage('" + response.image_url  + "', 0);");
+                        $(image_form_id + " #button-image-crop").attr("onclick", "Catcool.cropImage('" + response.image_url  + "', 0, this);");
                         $(image_form_id + " #button-image-crop").show();
                     }
 

@@ -190,7 +190,7 @@
                                         {/if}
                                     </div>
                                     <input type="file" name="file" id="file" size="20" />
-                                    <button type="button" id="button-image-crop" class="btn btn-xs btn-primary w-100 mt-2" {if !empty(old('image'))}onclick="Catcool.cropImage('{old('image')}', 1);"{elseif !empty($edit_data.image)}onclick="Catcool.cropImage('{$edit_data.image}', 1);"{else}style="display: none;"{/if}>
+                                    <button type="button" id="button-image-crop" class="btn btn-xs btn-primary w-100 mt-2" {if !empty(old('image'))}onclick="Catcool.cropImage('{old('image')}', 1, this);"{elseif !empty($edit_data.image)}onclick="Catcool.cropImage('{$edit_data.image}', 1, this);"{else}style="display: none;"{/if}>
                                         <i class="fas fa-crop me-1"></i>{lang('Admin.text_photo_crop')}
                                     </button>
                                     <div class="upload-area dropzone dz-clickable " id="uploadfile">

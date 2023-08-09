@@ -228,6 +228,11 @@
             e.preventDefault();
             if ($('input[name=\'file_thumb\']').length) {
                 $('#' + $('input[name=\'file_thumb\']').val()).attr('src', $(this).find('img').attr('src'));
+
+                if ($('#' + $('input[name=\'file_thumb\']').val()).data('is-background')) {
+                    console.log($('#' + $('input[name=\'file_thumb\']').val()).data('is-background'))
+                    $('#' + $('input[name=\'file_thumb\']').val()).css('background-image', 'url(' + $(this).find('img').attr('src') + ')');
+                }
             }
             $('#' + $('input[name=\'file_target\']').val()).val($($(this).data('file-target')).val());
             $('#modal_image').modal('hide');
@@ -619,7 +624,7 @@
                 var html = '<a href="' + image_setting.parent().find("a.thumbnail").attr('href') + '" data-lightbox="photos" id="button_image_zoom" class="btn btn-xs btn-info"><i class="fas fa-search-plus"></i></a>';
                 html += ' <button type="button" id="btn_rotation_left" class="btn btn-xs btn-secondary"><i class="fas fa-undo"></i></button>';
                 html += ' <button type="button" id="btn_rotation_hor" class="btn btn-xs btn-primary"><i class="fas fa-arrows-alt-h"></i></button> <button type="button" id="btn_rotation_vrt" class="btn btn-xs btn-primary"><i class="fas fa-arrows-alt-v"></i></button>';
-                html += ' <button type="button" id="btn_image_crop" onclick="Catcool.cropImage(\'' + path_url + '\', 0)" class="btn btn-xs btn-warning"><i class="fas fa-crop"></i></button>';
+                html += ' <button type="button" id="btn_image_crop" onclick="Catcool.cropImage(\'' + path_url + '\', 0, this)" class="btn btn-xs btn-warning"><i class="fas fa-crop"></i></button>';
                 return html;
             }
         });

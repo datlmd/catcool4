@@ -535,7 +535,7 @@ var Catcool = {
         });
         return false;
     },
-    cropImage: function (url, preserve_aspect_ratio) {
+    cropImage: function (url, preserve_aspect_ratio, obj) {
         if (is_processing) {
             return false;
         }
@@ -543,6 +543,9 @@ var Catcool = {
 
         $('#cropper_html').remove();
         $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
+
+        $('body').find('.image-crop-target').removeClass('image-crop-target');
+        $(obj).parent().parent().addClass('image-crop-target');
 
         $.ajax({
             url: 'image/crop',
