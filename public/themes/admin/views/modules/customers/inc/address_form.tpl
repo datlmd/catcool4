@@ -24,7 +24,7 @@
 		</div>
 
 		<div class="row mb-3">
-			<label class="col-sm-2 col-form-label text-sm-end required-label">{lang('Admin.text_full_name')}</label>
+			<label for="input_address_{$address_row}_firstname" class="col-sm-2 col-form-label text-sm-end required-label">{lang('Admin.text_full_name')}</label>
 			<div class="col-sm-10">
 				<div class="input-group">
 					<input type="text" value="{old("address[{$address_row}][firstname]", $address.firstname|default:'')}" placeholder="{lang('Admin.text_first_name')}" class="form-control" name="address[{$address_row}][firstname]" id="input_address_{$address_row}_firstname">
@@ -78,12 +78,12 @@
 			</div>
 		</div>
 		<div class="row mb-3">
-			<label for="address[{$address_row}][country_id]" class="col-sm-2 col-form-label text-sm-end required-label">{lang('CustomerAdmin.text_country')}</label>
+			<label for="input_address_{$address_row}_country_id" class="col-sm-2 col-form-label text-sm-end required-label">{lang('CustomerAdmin.text_country')}</label>
 			<div class="col-sm-4">
 				{form_dropdown("address[{$address_row}][country_id]", $country_list, old("address[{$address_row}][country_id]", $address.country_id|default:''), ["class" => "form-control country-changed", "id" => "input_address_{$address_row}_country_id", "target_id" => "#input_address_{$address_row}_province_id"])}
 				<div id="error_address_{$address_row}_country_id" class="invalid-feedback"></div>
 			</div>
-			<label for="address[{$address_row}][province_id]" class="col-sm-2 col-form-label text-sm-end required-label">{lang('CustomerAdmin.text_province')}</label>
+			<label for="input_address_{$address_row}_province_id" class="col-sm-2 col-form-label text-sm-end required-label">{lang('CustomerAdmin.text_province')}</label>
 			<div class="col-sm-4">
 				{$province_attributes = ["class" => "form-control province-changed", "id" => "input_address_{$address_row}_province_id", "target_id" => "#input_address_{$address_row}_district_id"]}
 				{if empty($address.address_id)}
@@ -94,7 +94,7 @@
 			</div>
 		</div>
 		<div class="row mb-3">
-			<label for="address[{$address_row}][district_id]" class="col-sm-2 col-form-label text-sm-end required-label">{lang('CustomerAdmin.text_district')}</label>
+			<label for="input_address_{$address_row}_district_id" class="col-sm-2 col-form-label text-sm-end required-label">{lang('CustomerAdmin.text_district')}</label>
 			<div class="col-sm-4">
 				{$district_attributes = ["class" => "form-control district-changed", "id" => "input_address_{$address_row}_district_id", "target_id" => "#input_address_{$address_row}_ward_id"]}
 				{if empty($address.address_id)}
@@ -103,7 +103,7 @@
 				{form_dropdown("address[{$address_row}][district_id]", $address.district_list, old("address[{$address_row}][district_id]", $address.district_id|default:''), $district_attributes)}
 				<div id="error_address_{$address_row}_district_id" class="invalid-feedback"></div>
 			</div>
-			<label for="address[{$address_row}][ward_id]" class="col-sm-2 col-form-label text-sm-end required-label">{lang('CustomerAdmin.text_ward')}</label>
+			<label for="input_address_{$address_row}_ward_id" class="col-sm-2 col-form-label text-sm-end required-label">{lang('CustomerAdmin.text_ward')}</label>
 			<div class="col-sm-4">
 				{$ward_attributes = ["class" => "form-control ward-changed", "id" => "input_address_{$address_row}_ward_id"]}
 				{if empty($address.address_id)}
