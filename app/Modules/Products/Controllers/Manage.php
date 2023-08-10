@@ -16,6 +16,8 @@ class Manage extends AdminController
     CONST SEO_URL_MODULE   = 'products';
     CONST SEO_URL_RESOURCE = 'Products::Detail/%s';
 
+    const FOLDER_UPLOAD = 'products/';
+
     public function __construct()
     {
         parent::__construct();
@@ -119,7 +121,7 @@ class Manage extends AdminController
             'override'        => $this->request->getPost('override'),
             'quantity'        => $this->request->getPost('quantity'),
             'stock_status_id' => $this->request->getPost('stock_status_id'),
-            'image'           => $this->request->getPost('image'),
+            //'image'           => $this->request->getPost('image'),
             'manufacturer_id' => $this->request->getPost('manufacturer_id'),
             'shipping'        => $this->request->getPost('shipping'),
             'price'           => $this->request->getPost('price'),
@@ -208,16 +210,45 @@ class Manage extends AdminController
         $product_image_model = new \App\Modules\Products\Models\ProductImageModel();
         $product_image_model->where(['product_id' => $product_id])->delete();
 
+        $main_image_url = "";
         $product_image_list = $this->request->getPost('product_image');
+
         if (!empty($product_image_list)) {
+            $product_image_sort_order = count($product_image_list);
             foreach ($product_image_list as $value) {
-                $product_image_data               = $value;
-                $product_image_data['product_id'] = $product_id;
+                if (empty($value) || empty($value['image'])) {
+                    continue;
+                }
+
+                if (stripos($value['image'], UPLOAD_FILE_TMP_DIR) !== false) {
+                    $product_image_url = str_replace(UPLOAD_FILE_TMP_DIR, self::FOLDER_UPLOAD . "$product_id/", $value['image']);
+                    $value['image']    = move_file_tmp($value['image'], $product_image_url);
+                }
+
+                $product_image_data = [
+                    'product_id' => $product_id,
+                    'image'      => $value['image'],
+                    'sort_order' => $product_image_sort_order
+                ];
+
                 if (!empty($value['product_image_id'])) {
                     $product_image_data['product_image_id'] = $value['product_image_id'];
                 }
+
                 $product_image_model->insert($product_image_data);
+
+                $product_image_sort_order--;
+                if (!empty($value['image']) && empty($main_image_url)) {
+                    $main_image_url = $value['image'];
+                }
             }
+        }
+
+        // update image main
+        if (!empty($main_image_url)) {
+            $data_product_image_main['product_id'] = $product_id;
+            $data_product_image_main['product_id'] = $main_image_url;
+            $this->model->save($data_product_image_main);
         }
 
         //product attribute
@@ -248,8 +279,9 @@ class Manage extends AdminController
         $route_model->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $product_id));
 
         //product option
-        $product_option_model = new \App\Modules\Products\Models\ProductOptionModel();
+        $product_option_model       = new \App\Modules\Products\Models\ProductOptionModel();
         $product_option_value_model = new \App\Modules\Products\Models\ProductOptionValueModel();
+
         $product_option_model->where(['product_id' => $product_id])->delete();
         $product_option_value_model->where(['product_id' => $product_id])->delete();
 
@@ -306,6 +338,8 @@ class Manage extends AdminController
 
     private function _getForm($product_id = null)
     {
+        $this->themes->addJS('common/js/admin/products/products');
+
         $this->themes->addJS('common/js/tinymce/tinymce.min');
         $this->themes->addJS('common/js/admin/tiny_content');
 
@@ -327,6 +361,8 @@ class Manage extends AdminController
         $this->themes->addJS('common/js/admin/related');
 
         $this->themes->addJS('common/plugin/shortable-nestable/Sortable.min');
+
+        $this->themes->addCSS('common/js/dropzone/dropdrap');
 
         $data['language_list'] = get_list_lang(true);
 

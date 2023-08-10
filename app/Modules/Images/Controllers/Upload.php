@@ -7,8 +7,6 @@ class Upload extends MyController
     private $_image_path;
     private $_image_url;
 
-    const UPLOAD_TMP = 'tmp/';
-
     public function __construct()
     {
         parent::__construct();
@@ -30,8 +28,8 @@ class Upload extends MyController
             $file_name = 'file'; //single
 
             // create folder
-            if (!is_dir($this->_image_path . self::UPLOAD_TMP)) {
-                mkdir($this->_image_path . self::UPLOAD_TMP, 0777, true);
+            if (!is_dir($this->_image_path . UPLOAD_FILE_TMP_DIR)) {
+                mkdir($this->_image_path . UPLOAD_FILE_TMP_DIR, 0777, true);
             }
 
             // Validation
@@ -112,16 +110,16 @@ class Upload extends MyController
         // Get random file name
         $newName = trim($file->getRandomName());
 
-        $file->move($this->_image_path . self::UPLOAD_TMP, $newName);
+        $file->move($this->_image_path . UPLOAD_FILE_TMP_DIR, $newName);
 
         // File path to display preview
-        $filepath = self::UPLOAD_TMP . $newName;
+        $filepath = UPLOAD_FILE_TMP_DIR . $newName;
 
         //resize image
         $image_tool = new \App\Libraries\ImageTool();
         $image_tool->resizeUpload($filepath);
 
-        $file_info = get_file_info($this->_image_path . self::UPLOAD_TMP . $newName);
+        $file_info = get_file_info($this->_image_path . UPLOAD_FILE_TMP_DIR . $newName);
 
         $file_info = [
             'image_url' => $filepath,

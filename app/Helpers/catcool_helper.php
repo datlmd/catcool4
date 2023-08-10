@@ -955,8 +955,8 @@ if (!function_exists('move_file_tmp'))
             return FALSE;
         }
 
-        $file_new   = !empty($name_file_new) ? $name_file_new : str_replace('tmp/', '', $field_name_tmp);
-        $folder_new = str_replace('tmp/', '', $file_info['dirname']);
+        $file_new   = !empty($name_file_new) ? $name_file_new : str_replace(UPLOAD_FILE_TMP_DIR, '', $field_name_tmp);
+        $folder_new = str_replace(UPLOAD_FILE_TMP_DIR, '', $file_info['dirname']);
 
         if (!is_dir($folder_new)) {
             mkdir($folder_new, 0777, true);

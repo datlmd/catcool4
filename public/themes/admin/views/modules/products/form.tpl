@@ -88,32 +88,18 @@
 
     {* template product image *}
     <div id="html_product_image" style="display: none">
-        <table>
-            <tbody>
-            <tr id="product_image_row_{'product_image_row_value'}">
-                <td class="text-start">
-                    <input type="hidden" name="product_image[{'product_image_row_value'}][product_image_id]" value="" />
 
-                    <a href="javascript:void(0);" class="ms-0" id="product_image_{'product_image_row_value'}_image" data-target="input_product_image_{'product_image_row_value'}_image" data-thumb="product_image_{'product_image_row_value'}_load_image_url" data-type="image" data-bs-toggle="image">
-                        <img src="{image_default_url()}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="product_image_{'product_image_row_value'}_load_image_url" data-placeholder="{image_default_url()}"/>
-                        <div class="btn-group w-100 mt-1" role="group">
-                            <button type="button" id="button-image-logo" class="button-image btn btn-xs btn-primary" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
-                            <button type="button" id="button-clear-logo" class="button-clear btn btn-xs btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </a>
-                    <input type="hidden" name="product_image[{'product_image_row_value'}][image]" value="" id="input_product_image_{'product_image_row_value'}_image" />
+        <input type="hidden" name="product_image[{'product_image_row_value'}][product_image_id]" value="" />
 
-                </td>
-                <td class="text-start">
-                    <input type="number" name="product_image[{'product_image_row_value'}][sort_order]" value="0" id="input_product_image_{'product_image_row_value'}_sort_order" min="0" placeholder="{lang('Admin.text_sort_order')}" class="form-control"/>
-                    <div id="error_product_image_{'product_image_row_value'}_sort_order" class="invalid-feedback"></div>
-                </td>
-                <td class="text-end">
-                    <button type="button" onclick="$('#product_image_row_{'product_image_row_value'}').remove();" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <a href="javascript:void(0);" class="ms-0" id="product_image_{'product_image_row_value'}_image" data-target="input_product_image_{'product_image_row_value'}_image" data-thumb="product_image_{'product_image_row_value'}_load_image_url" data-type="image" data-bs-toggle="image">
+            <img src="{image_default_url()}" style="background-image: url('{image_default_url()}')"  alt="" title="" id="product_image_{'product_image_row_value'}_load_image_url" data-is-background="true" data-placeholder="{image_default_url()}"/>
+            <div class="btn-group w-100 mt-1" role="group">
+                <button type="button" id="button-image-logo" class="button-image btn btn-xs btn-light" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
+                <button type="button" onclick="$(this).parent().parent().parent().remove();" class="btn btn-xs btn-light" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>
+            </div>
+        </a>
+        <input type="hidden" name="product_image[{'product_image_row_value'}][image]" value="" id="input_product_image_{'product_image_row_value'}_image" />
+
     </div>
     <input type="hidden" name="product_image_row" id="product_image_row" value="{if !empty($edit_data.image_list)}{$edit_data.image_list|@count}{else}0{/if}">
     {* end template product image *}
@@ -156,30 +142,3 @@
     {* end template product attribute *}
 
 {/strip}
-<script type="text/javascript">
-    $(function () {
-        Tiny_content.loadTiny(500);
-    });
-
-    var is_product_processing = false;
-
-    function addProductImage()
-    {
-        var product_image_row = $('#product_image_row').val();
-        product_image_row = parseInt(product_image_row) + 1;
-        $('#product_image_row').val(product_image_row);
-
-        var html = $('#html_product_image table tbody').html().replaceAll('product_image_row_value', product_image_row);
-        $('#product_image_list tbody').append(html);
-    }
-
-    function addProductAttribute()
-    {
-        var product_attribute_row = $('#product_attribute_row').val();
-        product_attribute_row = parseInt(product_attribute_row) + 1;
-        $('#product_attribute_row').val(product_attribute_row);
-
-        var html = $('#html_product_attribute_row table tbody').html().replaceAll('product_attribute_row_value', product_attribute_row);
-        $('#product_attribute_list tbody').append(html);
-    }
-</script>

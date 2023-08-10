@@ -287,6 +287,46 @@ label {
     background-size: cover;
 }
 
+/*** photo ***/
+.photo-list {
+    list-style: none;
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+.photo-list .photo-item {
+    float: left;
+    padding: 0.25rem;
+}
+.photo-list .photo-item {
+    width: 160px !important;
+    max-width: 160px !important;
+    height: 194px;
+    overflow: hidden;
+    margin: 5px 7px 5px 0;
+    text-align: center;
+    display: block;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 5px;
+}
+.photo-list .photo-item a {
+    margin: 0 !important;
+}
+.photo-list .photo-item img {
+    width: 150px;
+    height: 150px;
+    content: url(data:image/gif;base64,R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+/*** end photo ***/
+
 .img-photo-list {
     width: 140px;
     height: 140px;
