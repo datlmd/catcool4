@@ -65,6 +65,7 @@ return [
 	"text_affiliate_commission" => "Đại lý ủy quyền (%)",
 	"text_affiliate_group_id" => "Nhóm đại lý",
 	"text_affiliate_terms" => "Điều khoản làm đại lý",
+	"text_attribute_default" => "Nhóm thuộc tính mặc định",
 	"text_background_admin_path" => "Hình nền Admin",
 	"text_bottom_center" => "Dưới - Giữa",
 	"text_bottom_left" => "Dưới - Trái",

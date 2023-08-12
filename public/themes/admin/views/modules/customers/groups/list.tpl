@@ -33,7 +33,7 @@
 							<td class="text-center">{anchor("$manage_url/edit/`$item.customer_group_id`", $item.customer_group_id, 'class="text-primary"')}</td>
 							<td>
 								{anchor("$manage_url/edit/`$item.customer_group_id`", $item.name, 'class="text-primary"')}
-								{if $item.customer_group_id eq config_item('default_customer_group_id')}<strong> {lang('Admin.text_default')}</strong>{/if}
+								{if $item.customer_group_id eq config_item('default_customer_group_id')} <strong>({lang('Admin.text_default')})</strong>{/if}
 							</td>
 							<td class="text-center">
 								{$item.sort_order}

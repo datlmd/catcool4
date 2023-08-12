@@ -59,7 +59,7 @@
 												<td>
 													{anchor("$manage_url/edit/`$item.weight_class_id`", $item.name, 'class="text-primary"')}
 													{if $item.weight_class_id eq config_item('weight_class')}
-														&nbsp{lang('Admin.text_default')}
+														&nbsp<strong>({lang('Admin.text_default')})</strong>
 													{/if}
 												</td>
 												<td class="text-start">{$item.unit}</td>

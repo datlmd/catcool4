@@ -51,4 +51,21 @@ class GroupModel extends MyModel
 
         return $result;
     }
+
+    public function getListAll()
+    {
+        $result = $this->orderBy('sort_order', 'DESC')->findAll();
+        if (empty($result)) {
+            return [];
+        }
+
+        $list = [];
+
+        $language_id = get_lang_id(true);
+        foreach ($result as $value) {
+            $list[$value['attribute_group_id']] = format_data_lang_id($value, $this->table_lang, $language_id);
+        }
+
+        return $list;
+    }
 }

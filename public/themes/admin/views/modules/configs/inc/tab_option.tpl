@@ -25,6 +25,13 @@
 		</div>
 	</div>
 
+	<div class="form-group row">
+		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_attribute_default')}</div>
+		<div class="col-12 col-sm-8 col-lg-6">
+			{form_dropdown('attribute_default', $attribute_group_list, old('attribute_default', $settings.attribute_default), ['class' => 'form-control'])}
+		</div>
+	</div>
+
 	<div class="border-bottom mx-3 lead pb-1 my-3 fw-bold">{lang('ConfigAdmin.text_review')}</div>
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_review_status')}</div>

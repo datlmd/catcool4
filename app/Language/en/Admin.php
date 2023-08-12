@@ -202,7 +202,7 @@ return [
 	"text_confirm_write" => "Are you sure to save the file?",
 	"text_context" => "Context",
 	"text_ctime" => "Created at",
-	"text_default" => "<b>(Default)</b>",
+	"text_default" => "Default",
 	"text_deleted" => "Deleted",
 	"text_delete_file_success" => "File deleted successfully!",
 	"text_delete_success" => "Deleted successfully!",

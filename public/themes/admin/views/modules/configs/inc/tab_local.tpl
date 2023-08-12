@@ -23,7 +23,7 @@
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('Admin.text_language')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<select name="default_locale" class="form-control form-control-sm">
+			<select name="default_locale" class="form-control">
 				{foreach get_list_lang(true) as $key => $value}
 					<option value={$value.code}  {if $value.code == old('default_locale', $settings.default_locale)}selected="selected"{/if}>
 						{lang("General."|cat:$value.code)}
@@ -35,7 +35,7 @@
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_language_admin')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<select name="default_locale_admin" class="form-control form-control-sm">
+			<select name="default_locale_admin" class="form-control">
 				{foreach get_list_lang(true) as $key => $value}
 					<option value={$value.code}  {if $value.code == old('default_locale_admin', $settings.default_locale_admin)}selected="selected"{/if}>
 						{lang("General."|cat:$value.code)}
@@ -48,7 +48,7 @@
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_currency')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			{form_dropdown('currency', $settings.currency_list, old('currency', $currency), ['class' => 'form-control'])}
+			{form_dropdown('currency', $currency_list, old('currency', $settings.currency), ['class' => 'form-control'])}
 			<small>{lang('ConfigAdmin.help_currency')}</small>
 		</div>
 	</div>

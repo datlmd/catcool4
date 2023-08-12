@@ -65,6 +65,7 @@ return [
 	"text_affiliate_commission" => "Affiliate Commission (%)",
 	"text_affiliate_group_id" => "Affiliate Group",
 	"text_affiliate_terms" => "Affiliate Terms",
+	"text_attribute_default" => "Default attribute group",
 	"text_background_admin_path" => "Background Admin",
 	"text_bottom_center" => "Bottom - Center",
 	"text_bottom_left" => "Bottom - Left",

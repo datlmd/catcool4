@@ -98,6 +98,9 @@ class Manage extends AdminController
                 $this->validator->setRule('default_locale', lang('Admin.text_language'), 'required');
                 $this->validator->setRule('default_locale_admin', lang('ConfigAdmin.text_language_admin'), 'required');
                 break;
+            case 'tab_option':
+                $this->validator->setRule('attribute_default', lang('ConfigAdmin.text_attribute_default'), 'required');
+                break;
             case 'tab_mail':
                 $this->validator->setRule('email_engine', lang('ConfigAdmin.text_email_engine'), 'required');
                 break;
@@ -176,18 +179,18 @@ class Manage extends AdminController
         $this->themes->addJS('common/plugin/bootstrap-colorpicker/claviska/jquery-minicolors/jquery.minicolors.min');
         $this->themes->addJS('common/js/admin/filemanager');
 
-        $setings     = [];
+        $settings     = [];
         $list_config = $this->model->findAll();
         if (!empty($list_config)) {
             foreach ($list_config as $value) {
-                $setings[$value['config_key']] = $value['config_value'];
+                $settings[$value['config_key']] = $value['config_value'];
             }
         }
 
         $tab_type = !empty($tab_type) ? $tab_type : (!empty($this->request->getGetPost('tab_type')) ? $this->request->getGetPost('tab_type') : 'tab_page');
 
         $data['tab_type'] = $tab_type;
-        $data['settings'] = $setings;
+        $data['settings'] = $settings;
 
         $watermark_list = [
             ""             => lang('Admin.text_none'),
@@ -212,15 +215,17 @@ class Manage extends AdminController
 
         $data['country_list']  = $country_model->getListDisplay();
         $data['province_list'] = $province_model->getListDisplay();
-
-        $length_class_model = new \App\Modules\Products\Models\LengthClassModel();
-        $data['length_class_list'] = format_dropdown($length_class_model->getListALL(), 'length_class_id');
-
-        $weight_class_model = new \App\Modules\Products\Models\WeightClassModel();
-        $data['weight_class_list'] = format_dropdown($weight_class_model->getListALL(), 'weight_class_id');
-
         $data['timezone_list'] = $this->_getListTimezone();
         $data['currency_list'] = format_dropdown($currency_model->getListPublished(), 'code');
+
+        $length_class_model        = new \App\Modules\Products\Models\LengthClassModel();
+        $data['length_class_list'] = format_dropdown($length_class_model->getListALL(), 'length_class_id');
+
+        $weight_class_model        = new \App\Modules\Products\Models\WeightClassModel();
+        $data['weight_class_list'] = format_dropdown($weight_class_model->getListALL(), 'weight_class_id');
+
+        $attribute_group_model        = new \App\Modules\Attributes\Models\GroupModel();
+        $data['attribute_group_list'] = format_dropdown($attribute_group_model->getListALL(), 'attribute_group_id');
 
         //check permissions
         $key_file = 'config/Config.php';

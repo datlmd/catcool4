@@ -63,7 +63,7 @@
 												<td>
 													{anchor("$manage_url/edit/`$item.length_class_id`", $item.name, 'class="text-primary"')}
 													{if $item.length_class_id eq config_item('length_class')}
-														&nbsp{lang('Admin.text_default')}
+														&nbsp<strong>({lang('Admin.text_default')})</strong>
 													{/if}
 												</td>
 												<td class="text-start">{$item.unit}</td>
