@@ -53,7 +53,7 @@ class AttributeModel extends MyModel
         return $this;
     }
 
-    public function getListAll($is_cache = true)
+    public function getListAll($is_cache = true) : array
     {
         $result = $is_cache ? cache()->get(self::ATTRIBUTE_CACHE_NAME) : null;
         if (empty($result)) {
@@ -77,6 +77,22 @@ class AttributeModel extends MyModel
         $language_id = get_lang_id(true);
         foreach ($result as $value) {
             $list[$value['attribute_id']] = format_data_lang_id($value, $this->table_lang, $language_id);
+        }
+
+        return $list;
+    }
+
+    public function getListAttributeDefault() : array
+    {
+        $list = $this->getListAll();
+        if (empty($list)) {
+            return [];
+        }
+
+        foreach ($list as $key => $value) {
+            if ($value['attribute_group_id'] != config_item('attribute_default')) {
+                unset($list[$key]);
+            }
         }
 
         return $list;

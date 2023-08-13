@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="mt-3">
-                        <label class="form-label">{lang('Admin.tab_seo')}</label>
+                        <div class="border-bottom lead pb-1 my-3 fw-bold">{lang('Admin.tab_seo')}</div>
                         {include file=get_theme_path('views/inc/seo_form.tpl')}
                     </div>
                 </div>

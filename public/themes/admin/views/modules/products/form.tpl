@@ -44,6 +44,14 @@
                     </div>
 
                     <div class="card">
+                        <h5 class="card-header">{lang('ProductAdmin.text_attribute_title')}</h5>
+
+                        <div class="card-body">
+                            {include file=get_theme_path('views/modules/products/inc/tab_attributes.tpl')}
+                        </div>
+                    </div>
+
+                    <div class="card">
                         <h5 class="card-header">{lang('Admin.tab_data')}</h5>
                         <div class="card-body">
                             {include file=get_theme_path('views/modules/products/inc/tab_data.tpl')}
@@ -52,22 +60,6 @@
 
                     <div class="card">
                         <h5 class="card-header">{lang('Admin.tab_links')}</h5>
-                        <div class="card-body">
-                            {include file=get_theme_path('views/modules/products/inc/tab_links.tpl')}
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <h5 class="card-header">{lang('Admin.tab_attribute')}</h5>
-
-                        <div class="card-body">
-                            {include file=get_theme_path('views/modules/products/inc/tab_attributes.tpl')}
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <h5 class="card-header">{lang('Admin.tab_links')}</h5>
-
                         <div class="card-body">
                             {include file=get_theme_path('views/modules/products/inc/tab_links.tpl')}
                         </div>
@@ -86,6 +78,45 @@
         {form_close()}
     </div>
 
+    {* template product attribute *}
+    <div id="html_product_attribute_row" style="display: none">
+        <table>
+            <tbody>
+            <tr id="product_attribute_row_{'product_attribute_row_value'}">
+                <td class="text-start">
+
+                    <select name="product_attribute[{'product_attribute_row_value'}][attribute_id]" id="input_product_attribute_{'product_attribute_row_value'}_attribute_id" class="form-control form-control-sm">
+                        {foreach $attribute_list as $attribute}
+                            {if isset($attribute_default_list[$attribute.attribute_id])}
+                                {continue}
+                            {/if}
+                            <option value="{$attribute.attribute_id}">{$attribute.name}</option>
+                        {/foreach}
+                    </select>
+                    <div id="error_product_attribute_{'product_attribute_row_value'}_attribute_id" class="invalid-feedback"></div>
+
+                </td>
+                <td class="text-start">
+
+
+                    {foreach $language_list as $language}
+                        <div class="input-group {if !$language@last}mb-2{/if}">
+                            <span class="input-group-text">{$language.icon}</span>
+                            <input type="text" name="product_attribute[{'product_attribute_row_value'}][lang][{$language.id}][text]" value='{old("product_attribute[{'product_attribute_row_value'}][lang][{$language.id}][text]")}' id="input_product_attribute_{'product_attribute_row_value'}_lang_{$language.id}_text" class="form-control" >
+                        </div>
+                        <div id="error_product_attribute_{'product_attribute_row_value'}_lang_{$language.id}_text" class="invalid-feedback"></div>
+                    {/foreach}
+
+                </td>
+                <td class="text-center">
+                    <button type="button" onclick="$('#product_attribute_row_{'product_attribute_row_value'}').remove();" class="btn btn-xs btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    {* end template product attribute *}
+
     {* template product image *}
     <div id="html_product_image" style="display: none">
 
@@ -103,42 +134,5 @@
     </div>
     <input type="hidden" name="product_image_row" id="product_image_row" value="{if !empty($edit_data.image_list)}{$edit_data.image_list|@count}{else}0{/if}">
     {* end template product image *}
-
-    {* template product attribute *}
-    <div id="html_product_attribute_row" style="display: none">
-        <table>
-            <tbody>
-            <tr id="product_attribute_row_{'product_attribute_row_value'}">
-                <td class="text-start">
-
-                    <select name="product_attribute[{'product_attribute_row_value'}][attribute_id]" id="input_product_attribute_{'product_attribute_row_value'}_attribute_id" class="form-control form-control-sm">
-                        {foreach $attribute_list as $attribute}
-                            <option value="{$attribute.attribute_id}">{$attribute.name}</option>
-                        {/foreach}
-                    </select>
-                    <div id="error_product_attribute_{'product_attribute_row_value'}_attribute_id" class="invalid-feedback"></div>
-
-                </td>
-                <td class="text-start">
-
-
-                    {foreach $language_list as $language}
-                        <div class="input-group {if !$language@last}mb-2{/if}">
-                            <span class="input-group-text">{$language.icon}</span>
-                            <textarea type="textarea" name="product_attribute[{'product_attribute_row_value'}][lang][{$language.id}][text]" cols="40" rows="2" value='{old("product_attribute[{'product_attribute_row_value'}][lang][{$language.id}][text]")}' id="input_product_attribute_{'product_attribute_row_value'}_lang_{$language.id}_text" class="form-control"></textarea>
-                            <div id="error_product_attribute_{'product_attribute_row_value'}_lang_{$language.id}_text" class="invalid-feedback"></div>
-                        </div>
-                    {/foreach}
-
-                </td>
-                <td class="text-end">
-                    <button type="button" onclick="$('#product_attribute_row_{'product_attribute_row_value'}').remove();" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <input type="hidden" name="product_attribute_row" id="product_attribute_row" value="{if !empty($edit_data.product_attribute_list)}{$edit_data.product_attribute_list|@count}{else}0{/if}">
-    {* end template product attribute *}
 
 {/strip}

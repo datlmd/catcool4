@@ -260,6 +260,9 @@ class Manage extends AdminController
             $data_attribute = [];
             foreach ($product_attribute_list as $value) {
                 foreach (get_list_lang(true) as $language) {
+                    if (empty($value['attribute_id']) || empty($value['lang'][$language['id']]['text'])) {
+                        continue;
+                    }
                     $data_attribute[] = [
                         'product_id'   => $product_id,
                         'language_id'  => $language['id'],
@@ -355,8 +358,12 @@ class Manage extends AdminController
         $this->themes->addCSS('common/js/tags/tagsinput');
         $this->themes->addJS('common/js/tags/tagsinput');
 
-        $this->themes->addCSS('common/plugin/multi-select/css/bootstrap-multiselect.min');
-        $this->themes->addJS('common/plugin/multi-select/js/bootstrap-multiselect.min');
+        $this->themes->addCSS('common/plugin/multi-select/css/select2.min');
+        $this->themes->addCSS('common/plugin/multi-select/css/select2-bootstrap-5-theme.min');
+        $this->themes->addJS('common/plugin/multi-select/js/select2.min');
+        if (get_lang(true) == 'vi') {
+            $this->themes->addJS('common/plugin/multi-select/js/i18n/vi');
+        }
 
         $this->themes->addJS('common/js/admin/related');
 
@@ -443,6 +450,7 @@ class Manage extends AdminController
 
         $attribute_model = new \App\Modules\Attributes\Models\AttributeModel();
         $data['attribute_list'] = $attribute_model->getListAll();
+        $data['attribute_default_list'] = $attribute_model->getListAttributeDefault();
 
         $option_model = new \App\Modules\Options\Models\OptionModel();
         $data['option_list'] = $option_model->getListAll();
@@ -469,18 +477,18 @@ class Manage extends AdminController
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('ProductAdmin.text_name') . ' (' . $value['name']  . ')', 'required');
         }
 
-        $this->validator->setRule('model', lang('ProductAdmin.text_model'), 'required');
+        //$this->validator->setRule('model', lang('ProductAdmin.text_model'), 'required');
 
-        if (!empty($this->request->getPost('product_attribute'))) {
-            foreach ($this->request->getPost('product_attribute') as $key => $value) {
-                if (empty($value['lang'])) {
-                    continue;
-                }
-                foreach(get_list_lang(true) as $lang_value) {
-                    $this->validator->setRule(sprintf('product_attribute.%s.lang.%s.text', $key, $lang_value['id']), lang('ProductAdmin.text_text') . ' (' . $lang_value['name']  . ')', 'required');
-                }
-            }
-        }
+//        if (!empty($this->request->getPost('product_attribute'))) {
+//            foreach ($this->request->getPost('product_attribute') as $key => $value) {
+//                if (empty($value['lang'])) {
+//                    continue;
+//                }
+//                foreach(get_list_lang(true) as $lang_value) {
+//                    $this->validator->setRule(sprintf('product_attribute.%s.lang.%s.text', $key, $lang_value['id']), lang('ProductAdmin.text_text') . ' (' . $lang_value['name']  . ')', 'required');
+//                }
+//            }
+//        }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();

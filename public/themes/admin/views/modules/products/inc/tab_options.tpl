@@ -13,7 +13,7 @@
 				<div id="product_option_row_{$product_option_row}" class="mb-4">
 					<legend class="float-none text-dark border-bottom pb-1 mt-2 mb-3">
 						{$product_option_data.name}
-						<button type="button" class="btn btn-danger btn-sm float-end" onclick="$('#product_option_row_{$product_option_row}').remove();">
+						<button type="button" class="btn btn-danger btn-xs float-end" onclick="$('#product_option_row_{$product_option_row}').remove();">
 							<i class="fas fa-trash-alt"></i>
 						</button>
 					</legend>
@@ -145,8 +145,8 @@
 											<input type="hidden" name="product_option[{$product_option_row}][product_option_value][{$product_option_value_row}][weight]" value="{$product_option_value.weight}"/>
 										</td>
 										<td class="text-end">
-											<button type="button" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}" data-product_option_row="{$product_option_row}" data-product_option_value_row="{$product_option_value_row}" class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></button>
-											<button type="button" onclick="$('#product_option_value_row_{$product_option_value_row}').remove();" data-bs-toggle="tooltip" title="{lang('Admin.button_remove')}" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
+											<button type="button" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}" data-product_option_row="{$product_option_row}" data-product_option_value_row="{$product_option_value_row}" class="btn btn-xs btn-primary me-1"><i class="fas fa-edit"></i></button>
+											<button type="button" onclick="$('#product_option_value_row_{$product_option_value_row}').remove();" data-bs-toggle="tooltip" title="{lang('Admin.button_remove')}" class="btn btn-xs btn-danger"><i class="fas fa-trash-alt"></i></button>
 										</td>
 									</tr>
 
@@ -155,7 +155,7 @@
 								<tfoot>
 									<tr>
 										<td colspan="6"></td>
-										<td class="text-end"><button type="button" data-bs-toggle="tooltip" title="{lang('ProductAdmin.button_option_value_add')}" data-product_option_row="{$product_option_row}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></button>
+										<td class="text-end"><button type="button" data-bs-toggle="tooltip" title="{lang('ProductAdmin.button_option_value_add')}" data-product_option_row="{$product_option_row}" class="btn btn-xs btn-primary"><i class="fas fa-plus"></i></button>
 										</td>
 									</tr>
 								</tfoot>
@@ -315,7 +315,7 @@
 			html += '  <td class="text-end">' + $('#modal_option select[name=\'price_prefix\'] option:selected').val() + $('#modal_option input[name=\'price\']').val() + '<input type="hidden" name="product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][price_prefix]" value="' + $('#modal_option select[name=\'price_prefix\'] option:selected').val() + '"/><input type="hidden" name="product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][price]" value="' + $('#modal_option input[name=\'price\']').val() + '"/></td>';
 			html += '  <td class="text-end"> ' + $('#modal_option select[name=\'points_prefix\'] option:selected').val() + $('#modal_option input[name=\'points\']').val() + '<input type="hidden" name="product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][points_prefix]" value="' + $('#modal_option select[name=\'points_prefix\'] option:selected').val() + '"/><input type="hidden" name="product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][points]" value="' + $('#modal_option input[name=\'points\']').val() + '"/></td>';
 			html += '  <td class="text-end">' + $('#modal_option select[name=\'weight_prefix\'] option:selected').val() + $('#modal_option input[name=\'weight\']').val() + '<input type="hidden" name="product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][weight_prefix]" value="' + $('#modal_option select[name=\'weight_prefix\'] option:selected').val() + '"/><input type="hidden" name="product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][weight]" value="' + $('#modal_option input[name=\'weight\']').val() + '"/></td>';
-			html += '  <td class="text-end"><button type="button" data-bs-toggle="tooltip" title="{{lang('Admin.button_edit')}}" data-product_option_row="' + $(element).data('product_option_row') + '" data-product_option_value_row="' + product_option_value_row + '"class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button> <button type="button" onclick="$(\'#product_option_value_row_' + product_option_value_row + '\').remove();" data-bs-toggle="tooltip" rel="tooltip" title="{{lang('Admin.button_remove')}}" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button></td>';
+			html += '  <td class="text-end"><button type="button" data-bs-toggle="tooltip" title="{{lang('Admin.button_edit')}}" data-product_option_row="' + $(element).data('product_option_row') + '" data-product_option_value_row="' + product_option_value_row + '"class="btn btn-xs btn-primary"><i class="fas fa-edit"></i></button> <button type="button" onclick="$(\'#product_option_value_row_' + product_option_value_row + '\').remove();" data-bs-toggle="tooltip" rel="tooltip" title="{{lang('Admin.button_remove')}}" class="btn btn-xs btn-danger"><i class="fas fa-trash-alt"></i></button></td>';
 			html += '</tr>';
 
 			if ($(element).attr('data-product_option_value_row')) {
@@ -336,7 +336,7 @@
 
 		html  = '<div id="product_option_row_' + product_option_row + '" class="mb-4">';
 		html += '	<legend class="float-none text-dark border-bottom pb-1 mt-2 mb-3">' + item.name;
-		html += '		<button type="button" class="btn btn-danger btn-sm float-end" onclick="$(\'#product_option_row_' + product_option_row + '\').remove();"><i class="fas fa-trash-alt"></i></button>';
+		html += '		<button type="button" class="btn btn-danger btn-xs float-end" onclick="$(\'#product_option_row_' + product_option_row + '\').remove();"><i class="fas fa-trash-alt"></i></button>';
 		html += '	</legend>';
 		html += '	<input type="hidden" name="product_option[' + product_option_row + '][product_option_id]" value=""/>';
 		html += '	<input type="hidden" name="product_option[' + product_option_row + '][name]" value="' + item.name + '"/>';
@@ -431,7 +431,7 @@
 			html +=	'	<tfoot>';
 			html +=	'		<tr>';
 			html +=	'			<td colspan="6"></td>';
-			html +=	'			<td class="text-end"><button type="button" data-bs-toggle="tooltip" title="{{lang('ProductAdmin.button_option_value_add')}}" data-product_option_row="' + product_option_row + '" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></button></td>';
+			html +=	'			<td class="text-end"><button type="button" data-bs-toggle="tooltip" title="{{lang('ProductAdmin.button_option_value_add')}}" data-product_option_row="' + product_option_row + '" class="btn btn-xs btn-primary"><i class="fas fa-plus"></i></button></td>';
 			html +=	'		</tr>';
 			html +=	'	</tfoot>';
 			html +=	'</table>';

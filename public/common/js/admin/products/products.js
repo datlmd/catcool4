@@ -88,9 +88,9 @@ function addProductImage()
 
 function addProductAttribute()
 {
-    var product_attribute_row = $('#product_attribute_row').val();
+    var product_attribute_row = $('#product_attribute_row').data('value');
     product_attribute_row = parseInt(product_attribute_row) + 1;
-    $('#product_attribute_row').val(product_attribute_row);
+    $('#product_attribute_row').data('value', product_attribute_row);
 
     var html = $('#html_product_attribute_row table tbody').html().replaceAll('product_attribute_row_value', product_attribute_row);
     $('#product_attribute_list tbody').append(html);

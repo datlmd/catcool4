@@ -2,57 +2,6 @@
 
 	{form_hidden('tab_type', 'tab_data')}
 
-	<div class="form-group row">
-		<div class="col-12 col-sm-2 col-form-label text-sm-end">{lang('Admin.text_published')}</div>
-		<div class="col-12 col-sm-10 col-lg-10 mt-2 mb-0">
-			<label class="form-check form-check-inline ms-2">
-				<input type="radio" name="published" value="{STATUS_ON}" {if old('published', $edit_data.published)|default:1 eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
-				<label class="form-check-label" for="published_on">{lang('Admin.text_on')}</label>
-			</label>
-			<label class="form-check form-check-inline me-2">
-				<input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $edit_data.published)|default:1 eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
-				<label class="form-check-label" for="published_off">{lang('Admin.text_off')}</label>
-			</label>
-		</div>
-	</div>
-	<div class="form-group row">
-		<div class="col-12 col-sm-2 col-form-label text-sm-end">{lang('Admin.text_is_comment')}</div>
-		<div class="col-12 col-sm-10 col-lg-10 mt-2 mb-0">
-			<label class="form-check ms-2">
-				<input type="radio" name="is_comment" id="is_comment_off" class="form-check-input" value="{COMMENT_STATUS_OFF}" {set_radio('is_comment', COMMENT_STATUS_OFF, ($edit_data.is_comment == COMMENT_STATUS_OFF))}>
-				<label class="form-check-label" for="is_comment_off">{lang('Admin.text_comment_status_off')}</label>
-			</label>
-			<label class="form-check ms-2">
-				<input type="radio" name="is_comment" id="is_comment_confirm" class="form-check-input" value="{COMMENT_STATUS_CONFIRM}" {set_radio('is_comment', COMMENT_STATUS_CONFIRM, ($edit_data.is_comment == COMMENT_STATUS_CONFIRM))}>
-				<label class="form-check-label" for="is_comment_confirm">{lang('Admin.text_comment_status_confirm')}</label>
-			</label>
-			<label class="form-check ms-2">
-				{if isset($edit_data.is_comment)}
-					<input type="radio" name="is_comment" id="is_comment_on" class="form-check-input" value="{COMMENT_STATUS_ON}" {set_radio('is_comment', COMMENT_STATUS_ON, ($edit_data.is_comment == COMMENT_STATUS_ON))}>
-				{else}
-					<input type="radio" name="is_comment" id="is_comment_on" class="form-check-input" value="{COMMENT_STATUS_ON}" {set_radio('is_comment', COMMENT_STATUS_ON, true)}>
-				{/if}
-				<span class="form-check-label" for="is_comment_on">{lang('Admin.text_comment_status_on')}</span>
-			</label>
-		</div>
-	</div>
-
-	<div class="form-group row">
-		<div class="col-12 col-sm-2 col-form-label text-sm-end">{lang('Admin.text_sort_order')}</div>
-		<div class="col-12 col-sm-10 col-lg-10">
-			<input type="number" name="sort_order" value="{old('sort_order', $edit_data.sort_order)|default:0}" id="input_sort_order" min="0" class="form-control">
-			<div id="error_sort_order" class="invalid-feedback"></div>
-		</div>
-	</div>
-
-	<div class="form-group row">
-		<div class="col-12 col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_viewed')}</div>
-		<div class="col-12 col-sm-10 col-lg-10">
-			<input type="number" name="viewed" value="{old('viewed', $edit_data.viewed)|default:0}" id="input_viewed" min="0" class="form-control">
-			<div id="error_viewed" class="invalid-feedback"></div>
-		</div>
-	</div>
-
 	<div class="border-bottom mx-3 lead pb-1 my-3 fw-bold">{lang('ProductAdmin.text_model')}</div>
 	<div class="form-group row">
 		<div class="col-12 col-sm-2 col-form-label required-label text-sm-end">{lang('ProductAdmin.text_model')}</div>
