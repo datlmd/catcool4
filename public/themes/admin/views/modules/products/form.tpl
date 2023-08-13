@@ -1,5 +1,15 @@
 {strip}
     {form_hidden('manage_url', site_url($manage_url))}
+    <div id="simple-list-example" class="text-end fixed-top mt-5 d-none d-lg-block" style="width: 160px; right: 3px; top: 60px; left: auto;">
+        <button type="button" id="btn_search" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-target="#product_menu_list"><i class="fas fa-list"></i></button>
+        <div class="list-group collapse show mt-1" id="product_menu_list">
+            <a class="list-group-item list-group-item-action p-1" href="#content_product_general">{lang('Admin.tab_general')}</a>
+            <a class="list-group-item list-group-item-action p-1" href="#content_product_images">{lang('Admin.tab_image')}</a>
+            <a class="list-group-item list-group-item-action p-1" href="#content_product_attributes">{lang('ProductAdmin.text_attribute_title')}</a>
+            <a class="list-group-item list-group-item-action p-1" href="#content_product_data">{lang('ProductAdmin.text_sales_information')}</a>
+            <a class="list-group-item list-group-item-action p-1" href="#content_product_shipping">{lang('ProductAdmin.text_shipping_title')}</a>
+        </div>
+    </div>
     <div class="container-fluid  dashboard-content">
         {form_open(site_url("$manage_url/save"), ["id" => "validationform", "method" => "post", "data-cc-toggle" => "ajax"])}
 
@@ -8,7 +18,7 @@
             <input type="hidden" name="variant" value="{$edit_data.variant|default:""}">
             <input type="hidden" name="override" value="{$edit_data.override|default:""}">
 
-            <div class="row">
+            <div class="row" data-bs-spy="scroll" data-bs-target="#simple-list-example" data-bs-offset="0" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
                 <div class="col-12">
                     <div class="row">
                         <div class="col-sm-7 col-12">
@@ -29,21 +39,21 @@
                         {include file=get_theme_path('views/inc/alert.tpl') message=$errors type='danger'}
                     {/if}
 
-                    <div class="card">
+                    <div class="card" id="content_product_general">
                         <h5 class="card-header"><i class="fas {if !empty($edit_data.product_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                         <div class="card-body px-0">
                             {include file=get_theme_path('views/modules/products/inc/tab_general.tpl')}
                         </div>
                     </div>
 
-                    <div class="card">
+                    <div class="card" id="content_product_images">
                         <h5 class="card-header">{lang('Admin.tab_image')}</h5>
                         <div class="card-body">
                             {include file=get_theme_path('views/modules/products/inc/tab_images.tpl')}
                         </div>
                     </div>
 
-                    <div class="card">
+                    <div class="card" id="content_product_attributes">
                         <h5 class="card-header">{lang('ProductAdmin.text_attribute_title')}</h5>
 
                         <div class="card-body">
@@ -51,17 +61,17 @@
                         </div>
                     </div>
 
-                    <div class="card">
-                        <h5 class="card-header">{lang('Admin.tab_data')}</h5>
+                    <div class="card" id="content_product_data">
+                        <h5 class="card-header">{lang('ProductAdmin.text_sales_information')}</h5>
                         <div class="card-body">
                             {include file=get_theme_path('views/modules/products/inc/tab_data.tpl')}
                         </div>
                     </div>
 
-                    <div class="card">
-                        <h5 class="card-header">{lang('Admin.tab_links')}</h5>
+                    <div class="card" id="content_product_shipping">
+                        <h5 class="card-header">{lang('ProductAdmin.text_shipping_title')}</h5>
                         <div class="card-body">
-                            {include file=get_theme_path('views/modules/products/inc/tab_links.tpl')}
+                            {include file=get_theme_path('views/modules/products/inc/tab_shipping.tpl')}
                         </div>
                     </div>
 
@@ -70,6 +80,13 @@
 
                         <div class="card-body">
                             {include file=get_theme_path('views/modules/products/inc/tab_options.tpl')}
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h5 class="card-header">{lang('Admin.tab_links')}</h5>
+                        <div class="card-body">
+                            {include file=get_theme_path('views/modules/products/inc/tab_links.tpl')}
                         </div>
                     </div>
                 </div>
