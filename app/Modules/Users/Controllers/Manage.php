@@ -178,7 +178,6 @@ class Manage extends AdminController
     {
         $this->themes->addCSS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
         $this->themes->addCSS('common/js/dropzone/dropdrap');
-        $this->themes->addCSS('common/plugin/multi-select/css/bootstrap-multiselect.min');
 
 
         $this->themes->addJS('common/plugin/datepicker/moment.min');
@@ -188,7 +187,13 @@ class Manage extends AdminController
         }
 
         $this->themes->addJS('common/js/dropzone/dropdrap');
-        $this->themes->addJS('common/plugin/multi-select/js/bootstrap-multiselect.min');
+
+        $this->themes->addCSS('common/plugin/multi-select/css/select2.min');
+        $this->themes->addCSS('common/plugin/multi-select/css/select2-bootstrap-5-theme.min');
+        $this->themes->addJS('common/plugin/multi-select/js/select2.min');
+        if (get_lang(true) == 'vi') {
+            $this->themes->addJS('common/plugin/multi-select/js/i18n/vi');
+        }
 
         $data['list_lang'] = get_list_lang(true);
 

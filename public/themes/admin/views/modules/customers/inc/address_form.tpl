@@ -80,12 +80,12 @@
 		<div class="row mb-3">
 			<label for="input_address_{$address_row}_country_id" class="col-sm-2 col-form-label text-sm-end required-label">{lang('CustomerAdmin.text_country')}</label>
 			<div class="col-sm-4">
-				{form_dropdown("address[{$address_row}][country_id]", $country_list, old("address[{$address_row}][country_id]", $address.country_id|default:''), ["class" => "form-control country-changed", "id" => "input_address_{$address_row}_country_id", "target_id" => "#input_address_{$address_row}_province_id"])}
+				{form_dropdown("address[{$address_row}][country_id]", $country_list, old("address[{$address_row}][country_id]", $address.country_id|default:''), ["class" => "form-control country-changed cc-form-select-single", "id" => "input_address_{$address_row}_country_id", "target_id" => "#input_address_{$address_row}_province_id", "data-placeholder" => lang('Admin.text_select')])}
 				<div id="error_address_{$address_row}_country_id" class="invalid-feedback"></div>
 			</div>
 			<label for="input_address_{$address_row}_province_id" class="col-sm-2 col-form-label text-sm-end required-label">{lang('CustomerAdmin.text_province')}</label>
 			<div class="col-sm-4">
-				{$province_attributes = ["class" => "form-control province-changed", "id" => "input_address_{$address_row}_province_id", "target_id" => "#input_address_{$address_row}_district_id"]}
+				{$province_attributes = ["class" => "form-control province-changed cc-form-select-single", "id" => "input_address_{$address_row}_province_id", "target_id" => "#input_address_{$address_row}_district_id", "data-placeholder" => lang('Admin.text_select')]}
 				{if empty($address.address_id)}
 					{$province_attributes["disabled"] = "disabled"}
 				{/if}
@@ -96,7 +96,7 @@
 		<div class="row mb-3">
 			<label for="input_address_{$address_row}_district_id" class="col-sm-2 col-form-label text-sm-end required-label">{lang('CustomerAdmin.text_district')}</label>
 			<div class="col-sm-4">
-				{$district_attributes = ["class" => "form-control district-changed", "id" => "input_address_{$address_row}_district_id", "target_id" => "#input_address_{$address_row}_ward_id"]}
+				{$district_attributes = ["class" => "form-control district-changed cc-form-select-single", "id" => "input_address_{$address_row}_district_id", "target_id" => "#input_address_{$address_row}_ward_id", "data-placeholder" => lang('Admin.text_select')]}
 				{if empty($address.address_id)}
 					{$district_attributes["disabled"] = "disabled"}
 				{/if}
@@ -105,7 +105,7 @@
 			</div>
 			<label for="input_address_{$address_row}_ward_id" class="col-sm-2 col-form-label text-sm-end required-label">{lang('CustomerAdmin.text_ward')}</label>
 			<div class="col-sm-4">
-				{$ward_attributes = ["class" => "form-control ward-changed", "id" => "input_address_{$address_row}_ward_id"]}
+				{$ward_attributes = ["class" => "form-control ward-changed cc-form-select-single", "id" => "input_address_{$address_row}_ward_id", "data-placeholder" => lang('Admin.text_select')]}
 				{if empty($address.address_id)}
 					{$ward_attributes["disabled"] = "disabled"}
 				{/if}

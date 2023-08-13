@@ -158,12 +158,12 @@
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
                                     {if !empty($groups)}
-                                        <select name="groups[]" id="groups[]" class="form-control form-control-sm multiselect" multiple="multiple" title="{lang('text_select')}">
+                                        <select name="groups[]" id="groups[]" class="form-control form-control-sm cc-form-select-multi" multiple="multiple" data-placeholder="{lang('Admin.text_select')}">
+                                            <option value="">{lang('Admin.text_select')}</option>
                                             {foreach $groups as $key => $group}
                                                 <option value="{$key}" {if !empty($user_groups) && in_array($key, array_column($user_groups, 'group_id'))}selected{/if}>{$group.name}</option>
                                             {/foreach}
                                         </select>
-                                        <div id="category_review" class="w-100 p-3 bg-light"></div>
                                     {/if}
                                 </div>
                             </div>

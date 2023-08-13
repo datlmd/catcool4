@@ -65,7 +65,8 @@
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
                                     {if !empty($groups)}
-                                        <select name="group_id" id="input_group_id" class="form-control form-control-sm">
+                                        <select name="group_id" id="input_group_id" class="form-control form-control-sm cc-form-select-single" data-placeholder="{lang('Admin.text_select')}">
+                                            <option value="">{lang('Admin.text_select')}</option>
                                             {foreach $groups as $key => $group}
                                                 <option value="{$key}" {if $key eq $edit_data.group_id}selected{/if}>{$group.name}</option>
                                             {/foreach}
@@ -290,5 +291,14 @@
 
         var html = $('#html_customer_address_row').html().replaceAll('address_row_value', customer_address_row);
         $('#customer_address_content').append(html);
+
+        $('#customer_address_content .select2-container').remove();
+        $('#customer_address_content .cc-form-select-single').select2({
+            theme: "bootstrap-5",
+            width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+            placeholder: $( this ).data( 'placeholder' ),
+            selectionCssClass: 'select2--small',
+            dropdownCssClass: 'select2--small',
+        });
     }
 </script>

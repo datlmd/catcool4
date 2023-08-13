@@ -247,12 +247,12 @@
                                 <label class="form-label"><a href="{site_url('posts/categories_manage')}" target="_blank" class="link-primary">{lang('Admin.text_category')}</a></label>
 
                                 {$output_html = '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>'}
-                                <select name="category_ids[]" id="category_ids[]" class="form-control form-control-sm multiselect" multiple="multiple" title="{lang('Admin.text_select')}">
+                                <select name="category_ids[]" id="category_ids[]" class="form-control form-control-sm cc-form-select-multi" multiple="multiple" data-placeholder="{lang('Admin.text_select')}">
                                     {draw_tree_output_name(['data' => $categories_tree, 'key_id' => 'category_id'], $output_html, 0, old('category_ids', $edit_data.category_ids))}
                                 </select>
-                                <div id="category_review" class="w-100 p-3 bg-light"></div>
+
                             </div>
-                            <div class="form-group border-top pt-3">
+                            <div class="form-group pt-2">
                                 <label class="form-label">{lang('NewsAdmin.text_author')}</label>
                                 <input type="text" name="author" value="{old('author', $edit_data.author)}" id="author" class="form-control">
                             </div>

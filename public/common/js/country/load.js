@@ -41,6 +41,17 @@ $(function () {
                         $.each(response.provinces, function(index, value) {
                             $(province).append('<option value="' + index.replace("_", "") + '">' + value + '</option>');
                         });
+
+                        if ($(province).hasClass('cc-form-select-single')) {
+                            $(province).select2({
+                                theme: "bootstrap-5",
+                                width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+                                placeholder: $( this ).data( 'placeholder' ),
+                                selectionCssClass: 'select2--small',
+                                dropdownCssClass: 'select2--small',
+                            });
+                            $(province).select2('open');
+                        }
                     }
                 },
                 error: function (xhr, errorType, error) {
@@ -82,6 +93,17 @@ $(function () {
                         $.each(response.districts, function(index, value) {
                             $(district).append('<option value="' + index.replace("_", "") + '">' + value + '</option>');
                         });
+
+                        if ($(district).hasClass('cc-form-select-single')) {
+                            $(district).select2({
+                                theme: "bootstrap-5",
+                                width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+                                placeholder: $( this ).data( 'placeholder' ),
+                                selectionCssClass: 'select2--small',
+                                dropdownCssClass: 'select2--small',
+                            });
+                            $(district).select2('open');
+                        }
                     }
                 },
                 error: function (xhr, errorType, error) {
@@ -116,6 +138,17 @@ $(function () {
                         $.each(response.wards, function(index, value) {
                             $(ward).append('<option value="' + index.replace("_", "") + '">' + value + '</option>');
                         });
+
+                        if ($(ward).hasClass('cc-form-select-single')) {
+                            $(ward).select2({
+                                theme: "bootstrap-5",
+                                width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+                                placeholder: $( this ).data( 'placeholder' ),
+                                selectionCssClass: 'select2--small',
+                                dropdownCssClass: 'select2--small',
+                            });
+                            $(ward).select2('open');
+                        }
                     }
                 },
                 error: function (xhr, errorType, error) {

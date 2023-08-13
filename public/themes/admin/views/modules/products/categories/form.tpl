@@ -119,27 +119,16 @@
                             <div class="form-group mt-4 border-top pt-3">
                                 <label class="form-label fw-bold">{lang('ProductCategoryAdmin.text_filter')}</label>
                                 {$filter_ids = old('filter_ids', $edit_data.filter_ids)|default:[]}
-                                <select name="filter_ids[]" id="input_filter_ids[]" data-target="#filter_review" class="form-control form-control-sm multiselect" multiple="multiple" title="{lang('Admin.text_select')}">
+                                <select name="filter_ids[]" id="input_filter_ids[]" class="form-control form-control-sm cc-form-select-multi" multiple="multiple" data-placeholder="{lang('Admin.text_select')}">
                                     {foreach $filter_list as $value}
                                         <option value="{$value.filter_id}" {if in_array($value.filter_id, $filter_ids)}selected="selected"{/if}>{$value.name}</option>
                                     {/foreach}
                                 </select>
-                                <div id="filter_review" class="w-100 p-3 bg-light multiselect-review">
-                                    {if !empty($filter_list)}
-                                        <ul class="list-unstyled bullet-check mb-0">
-                                            {foreach $filter_list as $value}
-                                                {if !in_array($value.filter_id, $filter_ids)}
-                                                    {continue}
-                                                {/if}
-                                                <li>{$value.name}</li>
-                                            {/foreach}
-                                        </ul>
-                                    {/if}
-                                </div>
+
                             </div>
                             <div class="form-group mt-4 border-top pt-3">
                                 <label class="form-label fw-bold">{lang('Admin.text_parent')}</label>
-                                <select name="parent_id" id="parent_id" class="form-control">
+                                <select name="parent_id" id="parent_id" class="form-control cc-form-select-single" data-placeholder="{lang('Admin.text_select')}">
                                     <option value="">{lang('Admin.text_select')}</option>
                                     {$output_html = '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>'}
                                     {draw_tree_output_name(['data' => $patent_list, 'key_id' => 'category_id', 'id_root' => $edit_data.category_id], $output_html, 0, old('parent_id', $edit_data.parent_id))}
