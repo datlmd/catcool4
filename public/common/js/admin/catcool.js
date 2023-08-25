@@ -966,7 +966,7 @@ $(function () {
 
     //sort hình
     if ($('.sortable_photos').length) {
-        var sortable = Sortable.create($('.sortable_photos')[0],{
+        var sortable_photo = Sortable.create($('.sortable_photos')[0],{
             //animation: 100,
             onSort: function (/**Event*/evt) {
                 // same properties as onEnd
@@ -975,4 +975,13 @@ $(function () {
         });
     }
 
+    if ($('.sortable-catcool').length) {
+        var sortable_catcool = Sortable.create($('.sortable-catcool')[0],{
+            animation: 100,
+            onSort: function (/**Event*/evt) {
+                // same properties as onEnd
+                //alert(335);
+            },
+        });
+    }
 });

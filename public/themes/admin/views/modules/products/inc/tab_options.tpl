@@ -177,7 +177,7 @@
 	<fieldset>
 		<legend class="float-none border-bottom mb-3 bg-light p-2">{lang('ProductAdmin.text_option_add')}</legend>
 		<div class="row mb-3">
-			<label for="input-option" class="col-sm-2 col-form-label text-end">{lang('ProductAdmin.text_option')}</label>
+			<label for="option_select_add" class="col-sm-2 col-form-label text-end">{lang('ProductAdmin.text_option')}</label>
 			<div class="col-sm-10">
 				<select name="option_select_add" id="option_select_add" class="form-select form-select-sm">
 					<option value="0">{lang('Admin.text_none')}</option>

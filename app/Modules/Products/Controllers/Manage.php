@@ -1,6 +1,7 @@
 <?php namespace App\Modules\Products\Controllers;
 
 use App\Controllers\AdminController;
+use App\Modules\Currencies\Models\CurrencyModel;
 use App\Modules\Products\Models\ProductModel;
 use App\Modules\Products\Models\ProductLangModel;
 
@@ -26,6 +27,9 @@ class Manage extends AdminController
 
         $this->model = new ProductModel();
         $this->model_lang = new ProductLangModel();
+
+        $this->currency_model = new \App\Modules\Currencies\Models\CurrencyModel();
+        $this->smarty->assign('currency', $this->currency_model->getCurrency());
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -273,7 +277,9 @@ class Manage extends AdminController
                     //$product_attribute_model->insert($data_attribute);
                 }
             }
-            $product_attribute_model->insertBatch($data_attribute);
+            if (!empty($data_attribute)) {
+                $product_attribute_model->insertBatch($data_attribute);
+            }
         }
 
         //save route url
@@ -475,6 +481,13 @@ class Manage extends AdminController
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         foreach(get_list_lang(true) as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('ProductAdmin.text_name') . ' (' . $value['name']  . ')', 'required');
+        }
+
+        if (!empty($this->request->getPost('shipping'))) {
+            $this->validator->setRule('length', lang('ProductAdmin.text_length'), 'required|numeric');
+            $this->validator->setRule('width', lang('ProductAdmin.text_width'), 'required|numeric');
+            $this->validator->setRule('height', lang('ProductAdmin.text_height'), 'required|numeric');
+            $this->validator->setRule('weight', lang('ProductAdmin.text_weight'), 'required|numeric');
         }
 
         //$this->validator->setRule('model', lang('ProductAdmin.text_model'), 'required');

@@ -2,7 +2,7 @@
     {form_hidden('manage_url', site_url($manage_url))}
     <div id="simple-list-example" class="text-end fixed-top mt-5 d-none d-lg-block" style="width: 160px; right: 3px; top: 60px; left: auto;">
         <button type="button" id="btn_search" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-target="#product_menu_list"><i class="fas fa-list"></i></button>
-        <div class="list-group collapse show mt-1" id="product_menu_list">
+        <div class="list-group collapse mt-1" id="product_menu_list">
             <a class="list-group-item list-group-item-action p-1" href="#content_product_general">{lang('Admin.tab_general')}</a>
             <a class="list-group-item list-group-item-action p-1" href="#content_product_images">{lang('Admin.tab_image')}</a>
             <a class="list-group-item list-group-item-action p-1" href="#content_product_attributes">{lang('ProductAdmin.text_attribute_title')}</a>
@@ -72,6 +72,13 @@
                         <h5 class="card-header">{lang('ProductAdmin.text_shipping_title')}</h5>
                         <div class="card-body">
                             {include file=get_theme_path('views/modules/products/inc/tab_shipping.tpl')}
+                        </div>
+                    </div>
+
+                    <div class="card" id="content_product_shipping">
+                        <h5 class="card-header">{lang('ProductAdmin.text_other_title')}</h5>
+                        <div class="card-body">
+                            {include file=get_theme_path('views/modules/products/inc/tab_other.tpl')}
                         </div>
                     </div>
 
@@ -152,4 +159,56 @@
     <input type="hidden" name="product_image_row" id="product_image_row" value="{if !empty($edit_data.image_list)}{$edit_data.image_list|@count}{else}0{/if}">
     {* end template product image *}
 
+    {* template product variant option form *}
+    <div id="html_product_variant_option_form" style="display: none">
+        {include file=get_theme_path('views/modules/products/inc/variant_option_form.tpl')}
+    </div>
+    {* end template product variant option form *}
+
 {/strip}
+<script>
+    // Setup the "Move Me" links
+    $(".rowLink").click(function () {
+        // get the row containing this link
+        var row = $(this).closest("tr").remove().clone();
+
+        // find out in which table it resides
+        var table = $(this).closest("table");
+
+        // move it
+        row.detach();
+
+        if (table.is("#table1")) {
+            row.appendTo('#table2');
+        }
+        else {
+            row.appendTo('#table1');
+        }
+
+        // draw the user's attention to it
+        row.fadeOut();
+        row.fadeIn();
+    });
+
+    //JS to move Up and Down
+
+    // Setup the "Up" links
+    $(".rowUp").click(function () {
+        var row = $(this).closest("tr");
+
+        // Get the previous element in the DOM
+        var previous = row.prev();
+
+        // Check to see if it is a row
+        if (previous.is("tr")) {
+            // Move row above previous
+            row.detach();
+            previous.before(row);
+
+            // draw the user's attention to it
+            row.fadeOut();
+            row.fadeIn();
+        }
+        // else - already at the top
+    });
+</script>

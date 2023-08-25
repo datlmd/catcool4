@@ -62,7 +62,7 @@
 			<div id="error_manufacturer_id" class="invalid-feedback"></div>
 			<a href="{site_url('manufacturers/manage/add')}" class="link-primary mt-1 d-block">{lang('ProductAdmin.text_manufacturer_add')}</a>
 		</div>
-		<label for="input_category_ids" class="col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_category')}</label>
+		<label class="col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_category')}</label>
 		<div class="col-sm-4">
 			{$output_html = '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>'}
 			<select name="category_ids[]" id="input_category_ids[]" class="form-select form-select-sm cc-form-select-multi" multiple="multiple" data-placeholder="{lang('Admin.text_select')}">

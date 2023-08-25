@@ -18,11 +18,16 @@
 		<div class="col-12 col-sm-10 col-lg-10">
 			<input type="hidden" name="length_class_id" id="input_length_class_id" value="{config_item('length_class')}">
 			<div class="input-group">
-				<input type="text" name="length" value="{old('length', $edit_data.length)}" id="input_length" class="form-control" placeholder="{lang('ProductAdmin.text_length')}">
-				<input type="text" name="width" value="{old('width', $edit_data.width)}" id="input_width" class="form-control" placeholder="{lang('ProductAdmin.text_width')}">
-				<input type="text" name="height" value="{old('height', $edit_data.height)}" id="input_width" class="form-control" placeholder="{lang('ProductAdmin.text_height')}">
 				<span class="input-group-text">{$length_class_list[config_item('length_class')].unit}</span>
+				<input type="text" name="length" value="{old('length', $edit_data.length)|number_format:2}" id="input_length" class="form-control" placeholder="{lang('ProductAdmin.text_length')}">
+				<span class="input-group-text">X</span>
+				<input type="text" name="width" value="{old('width', $edit_data.width)|number_format:2}" id="input_width" class="form-control" placeholder="{lang('ProductAdmin.text_width')}">
+				<span class="input-group-text">X</span>
+				<input type="text" name="height" value="{old('height', $edit_data.height)|number_format:2}" id="input_width" class="form-control" placeholder="{lang('ProductAdmin.text_height')}">
 			</div>
+			<div id="error_length" class="invalid-feedback"></div>
+			<div id="error_width" class="invalid-feedback"></div>
+			<div id="error_height" class="invalid-feedback"></div>
 		</div>
 	</div>
 
@@ -45,8 +50,8 @@
 		<div class="col-12 col-sm-10 col-lg-10">
 			<input type="hidden" name="weight_class_id" id="input_weight_class_id" value="{config_item('weight_class')}">
 			<div class="input-group">
-				<input type="text" name="weight" value="{old('weight', $edit_data.weight)}" id="input_weight" class="form-control">
 				<span class="input-group-text">{$weight_class_list[config_item('weight_class')].unit}</span>
+				<input type="text" name="weight" value="{old('weight', $edit_data.weight)|number_format:2}" id="input_weight" class="form-control">
 			</div>
 
 			<div id="error_weight" class="invalid-feedback"></div>

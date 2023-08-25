@@ -59,15 +59,40 @@ class CurrencyModel extends MyModel
             }
         }
 
-        return $result;
+        $list = [];
+        foreach ($result as $value) {
+            $list[$value['code']] = $value;
+        }
+
+        return $list;
     }
 
-    public function deleteCache()
+    public function getCurrency($code = null)
+    {
+        if (empty($code)) {
+            $code = config_item('currency');
+        }
+
+        $list = $this->getListPublished();
+        if (empty($list[$code])) {
+            return [];
+        }
+
+        return $list[$code];
+    }
+
+    public function deleteCache() : bool
     {
         cache()->delete(self::CURRENCY_CACHE_NAME);
         return true;
     }
 
+    /**
+     * updateCurrency
+     *
+     * @return bool
+     * @throws \ReflectionException
+     */
     public function updateCurrency()
     {
         $curl = curl_init();
