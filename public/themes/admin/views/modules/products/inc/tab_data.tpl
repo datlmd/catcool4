@@ -2,8 +2,8 @@
 
 	{form_hidden('tab_type', 'tab_data')}
 
-	{$product_variant_option_row = 1}
-	{$product_variant_option_value_row = 1}
+	{$product_variant_option_row = 0}
+	{$product_variant_option_value_row = 0}
 
 	<div class="border-bottom lead mx-3 pb-1 my-3 fw-bold">{lang('ProductAdmin.text_price')}</div>
 
@@ -15,50 +15,18 @@
 				<div id="product_add_variant" class="btn btn-sm btn-warning">{lang('ProductAdmin.text_add_variant')}</div>
 
 				<div id="product_variant_option" style="display: none;">
-
-
-					<div id="product_variant_option_row_{$product_variant_option_row}" data-row="{$product_variant_option_row}" class="product-variant-option rounded bg-light p-3">
-						<div class="text-end product-variant-close">
-							<button type="button" class="btn-close" aria-label="Close"></button>
-						</div>
-
-						<input type="hidden" name="product_option[{$product_variant_option_row}][product_option_id]" value=""/>
-
-						<div class="row">
-							<label class="col-sm-3 col-form-label text-end">{lang('ProductAdmin.text_variant_name')}</label>
-							<div class="col-sm-9">
-								<select name="product_variant[{$product_variant_option_row}][option_id]" id="input_product_variant_{$product_variant_option_row}_option_id" class="form-select cc-form-select-single">
-									<option value="">{lang('Admin.text_select')}</option>
-									{foreach $option_list as $option}
-										<option value="{$option.option_id}">{$option.name}</option>
-									{/foreach}
-								</select>
-
-							</div>
-						</div>
-
-						<div class="product-variant-option-list">
-							<div class="row product-variant-option-item">
-								<label class="col-sm-3 col-form-label text-end">{lang('ProductAdmin.text_variant_option')}</label>
-								<div class="col-sm-9">
-									<ul class="list-group my-2">
-										<li class="list-group-item">
-											{include file=get_theme_path('views/modules/products/inc/variant_option_form.tpl')
-												product_variant_option_row=$product_variant_option_row
-												product_variant_option_value_row=$product_variant_option_value_row
-												product_variant_option_value=[]
-											}
-										</li>
-									</ul>
-									<button type="button" class="btn btn-sm btn-primary btn-variant-option-add"><i class="fas fa-plus me-1"></i>{lang('ProductAdmin.text_variant_option_add')}</button>
-								</div>
-							</div>
-
-						</div>
-
+					<div class="product-variant-option-group">
+						{*
+						{include file=get_theme_path('views/modules/products/inc/variant_form.tpl')
+						vf_variant_option_row=$product_variant_option_row
+						vf_variant_option_value_row=$product_variant_option_value_row
+						data_variant_option=[]
+						}
+						*}
 					</div>
 
 {*					<div id="product_variant_option_row_{$product_variant_option_row}" class="product-variant-option rounded bg-light p-3"></div>*}
+					<div id="product_add_variant_option_group" class="btn btn-sm btn-warning">{lang('ProductAdmin.text_add_variant')}</div>
 
 					<div id="product_variant_option_info" class="variant-list">
 

@@ -159,11 +159,14 @@
     <input type="hidden" name="product_image_row" id="product_image_row" value="{if !empty($edit_data.image_list)}{$edit_data.image_list|@count}{else}0{/if}">
     {* end template product image *}
 
-    {* template product variant option form *}
+    {* template product variant *}
     <div id="html_product_variant_option_form" style="display: none">
         {include file=get_theme_path('views/modules/products/inc/variant_option_form.tpl')}
     </div>
-    {* end template product variant option form *}
+    <div id="html_product_variant_form" style="display: none">
+        {include file=get_theme_path('views/modules/products/inc/variant_form.tpl')}
+    </div>
+    {* end template product variant *}
 
 {/strip}
 <script>
