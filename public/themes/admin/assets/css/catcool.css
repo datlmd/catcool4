@@ -782,7 +782,15 @@ a[data-bs-toggle="image"] {
 }
 
 .product-variant-close {
-    margin: -5px -5px 7px 0;
+
+}
+
+.product-variant-content .product-variant-option-list .variant-delete {
+    cursor: pointer;
+}
+
+.product-variant-content .product-variant-option-list .variant-move {
+    cursor: move;
 }
 
 /*** end product ***/

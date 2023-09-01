@@ -23,7 +23,7 @@
 				<span class="input-group-text">X</span>
 				<input type="text" name="width" value="{old('width', $edit_data.width)|number_format:2}" id="input_width" class="form-control" placeholder="{lang('ProductAdmin.text_width')}">
 				<span class="input-group-text">X</span>
-				<input type="text" name="height" value="{old('height', $edit_data.height)|number_format:2}" id="input_width" class="form-control" placeholder="{lang('ProductAdmin.text_height')}">
+				<input type="text" name="height" value="{old('height', $edit_data.height)|number_format:2}" id="input_height" class="form-control" placeholder="{lang('ProductAdmin.text_height')}">
 			</div>
 			<div id="error_length" class="invalid-feedback"></div>
 			<div id="error_width" class="invalid-feedback"></div>

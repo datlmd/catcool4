@@ -16,9 +16,12 @@
         <input type="hidden" name="product_variant[{$vf_variant_option_row}][option_values][{$vf_variant_option_value_row}][product_option_value_id]" value="{$product_variant_option_value.product_option_value_id}"/>
     {/if}
 
-    <div id="product_variant_option_row_{$vf_variant_option_row}" data-row="{$vf_variant_option_row}" class="product-variant-option rounded bg-light p-3">
-        <div class="text-end product-variant-close">
-            <button type="button" class="btn-close" aria-label="Close"></button>
+    <div id="product_variant_option_row_{$vf_variant_option_row}" data-row="{$vf_variant_option_row}" class="product-variant-option rounded bg-light p-3 mb-3">
+        <div class="d-flex mb-2">
+            <div class="flex-grow-1 fs-4 text-primary">{lang('ProductAdmin.text_variant_group')} {$vf_variant_option_row}</div>
+            <div class="text-end product-variant-close">
+                <button type="button" class="btn-close" aria-label="Close"></button>
+            </div>
         </div>
 
         <input type="hidden" name="product_option[{$vf_variant_option_row}][product_option_id]" value=""/>
@@ -32,7 +35,7 @@
                         <option value="{$option.option_id}">{$option.name}</option>
                     {/foreach}
                 </select>
-
+                <div id="error_product_variant_{$vf_variant_option_row}_option_id" class="invalid-feedback"></div>
             </div>
         </div>
 
@@ -41,13 +44,13 @@
                 <label class="col-sm-3 col-form-label text-end">{lang('ProductAdmin.text_variant_option')}</label>
                 <div class="col-sm-9">
                     <ul class="list-group my-2">
-                        <li class="list-group-item">
-                            {include file=get_theme_path('views/modules/products/inc/variant_option_form.tpl')
-                            vof_variant_option_row=$vf_variant_option_row
-                            vof_variant_option_value_row=$vf_variant_option_value_row
-                            data_variant_option_value=[]
-                            }
-                        </li>
+{*                        <li class="list-group-item">*}
+{*                            {include file=get_theme_path('views/modules/products/inc/variant_option_form.tpl')*}
+{*                            vof_variant_option_row=$vf_variant_option_row*}
+{*                            vof_variant_option_value_row=$vf_variant_option_value_row*}
+{*                            data_variant_option_value=[]*}
+{*                            }*}
+{*                        </li>*}
                     </ul>
                     <button type="button" class="btn btn-sm btn-primary btn-variant-option-add"><i class="fas fa-plus me-1"></i>{lang('ProductAdmin.text_variant_option_add')}</button>
                 </div>

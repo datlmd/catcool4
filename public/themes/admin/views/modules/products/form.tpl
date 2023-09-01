@@ -166,52 +166,37 @@
     <div id="html_product_variant_form" style="display: none">
         {include file=get_theme_path('views/modules/products/inc/variant_form.tpl')}
     </div>
+
+    <div id="html_product_variant_option_value_form_td" style="display: none">
+        <table>
+            <tr>
+                <td id="__option_info_row_id___price">
+                    <div class="input-group">
+                        <span class="input-group-text">{if !empty($currency.symbol_left)}{$currency.symbol_left}{elseif !empty($currency.symbol_right)}{$currency.symbol_right}{/if}</span>
+                        <input type="text" min="0" name="product_variant_list[__option_info_row_id__][price]" value="__variant_option_price__" id="input_product_variant_list___option_info_row_id___price" class="form-control">
+                    </div>
+                    <div id="error_product_variant_list___option_info_row_id___price" class="invalid-feedback"></div>
+                </td>
+                <td id="__option_info_row_id___quantity">
+                    <input type="text" min="0" name="product_variant_list[__option_info_row_id__][quantity]" value="__variant_option_quantity__" id="input_product_variant_list___option_info_row_id___quantity" class="form-control">
+                    <div id="error_product_variant_list___option_info_row_id___quantity" class="invalid-feedback"></div>
+                </td>
+                <td id="__option_info_row_id___sku">
+                    <input type="text" name="product_variant_list[__option_info_row_id__][sku]" value="__variant_option_sku__" id="input_product_variant_list___option_info_row_id___sku" class="form-control">
+                    <div id="error_product_variant_list___option_info_row_id___sku" class="invalid-feedback"></div>
+                </td>
+                <td id="__option_info_row_id___published">
+                    <div class="switch-button switch-button-xs catcool-center">
+                        {form_checkbox("product_variant_list[__option_info_row_id__][published]", true, true, ['id' => "input_product_variant_list___option_info_row_id___published"])}
+                        <span><label for="input_product_variant_list___option_info_row_id___published"></label></span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <input type="hidden" name="product_variant_option_row" id="product_variant_option_row" value="{$product_variant_option_row|default:0}">
+    <input type="hidden" name="product_variant_option_value_row" id="product_variant_option_value_row" value="{$product_variant_option_value_row|default:0}">
     {* end template product variant *}
 
 {/strip}
-<script>
-    // Setup the "Move Me" links
-    $(".rowLink").click(function () {
-        // get the row containing this link
-        var row = $(this).closest("tr").remove().clone();
-
-        // find out in which table it resides
-        var table = $(this).closest("table");
-
-        // move it
-        row.detach();
-
-        if (table.is("#table1")) {
-            row.appendTo('#table2');
-        }
-        else {
-            row.appendTo('#table1');
-        }
-
-        // draw the user's attention to it
-        row.fadeOut();
-        row.fadeIn();
-    });
-
-    //JS to move Up and Down
-
-    // Setup the "Up" links
-    $(".rowUp").click(function () {
-        var row = $(this).closest("tr");
-
-        // Get the previous element in the DOM
-        var previous = row.prev();
-
-        // Check to see if it is a row
-        if (previous.is("tr")) {
-            // Move row above previous
-            row.detach();
-            previous.before(row);
-
-            // draw the user's attention to it
-            row.fadeOut();
-            row.fadeIn();
-        }
-        // else - already at the top
-    });
-</script>

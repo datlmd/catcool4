@@ -28,7 +28,7 @@
                            data-varian-option-row="{$vof_variant_option_row}" data-variant-option-value-row="{$vof_variant_option_value_row}"
                            maxlength="{PRODUCT_VARIANT_LENGTH}"
                     >
-                    <span class="input-group-text"><span class="variant-option-name-length"></span>/{PRODUCT_VARIANT_LENGTH}</span>
+                    <span class="input-group-text"><span class="variant-option-name-length">{$data_variant_option_value.lang.{$language.id}.name|count_characters:true|default:0}</span>/{PRODUCT_VARIANT_LENGTH}</span>
                 </div>
                 <div id="error_product_variant_{$vof_variant_option_row}_option_values_{$vof_variant_option_value_row}_lang_{$language.id}_name" class="invalid-feedback"></div>
             {/foreach}
