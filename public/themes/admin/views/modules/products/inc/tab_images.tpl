@@ -11,7 +11,7 @@
 			{foreach $edit_data.image_list as $value_image}
 				<li class="photo-item">
 					{if stripos($value_image.image, 'root/') !== false}
-						<a href="javascript:void(0);" class="ms-0" id="product_image_{$product_image_row}_image" data-target="input_product_image_{$product_image_row}_image" data-thumb="product_image_{'product_image_row_value'}_load_image_url" data-type="image" data-bs-toggle="image">
+						<a href="javascript:void(0);" class="ms-0" id="product_image_{$product_image_row}_image" data-target="input_product_image_{$product_image_row}_image" data-thumb="product_image_{$product_image_row}_load_image_url" data-type="image" data-bs-toggle="image">
 							<img src="{image_thumb_url($value_image.image)}" style="background-image: url('{image_thumb_url($value_image.image)}')"  alt="" title="" id="product_image_{$product_image_row}_load_image_url" data-is-background="true" data-placeholder="{image_default_url()}"/>
 							<div class="btn-group w-100 mt-1" role="group">
 								<button type="button" id="button-image-logo" class="button-image btn btn-xs btn-light" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
