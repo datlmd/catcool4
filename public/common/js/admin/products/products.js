@@ -222,7 +222,7 @@ $(document).on('click', '#product_variant_option .btn-variant-option-add', funct
     product_variant_option_value_row = parseInt(product_variant_option_value_row) + 1;
     $('#product_variant_option_value_row').val(product_variant_option_value_row);
 
-    var html = $('#html_product_variant_option_form').html().replaceAll('product_variant_option_row_value', product_variant_option_row).replaceAll('product_variant_option_value_row_value', product_variant_option_value_row);
+    var html = $('#html_product_variant_option_value_form').html().replaceAll('product_variant_option_row_value', product_variant_option_row).replaceAll('product_variant_option_value_row_value', product_variant_option_value_row);
 
     $(this).parent().find('ul').append('<li class="list-group-item">' + html + '</li>');
 });
@@ -251,7 +251,7 @@ function showVariantOptionForm() {
     product_variant_option_value_row = parseInt(product_variant_option_value_row) + 1;
     $('#product_variant_option_value_row').val(product_variant_option_value_row);
 
-    var html = $('#html_product_variant_form').html().replaceAll('product_variant_option_row_value', product_variant_option_row).replaceAll('product_variant_option_value_row_value', product_variant_option_value_row);
+    var html = $('#html_product_variant_option_form').html().replaceAll('product_variant_option_row_value', product_variant_option_row).replaceAll('product_variant_option_value_row_value', product_variant_option_value_row);
 
     $('#product_variant_option .product-variant-option-group').append(html);
 
@@ -405,7 +405,7 @@ function showListOptionVariant() {
                 variant_option_info_row_id = 'variant_option_info_row_' + $(option_1).data('variant-option-value-row') + '_' + $(option_2).data('variant-option-value-row');
 
                 html_option_tr += '<tr id="variant_option_info_row' + variant_option_info_row_id + '">';
-                if (index_option_2 == 0) {
+                if (index_option_2 === 0) {
                     html_option_tr += '<td class="variant-name" rowspan="' + total_option_value + '">' + $(option_1).val() + '</td>';
                 }
                 html_option_tr += '<td class="variant-name">' + $(option_2).val() + '</td>';
@@ -431,7 +431,7 @@ function showListOptionVariant() {
     }
 
     if (html_option_tr != "") {
-        $('#product_variant_option #product_variant_option_info table tbody').html(html_option_tr);
+        $('#product_variant_option #product_variant_option_info table tbody').html(html_option_tr).fadeIn();
     }
 
     is_product_processing = false;

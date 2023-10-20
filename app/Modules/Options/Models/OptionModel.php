@@ -23,7 +23,7 @@ class OptionModel extends MyModel
     protected $with = ['option_lang'];
 
     const OPTION_CACHE_NAME = 'option_list_all';
-    const OPTION_CACHE_EXPIRE = YEAR;
+    const OPTION_CACHE_EXPIRE = DAY;
 
     public function __construct()
     {

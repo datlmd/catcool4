@@ -1,4 +1,9 @@
 {strip}
+    <style>
+        .list-group-item {
+            margin-bottom: 0px !important;
+        }
+    </style>
     {form_hidden('manage_url', site_url($manage_url))}
     <div id="simple-list-example" class="text-end fixed-top mt-5 d-none d-lg-block" style="width: 160px; right: 3px; top: 60px; left: auto;">
         <button type="button" id="btn_search" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-target="#product_menu_list"><i class="fas fa-list"></i></button>
@@ -160,11 +165,11 @@
     {* end template product image *}
 
     {* template product variant *}
+    <div id="html_product_variant_option_value_form" style="display: none">
+        {include file=get_theme_path('views/modules/products/inc/variant_option_value_form.tpl')}
+    </div>
     <div id="html_product_variant_option_form" style="display: none">
         {include file=get_theme_path('views/modules/products/inc/variant_option_form.tpl')}
-    </div>
-    <div id="html_product_variant_form" style="display: none">
-        {include file=get_theme_path('views/modules/products/inc/variant_form.tpl')}
     </div>
 
     <div id="html_product_variant_option_value_form_td" style="display: none">
@@ -173,22 +178,22 @@
                 <td id="__option_info_row_id___price">
                     <div class="input-group">
                         <span class="input-group-text">{if !empty($currency.symbol_left)}{$currency.symbol_left}{elseif !empty($currency.symbol_right)}{$currency.symbol_right}{/if}</span>
-                        <input type="text" min="0" name="product_variant_list[__option_info_row_id__][price]" value="__variant_option_price__" id="input_product_variant_list___option_info_row_id___price" class="form-control">
+                        <input type="text" min="0" name="product_variant_combination[__option_info_row_id__][price]" value="__variant_option_price__" id="input_product_variant_combination___option_info_row_id___price" class="form-control">
                     </div>
-                    <div id="error_product_variant_list___option_info_row_id___price" class="invalid-feedback"></div>
+                    <div id="error_product_variant_combination___option_info_row_id___price" class="invalid-feedback"></div>
                 </td>
                 <td id="__option_info_row_id___quantity">
-                    <input type="text" min="0" name="product_variant_list[__option_info_row_id__][quantity]" value="__variant_option_quantity__" id="input_product_variant_list___option_info_row_id___quantity" class="form-control">
-                    <div id="error_product_variant_list___option_info_row_id___quantity" class="invalid-feedback"></div>
+                    <input type="text" min="0" name="product_variant_combination[__option_info_row_id__][quantity]" value="__variant_option_quantity__" id="input_product_variant_combination___option_info_row_id___quantity" class="form-control">
+                    <div id="error_pproduct_variant_combination___option_info_row_id___quantity" class="invalid-feedback"></div>
                 </td>
                 <td id="__option_info_row_id___sku">
-                    <input type="text" name="product_variant_list[__option_info_row_id__][sku]" value="__variant_option_sku__" id="input_product_variant_list___option_info_row_id___sku" class="form-control">
-                    <div id="error_product_variant_list___option_info_row_id___sku" class="invalid-feedback"></div>
+                    <input type="text" name="product_variant_combination[__option_info_row_id__][sku]" value="__variant_option_sku__" id="input_product_variant_combination___option_info_row_id___sku" class="form-control">
+                    <div id="error_product_variant_combination___option_info_row_id___sku" class="invalid-feedback"></div>
                 </td>
                 <td id="__option_info_row_id___published">
                     <div class="switch-button switch-button-xs catcool-center">
-                        {form_checkbox("product_variant_list[__option_info_row_id__][published]", true, true, ['id' => "input_product_variant_list___option_info_row_id___published"])}
-                        <span><label for="input_product_variant_list___option_info_row_id___published"></label></span>
+                        {form_checkbox("product_variant_combination[__option_info_row_id__][published]", true, true, ['id' => "input_product_variant_combination___option_info_row_id___published"])}
+                        <span><label for="input_product_variant_combination___option_info_row_id___published"></label></span>
                     </div>
                 </td>
             </tr>

@@ -335,6 +335,73 @@ class Manage extends AdminController
             }
         }
 
+        //Variant option
+        $option_value_model                 = new \App\Modules\Options\Models\OptionValueModel();
+        $option_value_lang_model            = new \App\Modules\Options\Models\OptionValueLangModel();
+        $product_variant_option_model       = new \App\Modules\Products\Models\ProductVariantOptionModel();
+        $product_variant_option_value_model = new \App\Modules\Products\Models\ProductVariantOptionValueModel();
+
+        if ($this->request->getPost('product_variant_option')) {
+            $product_variant_option_model->where(['product_id' => $product_id])->delete();
+            $product_variant_option_value_model->where(['product_id' => $product_id])->delete();
+
+            $sort_product_variant_option = count($this->request->getPost('product_variant_option'));
+            foreach ($this->request->getPost('product_variant_option') as $variant_option) {
+                $data_product_variant_option = [
+                    'option_id'  => $variant_option['option_id'],
+                    'product_id' => $product_id,
+                    'sort_order' => $sort_product_variant_option,
+                ];
+                $product_variant_option_model->insert($data_product_variant_option);
+                $sort_product_variant_option--;
+
+                if (!empty($variant_option['option_values'])) {
+                    $option_value_model->where(['option_id' => $variant_option['option_id']])->delete();
+
+                    $sort_product_variant_option_value = count($variant_option['option_values']);
+
+                    foreach ($variant_option['option_values'] as $variant_option_value) {
+                        $data_option_value = [
+                            'option_id'  => $variant_option['option_id'],
+                            'image'      => $variant_option_value['option_value_id'] ?? null,
+                            'sort_order' => $sort_product_variant_option_value,
+                        ];
+
+                        if (!empty($variant_option_value['option_value_id'])) {
+                            $data_option_value['option_value_id'] = $variant_option_value['option_value_id'];
+                        }
+
+                        $option_value_id = $option_value_model->insert($data_option_value);
+                        $data_option_value_lang = $variant_option_value['lang'];
+                        foreach (get_list_lang(true) as $language) {
+                            $data_option_value_lang[$language['id']]['language_id']     = $language['id'];
+                            $data_option_value_lang[$language['id']]['option_value_id'] = $option_value_id;
+                            $data_option_value_lang[$language['id']]['option_id']       = $variant_option['option_id'];
+
+                            $option_value_lang_model->insert($data_option_value_lang[$language['id']]);
+                        }
+
+                        $data_product_variant_option_value = [
+                            'option_id'       => $variant_option['option_id'],
+                            'option_value_id' => $option_value_id,
+                            'product_id'      => $product_id,
+                            'sort_order'      => $sort_product_variant_option_value,
+                        ];
+                        $product_variant_option_value_model->insert($data_product_variant_option_value);
+                        $sort_product_variant_option_value--;
+                    }
+                }
+
+
+            }
+        }
+
+        if ($this->request->getPost('product_variant_combination')) {
+
+        }
+
+        cc_debug($this->request->getPost('product_variant_combination'));
+
         $json['product_id'] = $product_id;
 
         $json['success'] = lang('Admin.text_add_success');
