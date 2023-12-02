@@ -12,6 +12,7 @@ use App\Libraries\Google;
 use App\Libraries\Facebook;
 use App\Libraries\ZaloApi;
 use App\Libraries\Robot;
+use App\Libraries\Currency;
 
 /**
  * Services Configuration file.
@@ -144,5 +145,10 @@ class Services extends BaseService
     public static function robot($getShared = true)
     {
         return ($getShared === true ? static::getSharedInstance('robot') : new Robot());
+    }
+
+    public static function currency($getShared = true)
+    {
+        return ($getShared === true ? static::getSharedInstance('currency') : new Currency());
     }
 }
