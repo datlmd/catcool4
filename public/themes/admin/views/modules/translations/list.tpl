@@ -36,7 +36,7 @@
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 mb-2">
                                 <label class="form-label">{lang('TranslationAdmin.text_modules')}</label>
                                 {if !empty($module_list)}
-                                    <select name="module_id" class="form-control form-control-sm">
+                                    <select name="module_id" class="form-select form-select-sm cc-form-select-single" data-placeholder="{lang('Admin.text_select')}">
                                         <option value="">{lang('Admin.text_none')}</option>
                                         {foreach $module_list as $value}
                                             <option value="{$value.id}" {if old('module_id', $request->getGet('module_id')) eq $value.id}selected="selected"{/if}>{$value.module}{if !empty($value.sub_module)} - Sub: {$value.sub_module}{/if}</option>

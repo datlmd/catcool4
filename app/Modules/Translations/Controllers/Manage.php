@@ -38,6 +38,13 @@ class Manage extends AdminController
         $module_model = new ModuleModel();
         $language_model = new LanguageModel();
 
+        $this->themes->addCSS('common/plugin/multi-select/css/select2.min');
+        $this->themes->addCSS('common/plugin/multi-select/css/select2-bootstrap-5-theme.min');
+        $this->themes->addJS('common/plugin/multi-select/js/select2.min');
+        if (get_lang(true) == 'vi') {
+            $this->themes->addJS('common/plugin/multi-select/js/i18n/vi');
+        }
+
         $module_id   = $this->request->getGet('module_id') ?? self::FILTER_DEFAULT_FRONTEND;
         $sort        = $this->request->getGet('sort');
         $order       = $this->request->getGet('order');
