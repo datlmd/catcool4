@@ -7,7 +7,7 @@
     {form_hidden('manage_url', site_url($manage_url))}
     <div id="simple-list-example" class="text-end fixed-top mt-5 d-none d-lg-block" style="width: 160px; right: 3px; top: 60px; left: auto;">
         <button type="button" id="btn_search" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-target="#product_menu_list"><i class="fas fa-list"></i></button>
-        <div class="list-group collapse mt-1" id="product_menu_list">
+        <div class="list-group collapse show mt-1" id="product_menu_list">
             <a class="list-group-item list-group-item-action p-1" href="#content_product_general">{lang('Admin.tab_general')}</a>
             <a class="list-group-item list-group-item-action p-1" href="#content_product_images">{lang('Admin.tab_image')}</a>
             <a class="list-group-item list-group-item-action p-1" href="#content_product_attributes">{lang('ProductAdmin.text_attribute_title')}</a>
@@ -178,16 +178,16 @@
                 <td id="__option_info_row_id___price">
                     <div class="input-group">
                         <span class="input-group-text">{if !empty($currency.symbol_left)}{$currency.symbol_left}{elseif !empty($currency.symbol_right)}{$currency.symbol_right}{/if}</span>
-                        <input type="text" min="0" name="product_variant_combination[__option_info_row_id__][price]" value="__variant_option_price__" id="input_product_variant_combination___option_info_row_id___price" class="form-control">
+                        <input type="number" min="0" name="product_variant_combination[__option_info_row_id__][price]" value="0" id="input_product_variant_combination___option_info_row_id___price" class="form-control">
                     </div>
                     <div id="error_product_variant_combination___option_info_row_id___price" class="invalid-feedback"></div>
                 </td>
                 <td id="__option_info_row_id___quantity">
-                    <input type="text" min="0" name="product_variant_combination[__option_info_row_id__][quantity]" value="__variant_option_quantity__" id="input_product_variant_combination___option_info_row_id___quantity" class="form-control">
-                    <div id="error_pproduct_variant_combination___option_info_row_id___quantity" class="invalid-feedback"></div>
+                    <input type="number" min="0" name="product_variant_combination[__option_info_row_id__][quantity]" value="0" id="input_product_variant_combination___option_info_row_id___quantity" class="form-control">
+                    <div id="error_product_variant_combination___option_info_row_id___quantity" class="invalid-feedback"></div>
                 </td>
                 <td id="__option_info_row_id___sku">
-                    <input type="text" name="product_variant_combination[__option_info_row_id__][sku]" value="__variant_option_sku__" id="input_product_variant_combination___option_info_row_id___sku" class="form-control">
+                    <input type="text" name="product_variant_combination[__option_info_row_id__][sku]" value="" id="input_product_variant_combination___option_info_row_id___sku" class="form-control">
                     <div id="error_product_variant_combination___option_info_row_id___sku" class="invalid-feedback"></div>
                 </td>
                 <td id="__option_info_row_id___published">

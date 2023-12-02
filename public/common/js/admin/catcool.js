@@ -732,7 +732,15 @@ $(function () {
     });
 
     //time out 4s
-    setTimeout(function(){ $('#page_loading').fadeOut(); }, 4000);
+    setTimeout(function(){
+        $('#page_loading').fadeOut();
+
+
+    }, 4000);
+
+    if (!$(".nav-left-sidebar").length) {
+        $('.dashboard-main-wrapper').find('.dashboard-wrapper').removeClass(['dashboard-wrapper', 'navbar-full-text-content']).removeClass('nav-left-sidebar-content-scrolled');
+    }
 
     if ($('.make-slug').length) {
         $(".make-slug").on("keyup", function () {

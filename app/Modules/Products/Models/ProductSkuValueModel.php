@@ -2,16 +2,16 @@
 
 use App\Models\MyModel;
 
-class ProductVariantCombinationModel extends MyModel
+class ProductSkuValueModel extends MyModel
 {
-    protected $table      = 'product_variant_combination';
-    protected $primaryKey = 'product_id';
+    protected $table      = 'product_sku';
+    protected $primaryKey = 'product_sku_id';
 
     protected $returnType = 'array';
 
     protected $allowedFields = [
+        'product_sku_id',
         'product_id',
-        'product_variant_id',
         'option_id',
         'option_value_id',
     ];

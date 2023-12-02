@@ -3,18 +3,18 @@
 	{form_hidden('tab_type', 'tab_data')}
 
 	<div class="form-group row not-variant">
-		<div class="col-12 col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_price')}</div>
+		<div class="col-12 col-sm-2 col-form-label text-sm-end required-label">{lang('ProductAdmin.text_price')}</div>
 		<div class="col-12 col-sm-10 col-lg-10">
 			<div class="input-group">
 				<span class="input-group-text">{if !empty($currency.symbol_left)}{$currency.symbol_left}{elseif !empty($currency.symbol_right)}{$currency.symbol_right}{/if}</span>
-				<input type="text" name="price" value="{old('price', $edit_data.price)|number_format:$currency.decimal_place}" id="input_price" class="form-control">
+				<input type="number" name="price" value="{old('price', $edit_data.price)}" id="input_price" class="form-control">
 			</div>
 			<div id="error_price" class="invalid-feedback"></div>
 		</div>
 	</div>
 
 	<div class="form-group row not-variant">
-		<div class="col-12 col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_quantity')}</div>
+		<div class="col-12 col-sm-2 col-form-label text-sm-end required-label">{lang('ProductAdmin.text_quantity')}</div>
 		<div class="col-12 col-sm-10 col-lg-10">
 			<input type="number" name="quantity" value="{old('quantity', $edit_data.quantity)}" id="input_quantity" min="0" class="form-control">
 			<div id="error_quantity" class="invalid-feedback"></div>
