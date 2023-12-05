@@ -20,7 +20,7 @@
         <div class="flex-grow-1">
             {foreach $language_list as $language}
                 <div class="input-group {if !$language@last}mb-2{/if}">
-                    <span class="input-group-text">{$language.icon}</span>
+                    {if $language_list|count > 1}<span class="input-group-text">{$language.icon}</span>{/if}
                     <input type="text" name="product_variant_option[{$vof_variant_option_row}][option_values][{$vof_variant_option_value_row}][lang][{$language.id}][name]"
                            id="input_product_variant_option_{$vof_variant_option_row}_option_values_{$vof_variant_option_value_row}_lang_{$language.id}_name"
                            class="form-control variant-option-name {if $language@first}default{/if}"

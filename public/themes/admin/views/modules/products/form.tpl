@@ -130,7 +130,7 @@
 
                     {foreach $language_list as $language}
                         <div class="input-group {if !$language@last}mb-2{/if}">
-                            <span class="input-group-text">{$language.icon}</span>
+                            {if $language_list|count > 1}<span class="input-group-text">{$language.icon}</span>{/if}
                             <input type="text" name="product_attribute[{'product_attribute_row_value'}][lang][{$language.id}][text]" value='{old("product_attribute[{'product_attribute_row_value'}][lang][{$language.id}][text]")}' id="input_product_attribute_{'product_attribute_row_value'}_lang_{$language.id}_text" class="form-control" >
                         </div>
                         <div id="error_product_attribute_{'product_attribute_row_value'}_lang_{$language.id}_text" class="invalid-feedback"></div>

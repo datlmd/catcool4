@@ -33,7 +33,7 @@
                                 <div class="col-12 col-sm-8 col-lg-7">
                                     {foreach $language_list as $language}
                                         <div class="input-group {if !$language@last}mb-2{/if}">
-                                            <span class="input-group-text" title="{$language.name}">{$language.icon}</span>
+                                            {if $language_list|count > 1}<span class="input-group-text" title="{$language.name}">{$language.icon}</span>{/if}
                                             <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_lang_{$language.id}_name" class="form-control {if $validator->hasError("lang.`$language.id`.name")}is-invalid{/if}">
                                             <div id="error_lang_{$language.id}_name" class="invalid-feedback">
                                                 {$validator->getError("lang.`$language.id`.name")}
@@ -105,7 +105,7 @@
                                                     <input type="hidden" name="option_value[{$option_value_row}][option_value_id]" value="{$option_value.option_value_id}" />
                                                     {foreach $language_list as $language}
                                                         <div class="input-group {if !$language@last}mb-2{/if}">
-                                                            <span class="input-group-text">{$language.icon}</span>
+                                                            {if $language_list|count > 1}<span class="input-group-text">{$language.icon}</span>{/if}
                                                             <input type="text" name="option_value[{$option_value_row}][lang][{$language.id}][name]" value='{$option_value.lang[$language.id].name}' id="input_option_value_{$option_value_row}_lang_{$language.id}_name" class="form-control">
                                                             <div id="error_option_value_{$option_value_row}_lang_{$language.id}_name" class="invalid-feedback"></div>
                                                         </div>
@@ -161,7 +161,7 @@
                         <input type="hidden" name="option_value[{'option_value_row_value'}][option_value_id]" value="" />
                         {foreach $language_list as $language}
                             <div class="input-group {if !$language@last}mb-2{/if}">
-                                <span class="input-group-text">{$language.icon}</span>
+                                {if $language_list|count > 1}<span class="input-group-text">{$language.icon}</span>{/if}
                                 <input type="text" name="option_value[{'option_value_row_value'}][lang][{$language.id}][name]" value='{old("option_value[option_value_row][lang][{$language.id}][name]")}' id="input_option_value_{'option_value_row_value'}_lang_{$language.id}_name" class="form-control">
                                 <div id="error_option_value_{'option_value_row_value'}_lang_{$language.id}_name" class="invalid-feedback"></div>
                             </div>

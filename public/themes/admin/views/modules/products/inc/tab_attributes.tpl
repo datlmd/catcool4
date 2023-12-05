@@ -85,7 +85,7 @@
 				<input type="hidden" name="product_attribute[{$product_attribute_row}][attribute_id]" value="{$attribute.attribute_id}">
 				{foreach $language_list as $language}
 					<div class="input-group {if !$language@last}mb-2{/if}">
-						<span class="input-group-text">{$language.icon}</span>
+						{if $language_list|count > 1}<span class="input-group-text">{$language.icon}</span>{/if}
 						<input type="text" name="product_attribute[{$product_attribute_row}][lang][{$language.id}][text]" id="input_product_attribute_{$product_attribute_row}_lang_{$language.id}_text" class="form-control" value="{old("product_attribute[{$product_attribute_row}][lang][{$language.id}][text]", $edit_data.product_attribute_list[$attribute.attribute_id].lang[$language.id].text)}" >
 					</div>
 					<div id="error_product_attribute_{$product_attribute_row}_lang_{$language.id}_text" class="invalid-feedback"></div>
@@ -133,7 +133,7 @@
 
 						{foreach $language_list as $language}
 							<div class="input-group {if !$language@last}mb-2{/if}">
-								<span class="input-group-text">{$language.icon}</span>
+								{if $language_list|count > 1}<span class="input-group-text">{$language.icon}</span>{/if}
 								<input type="text" name="product_attribute[{$product_attribute_row}][lang][{$language.id}][text]" id="input_product_attribute_{$product_attribute_row}_lang_{$language.id}_text" class="form-control" value='{old("product_attribute[{$product_attribute_row}][lang][{$language.id}][text]", $attribute_data.lang[$language.id].text)}' >
 							</div>
 							<div id="error_product_attribute_{$product_attribute_row}_lang_{$language.id}_text" class="invalid-feedback"></div>
