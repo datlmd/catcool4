@@ -4,7 +4,7 @@ use App\Models\MyModel;
 
 class ProductSkuValueModel extends MyModel
 {
-    protected $table      = 'product_sku';
+    protected $table      = 'product_sku_value';
     protected $primaryKey = 'product_sku_id';
 
     protected $returnType = 'array';

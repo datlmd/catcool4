@@ -10,7 +10,7 @@
 
     <div id="product_variant_option_row_{$vf_variant_option_row}" data-row="{$vf_variant_option_row}" class="product-variant-option rounded bg-light p-3 mb-3">
         <div class="d-flex mb-2">
-            <div class="flex-grow-1 fs-4 text-primary">{lang('ProductAdmin.text_variant_group')} {$vf_variant_option_row}</div>
+            <div class="flex-grow-1 fs-6 text-primary">{lang('ProductAdmin.text_variant_group')} {$vf_variant_option_row}</div>
             <div class="text-end product-variant-close">
                 <button type="button" class="btn-close" aria-label="Close"></button>
             </div>

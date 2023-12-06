@@ -13,6 +13,9 @@
             <a class="list-group-item list-group-item-action p-1" href="#content_product_attributes">{lang('ProductAdmin.text_attribute_title')}</a>
             <a class="list-group-item list-group-item-action p-1" href="#content_product_data">{lang('ProductAdmin.text_sales_information')}</a>
             <a class="list-group-item list-group-item-action p-1" href="#content_product_shipping">{lang('ProductAdmin.text_shipping_title')}</a>
+            <a class="list-group-item list-group-item-action p-1" href="#content_product_other_title">{lang('ProductAdmin.text_other_title')}</a>
+            <a class="list-group-item list-group-item-action p-1" href="#content_product_option">{lang('Admin.tab_option')}</a>
+            <a class="list-group-item list-group-item-action p-1" href="#content_product_links">{lang('Admin.tab_links')}</a>
         </div>
     </div>
     <div class="container-fluid  dashboard-content">
@@ -80,14 +83,14 @@
                         </div>
                     </div>
 
-                    <div class="card" id="content_product_shipping">
+                    <div class="card" id="content_product_other_title">
                         <h5 class="card-header">{lang('ProductAdmin.text_other_title')}</h5>
                         <div class="card-body">
                             {include file=get_theme_path('views/modules/products/inc/tab_other.tpl')}
                         </div>
                     </div>
 
-                    <div class="card">
+                    <div class="card" id="content_product_option">
                         <h5 class="card-header">{lang('Admin.tab_option')}</h5>
 
                         <div class="card-body">
@@ -95,7 +98,7 @@
                         </div>
                     </div>
 
-                    <div class="card">
+                    <div class="card" id="content_product_links">
                         <h5 class="card-header">{lang('Admin.tab_links')}</h5>
                         <div class="card-body">
                             {include file=get_theme_path('views/modules/products/inc/tab_links.tpl')}
@@ -175,22 +178,22 @@
     <div id="html_product_variant_option_value_form_td" style="display: none">
         <table>
             <tr>
-                <td id="__option_info_row_id___price">
+                <td data-id="__option_info_row_id___price">
                     <div class="input-group">
                         <span class="input-group-text">{if !empty($currency.symbol_left)}{$currency.symbol_left}{elseif !empty($currency.symbol_right)}{$currency.symbol_right}{/if}</span>
-                        <input type="number" min="0" name="product_variant_combination[__option_info_row_id__][price]" value="0" id="input_product_variant_combination___option_info_row_id___price" class="form-control">
+                        <input type="text" name="product_variant_combination[__option_info_row_id__][price]" value="0" data-id="input_product_variant_combination___option_info_row_id___price" class="form-control">
                     </div>
-                    <div id="error_product_variant_combination___option_info_row_id___price" class="invalid-feedback"></div>
+                    <div data-id="error_product_variant_combination___option_info_row_id___price" class="invalid-feedback"></div>
                 </td>
-                <td id="__option_info_row_id___quantity">
-                    <input type="number" min="0" name="product_variant_combination[__option_info_row_id__][quantity]" value="0" id="input_product_variant_combination___option_info_row_id___quantity" class="form-control">
-                    <div id="error_product_variant_combination___option_info_row_id___quantity" class="invalid-feedback"></div>
+                <td data-id="__option_info_row_id___quantity">
+                    <input type="number" min="0" name="product_variant_combination[__option_info_row_id__][quantity]" value="0" data-id="input_product_variant_combination___option_info_row_id___quantity" class="form-control">
+                    <div data-id="error_product_variant_combination___option_info_row_id___quantity" class="invalid-feedback"></div>
                 </td>
-                <td id="__option_info_row_id___sku">
-                    <input type="text" name="product_variant_combination[__option_info_row_id__][sku]" value="" id="input_product_variant_combination___option_info_row_id___sku" class="form-control">
-                    <div id="error_product_variant_combination___option_info_row_id___sku" class="invalid-feedback"></div>
+                <td data-id="__option_info_row_id___sku">
+                    <input type="text" name="product_variant_combination[__option_info_row_id__][sku]" value="" data-id="input_product_variant_combination___option_info_row_id___sku" class="form-control">
+                    <div data-id="error_product_variant_combination___option_info_row_id___sku" class="invalid-feedback"></div>
                 </td>
-                <td id="__option_info_row_id___published">
+                <td data-id="__option_info_row_id___published">
                     <div class="switch-button switch-button-xs catcool-center">
                         {form_checkbox("product_variant_combination[__option_info_row_id__][published]", true, true, ['id' => "input_product_variant_combination___option_info_row_id___published"])}
                         <span><label for="input_product_variant_combination___option_info_row_id___published"></label></span>

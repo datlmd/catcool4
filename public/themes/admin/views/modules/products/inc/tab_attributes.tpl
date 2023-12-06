@@ -37,6 +37,68 @@
 		</div>
 	</div>
 
+	{if !empty(config_item('is_show_model')) || !empty(config_item('is_show_upc'))}
+		<div class="row border-bottom pb-3 mb-3">
+			{if !empty(config_item('is_show_model'))}
+				<label for="input_viewed" class="col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_model')}</label>
+				<div class="col-sm-4">
+					<input type="text" name="model" value="{old('model', $edit_data.model)}" id="input_model" class="form-control">
+					<div id="error_model" class="invalid-feedback"></div>
+				</div>
+			{/if}
+			{if !empty(config_item('is_show_upc'))}
+				<label for="input_sort_order" class="col-sm-2 col-form-label text-sm-end">{lang('Admin.text_upc')}</label>
+				<div class="col-sm-4">
+					<input type="text" name="upc" value="{old('upc', $edit_data.upc)}" id="input_upc" class="form-control">
+					<div class="form-text">{lang('ProductAdmin.help_upc')}</div>
+					<div id="error_upc" class="invalid-feedback"></div>
+				</div>
+			{/if}
+		</div>
+	{/if}
+
+	{if !empty(config_item('is_show_ean')) || !empty(config_item('is_show_jan'))}
+		<div class="row border-bottom pb-3 mb-3">
+			{if !empty(config_item('is_show_ean'))}
+				<label for="input_viewed" class="col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_ean')}</label>
+				<div class="col-sm-4">
+					<input type="text" name="ean" value="{old('ean', $edit_data.ean)}" id="input_ean" class="form-control">
+					<div class="form-text">{lang('ProductAdmin.help_ean')}</div>
+					<div id="error_ean" class="invalid-feedback"></div>
+				</div>
+			{/if}
+			{if !empty(config_item('is_show_jan'))}
+				<label for="input_sort_order" class="col-sm-2 col-form-label text-sm-end">{lang('Admin.text_jan')}</label>
+				<div class="col-sm-4">
+					<input type="text" name="jan" value="{old('jan', $edit_data.jan)}" id="input_jan" class="form-control">
+					<div class="form-text">{lang('ProductAdmin.help_jan')}</div>
+					<div id="error_jan" class="invalid-feedback"></div>
+				</div>
+			{/if}
+		</div>
+	{/if}
+
+	{if !empty(config_item('is_show_isbn')) || !empty(config_item('is_show_mpn'))}
+		<div class="row border-bottom pb-3 mb-3">
+			{if !empty(config_item('is_show_isbn'))}
+				<label for="input_viewed" class="col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_isbn')}</label>
+				<div class="col-sm-4">
+					<input type="text" name="isbn" value="{old('isbn', $edit_data.isbn)}" id="input_isbn" class="form-control">
+					<div class="form-text">{lang('ProductAdmin.help_isbn')}</div>
+					<div id="error_isbn" class="invalid-feedback"></div>
+				</div>
+			{/if}
+			{if !empty(config_item('is_show_mpn'))}
+				<label for="input_sort_order" class="col-sm-2 col-form-label text-sm-end">{lang('Admin.text_mpn')}</label>
+				<div class="col-sm-4">
+					<input type="text" name="mpn" value="{old('mpn', $edit_data.mpn)}" id="input_mpn" class="form-control">
+					<div class="form-text">{lang('ProductAdmin.help_mpn')}</div>
+					<div id="error_mpn" class="invalid-feedback"></div>
+				</div>
+			{/if}
+		</div>
+	{/if}
+
 	<div class="row border-bottom pb-3 mb-3">
 		<label for="input_viewed" class="col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_viewed')}</label>
 		<div class="col-sm-4">
