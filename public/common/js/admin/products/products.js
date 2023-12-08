@@ -4,6 +4,8 @@ var timeout_variant;
 $(function () {
     Tiny_content.loadTiny(500);
 
+    sortableVariantOption();
+
     // preventing page from redirecting
     $("html .drop-drap-file").on("dragover", function(e) {
         e.preventDefault();
@@ -211,12 +213,12 @@ $(document).on('click', '#product_add_variant', function() {
 
         sortableVariantOption();
 
-        showListOptionVariant();
+        showListVariantSku();
     }, 300);
 });
 
 $(document).on('click', '#product_variant_option .btn-variant-option-add', function() {
-    var product_variant_option_row = $('#product_variant_option_row').val();
+    var product_variant_option_row = $(this).data('variant-option-row');
     var product_variant_option_value_row = $('#product_variant_option_value_row').val();
 
     product_variant_option_value_row = parseInt(product_variant_option_value_row) + 1;
@@ -224,21 +226,25 @@ $(document).on('click', '#product_variant_option .btn-variant-option-add', funct
 
     var html = $('#html_product_variant_option_value_form').html().replaceAll('product_variant_option_row_value', product_variant_option_row).replaceAll('product_variant_option_value_row_value', product_variant_option_value_row);
 
-    $(this).parent().find('ul').append('<li class="list-group-item">' + html + '</li>');
+    $(this).parent().find('.d-flex.flex-wrap').append('<div class="variant-option-value-item pt-3">' + html + '</div>');
 
-    showListOptionVariant();
+    showListVariantSku();
 });
 
 function sortableVariantOption() {
 
     $('#product_variant_option .product-variant-option-list').each(function(i) {
-
-        Sortable.create($(this).find('ul')[0], {
+        Sortable.create($(this).find('.d-flex.flex-wrap')[0], {
             animation: 100,
-            onSort: function (evt) {
-                // same properties as onEnd
-                //alert(335);
+            onEnd: function (/**Event*/evt) {
+                var itemEl = evt.item;  // dragged HTMLElement
+                // console.log(evt.oldIndex);
+                // console.log(evt.newIndex);
+                showListVariantSku();
             },
+            // onSort: function (evt) {
+            //     // same properties as onEnd
+            // },
         });
     });
 }
@@ -284,28 +290,28 @@ $(document).on('click', '#product_variant_option #product_add_variant_option_gro
 
     clearTimeout(timeout_variant);
     timeout_iconpicker = setTimeout(function () {
-        showListOptionVariant();
+        showListVariantSku();
 
         sortableVariantOption();
 
         checkDisableListOption();
-    }, 300);
-
-});
-
-$(document).on('click mousemove', '#product_variant_option .product-variant-option-list ul li', function() {
-    clearTimeout(timeout_variant);
-    timeout_variant = setTimeout(function () {
-        showListOptionVariant();
     }, 500);
+
 });
 
-$(document).on('click', '#product_variant_option .product-variant-option-list li .variant-delete', function() {
+$(document).on('click mousemove', '#product_variant_option .product-variant-option-list .variant-option-value-item .variant-move', function() {
+    // clearTimeout(timeout_variant);
+    // timeout_variant = setTimeout(function () {
+    //     showListVariantSku();
+    // }, 500);
+});
+
+$(document).on('click', '#product_variant_option .product-variant-option-list .variant-option-value-item .variant-delete', function() {
     $(this).parent().parent().remove();
 
     clearTimeout(timeout_variant);
     timeout_variant = setTimeout(function () {
-        showListOptionVariant();
+        showListVariantSku();
     }, 500);
 });
 
@@ -324,7 +330,7 @@ $(document).on('click', '#product_variant_option .product-variant-option .btn-cl
 
     $(this).parent().parent().parent().remove();
 
-    showListOptionVariant();
+    showListVariantSku();
 });
 
 $(document).on('keyup', '#product_variant_option .variant-option-name.default', function() {
@@ -338,12 +344,12 @@ $(document).on('keyup', '#product_variant_option .variant-option-name.default', 
     clearTimeout(timeout_variant);
     timeout_iconpicker = setTimeout(function () {
         $('td[data-option-name="row_' + option_value.data('variant-option-value-row') + '_name"]').html(option_value.val());
-        //showListOptionVariant();
+        //showListVariantSku();
     }, 500);
 });
 
 $(document).on('change', '#product_variant_option select', function() {
-    //showListOptionVariant();
+    //showListVariantSku();
     var option_data = $(this);
     $('#td_' + option_data.attr('id')).html(option_data.find('option:selected').text());
 
@@ -372,7 +378,7 @@ function checkDisableListOption() {
     }
 }
 
-function showListOptionVariant() {
+function showListVariantSku() {
     if (is_product_processing) {
         return;
     }
@@ -485,7 +491,7 @@ function showListOptionVariant() {
                 variant_option_name_row_1 = 'row_' + $(option_1).data('variant-option-value-row') + '_name';
                 variant_option_name_row_2 = 'row_' + $(option_2).data('variant-option-value-row') + '_name';
 
-                html_option_tr += '<tr data-id="' + $(option_1).data('variant-option-value-row') + '" id="' + variant_option_info_row_id + '">';
+                html_option_tr += '<tr id="' + variant_option_info_row_id + '">';
                 if (index_option_2 === 0) {
                     html_option_tr += '<td data-option-name="' + variant_option_name_row_1 + '" class="variant-name" rowspan="' + total_option_value + '">' + $(option_1).val() + '</td>';
                 }

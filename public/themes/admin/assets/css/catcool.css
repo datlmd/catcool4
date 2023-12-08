@@ -793,6 +793,18 @@ a[data-bs-toggle="image"] {
     cursor: move;
 }
 
+.product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item {
+    width: 50%;
+}
+
+.product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(odd) {
+    padding-right: 15px !important;
+}
+
+.product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(even) {
+    padding-left: 15px !important;
+}
+
 /*** end product ***/
 
 /* Extra large devices (large desktops, 1200px and up)*/
@@ -828,6 +840,18 @@ a[data-bs-toggle="image"] {
     .nav-left-sidebar-content-scrolled { margin-left: 0; }
     .navbar-full-text { width: auto; }
     .navbar-full-text-content { margin-left: 0; }
+
+    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item {
+        width: 100% !important;
+    }
+
+    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(odd) {
+        padding-right: 0px !important;
+    }
+
+    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(even) {
+        padding-left: 0px !important;
+    }
 }
 
 /* Extra small devices (portrait phones, less than 576px)*/
@@ -838,9 +862,33 @@ a[data-bs-toggle="image"] {
     .navbar-full-text { width: auto; }
     .navbar-full-text-content { margin-left: 0; }
     .img-photo-list, .img-photo-list img { width: 100px; height: 100px; }
+
+    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item {
+        width: 100% !important;
+    }
+
+    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(odd) {
+        padding-right: 0px !important;
+    }
+
+    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(even) {
+        padding-left: 0px !important;
+    }
 }
 
 /* Extra small devices (portrait galaxyfold, less than 300px)*/
 @media (max-width: 300px) {
     .img-photo-list, .img-photo-list img { width: 70px; height: 70px; }
+
+    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item {
+        width: 100% !important;
+    }
+
+    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(odd) {
+        padding-right: 0px !important;
+    }
+
+    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(even) {
+        padding-left: 0px !important;
+    }
 }

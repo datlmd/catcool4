@@ -4,7 +4,9 @@
             margin-bottom: 0px !important;
         }
     </style>
+
     {form_hidden('manage_url', site_url($manage_url))}
+
     <div id="simple-list-example" class="text-end fixed-top mt-5 d-none d-lg-block" style="width: 160px; right: 3px; top: 60px; left: auto;">
         <button type="button" id="btn_search" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-target="#product_menu_list"><i class="fas fa-list"></i></button>
         <div class="list-group collapse show mt-1" id="product_menu_list">
@@ -181,7 +183,7 @@
                 <td data-id="__option_info_row_id___price">
                     <div class="input-group">
                         <span class="input-group-text">{if !empty($currency.symbol_left)}{$currency.symbol_left}{elseif !empty($currency.symbol_right)}{$currency.symbol_right}{/if}</span>
-                        <input type="text" name="product_variant_combination[__option_info_row_id__][price]" value="0" data-id="input_product_variant_combination___option_info_row_id___price" class="form-control">
+                        <input type="number" step="0.01" name="product_variant_combination[__option_info_row_id__][price]" value="0" data-id="input_product_variant_combination___option_info_row_id___price" class="form-control">
                     </div>
                     <div data-id="error_product_variant_combination___option_info_row_id___price" class="invalid-feedback"></div>
                 </td>
@@ -203,7 +205,7 @@
         </table>
     </div>
 
-    <input type="hidden" name="product_variant_option_row" id="product_variant_option_row" value="{$product_variant_option_row|default:0}">
+    <input type="hidden" name="product_variant_option_row" id="product_variant_option_row" value="{$edit_data.product_variant_option_list|count|default:0}">
     <input type="hidden" name="product_variant_option_value_row" id="product_variant_option_value_row" value="{$product_variant_option_value_row|default:0}">
     {* end template product variant *}
 

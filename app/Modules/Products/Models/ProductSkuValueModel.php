@@ -20,4 +20,18 @@ class ProductSkuValueModel extends MyModel
     {
         parent::__construct();
     }
+
+    public function getListByProductId($product_id)
+    {
+        if (empty($product_id)) {
+            return [];
+        }
+
+        $result = $this->where(['product_id' => $product_id])->findAll();
+        if (empty($result)) {
+            return [];
+        }
+
+        return $result;
+    }
 }

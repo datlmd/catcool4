@@ -2037,3 +2037,10 @@ if (!function_exists('back_to'))
         return $previous_url;
     }
 }
+
+if (!function_exists('create_variant_key')) {
+    function create_variant_key($product_id, $option_value_list, $product_sku_id = null)
+    {
+        return md5(sprintf('%s_%s_%s', $product_id, implode('_', $option_value_list), $product_sku_id));
+    }
+}

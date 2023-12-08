@@ -31,10 +31,14 @@ class ProductVariantOptionModel extends MyModel
             return [];
         }
 
+        $option_sort = array_column($result, 'sort_order');
+        array_multisort($option_sort, SORT_DESC, $result);
+
         $option_model       = new \App\Modules\Options\Models\OptionModel();
         $option_value_model = new \App\Modules\Options\Models\OptionValueModel();
 
         $option_list = $option_model->getListAll();
+
         foreach ($result as $key => $value) {
             if (empty($option_list[$value['option_id']])) {
                 unset($result[$key]);

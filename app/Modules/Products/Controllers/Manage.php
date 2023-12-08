@@ -20,6 +20,7 @@ class Manage extends AdminController
     const FOLDER_UPLOAD = 'products/';
 
     private $_variant_combination_name = 'variant_option_info_row_';
+    private $_variant_option_row_name = 'r%s';
 
     public function __construct()
     {
@@ -352,7 +353,11 @@ class Manage extends AdminController
             $product_variant_option_model->where(['product_id' => $product_id])->delete();
             $product_variant_option_value_model->where(['product_id' => $product_id])->delete();
 
+            //delete cache option value
+            $option_value_model->deleteCache();
+
             $sort_product_variant_option = count($this->request->getPost('product_variant_option'));
+            //cc_debug($this->request->getPost('product_variant_option'));
             foreach ($this->request->getPost('product_variant_option') as $variant_option) {
                 $data_product_variant_option = [
                     'option_id'  => $variant_option['option_id'],
@@ -424,7 +429,7 @@ class Manage extends AdminController
                 $product_sku_id = $product_sku_model->insert($data_product_sku);
 
                 //product sku value
-                $product_sku_value_model->where(['product_id' => $product_id])->delete();
+                $product_sku_value_model->where(['product_id' => $product_id, 'product_sku_id' => $product_sku_id])->delete();
                 $data_product_sku_value = [];
 
                 $combination_rows = str_ireplace($this->_variant_combination_name, '', $combination_key);
@@ -543,6 +548,14 @@ class Manage extends AdminController
             $product_option_model = new \App\Modules\Products\Models\ProductOptionModel();
             $data_form['product_option_list'] = $product_option_model->getListByProductId($product_id);
 
+            //product variant
+            $product_variant_option_model = new \App\Modules\Products\Models\ProductVariantOptionModel();
+            $product_sku_model            = new \App\Modules\Products\Models\ProductSkuModel();
+
+            $data_form['product_variant_option_list'] = $product_variant_option_model->getListVariantOptionByProductId($product_id);
+            $data_form['product_sku_list'] = $product_sku_model->getListSkuByProductId($product_id);
+            //cc_debug($data_form['product_sku_list']);
+
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('ProductAdmin.text_add');
@@ -575,6 +588,8 @@ class Manage extends AdminController
         $option_model = new \App\Modules\Options\Models\OptionModel();
         $data['option_list'] = $option_model->getListAll();
 
+        $data['variant_option_row_name'] = $this->_variant_option_row_name;
+
         $data['errors'] = $this->errors;
 
         $this->breadcrumb->add($data['text_form'], $breadcrumb_url);
@@ -604,8 +619,9 @@ class Manage extends AdminController
             $this->validator->setRule('weight', lang('ProductAdmin.text_weight'), 'required|numeric');
         }
 
-        if ($this->request->getPost('product_variant_option') && $this->request->getPost('product_variant_combination')) {
+        if ($this->request->getPost('product_variant_option')) {
             $product_variant_option_list = [];
+
             foreach ($this->request->getPost('product_variant_option') as $option_key => $variant_option) {
 
                 $this->validator->setRule(

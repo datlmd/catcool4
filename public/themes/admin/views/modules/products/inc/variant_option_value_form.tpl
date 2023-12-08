@@ -4,7 +4,9 @@
         {assign var="vof_variant_option_row" value="product_variant_option_row_value"}
     {/if}
 
-    {if empty($vof_variant_option_value_row)}
+    {if !empty($data_variant_option_value)}
+        {assign var="vof_variant_option_value_row" value=sprintf($variant_option_row_name, $data_variant_option_value.option_value_id)}
+    {else}
         {assign var="vof_variant_option_value_row" value="product_variant_option_value_row_value"}
     {/if}
 
