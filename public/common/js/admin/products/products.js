@@ -331,6 +331,8 @@ $(document).on('click', '#product_variant_option .product-variant-option .btn-cl
     $(this).parent().parent().parent().remove();
 
     showListVariantSku();
+
+    checkDisableListOption();
 });
 
 $(document).on('keyup', '#product_variant_option .variant-option-name.default', function() {
