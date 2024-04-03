@@ -6,10 +6,16 @@
                     <h5 class="modal-title" id="photoModalLabel">{lang('Image.text_crop_image')}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body px-3 py-4 text-center">
+                <div class="modal-body px-2 pt-3 pb-2 text-center">
                     <div id="custom-preview-wrapper"></div>
                     <div class="image-wrapper" id="image-cropper-wrapper">
                         <img id="image_cropper" src="{base_url()}/file/{$image_url}?{time()}" class="w-100" style="display: none;">
+                    </div>
+
+                    <div class="btn-group float-end mt-1" role="group">
+                        <button type="button" id="btn_form_crop_rotation_left" class="btn btn-sm btn-light"><i class="fas fa-undo"></i></button>
+                        <button type="button" id="btn_form_crop_rotation_hor" class="btn btn-sm btn-light"><i class="fas fa-arrows-alt-h"></i></button>
+                        <button type="button" id="btn_form_crop_rotation_vrt" class="btn btn-sm btn-light"><i class="fas fa-arrows-alt-v"></i></button>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
@@ -61,10 +67,17 @@
         setTimeout(function(){
             $('#image_cropper').show();
             $('#image_cropper').rcrop(options);
-        },400);
+
+            if ($("#filemanager").length) {
+                $("#modal_image_crop .btn-group").hide();
+            } else {
+                $("#modal_image_crop .btn-group").show();
+            }
+
+        }, 300);
     });
 
-    $(document).on("click", '#btn_submit_crop', function(event) {
+    $(document).on("click", '#modal_image_crop #btn_submit_crop', function(event) {
         if (is_processing) {
             return false;
         }
@@ -122,4 +135,152 @@
             $('body').addClass('modal-open');
         }
     });
+
+    $(document).on("click", '#modal_image_crop #btn_form_crop_rotation_left', function(e) {
+        if (is_processing) {
+            return false;
+        }
+        is_processing = true;
+        $.ajax({
+            url: base_url + 'common/filemanager/rotation/90',
+            type: 'POST',
+            data: {
+                'path': $("#image_crop_url").val()
+            },
+            dataType: 'json',
+            beforeSend: function() {
+                $('#modal_image_crop #btn_form_crop_rotation_left i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
+            },
+            complete: function() {
+                $('#modal_image_crop #btn_form_crop_rotation_left i').replaceWith('<i class="fas fa-undo"></i>');
+            },
+            success: function(json) {
+                is_processing = false;
+                is_disposing = false;
+                if (json['error']) {
+                    $.notify(json['error'], {
+                        'type':'danger'
+                    });
+                }
+                if (json['success']) {
+
+                    $("#modal_image_crop #image-cropper-wrapper img").attr("src", json['image']);
+
+                    if ($(".image-crop-target").length) {
+                        $(".image-crop-target a").attr("href", json['image']);
+                        $(".image-crop-target img").attr("src", json['image']);
+
+                        if ($(".image-crop-target img.img-backgroud").length) {
+                            $(".image-crop-target img").attr("style", 'background-image: url(' + json['image'] + ')');
+                        }
+                    }
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                is_processing = false;
+                is_disposing = false;
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    });
+
+    $(document).on("click", '#modal_image_crop #btn_form_crop_rotation_hor', function(e) {
+        if (is_processing) {
+            return false;
+        }
+        is_processing = true;
+        $.ajax({
+            url: base_url + '/common/filemanager/rotation/hor',
+            type: 'POST',
+            data: {
+                'path': $("#image_crop_url").val()
+            },
+            dataType: 'json',
+            beforeSend: function() {
+                $('#modal_image_crop #btn_form_crop_rotation_hor i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
+            },
+            complete: function() {
+                $('#modal_image_crop #btn_form_crop_rotation_hor i').replaceWith('<i class="fas fa-arrows-alt-h"></i>');
+            },
+            success: function(json) {
+                is_processing = false;
+                is_disposing = false;
+                if (json['error']) {
+                    $.notify(json['error'], {
+                        'type':'danger'
+                    });
+                }
+                if (json['success']) {
+                    $("#modal_image_crop #image-cropper-wrapper img").attr("src", json['image']);
+
+                    if ($(".image-crop-target").length) {
+                        $(".image-crop-target a").attr("href", json['image']);
+                        $(".image-crop-target img").attr("src", json['image']);
+
+                        if ($(".image-crop-target img.img-backgroud").length) {
+                            $(".image-crop-target img").attr("style", 'background-image: url(' + json['image'] + ')');
+                        }
+                    }
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                is_processing = false;
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                is_disposing = false;
+            }
+        });
+    });
+
+    $(document).on("click", '#modal_image_crop #btn_form_crop_rotation_vrt', function(e) {
+        if (is_processing) {
+            return false;
+        }
+        is_processing = true;
+        $.ajax({
+            url: base_url + '/common/filemanager/rotation/vrt',
+            type: 'POST',
+            data: {
+                'path': $("#image_crop_url").val()
+            },
+            dataType: 'json',
+            beforeSend: function() {
+                $('#modal_image_crop #btn_form_crop_rotation_vrt i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
+            },
+            complete: function() {
+                $('#modal_image_crop #btn_form_crop_rotation_vrt i').replaceWith('<i class="fas fa-arrows-alt-v"></i>');
+            },
+            success: function(json) {
+                is_processing = false;
+                is_disposing = false;
+                if (json['error']) {
+                    $.notify(json['error'], {
+                        'type':'danger'
+                    });
+                }
+                if (json['success']) {
+                    $("#modal_image_crop #image-cropper-wrapper img").attr("src", json['image']);
+
+                    if ($(".image-crop-target").length) {
+                        $(".image-crop-target a").attr("href", json['image']);
+                        $(".image-crop-target img").attr("src", json['image']);
+
+                        if ($(".image-crop-target img.img-backgroud").length) {
+                            $(".image-crop-target img").attr("style", 'background-image: url(' + json['image'] + ')');
+                        }
+                    }
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                is_processing = false;
+                is_disposing = false;
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    });
+
+    $(document).on('click', '#btn_image_crop', function(e) {
+        $('.image-setting').popover('dispose');
+        is_disposing = false;
+    });
+
 </script>

@@ -223,6 +223,10 @@
     var is_processing = false;
     var is_disposing = false;
 
+    $(document).on('click', '#filemanager .modal-header .btn-close', function (e) {
+        $("#filemanager").remove();
+    });
+
     if ($('input[name=\'file_target\']').length) {
         $('a.thumbnail').on('click', function (e) {
             e.preventDefault();
@@ -826,7 +830,6 @@
         $(document).on("click", ".video-play", function (e) {
             $($(this).data("bs-target")).find('video').get(0).play();
         });
-
         $("html").on("dragover", function (e) {
             e.preventDefault();
             e.stopPropagation();

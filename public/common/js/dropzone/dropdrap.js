@@ -1,37 +1,33 @@
 var is_uploading = false;
 $(function() {
     // preventing page from redirecting
-    $("html").on("dragover", function(e) {
+    $("html .drop-drap-file").on("dragover", function(e) {
         e.preventDefault();
         e.stopPropagation();
-        $('.upload-area h5').removeClass('upload-drop');
-        console.log(1);
+        $(this).find('.upload-area h5').removeClass('upload-drop');
     });
 
-    $("html").on("drop", function(e) {
+    $("html .drop-drap-file").on("drop", function(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log(2);
     });
 
     // Drag enter .upload-area
-    $('body').on('dragenter', function (e) {
+    $('body .drop-drap-file').on('dragenter', function (e) {
         e.stopPropagation();
         e.preventDefault();
-        $('.upload-area h5').removeClass('upload-drop');
-        console.log(3);
+        $(this).find('.upload-area h5').removeClass('upload-drop');
     });
 
     // Drag over class .upload-area
-    $('body').on('dragover', function (e) {
+    $('body .drop-drap-file').on('dragover', function (e) {
         e.stopPropagation();
         e.preventDefault();
-        $('.upload-area h5').addClass('upload-drop');
-        console.log(4);
+        $(this).find('.upload-area h5').addClass('upload-drop');
     });
 
     // Drop
-    $('body').on('drop', function (e) {
+    $('body .drop-drap-file').on('drop', function (e) {
         e.stopPropagation();
         e.preventDefault();
 
@@ -41,43 +37,48 @@ $(function() {
 
         fd.append('file', file[0]);
 
-        uploadData(fd);
+        uploadData(fd, this);
     });
+});
 
-    // Open file selector on div click
-    $(document).on('click', ".drop-drap-file .upload-area", function(obj) {
-        $("#file").click();
-    });
+// Open file selector on div click
+$(document).on('click', ".drop-drap-file .upload-area", function(obj) {
+    $(".file-input").click();
+});
 
-    // file selected
-    $(document).on('change', ".drop-drap-file #file", function(obj) {
-        var fd = new FormData();
+// file selected
+$(document).on('change', ".drop-drap-file .file-input", function(obj) {
+    var fd = new FormData();
 
-        var files = $('#file')[0].files[0];
+    var files = $('.drop-drap-file').find(".file-input")[0].files[0];
 
-        fd.append('file',files);
+    fd.append('file', files);
 
-        uploadData(fd);
-    });
+    uploadData(fd, $(this).parent());
+});
 
+$(document).on('click', ".drop-drap-file .btn-group .button-image-delete", function(e) {
+    $(this).parent().parent().parent().find(".drop-drap-image-content").hide();
+    $(this).parent().parent().parent().find(".upload-area").show();
 });
 
 // Sending AJAX request and upload file
-function uploadData(formdata) {
+function uploadData(formdata, obj) {
     if (is_uploading) {
         return false;
     }
-    var module_name = $('.drop-drap-file').attr("data-module");
+    //var module_name = $('.drop-drap-file').attr("data-module");
+    var module_name = $(obj).attr("data-module");
     if (!module_name.length) {
         return false;
     }
 
-    formdata.append('module',module_name);
+    formdata.append('module', module_name);
 
     var progress = '<div class="progress">';
     progress += '<div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width: 0%"></div>';
     progress += '</div>';
-    $('.drop-drap-file').append(progress);
+    $(obj).append(progress);
 
     $('.loading').fadeIn();
 
@@ -86,6 +87,9 @@ function uploadData(formdata) {
     }
 
     timer = setInterval(function() {
+
+        $('.image-error').fadeOut();
+
         clearInterval(timer);
 
         is_uploading = true;
@@ -114,22 +118,29 @@ function uploadData(formdata) {
             success: function(data){
                 is_uploading = false;
                 $('.loading').fadeOut();
-                $('.drop-drap-file .progress').remove().fadeOut();
-                $('.upload-area h5').removeClass('upload-drop');
+                $(obj).find('.progress').remove().fadeOut();
+                $(obj).find('.upload-area h5').removeClass('upload-drop');
 
                 var response = JSON.stringify(data);
                 response     = JSON.parse(response);
                 if (response.status == 'ng') {
                     $.notify(response.msg, {'type':'danger'});
+
+                    if ($('.image-error').length) {
+                        $('.image-error').html(response.msg);
+                        $('.image-error').fadeIn();
+                    }
+
                     return false;
                 }
-                addThumbnail(response);
+                addThumbnail(response, obj);
             },
             error: function (xhr, errorType, error) {
                 is_uploading = false;
                 $('.loading').fadeOut();
+                $('.image-error').fadeOut();
                 $('.drop-drap-file .progress').remove().fadeOut();
-                $('.upload-area h5').removeClass('upload-drop');
+                $('.drop-drap-file .upload-area h5').removeClass('upload-drop');
             }
         });
     }, 500);
@@ -176,10 +187,10 @@ function delete_file(obj) {
 }
 
 // Added thumbnail
-function addThumbnail(data) {
-    var image_id = $(".drop-drap-file").attr("data-image-id");
-    var input_name = $(".drop-drap-file").attr("data-input-name");
-    var image_class = $(".drop-drap-file").attr("data-image-class");
+function addThumbnail(data, obj) {
+    var input_lightbox = $(obj).data("lightbox");
+    var input_name = $(obj).attr("data-input-name");
+    var image_class = $(obj).attr("data-image-class");
 
     if (!image_class.length) {
         image_class = 'img-fluid';
@@ -189,15 +200,18 @@ function addThumbnail(data) {
     var size = convertSize(data.file_size);
     var src = image_url + '/' + data.image_url;
 
-    var image_html = '<a href="' + src + '" data-lightbox="photos"><img src="' + src + '" style="background-image: url(' + src + ');" class="' + image_class + '"></a>';
+    var image_html = '<a href="' + src + '" data-lightbox="' + input_lightbox + '"><img src="' + src + '" style="background-image: url(' + src + ');" class="' + image_class + '"></a>';
     image_html += '<input type="hidden" name="' + input_name + '" value="' + data.image_url + '">';
 
-    if ($("#button-image-crop").length) {
-        $("#button-image-crop").attr("onclick", "Catcool.cropImage('" + data.image_url  + "', 1, this);");
-        $("#button-image-crop").show();
+    if ($(obj).find(".button-image-crop").length) {
+        $(obj).find(".button-image-crop").attr("onclick", "Catcool.cropImage('" + data.image_url  + "', 1, this);");
+        $(obj).find(".button-image-crop").show();
     }
 
-    $(".drop-drap-file #" + image_id).html(image_html);
+    $(obj).find(".drop-drap-image").html(image_html);
+
+    $(obj).find(".drop-drap-image-content").show();
+    $(obj).find(".upload-area").hide();
 }
 
 // Bytes conversion
