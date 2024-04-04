@@ -322,9 +322,10 @@ class Manage extends AdminController
                 $image_tool->thumbFit($avatar, $avatar_name, $width, $height);
 
                 $avatar = $avatar_name;
-            } else {
-                $avatar = $this->request->getPost('avatar_root');
             }
+//            else {
+//                $avatar = $this->request->getPost('avatar_root');
+//            }
 
             $edit_data = [
                 'email'      => strtolower($this->request->getPost('email')),

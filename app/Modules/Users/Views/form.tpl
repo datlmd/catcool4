@@ -177,25 +177,33 @@
                             <div class="form-group">
                                 {lang('UserAdmin.text_avatar')}
                                 <!-- Drag and Drop container-->
-                                <div class="drop-drap-file" data-module="users" data-image-id="image_avatar_thumb" data-input-name="avatar" data-image-class="rounded-circle shadow-sm img-backgroud img-w-200 img-h-200">
-                                    <div id="image_avatar_thumb" class="image-crop-target text-center">
-                                        {if !empty(old('avatar'))}
-                                            <a href="{image_url(old('avatar'))}" data-lightbox="users"><img src="{image_url(old('avatar'))}" style="background-image: url('{image_url(old('avatar'))}');" class="rounded-circle shadow-sm img-backgroud img-w-200 img-h-200"></a>
-                                            <input type="hidden" name="avatar" value="{old('avatar')}">
-                                        {elseif !empty($edit_data.image)}
-                                            <a href="{image_url($edit_data.image)}" data-lightbox="users"><img src="{image_url($edit_data.image)}" style="background-image: url('{image_url($edit_data.image)}');" class="rounded-circle shadow-sm img-backgroud img-w-200 img-h-200"></a>
-                                        {/if}
-                                        {if isset($edit_data.image)}
-                                            <input type="hidden" name="avatar_root" value="{$edit_data.image}">
-                                        {/if}
+                                <div class="drop-drap-file" data-module="users" data-lightbox="users" data-input-name="avatar" data-image-class="rounded-circle shadow-sm img-backgroud img-w-200 img-h-200">
+                                    <div class="text-center drop-drap-image-content" {if !isset($edit_data.image)}style="display: none"{/if}>
+                                        <div class="drop-drap-image">
+                                            {if !empty(old('avatar'))}
+                                                <a href="{image_url(old('avatar'))}" data-lightbox="users"><img src="{image_url(old('avatar'))}" style="background-image: url('{image_url(old('avatar'))}');" class="rounded-circle shadow-sm img-backgroud img-w-200 img-h-200"></a>
+                                                <input type="hidden" name="avatar" value="{old('avatar')}">
+                                            {elseif !empty($edit_data.image)}
+                                                <a href="{image_url($edit_data.image)}" data-lightbox="users"><img src="{image_url($edit_data.image)}" style="background-image: url('{image_url($edit_data.image)}');" class="rounded-circle shadow-sm img-backgroud img-w-200 img-h-200"></a>
+                                            {/if}
+                                            {if isset($edit_data.image)}
+                                                <input type="hidden" name="avatar_root" value="{$edit_data.image}">
+                                            {/if}
+                                        </div>
+
+                                        <div class="btn-group w-50 mt-2" role="group">
+                                            <button type="button" class="btn btn-xs btn-light button-image-crop" title="{lang('Admin.text_photo_crop')}" {if !empty(old('avatar'))}onclick="Catcool.cropImage('{old('avatar')}', 1, this);"{elseif !empty($edit_data.image)}onclick="Catcool.cropImage('{$edit_data.image}', 1, this);"{else}style="display: none;"{/if}>
+                                                <i class="fas fa-crop"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-xs btn-light button-image-delete"><i class="fas fa-trash"></i></button>
+                                        </div>
                                     </div>
-                                    <input type="file" name="file" id="file" size="20" />
-                                    <button type="button" id="button-image-crop" class="btn btn-xs btn-primary w-100 mt-2" {if !empty(old('avatar'))}onclick="Catcool.cropImage('{old('avatar')}', 1, this);"{elseif !empty($edit_data.image)}onclick="Catcool.cropImage('{$edit_data.image}', 1, this);"{else}style="display: none;"{/if}>
-                                        <i class="fas fa-crop me-1"></i>{lang('Admin.text_photo_crop')}
-                                    </button>
-                                    <div class="upload-area dropzone dz-clickable " id="uploadfile">
-                                        <h5 class="dz-message py-3"><i class="fas fa-plus me-1"></i><i class="fas fa-image"></i></h5>
+
+                                    <input type="file" name="file_input" class="file-input" style="display: none;" />
+                                    <div class="upload-area dropzone dz-clickable" {if isset($edit_data.image)}style="display: none"{/if}>
+                                        <h5 class="dz-message py-5"><i class="fas fa-plus me-1"></i><i class="fas fa-image"></i></h5>
                                     </div>
+                                    <div class="text-danger image-error"></div>
                                 </div>
                             </div>
                             <div class="form-group">
