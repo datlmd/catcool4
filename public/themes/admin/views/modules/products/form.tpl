@@ -173,6 +173,9 @@
     <div id="html_product_variant_option_value_form" style="display: none">
         {include file=get_theme_path('views/modules/products/inc/variant_option_value_form.tpl')}
     </div>
+    <div id="html_product_variant_option_value_form_image" style="display: none">
+        {include file=get_theme_path('views/modules/products/inc/variant_option_value_form.tpl') variant_option_index=0}
+    </div>
     <div id="html_product_variant_option_form" style="display: none">
         {include file=get_theme_path('views/modules/products/inc/variant_option_form.tpl')}
     </div>
@@ -205,8 +208,6 @@
         </table>
     </div>
 
-    <input type="hidden" name="product_variant_option_row" id="product_variant_option_row" value="{$edit_data.product_variant_option_list|count|default:0}">
-    <input type="hidden" name="product_variant_option_value_row" id="product_variant_option_value_row" value="{$product_variant_option_value_row|default:0}">
     {* end template product variant *}
 
 {/strip}

@@ -785,7 +785,7 @@ a[data-bs-toggle="image"] {
 
 }
 
-.product-variant-content .product-variant-option-list .variant-delete {
+.product-variant-content .product-variant-option-list .variant-delete i {
     cursor: pointer;
 }
 
@@ -803,6 +803,14 @@ a[data-bs-toggle="image"] {
 
 .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(even) {
     padding-left: 15px !important;
+}
+
+.product-variant-content .product-variant-option-list .product-variant-option-item .drop-drap-image {
+    max-width: 60px !important;
+}
+
+.product-variant-content .product-variant-option-list .product-variant-option-item .drop-drap-file .upload-area {
+    margin: 0 !important;
 }
 
 /*** end product ***/

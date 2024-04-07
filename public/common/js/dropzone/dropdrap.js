@@ -1,33 +1,33 @@
 var is_uploading = false;
 $(function() {
     // preventing page from redirecting
-    $("html .drop-drap-file").on("dragover", function(e) {
+    $(document).on('dragover', ".drop-drap-file", function(e) {
         e.preventDefault();
         e.stopPropagation();
         $(this).find('.upload-area h5').removeClass('upload-drop');
     });
 
-    $("html .drop-drap-file").on("drop", function(e) {
+    $(document).on('drop', ".drop-drap-file", function(e) {
         e.preventDefault();
         e.stopPropagation();
     });
 
     // Drag enter .upload-area
-    $('body .drop-drap-file').on('dragenter', function (e) {
+    $(document).on('dragenter', ".drop-drap-file", function(e) {
         e.stopPropagation();
         e.preventDefault();
         $(this).find('.upload-area h5').removeClass('upload-drop');
     });
 
     // Drag over class .upload-area
-    $('body .drop-drap-file').on('dragover', function (e) {
+    $(document).on('dragover', ".drop-drap-file", function(e) {
         e.stopPropagation();
         e.preventDefault();
         $(this).find('.upload-area h5').addClass('upload-drop');
     });
 
     // Drop
-    $('body .drop-drap-file').on('drop', function (e) {
+    $(document).on('drop', ".drop-drap-file", function(e) {
         e.stopPropagation();
         e.preventDefault();
 
@@ -39,27 +39,27 @@ $(function() {
 
         uploadData(fd, this);
     });
-});
 
-// Open file selector on div click
-$(document).on('click', ".drop-drap-file .upload-area", function(obj) {
-    $(".file-input").click();
-});
+    // Open file selector on div click
+    $(document).on('click', ".drop-drap-file .upload-area", function(e) {
+        $(this).parent().find(".file-input").click();
+    });
 
-// file selected
-$(document).on('change', ".drop-drap-file .file-input", function(obj) {
-    var fd = new FormData();
+    // file selected
+    $(document).on('change', ".drop-drap-file .file-input", function(e) {
+        var fd = new FormData();
 
-    var files = $('.drop-drap-file').find(".file-input")[0].files[0];
+        var files = $('.drop-drap-file').find(".file-input")[0].files[0];
 
-    fd.append('file', files);
+        fd.append('file', files);
 
-    uploadData(fd, $(this).parent());
-});
+        uploadData(fd, $(this).parent());
+    });
 
-$(document).on('click', ".drop-drap-file .btn-group .button-image-delete", function(e) {
-    $(this).parent().parent().parent().find(".drop-drap-image-content").hide();
-    $(this).parent().parent().parent().find(".upload-area").show();
+    $(document).on('click', ".drop-drap-file .btn-group .button-image-delete", function(e) {
+        $(this).parent().parent().parent().find(".drop-drap-image-content").hide();
+        $(this).parent().parent().parent().find(".upload-area").show();
+    });
 });
 
 // Sending AJAX request and upload file
@@ -200,7 +200,11 @@ function addThumbnail(data, obj) {
     var size = convertSize(data.file_size);
     var src = image_url + '/' + data.image_url;
 
-    var image_html = '<a href="' + src + '" data-lightbox="' + input_lightbox + '"><img src="' + src + '" style="background-image: url(' + src + ');" class="' + image_class + '"></a>';
+    var image_html = '<a href="' + src + '" data-lightbox="' + input_lightbox + '"><img src="' + src + '"';
+    // if (image_class.search('img-backgroud')) {
+    //     image_html += ' style="background-image: url(' + src + ');"';
+    // }
+    image_html += ' class="' + image_class + '"></a>';
     image_html += '<input type="hidden" name="' + input_name + '" value="' + data.image_url + '">';
 
     if ($(obj).find(".button-image-crop").length) {
@@ -209,6 +213,9 @@ function addThumbnail(data, obj) {
     }
 
     $(obj).find(".drop-drap-image").html(image_html);
+    if ($(obj).find(".img-backgroud").length) {
+        $(obj).find(".img-backgroud").css('background-image', 'url(' + src + ')');
+    }
 
     $(obj).find(".drop-drap-image-content").show();
     $(obj).find(".upload-area").hide();

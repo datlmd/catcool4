@@ -23,8 +23,8 @@
 							<img src="" class="img-backgroud" style="background-image: url('{image_thumb_url($value_image.image)}')" alt="" title="" id="product_image_{$product_image_row}_load_image_url" />
 						</a>
 						<div class="btn-group w-100 mt-1" role="group">
-							<button type="button" id="button-image-crop" class="btn btn-xs btn-light" onclick="Catcool.cropImage('{$value_image.image}', 1, this);"><i class="fas fa-crop"></i></button>
-							<button type="button" id="button-image-delete" onclick="$(this).parent().parent().remove();" class="btn btn-xs btn-light"><i class="fas fa-trash"></i></button>
+							<button type="button" id="product_image_{$product_image_row}_image_crop" class="btn btn-xs btn-light" onclick="Catcool.cropImage('{$value_image.image}', 1, this);"><i class="fas fa-crop"></i></button>
+							<button type="button" id="product_image_{$product_image_row}_image_delete" onclick="$(this).parent().parent().remove();" class="btn btn-xs btn-light"><i class="fas fa-trash"></i></button>
 						</div>
 					{/if}
 
@@ -40,15 +40,15 @@
 		<button type="button" onclick="addProductImage();" data-bs-toggle="tooltip" title="{lang('ProductAdmin.text_image_add')}" class="btn btn-xs btn-primary"><i class="fas fa-plus me-1"></i>{lang("Image.select_file_manager")}</button>
 	</div>
 
-	<div class="drop-drap-file" data-is-multi="multiple" data-module="products" data-image-id="image_image_thumb" data-input-name="image" data-image-class="rounded-circle shadow-sm img-backgroud img-w-200 img-h-200">
-		<input type="file" name="file" id="file" multiple accept="audio/*,video/*,image/*" /> {*multiple*}
-		<div class="upload-area dropzone dz-clickable " id="uploadfile">
+	<div class="drop-drap-image-list" data-is-multi="multiple" data-module="products" data-image-id="image_image_thumb" data-input-name="image">
+		<input type="file" name="file_list" id="file_list" class="file-input" multiple accept="audio/*,video/*,image/*" style="display: none"/> {*multiple*}
+		<div class="upload-area dropzone dz-clickable " id="upload_file_list">
 			<h5 class="dz-message py-3">
 				<i class="fas fa-plus me-1 text-success"></i><i class="fas fa-image text-success"></i><br/>
 				<small>{lang("Admin.text_upload_drop_drap")}</small>
 			</h5>
 		</div>
+		<div id="image_error" class="text-danger"></div>
 	</div>
-	<div id="image_error" class="text-danger"></div>
 
 {/strip}

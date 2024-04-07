@@ -201,9 +201,13 @@
 
                                     <input type="file" name="file_input" class="file-input" style="display: none;" />
                                     <div class="upload-area dropzone dz-clickable" {if isset($edit_data.image)}style="display: none"{/if}>
-                                        <h5 class="dz-message py-5"><i class="fas fa-plus me-1"></i><i class="fas fa-image"></i></h5>
+                                        <h5 class="dz-message py-5">
+                                            <i class="fas fa-plus text-success me-1"></i>
+                                            <i class="fas fa-image text-success"></i>
+                                            <br/><small>{lang("Admin.text_upload_drop_drap")}</small>
+                                        </h5>
                                     </div>
-                                    <div class="text-danger image-error"></div>
+                                    <div class="text-danger image-error mt-2"></div>
                                 </div>
                             </div>
                             <div class="form-group">

@@ -495,6 +495,7 @@ class Manage extends AdminController
         $this->themes->addJS('common/plugin/shortable-nestable/Sortable.min');
 
         $this->themes->addCSS('common/js/dropzone/dropdrap');
+        $this->themes->addJS('common/js/dropzone/dropdrap');
 
         $data['language_list'] = get_list_lang(true);
 

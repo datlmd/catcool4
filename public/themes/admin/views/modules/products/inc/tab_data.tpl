@@ -2,45 +2,50 @@
 
 	{form_hidden('tab_type', 'tab_data')}
 
-	{if empty($edit_data.product_variant_option_list)}
-		<div class="form-group row not-variant">
-			<div class="col-12 col-sm-2 col-form-label text-sm-end required-label">{lang('ProductAdmin.text_price')}</div>
-			<div class="col-12 col-sm-10 col-lg-10">
-				<div class="input-group">
-					<span class="input-group-text">{if !empty($currency.symbol_left)}{$currency.symbol_left}{elseif !empty($currency.symbol_right)}{$currency.symbol_right}{/if}</span>
-					<input type="number" step="0.01" name="price" value="{old('price', $edit_data.price)}" id="input_price" class="form-control">
-				</div>
-				<div id="error_price" class="invalid-feedback"></div>
+	<input type="hidden" name="is_variant" id="is_variant" value="{if !empty($edit_data.product_variant_option_list)}1{else}0{/if}">
+
+	{* not-variant *}
+	<div class="form-group row not-variant" {if !empty($edit_data.product_variant_option_list)}style="display: none;"{/if}>
+		<div class="col-12 col-sm-2 col-form-label text-sm-end required-label">{lang('ProductAdmin.text_price')}</div>
+		<div class="col-12 col-sm-10 col-lg-10">
+			<div class="input-group">
+				<span class="input-group-text">{if !empty($currency.symbol_left)}{$currency.symbol_left}{elseif !empty($currency.symbol_right)}{$currency.symbol_right}{/if}</span>
+				<input type="number" step="0.01" name="price" value="{old('price', $edit_data.price)}" id="input_price" class="form-control">
 			</div>
+			<div id="error_price" class="invalid-feedback"></div>
 		</div>
-
-		<div class="form-group row not-variant">
-			<div class="col-12 col-sm-2 col-form-label text-sm-end required-label">{lang('ProductAdmin.text_quantity')}</div>
-			<div class="col-12 col-sm-10 col-lg-10">
-				<input type="number" name="quantity" value="{old('quantity', $edit_data.quantity)}" id="input_quantity" min="0" class="form-control">
-				<div id="error_quantity" class="invalid-feedback"></div>
-			</div>
+	</div>
+	{* not-variant *}
+	<div class="form-group row not-variant" {if !empty($edit_data.product_variant_option_list)}style="display: none;"{/if}>
+		<div class="col-12 col-sm-2 col-form-label text-sm-end required-label">{lang('ProductAdmin.text_quantity')}</div>
+		<div class="col-12 col-sm-10 col-lg-10">
+			<input type="number" name="quantity" value="{old('quantity', $edit_data.quantity)}" id="input_quantity" min="0" class="form-control">
+			<div id="error_quantity" class="invalid-feedback"></div>
 		</div>
-
-		{if !empty(config_item('is_show_sku'))}
-			<div class="form-group row not-variant">
-				<div class="col-12 col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_sku')}</div>
-				<div class="col-12 col-sm-10 col-lg-10">
-					<input type="text" name="sku" value="{old('sku', $edit_data.sku)}" id="input_sku" class="form-control">
-					<div class="form-text">{lang('ProductAdmin.help_sku')}</div>
-					<div id="error_sku" class="invalid-feedback"></div>
-				</div>
-			</div>
-		{/if}
-
-		<div class="form-group row not-variant">
-			<div class="col-12 col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_product_classification')}</div>
+	</div>
+	{* not-variant *}
+	{if !empty(config_item('is_show_sku'))}
+		<div class="form-group row not-variant" {if !empty($edit_data.product_variant_option_list)}style="display: none;"{/if}>
+			<div class="col-12 col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_sku')}</div>
 			<div class="col-12 col-sm-10 col-lg-10">
-				<div id="product_add_variant" class="btn btn-sm btn-warning">{lang('ProductAdmin.text_add_variant')}</div>
-				<div class="form-text">{lang('ProductAdmin.help_variant')}</div>
+				<input type="text" name="sku" value="{old('sku', $edit_data.sku)}" id="input_sku" class="form-control">
+				<div class="form-text">{lang('ProductAdmin.help_sku')}</div>
+				<div id="error_sku" class="invalid-feedback"></div>
 			</div>
 		</div>
 	{/if}
+	{* not-variant *}
+	<div class="form-group row not-variant" {if !empty($edit_data.product_variant_option_list)}style="display: none;"{/if}>
+		<div class="col-12 col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_product_classification')}</div>
+		<div class="col-12 col-sm-10 col-lg-10">
+			<div id="product_add_variant" class="btn btn-sm btn-warning">{lang('ProductAdmin.text_add_variant')}</div>
+			<div class="form-text">{lang('ProductAdmin.help_variant')}</div>
+		</div>
+	</div>
+
+
+
+	{* ----- Variant ----- *}
 
 	{$product_variant_option_row = 0}
 	{$product_variant_option_value_row = 0}
@@ -53,9 +58,11 @@
 			<div class="product-variant-option-group">
 				{if !empty($edit_data.product_variant_option_list)}
 					{foreach $edit_data.product_variant_option_list as $variant_option}
+						{$product_variant_option_value_row = $product_variant_option_value_row + count($variant_option.option_value_list)}
 						{include file=get_theme_path('views/modules/products/inc/variant_option_form.tpl')
 							vf_variant_option_row=$variant_option.option_id
 							data_variant_option=$variant_option
+							variant_option_index = $variant_option@index
 						}
 					{/foreach}
 				{/if}
@@ -78,7 +85,7 @@
 							>
 								{if !empty($edit_data.product_variant_option_list)}
 									{foreach $edit_data.product_variant_option_list as $variant_option}
-										<td id="td_input_product_variant_option_{$variant_option.product_id}_{$variant_option.option_id}_option_id" class="variant-name">
+										<td id="td_input_product_variant_option_{sprintf($variant_option_row_name, $variant_option.option_id)}_option_id" class="variant-name">
 											{$variant_option.name}
 										</td>
 									{/foreach}
@@ -95,7 +102,7 @@
 									{foreach $variant_option_1.option_value_list as $variant_option_value_1}
 										{if $edit_data.product_variant_option_list|count eq 3}
 
-										{elseif $edit_data.product_variant_option_list|count eq 2}
+										{elseif $edit_data.product_variant_option_list|count == 2}
 											{foreach $edit_data.product_variant_option_list as $variant_option_2}
 												{if $variant_option_1.option_id eq $variant_option_2.option_id}
 													{continue}
@@ -111,11 +118,11 @@
 													<tr id="{$variant_option_info_row_id}">
 
 														{if $variant_option_value_2@index eq 0}
-															<td data-option-name="{$variant_option_name_row_1}" rowspan="{$variant_option_2.option_value_list|count}" class="variant-name">
+															<td data-option-name="{$variant_option_name_row_1}" rowspan="{$variant_option_2.option_value_list|count}" class="variant-name text-center">
 																{$variant_option_value_1.name}
 															</td>
 														{/if}
-														<td data-option-name="{$variant_option_name_row_2}" class="variant-name">
+														<td data-option-name="{$variant_option_name_row_2}" class="variant-name text-center">
 															{$variant_option_value_2.name}
 														</td>
 														<td id="{$variant_option_info_row_id}_price">
@@ -151,7 +158,7 @@
 
 											<tr id="{$variant_option_info_row_id}">
 
-												<td data-option-name="{$variant_option_name_row}" class="variant-name">
+												<td data-option-name="{$variant_option_name_row}" class="variant-name text-center">
 													{$variant_option_value_1.name}
 												</td>
 
@@ -192,6 +199,9 @@
 				</div>
 			</div>
 		</div>
+
+		<input type="hidden" name="product_variant_option_row" id="product_variant_option_row" value="{$edit_data.product_variant_option_list|count|default:0}">
+		<input type="hidden" name="product_variant_option_value_row" id="product_variant_option_value_row" value="{$product_variant_option_value_row|default:0}">
 
 	</div>
 
