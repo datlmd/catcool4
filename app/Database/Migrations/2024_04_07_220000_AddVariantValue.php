@@ -3,22 +3,22 @@
 use CodeIgniter\Database\Migration;
 
 /**
- * Class AddVariantOptionValue
- * php spark migrate:file "app/Database/Migrations/2024_04_07_220000_AddVariantOptionValue.php"
+ * Class AddVariantValue
+ * php spark migrate:file "app/Database/Migrations/2024_04_07_220000_AddVariantValue.php"
  * @package App\Database\Migrations
  */
-class AddVariantOptionValue extends Migration
+class AddVariantValue extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'variant_option_value_id' => [
+            'variant_value_id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'variant_option_id' => [
+            'variant_id' => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'unsigned'   => true,
@@ -32,11 +32,11 @@ class AddVariantOptionValue extends Migration
                 'constraint' => 3,
             ],
         ]);
-        $this->forge->addKey('variant_option_value_id', true);
-        $this->forge->createTable('variant_option_value');
+        $this->forge->addKey('variant_value_id', true);
+        $this->forge->createTable('variant_value');
 
         $this->forge->addField([
-            'variant_option_value_id' => [
+            'variant_value_id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
                 'unsigned'       => true,
@@ -45,7 +45,7 @@ class AddVariantOptionValue extends Migration
                 'type'       => 'INT',
                 'constraint' => '11',
             ],
-            'variant_option_id' => [
+            'variant_id' => [
                 'type'       => 'INT',
                 'constraint' => '11',
                 'unsigned'   => true,
@@ -56,20 +56,20 @@ class AddVariantOptionValue extends Migration
                 //'collation'  => 'utf8_general_ci',
             ],
         ]);
-        $this->forge->addKey(['variant_option_value_id', 'language_id'], true);
+        $this->forge->addKey(['variant_value_id', 'language_id'], true);
 
         $this->db->disableForeignKeyChecks();
 
-        $this->forge->addForeignKey('variant_option_value_id', 'variant_option_value', 'variant_option_value_id', 'NO ACTION', 'CASCADE', 'variant_option_value_lang_ibfk_1');
+        $this->forge->addForeignKey('variant_value_id', 'variant_value', 'variant_value_id', 'NO ACTION', 'CASCADE', 'variant_value_lang_ibfk_1');
 
         $this->db->enableForeignKeyChecks();
 
-        $this->forge->createTable('variant_option_value_lang');
+        $this->forge->createTable('variant_value_lang');
     }
 
     public function down()
     {
-        $this->forge->dropTable('variant_option_value_lang');
-        $this->forge->dropTable('variant_option_value');
+        $this->forge->dropTable('variant_value_lang');
+        $this->forge->dropTable('variant_value');
     }
 }
