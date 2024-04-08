@@ -19,8 +19,8 @@ class Manage extends AdminController
 
     const FOLDER_UPLOAD = 'products/';
 
-    private $_variant_combination_name = 'variant_option_info_row_';
-    private $_variant_option_row_name = 'r%s';
+    private $_variant_combination_name = 'variant_info_row_';
+    private $_variant_row_name = 'r%s';
 
     public function __construct()
     {
@@ -338,75 +338,77 @@ class Manage extends AdminController
             }
         }
 
-        //Variant option
-        if ($this->request->getPost('product_variant_option') && $this->request->getPost('product_variant_combination')) {
+        //Variant
+        if ($this->request->getPost('product_variant') && $this->request->getPost('product_variant_combination')) {
 
-            $option_value_model                 = new \App\Modules\Options\Models\OptionValueModel();
-            $option_value_lang_model            = new \App\Modules\Options\Models\OptionValueLangModel();
-            $product_variant_option_model       = new \App\Modules\Products\Models\ProductVariantOptionModel();
-            $product_variant_option_value_model = new \App\Modules\Products\Models\ProductVariantOptionValueModel();
-            $product_sku_model                  = new \App\Modules\Products\Models\ProductSkuModel();
-            $product_sku_value_model            = new \App\Modules\Products\Models\ProductSkuValueModel();
+            $variant_value_model      = new \App\Modules\Variants\Models\VariantValueModel();
+            $variant_value_lang_model = new \App\Modules\Variants\Models\VariantValueLangModel();
 
-            $option_value_id_list = [];
+            $product_variant_model       = new \App\Modules\Products\Models\ProductVariantModel();
+            $product_variant_value_model = new \App\Modules\Products\Models\ProductVariantValueModel();
 
-            $product_variant_option_model->where(['product_id' => $product_id])->delete();
-            $product_variant_option_value_model->where(['product_id' => $product_id])->delete();
+            $product_sku_model       = new \App\Modules\Products\Models\ProductSkuModel();
+            $product_sku_value_model = new \App\Modules\Products\Models\ProductSkuValueModel();
+
+            $variant_value_id_list = [];
+
+            $product_variant_model->where(['product_id' => $product_id])->delete();
+            $product_variant_value_model->where(['product_id' => $product_id])->delete();
 
             //delete cache option value
-            $option_value_model->deleteCache();
+            $variant_value_model->deleteCache();
 
-            $sort_product_variant_option = count($this->request->getPost('product_variant_option'));
-            //cc_debug($this->request->getPost('product_variant_option'));
-            foreach ($this->request->getPost('product_variant_option') as $variant_option) {
-                $data_product_variant_option = [
-                    'option_id'  => $variant_option['option_id'],
+            $sort_product_variant = count($this->request->getPost('product_variant'));
+            //cc_debug($this->request->getPost('product_variant'));
+            foreach ($this->request->getPost('product_variant') as $variant) {
+                $data_product_variant = [
+                    'variant_id' => $variant['variant_id'],
                     'product_id' => $product_id,
-                    'sort_order' => $sort_product_variant_option,
+                    'sort_order' => $sort_product_variant,
                 ];
-                $product_variant_option_model->insert($data_product_variant_option);
-                $sort_product_variant_option--;
+                $product_variant_model->insert($data_product_variant);
+                $sort_product_variant--;
 
-                if (!empty($variant_option['option_values'])) {
-                    $option_value_model->where(['option_id' => $variant_option['option_id']])->delete();
+                if (!empty($variant['option_values'])) {
+                    $variant_value_model->where(['variant_id' => $variant['variant_id']])->delete();
 
-                    $sort_product_variant_option_value = count($variant_option['option_values']);
+                    $sort_product_variant_value = count($variant['variant_values']);
 
-                    foreach ($variant_option['option_values'] as $option_value_key => $variant_option_value) {
-                        $data_option_value = [
-                            'option_id'  => $variant_option['option_id'],
-                            'image'      => $variant_option_value['option_value_id'] ?? "",
-                            'sort_order' => $sort_product_variant_option_value,
+                    foreach ($variant['variant_values'] as $option_value_key => $variant_value) {
+                        $data_variant_value = [
+                            'variant_id' => $variant['variant_id'],
+                            'image'      => $variant_value['variant_value_id'] ?? "",
+                            'sort_order' => $sort_product_variant_value,
                         ];
 
-                        if (!empty($variant_option_value['option_value_id'])) {
-                            $data_option_value['option_value_id'] = $variant_option_value['option_value_id'];
+                        if (!empty($variant_value['variant_value_id'])) {
+                            $data_option_value['variant_value_id'] = $variant_value['variant_value_id'];
                         }
 
-                        $option_value_id = $option_value_model->insert($data_option_value);
-                        $data_option_value_lang = $variant_option_value['lang'];
+                        $variant_value_id = $variant_value_model->insert($data_variant_value);
+                        $data_variant_value_lang = $variant_value['lang'];
                         foreach (get_list_lang(true) as $language) {
-                            $data_option_value_lang[$language['id']]['language_id']     = $language['id'];
-                            $data_option_value_lang[$language['id']]['option_value_id'] = $option_value_id;
-                            $data_option_value_lang[$language['id']]['option_id']       = $variant_option['option_id'];
+                            $data_variant_value_lang[$language['id']]['language_id']      = $language['id'];
+                            $data_variant_value_lang[$language['id']]['variant_value_id'] = $variant_value_id;
+                            $data_variant_value_lang[$language['id']]['variant_id']       = $variant['variant_id'];
 
-                            $option_value_lang_model->insert($data_option_value_lang[$language['id']]);
+                            $variant_value_lang_model->insert($data_variant_value_lang[$language['id']]);
                         }
 
                         //list option value row tmp
-                        $option_value_id_list[$option_value_key] = [
-                            'option_id'       => $variant_option['option_id'],
-                            'option_value_id' => $option_value_id,
+                        $variant_value_id_list[$option_value_key] = [
+                            'variant_id'       => $variant['variant_id'],
+                            'variant_value_id' => $variant_value_id,
                         ];
 
-                        $data_product_variant_option_value = [
-                            'option_id'       => $variant_option['option_id'],
-                            'option_value_id' => $option_value_id,
-                            'product_id'      => $product_id,
-                            'sort_order'      => $sort_product_variant_option_value,
+                        $data_product_variant_value = [
+                            'variant_id'       => $variant['variant_id'],
+                            'variant_value_id' => $variant_value_id,
+                            'product_id'       => $product_id,
+                            'sort_order'       => $sort_product_variant_value,
                         ];
-                        $product_variant_option_value_model->insert($data_product_variant_option_value);
-                        $sort_product_variant_option_value--;
+                        $product_variant_value_model->insert($data_product_variant_value);
+                        $sort_product_variant_value--;
                     }
                 }
             }
@@ -436,15 +438,15 @@ class Manage extends AdminController
                 $combination_rows = explode('_', $combination_rows);
 
                 foreach ($combination_rows as $option_value_row) {
-                    if (!isset($option_value_id_list[$option_value_row])) {
+                    if (!isset($variant_value_id_list[$option_value_row])) {
                         continue;
                     }
 
                     $data_product_sku_value[] = [
-                        'product_sku_id'  => $product_sku_id,
-                        'product_id'      => $product_id,
-                        'option_id'       => $option_value_id_list[$option_value_row]['option_id'],
-                        'option_value_id' => $option_value_id_list[$option_value_row]['option_value_id'],
+                        'product_sku_id'   => $product_sku_id,
+                        'product_id'       => $product_id,
+                        'variant_id'       => $variant_value_id_list[$option_value_row]['variant_id'],
+                        'variant_value_id' => $variant_value_id_list[$option_value_row]['variant_value_id'],
                     ];
                 }
 
@@ -550,10 +552,10 @@ class Manage extends AdminController
             $data_form['product_option_list'] = $product_option_model->getListByProductId($product_id);
 
             //product variant
-            $product_variant_option_model = new \App\Modules\Products\Models\ProductVariantOptionModel();
-            $product_sku_model            = new \App\Modules\Products\Models\ProductSkuModel();
+            $product_variant_model = new \App\Modules\Products\Models\ProductVariantModel();
+            $product_sku_model     = new \App\Modules\Products\Models\ProductSkuModel();
 
-            $data_form['product_variant_option_list'] = $product_variant_option_model->getListVariantOptionByProductId($product_id);
+            $data_form['product_variant_list'] = $product_variant_model->getListVariantByProductId($product_id);
             $data_form['product_sku_list'] = $product_sku_model->getListSkuByProductId($product_id);
             //cc_debug($data_form['product_sku_list']);
 
@@ -589,7 +591,10 @@ class Manage extends AdminController
         $option_model = new \App\Modules\Options\Models\OptionModel();
         $data['option_list'] = $option_model->getListAll();
 
-        $data['variant_option_row_name'] = $this->_variant_option_row_name;
+        $variant_model = new \App\Modules\Variants\Models\VariantModel();
+        $data['variant_list'] = $variant_model->getListAll();
+
+        $data['variant_row_name'] = $this->_variant_row_name;
 
         $data['errors'] = $this->errors;
 
@@ -620,27 +625,27 @@ class Manage extends AdminController
             $this->validator->setRule('weight', lang('ProductAdmin.text_weight'), 'required|numeric');
         }
 
-        if ($this->request->getPost('product_variant_option')) {
-            $product_variant_option_list = [];
+        if ($this->request->getPost('product_variant')) {
+            $product_variant_list = [];
 
-            foreach ($this->request->getPost('product_variant_option') as $option_key => $variant_option) {
+            foreach ($this->request->getPost('product_variant') as $variant_key => $variant) {
 
                 $this->validator->setRule(
-                    sprintf('product_variant_option.%s.option_id', $option_key),
+                    sprintf('product_variant.%s.variant_id', $variant_key),
                     lang('ProductAdmin.text_variant_name'),
                     'required',
                 );
 
-                if (!empty($product_variant_option_list[$variant_option['option_id']])) {
-                    $this->errors[sprintf('product_variant_option.%s.option_id', $option_key)] = lang('ProductAdmin.error_variant_name');
+                if (!empty($product_variant_list[$variant['variant_id']])) {
+                    $this->errors[sprintf('product_variant.%s.variant_id', $variant_key)] = lang('ProductAdmin.error_variant_name');
                     return false;
                 }
-                $product_variant_option_list[$variant_option['option_id']] = $variant_option['option_id'];
+                $product_variant_list[$variant['variant_id']] = $variant['variant_id'];
 
-                if (!empty($variant_option['option_values'])) {
-                    foreach ($variant_option['option_values'] as $option_value_key => $variant_option_value) {
+                if (!empty($variant['variant_values'])) {
+                    foreach ($variant['variant_values'] as $variant_value_key => $variant_value) {
                         foreach (get_list_lang(true) as $lang_value) {
-                            $this->validator->setRule(sprintf('product_variant_option.%s.option_values.%s.lang.%s.name', $option_key, $option_value_key, $lang_value['id']), lang('ProductAdmin.text_variant_option') . ' (' . $lang_value['name'] . ')', 'required');
+                            $this->validator->setRule(sprintf('product_variant.%s.variant_values.%s.lang.%s.name', $variant_key, $variant_value_key, $lang_value['id']), lang('ProductAdmin.text_variant_value') . ' (' . $lang_value['name'] . ')', 'required');
                         }
                     }
                 }

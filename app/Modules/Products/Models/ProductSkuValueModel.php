@@ -12,8 +12,8 @@ class ProductSkuValueModel extends MyModel
     protected $allowedFields = [
         'product_sku_id',
         'product_id',
-        'option_id',
-        'option_value_id',
+        'variant_id',
+        'variant_value_id',
     ];
 
     public function __construct()

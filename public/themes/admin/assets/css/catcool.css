@@ -775,7 +775,7 @@ a[data-bs-toggle="image"] {
     width: 100px;
 }
 
-.product-variant-content .variant-list .variant-option {
+.product-variant-content .variant-list .variant {
     width: 25%;
     min-width: 120px;
     max-width: 160px;
@@ -785,31 +785,31 @@ a[data-bs-toggle="image"] {
 
 }
 
-.product-variant-content .product-variant-option-list .variant-delete i {
+.product-variant-content .product-variant-list .variant-delete i {
     cursor: pointer;
 }
 
-.product-variant-content .product-variant-option-list .variant-move {
+.product-variant-content .product-variant-list .variant-move {
     cursor: move;
 }
 
-.product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item {
+.product-variant-content .product-variant-list .product-variant-item .variant-value-item {
     width: 50%;
 }
 
-.product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(odd) {
+.product-variant-content .product-variant-list .product-variant-item .variant-value-item:nth-of-type(odd) {
     padding-right: 15px !important;
 }
 
-.product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(even) {
+.product-variant-content .product-variant-list .product-variant-item .variant-value-item:nth-of-type(even) {
     padding-left: 15px !important;
 }
 
-.product-variant-content .product-variant-option-list .product-variant-option-item .drop-drap-image {
+.product-variant-content .product-variant-list .product-variant-item .drop-drap-image {
     max-width: 60px !important;
 }
 
-.product-variant-content .product-variant-option-list .product-variant-option-item .drop-drap-file .upload-area {
+.product-variant-content .product-variant-list .product-variant-item .drop-drap-file .upload-area {
     margin: 0 !important;
 }
 
@@ -849,15 +849,15 @@ a[data-bs-toggle="image"] {
     .navbar-full-text { width: auto; }
     .navbar-full-text-content { margin-left: 0; }
 
-    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item {
+    .product-variant-content .product-variant-list .product-variant-item .variant-value-item {
         width: 100% !important;
     }
 
-    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(odd) {
+    .product-variant-content .product-variant-list .product-variant-item .variant-value-item:nth-of-type(odd) {
         padding-right: 0px !important;
     }
 
-    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(even) {
+    .product-variant-content .product-variant-list .product-variant-item .variant-value-item:nth-of-type(even) {
         padding-left: 0px !important;
     }
 }
@@ -871,15 +871,15 @@ a[data-bs-toggle="image"] {
     .navbar-full-text-content { margin-left: 0; }
     .img-photo-list, .img-photo-list img { width: 100px; height: 100px; }
 
-    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item {
+    .product-variant-content .product-variant-list .product-variant-item .variant-value-item {
         width: 100% !important;
     }
 
-    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(odd) {
+    .product-variant-content .product-variant-list .product-variant-item .variant-value-item:nth-of-type(odd) {
         padding-right: 0px !important;
     }
 
-    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(even) {
+    .product-variant-content .product-variant-list .product-variant-item .variant-value-item:nth-of-type(even) {
         padding-left: 0px !important;
     }
 }
@@ -888,15 +888,15 @@ a[data-bs-toggle="image"] {
 @media (max-width: 300px) {
     .img-photo-list, .img-photo-list img { width: 70px; height: 70px; }
 
-    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item {
+    .product-variant-content .product-variant-list .product-variant-item .variant-value-item {
         width: 100% !important;
     }
 
-    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(odd) {
+    .product-variant-content .product-variant-list .product-variant-item .variant-value-item:nth-of-type(odd) {
         padding-right: 0px !important;
     }
 
-    .product-variant-content .product-variant-option-list .product-variant-option-item .variant-option-value-item:nth-of-type(even) {
+    .product-variant-content .product-variant-list .product-variant-item .variant-value-item:nth-of-type(even) {
         padding-left: 0px !important;
     }
 }
