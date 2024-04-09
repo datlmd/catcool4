@@ -35,9 +35,9 @@
                                         <div class="input-group {if !$language@last}mb-1{/if}">
                                             {if $language_list|count > 1}<span class="input-group-text" title="{$language.name}">{$language.icon}</span>{/if}
                                             <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_lang_{$language.id}_name" class="form-control {if $validator->hasError("lang.`$language.id`.name")}is-invalid{/if}">
-                                            <div id="error_lang_{$language.id}_name" class="invalid-feedback">
-                                                {$validator->getError("lang.`$language.id`.name")}
-                                            </div>
+                                        </div>
+                                        <div id="error_lang_{$language.id}_name" class="invalid-feedback">
+                                            {$validator->getError("lang.`$language.id`.name")}
                                         </div>
                                     {/foreach}
                                 </div>
@@ -56,6 +56,7 @@
                         </div>
                     </div>
 
+                    {*
                     <div id="variant_value_list" class="card">
                         <h5 class="card-header">{lang('VariantAdmin.text_variant_value')}</h5>
                         <div class="card-body">
@@ -121,6 +122,8 @@
                             </table>
                         </div>
                     </div>
+                    *}
+
                 </div>
             </div>
         {form_close()}

@@ -57,7 +57,7 @@ class VariantModel extends MyModel
     {
         $result = $is_cache ? cache()->get(self::CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->orderBy('sort_order', 'ASC')->findAll();
+            $result = $this->orderBy('sort_order', 'DESC')->findAll();
             if (empty($result)) {
                 return [];
             }

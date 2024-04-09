@@ -139,6 +139,7 @@ class Manage extends AdminController
         }
 
         //variant value
+        /*
         if (!empty($this->request->getPost('variant_id'))) {
             $this->model_value->where(['variant_id' => $variant_id])->delete();
         }
@@ -169,6 +170,7 @@ class Manage extends AdminController
                 }
             }
         }
+        */
 
         $json['variant_id'] = $variant_id;
 
@@ -197,7 +199,7 @@ class Manage extends AdminController
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
-            $data_form['variant_values'] = $this->model_value->getListById($id);
+            //$data_form['variant_values'] = $this->model_value->getListById($id);
 
             $data['edit_data'] = $data_form;
         } else {
