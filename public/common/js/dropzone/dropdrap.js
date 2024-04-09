@@ -49,7 +49,7 @@ $(function() {
     $(document).on('change', ".drop-drap-file .file-input", function(e) {
         var fd = new FormData();
 
-        var files = $('.drop-drap-file').find(".file-input")[0].files[0];
+        var files = $(this).parent().find(".file-input")[0].files[0];
 
         fd.append('file', files);
 
@@ -58,15 +58,17 @@ $(function() {
 
     $(document).on('click', ".drop-drap-file .btn-group .button-image-delete", function(e) {
         $(this).parent().parent().parent().find(".drop-drap-image-content").hide();
+        $(this).parent().parent().parent().find(".drop-drap-image").html("");
+
         $(this).parent().parent().parent().find(".upload-area").show();
     });
 });
 
 // Sending AJAX request and upload file
 function uploadData(formdata, obj) {
-    if (is_uploading) {
-        return false;
-    }
+    // if (is_uploading) {
+    //     return false;
+    // }
     //var module_name = $('.drop-drap-file').attr("data-module");
     var module_name = $(obj).attr("data-module");
     if (!module_name.length) {
@@ -147,9 +149,9 @@ function uploadData(formdata, obj) {
 }
 
 function delete_file(obj) {
-    if (is_uploading) {
-        return false;
-    }
+    // if (is_uploading) {
+    //     return false;
+    // }
     $('.loading').fadeIn();
 
     var image_url = $(obj).attr("data-image-url");
