@@ -14,7 +14,7 @@
 
             </div>
             <div class="text-end product-variant-close">
-                <button type="button" class="btn-close" {if !empty($edit_data.product_variant_list) && $edit_data.product_variant_list|count > 1}disabled{/if} aria-label="Close"></button>
+                <button type="button" class="btn-close" {if isset($variant_index) && $variant_index === 0 && !empty($edit_data.product_variant_list) && $edit_data.product_variant_list|count > 1}disabled{/if} aria-label="Close"></button>
             </div>
         </div>
 

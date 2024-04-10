@@ -767,6 +767,10 @@ a[data-bs-toggle="image"] {
     width: 100%;
 }
 
+.product-variant-content .variant-list table {
+    min-width: 700px;
+}
+
 .product-variant-content .variant-list thead td {
     font-weight: bold;
 }
@@ -806,7 +810,7 @@ a[data-bs-toggle="image"] {
 }
 
 .product-variant-content .product-variant-list .product-variant-item .drop-drap-image {
-    max-width: 60px !important;
+    max-width: 70px !important;
 }
 
 .product-variant-content .product-variant-list .product-variant-item .drop-drap-file .upload-area {

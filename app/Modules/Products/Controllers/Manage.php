@@ -338,28 +338,31 @@ class Manage extends AdminController
             }
         }
 
-        //Variant
+        //Bat dau Variant
+        $product_variant_model       = new \App\Modules\Products\Models\ProductVariantModel();
+        $product_variant_value_model = new \App\Modules\Products\Models\ProductVariantValueModel();
+
+        $variant_value_model      = new \App\Modules\Variants\Models\VariantValueModel();
+        $variant_value_lang_model = new \App\Modules\Variants\Models\VariantValueLangModel();
+
+        $product_sku_model       = new \App\Modules\Products\Models\ProductSkuModel();
+        $product_sku_value_model = new \App\Modules\Products\Models\ProductSkuValueModel();
+
+        //xoa tat ca variant trước khi check, nếu co variant thi them vao lại
+        $product_variant_model->where(['product_id' => $product_id])->delete();
+        $product_variant_value_model->where(['product_id' => $product_id])->delete();
+        //product sku
+        $product_sku_model->where(['product_id' => $product_id])->delete();
+
         if ($this->request->getPost('product_variant') && $this->request->getPost('product_variant_combination')) {
-
-            $variant_value_model      = new \App\Modules\Variants\Models\VariantValueModel();
-            $variant_value_lang_model = new \App\Modules\Variants\Models\VariantValueLangModel();
-
-            $product_variant_model       = new \App\Modules\Products\Models\ProductVariantModel();
-            $product_variant_value_model = new \App\Modules\Products\Models\ProductVariantValueModel();
-
-            $product_sku_model       = new \App\Modules\Products\Models\ProductSkuModel();
-            $product_sku_value_model = new \App\Modules\Products\Models\ProductSkuValueModel();
 
             $variant_value_id_list = [];
 
-            $product_variant_model->where(['product_id' => $product_id])->delete();
-            $product_variant_value_model->where(['product_id' => $product_id])->delete();
-
-            //delete cache option value
+            //delete cache variant value
             $variant_value_model->deleteCache();
 
             $sort_product_variant = count($this->request->getPost('product_variant'));
-            //cc_debug($this->request->getPost('product_variant'));
+
             foreach ($this->request->getPost('product_variant') as $variant) {
                 $data_product_variant = [
                     'variant_id' => $variant['variant_id'],
@@ -369,20 +372,27 @@ class Manage extends AdminController
                 $product_variant_model->insert($data_product_variant);
                 $sort_product_variant--;
 
-                if (!empty($variant['option_values'])) {
+                if (!empty($variant['variant_values'])) {
+
                     $variant_value_model->where(['variant_id' => $variant['variant_id']])->delete();
 
                     $sort_product_variant_value = count($variant['variant_values']);
 
-                    foreach ($variant['variant_values'] as $option_value_key => $variant_value) {
+                    foreach ($variant['variant_values'] as $variant_value_key => $variant_value) {
+
+                        if (!empty($variant_value['image']) && stripos($variant_value['image'], UPLOAD_FILE_TMP_DIR) !== false) {
+                            $variant_image_url = str_replace(UPLOAD_FILE_TMP_DIR, self::FOLDER_UPLOAD . "$product_id/variant_", $variant_value['image']);
+                            $variant_value['image'] = move_file_tmp($variant_value['image'], $variant_image_url);
+                        }
+
                         $data_variant_value = [
                             'variant_id' => $variant['variant_id'],
-                            'image'      => $variant_value['variant_value_id'] ?? "",
+                            'image'      => !empty($variant_value['image']) ? $variant_value['image'] : "",
                             'sort_order' => $sort_product_variant_value,
                         ];
 
                         if (!empty($variant_value['variant_value_id'])) {
-                            $data_option_value['variant_value_id'] = $variant_value['variant_value_id'];
+                            $data_variant_value['variant_value_id'] = $variant_value['variant_value_id'];
                         }
 
                         $variant_value_id = $variant_value_model->insert($data_variant_value);
@@ -391,12 +401,13 @@ class Manage extends AdminController
                             $data_variant_value_lang[$language['id']]['language_id']      = $language['id'];
                             $data_variant_value_lang[$language['id']]['variant_value_id'] = $variant_value_id;
                             $data_variant_value_lang[$language['id']]['variant_id']       = $variant['variant_id'];
+                            $data_variant_value_lang[$language['id']]['name']             = trim($data_variant_value_lang[$language['id']]['name']);
 
                             $variant_value_lang_model->insert($data_variant_value_lang[$language['id']]);
                         }
 
-                        //list option value row tmp
-                        $variant_value_id_list[$option_value_key] = [
+                        //list variant value row tmp
+                        $variant_value_id_list[$variant_value_key] = [
                             'variant_id'       => $variant['variant_id'],
                             'variant_value_id' => $variant_value_id,
                         ];
@@ -414,8 +425,6 @@ class Manage extends AdminController
             }
 
             //product sku
-            $product_sku_model->where(['product_id' => $product_id])->delete();
-
             foreach ($this->request->getPost('product_variant_combination') as $combination_key => $combination_value) {
                 $data_product_sku = [
                     'product_id' => $product_id,
@@ -437,16 +446,16 @@ class Manage extends AdminController
                 $combination_rows = str_ireplace($this->_variant_combination_name, '', $combination_key);
                 $combination_rows = explode('_', $combination_rows);
 
-                foreach ($combination_rows as $option_value_row) {
-                    if (!isset($variant_value_id_list[$option_value_row])) {
+                foreach ($combination_rows as $variant_value_row) {
+                    if (!isset($variant_value_id_list[$variant_value_row])) {
                         continue;
                     }
 
                     $data_product_sku_value[] = [
                         'product_sku_id'   => $product_sku_id,
                         'product_id'       => $product_id,
-                        'variant_id'       => $variant_value_id_list[$option_value_row]['variant_id'],
-                        'variant_value_id' => $variant_value_id_list[$option_value_row]['variant_value_id'],
+                        'variant_id'       => $variant_value_id_list[$variant_value_row]['variant_id'],
+                        'variant_value_id' => $variant_value_id_list[$variant_value_row]['variant_value_id'],
                     ];
                 }
 
@@ -455,6 +464,7 @@ class Manage extends AdminController
                 }
             }
         }
+        // het variant
 
         $json['product_id'] = $product_id;
 
@@ -625,7 +635,7 @@ class Manage extends AdminController
             $this->validator->setRule('weight', lang('ProductAdmin.text_weight'), 'required|numeric');
         }
 
-        if ($this->request->getPost('product_variant')) {
+        if (!empty($this->request->getPost('is_variant')) && $this->request->getPost('product_variant')) {
             $product_variant_list = [];
 
             foreach ($this->request->getPost('product_variant') as $variant_key => $variant) {
@@ -643,9 +653,46 @@ class Manage extends AdminController
                 $product_variant_list[$variant['variant_id']] = $variant['variant_id'];
 
                 if (!empty($variant['variant_values'])) {
+                    $variant_value_images = array_filter(array_column($variant['variant_values'], 'image'));
+
+                    $variant_value_name_list = []; // su dung de check phan loai co ton tai trung nhau khong
                     foreach ($variant['variant_values'] as $variant_value_key => $variant_value) {
+                        foreach ($variant_value['lang'] as $lang_key => $lang_value) {
+                            $variant_value_name_list[$variant_value_key] = $lang_value['name'];
+                        }
+                    }
+
+                    foreach ($variant['variant_values'] as $variant_value_key => $variant_value) {
+
+                        //kiem tra variant co bi trung nhau khong
+                        foreach ($variant_value['lang'] as $lang_key => $lang_value) {
+                            $error_variant_values = array_keys($variant_value_name_list, $lang_value['name']);
+
+                            if (empty($error_variant_values)) {
+                                continue;
+                            }
+
+                            foreach ($error_variant_values as $error_variant_value) {
+                                if ($error_variant_value == $variant_value_key) {
+                                    continue;
+                                }
+
+                                $this->errors[sprintf('product_variant.%s.variant_values.%s.lang.%s.name', $variant_key, $error_variant_value, $lang_key)] = lang('ProductAdmin.error_variant_value_name_unique');
+                            }
+                            if (!empty($this->errors)) {
+                                $this->errors[sprintf('product_variant.%s.variant_values.%s.lang.%s.name', $variant_key, $variant_value_key, $lang_key)] = lang('ProductAdmin.error_variant_value_name_unique');
+                                return false;
+                            }
+                        }
+
+                        if (!empty($variant_value_images)) {
+                            $this->validator->setRule(sprintf('product_variant.%s.variant_values.%s.image', $variant_key, $variant_value_key), lang('ProductAdmin.text_variant_value_image'), 'required');
+                        }
+
+
+
                         foreach (get_list_lang(true) as $lang_value) {
-                            $this->validator->setRule(sprintf('product_variant.%s.variant_values.%s.lang.%s.name', $variant_key, $variant_value_key, $lang_value['id']), lang('ProductAdmin.text_variant_value') . ' (' . $lang_value['name'] . ')', 'required');
+                            $this->validator->setRule(sprintf('product_variant.%s.variant_values.%s.lang.%s.name', $variant_key, $variant_value_key, $lang_value['id']), lang('ProductAdmin.text_variant_value') . ' (' . $lang_value['name'] . ')', 'required|max_length[50]|min_length[1]');
                         }
                     }
                 }
@@ -653,11 +700,11 @@ class Manage extends AdminController
 
             foreach ($this->request->getPost('product_variant_combination') as $combination_key => $combination_value) {
                 $this->validator->setRule(sprintf('product_variant_combination.%s.price', $combination_key), lang('ProductAdmin.text_price'), 'required|decimal');
-                $this->validator->setRule(sprintf('product_variant_combination.%s.quantity', $combination_key), lang('ProductAdmin.text_quantity'), 'required|is_natural_no_zero');
+                $this->validator->setRule(sprintf('product_variant_combination.%s.quantity', $combination_key), lang('ProductAdmin.text_quantity'), 'required|is_natural');
             }
         } else {
             $this->validator->setRule('price', lang('ProductAdmin.text_price'), 'required|decimal');
-            $this->validator->setRule('quantity', lang('ProductAdmin.text_quantity'), 'required|numeric');
+            $this->validator->setRule('quantity', lang('ProductAdmin.text_quantity'), 'required|is_natural_no_zero');
         }
 
         //$this->validator->setRule('model', lang('ProductAdmin.text_model'), 'required');

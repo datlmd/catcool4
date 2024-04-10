@@ -20,11 +20,8 @@
 
     <div class="d-flex flex-row">
         {if isset($variant_index) && $variant_index eq 0}
-            <div class="pe-2 variant-value-item-image">
+            <div class="pe-2 variant-value-item-image" style="max-width: 80px;">
 {*            <div class="flex-grow-1 pe-2 variant-value-item-image">*}
-
-                <input type="hidden" name="product_variant[{$vof_variant_row}][variant_values][{$vof_variant_value_row}][image]" value="{$data_variant_value.image|default:""}" id="input_product_variant_{$vof_variant_row}_variant_values_{$vof_variant_value_row}_image" />
-
                 <div class="drop-drap-file" data-module="products" data-image-id="product_variant_{$vof_variant_row}_variant_values_{$vof_variant_value_row}_image" data-input-name="product_variant[{$vof_variant_row}][variant_values][{$vof_variant_value_row}][image]" data-image-class="img-thumbnail">
                     <div id="product_variant_{$vof_variant_row}_variant_values_{$vof_variant_value_row}_image" class="text-center drop-drap-image-content" {if empty($data_variant_value.image)}style="display: none;"{/if}>
                         <div class="drop-drap-image">
@@ -33,6 +30,7 @@
                                      class="img-thumbnail"
                                 >
                             </a>
+                            <input type="hidden" name="product_variant[{$vof_variant_row}][variant_values][{$vof_variant_value_row}][image]" value="{$data_variant_value.image|default:""}" id="input_product_variant_{$vof_variant_row}_variant_values_{$vof_variant_value_row}_image" />
                         </div>
                         <div class="btn-group my-1" role="group">
                             <button type="button"
@@ -52,6 +50,9 @@
                             <i class="fas fa-image text-primary"></i>
                         </h5>
                     </div>
+
+                    <div id="error_product_variant_{$vof_variant_row}_variant_values_{$vof_variant_value_row}_image" class="invalid-feedback"></div>
+
                 </div>
             </div>
         {/if}

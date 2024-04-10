@@ -184,7 +184,7 @@ function addThumbnailToList(data) {
     for (key in data) {
         image_html += '<li class="photo-item">';
         image_html += '    <input type="hidden" name="product_image[' + product_image_row + '][product_image_id]" value="" />';
-        image_html += '    <a href="' + image_url + '/' + data[key]['image_url'] + '" data-lightbox="products"><img src="" class="img-backgroud" style="background-image: url(' + image_url + '/' + data[key]['image_url'] + ')" alt="" title="" id="product_image_' + product_image_row + '_load_image_url" /></a>';
+        image_html += '    <a href="' + image_url + '/' + data[key]['image_url'] + '" data-lightbox="products"><img src="" class="img-backgroud" style="background-image: url(' + image_url + "/" + data[key]['image_url'] + ')" alt="" title="" id="product_image_' + product_image_row + '_load_image_url" /></a>';
         image_html += '    <div class="btn-group w-100 mt-1" role="group">';
         image_html += '        <button type="button" id="product_image_' + product_image_row + '_image_crop" class="btn btn-xs btn-light" onclick="Catcool.cropImage(\'' + data[key]['image_url'] +'\', 1, this);"><i class="fas fa-crop"></i></button>';
         image_html += '        <button type="button" id="product_image_' + product_image_row + '_image_delete" onclick="$(this).parent().parent().remove();" class="btn btn-xs btn-light"><i class="fas fa-trash"></i></button>';
@@ -219,7 +219,7 @@ $(document).on('click', '#product_add_variant', function() {
 });
 
 $(document).on('click', '#product_variant .btn-variant-value-add', function() {
-    var product_variant_row = $('#product_variant_row').val();//$(this).data('variant-row');
+    var product_variant_row = $(this).data('variant-row');
     var product_variant_value_row = $('#product_variant_value_row').val();
 
     product_variant_value_row = parseInt(product_variant_value_row) + 1;
@@ -328,7 +328,7 @@ $(document).on('click mousemove', '#product_variant .product-variant-list .varia
 });
 
 $(document).on('click', '#product_variant .product-variant-list .variant-value-item .variant-delete i', function() {
-    $(this).parent().parent().remove();
+    $(this).parent().parent().parent().remove();
 
     clearTimeout(timeout_variant);
     timeout_variant = setTimeout(function () {
@@ -504,21 +504,8 @@ function showListVariantSku() {
                     html_variant_tr += setInputItemVariant(variant_info_row_id);
                     html_variant_tr += '</tr>';
 
-                    if ($('#' + variant_info_row_id + '_price').length) {
-                        variant_data_list[variant_info_row_id + '_price'] = $('#' + variant_info_row_id + '_price input').val();
-                    }
+                    variant_data_list = $.merge(variant_data_list, getInputItemVariant(variant_info_row_id));
 
-                    if ($('#' + variant_info_row_id + '_quantity').length) {
-                        variant_data_list[variant_info_row_id + '_quantity'] = $('#' + variant_info_row_id + '_quantity input').val();
-                    }
-
-                    if ($('#' + variant_info_row_id + '_sku').length) {
-                        variant_data_list[variant_info_row_id + '_sku'] = $('#' + variant_info_row_id + '_sku input').val();
-                    }
-
-                    if ($('#' + variant_info_row_id + '_published').length) {
-                        variant_data_list[variant_info_row_id + '_published'] = $('#' + variant_info_row_id + '_published input').prop('checked');
-                    }
                 });
             });
         });
@@ -545,21 +532,8 @@ function showListVariantSku() {
                 html_variant_tr += setInputItemVariant(variant_info_row_id);
                 html_variant_tr += '</tr>';
 
-                if ($('#' + variant_info_row_id + '_price').length) {
-                    variant_data_list[variant_info_row_id + '_price'] = $('#' + variant_info_row_id + '_price input').val();
-                }
+                variant_data_list = $.merge(variant_data_list, getInputItemVariant(variant_info_row_id));
 
-                if ($('#' + variant_info_row_id + '_quantity').length) {
-                    variant_data_list[variant_info_row_id + '_quantity'] = $('#' + variant_info_row_id + '_quantity input').val();
-                }
-
-                if ($('#' + variant_info_row_id + '_sku').length) {
-                    variant_data_list[variant_info_row_id + '_sku'] = $('#' + variant_info_row_id + '_sku input').val();
-                }
-
-                if ($('#' + variant_info_row_id + '_published').length) {
-                    variant_data_list[variant_info_row_id + '_published'] = $('#' + variant_info_row_id + '_published input').prop('checked');
-                }
             });
         });
 
@@ -578,21 +552,7 @@ function showListVariantSku() {
             html_variant_tr += setInputItemVariant(variant_info_row_id);
             html_variant_tr += '</tr>';
 
-            if ($('#' + variant_info_row_id + '_price').length) {
-                variant_data_list[variant_info_row_id + '_price'] = $('#' + variant_info_row_id + '_price input').val();
-            }
-
-            if ($('#' + variant_info_row_id + '_quantity').length) {
-                variant_data_list[variant_info_row_id + '_quantity'] = $('#' + variant_info_row_id + '_quantity input').val();
-            }
-
-            if ($('#' + variant_info_row_id + '_sku').length) {
-                variant_data_list[variant_info_row_id + '_sku'] = $('#' + variant_info_row_id + '_sku input').val();
-            }
-
-            if ($('#' + variant_info_row_id + '_published').length) {
-                variant_data_list[variant_info_row_id + '_published'] = $('#' + variant_info_row_id + '_published input').prop('checked');
-            }
+            variant_data_list = $.merge(variant_data_list, getInputItemVariant(variant_info_row_id));
 
         });
     }
@@ -604,25 +564,78 @@ function showListVariantSku() {
     //     $('#product_variant #product_variant_info table tbody').html('<tr><td>Không có SKU nào sẵn có</td></tr>');
     // }
 
-    for (key in variant_data_list) {
-        if (key.includes('published')) {
-
-            $('#' + key + ' input').prop('checked', variant_data_list[key]);
+    $.each(variant_data_list, function (index, value) {
+        if (value.row_id.includes('published')) {
+                        $('#' + value.row_id + ' input').prop('checked', value.value);
+        } else if (value.row_id.includes('product_sku_id')) {
+            $('#' + value.row_id).val(value.value);
         } else {
-            $('#' + key + ' input').val(variant_data_list[key]);
+            $('#' + value.row_id + ' input').val(value.value);
         }
-    }
+    });
 
     is_product_processing = false;
 }
 
+function getInputItemVariant(variant_info_row_id) {
+
+    var variant_data_list = [];
+
+    if ($('#' + variant_info_row_id + '_product_sku_id').length) {
+        variant_data_list.push({
+            row_id: variant_info_row_id + '_product_sku_id',
+            value: $('#' + variant_info_row_id + '_product_sku_id').val()
+        });
+    }
+
+    if ($('#' + variant_info_row_id + '_price').length) {
+        variant_data_list.push({
+            row_id: variant_info_row_id + '_price',
+            value: $('#' + variant_info_row_id + '_price input').val()
+        });
+    }
+
+    if ($('#' + variant_info_row_id + '_quantity').length) {
+        variant_data_list.push({
+            row_id: variant_info_row_id + '_quantity',
+            value: $('#' + variant_info_row_id + '_quantity input').val()
+        });
+    }
+
+    if ($('#' + variant_info_row_id + '_sku').length) {
+        variant_data_list.push({
+            row_id: variant_info_row_id + '_sku',
+            value: $('#' + variant_info_row_id + '_sku input').val()
+        });
+    }
+
+    if ($('#' + variant_info_row_id + '_published').length) {
+        variant_data_list.push({
+            row_id: variant_info_row_id + '_published',
+            value: $('#' + variant_info_row_id + '_published input').is(':checked')
+        });
+    }
+
+    return variant_data_list;
+}
 
 function setInputItemVariant(variant_info_row_id)
 {
-
     var htm_td = $('#html_product_variant_value_form_td table tr').html();
 
     htm_td = htm_td.replaceAll('__variant_info_row_id__', variant_info_row_id).replaceAll('data-id', 'id');
 
     return htm_td;
 }
+
+$(document).on('click', '#product_variant .variant-list .btn-variant-update-bulk', function() {
+    if ($('#product_variant .variant-list #input_product_variant_combination_price_all').val() && $('#product_variant .variant-list #input_product_variant_combination_price_all').val() > 0) {
+        $('#product_variant .variant-list .variant-combination-price input').val($('#product_variant .variant-list #input_product_variant_combination_price_all').val());
+    }
+    if ($('#product_variant .variant-list #input_product_variant_combination_quantity_all').val() && $('#product_variant .variant-list #input_product_variant_combination_quantity_all').val() >= 0) {
+        $('#product_variant .variant-list .variant-combination-quantity input').val($('#product_variant .variant-list #input_product_variant_combination_quantity_all').val());
+    }
+    if ($('#product_variant .variant-list #input_product_variant_combination_sku_all').val() && $('#product_variant .variant-list #input_product_variant_combination_sku_all').val() != "") {
+        $('#product_variant .variant-list .variant-combination-sku input').val($('#product_variant .variant-list #input_product_variant_combination_sku_all').val());
+    }
+});

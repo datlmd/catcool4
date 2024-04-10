@@ -183,27 +183,32 @@
     <div id="html_product_variant_value_form_td" style="display: none">
         <table>
             <tr>
-                <td data-id="__variant_info_row_id___price">
-                    <div class="input-group">
-                        <span class="input-group-text">{if !empty($currency.symbol_left)}{$currency.symbol_left}{elseif !empty($currency.symbol_right)}{$currency.symbol_right}{/if}</span>
-                        <input type="number" step="0.01" name="product_variant_combination[__variant_info_row_id__][price]" value="0" data-id="input_product_variant_combination___variant_info_row_id___price" class="form-control">
-                    </div>
-                    <div data-id="error_product_variant_combination___variant_info_row_id___price" class="invalid-feedback"></div>
-                </td>
-                <td data-id="__variant_info_row_id___quantity">
-                    <input type="number" min="0" name="product_variant_combination[__variant_info_row_id__][quantity]" value="0" data-id="input_product_variant_combination___variant_info_row_id___quantity" class="form-control">
-                    <div data-id="error_product_variant_combination___variant_info_row_id___quantity" class="invalid-feedback"></div>
-                </td>
-                <td data-id="__variant_info_row_id___sku">
-                    <input type="text" name="product_variant_combination[__variant_info_row_id__][sku]" value="" data-id="input_product_variant_combination___variant_info_row_id___sku" class="form-control">
-                    <div data-id="error_product_variant_combination___variant_info_row_id___sku" class="invalid-feedback"></div>
-                </td>
-                <td data-id="__variant_info_row_id___published">
-                    <div class="switch-button switch-button-xs catcool-center">
-                        {form_checkbox("product_variant_combination[__variant_info_row_id__][published]", true, true, ['id' => "input_product_variant_combination___variant_info_row_id___published"])}
-                        <span><label for="input_product_variant_combination___variant_info_row_id___published"></label></span>
-                    </div>
-                </td>
+                {include file=get_theme_path('views/modules/products/inc/variant_sku_form.tpl')
+                    product_variant_combination_attr_id='data-id'
+                }
+{*                <input type="hidden" name="product_variant_combination[__variant_info_row_id__][product_sku_id]" value="" data-id="__variant_info_row_id___product_sku_id" >*}
+
+{*                <td data-id="__variant_info_row_id___price">*}
+{*                    <div class="input-group">*}
+{*                        <span class="input-group-text">{if !empty($currency.symbol_left)}{$currency.symbol_left}{elseif !empty($currency.symbol_right)}{$currency.symbol_right}{/if}</span>*}
+{*                        <input type="number" step="0.01" name="product_variant_combination[__variant_info_row_id__][price]" value="0" data-id="input_product_variant_combination___variant_info_row_id___price" class="form-control">*}
+{*                    </div>*}
+{*                    <div data-id="error_product_variant_combination___variant_info_row_id___price" class="invalid-feedback"></div>*}
+{*                </td>*}
+{*                <td data-id="__variant_info_row_id___quantity">*}
+{*                    <input type="number" min="0" name="product_variant_combination[__variant_info_row_id__][quantity]" value="0" data-id="input_product_variant_combination___variant_info_row_id___quantity" class="form-control">*}
+{*                    <div data-id="error_product_variant_combination___variant_info_row_id___quantity" class="invalid-feedback"></div>*}
+{*                </td>*}
+{*                <td data-id="__variant_info_row_id___sku">*}
+{*                    <input type="text" name="product_variant_combination[__variant_info_row_id__][sku]" value="" data-id="input_product_variant_combination___variant_info_row_id___sku" class="form-control">*}
+{*                    <div data-id="error_product_variant_combination___variant_info_row_id___sku" class="invalid-feedback"></div>*}
+{*                </td>*}
+{*                <td data-id="__variant_info_row_id___published">*}
+{*                    <div class="switch-button switch-button-xs catcool-center">*}
+{*                        {form_checkbox("product_variant_combination[__variant_info_row_id__][published]", true, true, ['id' => "input_product_variant_combination___variant_info_row_id___published"])}*}
+{*                        <span><label for="input_product_variant_combination___variant_info_row_id___published"></label></span>*}
+{*                    </div>*}
+{*                </td>*}
             </tr>
         </table>
     </div>
