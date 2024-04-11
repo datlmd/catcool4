@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -19,7 +21,24 @@ use DateTimeImmutable;
  *
  * Requires the intl PHP extension.
  *
- * @property string $date
+ * @property int    $age         read-only
+ * @property string $day         read-only
+ * @property string $dayOfWeek   read-only
+ * @property string $dayOfYear   read-only
+ * @property bool   $dst         read-only
+ * @property string $hour        read-only
+ * @property bool   $local       read-only
+ * @property string $minute      read-only
+ * @property string $month       read-only
+ * @property string $quarter     read-only
+ * @property string $second      read-only
+ * @property int    $timestamp   read-only
+ * @property bool   $utc         read-only
+ * @property string $weekOfMonth read-only
+ * @property string $weekOfYear  read-only
+ * @property string $year        read-only
+ *
+ * @see \CodeIgniter\I18n\TimeTest
  */
 class Time extends DateTimeImmutable
 {

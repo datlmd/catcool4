@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -46,7 +48,7 @@ class MockResult extends BaseResult
     /**
      * Frees the current result.
      *
-     * @return mixed
+     * @return void
      */
     public function freeResult()
     {
@@ -59,10 +61,11 @@ class MockResult extends BaseResult
      *
      * @param int $n
      *
-     * @return mixed
+     * @return bool
      */
     public function dataSeek($n = 0)
     {
+        return true;
     }
 
     /**

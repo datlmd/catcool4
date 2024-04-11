@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -9,13 +11,7 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-namespace CodeIgniter\Exceptions;
-
-use Error;
-
-/**
- * Error: Action must be taken immediately (system/db down, etc)
- */
-class AlertError extends Error
-{
-}
+// "Language" language settings
+return [
+    'invalidMessageFormat' => 'Invalid message format: "{0}", args: "{1}"',
+];

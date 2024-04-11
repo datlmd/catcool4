@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -15,6 +17,7 @@ use Closure;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Database\Exceptions\DataException;
 use CodeIgniter\Traits\ConditionalTrait;
+use Config\Feature;
 use InvalidArgumentException;
 
 /**
@@ -88,8 +91,7 @@ class BaseBuilder
      * QB keys
      * list of column names.
      *
-     * @var string[]
-     * @phpstan-var list<string>
+     * @var list<string>
      */
     protected $QBKeys = [];
 
@@ -117,7 +119,7 @@ class BaseBuilder
     /**
      * QB UNION data
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected array $QBUnion = [];
 
@@ -131,8 +133,7 @@ class BaseBuilder
     /**
      * QB data sets
      *
-     * @var array[]|string[]
-     * @phpstan-var array<string, string>|list<list<string|int>>
+     * @var array<string, string>|list<list<int|string>>
      */
     protected $QBSet = [];
 
@@ -164,16 +165,18 @@ class BaseBuilder
      * Holds additional options and data used to render SQL
      * and is reset by resetWrite()
      *
-     * @phpstan-var array{
+     * @var array{
      *   updateFieldsAdditional?: array,
      *   tableIdentity?: string,
      *   updateFields?: array,
      *   constraints?: array,
      *   setQueryAsData?: string,
      *   sql?: string,
-     *   alias?: string
+     *   alias?: string,
+     *   fieldTypes?: array<string, array<string, string>>
      * }
-     * @var array
+     *
+     * fieldTypes: [ProtectedTableName => [FieldName => Type]]
      */
     protected $QBOptions;
 
@@ -281,14 +284,14 @@ class BaseBuilder
     /**
      * Strings that determine if a string represents a literal value or a field name
      *
-     * @var string[]
+     * @var list<string>
      */
     protected $isLiteralStr = [];
 
     /**
      * RegExp used to get operators
      *
-     * @var string[]
+     * @var list<string>
      */
     protected $pregOperators = [];
 
@@ -313,7 +316,7 @@ class BaseBuilder
         $this->db = $db;
 
         // If it contains `,`, it has multiple tables
-        if (is_string($tableName) && strpos($tableName, ',') === false) {
+        if (is_string($tableName) && ! str_contains($tableName, ',')) {
             $this->tableName = $tableName;  // @TODO remove alias if exists
         } else {
             $this->tableName = '';
@@ -321,7 +324,7 @@ class BaseBuilder
 
         $this->from($tableName);
 
-        if (! empty($options)) {
+        if ($options !== null && $options !== []) {
             foreach ($options as $key => $value) {
                 if (property_exists($this, $key)) {
                     $this->{$key} = $value;
@@ -333,7 +336,7 @@ class BaseBuilder
     /**
      * Returns the current database connection
      *
-     * @return BaseConnection|ConnectionInterface
+     * @return BaseConnection
      */
     public function db(): ConnectionInterface
     {
@@ -511,7 +514,7 @@ class BaseBuilder
             throw DataException::forEmptyInputGiven('Select');
         }
 
-        if (strpos($select, ',') !== false) {
+        if (str_contains($select, ',')) {
             throw DataException::forInvalidArgument('column name not separated by comma');
         }
 
@@ -538,7 +541,7 @@ class BaseBuilder
      */
     protected function createAliasFromTable(string $item): string
     {
-        if (strpos($item, '.') !== false) {
+        if (str_contains($item, '.')) {
             $item = explode('.', $item);
 
             return end($item);
@@ -574,7 +577,7 @@ class BaseBuilder
         }
 
         foreach ((array) $from as $table) {
-            if (strpos($table, ',') !== false) {
+            if (str_contains($table, ',')) {
                 $this->from(explode(',', $table));
             } else {
                 $table = trim($table);
@@ -706,7 +709,6 @@ class BaseBuilder
      *
      * @param array|RawSql|string $key
      * @param mixed               $value
-     * @param bool                $escape
      *
      * @return $this
      */
@@ -764,7 +766,7 @@ class BaseBuilder
                     $op = trim(current($op));
 
                     // Does the key end with operator?
-                    if (substr($k, -strlen($op)) === $op) {
+                    if (str_ends_with($k, $op)) {
                         $k  = rtrim(substr($k, 0, -strlen($op)));
                         $op = " {$op}";
                     } else {
@@ -924,6 +926,7 @@ class BaseBuilder
      * @used-by whereNotIn()
      * @used-by orWhereNotIn()
      *
+     * @param non-empty-string|null          $key
      * @param array|BaseBuilder|Closure|null $values The values searched on, or anonymous function with subquery
      *
      * @return $this
@@ -932,7 +935,7 @@ class BaseBuilder
      */
     protected function _whereIn(?string $key = null, $values = null, bool $not = false, string $type = 'AND ', ?bool $escape = null, string $clause = 'QBWhere')
     {
-        if (empty($key) || ! is_string($key)) {
+        if ($key === null || $key === '') {
             throw new InvalidArgumentException(sprintf('%s() expects $key to be a non-empty string', debug_backtrace(0, 2)[1]['function']));
         }
 
@@ -1438,7 +1441,7 @@ class BaseBuilder
     public function orderBy(string $orderBy, string $direction = '', ?bool $escape = null)
     {
         $qbOrderBy = [];
-        if (empty($orderBy)) {
+        if ($orderBy === '') {
             return $this;
         }
 
@@ -1490,11 +1493,16 @@ class BaseBuilder
      */
     public function limit(?int $value = null, ?int $offset = 0)
     {
+        $limitZeroAsAll = config(Feature::class)->limitZeroAsAll ?? true;
+        if ($limitZeroAsAll && $value === 0) {
+            $value = null;
+        }
+
         if ($value !== null) {
             $this->QBLimit = $value;
         }
 
-        if (! empty($offset)) {
+        if ($offset !== null && $offset !== 0) {
             $this->QBOffset = $offset;
         }
 
@@ -1508,8 +1516,8 @@ class BaseBuilder
      */
     public function offset(int $offset)
     {
-        if (! empty($offset)) {
-            $this->QBOffset = (int) $offset;
+        if ($offset !== 0) {
+            $this->QBOffset = $offset;
         }
 
         return $this;
@@ -1526,7 +1534,7 @@ class BaseBuilder
     /**
      * Allows key/value pairs to be set for insert(), update() or replace().
      *
-     * @param array|object|string $key    Field name, or an array of field/value pairs
+     * @param array|object|string $key    Field name, or an array of field/value pairs, or an object
      * @param mixed               $value  Field value, if $key is a single field
      * @param bool|null           $escape Whether to escape values
      *
@@ -1607,6 +1615,11 @@ class BaseBuilder
      */
     public function get(?int $limit = null, int $offset = 0, bool $reset = true)
     {
+        $limitZeroAsAll = config(Feature::class)->limitZeroAsAll ?? true;
+        if ($limitZeroAsAll && $limit === 0) {
+            $limit = null;
+        }
+
         if ($limit !== null) {
             $this->limit($limit, $offset);
         }
@@ -1740,7 +1753,12 @@ class BaseBuilder
             $this->where($where);
         }
 
-        if (! empty($limit)) {
+        $limitZeroAsAll = config(Feature::class)->limitZeroAsAll ?? true;
+        if ($limitZeroAsAll && $limit === 0) {
+            $limit = null;
+        }
+
+        if ($limit !== null) {
             $this->limit($limit, $offset);
         }
 
@@ -1761,7 +1779,9 @@ class BaseBuilder
     /**
      * Compiles batch insert/update/upsert strings and runs the queries
      *
-     * @return false|int|string[] Number of rows inserted or FALSE on failure, SQL array when testMode
+     * @param '_deleteBatch'|'_insertBatch'|'_updateBatch'|'_upsertBatch' $renderMethod
+     *
+     * @return false|int|list<string> Number of rows inserted or FALSE on failure, SQL array when testMode
      *
      * @throws DatabaseException
      */
@@ -1898,7 +1918,7 @@ class BaseBuilder
      *
      * @param array|object|null $set
      *
-     * @return false|int|string[] Number of affected rows or FALSE on failure, SQL array when testMode
+     * @return false|int|list<string> Number of affected rows or FALSE on failure, SQL array when testMode
      *
      * @throws DatabaseException
      */
@@ -1934,7 +1954,7 @@ class BaseBuilder
      *
      * @param array|object|null $set a dataset
      *
-     * @return false|int|string[] Number of affected rows or FALSE on failure, SQL array when testMode
+     * @return false|int|list<string> Number of affected rows or FALSE on failure, SQL array when testMode
      *
      * @throws DatabaseException
      */
@@ -1966,13 +1986,11 @@ class BaseBuilder
     /**
      * Generates a platform-specific upsertBatch string from the supplied data
      *
-     * @used-by batchExecute
+     * @used-by batchExecute()
      *
-     * @param string   $table Protected table name
-     * @param string[] $keys  QBKeys
-     * @phpstan-param list<string> $keys QBKeys
-     * @param array<array<int|string>> $values QBSet
-     * @phpstan-param list<list<string|int>> $values QBSet
+     * @param string                 $table  Protected table name
+     * @param list<string>           $keys   QBKeys
+     * @param list<list<int|string>> $values QBSet
      */
     protected function _upsertBatch(string $table, array $keys, array $values): string
     {
@@ -1997,7 +2015,7 @@ class BaseBuilder
         }
 
         if (isset($this->QBOptions['setQueryAsData'])) {
-            $data = $this->QBOptions['setQueryAsData'];
+            $data = $this->QBOptions['setQueryAsData'] . "\n";
         } else {
             $data = 'VALUES ' . implode(', ', $this->formatValues($values)) . "\n";
         }
@@ -2021,9 +2039,9 @@ class BaseBuilder
     /**
      * Sets update fields for upsert, update
      *
-     * @param RawSql[]|string|string[] $set
-     * @param bool                     $addToDefault adds update fields to the default ones
-     * @param array|null               $ignore       ignores items in set
+     * @param list<RawSql>|list<string>|string $set
+     * @param bool                             $addToDefault adds update fields to the default ones
+     * @param array|null                       $ignore       ignores items in set
      *
      * @return $this
      */
@@ -2165,7 +2183,7 @@ class BaseBuilder
      *
      * @param array|object|null $set a dataset
      *
-     * @return false|int|string[] Number of rows inserted or FALSE on failure, SQL array when testMode
+     * @return false|int|list<string> Number of rows inserted or FALSE on failure, SQL array when testMode
      */
     public function insertBatch($set = null, ?bool $escape = null, int $batchSize = 100)
     {
@@ -2195,13 +2213,11 @@ class BaseBuilder
     /**
      * Generates a platform-specific insert string from the supplied data.
      *
-     * @used-by batchExecute
+     * @used-by batchExecute()
      *
-     * @param string   $table Protected table name
-     * @param string[] $keys  QBKeys
-     * @phpstan-param list<string> $keys QBKeys
-     * @param array<array<int|string>> $values QBSet
-     * @phpstan-param list<list<string|int>> $values QBSet
+     * @param string                 $table  Protected table name
+     * @param list<string>           $keys   QBKeys
+     * @param list<list<int|string>> $values QBSet
      */
     protected function _insertBatch(string $table, array $keys, array $values): string
     {
@@ -2278,7 +2294,7 @@ class BaseBuilder
      *
      * @param array|object|null $set
      *
-     * @return bool
+     * @return BaseResult|bool|Query
      *
      * @throws DatabaseException
      */
@@ -2326,7 +2342,7 @@ class BaseBuilder
      */
     protected function removeAlias(string $from): string
     {
-        if (strpos($from, ' ') !== false) {
+        if (str_contains($from, ' ')) {
             // if the alias is written with the AS keyword, remove it
             $from = preg_replace('/\s+AS\s+/i', ' ', $from);
 
@@ -2460,7 +2476,12 @@ class BaseBuilder
             $this->where($where);
         }
 
-        if (! empty($limit)) {
+        $limitZeroAsAll = config(Feature::class)->limitZeroAsAll ?? true;
+        if ($limitZeroAsAll && $limit === 0) {
+            $limit = null;
+        }
+
+        if ($limit !== null) {
             if (! $this->canLimitWhereUpdates) {
                 throw new DatabaseException('This driver does not allow LIMITs on UPDATE queries using WHERE.');
             }
@@ -2501,10 +2522,18 @@ class BaseBuilder
             $valStr[] = $key . ' = ' . $val;
         }
 
+        $limitZeroAsAll = config(Feature::class)->limitZeroAsAll ?? true;
+        if ($limitZeroAsAll) {
+            return 'UPDATE ' . $this->compileIgnore('update') . $table . ' SET ' . implode(', ', $valStr)
+                . $this->compileWhereHaving('QBWhere')
+                . $this->compileOrderBy()
+                . ($this->QBLimit ? $this->_limit(' ', true) : '');
+        }
+
         return 'UPDATE ' . $this->compileIgnore('update') . $table . ' SET ' . implode(', ', $valStr)
             . $this->compileWhereHaving('QBWhere')
             . $this->compileOrderBy()
-            . ($this->QBLimit ? $this->_limit(' ', true) : '');
+            . ($this->QBLimit !== false ? $this->_limit(' ', true) : '');
     }
 
     /**
@@ -2533,7 +2562,7 @@ class BaseBuilder
      * @param array|object|null        $set         a dataset
      * @param array|RawSql|string|null $constraints
      *
-     * @return false|int|string[] Number of rows affected or FALSE on failure, SQL array when testMode
+     * @return false|int|list<string> Number of rows affected or FALSE on failure, SQL array when testMode
      */
     public function updateBatch($set = null, $constraints = null, int $batchSize = 100)
     {
@@ -2565,13 +2594,11 @@ class BaseBuilder
     /**
      * Generates a platform-specific batch update string from the supplied data
      *
-     * @used-by batchExecute
+     * @used-by batchExecute()
      *
-     * @param string   $table Protected table name
-     * @param string[] $keys  QBKeys
-     * @phpstan-param list<string> $keys QBKeys
-     * @param array[] $values QBSet
-     * @phpstan-param list<list<string|int>> $values QBSet
+     * @param string                 $table  Protected table name
+     * @param list<string>           $keys   QBKeys
+     * @param list<list<int|string>> $values QBSet
      */
     protected function _updateBatch(string $table, array $keys, array $values): string
     {
@@ -2748,9 +2775,9 @@ class BaseBuilder
     /**
      * Compiles a delete string and runs the query
      *
-     * @param mixed $where
+     * @param array|RawSql|string $where
      *
-     * @return bool|string Returns a string if in test mode.
+     * @return bool|string Returns a SQL string if in test mode.
      *
      * @throws DatabaseException
      */
@@ -2772,7 +2799,12 @@ class BaseBuilder
 
         $sql = $this->_delete($this->removeAlias($table));
 
-        if (! empty($limit)) {
+        $limitZeroAsAll = config(Feature::class)->limitZeroAsAll ?? true;
+        if ($limitZeroAsAll && $limit === 0) {
+            $limit = null;
+        }
+
+        if ($limit !== null) {
             $this->QBLimit = $limit;
         }
 
@@ -2797,7 +2829,7 @@ class BaseBuilder
      * @param array|object|null $set         a dataset
      * @param array|RawSql|null $constraints
      *
-     * @return false|int|string[] Number of rows affected or FALSE on failure, SQL array when testMode
+     * @return false|int|list<string> Number of rows affected or FALSE on failure, SQL array when testMode
      */
     public function deleteBatch($set = null, $constraints = null, int $batchSize = 100)
     {
@@ -2829,13 +2861,11 @@ class BaseBuilder
     /**
      * Generates a platform-specific batch update string from the supplied data
      *
-     * @used-by batchExecute
+     * @used-by batchExecute()
      *
-     * @param string   $table Protected table name
-     * @param string[] $keys  QBKeys
-     * @phpstan-param list<string> $keys QBKeys
-     * @param array<array<int|string>> $values QBSet
-     * @phpstan-param list<list<string|int>> $values QBSet
+     * @param string       $table Protected table name
+     * @param list<string> $keys  QBKeys
+     * @paramst<string|int>> $values QBSet
      */
     protected function _deleteBatch(string $table, array $keys, array $values): string
     {
@@ -2978,12 +3008,12 @@ class BaseBuilder
 
         // Does the string contain a comma?  If so, we need to separate
         // the string into discreet statements
-        if (strpos($table, ',') !== false) {
+        if (str_contains($table, ',')) {
             return $this->trackAliases(explode(',', $table));
         }
 
         // if a table alias is used we can recognize it by a space
-        if (strpos($table, ' ') !== false) {
+        if (str_contains($table, ' ')) {
             // if the alias is written with the AS keyword, remove it
             $table = preg_replace('/\s+AS\s+/i', ' ', $table);
 
@@ -3040,7 +3070,12 @@ class BaseBuilder
             . $this->compileWhereHaving('QBHaving')
             . $this->compileOrderBy();
 
-        if ($this->QBLimit) {
+        $limitZeroAsAll = config(Feature::class)->limitZeroAsAll ?? true;
+        if ($limitZeroAsAll) {
+            if ($this->QBLimit) {
+                $sql = $this->_limit($sql . "\n");
+            }
+        } elseif ($this->QBLimit !== false || $this->QBOffset) {
             $sql = $this->_limit($sql . "\n");
         }
 
@@ -3123,11 +3158,11 @@ class BaseBuilder
 
                     if (! empty($matches[4])) {
                         $protectIdentifiers = false;
-                        if (strpos($matches[4], '.') !== false) {
+                        if (str_contains($matches[4], '.')) {
                             $protectIdentifiers = true;
                         }
 
-                        if (strpos($matches[4], ':') === false) {
+                        if (! str_contains($matches[4], ':')) {
                             $matches[4] = $this->db->protectIdentifiers(trim($matches[4]), false, $protectIdentifiers);
                         }
 
@@ -3184,7 +3219,7 @@ class BaseBuilder
      */
     protected function compileOrderBy(): string
     {
-        if (is_array($this->QBOrderBy) && ! empty($this->QBOrderBy)) {
+        if (is_array($this->QBOrderBy) && $this->QBOrderBy !== []) {
             foreach ($this->QBOrderBy as &$orderBy) {
                 if ($orderBy['escape'] !== false && ! $this->isLiteral($orderBy['field'])) {
                     $orderBy['field'] = $this->db->protectIdentifiers($orderBy['field']);
@@ -3277,7 +3312,7 @@ class BaseBuilder
     {
         $str = trim($str);
 
-        if (empty($str)
+        if ($str === ''
             || ctype_digit($str)
             || (string) (float) $str === $str
             || in_array(strtoupper($str), ['TRUE', 'FALSE'], true)
@@ -3413,8 +3448,7 @@ class BaseBuilder
     /**
      * Returns the SQL string operator from where key
      *
-     * @return array<int, string>|false
-     * @phpstan-return list<string>|false
+     * @return false|list<string>
      */
     private function getOperatorFromWhereKey(string $whereKey)
     {

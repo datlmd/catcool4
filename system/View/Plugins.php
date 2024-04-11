@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -12,7 +14,6 @@
 namespace CodeIgniter\View;
 
 use CodeIgniter\HTTP\URI;
-use Config\Services;
 
 /**
  * View plugins
@@ -32,7 +33,7 @@ class Plugins
     /**
      * Wrap helper function to use as view plugin.
      *
-     * @return mixed|string|URI
+     * @return string|URI
      */
     public static function previousURL()
     {
@@ -78,8 +79,8 @@ class Plugins
      */
     public static function ValidationErrors(array $params = []): string
     {
-        $validator = Services::validation();
-        if (empty($params)) {
+        $validator = service('validation');
+        if ($params === []) {
             return $validator->listErrors();
         }
 

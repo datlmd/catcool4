@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -17,6 +19,8 @@ use ReturnTypeWillChange;
 
 /**
  * Session handler for Postgre
+ *
+ * @see \CodeIgniter\Session\Handlers\Database\PostgreHandlerTest
  */
 class PostgreHandler extends DatabaseHandler
 {

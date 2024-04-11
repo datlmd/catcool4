@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -80,6 +82,8 @@ class Result extends BaseResult
 
     /**
      * Frees the current result.
+     *
+     * @return void
      */
     public function freeResult()
     {
@@ -140,7 +144,7 @@ class Result extends BaseResult
         $classObj = new $className();
 
         if (is_subclass_of($className, Entity::class)) {
-            return $classObj->setAttributes($row);
+            return $classObj->injectRawData($row);
         }
 
         $classSet = Closure::bind(function ($key, $value) {

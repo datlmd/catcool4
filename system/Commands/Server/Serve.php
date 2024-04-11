@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -54,7 +56,7 @@ class Serve extends BaseCommand
     /**
      * Arguments
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $arguments = [];
 
@@ -75,7 +77,7 @@ class Serve extends BaseCommand
     /**
      * Options
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $options = [
         '--php'  => 'The PHP Binary [default: "PHP_BINARY"]',

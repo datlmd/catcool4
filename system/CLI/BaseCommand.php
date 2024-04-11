@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -11,6 +13,7 @@
 
 namespace CodeIgniter\CLI;
 
+use Config\Exceptions;
 use Psr\Log\LoggerInterface;
 use ReflectionException;
 use Throwable;
@@ -18,14 +21,14 @@ use Throwable;
 /**
  * BaseCommand is the base class used in creating CLI commands.
  *
- * @property array           $arguments
- * @property Commands        $commands
- * @property string          $description
- * @property string          $group
- * @property LoggerInterface $logger
- * @property string          $name
- * @property array           $options
- * @property string          $usage
+ * @property array<string, string> $arguments
+ * @property Commands              $commands
+ * @property string                $description
+ * @property string                $group
+ * @property LoggerInterface       $logger
+ * @property string                $name
+ * @property array<string, string> $options
+ * @property string                $usage
  */
 abstract class BaseCommand
 {
@@ -61,14 +64,14 @@ abstract class BaseCommand
     /**
      * the Command's options description
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $options = [];
 
     /**
      * the Command's Arguments description
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $arguments = [];
 
@@ -116,18 +119,22 @@ abstract class BaseCommand
 
     /**
      * A simple method to display an error with line/file, in child commands.
+     *
+     * @return void
      */
     protected function showError(Throwable $e)
     {
         $exception = $e;
         $message   = $e->getMessage();
-        $config    = config('Exceptions');
+        $config    = config(Exceptions::class);
 
         require $config->errorViewPath . '/cli/error_exception.php';
     }
 
     /**
      * Show Help includes (Usage, Arguments, Description, Options).
+     *
+     * @return void
      */
     public function showHelp()
     {
@@ -138,7 +145,7 @@ abstract class BaseCommand
         } else {
             $usage = $this->name;
 
-            if (! empty($this->arguments)) {
+            if ($this->arguments !== []) {
                 $usage .= ' [arguments]';
             }
         }
@@ -151,7 +158,7 @@ abstract class BaseCommand
             CLI::write($this->setPad($this->description, 0, 0, 2));
         }
 
-        if (! empty($this->arguments)) {
+        if ($this->arguments !== []) {
             CLI::newLine();
             CLI::write(lang('CLI.helpArguments'), 'yellow');
             $length = max(array_map('strlen', array_keys($this->arguments)));
@@ -161,7 +168,7 @@ abstract class BaseCommand
             }
         }
 
-        if (! empty($this->options)) {
+        if ($this->options !== []) {
             CLI::newLine();
             CLI::write(lang('CLI.helpOptions'), 'yellow');
             $length = max(array_map('strlen', array_keys($this->options)));

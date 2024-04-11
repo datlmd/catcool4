@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -103,6 +105,8 @@ class Result extends BaseResult
 
     /**
      * Frees the current result.
+     *
+     * @return void
      */
     public function freeResult()
     {
@@ -146,7 +150,7 @@ class Result extends BaseResult
     protected function fetchObject(string $className = 'stdClass')
     {
         if (is_subclass_of($className, Entity::class)) {
-            return empty($data = $this->fetchAssoc()) ? false : (new $className())->setAttributes($data);
+            return empty($data = $this->fetchAssoc()) ? false : (new $className())->injectRawData($data);
         }
 
         return $this->resultID->fetch_object($className);

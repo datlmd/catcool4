@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -9,16 +11,13 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-namespace CodeIgniter\Cache\Exceptions;
+namespace CodeIgniter\Router\Exceptions;
+
+use RuntimeException;
 
 /**
- * Provides a domain-level interface for broad capture
- * of all framework-related exceptions.
- *
- * catch (\CodeIgniter\Cache\Exceptions\ExceptionInterface) { ... }
- *
- * @deprecated 4.1.2
+ * @internal
  */
-interface ExceptionInterface
+final class MethodNotFoundException extends RuntimeException
 {
 }

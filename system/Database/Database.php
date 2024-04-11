@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -16,7 +18,7 @@ use InvalidArgumentException;
 /**
  * Database Connection Factory
  *
- * Creates and returns an instance of the appropriate DatabaseConnection
+ * Creates and returns an instance of the appropriate Database Connection.
  */
 class Database
 {
@@ -32,8 +34,7 @@ class Database
     protected $connections = [];
 
     /**
-     * Parses the connection binds and returns an instance of the driver
-     * ready to go.
+     * Parses the connection binds and creates a Database Connection instance.
      *
      * @return BaseConnection
      *
@@ -45,7 +46,7 @@ class Database
             throw new InvalidArgumentException('You must supply the parameter: alias.');
         }
 
-        if (! empty($params['DSN']) && strpos($params['DSN'], '://') !== false) {
+        if (! empty($params['DSN']) && str_contains($params['DSN'], '://')) {
             $params = $this->parseDSN($params);
         }
 
@@ -83,7 +84,7 @@ class Database
     }
 
     /**
-     * Parse universal DSN string
+     * Parses universal DSN string
      *
      * @throws InvalidArgumentException
      */
@@ -105,7 +106,7 @@ class Database
             'database' => isset($dsn['path']) ? rawurldecode(substr($dsn['path'], 1)) : '',
         ];
 
-        if (! empty($dsn['query'])) {
+        if (isset($dsn['query']) && ($dsn['query'] !== '')) {
             parse_str($dsn['query'], $extra);
 
             foreach ($extra as $key => $val) {
@@ -121,21 +122,20 @@ class Database
     }
 
     /**
-     * Initialize database driver.
+     * Creates a database object.
      *
      * @param string       $driver   Driver name. FQCN can be used.
-     * @param array|object $argument
+     * @param string       $class    'Connection'|'Forge'|'Utils'
+     * @param array|object $argument The constructor parameter.
      *
      * @return BaseConnection|BaseUtils|Forge
      */
     protected function initDriver(string $driver, string $class, $argument): object
     {
-        $class = $driver . '\\' . $class;
+        $classname = (! str_contains($driver, '\\'))
+            ? "CodeIgniter\\Database\\{$driver}\\{$class}"
+            : $driver . '\\' . $class;
 
-        if (strpos($driver, '\\') === false) {
-            $class = "CodeIgniter\\Database\\{$class}";
-        }
-
-        return new $class($argument);
+        return new $classname($argument);
     }
 }

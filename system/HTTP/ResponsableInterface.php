@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -9,16 +11,9 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-namespace CodeIgniter\Test;
+namespace CodeIgniter\HTTP;
 
-/**
- * CIDatabaseTestCase
- *
- * Use DatabaseTestTrait instead.
- *
- * @deprecated 4.1.2
- */
-abstract class CIDatabaseTestCase extends CIUnitTestCase
+interface ResponsableInterface
 {
-    use DatabaseTestTrait;
+    public function getResponse(): ResponseInterface;
 }
