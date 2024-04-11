@@ -10,7 +10,7 @@
 		<div class="col-12 col-sm-10 col-lg-10">
 			<div class="input-group">
 				<span class="input-group-text">{if !empty($currency.symbol_left)}{$currency.symbol_left}{elseif !empty($currency.symbol_right)}{$currency.symbol_right}{/if}</span>
-				<input type="number" step="0.01" name="price" value="{old('price', $edit_data.price)}" id="input_price" class="form-control">
+				<input type="text" data-type="currency" name="price" value="{old('price', show_currency_system($edit_data.price))}" id="input_price" class="form-control">
 			</div>
 			<div id="error_price" class="invalid-feedback"></div>
 		</div>
@@ -58,12 +58,14 @@
 			<div class="product-variant-group">
 				{if !empty($edit_data.product_variant_list)}
 					{foreach $edit_data.product_variant_list as $variant}
-						{$product_variant_value_row = $product_variant_value_row + count($variant.value_list)}
-						{include file=get_theme_path('views/modules/products/inc/variant_form.tpl')
-							vf_variant_row=$variant.variant_id
-							data_variant=$variant
-							variant_index = $variant@index
-						}
+						{if !empty($variant.value_list)}
+							{$product_variant_value_row = $product_variant_value_row + count($variant.value_list)}
+							{include file=get_theme_path('views/modules/products/inc/variant_form.tpl')
+								vf_variant_row=$variant.variant_id
+								data_variant=$variant
+								variant_index = $variant@index
+							}
+						{/if}
 					{/foreach}
 				{/if}
 			</div>
@@ -79,7 +81,7 @@
 					<div class="col-12 col-sm-3 pb-1">
 						<div class="input-group">
 							<span class="input-group-text">{if !empty($currency.symbol_left)}{$currency.symbol_left}{elseif !empty($currency.symbol_right)}{$currency.symbol_right}{/if}</span>
-							<input type="number" min="0" name="product_variant_combination_price_all" value="" id="input_product_variant_combination_price_all" class="form-control" placeholder="{lang('ProductAdmin.text_price')}">
+							<input type="text" min="0" data-type="currency" name="product_variant_combination_price_all" value="" id="input_product_variant_combination_price_all" class="form-control show-currency" placeholder="{lang('ProductAdmin.text_price')}">
 						</div>
 					</div>
 					<div class="col-12 col-sm-3 pb-1">
@@ -119,9 +121,9 @@
 							{if !empty($edit_data.product_variant_list)}
 								{foreach $edit_data.product_variant_list as $variant_1}
 									{foreach $variant_1.value_list as $variant_value_1}
-										{if $edit_data.product_variant_list|count eq 3}
+										{if !empty($edit_data.product_variant_list) && count($edit_data.product_variant_list) eq 3}
 
-										{elseif $edit_data.product_variant_list|count == 2}
+										{elseif !empty($edit_data.product_variant_list) && count($edit_data.product_variant_list) == 2}
 											{foreach $edit_data.product_variant_list as $variant_2}
 												{if $variant_1.variant_id eq $variant_2.variant_id}
 													{continue}
@@ -139,7 +141,7 @@
 {*														<input type="hidden" name="product_variant_combination[{$variant_info_row_id}][product_sku_id]" id="{$variant_info_row_id}_product_sku_id" value="{$edit_data.product_sku_list[$create_variant_key].product_sku_id}">*}
 
 														{if $variant_value_2@index eq 0}
-															<td data-variant-name="{$variant_name_row_1}" rowspan="{$variant_2.value_list|count}" class="variant-name text-center">
+															<td data-variant-name="{$variant_name_row_1}" rowspan="{count($variant_2.value_list)}" class="variant-name text-center">
 																{$variant_value_1.name}
 															</td>
 														{/if}

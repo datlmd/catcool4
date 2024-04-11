@@ -131,7 +131,7 @@ class Manage extends AdminController
             //'image'           => $this->request->getPost('image'),
             'manufacturer_id' => $this->request->getPost('manufacturer_id'),
             'shipping'        => $this->request->getPost('shipping'),
-            'price'           => (float)$this->request->getPost('price'),
+            'price'           => format_decimal($this->request->getPost('price')),//(float)$this->request->getPost('price'),
             'points'          => 0,//$this->request->getPost('points'),
             'tax_class_id'    => $this->request->getPost('tax_class_id'),
             'date_available'  => $date_available,
@@ -319,7 +319,7 @@ class Manage extends AdminController
                             'option_value_id'   => $option_value['option_value_id'],
                             'quantity'          => $option_value['quantity'],
                             'subtract'          => $option_value['subtract'],
-                            'price'             => $option_value['price'],
+                            'price'             => format_decimal($option_value['price']),
                             'price_prefix'      => $option_value['price_prefix'],
                             'points'            => $option_value['points'],
                             'points_prefix'     => $option_value['points_prefix'],
@@ -428,7 +428,7 @@ class Manage extends AdminController
             foreach ($this->request->getPost('product_variant_combination') as $combination_key => $combination_value) {
                 $data_product_sku = [
                     'product_id' => $product_id,
-                    'price'      => $combination_value['price'],
+                    'price'      => format_decimal($combination_value['price']),
                     'quantity'   => $combination_value['quantity'],
                     'sku'        => $combination_value['sku'],
                     'published'  => !empty($combination_value['published']) ? STATUS_ON : STATUS_OFF,
@@ -504,12 +504,17 @@ class Manage extends AdminController
 
         $this->themes->addJS('common/js/admin/related');
 
+        $this->themes->addJS('common/js/common/currency');
+
         $this->themes->addJS('common/plugin/shortable-nestable/Sortable.min');
 
         $this->themes->addCSS('common/js/dropzone/dropdrap');
         $this->themes->addJS('common/js/dropzone/dropdrap');
 
         $data['language_list'] = get_list_lang(true);
+
+        $product_variant_list = [];
+        $product_sku_list = [];
 
         //edit
         if (!empty($product_id) && is_numeric($product_id)) {
@@ -565,15 +570,17 @@ class Manage extends AdminController
             $product_variant_model = new \App\Modules\Products\Models\ProductVariantModel();
             $product_sku_model     = new \App\Modules\Products\Models\ProductSkuModel();
 
-            $data_form['product_variant_list'] = $product_variant_model->getListVariantByProductId($product_id);
-            $data_form['product_sku_list'] = $product_sku_model->getListSkuByProductId($product_id);
-            //cc_debug($data_form['product_sku_list']);
+            $product_variant_list = $product_variant_model->getListVariantByProductId($product_id);
+            $product_sku_list = $product_sku_model->getListSkuByProductId($product_id);
 
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('ProductAdmin.text_add');
             $breadcrumb_url = site_url(self::MANAGE_URL . "/add");
         }
+
+        $data_form['product_variant_list'] = $product_variant_list;
+        $data_form['product_sku_list'] = $product_sku_list;
 
         $stock_status_model = new \App\Modules\Products\Models\StockStatusModel();
         $data['stock_status_list'] = $stock_status_model->getListAll();

@@ -628,13 +628,6 @@ var Catcool = {
         //     }
         // }
 
-        console.log(e);
-        console.log('element ' + element);
-        console.log('action ' + action);
-        console.log('button ' + button);
-        console.log('method ' + method);
-        console.log('enctype ' + enctype);
-
         $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
 
         $.ajax({

@@ -1463,6 +1463,9 @@ if (!function_exists('script_global'))
             var image_root_url = "' . get_upload_url() . '";
             var username = "' . $username . '";
             var csrf_token = "' . csrf_token() . '";
+            var decimal_point = "' . config_item('decimal_point') . '";
+            var thousand_point = "' . config_item('thousand_point') . '";
+            var decimal_place = "' . config_item('decimal_place') . '";
         ';
     }
 }
@@ -2042,5 +2045,27 @@ if (!function_exists('create_variant_key')) {
     function create_variant_key($product_id, $option_value_list, $product_sku_id = null)
     {
         return md5(sprintf('%s_%s_%s', $product_id, implode('_', $option_value_list), $product_sku_id));
+    }
+}
+
+if (!function_exists('show_currency_system')) {
+    function show_currency_system($currency)
+    {
+        if (is_null($currency)) {
+            return $currency;
+        }
+
+        return number_format($currency, config_item('decimal_place'), config_item('decimal_point'), config_item('thousand_point'));
+    }
+}
+
+if (!function_exists('format_decimal')) {
+    function format_decimal($currency)
+    {
+        if (is_null($currency)) {
+            return $currency;
+        }
+
+        return str_ireplace([config_item('thousand_point'), config_item('decimal_point')], ["", "."] , $currency);
     }
 }

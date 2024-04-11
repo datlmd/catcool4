@@ -629,7 +629,8 @@ function setInputItemVariant(variant_info_row_id)
 }
 
 $(document).on('click', '#product_variant .variant-list .btn-variant-update-bulk', function() {
-    if ($('#product_variant .variant-list #input_product_variant_combination_price_all').val() && $('#product_variant .variant-list #input_product_variant_combination_price_all').val() > 0) {
+
+    if ($('#product_variant .variant-list #input_product_variant_combination_price_all').val() && $('#product_variant .variant-list #input_product_variant_combination_price_all').val() != "") {
         $('#product_variant .variant-list .variant-combination-price input').val($('#product_variant .variant-list #input_product_variant_combination_price_all').val());
     }
     if ($('#product_variant .variant-list #input_product_variant_combination_quantity_all').val() && $('#product_variant .variant-list #input_product_variant_combination_quantity_all').val() >= 0) {

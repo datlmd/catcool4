@@ -130,9 +130,9 @@
 											<input type="hidden" name="product_option[{$product_option_row}][product_option_value][{$product_option_value_row}][subtract]" value="{$product_option_value.subtract}"/>
 										</td>
 										<td class="text-end">
-											{$product_option_value.price_prefix}{$product_option_value.price}
+											{$product_option_value.price_prefix}{show_currency_system($product_option_value.price)}
 											<input type="hidden" name="product_option[{$product_option_row}][product_option_value][{$product_option_value_row}][price_prefix]" value="{$product_option_value.price_prefix}"/>
-											<input type="hidden" name="product_option[{$product_option_row}][product_option_value][{$product_option_value_row}][price]" value="{$product_option_value.price}"/>
+											<input type="hidden" name="product_option[{$product_option_row}][product_option_value][{$product_option_value_row}][price]" value="{show_currency_system($product_option_value.price)}"/>
 										</td>
 										<td class="text-end">
 											{$product_option_value.points_prefix}{$product_option_value.points}
@@ -259,7 +259,7 @@
 			html += '      	       <option value="-">-</option>';
 		}
 		html += '      	     </select>';
-		html += '      	     <input type="text" name="price" value="' + ($(element).data('product_option_value_row') ? $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][price]\']').val() : '0') + '" placeholder="{{lang('ProductAdmin.text_price')}}" id="input-modal-price" class="form-control"/>';
+		html += '      	     <input type="text" data-type="currency" name="price" value="' + ($(element).data('product_option_value_row') ? $('input[name=\'product_option[' + $(element).data('product_option_row') + '][product_option_value][' + product_option_value_row + '][price]\']').val() : '') + '" placeholder="{{lang('ProductAdmin.text_price')}}" id="input-modal-price" class="form-control"/>';
 		html += '          </div>';
 		html += '        </div>';
 		html += '        <div class="mb-3">';

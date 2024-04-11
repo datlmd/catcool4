@@ -123,7 +123,7 @@ class Manage extends AdminController
         //list lang
         $language_list = $language_model->getListPublished();
         foreach ($language_list as $lang) {
-            if (empty($values[$lang['id']])) {
+            if (is_null($values[$lang['id']])) {
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => sprintf(lang('Admin.text_manage_validation'), $lang['name'])]);
             }
         }
@@ -179,7 +179,7 @@ class Manage extends AdminController
         //list lang
         $language_list = $language_model->getListPublished();
         foreach ($language_list as $lang) {
-            if (empty($values[$lang['id']])) {
+            if (is_null($values[$lang['id']])) {
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => sprintf(lang('Admin.text_manage_validation'), $lang['name'])]);
             }
         }

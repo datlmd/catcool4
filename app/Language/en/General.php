@@ -8,6 +8,7 @@ return [
 	"datetime_format" => "d/m/Y H:i:s",
 	"date_format_long" => "l jS F Y",
 	"date_format_short" => "d/m/Y",
+	"decimal_place" => "2",
 	"decimal_point" => ".",
 	"direction" => "ltr",
 	"en" => "English",

@@ -13,7 +13,7 @@
     <td {$product_variant_combination_attr_id}="{$product_variant_combination_row_id}_price" class="variant-combination-price">
         <div class="input-group">
             <span class="input-group-text">{if !empty($currency.symbol_left)}{$currency.symbol_left}{elseif !empty($currency.symbol_right)}{$currency.symbol_right}{/if}</span>
-            <input type="number" step="0.01" min="0" name="product_variant_combination[{$product_variant_combination_row_id}][price]" value="{old("product_variant_combination[{$product_variant_combination_row_id}][price]", $product_variant_combination.price|default:0)}" {$product_variant_combination_attr_id}="input_product_variant_combination_{$product_variant_combination_row_id}_price" class="form-control">
+            <input type="text" data-type="currency" min="0" name="product_variant_combination[{$product_variant_combination_row_id}][price]" value="{old("product_variant_combination[{$product_variant_combination_row_id}][price]", show_currency_system($product_variant_combination.price)|default:"")}" {$product_variant_combination_attr_id}="input_product_variant_combination_{$product_variant_combination_row_id}_price" class="form-control">
         </div>
         <div {$product_variant_combination_attr_id}="error_product_variant_combination_{$product_variant_combination_row_id}_price" class="invalid-feedback"></div>
     </td>
