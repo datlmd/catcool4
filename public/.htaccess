@@ -9,7 +9,7 @@ Options -Indexes
 # FollowSymLinks must be enabled for this to work.
 <IfModule mod_rewrite.c>
 	Options +FollowSymlinks
-    RewriteEngine On
+	RewriteEngine On
 
 	# If you installed CodeIgniter in a subfolder, you will need to
 	# change the following line to match the subfolder you need.
@@ -17,27 +17,28 @@ Options -Indexes
 	# RewriteBase /
 
 	# Redirect Trailing Slashes...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_URI} (.+)/$
+	RewriteRule ^ %1 [L,R=301]
 
-    # Rewrite "www.example.com -> example.com"
-    RewriteCond %{HTTPS} !=on
-    RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-    RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
+	# Rewrite "www.example.com -> example.com"
+	RewriteCond %{HTTPS} !=on
+	RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+	RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
 
 	# Checks to see if the user is attempting to access a valid file,
-    # such as an image or css document, if this isn't true it sends the
-    # request to the front controller, index.php
+	# such as an image or css document, if this isn't true it sends the
+	# request to the front controller, index.php
 	RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^([\s\S]*)$ index.php/$1 [L,NC,QSA]
-	#RewriteRule ^(.*)$ index.php/$1 [L]
-	RewriteCond $1 !^(index\.php|media|writable|system|content|user_guide|docs|robots\.txt|favicon\.ico|.*.swf|piattos_xml|piattos_items|assets|.*.unity3d|crossdomain\.xml)
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^([\s\S]*)$ index.php/$1 [L,NC,QSA]
+    #RewriteRule ^(.*)$ index.php/$1 [L]
+    RewriteCond $1 !^(index\.php|media|writable|system|content|user_guide|docs|robots\.txt|favicon\.ico|.*.swf|piattos_xml|piattos_items|assets|.*.unity3d|crossdomain\.xml)
+
 
 	# Ensure Authorization header is passed along
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+	RewriteCond %{HTTP:Authorization} .
+	RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 </IfModule>
 
 <IfModule mod_headers.c>
@@ -83,5 +84,5 @@ Options -Indexes
 </IfModule>
 
 # Disable server signature start
-	ServerSignature Off
+ServerSignature Off
 # Disable server signature end
