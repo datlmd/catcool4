@@ -73,14 +73,17 @@ class Security extends BaseConfig
      */
     public bool $regenerate = false; // datlm stop csrf
 
+
     /**
      * --------------------------------------------------------------------------
      * CSRF Redirect
      * --------------------------------------------------------------------------
      *
      * Redirect to previous page with error on failure.
+     *
+     * @see https://codeigniter4.github.io/userguide/libraries/security.html#redirection-on-failure
      */
-    public bool $redirect = false;
+    public bool $redirect = (ENVIRONMENT === 'production');
 
     /**
      * --------------------------------------------------------------------------

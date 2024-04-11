@@ -26,7 +26,6 @@ class Pager extends BaseConfig
         'default_head'   => 'CodeIgniter\Pager\Views\default_head',
         'admin'          => 'App\Views\pager\admin', //datlm
         'frontend'       => 'App\Views\pager\frontend', //datlm
-
     ];
 
     /**
