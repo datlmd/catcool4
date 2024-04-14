@@ -13,10 +13,10 @@
         "php": "^8.1",
         "ext-intl": "*",
         "ext-mbstring": "*",
+        "facebook/php-business-sdk": "*",
+        "google/apiclient": "*",
         "laminas/laminas-escaper": "^2.13",
         "psr/log": "^3.0",
-        "google/apiclient": "^2.7",
-        "facebook/graph-sdk": "^5.7",
         "zaloplatform/zalo-php-sdk": "^2.0"
     },
     "require-dev": {
