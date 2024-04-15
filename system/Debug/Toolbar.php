@@ -433,7 +433,8 @@ class Toolbar
                 . $kintScript
                 . PHP_EOL;
 
-            if (str_contains($response->getBody(), '<head>')) {
+            //datlm fix va check !empty($response->getBody()) dat le
+            if (!empty($response->getBody()) && str_contains($response->getBody(), '<head>')) {
                 $response->setBody(
                     preg_replace(
                         '/<head>/',
