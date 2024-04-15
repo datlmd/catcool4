@@ -96,7 +96,7 @@ class MyController extends Controller
 
     public function __construct()
     {
-        $this->loadHelpers();
+        helper($this->helpers);
 
         //set time zone
         if (!empty(config_item('app_timezone'))) {
