@@ -1,11 +1,21 @@
 var is_product_processing = false;
 var timeout_variant;
 var product_variant_max = 3;
+var product_variant_combination_sku_name = 'variant_info_row_'
 
 $(function () {
     Tiny_content.loadTiny(500);
 
     sortableVariant();
+
+    //Check button them bien the
+    if ($('#product_variant .product-variant').length >= product_variant_max) {
+        $('#product_variant #product_add_variant_group').hide();
+    }
+
+    if ($('#product_variant_combination_sku_name').length && $('#product_variant_combination_sku_name').val() != "") {
+        product_variant_combination_sku_name = $('#product_variant_combination_sku_name').val();
+    }
 
     // preventing page from redirecting
     $(document).on('dragover', ".drop-drap-image-list", function(e) {
@@ -307,6 +317,11 @@ function showVariantForm() {
 
 $(document).on('click', '#product_variant #product_add_variant_group .btn', function() {
 
+    if ($('#product_variant .product-variant').length >= product_variant_max) {
+        $('#product_variant #product_add_variant_group').hide();
+        return;
+    }
+
     showVariantForm();
 
     clearTimeout(timeout_variant);
@@ -485,22 +500,25 @@ function showListVariantSku() {
                     //     return;
                     // }
 
-                    variant_info_row_id = 'variant_info_row_' + $(variant_1).data('variant-value-row') + '_' + $(variant_2).data('variant-value-row') + '_' + $(variant_3).data('variant-value-row');
+                    variant_info_row_id = product_variant_combination_sku_name + $(variant_1).data('variant-value-row') + '_' + $(variant_2).data('variant-value-row') + '_' + $(variant_3).data('variant-value-row');
 
                     variant_name_row_1 = 'row_' + $(variant_1).data('variant-value-row') + '_name';
                     variant_name_row_2 = 'row_' + $(variant_2).data('variant-value-row') + '_name';
                     variant_name_row_3 = 'row_' + $(variant_3).data('variant-value-row') + '_name';
 
                     html_variant_tr += '<tr id="' + variant_info_row_id + '">';
-                    if (index_variant_2 == 0 && index_variant_3 == 0) {
-                        html_variant_tr += '<td data-variant-name="' + variant_name_row_1 + '" class="variant-name text-center" rowspan="' + parseInt(total_variant_value_2 * total_variant_value_3) + '">' + $(variant_1).val() + '</td>';
-                    }
+                    // if (index_variant_2 == 0 && index_variant_3 == 0) {
+                    //     html_variant_tr += '<td data-variant-name="' + variant_name_row_1 + '" class="variant-name text-center" rowspan="' + parseInt(total_variant_value_2 * total_variant_value_3) + '">' + $(variant_1).val() + '</td>';
+                    // }
+                    //
+                    // if (index_variant_3 == 0) {
+                    //     html_variant_tr += '<td data-variant-name="' + variant_name_row_2 + '" class="variant-name text-center" rowspan="' + total_variant_value_3 + '">' + $(variant_2).val() + '</td>';
+                    // }
 
-                    if (index_variant_3 == 0) {
-                        html_variant_tr += '<td data-variant-name="' + variant_name_row_2 + '" class="variant-name text-center" rowspan="' + total_variant_value_3 + '">' + $(variant_2).val() + '</td>';
-                    }
-
+                    html_variant_tr += '<td data-variant-name="' + variant_name_row_1 + '" class="variant-name text-center">' + $(variant_1).val() + '</td>';
+                    html_variant_tr += '<td data-variant-name="' + variant_name_row_2 + '" class="variant-name text-center">' + $(variant_2).val() + '</td>';
                     html_variant_tr += '<td data-variant-name="' + variant_name_row_3 + '" class="variant-name text-center">' + $(variant_3).val() + '</td>';
+
                     html_variant_tr += setInputItemVariant(variant_info_row_id);
                     html_variant_tr += '</tr>';
 
@@ -518,15 +536,16 @@ function showListVariantSku() {
                 //     return;
                 // }
 
-                variant_info_row_id = 'variant_info_row_' + $(variant_1).data('variant-value-row') + '_' + $(variant_2).data('variant-value-row');
+                variant_info_row_id = product_variant_combination_sku_name + $(variant_1).data('variant-value-row') + '_' + $(variant_2).data('variant-value-row');
 
                 variant_name_row_1 = 'row_' + $(variant_1).data('variant-value-row') + '_name';
                 variant_name_row_2 = 'row_' + $(variant_2).data('variant-value-row') + '_name';
 
                 html_variant_tr += '<tr id="' + variant_info_row_id + '">';
-                if (index_variant_2 === 0) {
-                    html_variant_tr += '<td data-variant-name="' + variant_name_row_1 + '" class="variant-name text-center" rowspan="' + total_variant_value + '">' + $(variant_1).val() + '</td>';
-                }
+                // if (index_variant_2 === 0) {
+                //     html_variant_tr += '<td data-variant-name="' + variant_name_row_1 + '" class="variant-name text-center" rowspan="' + total_variant_value + '">' + $(variant_1).val() + '</td>';
+                // }
+                html_variant_tr += '<td data-variant-name="' + variant_name_row_1 + '" class="variant-name text-center">' + $(variant_1).val() + '</td>';
                 html_variant_tr += '<td data-variant-name="' + variant_name_row_2 + '" class="variant-name text-center">' + $(variant_2).val() + '</td>';
 
                 html_variant_tr += setInputItemVariant(variant_info_row_id);
@@ -543,7 +562,7 @@ function showListVariantSku() {
             // if ($(this).val() == '' || $(this).val() === undefined) {
             //     return;
             // }
-            variant_info_row_id = 'variant_info_row_' + $(this).data('variant-value-row');
+            variant_info_row_id = product_variant_combination_sku_name + $(this).data('variant-value-row');
 
             variant_name_row    = 'row_' + $(this).data('variant-value-row') + '_name';
 

@@ -301,11 +301,11 @@ label {
     padding: 0.25rem;
 }
 .photo-list .photo-item {
-    width: 160px !important;
-    max-width: 160px !important;
-    height: 194px;
+    width: 125px !important;
+    max-width: 125px !important;
+    height: 165px;
     overflow: hidden;
-    margin: 5px 7px 5px 0;
+    margin: 5px 10px 5px 0;
     text-align: center;
     display: block;
     background-color: #fff;
@@ -317,8 +317,8 @@ label {
     margin: 0 !important;
 }
 .photo-list .photo-item img {
-    width: 150px;
-    height: 150px;
+    width: 100%;
+    height: 120px;
     content: url(data:image/gif;base64,R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
     background-position: center;
     background-repeat: no-repeat;

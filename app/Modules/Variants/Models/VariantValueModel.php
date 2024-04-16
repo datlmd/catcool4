@@ -64,6 +64,7 @@ class VariantValueModel extends MyModel
         $language_id = get_lang_id(IS_ADMIN);
         foreach ($result as $key => $value) {
             $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
+            $result[$key]['variant_value_row'] = format_product_variant_row($value['variant_value_id']);
         }
 
         return $result;

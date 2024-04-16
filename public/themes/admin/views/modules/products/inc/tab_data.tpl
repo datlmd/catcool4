@@ -96,7 +96,7 @@
 				</div>
 
 				<div class="table-responsive">
-					<table class="table table-bordered table-hover second">
+					<table class="table table-hover second">
 						<thead class="table-light">
 							<tr class="table-light text-center" data-variant="{lang('ProductAdmin.text_variant_group')}"
 								data-price="{lang('ProductAdmin.text_price')}"
@@ -106,7 +106,7 @@
 							>
 								{if !empty($edit_data.product_variant_list)}
 									{foreach $edit_data.product_variant_list as $variant}
-										<td id="td_input_product_variant_{sprintf($variant_row_name, $variant.variant_id)}_variant_id" class="variant-name">
+										<td id="td_input_product_variant_{$variant.variant_row}_variant_id" class="variant-name">
 											{$variant.name}
 										</td>
 									{/foreach}
@@ -119,89 +119,30 @@
 						</thead>
 						<tbody class="table-group-divider">
 							{if !empty($edit_data.product_variant_list)}
-								{foreach $edit_data.product_variant_list as $variant_1}
-									{foreach $variant_1.value_list as $variant_value_1}
-										{if !empty($edit_data.product_variant_list) && count($edit_data.product_variant_list) eq 3}
 
-										{elseif !empty($edit_data.product_variant_list) && count($edit_data.product_variant_list) == 2}
-											{foreach $edit_data.product_variant_list as $variant_2}
-												{if $variant_1.variant_id eq $variant_2.variant_id}
-													{continue}
-												{/if}
-												{foreach $variant_2.value_list as $variant_value_2}
-
-													{$variant_info_row_id = sprintf('variant_info_row_%s_%s', sprintf($variant_row_name, $variant_value_1.variant_value_id), sprintf($variant_row_name, $variant_value_2.variant_value_id))}
-													{$variant_name_row_1 = sprintf('row_%s_name', $variant_value_1.variant_value_id)}
-													{$variant_name_row_2 = sprintf('row_%s_name', $variant_value_2.variant_value_id)}
-
-													{$create_variant_key = create_variant_key($variant_1.product_id, [$variant_value_1.variant_value_id, $variant_value_2.variant_value_id])}
-
-													<tr id="{$variant_info_row_id}">
-
-{*														<input type="hidden" name="product_variant_combination[{$variant_info_row_id}][product_sku_id]" id="{$variant_info_row_id}_product_sku_id" value="{$edit_data.product_sku_list[$create_variant_key].product_sku_id}">*}
-
-														{if $variant_value_2@index eq 0}
-															<td data-variant-name="{$variant_name_row_1}" rowspan="{count($variant_2.value_list)}" class="variant-name text-center">
-																{$variant_value_1.name}
-															</td>
-														{/if}
-														<td data-variant-name="{$variant_name_row_2}" class="variant-name text-center">
-															{$variant_value_2.name}
-														</td>
-
-														{include file=get_theme_path('views/modules/products/inc/variant_sku_form.tpl')
-															product_variant_combination_attr_id='id'
-															product_variant_combination_row_id=$variant_info_row_id
-															product_variant_combination=$edit_data.product_sku_list[$create_variant_key]
-														}
-
-{*														<td id="{$variant_info_row_id}_price" class="variant-combination-price">*}
-{*															<div class="input-group">*}
-{*																<span class="input-group-text">{if !empty($currency.symbol_left)}{$currency.symbol_left}{elseif !empty($currency.symbol_right)}{$currency.symbol_right}{/if}</span>*}
-{*																<input type="text" name="product_variant_combination[{$variant_info_row_id}][price]" value="{$edit_data.product_sku_list[$create_variant_key].price}" id="input_product_variant_combination_{$variant_info_row_id}_price" class="form-control">*}
-{*															</div>*}
-{*															<div id="error_product_variant_combination_{$variant_info_row_id}_price" class="invalid-feedback"></div>*}
-{*														</td>*}
-{*														<td id="{$variant_info_row_id}_quantity" class="variant-combination-quantity">*}
-{*															<input type="number" min="0" name="product_variant_combination[{$variant_info_row_id}][quantity]" value="{$edit_data.product_sku_list[$create_variant_key].quantity}" id="input_product_variant_combination_{$variant_info_row_id}_quantity" class="form-control">*}
-{*															<div id="error_product_variant_combination_{$variant_info_row_id}_quantity" class="invalid-feedback"></div>*}
-{*														</td>*}
-{*														<td id="{$variant_info_row_id}_sku" class="variant-combination-sku">*}
-{*															<input type="text" name="product_variant_combination[{$variant_info_row_id}][sku]" value="{$edit_data.product_sku_list[$create_variant_key].sku}" id="input_product_variant_combination_{$variant_info_row_id}_sku" class="form-control">*}
-{*															<div id="error_product_variant_combination_{$variant_info_row_id}_sku" class="invalid-feedback"></div>*}
-{*														</td>*}
-{*														<td id="{$variant_info_row_id}_published">*}
-{*															<div class="switch-button switch-button-xs catcool-center">*}
-{*																{form_checkbox("product_variant_combination[{$variant_info_row_id}][published]", true, $edit_data.product_sku_list[$create_variant_key].published|default:true, ['id' => "input_product_variant_combination_{$variant_info_row_id}_published"])}*}
-{*																<span><label for="input_product_variant_combination_{$variant_info_row_id}_published"></label></span>*}
-{*															</div>*}
-{*														</td>*}
-													</tr>
-												{/foreach}
-											{/foreach}
-										{else}
-											{$variant_info_row_id = sprintf('variant_info_row_%s', sprintf($variant_row_name, $variant_value_1.variant_value_id))}
-											{$variant_name_row = sprintf('row_%s_name', $variant_value_1.variant_value_id)}
-											{$create_variant_key = create_variant_key($variant_1.product_id, [$variant_value_1.variant_value_id])}
-
-											<tr id="{$variant_info_row_id}">
-
-												<td data-variant-name="{$variant_name_row}" class="variant-name text-center">
-													{$variant_value_1.name}
-												</td>
-
-												{include file=get_theme_path('views/modules/products/inc/variant_sku_form.tpl')
-													product_variant_combination_attr_id='id'
-													product_variant_combination_row_id=$variant_info_row_id
-													product_variant_combination=$edit_data.product_sku_list[$create_variant_key]
-												}
-
-											</tr>
+								{if !empty($edit_data.product_sku_list)}
+									{foreach $edit_data.product_sku_list as $product_sku_info}
+										{if empty($product_sku_info.sku_value_list)}
+											{continue}
 										{/if}
+
+										<tr id="{$product_sku_info.variant_combination_sku_name}">
+											{foreach $product_sku_info.sku_value_list as $product_sku_value_info}
+												<td data-variant-name="{sprintf('row_%s_name', $product_sku_value_info.variant_value_id)}" class="variant-name text-center">
+													{$edit_data.product_variant_list[$product_sku_value_info.variant_id]['value_list'][$product_sku_value_info.variant_value_id].name}
+												</td>
+											{/foreach}
+
+											{include file=get_theme_path('views/modules/products/inc/variant_sku_form.tpl')
+												product_variant_combination_attr_id='id'
+												product_variant_combination_row_id=$product_sku_info.variant_combination_sku_name
+												product_variant_combination=$product_sku_info
+											}
+										</tr>
 									{/foreach}
 
-									{break}
-								{/foreach}
+								{/if}
+
 							{/if}
 						</tbody>
 					</table>
@@ -211,6 +152,8 @@
 
 		<input type="hidden" name="product_variant_row" id="product_variant_row" value="{$edit_data.product_variant_list|count|default:0}">
 		<input type="hidden" name="product_variant_value_row" id="product_variant_value_row" value="{$product_variant_value_row|default:0}">
+
+		<input type="hidden" name="product_variant_combination_sku_name" id="product_variant_combination_sku_name" value="{PRODUCT_VARIANT_COMBINATION_SKU_NAME}">
 
 	</div>
 

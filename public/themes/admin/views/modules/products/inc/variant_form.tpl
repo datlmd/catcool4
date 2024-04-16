@@ -1,7 +1,7 @@
 {strip}
 
     {if !empty($data_variant)}
-        {assign var="vf_variant_row" value=sprintf($variant_row_name, $data_variant.variant_id)}
+        {assign var="vf_variant_row" value=$data_variant.variant_row}
     {else}
         {assign var="vf_variant_row" value="product_variant_row_value"}
     {/if}

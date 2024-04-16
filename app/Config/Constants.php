@@ -144,6 +144,8 @@ defined('DISPLAY_GRID') OR define('DISPLAY_GRID', 'grid');
 
 //product
 defined('PRODUCT_VARIANT_LENGTH') OR define('PRODUCT_VARIANT_LENGTH', 50);
+defined('PRODUCT_VARIANT_ROW_NAME') OR define('PRODUCT_VARIANT_ROW_NAME', 'row%s');
+defined('PRODUCT_VARIANT_COMBINATION_SKU_NAME') OR define('PRODUCT_VARIANT_COMBINATION_SKU_NAME', 'variant_info_row_');
 
 defined('UPLOAD_FILE_DIR')             OR define('UPLOAD_FILE_DIR', 'public/uploads/');
 defined('UPLOAD_FILE_TMP_DIR')         OR define('UPLOAD_FILE_TMP_DIR', 'tmp/');

@@ -19,9 +19,6 @@ class Manage extends AdminController
 
     const FOLDER_UPLOAD = 'products/';
 
-    private $_variant_combination_name = 'variant_info_row_';
-    private $_variant_row_name = 'r%s';
-
     public function __construct()
     {
         parent::__construct();
@@ -406,7 +403,7 @@ class Manage extends AdminController
                             $variant_value_lang_model->insert($data_variant_value_lang[$language['id']]);
                         }
 
-                        //list variant value row tmp
+                        //list variant value row tmp, duoc su dung cho sku
                         $variant_value_id_list[$variant_value_key] = [
                             'variant_id'       => $variant['variant_id'],
                             'variant_value_id' => $variant_value_id,
@@ -443,7 +440,7 @@ class Manage extends AdminController
                 $product_sku_value_model->where(['product_id' => $product_id, 'product_sku_id' => $product_sku_id])->delete();
                 $data_product_sku_value = [];
 
-                $combination_rows = str_ireplace($this->_variant_combination_name, '', $combination_key);
+                $combination_rows = str_ireplace(PRODUCT_VARIANT_COMBINATION_SKU_NAME, '', $combination_key);
                 $combination_rows = explode('_', $combination_rows);
 
                 foreach ($combination_rows as $variant_value_row) {
@@ -513,9 +510,6 @@ class Manage extends AdminController
 
         $data['language_list'] = get_list_lang(true);
 
-        $product_variant_list = [];
-        $product_sku_list = [];
-
         //edit
         if (!empty($product_id) && is_numeric($product_id)) {
             $data['text_form'] = lang('ProductAdmin.text_edit');
@@ -570,17 +564,14 @@ class Manage extends AdminController
             $product_variant_model = new \App\Modules\Products\Models\ProductVariantModel();
             $product_sku_model     = new \App\Modules\Products\Models\ProductSkuModel();
 
-            $product_variant_list = $product_variant_model->getListVariantByProductId($product_id);
-            $product_sku_list = $product_sku_model->getListSkuByProductId($product_id);
+            $data_form['product_variant_list'] = $product_variant_model->getListVariantByProductId($product_id);
+            $data_form['product_sku_list'] = $product_sku_model->getListSkuByProductId($product_id);
 
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('ProductAdmin.text_add');
             $breadcrumb_url = site_url(self::MANAGE_URL . "/add");
         }
-
-        $data_form['product_variant_list'] = $product_variant_list;
-        $data_form['product_sku_list'] = $product_sku_list;
 
         $stock_status_model = new \App\Modules\Products\Models\StockStatusModel();
         $data['stock_status_list'] = $stock_status_model->getListAll();
@@ -610,8 +601,6 @@ class Manage extends AdminController
 
         $variant_model = new \App\Modules\Variants\Models\VariantModel();
         $data['variant_list'] = $variant_model->getListAll();
-
-        $data['variant_row_name'] = $this->_variant_row_name;
 
         $data['errors'] = $this->errors;
 
@@ -703,6 +692,11 @@ class Manage extends AdminController
                         }
                     }
                 }
+            }
+
+            if (empty($this->request->getPost('product_variant_combination'))) {
+                $this->errors['product_variant_combination'] = lang("Validation.required", ["field" => lang('ProductAdmin.text_variant_list')]);
+                return false;
             }
 
             foreach ($this->request->getPost('product_variant_combination') as $combination_key => $combination_value) {

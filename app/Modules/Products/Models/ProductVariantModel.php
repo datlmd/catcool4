@@ -39,17 +39,19 @@ class ProductVariantModel extends MyModel
 
         $variant_list = $variant_model->getListAll();
 
+        $list = [];
         foreach ($result as $key => $value) {
             if (empty($variant_list[$value['variant_id']])) {
-                unset($result[$key]);
+                //unset($result[$key]);
                 continue;
             }
-            $variant_info = $variant_list[$value['variant_id']];
 
-            $result[$key]['name']       = $variant_info['name'];
-            $result[$key]['value_list'] = $variant_value_model->getListById($value['variant_id']);
+            $value['name']        = $variant_list[$value['variant_id']]['name'];
+            $value['variant_row'] = format_product_variant_row($value['variant_id']);
+            $value['value_list']  = $variant_value_model->getListById($value['variant_id']);
+            $list[$value['variant_id']] = $value;
         }
 
-        return $result;
+        return $list;
     }
 }

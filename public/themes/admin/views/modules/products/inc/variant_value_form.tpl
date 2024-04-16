@@ -5,7 +5,7 @@
     {/if}
 
     {if !empty($data_variant_value)}
-        {assign var="vof_variant_value_row" value=sprintf($variant_row_name, $data_variant_value.variant_value_id)}
+        {assign var="vof_variant_value_row" value=$data_variant_value.variant_value_row}
     {else}
         {assign var="vof_variant_value_row" value="product_variant_value_row_value"}
     {/if}

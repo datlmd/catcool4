@@ -2042,9 +2042,9 @@ if (!function_exists('back_to'))
 }
 
 if (!function_exists('create_variant_key')) {
-    function create_variant_key($product_id, $option_value_list, $product_sku_id = null)
+    function create_variant_key($product_id, $variant_value_list, $product_sku_id = null)
     {
-        return md5(sprintf('%s_%s_%s', $product_id, implode('_', $option_value_list), $product_sku_id));
+        return md5(sprintf('%s_%s_%s', $product_id, implode('_', $variant_value_list), $product_sku_id));
     }
 }
 
@@ -2067,5 +2067,17 @@ if (!function_exists('format_decimal')) {
         }
 
         return str_ireplace([config_item('thousand_point'), config_item('decimal_point')], ["", "."] , $currency);
+    }
+}
+
+if (!function_exists('format_product_variant_row')) {
+    function format_product_variant_row($variant_id)
+    {
+        if (is_null($variant_id)) {
+            return $variant_id;
+        }
+
+
+        return sprintf(PRODUCT_VARIANT_ROW_NAME, $variant_id);
     }
 }
