@@ -1715,11 +1715,28 @@ if (!function_exists('add_meta'))
 
             $theme->addMeta('revisit-after', '1 days');
 
-            $theme->addMeta('generator', 'Cat Cool CMS');
+            if (!empty(config_item('page_generator'))) {
+                $theme->addMeta('generator', config_item('page_generator'));
+            } else {
+                $theme->addMeta('generator', 'CatCool CMS');
+            }
+
             if (!empty(lang('Frontend.text_copyright'))) {
                 $theme->addMeta('copyright', strip_tags(lang('Frontend.text_copyright')));
             }
-            $theme->addMeta('author', 'Dat Le');
+
+            if (!empty(config_item('page_author'))) {
+                $theme->addMeta('author', config_item('page_author'));
+            } else {
+                $theme->addMeta('author', 'Dat Le');
+            }
+
+            if (!empty(config_item('page_author_link'))) {
+                $theme->addMeta('author', config_item('page_author_link'), 'rel');
+            } else {
+                $theme->addMeta('author', site_url(), 'rel');
+            }
+
             $theme->addMeta('author', site_url(), 'rel');
 
             $theme->addMeta('description', $description, 'meta', ['id' => 'meta_description']);
@@ -1872,7 +1889,7 @@ if (!function_exists('script_google_search'))
                     }
                 </script>';
             } else {
-                log_message('error', 'script_google_search - image data null' . implode('||', $detail));
+                log_message('error', 'script_google_search - image data null' . implode('--||--', $detail));
             }
         }
 
