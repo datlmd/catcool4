@@ -86,6 +86,10 @@ class Detail extends MyController
             $this->themes->addCSS('common/plugin/fancybox/fancybox');
             $this->themes->addJS('common/plugin/fancybox/fancybox');
 
+            //@todo Chan index tam thoi trang news
+            $this->themes->addMeta('robots', 'noindex');
+            $this->themes->addMeta('googlebot', 'noindex,');
+
             theme_load($tpl_name, $data);
         } catch (\Exception $ex) {
             log_message('error', $ex->getMessage() . "[ID: $news_id, $ctime, $slug]");

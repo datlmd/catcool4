@@ -60,6 +60,10 @@ class News extends MyController
 
         add_meta(['title' => lang("News.heading_title")], $this->themes);
 
+        //@todo Chan index tam thoi trang news
+        $this->themes->addMeta('robots', 'noindex');
+        $this->themes->addMeta('googlebot', 'noindex,');
+
         $tpl_name = 'index';
         if (!empty($this->is_mobile)) {
             $tpl_name = 'mobile/index';

@@ -44,6 +44,10 @@ class Tag extends MyController
 
         add_meta(['title' => $tag, 'url' => current_url()], $this->themes);
 
+        //@todo Chan index tam thoi trang news
+        $this->themes->addMeta('robots', 'noindex');
+        $this->themes->addMeta('googlebot', 'noindex,');
+
         $tpl_name = 'tag';
         if (!empty($this->is_mobile)) {
             $tpl_name = 'mobile/tag';
