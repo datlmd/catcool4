@@ -14,6 +14,10 @@ $routes->set404Override('App\Modules\Frontend\Controllers\Error404::index'); //d
 
 $routes->get('/', 'News::index', ['namespace' => 'App\Modules\News\Controllers']);
 
+$routes->add('sitemap.xml', 'Sitemap::index');
+$routes->add('sitemap-category.xml', 'Sitemap::category');
+$routes->add('sitemap-post(:any).xml', 'Sitemap::post/$1');
+
 foreach(glob(APPPATH . 'Modules/*', GLOB_ONLYDIR) as $item_dir) {
     if (file_exists($item_dir . '/Config/Routes.php')) {
         require_once($item_dir . '/Config/Routes.php');

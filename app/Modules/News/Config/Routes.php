@@ -37,13 +37,14 @@ $routes->add('(:any)-post(:num)c(:num).preview', 'Detail::index/$1/$2/$3/preview
 
 $routes->add('tag/(:any).html', 'Tag::index/$1', ['namespace' => 'App\Modules\News\Controllers']);
 
+//Quet tin
 $routes->add('robot/(:segment)/(:segment)', 'Robot::index/$1/$2', ['namespace' => 'App\Modules\News\Controllers']);
 
-$routes->add('sitemap.xml', 'Sitemap::index', ['namespace' => 'App\Modules\News\Controllers']);
-$routes->add('sitemap-category.xml', 'Sitemap::category', ['namespace' => 'App\Modules\News\Controllers']);
-$routes->add('sitemap-news.xml', 'Sitemap::news', ['namespace' => 'App\Modules\News\Controllers']);
-$routes->add('sitemap-news-(:any).xml', 'Sitemap::news/$1', ['namespace' => 'App\Modules\News\Controllers']);
-
-$routes->add('sitemap-post-(:any).xml', 'Sitemap::post/$1', ['namespace' => 'App\Modules\News\Controllers']);
+//$routes->add('sitemap.xml', 'Sitemap::index', ['namespace' => 'App\Modules\News\Controllers']);
+//$routes->add('sitemap-category.xml', 'Sitemap::category', ['namespace' => 'App\Modules\News\Controllers']);
+//$routes->add('sitemap-news.xml', 'Sitemap::news', ['namespace' => 'App\Modules\News\Controllers']);
+//$routes->add('sitemap-news-(:any).xml', 'Sitemap::news/$1', ['namespace' => 'App\Modules\News\Controllers']);
+//
+//$routes->add('sitemap-post-(:any).xml', 'Sitemap::post/$1', ['namespace' => 'App\Modules\News\Controllers']);
 
 $routes->add('fb-news', 'Facebook::index', ['namespace' => 'App\Modules\News\Controllers']);
