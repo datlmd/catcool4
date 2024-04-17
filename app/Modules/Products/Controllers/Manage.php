@@ -422,13 +422,17 @@ class Manage extends AdminController
             }
 
             //product sku
+            $sort_product_variant_combination = count($this->request->getPost('product_variant_combination'));
+
             foreach ($this->request->getPost('product_variant_combination') as $combination_key => $combination_value) {
+
                 $data_product_sku = [
                     'product_id' => $product_id,
                     'price'      => format_decimal($combination_value['price']),
                     'quantity'   => $combination_value['quantity'],
                     'sku'        => $combination_value['sku'],
                     'published'  => !empty($combination_value['published']) ? STATUS_ON : STATUS_OFF,
+                    'sort_order' => $sort_product_variant_combination,
                 ];
 
                 if (!empty($combination_value['product_sku_id'])) {
@@ -459,6 +463,8 @@ class Manage extends AdminController
                 if (!empty($data_product_sku_value)) {
                     $product_sku_value_model->insertBatch($data_product_sku_value);
                 }
+
+                $sort_product_variant_combination--;
             }
         }
         // het variant

@@ -128,7 +128,7 @@
 
 										<tr id="{$product_sku_info.variant_combination_sku_name}">
 											{foreach $product_sku_info.sku_value_list as $product_sku_value_info}
-												<td data-variant-name="{sprintf('row_%s_name', $product_sku_value_info.variant_value_id)}" class="variant-name text-center">
+												<td data-variant-name="{sprintf('row_%s_name', format_product_variant_row($product_sku_value_info.variant_value_id))}" class="variant-name text-center">
 													{$edit_data.product_variant_list[$product_sku_value_info.variant_id]['value_list'][$product_sku_value_info.variant_value_id].name}
 												</td>
 											{/foreach}

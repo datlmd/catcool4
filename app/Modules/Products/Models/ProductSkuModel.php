@@ -16,6 +16,7 @@ class ProductSkuModel extends MyModel
         'quantity',
         'sku',
         'published',
+        'sort_order',
     ];
 
     public function __construct()
@@ -33,6 +34,9 @@ class ProductSkuModel extends MyModel
         if (empty($result)) {
             return [];
         }
+
+        $sort_list = array_column($result, 'sort_order');
+        array_multisort($sort_list, SORT_DESC, $result);
 
         $list = [];
 

@@ -33,8 +33,11 @@
 
         <div class="product-variant-list">
             <div class="row product-variant-item mt-2">
-                <label class="col-12 col-form-label">{lang('ProductAdmin.text_variant_value')}</label>
-                <div class="col-12">
+                <label class="col-6 col-form-label">{lang('ProductAdmin.text_variant_value')}</label>
+                <div class="col-6 text-end">
+                    <button type="button" class="btn btn-xs btn-primary btn-variant-value-add mt-1" data-variant-row="{$vf_variant_row}"><i class="fas fa-plus me-1"></i>{lang('ProductAdmin.text_variant_value_add')}</button>
+                </div>
+                <div class="col-12 mt-2">
                     <div class="d-flex flex-wrap">
                         {if !empty($data_variant.value_list)}
                             {foreach $data_variant.value_list as $variant_value}
@@ -57,7 +60,6 @@
 
                     </div>
 
-                    <button type="button" class="btn btn-xs btn-primary btn-variant-value-add mt-1" data-variant-row="{$vf_variant_row}"><i class="fas fa-plus me-1"></i>{lang('ProductAdmin.text_variant_value_add')}</button>
                 </div>
             </div>
 

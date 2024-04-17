@@ -36,8 +36,20 @@ class ProductVariantModel extends MyModel
 
         $variant_model       = new \App\Modules\Variants\Models\VariantModel();
         $variant_value_model = new \App\Modules\Variants\Models\VariantValueModel();
+        $product_variant_value_model = new ProductVariantValueModel();
 
         $variant_list = $variant_model->getListAll();
+        $variant_value_list = $variant_value_model->getListAll();
+
+        $product_variant_value_list = $product_variant_value_model->getListVariantValueByProductId($product_id);
+        $product_variant_group_list = [];
+
+        foreach ($product_variant_value_list as $product_variant_value_key => $product_variant_value) {
+            if (empty($variant_value_list[$product_variant_value['variant_value_id']])) {
+                continue;
+            }
+            $product_variant_group_list[$product_variant_value['variant_id']][] = array_merge($product_variant_value, $variant_value_list[$product_variant_value['variant_value_id']]);
+        }
 
         $list = [];
         foreach ($result as $key => $value) {
@@ -48,7 +60,16 @@ class ProductVariantModel extends MyModel
 
             $value['name']        = $variant_list[$value['variant_id']]['name'];
             $value['variant_row'] = format_product_variant_row($value['variant_id']);
-            $value['value_list']  = $variant_value_model->getListById($value['variant_id']);
+
+            $variant_values = $product_variant_group_list[$value['variant_id']];
+            $variant_value_sort = array_column($variant_values, 'sort_order');
+            array_multisort($variant_value_sort, SORT_DESC, $variant_values);
+
+            foreach ($variant_values as $variant_value) {
+                $variant_value['variant_value_row'] = format_product_variant_row($variant_value['variant_value_id']);
+                $value['value_list'][$variant_value['variant_value_id']] = $variant_value;
+            }
+
             $list[$value['variant_id']] = $value;
         }
 

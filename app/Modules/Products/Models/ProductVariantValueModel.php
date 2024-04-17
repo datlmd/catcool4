@@ -32,21 +32,6 @@ class ProductVariantValueModel extends MyModel
             return [];
         }
 
-        $variant_model       = new \App\Modules\Variants\Models\VariantModel();
-        $variant_value_model = new \App\Modules\Variants\Models\VariantValueModel();
-
-        $variant_list = $variant_model->getListAll();
-        foreach ($result as $key => $value) {
-            if (empty($variant_list[$value['variant_id']])) {
-                unset($result[$key]);
-                continue;
-            }
-            $variant_info = $variant_list[$value['variant_id']];
-
-            $result[$key]['name']       = $variant_info['name'];
-            $result[$key]['value_list'] = $variant_value_model->getListById($value['variant_id']);
-        }
-
         return $result;
     }
 }
