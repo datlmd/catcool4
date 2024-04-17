@@ -159,7 +159,7 @@
         <a href="javascript:void(0);" class="ms-0" id="product_image_{'product_image_row_value'}_image" data-target="input_product_image_{'product_image_row_value'}_image" data-thumb="product_image_{'product_image_row_value'}_load_image_url" data-type="image" data-bs-toggle="image">
             <img src="{image_default_url()}" style="background-image: url('{image_default_url()}')"  alt="" title="" id="product_image_{'product_image_row_value'}_load_image_url" data-is-background="true" data-placeholder="{image_default_url()}"/>
             <div class="btn-group w-100 mt-1" role="group">
-                <button type="button" id="button-image-logo" class="button-image btn btn-xs btn-light" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
+                <button type="button" class="button-image btn btn-xs btn-light" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
                 <button type="button" onclick="$(this).parent().parent().parent().remove();" class="btn btn-xs btn-light" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>
             </div>
         </a>

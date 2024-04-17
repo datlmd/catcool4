@@ -34,10 +34,10 @@ class FileManager extends AdminController
         $this->_dir_image      = get_upload_url();
         $this->_dir_image_path = get_upload_path();
 
-        $this->_upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
+        $this->_upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,heic,HEIC,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
         if (!empty($this->request->getGet('type')) && in_array($this->request->getGet('type'), ["image", "media"])) {
             if ($this->request->getGet('type') == "image") {
-                $this->_upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
+                $this->_upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,heic,HEIC,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
             } else {
                 $this->_upload_type = 'webm,WEBM,mpg,MPG,mp2,MP2,mpeg,MPEG,mpe,MPE,mpv,MPV,ogg,OGG,mp4,MP4,m4p,M4P,m4v,M4V,avi,AVI,wmv,WMV,mov,MOV,qt,QT,flv,FLV,swf,SWF,avchd,AVCHD';
             }
@@ -526,6 +526,10 @@ class FileManager extends AdminController
                 foreach($this->request->getFileMultiple($file_name) as $file) {
                     // Get random file name
                     $newName = !empty(config_item('file_encrypt_name')) ? trim($file->getRandomName()) : str_replace(" ", "", trim($file->getName()));
+                    if (preg_match('/\A[a-z 0-9~%.:_\-]+\z/iu', $newName) !== 1) {
+                        $newName = $file->getRandomName();
+                    }
+
                     // Store file in public/uploads/ folder
                     $file->move($directory, $newName);
 

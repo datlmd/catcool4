@@ -9,12 +9,12 @@
                 <button type="button" data-bs-toggle="tooltip" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary btn-space"><i class="fas fa-upload me-1"></i>{$button_upload}</button>
                 <button type="button" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success btn-space"><i class="fas fa-folder me-1"></i>{$button_folder}</button>
                 <button type="button" data-bs-toggle="tooltip" title="{$button_delete}" id="button_delete" class="btn btn-sm btn-danger btn-space"><i class="fas fa-trash"></i></button>
+                <a href="{base_url('image/editor')}" data-bs-toggle="tooltip" title="Photo Editor" target="_blank" class="btn btn-sm btn-warning btn-space me-0"><i class="fas fa-pencil-alt"></i></a>
             </div>
             <div class="col-sm-4 col-12 mb-1">
                 <div class="input-group">
                     <input type="text" name="search" value="{$filter_name}" placeholder="{$entry_search}" style="min-width: 50px;" class="form-control btn-space me-0">
                     <button type="button" title="{$button_search}" id="button_search" class="btn btn-sm btn-primary btn-space"><i class="fas fa-search"></i></button>
-                    <a href="{base_url('image/editor')}" data-bs-toggle="tooltip" title="Photo Editor" target="_blank" class="btn btn-sm btn-warning btn-space me-0"><i class="fas fa-pencil-alt"></i></a>
                 </div>
             </div>
         </div>
@@ -194,7 +194,8 @@
             {/if}
         </div>
     {/capture}
-    <div id="filemanager" class="modal-dialog modal-xl modal-dialog-centered" style="max-width: 1200px !important;">
+{*    style="max-width: 1200px !important;"*}
+    <div id="filemanager" class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen" >
         <div class="modal-content">
             <div class="modal-header bg-dark">
                 <h5 class="modal-title text-white" id="photoModalLabel">{$heading_title}{if !empty($directory)} ({$directory|urldecode}){/if}</h5>
@@ -469,7 +470,8 @@
             html: true,
             placement: 'bottom',
             customClass: 'shadow',
-            trigger: 'manual',
+            //trigger: true,
+            container: '.modal-body',
             title: '{{$entry_folder}}',
             content: function () {
                 var html = '<div class="input-group">';
@@ -481,11 +483,12 @@
         });
 
         button_folder.popover('toggle');
+
         is_disposing = true;
 
         $('input[name=\'folder_filemanager\']').focus();
 
-        $('#button_create_folder').on('click', function() {
+        $(document).on('click', '#button_create_folder', function(e) {
             if (!$('input[name=\'folder_filemanager\']').val()) {
                 $.notify('{{$error_folder_null}}', {
                     'type':'danger'
@@ -641,7 +644,7 @@
             $(this).ekkoLightbox();
         });
 
-        $('#btn_rotation_left').on('click', function (e) {
+        $(document).on('click', '#btn_rotation_left', function(e) {
             if (is_processing) {
                 return false;
             }
@@ -686,7 +689,7 @@
             });
         });
 
-        $('#btn_rotation_hor').on('click', function (e) {
+        $(document).on('click', '#btn_rotation_hor', function(e) {
             if (is_processing) {
                 return false;
             }
@@ -731,7 +734,7 @@
             });
         });
 
-        $('#btn_rotation_vrt').on('click', function (e) {
+        $(document).on('click', '#btn_rotation_vrt', function(e) {
             if (is_processing) {
                 return false;
             }

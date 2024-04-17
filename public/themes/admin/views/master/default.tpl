@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="{if !empty($html_class)}{$html_class}{/if}" dir="{lang('General.direction')}" lang="{lang('General.code')}">
     <head>
         <meta charset="utf-8">
