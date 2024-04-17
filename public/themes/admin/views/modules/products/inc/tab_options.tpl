@@ -6,6 +6,7 @@
 	{$product_option_value_row = 0}
 
 	<div id="option">
+		<div id="error_product_option_errors" class="text-danger"></div>
 		{if !empty($edit_data.product_option_list)}
 			{foreach $edit_data.product_option_list as $product_option_data}
 				{$product_option_row = $product_option_row + 1}

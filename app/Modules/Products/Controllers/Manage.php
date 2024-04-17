@@ -650,7 +650,6 @@ class Manage extends AdminController
 
                 if (!empty($product_variant_list[$variant['variant_id']])) {
                     $this->errors[sprintf('product_variant.%s.variant_id', $variant_key)] = lang('ProductAdmin.error_variant_name');
-                    return false;
                 }
                 $product_variant_list[$variant['variant_id']] = $variant['variant_id'];
 
@@ -683,7 +682,6 @@ class Manage extends AdminController
                             }
                             if (!empty($this->errors)) {
                                 $this->errors[sprintf('product_variant.%s.variant_values.%s.lang.%s.name', $variant_key, $variant_value_key, $lang_key)] = lang('ProductAdmin.error_variant_value_name_unique');
-                                return false;
                             }
                         }
 
@@ -702,16 +700,36 @@ class Manage extends AdminController
 
             if (empty($this->request->getPost('product_variant_combination'))) {
                 $this->errors['product_variant_combination'] = lang("Validation.required", ["field" => lang('ProductAdmin.text_variant_list')]);
-                return false;
             }
 
             foreach ($this->request->getPost('product_variant_combination') as $combination_key => $combination_value) {
+                if (format_decimal($combination_value['price']) < config_item('price_minimum')) {
+                    $this->errors[sprintf('product_variant_combination.%s.price', $combination_key)] = lang('Validation.greater_than_equal_to', ['field' => lang('ProductAdmin.text_price'), 'param' => config_item('price_minimum')]);
+                }
+
                 $this->validator->setRule(sprintf('product_variant_combination.%s.price', $combination_key), lang('ProductAdmin.text_price'), 'required|decimal');
                 $this->validator->setRule(sprintf('product_variant_combination.%s.quantity', $combination_key), lang('ProductAdmin.text_quantity'), 'required|is_natural');
             }
         } else {
+            if (format_decimal($this->request->getPost('price')) < config_item('price_minimum')) {
+                $this->errors['price'] = lang('Validation.greater_than_equal_to', ['field' => lang('ProductAdmin.text_price'), 'param' => config_item('price_minimum')]);
+            }
             $this->validator->setRule('price', lang('ProductAdmin.text_price'), 'required|decimal');
-            $this->validator->setRule('quantity', lang('ProductAdmin.text_quantity'), 'required|is_natural_no_zero');
+            $this->validator->setRule('quantity', lang('ProductAdmin.text_quantity'), 'required|is_natural');
+        }
+
+        if (!empty($this->request->getPost('product_option'))) {
+            foreach ($this->request->getPost('product_option') as $product_option_key => $product_option) {
+                if (empty($product_option['product_option_value'])) {
+                    continue;
+                }
+
+                foreach ($product_option['product_option_value'] as $option_value_key => $option_value) {
+                    if (!is_null($option_value['price']) && $option_value['price'] > 0 && format_decimal($option_value['price']) < config_item('price_minimum')) {
+                        $this->errors['product_option_errors'] = lang('Validation.greater_than_equal_to', ['field' => lang('ProductAdmin.text_price'), 'param' => config_item('price_minimum')]);
+                    }
+                }
+            }
         }
 
         //$this->validator->setRule('model', lang('ProductAdmin.text_model'), 'required');
@@ -726,6 +744,10 @@ class Manage extends AdminController
 //                }
 //            }
 //        }
+
+        if (!empty($this->errors)) {
+            return false;
+        }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();
