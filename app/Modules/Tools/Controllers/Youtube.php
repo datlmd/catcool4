@@ -83,6 +83,7 @@ class Youtube extends MyController
                         'type' => $type,
                         'url' => $value['url'],
                         'download_url' => 'tools/youtube/huong-dan-tai?link=' . urlencode($value['url']) . '&title=' . urlencode($video_data['videoDetails']['title']) . '&type=' . $type,
+                        'download_url' => ($value['url']),
                         'qualityLabel' => $value['qualityLabel'] ?? "",
                     ];
                 }
@@ -111,16 +112,19 @@ class Youtube extends MyController
         $download_file_name = strtolower(str_replace(' ', '_', $download_file_name));
         //$download_file_name = preg_replace('/[^A-Za-z0-9.\_\-]/', '', basename($download_file_name));
 
+        header("Location: $download_url");
+        exit();
+
+        //@todo fix download
         if (!empty($download_url) && substr($download_url, 0, 8) === 'https://') {
 
-            header("Cache-Control: public");
-            header('Content-Type: application/octet-stream');
-            header("Content-Description: File Transfer");
-            header('Content-Disposition: attachment;filename="' . $download_file_name . '"');
-            header("Content-Transfer-Encoding: binary");
-
-            readfile($download_url);
-            exit();
+//            header("Cache-Control: public");
+//            header("Content-Transfer-Encoding: binary");
+//            header('Content-Disposition: attachment;filename="' . $download_file_name . '"');
+//            header("Content-Transfer-Encoding: binary");
+//            header('Content-Type: application/octet-stream');
+//
+//            readfile($download_url);
         }
     }
 

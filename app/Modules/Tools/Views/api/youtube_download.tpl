@@ -31,7 +31,7 @@
                             {if $video_info.qualityLabel}{$video_info.qualityLabel}{else}Unknown{/if}
                         </td>
                         <td class="text-end">
-                            <a href="{$video_info.download_url}"><i class="fa fa-download me-1"></i>{lang('Tool.text_download_video')}</a>
+                            <a href="{$video_info.download_url}" target="_blank"><i class="fa fa-download me-1"></i>{lang('Tool.text_download_video')}</a>
                         </td>
                     </tr>
                 {/foreach}
@@ -57,7 +57,7 @@
                             {if $video_info.qualityLabel}{$video_info.qualityLabel}{else}Unknown{/if}
                         </td>
                         <td class="text-end">
-                            <a href="{$video_info.download_url}"><i class="fa fa-download me-1"></i>{lang('Tool.text_download_video')}</a>
+                            <a href="{$video_info.download_url}" target="_blank"><i class="fa fa-download me-1"></i>{lang('Tool.text_download_video')}</a>
                         </td>
                     </tr>
                 {/foreach}
