@@ -1807,7 +1807,7 @@ if (!function_exists('add_meta'))
             if (!empty($keywords) && $url != base_url()) {
                 $keyword_list = explode(',', $keywords);
                 foreach ($keyword_list as $key => $keyword) {
-                    $theme->addMeta('og:article:tag', $keyword, 'meta', ['property' => 'article:tag', 'id' => "meta_tag_$key" ]);
+                    $theme->addMeta('og:article:tag', trim($keyword), 'meta', ['property' => 'article:tag', 'id' => "meta_tag_$key" ]);
                 }
             }
 
