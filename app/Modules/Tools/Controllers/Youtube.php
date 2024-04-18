@@ -106,20 +106,28 @@ class Youtube extends MyController
 
     public function download()
     {
-        $downloadURL = urldecode($this->request->getGet('link'));
-        $downloadFileName = urldecode($this->request->getGet('title')) . '.' . urldecode($this->request->getGet('type'));
-        if (! empty($downloadURL) && substr($downloadURL, 0, 8) === 'https://') {
+        $download_url = urldecode($this->request->getGet('link'));
+        $download_file_name = urldecode($this->request->getGet('title')) . '.' . urldecode($this->request->getGet('type'));
+        $download_file_name = strtolower(str_replace(' ', '_', $download_file_name));
+        //$download_file_name = preg_replace('/[^A-Za-z0-9.\_\-]/', '', basename($download_file_name));
+
+        if (!empty($download_url) && substr($download_url, 0, 8) === 'https://') {
+
             header("Cache-Control: public");
+            header('Content-Type: application/octet-stream');
             header("Content-Description: File Transfer");
-            header("Content-Disposition: attachment;filename=\"$downloadFileName\"");
+            header('Content-Disposition: attachment;filename="' . $download_file_name . '"');
             header("Content-Transfer-Encoding: binary");
-            readfile($downloadURL);
+
+            readfile($download_url);
+            exit();
         }
     }
 
     public function getYoutubeVideoMeta($videoId, $key = null)
     {
-        $key = $key ?? 'AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8';
+        //'AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8' key test cua trang khac
+        $key = $key ?? config_item('google_api_key');
 
         $ch = curl_init();
         $curlUrl = 'https://www.youtube.com/youtubei/v1/player?key=' . $key;
