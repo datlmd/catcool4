@@ -6,7 +6,7 @@
                 <a href="{$display_url}&d={DISPLAY_GRID}" data-bs-toggle="tooltip" title="{lang("Admin.text_grid")}" id="button_display_grid" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-th"></i></a>
                 <a href="{$display_url}&d={DISPLAY_LIST}" data-bs-toggle="tooltip" title="{lang("Admin.text_list")}" id="button_display_list" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-list"></i></a>
                 <a href="{$refresh}" data-bs-toggle="tooltip" title="{$button_refresh}" id="button_refresh" class="btn btn-sm btn-secondary btn-space"><i class="fas fa-sync"></i></a>
-                <button type="button" data-bs-toggle="tooltip" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary btn-space"><i class="fas fa-upload me-1"></i>{$button_upload}</button>
+                <button type="button" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary btn-space"><i class="fas fa-upload me-1"></i>{$button_upload}</button>
                 <button type="button" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success btn-space"><i class="fas fa-folder me-1"></i>{$button_folder}</button>
                 <button type="button" data-bs-toggle="tooltip" title="{$button_delete}" id="button_delete" class="btn btn-sm btn-danger btn-space"><i class="fas fa-trash"></i></button>
                 <a href="{base_url('image/editor')}" data-bs-toggle="tooltip" title="Photo Editor" target="_blank" class="btn btn-sm btn-warning btn-space me-0"><i class="fas fa-pencil-alt"></i></a>
@@ -49,7 +49,7 @@
                                             <a href="{$file.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
                                                 <img src="{image_root($file.path)}" style="background-image: url('{image_root($file.path)}');" alt="{$file.name}" title="{$file.name}" class="" />
                                             </a>
-                                            <button type="button" class="btn btn-xs btn-light image-setting shadow-sm" data-path="{$file.path}" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
+                                            <button type="button" class="btn btn-xs btn-light image-setting shadow-sm" id="setting_key_{$key}" data-path="{$file.path}" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
                                         </div>
                                     {elseif $file.type == 'video'}
                                         <div class="position-relative">
@@ -114,7 +114,7 @@
                                 <a href="{$file.thumb}" target="_blank" {if empty($target) && !empty($is_show_lightbox)}data-lightbox="photos"{/if} class="thumbnail" data-file-target="#cb_{$key}">
                                     <img src="{image_root($file.path)}" style="background-image: url('{image_root($file.path)}');" alt="{$file.name}" title="{$file.name}" class="" />
                                 </a>
-                                <button type="button" class="btn btn-xs btn-light image-setting shadow-sm" data-path="{$file.path}" data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
+                                <button type="button" class="btn btn-xs btn-light image-setting shadow-sm" data-path="{$file.path}" id="setting_key_{$key}"  data-bs-toggle="popover"><i class="fas fa-ellipsis-h"></i></button>
                             </div>
 
                             <div class="row mt-1">
@@ -198,7 +198,7 @@
     <div id="filemanager" class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen" >
         <div class="modal-content">
             <div class="modal-header bg-dark">
-                <h5 class="modal-title text-white" id="photoModalLabel">{$heading_title}{if !empty($directory)} ({$directory|urldecode}){/if}</h5>
+                <h5 class="modal-title text-white" id="photoModalLabel">{$heading_title}{if !empty($directory)} | <span class="text-secondary">{$directory|urldecode}</span>{/if}</h5>
                 <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4" style="min-height: 600px;">
@@ -220,6 +220,9 @@
 {if $target}{form_hidden('file_target', $target)}{/if}
 {if $file_type}{form_hidden('file_type', $file_type)}{/if}
 
+<input type="hidden" name="input_directory" value="{$directory}">
+<input type="hidden" name="input_setting_path" value="">
+
 <script type="text/javascript">
     var is_processing = false;
     var is_disposing = false;
@@ -235,7 +238,7 @@
                 $('#' + $('input[name=\'file_thumb\']').val()).attr('src', $(this).find('img').attr('src'));
 
                 if ($('#' + $('input[name=\'file_thumb\']').val()).data('is-background')) {
-                    console.log($('#' + $('input[name=\'file_thumb\']').val()).data('is-background'))
+
                     $('#' + $('input[name=\'file_thumb\']').val()).css('background-image', 'url(' + $(this).find('img').attr('src') + ')');
                 }
             }
@@ -459,6 +462,7 @@
         e.preventDefault();
 
         $('#button-folder').popover('dispose');
+
         if ($popover) {
             is_disposing = false;
             return;
@@ -500,7 +504,7 @@
             }
             is_processing = true;
             $.ajax({
-                url: base_url + '/common/filemanager/folder?directory={{$directory}}',
+                url: base_url + '/common/filemanager/folder?directory=' + $('input[name=\'input_directory\']').val(),
                 type: 'post',
                 dataType: 'json',
                 data: 'folder=' + encodeURIComponent($('input[name=\'folder_filemanager\']').val()),
@@ -619,6 +623,7 @@
         }
 
         var path_url = $(this).data('path');
+        $('input[name=\'input_setting_path\']').val(path_url);
 
         image_setting.popover({
             animation: false,
@@ -629,8 +634,9 @@
             trigger: 'manual',
             content: function() {
                 var html = '<a href="' + image_setting.parent().find("a.thumbnail").attr('href') + '" data-lightbox="photos" id="button_image_zoom" class="btn btn-xs btn-info"><i class="fas fa-search-plus"></i></a>';
-                html += ' <button type="button" id="btn_rotation_left" class="btn btn-xs btn-secondary"><i class="fas fa-undo"></i></button>';
-                html += ' <button type="button" id="btn_rotation_hor" class="btn btn-xs btn-primary"><i class="fas fa-arrows-alt-h"></i></button> <button type="button" id="btn_rotation_vrt" class="btn btn-xs btn-primary"><i class="fas fa-arrows-alt-v"></i></button>';
+                html += ' <button type="button" id="btn_rotation_left" class="btn btn-xs btn-secondary" data-setting-key="' + image_setting.attr('id') + '"><i class="fas fa-undo"></i></button>';
+                html += ' <button type="button" id="btn_rotation_hor" class="btn btn-xs btn-primary" data-setting-key="' + image_setting.attr('id') + '"><i class="fas fa-arrows-alt-h"></i></button>';
+                html += ' <button type="button" id="btn_rotation_vrt" class="btn btn-xs btn-primary" data-setting-key="' + image_setting.attr('id') + '"><i class="fas fa-arrows-alt-v"></i></button>';
                 html += ' <button type="button" id="btn_image_crop" onclick="Catcool.cropImage(\'' + path_url + '\', 0, this)" class="btn btn-xs btn-warning"><i class="fas fa-crop"></i></button>';
                 return html;
             }
@@ -649,11 +655,14 @@
                 return false;
             }
             is_processing = true;
+
+            var setting_key_id = $(this);
+
             $.ajax({
                 url: base_url + '/common/filemanager/rotation/90',
                 type: 'POST',
                 data: {
-                    'path': path_url
+                    'path': $('input[name=\'input_setting_path\']').val()
                 },
                 dataType: 'json',
                 beforeSend: function() {
@@ -673,11 +682,13 @@
                         });
                     }
                     if (json['success']) {
-                        image_setting.parent().find("img").attr('src', '');
-                        image_setting.parent().find("img").css("background-image", "url('')");
-                        image_setting.parent().find("img").attr('src', json['image']);
-                        image_setting.parent().find("img").css("background-image", "url('" + json['image'] + "')").fadeIn(500);
-                        image_setting.parent().find("a").attr('href', json['image']);
+
+                        $('#' + setting_key_id.data('setting-key')).parent().find("img").attr('src', '');
+                        $('#' + setting_key_id.data('setting-key')).parent().find("img").css("background-image", "url('')");
+                        $('#' + setting_key_id.data('setting-key')).parent().find("img").attr('src', json['image']);
+                        $('#' + setting_key_id.data('setting-key')).parent().find("img").css("background-image", "url('" + json['image'] + "')").fadeIn(500);
+                        $('#' + setting_key_id.data('setting-key')).parent().find("a").attr('href', json['image']);
+
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
@@ -694,11 +705,14 @@
                 return false;
             }
             is_processing = true;
+
+            var setting_key_id = $(this);
+
             $.ajax({
                 url: base_url + '/common/filemanager/rotation/hor',
                 type: 'POST',
                 data: {
-                    'path': path_url
+                    'path': $('input[name=\'input_setting_path\']').val()
                 },
                 dataType: 'json',
                 beforeSend: function() {
@@ -718,10 +732,10 @@
                         });
                     }
                     if (json['success']) {
-                        image_setting.parent().find("img").attr('src', '');
-                        image_setting.parent().find("img").css("background-image", "url('')");
-                        image_setting.parent().find("img").attr('src', json['image']);
-                        image_setting.parent().find("img").css("background-image", "url('" + json['image'] + "')").fadeIn(500);
+                        $('#' + setting_key_id.data('setting-key')).parent().find("img").attr('src', '');
+                        $('#' + setting_key_id.data('setting-key')).parent().find("img").css("background-image", "url('')");
+                        $('#' + setting_key_id.data('setting-key')).parent().find("img").attr('src', json['image']);
+                        $('#' + setting_key_id.data('setting-key')).parent().find("img").css("background-image", "url('" + json['image'] + "')").fadeIn(500);
                         image_setting.parent().find("a").attr('href', json['image']);
                     }
                 },
@@ -739,11 +753,14 @@
                 return false;
             }
             is_processing = true;
+
+            var setting_key_id = $(this);
+
             $.ajax({
                 url: base_url + '/common/filemanager/rotation/vrt',
                 type: 'POST',
                 data: {
-                    'path': path_url
+                    'path': $('input[name=\'input_setting_path\']').val()
                 },
                 dataType: 'json',
                 beforeSend: function() {
@@ -763,11 +780,11 @@
                         });
                     }
                     if (json['success']) {
-                        image_setting.parent().find("img").attr('src', '');
-                        image_setting.parent().find("img").css("background-image", "url('')");
-                        image_setting.parent().find("img").attr('src', json['image']);
-                        image_setting.parent().find("img").css("background-image", "url('" + json['image'] + "')").fadeIn(500);
-                        image_setting.parent().find("a").attr('href', json['image']);
+                        $('#' + setting_key_id.data('setting-key')).parent().find("img").attr('src', '');
+                        $('#' + setting_key_id.data('setting-key')).parent().find("img").css("background-image", "url('')");
+                        $('#' + setting_key_id.data('setting-key')).parent().find("img").attr('src', json['image']);
+                        $('#' + setting_key_id.data('setting-key')).parent().find("img").css("background-image", "url('" + json['image'] + "')").fadeIn(500);
+                        $('#' + setting_key_id.data('setting-key')).parent().find("a").attr('href', json['image']);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {

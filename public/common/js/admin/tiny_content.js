@@ -21,7 +21,7 @@ var Tiny_content = {
             remove_script_host: false,
             relative_urls: false,
             menubar: false,
-            toolbar: 'undo redo | fullscreen preview code | formatselect bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | link image myFileManager media pageembed | numlist bullist checklist | table | fontselect fontsizeselect | forecolor backcolor casechange permanentpen formatpainter removeformat | hr pagebreak codesample | print emoticons help', /* charmap emoticons a11ycheck ltr rtl */
+            toolbar: 'undo redo | fullscreen preview code | formatselect bold italic underline strikethrough | link image myFileManager media pageembed | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist checklist | table | fontselect fontsizeselect | forecolor backcolor casechange permanentpen formatpainter removeformat | hr pagebreak codesample | print emoticons help', /* charmap emoticons a11ycheck ltr rtl */
             fontsize_formats: "8px 9px 10px 11px 12px 14px 16px 18px 20px 24px 30px 36px 48px 64px 72px",
             image_caption: true,
             image_title: true,
@@ -119,7 +119,8 @@ var Tiny_content = {
 
                         $('#modal_image').modal('show');
                         $('html').css('overflow', 'hidden');
-                        $('#modal_image').delegate('a.thumbnail', 'click', function(e) {
+
+                        $('#modal_image').delegate('#filemanager_list a.thumbnail', 'click', function(e) {
                             e.preventDefault();
 
                             var img_url = base_url + '/img/' + $($(this).data('file-target')).val();
