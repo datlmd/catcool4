@@ -1835,7 +1835,7 @@ if (!function_exists('script_google_search'))
 
         if (!empty($detail)) {
 
-            $image = $detail['image'];
+            $image = $detail['image'] ?? null;
             if (strpos($image, 'http://') !== false || strpos($image, 'https://') !== false) {
                 $image_data = getimagesize($detail['image']);
             } else {
@@ -1889,7 +1889,7 @@ if (!function_exists('script_google_search'))
                     }
                 </script>';
             } else {
-                log_message('error', 'script_google_search - image data null' . implode('--||--', $detail));
+                log_message('warning', 'script_google_search - image data null' . implode('--||--', $detail));
             }
         }
 

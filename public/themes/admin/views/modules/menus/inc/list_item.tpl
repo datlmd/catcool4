@@ -5,6 +5,7 @@
 				<a href="{site_url($manage_url)}/edit/{$menu.menu_id}" class="text-primary">
 					<i class="{if !empty($menu.icon)}{$menu.icon}{else}fas fa-angle-double-right{/if} me-2"></i>{$menu.name}
 				</a>
+				<span class="ms-2">({lang('Admin.column_id')}: {$menu.menu_id})</span>
 			</div>
 			<div class="dd-nodrag btn-group ms-auto">
 				<div class="switch-button switch-button-xs catcool-center my-auto me-3">

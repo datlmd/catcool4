@@ -7,7 +7,7 @@ class Sitemap extends Controller
 {
     protected $model;
 
-    protected $helpers = ['url','date', 'catcool', 'inflector'];
+    protected $helpers = ['url','date', 'catcool', 'inflector', 'cookie'];
 
     const SITEMAP_NEWS_FROM = '2024-01-01';
 

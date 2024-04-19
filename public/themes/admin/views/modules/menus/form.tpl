@@ -12,8 +12,8 @@
                 </div>
             </div>
             {if !empty($edit_data.menu_id)}
-                {form_hidden('menu_id', $edit_data.menu_id)}
-                {form_hidden('is_admin', session('is_menu_admin'))}
+                <input type="hidden" name="menu_id" value="{$edit_data.menu_id}">
+                <input type="hidden" name="is_admin" value="{session('is_menu_admin')}">
             {/if}
             <div class="row">
                 {if !empty(print_flash_alert())}
