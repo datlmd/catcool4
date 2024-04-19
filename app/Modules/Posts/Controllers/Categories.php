@@ -20,22 +20,19 @@ class Categories extends MyController
             ->addPartial('footer_top')
             ->addPartial('footer_bottom');
 
-        $this->model = new CategoryModel();
+        $this->category_model = new CategoryModel();
         $this->post_model = new PostModel();
     }
 
     public function detail($id = null)
     {
-        $post_category_list = $this->model->getListPublished();
+        $post_category_list = $this->category_model->getListPublished();
         $detail = $post_category_list[$id] ?? null;
         if (empty($detail)) {
             $this->pageNotFound();
         }
 
         list($list, $pager) = $this->post_model->getListByCategory($id);
-
-        $news_model = new \App\Modules\News\Models\NewsModel();
-        $news_category_model = new \App\Modules\News\Models\CategoryModel();
 
         $data = [
             'detail'             => $detail,
@@ -44,9 +41,7 @@ class Categories extends MyController
             'post_category_list' => $post_category_list,
             'post_category_tree' => get_list_tree_selected($post_category_list, $id, 'category_id'),
             'post_latest_list'   => $this->post_model->getListPostLatest(6),
-            'post_counter_list'  => $this->post_model->getListCounter(5),
-            'news_category_list' => $news_category_model->getListPublished(),
-            'news_counter_list'  => $news_model->getListCounter(6),
+            'post_hot_list'      => $this->post_model->getListHot(6),
         ];
 
         $this->_setMeta($detail);

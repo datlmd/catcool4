@@ -32,9 +32,6 @@ class Tag extends MyController
 
         list($list, $pager) = $this->model->getListByTag($tag);
 
-        $news_model = new \App\Modules\News\Models\NewsModel();
-        $news_category_model = new \App\Modules\News\Models\CategoryModel();
-
         $data = [
             'tag'                => $tag,
             'list'               => $list,
@@ -42,8 +39,7 @@ class Tag extends MyController
             'post_category_list' => $post_category_list,
             'post_latest_list'   => $this->model->getListPostLatest(6),
             'post_counter_list'  => $this->model->getListCounter(5),
-            'news_category_list' => $news_category_model->getListPublished(),
-            'news_counter_list'  => $news_model->getListCounter(6),
+            'post_hot_list'      => $this->model->getListHot(6),
         ];
 
         add_meta(['title' => $tag, 'url' => current_url()], $this->themes);

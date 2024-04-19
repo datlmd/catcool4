@@ -26,7 +26,7 @@
 
 		{if !empty($hot_list)}
 			<div class="category-name d-block mt-2 mb-4">
-				<span>{lang('News.text_hot_post')}</span>
+				<span>{lang('Post.text_hot_post')}</span>
 			</div>
 			{foreach $hot_list as $post}
 				{include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$post article_type='middle_left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}

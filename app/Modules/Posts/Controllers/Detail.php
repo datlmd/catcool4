@@ -3,7 +3,6 @@
 use App\Controllers\MyController;
 use App\Modules\Posts\Models\PostModel;
 use App\Modules\Posts\Models\CategoryModel;
-use App\Modules\News\Models\NewsModel;
 
 class Detail extends MyController
 {
@@ -56,9 +55,6 @@ class Detail extends MyController
             $post_same_category_list = $this->model->getListTheSameCategory($detail['category_ids'], $detail['post_id'], 6);
 
 
-            $news_model = new NewsModel();
-            $news_category_model = new \App\Modules\News\Models\CategoryModel();
-
             $this->_setMeta($detail);
 
             $data = [
@@ -70,9 +66,7 @@ class Detail extends MyController
                 'script_google_search'    => $this->_scriptGoogleSearch($detail, $post_category_list),
                 'post_latest_list'        => $this->model->getListPostLatest(6),
                 'post_counter_list'       => $this->model->getListCounter(5),
-                //news
-                'news_category_list'      => $news_category_model->getListPublished(),
-                'news_counter_list'       => $news_model->getListCounter(6),
+                'post_hot_list'           => $this->model->getListHot(6),
             ];
 
             $tpl_name = 'detail';

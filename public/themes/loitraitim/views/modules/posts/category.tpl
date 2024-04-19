@@ -17,21 +17,21 @@
                 </div>
                 {if !empty($list)}
                     <div class="row">
-                        {foreach $list as $news}
-                            {if $news@iteration > 2}
+                        {foreach $list as $post}
+                            {if $post@iteration > 2}
                                 {break}
                             {/if}
                             <div class="col-sm-6 col-12">
-                                {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_class="mb-3 home-page"}
+                                {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_class="mb-3 home-page"}
                             </div>
                         {/foreach}
                     </div>
 
-                    {foreach $list as $news}
-                        {if $news@iteration <= 2}
+                    {foreach $list as $post}
+                        {if $post@iteration <= 2}
                             {continue}
                         {/if}
-                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-4 pt-4 border-top category"}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='left' article_class="mb-4 pt-4 border-top category"}
                     {/foreach}
 
                     {if !empty($list) && !empty($pager->links('default', 'frontend'))}
@@ -41,9 +41,14 @@
             </div>
             <aside class="col-md-4 col-12 d-none d-lg-block pt-3 ps-4">
 
-                {if !empty($post_counter_list)}
-                    {foreach $post_counter_list as $news}
-                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3" is_show_category=true is_hide_description=true}
+                {if !empty($post_hot_list)}
+                    {foreach $post_hot_list as $post}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl')
+                            article_info=$post article_type='left'
+                            article_class="mb-3"
+                            is_show_category=true
+                            is_hide_description=true
+                        }
                     {/foreach}
                 {/if}
 
@@ -57,10 +62,10 @@
 
                 {if !empty($post_latest_list)}
                     <div class="category-name d-block mt-2 mb-4">
-                        <span>{lang('News.text_new_post')}</span>
+                        <span>{lang('Post.text_new_post')}</span>
                     </div>
-                    {foreach $post_latest_list as $news}
-                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
+                    {foreach $post_latest_list as $post}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
                     {/foreach}
                 {/if}
 
@@ -72,6 +77,6 @@
     </section>
 
 
-    {include file=get_theme_path('views/modules/news/inc/counter_view.tpl') counter_list=$news_counter_list text_title=lang('News.text_news')}
+    {include file=get_theme_path('views/modules/posts/inc/counter_view.tpl') counter_list=$post_counter_list}
 
 {/strip}

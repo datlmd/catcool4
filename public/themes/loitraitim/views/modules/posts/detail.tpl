@@ -15,14 +15,14 @@
                 <span>{if !empty($detail.author)}{$detail.author}{else}Ryan Lee{/if},</span>
                 {if !empty($detail.source)}
                     <span>
-                        {lang('News.text_source')}: {str_ireplace('www.', '', parse_url($detail.source, PHP_URL_HOST))}
+                        {lang('Post.text_source')}: {str_ireplace('www.', '', parse_url($detail.source, PHP_URL_HOST))}
                     </span>
                 {/if}
                 <span><i class="far fa-clock"></i> {time_ago($detail.publish_date)}</span>
                 <span class="d-none"><i class="fas fa-eye"></i> {$detail.counter_view}</span>
                 {if $detail.is_comment eq COMMENT_STATUS_ON}
                     <span class="d-none" id="detail_total_comment">
-                        <i class="far fa-comments"></i> <fb:comments-count href="{$detail.detail_url}"></fb:comments-count> {lang('News.text_comment')}
+                        <i class="far fa-comments"></i> <fb:comments-count href="{$detail.detail_url}"></fb:comments-count> {lang('Post.text_comment')}
                     </span>
                 {/if}
             </div>
@@ -92,11 +92,11 @@
             <aside class="col-md-4 col-12 d-none d-lg-block">
                 <div class="position-sticky">
                     {if !empty($post_counter_list)}
-                        {foreach $post_counter_list as $news}
-                            {if $news.post_id eq $detail.post_id}
+                        {foreach $post_counter_list as $post}
+                            {if $post.post_id eq $detail.post_id}
                                 {continue}
                             {/if}
-                            {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3" is_show_category=true is_hide_description=true}
+                            {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='left' article_class="mb-3" is_show_category=true is_hide_description=true}
                         {/foreach}
                     {/if}
                 </div>
@@ -109,38 +109,38 @@
             <div class="col">
                 {if !empty($related_list)}
                     <div class="category-name d-block mt-2 mb-4">
-                        <span>{lang('News.text_related')}</span>
+                        <span>{lang('Post.text_related')}</span>
                     </div>
-                    {foreach $related_list as $news}
-                        {if $news.post_id eq $detail.post_id}
+                    {foreach $related_list as $post}
+                        {if $post.post_id eq $detail.post_id}
                             {continue}
                         {/if}
 
-                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='small' article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='small' article_class="mb-3 pb-3 border-bottom" is_show_category=true is_hide_description=true}
                     {/foreach}
                 {/if}
 
                 {if !empty($post_same_category_list)}
                     <div class="category-name d-block mt-2 mb-4">
-                        <span>{lang('News.text_same_category')}</span>
+                        <span>{lang('Post.text_same_category')}</span>
                     </div>
-                    {foreach $post_same_category_list as $news}
-                        {if $news.post_id eq $detail.post_id}
+                    {foreach $post_same_category_list as $post}
+                        {if $post.post_id eq $detail.post_id}
                             {continue}
                         {/if}
-                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
                     {/foreach}
                 {/if}
 
                 {if !empty($post_latest_list)}
                     <div class="category-name d-block mt-2 mb-4">
-                        <span>{lang('News.text_new_post')}</span>
+                        <span>{lang('Post.text_new_post')}</span>
                     </div>
-                    {foreach $post_latest_list as $news}
-                        {if $news.post_id eq $detail.post_id}
+                    {foreach $post_latest_list as $post}
+                        {if $post.post_id eq $detail.post_id}
                             {continue}
                         {/if}
-                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$news article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
                     {/foreach}
                 {/if}
 
@@ -151,7 +151,7 @@
         </div>
     </section>
 
-    {include file=get_theme_path('views/modules/news/inc/counter_view.tpl') counter_list=$news_counter_list text_title=lang('News.text_news')}
+    {include file=get_theme_path('views/modules/news/inc/counter_view.tpl') counter_list=$post_hot_list text_title=lang('Post.text_hot_post')}
 
     {literal}
         <style>
