@@ -47,8 +47,6 @@
                     {/foreach}
                 {/if}
 
-                {include file=get_theme_path('views/inc/shopee_ads.tpl')}
-
             </aside>
         </div>
     </div>

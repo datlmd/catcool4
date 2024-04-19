@@ -49,7 +49,9 @@ class PostModel extends MyModel
     protected $useSoftDeletes = true;
     protected $deletedField = 'deleted';
 
-    const POST_CACHE_EXPIRE = YEAR;
+    const POST_CACHE_EXPIRE = DAY;
+    const POST_CACHE_CATEGORY_HOME = 'post_category_home_list';
+    const POST_CACHE_HOT_LIST = 'post_hot_list';
     const POST_CACHE_DETAIL = 'post_detail_id_%s';
     const POST_CACHE_LATEST_LIST = 'post_latest_list';
 
@@ -59,6 +61,10 @@ class PostModel extends MyModel
 
     const SOURCE_TYPE_ROBOT = 1;
     const POST_FORMAT_NORMAL = 1;
+
+    private $_queries = [
+        'post_all' => "SELECT * FROM `TABLE_NAME`",
+        ];
 
     function __construct()
     {
@@ -157,8 +163,8 @@ class PostModel extends MyModel
         }
 
         cache()->delete(self::POST_CACHE_LATEST_LIST);
-//        cache()->delete(self::NEWS_CACHE_SLIDE_HOME);
-//        cache()->delete(self::NEWS_CACHE_COUNTER_LIST);
+        cache()->delete(self::POST_CACHE_CATEGORY_HOME);
+        cache()->delete(self::POST_CACHE_HOT_LIST);
 //        cache()->delete(self::NEWS_CACHE_HOT_LIST);
 //        cache()->delete(self::NEWS_CACHE_NEW_LIST);
 
@@ -331,6 +337,59 @@ class PostModel extends MyModel
         return [$list, $result->pager];
     }
 
+    public function getListAll($limit = PAGINATION_DEFAULF_LIMIT)
+    {
+        $where = [
+            'published' => STATUS_ON,
+            'publish_date <=' => get_date(),
+        ];
+
+        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+            ->where($where)
+            ->orderBy('publish_date', 'DESC');
+
+        $list = $result->paginate($limit);
+        if (empty($list)) {
+            return [[],[]];
+        }
+
+        foreach ($list as $key_news => $value) {
+            $list[$key_news] = $this->formatDetail($value);
+        }
+
+        return [$list, $result->pager];
+    }
+
+    public function getListHot($limit = 20, $is_cache = true)
+    {
+        $result = $is_cache ? cache()->get(self::POST_CACHE_HOT_LIST) : null;
+        if (empty($result)) {
+
+            $where = [
+                'published' => STATUS_ON,
+                'publish_date <=' => get_date(),
+                'is_hot' => STATUS_ON,
+            ];
+
+            $list = $this->select(['post_id', 'name', 'slug', 'description', 'content', 'category_ids', 'publish_date', 'images', 'ctime'])
+                ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
+            if (empty($list)) {
+                return [];
+            }
+
+            foreach ($list as $key_news => $value) {
+                $result[] = $this->formatDetail($value);
+            }
+
+            if ($is_cache) {
+                // Save into the cache for $expire_time 1 month
+                cache()->save(self::POST_CACHE_HOT_LIST, $result, self::POST_CACHE_EXPIRE);
+            }
+        }
+
+        return $result;
+    }
+
     public function getListByTag($tag = null, $limit = PAGINATION_DEFAULF_LIMIT)
     {
         if (empty($tag)) {
@@ -410,27 +469,6 @@ class PostModel extends MyModel
                 // Save into the cache for $expire_time 1 month
                 cache()->save(self::POST_CACHE_LATEST_LIST, $result, self::POST_CACHE_EXPIRE);
             }
-        }
-
-        return $result;
-    }
-
-    public function getListCounter($limit = 20)
-    {
-        $where = [
-            'published' => STATUS_ON,
-            'publish_date <=' => get_date(),
-        ];
-
-        $list = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
-            ->orderBy('counter_view', 'DESC')->where($where)->findAll($limit);
-        if (empty($list)) {
-            return [];
-        }
-
-        $result = [];
-        foreach ($list as $key_news => $value) {
-            $result[] = $this->formatDetail($value);
         }
 
         return $result;
@@ -652,5 +690,26 @@ class PostModel extends MyModel
         }
 
         return $insert_list;
+    }
+
+    public function getListCounter($limit = 20)
+    {
+        $where = [
+            'published' => STATUS_ON,
+            'publish_date <=' => get_date(),
+        ];
+
+        $list = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+            ->orderBy('counter_view', 'DESC')->where($where)->findAll($limit);
+        if (empty($list)) {
+            return [];
+        }
+
+        $result = [];
+        foreach ($list as $key_news => $value) {
+            $result[] = $this->formatDetail($value);
+        }
+
+        return $result;
     }
 }

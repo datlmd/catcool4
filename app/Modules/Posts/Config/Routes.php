@@ -26,6 +26,8 @@ $routes->group('posts', ['namespace' => 'App\Modules\Posts\Controllers'], functi
     $subroutes->add('categories_manage/update_sort', 'CategoriesManage::updateSort');
 });
 
+$routes->add('posts', 'Posts::index', ['namespace' => 'App\Modules\Posts\Controllers']);
+
 $routes->add('(:any)-post(:num).html', 'Detail::index/$1/$2', ['namespace' => 'App\Modules\Posts\Controllers']);
 $routes->add('(:any)-post(:num).preview', 'Detail::index/$1/$2/preview', ['namespace' => 'App\Modules\Posts\Controllers']);
 

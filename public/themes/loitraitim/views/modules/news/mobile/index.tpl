@@ -5,7 +5,7 @@
 				{get_today()}
 			</div>
 			<div class="col-6 text-end">
-				{include file=get_theme_path('views/modules/news/inc/weather.tpl')}
+				{include file=get_theme_path('views/inc/weather.tpl')}
 			</div>
 		</div>
 
