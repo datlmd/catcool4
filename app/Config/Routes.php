@@ -12,7 +12,7 @@ $routes->get('install', 'Install::index');
 
 $routes->set404Override('App\Modules\Frontend\Controllers\Error404::index'); //datlm
 
-$routes->get('/', 'News::index', ['namespace' => 'App\Modules\News\Controllers']);
+$routes->get('/', 'Posts::index', ['namespace' => 'App\Modules\Posts\Controllers']);
 
 $routes->add('sitemap.xml', 'Sitemap::index');
 $routes->add('sitemap-category.xml', 'Sitemap::category');
