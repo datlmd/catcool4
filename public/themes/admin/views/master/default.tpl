@@ -5,6 +5,16 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, maximum-scale=1.0, user-scalable=0">
         <base href="{site_url()}">
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="{base_url(config_item('favicon'))}" type="image/x-icon" />
+        {if !empty(config_item('favicon_apple_touche'))}
+            <link rel="apple-touch-icon" sizes="180x180" href="{base_url(config_item('favicon_apple_touche'))}">
+        {/if}
+        {if !empty(config_item('favicon_32_32'))}
+            <link rel="icon" type="image/png" sizes="32x32" href="{base_url(config_item('favicon_32_32'))}">
+        {/if}
+
         <title>{if !empty($page_title)}{$page_title}{/if}</title>
 
         {$metadata}

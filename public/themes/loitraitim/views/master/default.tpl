@@ -11,9 +11,13 @@
 	<base href="{site_url()}">
 
 	<!-- Favicon -->
-	<link rel="shortcut icon" href="{img_url('favicon/favicon.ico')}" type="image/x-icon" />
-	<link rel="apple-touch-icon" sizes="180x180" href="{img_url('favicon/apple-touch-icon.png')}">
-	<link rel="icon" type="image/png" sizes="32x32" href="{img_url('favicon/favicon-32x32.png')}">
+	<link rel="shortcut icon" href="{base_url(config_item('favicon'))}" type="image/x-icon" />
+	{if !empty(config_item('favicon_apple_touche'))}
+		<link rel="apple-touch-icon" sizes="180x180" href="{base_url(config_item('favicon_apple_touche'))}">
+	{/if}
+	{if !empty(config_item('favicon_32_32'))}
+		<link rel="icon" type="image/png" sizes="32x32" href="{base_url(config_item('favicon_32_32'))}">
+	{/if}
 
 	<title>{if !empty($page_title)}{$page_title}{/if}</title>
 	{$metadata}

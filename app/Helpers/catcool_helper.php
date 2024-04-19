@@ -1881,7 +1881,7 @@ if (!function_exists('script_google_search'))
                             "name": "' . str_ireplace('www.', '', base_url()) . '",
                             "logo": {
                             "@type": "ImageObject",
-                                "url": "' . img_url('favicon/favicon-16x16.png') . '",
+                                "url": "' . base_url(config_item('favicon_16_16') ?? config_item('favicon')) . '",
                                 "width": 60,
                                 "height": 60
                             }
