@@ -1881,7 +1881,7 @@ if (!function_exists('script_google_search'))
                             "name": "' . str_ireplace('www.', '', base_url()) . '",
                             "logo": {
                             "@type": "ImageObject",
-                                "url": "' . base_url(config_item('favicon_16_16') ?? config_item('favicon')) . '",
+                                "url": "' . base_url() . (config_item('favicon_16_16') ?? config_item('favicon')) . '",
                                 "width": 60,
                                 "height": 60
                             }
@@ -1940,7 +1940,7 @@ if (!function_exists('config_item'))
     {
         $key = camelize($key);
         if (empty($key) || empty(config('Config')->$key)) {
-            return "";
+            return null;
         }
 
         return config('Config')->$key;
