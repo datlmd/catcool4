@@ -1940,7 +1940,7 @@ if (!function_exists('config_item'))
     {
         $key = camelize($key);
         if (empty($key) || empty(config('Config')->$key)) {
-            return null;
+            return "";
         }
 
         return config('Config')->$key;
