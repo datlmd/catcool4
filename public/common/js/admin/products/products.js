@@ -8,6 +8,76 @@ $(function () {
 
     sortableVariant();
 
+    // preventing page from redirecting
+    $(document).on('dragover', "html", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $('.upload-area h5').removeClass('upload-drop');
+    });
+
+    $(document).on('drop', "html", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+    // Drag enter .upload-area
+    $(document).on('dragenter', ".drop-drap-image-list", function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $('.upload-area h5').removeClass('upload-drop');
+    });
+
+    // Drag over class .upload-area
+    $(document).on('dragover', ".drop-drap-image-list", function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $(this).find('.upload-area h5').addClass('upload-drop');
+    });
+
+    // Drop
+    $(document).on('drop', ".drop-drap-image-list", function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        //$("h5").text("Upload");
+        var file = e.originalEvent.dataTransfer.files;
+        var fd = new FormData();
+
+        if (file.length > 0) {
+            for (var i = 0; i < file.length; i++) {
+                fd.append("files[]", file[i]);
+            }
+
+            uploadDataImageList(fd);
+        }
+
+        //uploadData(fd);
+    });
+
+    // Open file selector on div click
+    $(document).on('click', ".drop-drap-image-list .upload-area", function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $(this).parent().find(".file-input").click();
+    });
+
+    // file selected
+    $(document).on('change', ".drop-drap-image-list .file-input", function(e) {
+        var fd = new FormData();
+
+        //var files = $('#file')[0].files[0];
+
+        var files = $(this);
+        for (var i = 0; i < this.files.length; i++) {
+            fd.append("files[]", files[0].files[i]);
+        }
+
+        //fd.append('file',files);
+
+        uploadDataImageList(fd);
+    });
+
+
     //Check button them bien the
     if ($('#product_variant .product-variant').length >= product_variant_max) {
         $('#product_variant #product_add_variant_group').hide();
@@ -17,75 +87,6 @@ $(function () {
         product_variant_combination_sku_name = $('#product_variant_combination_sku_name').val();
     }
 
-});
-
-// preventing page from redirecting
-$(document).on('dragover', ".drop-drap-image-list", function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    $(this).find('.upload-area h5').removeClass('upload-drop');
-});
-
-$(document).on('drop', ".drop-drap-image-list", function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-});
-
-// Drag enter .upload-area
-$(document).on('dragenter', ".drop-drap-image-list", function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    $(this).find('.upload-area h5').removeClass('upload-drop');
-});
-
-// Drag over class .upload-area
-$(document).on('dragover', ".drop-drap-image-list", function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    $(this).find('.upload-area h5').addClass('upload-drop');
-});
-
-// Drop
-$(document).on('drop', ".drop-drap-image-list", function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-
-    //$("h5").text("Upload");
-    var file = e.originalEvent.dataTransfer.files;
-    var fd = new FormData();
-
-    if (file.length > 0) {
-        for (var i = 0; i < file.length; i++) {
-            fd.append("files[]", file[i]);
-        }
-
-        uploadDataImageList(fd);
-    }
-
-    //uploadData(fd);
-});
-
-// Open file selector on div click
-$(document).on('click', ".drop-drap-image-list .upload-area", function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    $(this).parent().find(".file-input").click();
-});
-
-// file selected
-$(document).on('change', ".drop-drap-image-list .file-input", function(e) {
-    var fd = new FormData();
-
-    //var files = $('#file')[0].files[0];
-
-    var files = $(this);
-    for (var i = 0; i < this.files.length; i++) {
-        fd.append("files[]", files[0].files[i]);
-    }
-
-    //fd.append('file',files);
-
-    uploadDataImageList(fd);
 });
 
 function addProductImage()

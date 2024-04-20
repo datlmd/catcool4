@@ -1,22 +1,22 @@
 var is_uploading = false;
 $(function() {
-    // preventing page from redirecting
-    $(document).on('dragover', ".drop-drap-file", function(e) {
+    //preventing page from redirecting
+    $(document).on('dragover', "html .drop-drap-file", function(e) {
         e.preventDefault();
         e.stopPropagation();
-        $(this).find('.upload-area h5').removeClass('upload-drop');
+        $('.upload-area h5').removeClass('upload-drop');
     });
 
-    $(document).on('drop', ".drop-drap-file", function(e) {
+    $(document).on('drop', "html .drop-drap-file", function(e) {
         e.preventDefault();
         e.stopPropagation();
     });
 
     // Drag enter .upload-area
-    $(document).on('dragenter', ".drop-drap-file", function(e) {
+    $(document).on('dragenter', "html .drop-drap-file", function(e) {
         e.stopPropagation();
         e.preventDefault();
-        $(this).find('.upload-area h5').removeClass('upload-drop');
+        $('.upload-area h5').removeClass('upload-drop');
     });
 
     // Drag over class .upload-area

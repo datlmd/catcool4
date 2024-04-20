@@ -850,13 +850,13 @@
         $(document).on("click", ".video-play", function (e) {
             $($(this).data("bs-target")).find('video').get(0).play();
         });
-        $("html").on("dragover", function (e) {
+        $("#modal_image").on("dragover", function (e) {
             e.preventDefault();
             e.stopPropagation();
             /*$("h5").text("Drag here");*/
             $('#modal_image .modal-body').removeClass('upload-drop');
         });
-        $("html").on("drop", function (e) {
+        $("#modal_image").on("drop", function (e) {
             e.preventDefault();
             e.stopPropagation();
         });
