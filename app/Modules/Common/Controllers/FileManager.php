@@ -78,11 +78,21 @@ class FileManager extends AdminController
             $filter_name = null;
         }
 
+        $directory_session = null;
+
         // Make sure we have the correct directory
         $directory = $this->request->getGet('directory');
         if (isset($directory)) {
+            session()->set('manager_directory', $directory);
             $directory = rtrim($this->_dir_image_path . self::PATH_SUB_NAME . '/' . str_replace('*', '', $directory), '/');
+        } elseif (!empty(session('manager_directory')) && empty($this->request->getGet('is_parent'))) {
+            $directory_session = session('manager_directory');
+            $directory = rtrim($this->_dir_image_path . self::PATH_SUB_NAME . '/' . str_replace('*', '', $directory_session), '/');
+            //session()->remove('manager_directory');
         } else {
+            if (!empty($this->request->getGet('is_parent'))) {
+                session()->remove('manager_directory');
+            }
             $directory = $this->_dir_image_path . self::PATH_SUB_NAME;
         }
 
@@ -325,14 +335,14 @@ class FileManager extends AdminController
 
         //$data['token'] = 'token';
 
-        $directory = $this->request->getGet('directory');
-        if (isset($directory)) {
+        $directory = !empty($directory_session) ? $directory_session : $this->request->getGet('directory');
+        if (!empty($directory)) {
             $data['directory'] = urlencode($directory);
         } else {
             $data['directory'] = '';
         }
 
-        $data['directory']   = !empty($this->request->getGet('directory')) ? urlencode($this->request->getGet('directory')) : "";
+        //$data['directory']   = !empty($this->request->getGet('directory')) ? urlencode($this->request->getGet('directory')) : "";
         $data['filter_name'] = $this->request->getGet('filter_name') ?? "";
         $data['target']      = $this->request->getGet('target') ?? ""; // Return the target ID for the file manager to set the value
         $data['thumb']       = $this->request->getGet('thumb') ?? ""; // Return the thumbnail for the file manager to show a thumbnail
@@ -342,7 +352,7 @@ class FileManager extends AdminController
         // Parent
         $url = '';
 
-        $directory = $this->request->getGet('directory');
+        $directory = !empty($directory_session) ? $directory_session : $this->request->getGet('directory');
         if (!empty($directory)) {
             $pos = strrpos($directory, '/');
 
@@ -371,13 +381,13 @@ class FileManager extends AdminController
         if (!empty($display)) {
             $url .= '&d=' . $display;
         }
-
+        $url .= '&is_parent=1';
         $data['parent'] = site_url('common/filemanager').'?'. $url;
 
         // Refresh
         $url = '';
 
-        $directory = $this->request->getGet('directory');
+        $directory = !empty($directory_session) ? $directory_session : $this->request->getGet('directory');
         if (isset($directory)) {
             $url .= '&directory=' . urlencode($directory);
         }
@@ -406,7 +416,7 @@ class FileManager extends AdminController
 
         // Display
         $url = '';
-        $directory = $this->request->getGet('directory');
+        $directory = !empty($directory_session) ? $directory_session : $this->request->getGet('directory');
         if (isset($directory)) {
             $url .= '&directory=' . urlencode($directory);
         }
@@ -431,7 +441,7 @@ class FileManager extends AdminController
         //
         $url = '';
 
-        $directory = $this->request->getGet('directory');
+        $directory = !empty($directory_session) ? $directory_session : $this->request->getGet('directory');
         if (isset($directory)) {
             $url .= '&directory=' . urlencode(html_entity_decode($directory, ENT_QUOTES, 'UTF-8'));
         }

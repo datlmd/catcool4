@@ -19,9 +19,10 @@
             </div>
         </div>
         <div>{lang('Admin.text_upload_drop_drap')} - {lang('Admin.text_maximum_upload')}: {$file_max_size}</div>
-        <hr />
+        <div class="border border-bottom my-2"></div>
         <div id="msg" class="text-secondary"></div>
         <div class="row" id="filemanager_list">
+            {if !empty($directory)}<div class="text-dark fs-6 mb-2"><i class="fas fa-folder me-1"></i>{$directory|urldecode|replace:'/':'<i class=" fas fa-angle-right mx-1"></i>'}</div>{/if}
             {if $display == DISPLAY_LIST}
                 <div class="table-responsive">
                     <table class="table table-striped table-hover table-bordered second">
@@ -198,7 +199,7 @@
     <div id="filemanager" class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen" >
         <div class="modal-content">
             <div class="modal-header bg-dark">
-                <h5 class="modal-title text-white" id="photoModalLabel">{$heading_title}{if !empty($directory)} | <span class="text-secondary">{$directory|urldecode}</span>{/if}</h5>
+                <h5 class="modal-title text-white" id="photoModalLabel">{$heading_title}</h5>
                 <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4" style="min-height: 600px;">
