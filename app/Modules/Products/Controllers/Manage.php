@@ -51,6 +51,10 @@ class Manage extends AdminController
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
+        $product_sku_model     = new \App\Modules\Products\Models\ProductSkuModel();
+
+        //$data_form['product_sku_list'] = $product_sku_model->getListSkuByProductIds([$product_ids]);
+
 	    $data = [
             'breadcrumb'    => $this->breadcrumb->render(),
             'list'          => $list->paginate($limit),
@@ -121,8 +125,8 @@ class Manage extends AdminController
             'isbn'            => $this->request->getPost('isbn'),
             'mpn'             => $this->request->getPost('mpn'),
             'location'        => $this->request->getPost('location'),
-            'variant'         => $this->request->getPost('variant'),
-            'override'        => $this->request->getPost('override'),
+            //'variant'         => $this->request->getPost('variant'),
+            //'override'        => $this->request->getPost('override'),
             'quantity'        => $this->request->getPost('quantity'),
             'stock_status_id' => $this->request->getPost('stock_status_id'),
             //'image'           => $this->request->getPost('image'),
@@ -466,6 +470,13 @@ class Manage extends AdminController
 
                 $sort_product_variant_combination--;
             }
+
+            //update variant
+            $product_variant_list = $product_variant_model->getListVariantByProductId($product_id);
+            $this->model->save(['product_id' => $product_id, 'variant' => json_encode($product_variant_list, JSON_FORCE_OBJECT)]);
+        } else {
+            //update variant
+            $this->model->save(['product_id' => $product_id, 'variant' => '']);
         }
         // het variant
 
@@ -571,7 +582,7 @@ class Manage extends AdminController
             $product_sku_model     = new \App\Modules\Products\Models\ProductSkuModel();
 
             $data_form['product_variant_list'] = $product_variant_model->getListVariantByProductId($product_id);
-            $data_form['product_sku_list'] = $product_sku_model->getListSkuByProductId($product_id);
+            $data_form['product_sku_list'] = $product_sku_model->getListSkuByProductIds([$product_id]);
 
             $data['edit_data'] = $data_form;
         } else {

@@ -21,13 +21,13 @@ class ProductSkuValueModel extends MyModel
         parent::__construct();
     }
 
-    public function getListByProductId($product_id)
+    public function getListByProductIds($product_ids)
     {
-        if (empty($product_id)) {
+        if (empty($product_ids) || !is_array($product_ids)) {
             return [];
         }
 
-        $result = $this->where(['product_id' => $product_id])->findAll();
+        $result = $this->whereIn('product_id', $product_ids)->findAll();
         if (empty($result)) {
             return [];
         }

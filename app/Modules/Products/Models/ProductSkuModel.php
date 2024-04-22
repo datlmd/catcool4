@@ -24,13 +24,13 @@ class ProductSkuModel extends MyModel
         parent::__construct();
     }
 
-    public function getListSkuByProductId($product_id)
+    public function getListSkuByProductIds($product_ids)
     {
-        if (empty($product_id)) {
+        if (empty($product_ids) || !is_array($product_ids)) {
             return [];
         }
 
-        $result = $this->where(['product_id' => $product_id])->findAll();
+        $result = $this->whereIn('product_id', $product_ids)->findAll();
         if (empty($result)) {
             return [];
         }
@@ -41,7 +41,7 @@ class ProductSkuModel extends MyModel
         $list = [];
 
         $sku_value_model = new \App\Modules\Products\Models\ProductSkuValueModel();
-        $sku_value_list = $sku_value_model->getListByProductId($product_id);
+        $sku_value_list = $sku_value_model->getListByProductIds($product_ids);
 
         foreach ($result as $value) {
             $variant_value_list = [];
@@ -61,7 +61,7 @@ class ProductSkuModel extends MyModel
 
             $value['variant_combination_sku_name'] = PRODUCT_VARIANT_COMBINATION_SKU_NAME . implode("_", $variant_value_row_list);
 
-            $list[create_variant_key($product_id, $variant_value_list)] = $value;
+            $list[create_variant_key($value['product_id'], $variant_value_list)] = $value;
         }
 
         return $list;
