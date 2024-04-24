@@ -13,6 +13,8 @@ $routes->group('products', ['namespace' => 'App\Modules\Products\Controllers'], 
     $subroutes->add('manage/delete', 'Manage::delete');
     $subroutes->add('manage/publish', 'Manage::publish');
     $subroutes->add('manage/related', 'Manage::related');
+    $subroutes->add('manage/edit_sku', 'Manage::editSku');
+    $subroutes->add('manage/get_sku_list', 'Manage::getSkuList');
 
     $subroutes->add('weight_classes_manage', 'WeightClassesManage::index');
     $subroutes->add('weight_classes_manage/add', 'WeightClassesManage::add');

@@ -44,6 +44,8 @@ class Manage extends AdminController
 	{
         add_meta(['title' => lang('ProductAdmin.heading_title')], $this->themes);
 
+        $this->themes->addJS('common/js/common/currency');
+
         $limit       = $this->request->getGet('limit');
         $sort        = $this->request->getGet('sort');
         $order       = $this->request->getGet('order');
@@ -51,13 +53,54 @@ class Manage extends AdminController
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
-        $product_sku_model     = new \App\Modules\Products\Models\ProductSkuModel();
+        $product_list = $list->paginate($limit);
 
-        //$data_form['product_sku_list'] = $product_sku_model->getListSkuByProductIds([$product_ids]);
+        $product_ids = array_column($product_list, 'product_id');
+
+        $product_sku_model     = new \App\Modules\Products\Models\ProductSkuModel();
+        $product_sku_list = $product_sku_model->getListSkuByProductIds($product_ids);
+
+        if (!empty($product_sku_list)) {
+            foreach ($product_list as $product_key => $product) {
+
+                $product_list[$product_key]['price'] = service('currency')->format($product['price'], config_item('currency'));
+
+                if (empty($product['variant'])) {
+                    continue;
+                }
+
+                $sku_quantity = 0;
+                $sku_prices = [];
+                $is_out_of_stock = false;
+                foreach ($product_sku_list as $sku) {
+                    if ($product['product_id'] != $sku['product_id']) {
+                        continue;
+                    }
+
+                    $product_list[$product_key]['sku_list'][] = $sku;
+
+                    $sku_prices[$sku['price']] = service('currency')->format($sku['price'], config_item('currency'));
+                    $sku_quantity += $sku['quantity'];
+
+                    if ($sku['quantity'] < 10) {
+                        $is_out_of_stock = true;
+                    }
+                }
+
+                $product_list[$product_key]['quantity'] = $sku_quantity;
+                $product_list[$product_key]['is_out_of_stock'] = $is_out_of_stock;
+
+                sort($sku_prices);
+                if (count($sku_prices) > 2) {
+                    $sku_prices = [$sku_prices[0], $sku_prices[count($sku_prices) - 1]];
+                }
+                $product_list[$product_key]['price'] = implode(" - ", $sku_prices);
+            }
+        }
 
 	    $data = [
             'breadcrumb'    => $this->breadcrumb->render(),
-            'list'          => $list->paginate($limit),
+            'list'          => $product_list,
             'pager'         => $list->pager,
             'sort'          => empty($sort) ? 'product_id' : $sort,
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
@@ -835,6 +878,179 @@ class Manage extends AdminController
             'status' => 'ok',
             'view' => $this->themes::view('inc/related_list', ['related_list' => $related_list], true)
         ];
+
+        json_output($data);
+    }
+
+    public function getSkuList()
+    {
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $errors = [];
+
+        $product_id = $this->request->getGet('product_id');
+
+        $product_info = $this->model->where(['product_id' => $product_id])->first();
+        if (empty($product_info)) {
+            $errors[] = lang('Admin.error_empty');
+        }
+
+        $variant_model = new \App\Modules\Variants\Models\VariantModel();
+        $variant_list = $variant_model->getListAll();
+
+        $product_sku_model     = new \App\Modules\Products\Models\ProductSkuModel();
+        $product_sku_list = $product_sku_model->getListSkuByProductIds([$product_id]);
+
+        foreach ($product_sku_list as $sku_key => $sku) {
+            //variant option
+            $sku_name = [];
+            foreach ($sku['sku_value_list'] as $sku_value) {
+                if (empty($variant_list[$sku_value['variant_id']]['value_list'][$sku_value['variant_value_id']])) {
+                    $sku_name[] = $sku_value['variant_value_id'];
+                } else {
+                    $sku_name[] = $variant_list[$sku_value['variant_id']]['value_list'][$sku_value['variant_value_id']]['name'];
+                }
+            }
+
+            $product_sku_list[$sku_key]['sku_name'] = implode(" - ", $sku_name);
+        }
+
+        $product_info['sku_list'] = $product_sku_list;
+
+        $data = [
+            'product' => $product_info,
+            'errors' => $errors,
+        ];
+
+        echo $this->themes::view('inc/product_sku_form', $data);
+    }
+
+    public function editSku()
+    {
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $token = csrf_hash();
+
+        if (!isset($_POST) || empty($_POST)) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
+        }
+
+        $this->errors = [];
+
+        if (!empty($this->request->getPost('product_sku'))) {
+
+            foreach ($this->request->getPost('product_sku') as $sku) {
+                if (format_decimal($sku['price']) < config_item('price_minimum')) {
+                    $this->errors[sprintf('product_sku.%s.price', $sku['product_sku_id'])] = lang('Validation.greater_than_equal_to', ['field' => lang('ProductAdmin.text_price'), 'param' => config_item('price_minimum')]);
+                }
+
+                $this->validator->setRule(sprintf('product_sku.%s.product_id', $sku['product_sku_id']), lang('ProductAdmin.text_product_id'), 'required');
+                $this->validator->setRule(sprintf('product_sku.%s.product_sku_id', $sku['product_sku_id']), lang('ProductAdmin.text_product_sku_id'), 'required');
+                $this->validator->setRule(sprintf('product_sku.%s.price', $sku['product_sku_id']), lang('ProductAdmin.text_price'), 'required|decimal');
+                $this->validator->setRule(sprintf('product_sku.%s.quantity', $sku['product_sku_id']), lang('ProductAdmin.text_quantity'), 'required|is_natural');
+            }
+        }
+
+        if (!empty($this->request->getPost('product_info'))) {
+
+            if (format_decimal($this->request->getPost('product_info')['price']) < config_item('price_minimum')) {
+                $this->errors['product_info.price'] = lang('Validation.greater_than_equal_to', ['field' => lang('ProductAdmin.text_price'), 'param' => config_item('price_minimum')]);
+            }
+
+            $this->validator->setRule('product_info.product_id', lang('ProductAdmin.text_product_id'), 'required');
+            $this->validator->setRule('product_info.price', lang('ProductAdmin.text_price'), 'required|decimal');
+            $this->validator->setRule('product_info.quantity', lang('ProductAdmin.text_quantity'), 'required|is_natural');
+        }
+
+        if (!$this->validator->withRequest($this->request)->run()) {
+            $this->errors = $this->validator->getErrors();
+        }
+
+        if (!empty($this->errors)) {
+            json_output(['token' => $token, 'status' => 'ng', 'error' => $this->errors]);
+        }
+
+        $product_id   = null;
+        $sku_quantity = 0;
+        $price_show   = "";
+
+        if (!empty($this->request->getPost('product_sku'))) {
+
+            $data_edit    = [];
+
+            foreach ($this->request->getPost('product_sku') as $sku) {
+                $data_edit[] = [
+                    'product_sku_id' => $sku['product_sku_id'],
+                    'price'          => format_decimal($sku['price']),
+                    'quantity'       => $sku['quantity']
+                ];
+
+                $sku_prices[$sku['price']] = service('currency')->format(format_decimal($sku['price']), config_item('currency'));
+                $sku_quantity += $sku['quantity'];
+                $product_id = $sku['product_id'];
+            }
+
+            $product_sku_model = new \App\Modules\Products\Models\ProductSkuModel();
+            $product_sku_model->updateBatch($data_edit, 'product_sku_id');
+
+            sort($sku_prices);
+            if (count($sku_prices) > 2) {
+                $sku_prices = [$sku_prices[0], $sku_prices[count($sku_prices) - 1]];
+            }
+
+            $price_show = implode(" - ", $sku_prices);
+        } elseif (!empty($this->request->getPost('product_info'))) {
+            $data_edit = [
+                'product_id' => $this->request->getPost('product_info')['product_id'],
+                'price'      => format_decimal($this->request->getPost('product_info')['price']),
+                'quantity'   => $this->request->getPost('product_info')['quantity']
+            ];
+
+            $this->model->save($data_edit);
+
+            $sku_quantity = $data_edit['quantity'];
+            $price_show   = service('currency')->format($data_edit['price'], config_item('currency'));
+            $product_id   = $data_edit['product_id'];
+        }
+
+        $data = [
+            'price'      => $price_show,
+            'quantity'   => $sku_quantity,
+            'product_id' => $product_id,
+        ];
+
+        set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
+        json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_edit_success'), 'data' => $data]);
+    }
+
+    public function publish()
+    {
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $token = csrf_hash();
+
+        if (empty($this->request->getPost())) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
+        }
+
+        $id        = $this->request->getPost('id');
+        $item_edit = $this->model->find($id);
+        if (empty($item_edit)) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+        }
+
+        $item_edit['published'] = !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF;
+        if (!$this->model->update($id, $item_edit)) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
+        }
+
+        $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')];
 
         json_output($data);
     }
