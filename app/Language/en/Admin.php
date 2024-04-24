@@ -96,7 +96,7 @@ return [
 	"column_published" => "Status",
 	"column_slug" => "SEO Url  / Alias",
 	"column_sort_order" => "Sort Order",
-	"dashboard_heading" => "Home",
+	"dashboard_heading" => "Dashboard",
 	"error" => "System Error! Please check the form carefully for errors!",
 	"error_add_album_empty_photo" => "Please select a picture before creating an album",
 	"error_captcha" => "The security code is incorrect",

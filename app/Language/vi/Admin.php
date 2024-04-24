@@ -96,7 +96,7 @@ return [
 	"column_published" => "Trạng thái",
 	"column_slug" => "Đường dẫn SEO / Alias",
 	"column_sort_order" => "Sắp xếp",
-	"dashboard_heading" => "Trang chủ",
+	"dashboard_heading" => "Bảng điều khiển",
 	"error" => "Lỗi hệ thống!",
 	"error_add_album_empty_photo" => "Vui lòng chọn hình trước khi tạo album",
 	"error_captcha" => "Mã bảo vệ không đúng",

@@ -16,4 +16,6 @@ $routes->group('manage', ['namespace' => 'App\Modules\Manage\Controllers'], func
     $subroutes->add('backup/download', 'Backup::download');
     $subroutes->add('backup/restore', 'Backup::restore');
     $subroutes->add('backup/upload', 'Backup::upload');
+
+    $subroutes->add('dashboard', 'Dashboard::index');
 });
