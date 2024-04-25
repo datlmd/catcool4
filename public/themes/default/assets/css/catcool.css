@@ -1,0 +1,73 @@
+html {
+}
+
+body {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+    color: #666;
+    font-size: 14px;
+    line-height: 20px;
+    width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: #444;
+    margin: 0;
+    padding: 0;
+}
+/* Override the bootstrap defaults */
+h1 {
+    font-size: 33px;
+}
+h2 {
+    font-size: 27px;
+}
+h3 {
+    font-size: 21px;
+}
+h4 {
+    font-size: 16px;
+}
+footer h5 {
+    font-size: 14px;
+}
+h6 {
+    font-size: 12px;
+}
+
+dl, ol, ul , p {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: #23a1d1;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+}
+a:hover {
+    text-decoration: none;
+    color: #eb2d2d;
+}
+/* Chrome border line */
+button:focus {
+    outline: none !important;
+}
+legend {
+    font-size: 18px;
+    padding: 7px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e5e5e5;
+}
+label {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.header-top {
+    background: #ffffff;
+}
+
+.header-top .header-top-contact {
+    font-size: 12px;
+}
