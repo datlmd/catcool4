@@ -12,4 +12,6 @@ $routes->group('languages', ['namespace' => 'App\Modules\Languages\Controllers']
     $subroutes->add('manage/delete', 'Manage::delete');
     $subroutes->add('manage/publish', 'Manage::publish');
     $subroutes->add('manage/switch/(:any)', 'Manage::switch/$1');
+
+    $subroutes->get('switch/(:any)', 'Languages::switch/$1');
 });

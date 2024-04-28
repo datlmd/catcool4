@@ -4,25 +4,27 @@
         {if !empty($header_bottom)}{$header_bottom}{/if}
         <div role="main" class="main">
             {if !empty($breadcumb)}{$breadcumb}{/if}
-            <div class="container">
-                <div class="row">
-                    {if !empty($content_left)}
-                        <aside id="content_left" class="col-3 d-none d-md-block">
-                            {$content_left}
-                        </aside>
-                    {/if}
+            <div class="container-fluid">
+                <div class="container-xxl">
+                    <div class="row">
+                        {if !empty($content_left)}
+                            <aside id="content_left" class="col-3 d-none d-md-block">
+                                {$content_left}
+                            </aside>
+                        {/if}
 
-                    <div id="content" class="col">
-                        {if !empty($content_top)}{$content_top}{/if}
-                        {if !empty($content)}{$content}{/if}
-                        {if !empty($content_bottom)}{$content_bottom}{/if}
+                        <div id="content" class="col">
+                            {if !empty($content_top)}{$content_top}{/if}
+                            {if !empty($content)}{$content}{/if}
+                            {if !empty($content_bottom)}{$content_bottom}{/if}
+                        </div>
+
+                        {if !empty($content_right)}
+                            <aside id="content_right" class="col-3 d-none d-md-block">
+                                {$content_right}
+                            </aside>
+                        {/if}
                     </div>
-
-                    {if !empty($content_right)}
-                        <aside id="content_right" class="col-3 d-none d-md-block">
-                            {$content_right}
-                        </aside>
-                    {/if}
                 </div>
             </div>
         </div>

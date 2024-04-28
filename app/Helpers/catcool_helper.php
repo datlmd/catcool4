@@ -1610,13 +1610,20 @@ if (!function_exists('get_menu_by_position'))
     {
         $menu_model = new \App\Modules\Menus\Models\MenuModel();
 
-        $menu = $menu_model->getMenuActive(['context' => $position], 3600*30*12);
-        $menu = format_tree(['data' => $menu, 'key_id' => 'menu_id']);
-        if (empty($menu)) {
+        $menus = $menu_model->getMenuActive(null, 3600*30*12);
+        if (empty($menus)) {
             return false;
         }
 
-        return $menu;
+        foreach ($menus as $menu_key => $menu) {
+            if ($menu['context'] != $position) {
+                unset($menus[$menu_key]);
+            }
+        }
+
+        $menus = format_tree(['data' => $menus, 'key_id' => 'menu_id']);
+
+        return $menus;
     }
 }
 

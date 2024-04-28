@@ -30,10 +30,15 @@
 	<!-- StyleSheets -->
 	<link rel="stylesheet" type="text/css" href="{base_url('common/plugin/bootstrap/css/bootstrap.min.css')}">
 	<link rel="stylesheet" type="text/css" href="{base_url('common/plugin/bootstrap/css/bootstrap-utilities.min.css')}">
-    <link rel="stylesheet" href="{base_url('common/css/catcool.css')}" type="text/css">
-	{include file=get_theme_path('views/master/common/css.tpl')}
-	{include file=get_theme_path('views/master/common/css_theme.tpl')}
+
+
 	{if !empty($css_files)}{$css_files}{/if}
+
+	{include file=get_theme_path('views/master/common/css.tpl')}
+
+	<link rel="stylesheet" href="{base_url('common/css/catcool.css')}" type="text/css">
+
+	{include file=get_theme_path('views/master/common/css_theme.tpl')}
 
 	<!-- Head Libs -->
 	<script src="{base_url('common/plugin/modernizr/modernizr.min.js')}"></script>

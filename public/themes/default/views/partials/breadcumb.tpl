@@ -1,14 +1,7 @@
-<section class="page-header page-header-classic" style="background-image: url('{img_url('breadcrumb.jpg')}');">
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                {if !empty($breadcrumb)}{$breadcrumb}{/if}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col p-static">
-                <h1 data-title-border>{if !empty($breadcrumb_title)}{$breadcrumb_title}{/if}</h1>
-            </div>
+{strip}
+    <div class="container-fluid breadcumb-content">
+        <div class="container-xxl">
+            {include file=get_view_path('common/breadcumb.tpl')}
         </div>
     </div>
-</section>
+{/strip}
