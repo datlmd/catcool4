@@ -17,20 +17,6 @@
                                         </a>
                                     </li>
                                 {/foreach}
-                                {foreach $item.subs as $sub}
-                                    <li>
-                                        <a class="nav-item" href="{$sub.slug}">
-                                            <span>{$sub.name}</span>
-                                        </a>
-                                    </li>
-                                {/foreach}
-                                {foreach $item.subs as $sub}
-                                    <li>
-                                        <a class="nav-item" href="{$sub.slug}">
-                                            <span>{$sub.name}</span>
-                                        </a>
-                                    </li>
-                                {/foreach}
                             </ul>
                         </div>
 

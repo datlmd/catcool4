@@ -8,7 +8,7 @@
 						{include file=get_view_path('common/newsletter.tpl')}
 					</div>
 
-					<div class="col-md-6 col-lg-4 text-end">
+					<div class="col-md-6 col-lg-4 text-center">
 						{include file=get_view_path('common/social_list.tpl')}
 					</div>
 				</div>

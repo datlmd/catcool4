@@ -1,5 +1,5 @@
 {strip}
-    <header>
+    <header id="header_main_pc" class="d-none d-lg-inline">
         {* phan header tren cung *}
         <div class="container-fluid header-top">
             <div class="container-xxl d-flex justify-content-between">
@@ -39,6 +39,10 @@
 
                     <ul class="nav">
 
+                        <li class="nav-item">
+                            {view_cell('Common::currency')}
+                        </li>
+
                         {assign var="menu_top" value=get_menu_by_position(MENU_POSITION_TOP)}
 
                         {if !empty($menu_top)}
@@ -55,9 +59,21 @@
                         {/if}
 
                         <li class="nav-item">
-                            {view_cell('Common::currency')}
+                            <a class="nav-link" href="">
+                                <i class="far fa-heart"></i>
+                                <span class="d-none d-md-inline ms-1">{lang('Frontend.text_wishlist')}</span>
+                                <span class="ms-1">
+                                    (0)
+                                </span>
+                            </a>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="d-none d-md-inline ms-1">{lang('Frontend.text_shopping_cart')}</span>
+                            </a>
+                        </li>
+                        
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-user"></i>
@@ -68,18 +84,6 @@
                                 <li><a class="dropdown-item" href="#">Another action</a></li>
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">
-                                <i class="far fa-heart"></i>
-                                <span class="d-none d-md-inline ms-1">{lang('Frontend.text_wishlist')}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">
-                                <i class="fas fa-shopping-cart"></i>
-                                <span class="d-none d-md-inline ms-1">{lang('Frontend.text_shopping_cart')}</span>
-                            </a>
                         </li>
 
                         {if is_multi_lang() == true}
@@ -105,18 +109,15 @@
                     </a>
                 </div>
 
-                <div class="header-search">
-                    <form role="search" action="{site_url("search")}" method="get">
-                        <div class="input-group">
-                            <input type="text" name="t" class="form-control" placeholder="{lang('General.text_search')}" aria-label="{lang('General.text_search')}" aria-describedby="btn_search_product">
-                            <button  type="submit" class="input-group-text" id="btn_search_product"><i class="fa fa-search header-nav-top-icon"></i></button>
-                        </div>
-                    </form>
+                <div class="header-search-form" style="width: 40%">
+                    {include file=get_view_path('common/search.tpl')}
                 </div>
             </div>
         </div>
 
         {* phan header menu chinh *}
+        <div class="header-bottom-scroll" style="display: none;"></div>
+
         <div class="container-fluid header-bottom">
             <div class="container-xxl header-menu">
 
@@ -128,5 +129,9 @@
 
             </div>
         </div>
+    </header>
+
+    <header id="header_main_mobile" class="d-block d-lg-none">
+        {include file=get_view_path('common/header_menu_mobile.tpl')}
     </header>
 {/strip}

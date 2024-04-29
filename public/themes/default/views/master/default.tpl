@@ -50,7 +50,10 @@
     <script>{script_global()}</script>
 </head>
 <body class="{if !empty($body_class)}{$body_class}{/if}">
+
 	{$layout}
+
+	<button id="btn_scroll_to_top" onclick="scrollToTop()"><i class="fas fa-angle-up"></i></button>
 	<!-- JavaScripts -->
 	{include file=get_theme_path('views/master/common/js.tpl')}
 	{include file=get_theme_path('views/master/common/js_theme.tpl')}

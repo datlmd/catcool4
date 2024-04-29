@@ -4,16 +4,24 @@ namespace App\Cells;
 
 class Common
 {
-    public function language(): string
+    public function language($type = null): string
     {
-        return \App\Libraries\Themes::init()::view('common/language');
+        if (empty($type)) {
+            $type = "dropdown";
+        }
+
+        return \App\Libraries\Themes::init()::view('common/language', ['type' => $type]);
     }
 
-    public function currency(): string
+    public function currency($type = null): string
     {
         $currency_model = new \App\Modules\Currencies\Models\CurrencyModel();
 
-        return \App\Libraries\Themes::init()::view('common/currency', ['currency_list' => $currency_model->getListPublished()]);
+        if (empty($type)) {
+            $type = "dropdown";
+        }
+
+        return \App\Libraries\Themes::init()::view('common/currency', ['currency_list' => $currency_model->getListPublished(), 'type' => $type]);
     }
 
     public function menuFooter(): string
