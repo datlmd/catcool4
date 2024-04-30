@@ -303,7 +303,7 @@ class Manage extends AdminController
             ]);
 
             if ($this->validator->withRequest($this->request)->run()) {
-                $send_email = send_email($email, config_item('email_from'), $subject_title, $subject, $content);
+                $send_email = send_email($email, config_item('email_from'), $subject, $content, $subject_title);
                 if (!$send_email) {
                     $data['errors'] = lang('Email.error_sent_unsuccessful');
                 } else {

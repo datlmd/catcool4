@@ -87,6 +87,10 @@ a:hover {
     box-shadow: 0 0 0 .25rem rgb(var(--text-color-main-rgb) / 20%);
 }
 
+.btn, .form-control {
+    font-size: var(--body-font-size);
+}
+
 /* Chrome border line */
 button:focus {
     outline: none !important;

@@ -516,6 +516,11 @@ var Catcool = {
                     return false;
                 }
 
+                if (response.redirect) {
+                    location = response.redirect.replaceAll('&amp;', '&');
+                    return false;
+                }
+
                 $('body').append('<div id="modal_image" class="modal fade" role="dialog" data-bs-keyboard="false" data-bs-backdrop="static">' + html + '</div>');
 
                 $('html').css('overflow', 'hidden');

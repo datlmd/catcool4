@@ -1486,7 +1486,7 @@ if (!function_exists('json_output'))
 
 if (!function_exists('send_email'))
 {
-    function send_email($email_to, $email_from, $subject_title = null, $subject, $content, $reply_to = null, $bcc = null, $config = null)
+    function send_email($email_to, $email_from, $subject, $content, $subject_title = null, $reply_to = null, $bcc = null, $config = null)
     {
         //Gửi mail
         try {

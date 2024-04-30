@@ -695,7 +695,7 @@ class Manage extends AdminController
                 $subject_title = config_item('email_subject_title');
                 $subject       = lang('Email.forgot_password_subject', [$user_info['username']], $language);
 
-                $send_email = send_email($user_info['email'], config_item('email_from'), $subject_title, $subject, $message);
+                $send_email = send_email($user_info['email'], config_item('email_from'), $subject, $message, $subject_title);
                 if (!$send_email) {
                     $data['errors'] = lang('UserAdmin.error_forgot_password_unsuccessful');
                 } else {

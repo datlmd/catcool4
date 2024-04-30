@@ -29,11 +29,24 @@ class AuthAdminFilter implements FilterInterface
                 }
                 $redirect = 'users/manage/login?redirect=' . urlencode(current_url() . $query_string);
 
+                if (\Config\Services::request()->isAJAX()) {
+                    header('content-type: application/json; charset=utf8');
+                    echo json_encode(['token' => csrf_hash(), 'redirect' => site_url($redirect)]);
+                    exit();
+                }
+
                 return redirect()->to(site_url($redirect));
             }
         }
 
         if (empty(session('admin.is_admin'))) {
+
+            if (\Config\Services::request()->isAJAX()) {
+                header('content-type: application/json; charset=utf8');
+                echo json_encode(['token' => csrf_hash(), 'redirect' => site_url()]);
+                exit();
+            }
+
             //chuyen sang trang frontend
             return redirect()->to(site_url());
         }
