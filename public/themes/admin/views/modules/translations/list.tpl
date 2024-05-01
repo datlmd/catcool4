@@ -226,7 +226,7 @@
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     {if !empty($module_list)}
-                                        <select name="module_id" class="form-control form-control-sm">
+                                        <select name="module_id" class="form-control form-control-sm cc-form-select-single">
                                             {foreach $module_list as $value}
                                                 <option value="{$value.id}">{$value.module}{if !empty($value.sub_module)} - Sub: {$value.sub_module}{/if}</option>
                                             {/foreach}

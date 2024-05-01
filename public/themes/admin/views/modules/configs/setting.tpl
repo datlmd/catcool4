@@ -25,6 +25,9 @@
 									<a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_page'}active{/if}" id="tab_page" data-bs-toggle="tab" href="#tab_content_page" role="tab" aria-controls="tab_page" aria-selected="{if old('tab_type', $tab_type) eq 'tab_page'}true{else}false{/if}">{lang('Admin.tab_general')}</a>
 								</li>
 								<li class="nav-item">
+									<a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_store'}active{/if}" id="tab_store" data-bs-toggle="tab" href="#tab_content_store" role="tab" aria-controls="tab_store" aria-selected="{if old('tab_type', $tab_type) eq 'tab_store'}true{else}false{/if}">{lang('Admin.tab_store')}</a>
+								</li>
+								<li class="nav-item">
 									<a class="nav-link p-2 ps-3 pe-3 {if old('tab_type', $tab_type) eq 'tab_image'}active{/if}" id="tab_image" data-bs-toggle="tab" href="#tab_content_image" role="tab" aria-controls="tab_image" aria-selected="{if old('tab_type', $tab_type) eq 'tab_image'}true{else}false{/if}">{lang('Admin.tab_image')}</a>
 								</li>
 								<li class="nav-item">
@@ -43,6 +46,9 @@
 							<div class="tab-content border-0 p-3" id="tab_content">
 								<div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_page'}show active{/if}" role="tabpanel" id="tab_content_page"  aria-labelledby="tab_page">
 									{include file=get_theme_path('views/modules/configs/inc/tab_page.tpl')}
+								</div>
+								<div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_store'}show active{/if}" role="tabpanel" id="tab_content_store"  aria-labelledby="tab_store">
+									{include file=get_theme_path('views/modules/configs/inc/tab_store.tpl')}
 								</div>
 								<div class="tab-pane fade {if old('tab_type', $tab_type) eq 'tab_image'}show active{/if}" role="tabpanel" id="tab_content_image"  aria-labelledby="tab_image">
 									{include file=get_theme_path('views/modules/configs/inc/tab_image.tpl')}

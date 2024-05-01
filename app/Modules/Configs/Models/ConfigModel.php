@@ -101,7 +101,11 @@ class ConfigModel extends MyModel
             if (!empty($settings)) {
                 foreach ($settings as $setting) {
                     $config_value = $setting['config_value'];
-                    if (is_numeric($config_value) || is_bool($config_value) || in_array($config_value, ['true', 'false', 'TRUE', 'FALSE']) || strpos($config_value, '[') !== false) {
+                    if ((is_numeric($config_value) && $setting['config_key'] != 'store_phone')
+                        || is_bool($config_value)
+                        || in_array($config_value, ['true', 'false', 'TRUE', 'FALSE'])
+                        || strpos($config_value, '[') !== false
+                    ) {
                         $config_value = $config_value;
                     } else if ($setting['config_key'] == 'file_mime_allowed') {
                         $config_value = str_replace("'", '"', $config_value);

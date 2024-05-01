@@ -88,6 +88,13 @@ class Manage extends AdminController
                 $this->validator->setRule('pagination_limit', lang('ConfigAdmin.text_pagination_limit'), 'required|is_natural_no_zero');
                 $this->validator->setRule('pagination_limit_admin', lang('ConfigAdmin.text_pagination_limit_admin'), 'required|is_natural_no_zero');
                 break;
+            case 'tab_store':
+                $this->validator->setRule('store_name', lang('ConfigAdmin.text_store_name'), 'required');
+                $this->validator->setRule('store_owner', lang('ConfigAdmin.text_store_owner'), 'required');
+                $this->validator->setRule('store_address', lang('ConfigAdmin.text_store_address'), 'required');
+                $this->validator->setRule('store_email', lang('ConfigAdmin.text_store_email'), 'required|valid_email');
+                $this->validator->setRule('store_phone', lang('ConfigAdmin.text_store_phone'), 'required');
+                break;
             case 'tab_image':
                 $this->validator->setRule('file_max_size', lang('ConfigAdmin.text_file_max_size'), 'required|is_natural');
                 $this->validator->setRule('file_ext_allowed', lang('ConfigAdmin.text_file_ext_allowed'), 'required');
@@ -114,7 +121,10 @@ class Manage extends AdminController
         if (!empty($this->request->getPost())) {
 
             if (!$this->validator->withRequest($this->request)->run()) {
-                set_alert($this->errors, ALERT_ERROR);
+                set_alert([
+                    ALERT_ERROR => $this->validator->getErrors()
+                ]);
+
                 return redirect()->back()->withInput();
             }
 
@@ -129,6 +139,7 @@ class Manage extends AdminController
                     break;
                 case 'tab_page':
                 case 'tab_local':
+                case 'tab_store':
                 default:
                     break;
             }
