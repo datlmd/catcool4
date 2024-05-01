@@ -611,7 +611,7 @@ class Manage extends AdminController
 
     public function login()
     {
-        helper('reCaptcha');
+        //helper('reCaptcha');
 
         $data     = [];
         $redirect = empty($this->request->getGetPost('redirect')) ? site_url(CATCOOL_DASHBOARD) : $this->request->getGetPost('redirect');
@@ -627,35 +627,72 @@ class Manage extends AdminController
             }
         }
 
-        // validate form input
-        $this->validator->setRules([
-            'username' => ['label' => str_replace(':', '', lang('Admin.text_username')), 'rules' => 'required'],
-            'password' => ['label' => str_replace(':', '', lang('Admin.text_password')), 'rules' => 'required'],
-            'captcha' => 'required|reCaptcha3[loginRootForm,0.9]'
-        ]);
-
-        if (!empty($this->request->getPost()) && $this->validator->withRequest($this->request)->run()) {
-
-            $remember = (bool)$this->request->getPost('remember');
-            if ($this->model->login($this->request->getPost('username'), $this->request->getPost('password'), $remember, true)) {
-                set_alert(lang('User.text_login_successful'), ALERT_SUCCESS, ALERT_POPUP);
-                return redirect()->to($redirect);
-            }
-
-            $data['errors'] = (empty($this->model->getErrors())) ? lang('User.text_login_unsuccessful') : $this->model->getErrors();
-        }
-
         $data['username'] = $this->request->getPost('username');
         $data['remember'] = $this->request->getPost('remember');
         $data['redirect'] = $redirect;
 
-        if (!empty($this->validator->getErrors())) {
-            $data['errors'] = $this->validator->getErrors();
-        }
+//        if (!empty($this->validator->getErrors())) {
+//            $data['errors'] = $this->validator->getErrors();
+//        }
 
         add_meta(['title' => lang("UserAdmin.login_heading")], $this->themes);
 
         $this->themes->setLayout('empty')::load('login', $data);
+    }
+
+    public function apiLogin()
+    {
+        //helper('reCaptcha');
+
+        $redirect = empty($this->request->getPost('redirect')) ? site_url(CATCOOL_DASHBOARD) : $this->request->getPost('redirect');
+        $redirect = urldecode($redirect);
+
+        if (!empty(session('admin.user_id'))) {
+            json_output([
+                'redirect' => $redirect
+            ]);
+        }
+
+        if (empty($this->request->getPost())) {
+            json_output([
+                'alert' => print_alert(lang('User.text_login_unsuccessful'), 'danger')
+            ]);
+        }
+
+        // validate form input
+        $this->validator->setRules([
+            'username' => ['label' => str_replace(':', '', lang('Admin.text_username')), 'rules' => 'required'],
+            'password' => ['label' => str_replace(':', '', lang('Admin.text_password')), 'rules' => 'required'],
+            //'captcha' => 'required|reCaptcha3[loginRootForm,0.9]'
+        ]);
+
+        if (!$this->validator->withRequest($this->request)->run()) {
+
+            $errors = $this->validator->getErrors();
+
+            json_output([
+                'error' => $errors,
+                'alert' => print_alert($errors, 'danger')
+            ]);
+        }
+
+        $remember = (bool)$this->request->getPost('remember');
+        if (!$this->model->login($this->request->getPost('username'), $this->request->getPost('password'), $remember, true)) {
+
+            $errors = (empty($this->model->getErrors())) ? lang('User.text_login_unsuccessful') : $this->model->getErrors();
+
+            json_output([
+                'error' => $errors,
+                'alert' => print_alert($errors, 'danger')
+            ]);
+        }
+
+        set_alert(lang('User.text_login_successful'), ALERT_SUCCESS, ALERT_POPUP);
+
+        json_output([
+            'success' => lang('User.text_login_successful'),
+            'redirect' => $redirect,
+        ]);
     }
 
     public function logout()

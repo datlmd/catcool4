@@ -94,6 +94,7 @@ class Filters extends BaseFilters
             'auth_admin' => [
                 'except' => [
                     '*/login',
+                    '*/api_login',
                     '*/logout',
                     '*/forgot_password',
                     '*/reset_password/*',

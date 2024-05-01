@@ -655,7 +655,6 @@ var Catcool = {
                 $('.loading').remove().fadeOut();
                 is_processing = false;
 
-               // $('.alert-dismissible').remove();
                 $(form).find('.is-invalid').removeClass('is-invalid');
                 $(form).find('.invalid-feedback').removeClass('d-block');
 
@@ -683,6 +682,16 @@ var Catcool = {
                         $('#error_' + key.replaceAll('.', '_')).html(json['error'][key]).addClass('d-block');
 
                         $.notify(json['error'][key], {'type': 'danger'});
+                    }
+                }
+
+                if (json['alert']) {
+                    if ($(form).data('alert') != "") {
+                        $($(form).data('alert')).html("");
+                        $($(form).data('alert')).prepend(json['alert']);
+                    } else {
+                        $('#alert').html("");
+                        $('#alert').prepend(json['alert']);
                     }
                 }
 

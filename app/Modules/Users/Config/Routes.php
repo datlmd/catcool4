@@ -12,6 +12,7 @@ $routes->group('users', ['namespace' => 'App\Modules\Users\Controllers'], functi
     $subroutes->add('manage/delete', 'Manage::delete');
     $subroutes->add('manage/publish', 'Manage::publish');
     $subroutes->add('manage/login', 'Manage::login');
+    $subroutes->post('manage/api_login', 'Manage::apiLogin');
     $subroutes->add('manage/logout', 'Manage::logout');
     $subroutes->add('manage/permission/(:num)', 'Manage::permission/$1');
     $subroutes->add('manage/change_password/(:num)', 'Manage::changePassword/$1');
