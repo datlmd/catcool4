@@ -169,7 +169,8 @@ class AuthModel extends MyModel
             'domain' => '',
             'path'   => '/',
             'prefix' => '',
-            'secure' => false
+            'secure' => (bool)config_item('force_global_secure_requests'),
+            'samesite' => \CodeIgniter\Cookie\Cookie::SAMESITE_LAX,
         ];
 
         $response = \Config\Services::response();

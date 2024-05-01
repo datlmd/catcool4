@@ -90,7 +90,8 @@ if (!function_exists('set_lang'))
             'domain' => '',
             'path' => '/',
             'prefix' => '',
-            'secure' => FALSE
+            'secure' => (bool)config_item('force_global_secure_requests'),
+            'samesite' => \CodeIgniter\Cookie\Cookie::SAMESITE_LAX,
         ];
 
         $response = \Config\Services::response();
