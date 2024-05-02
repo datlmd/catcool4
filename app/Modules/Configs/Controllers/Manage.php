@@ -90,10 +90,10 @@ class Manage extends AdminController
                 break;
             case 'tab_store':
                 $this->validator->setRule('store_name', lang('ConfigAdmin.text_store_name'), 'required');
-                $this->validator->setRule('store_owner', lang('ConfigAdmin.text_store_owner'), 'required');
-                $this->validator->setRule('store_address', lang('ConfigAdmin.text_store_address'), 'required');
+                $this->validator->setRule('store_owner', lang('ConfigAdmin.text_store_owner'), 'required|min_length[3]|max_length[64]');
+                $this->validator->setRule('store_address', lang('ConfigAdmin.text_store_address'), 'required|min_length[3]|max_length[256]');
                 $this->validator->setRule('store_email', lang('ConfigAdmin.text_store_email'), 'required|valid_email');
-                $this->validator->setRule('store_phone', lang('ConfigAdmin.text_store_phone'), 'required');
+                $this->validator->setRule('store_phone', lang('ConfigAdmin.text_store_phone'), 'required|min_length[3]|max_length[32]');
                 break;
             case 'tab_image':
                 $this->validator->setRule('file_max_size', lang('ConfigAdmin.text_file_max_size'), 'required|is_natural');

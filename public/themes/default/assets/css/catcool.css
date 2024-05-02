@@ -1,29 +1,21 @@
 @charset "UTF-8";
+
 :root {
     --body-font-size: 12px;
-    --body-color-main: #666666;
+    --body-color-main: #444444;
     --text-color-main-rgb: 208 47 152;
     --text-color-main: #8a3f7f;
     --text-color-gradient: #d09693;
     --text-color-white: #ffffff;
     --footer-bg-color: #323232;
     --footer-text-color: #888888;
-
-    --bs-primary: var(--text-color-main);
-    --bs-secondary: #6c757d;
-    --bs-success: #198754;
-    --bs-info: #0dcaf0;
-    --bs-warning: #ffc107;
-    --bs-danger: #dc3545;
-    --bs-light: #f8f9fa;
-    --bs-dark: #212529;
 }
 
 html {
 }
 
 body {
-    font-family: "Open Sans", sans-serif;
+    font-family: Tahoma, "Open Sans", sans-serif;
     font-weight: 400;
     color: var(--body-color-main);
     font-size: var(--body-font-size);
@@ -78,6 +70,7 @@ a:hover {
     /*-ms-animation: pulse .5s ease-in-out 1 alternate;*/
     /*-o-animation: pulse .5s ease-in-out 1 alternate;*/
 }
+
 
 .form-control:focus {
     color: #212529;

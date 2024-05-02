@@ -26,9 +26,9 @@
 		<div class="footer-copyright container-fluid">
 			<div class="container-xxl">
 
-				{if !empty(lang('Frontend.text_business_hours_value'))}
+				{if !empty(config_item('store_open'))}
 					<span class="text-opentime_title" data-type="lang" data-key="Frontend.text_business_hours">{lang('Frontend.text_business_hours')}</span>
-					<span class="text-opentime_value" data-type="lang" data-key="Frontend.text_business_hours_value">{lang('Frontend.text_business_hours_value')}</span>
+					<span class="text-opentime_value">{config_item('store_open')}</span>
 					<br/>
 				{/if}
 

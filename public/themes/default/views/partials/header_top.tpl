@@ -7,27 +7,28 @@
                 <div class="header-top-contact animate__animated animate__fadeInDown">
 
                     <ul class="nav nav-pills">
-                        {if !empty(lang('Frontend.text_address_value'))}
+                        {if !empty(config_item('store_address'))}
                             <li class="nav-item d-none d-md-inline">
                                 <a class="nav-link disabled">
                                     <i class="far fa-dot-circle me-1"></i>
-                                    <span data-type="lang" data-key="Frontend.text_address_value">{lang('Frontend.text_address_value')}</span>
+                                    {config_item('store_address')}
+{*                                    <span data-type="lang" data-key="Frontend.text_address_value">{lang('Frontend.text_address_value')}</span>*}
                                 </a>
                             </li>
                         {/if}
-                        {if !empty(lang('Frontend.text_phone_value'))}
+                        {if !empty(config_item('store_phone'))}
                             <li class="nav-item contact-phone">
                                 <a href="tel:{lang('Frontend.text_phone_value')}" class="nav-link">
                                     <i class="fas fa-phone me-1"></i>
-                                    <span class="d-none d-md-inline" data-type="lang" data-key="Frontend.text_phone_value">{lang('Frontend.text_phone_value')}</span>
+                                   {config_item('store_phone')}
                                 </a>
                             </li>
                         {/if}
-                        {if !empty(lang('Frontend.text_email_value'))}
+                        {if !empty(config_item('store_email'))}
                             <li class="nav-item">
                                 <a href="mailto:{lang('Frontend.text_email_value')}" class="nav-link">
                                     <i class="far fa-envelope me-1"></i>
-                                    <span class="d-none d-md-inline" data-type="lang" data-key="Frontend.text_email_value">{lang('Frontend.text_email_value')}</span>
+                                    {config_item('store_email')}
                                 </a>
                             </li>
                         {/if}
