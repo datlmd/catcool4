@@ -15,8 +15,23 @@ class Contact extends MyController
         //set theme
         $this->themes->setTheme(config_item('theme_frontend'));
 
+        if (!empty(config_item('store_location'))) {
+            $store_location = explode(',', config_item('store_location'));
 
-        $data = [];
+            $location_model = new \App\Modules\Locations\Models\LocationModel();
+            $location_list = $location_model->getLocations();
+
+            foreach ($location_list as $location_key => $location) {
+                if (!in_array($location['location_id'], $store_location)) {
+                    unset($location_list[$location_key]);
+                }
+            }
+
+        }
+
+        $data = [
+            'location_list' => $location_list,
+        ];
 
 
         $this->themes->addPartial('header_top')

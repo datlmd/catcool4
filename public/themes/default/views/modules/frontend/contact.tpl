@@ -47,6 +47,53 @@
 
     </div>
 
+    {if $location_list}
+        <h3 class="text-start mb-3 border-bottom pb-2">{lang('Contact.text_store')}</h3>
+        {foreach $location_list as $location}
+            <div class="row pb-4">
+                {if !empty($location.image)}
+                    <div class="col-sm-6 col-md-3 mb-3">
+                        <img alt="{$location.name}" class="img-thumbnail" src="{image_thumb_url($location.image, 400, 400)}">
+                    </div>
+                {/if}
+                <div class="col-sm-6 col-md-3 mb-3">
+                    <div class="fs-4 text-primary mb-2">{$location.name}</div>
+                    <address>
+                        {$location.address}
+                    </address>
+                    {if $location.geocode}
+                        <a href="https://maps.google.com/maps?q={$location.geocode|urlencode}&hl={get_lang()}&t=m&z=15" target="_blank" class="btn btn-info">
+                            <i class="fa-solid fa-location-dot"></i> {lang('Contact.text_google_map')}
+                        </a>
+                    {/if}
+
+                </div>
+
+                <div class="col-sm-6 col-md-3 mb-3">
+                    <strong>{lang('Contact.text_phone')}</strong>
+                    <br/>
+                    {$location.phone}
+                </div>
+
+                <div class="col-sm-6 col-md-3">
+                    {if !empty($location.open)}
+                        <strong>{lang('Contact.text_open')}</strong>
+                        <br/>
+                        {$location.open}
+                    {/if}
+                    {if !empty($location.comment)}
+                        <br/>
+                        <br/>
+                        <strong>{lang('Contact.text_comment')}</strong>
+                        <br/>
+                        {$location.comment}
+                    {/if}
+                </div>
+
+            </div>
+        {/foreach}
+    {/if}
+
     <h3 class="text-start my-3 border-bottom pb-2">{lang('Contact.text_contact_form')}</h3>
     {form_open(site_url("contact/send"), ["id" => "contact_form", "method" => "post", "data-cc-toggle" => "ajax", "data-alert" => "#contact_alert"])}
         <div id="contact_alert"></div>

@@ -16,6 +16,7 @@ return [
 	"text_open" => "Opening Times",
 	"text_phone" => "Telephone",
 	"text_send" => "Send",
+	"text_store" => "Our Stores",
 	"text_success" => "Your enquiry has been successfully sent to the store owner!",
 	"text_title" => "Contact Us",
 ];

@@ -16,6 +16,7 @@ return [
 	"text_open" => "Giờ mở cửa",
 	"text_phone" => "Điện thoại",
 	"text_send" => "Gửi",
+	"text_store" => "Danh sách Cửa hàng",
 	"text_success" => "Yêu cầu của bạn đã được gửi thành công đến chủ cửa hàng!",
 	"text_title" => "Liện hệ",
 ];

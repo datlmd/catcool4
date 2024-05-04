@@ -44,11 +44,11 @@ class LocationModel extends MyModel
         return $this->orderBy($sort, $order);
     }
 
-    public function getListAll($is_cache = true)
+    public function getLocations($is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::LOCATION_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->orderBy('sort_order', 'DESC')->findAll();
+            $result = $this->orderBy('location_id', 'DESC')->findAll();
             if (empty($result)) {
                 return [];
             }

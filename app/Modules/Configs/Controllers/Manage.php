@@ -137,9 +137,11 @@ class Manage extends AdminController
                 case 'tab_server':
                     $data_settings['robots'] = preg_replace('/\s+/', '|', trim($_POST['robots']));
                     break;
+                case 'tab_store':
+                    $data_settings['store_location'] = implode(',', $this->request->getPost('store_location[]'));
+                    break;
                 case 'tab_page':
                 case 'tab_local':
-                case 'tab_store':
                 default:
                     break;
             }
@@ -194,7 +196,15 @@ class Manage extends AdminController
         $list_config = $this->model->findAll();
         if (!empty($list_config)) {
             foreach ($list_config as $value) {
-                $settings[$value['config_key']] = $value['config_value'];
+                switch ($value['config_key']) {
+                    case 'store_location':
+                        $settings[$value['config_key']] = explode(',', $value['config_value']);
+                        break;
+                    default:
+                        $settings[$value['config_key']] = $value['config_value'];
+                        break;
+                }
+            
             }
         }
 
@@ -237,6 +247,9 @@ class Manage extends AdminController
 
         $attribute_group_model        = new \App\Modules\Attributes\Models\GroupModel();
         $data['attribute_group_list'] = format_dropdown($attribute_group_model->getListALL(), 'attribute_group_id');
+
+        $location_model = new \App\Modules\Locations\Models\LocationModel();
+        $data['location_list'] = $location_model->getLocations();
 
         //check permissions
         $key_file = 'config/Config.php';
