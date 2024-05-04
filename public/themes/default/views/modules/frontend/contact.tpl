@@ -12,13 +12,13 @@
             </div>
         {/if}
         <div class="col-sm-6 col-md-3 mb-3">
-            <div class="fs-4 text-primary mb-2">{config_item('store_name')}</div>
+            <div class="fs-6 text-primary mb-2">{config_item('store_name')}</div>
             <address>
                 {config_item('store_address')}
             </address>
             {if config_item('store_geocode')}
-                <a href="https://maps.google.com/maps?q={config_item('store_geocode')|urlencode}&hl={get_lang()}&t=m&z=15" target="_blank" class="btn btn-info">
-                    <i class="fa-solid fa-location-dot"></i> {lang('Contact.text_google_map')}
+                <a href="https://maps.google.com/maps?q={config_item('store_geocode')|urlencode}&hl={get_lang()}&t=m&z=15" target="_blank" class="btn btn-outline-primary">
+                    <i class="fas fa-map-marker-alt"></i> {lang('Contact.text_google_map')}
                 </a>
             {/if}
 
@@ -50,20 +50,20 @@
     {if $location_list}
         <h3 class="text-start mb-3 border-bottom pb-2">{lang('Contact.text_store')}</h3>
         {foreach $location_list as $location}
-            <div class="row pb-4">
+            <div class="row pb-3">
                 {if !empty($location.image)}
                     <div class="col-sm-6 col-md-3 mb-3">
                         <img alt="{$location.name}" class="img-thumbnail" src="{image_thumb_url($location.image, 400, 400)}">
                     </div>
                 {/if}
                 <div class="col-sm-6 col-md-3 mb-3">
-                    <div class="fs-4 text-primary mb-2">{$location.name}</div>
+                    <div class="fs-6 text-primary mb-2">{$location.name}</div>
                     <address>
                         {$location.address}
                     </address>
                     {if $location.geocode}
-                        <a href="https://maps.google.com/maps?q={$location.geocode|urlencode}&hl={get_lang()}&t=m&z=15" target="_blank" class="btn btn-info">
-                            <i class="fa-solid fa-location-dot"></i> {lang('Contact.text_google_map')}
+                        <a href="https://maps.google.com/maps?q={$location.geocode|urlencode}&hl={get_lang()}&t=m&z=15" target="_blank" class="btn btn-outline-primary">
+                            <i class="fas fa-map-marker-alt"></i> {lang('Contact.text_google_map')}
                         </a>
                     {/if}
 
