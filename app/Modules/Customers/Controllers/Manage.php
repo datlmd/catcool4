@@ -136,7 +136,7 @@ class Manage extends AdminController
             'dob'        => !empty($this->request->getPost('dob')) ? standar_date($this->request->getPost('dob')) : self::DOB_DEFAULT,
             'gender'     => $this->request->getPost('gender'),
             'newsletter' => $this->request->getPost('newsletter'),
-            'status'     => $this->request->getPost('status'),
+            'active'     => !empty($this->request->getPost('active')) ? STATUS_ON : STATUS_OFF,
             'safe'       => $this->request->getPost('safe'),
             //'custom_field',
             //'active' => !empty($this->request->getPost('active')) ? STATUS_ON : STATUS_OFF,

@@ -1,1 +1,4 @@
-{strip}    <h2>{$detail.name}</h2>    <p>{$detail.content}</p>{/strip}
+{strip}
+    <h1>{$detail.name}</h1>
+    <p>{$detail.content}</p>
+{/strip}

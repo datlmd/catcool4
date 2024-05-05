@@ -5,7 +5,7 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('customers', ['namespace' => 'App\Modules\Customers\Controllers'], function($subroutes){
+$routes->group('customers', ['namespace' => 'App\Modules\Customers\Controllers'], function($subroutes) {
     $subroutes->add('', 'Customers::index');
     $subroutes->add('login', 'Login::index');
     $subroutes->add('profile', 'Profile::index');
@@ -22,4 +22,10 @@ $routes->group('customers', ['namespace' => 'App\Modules\Customers\Controllers']
     $subroutes->add('groups_manage/edit/(:num)', 'GroupsManage::edit/$1');
     $subroutes->add('groups_manage/delete', 'GroupsManage::delete');
     $subroutes->add('groups_manage/save', 'GroupsManage::save');
+});
+
+$routes->group('account', ['namespace' => 'App\Modules\Customers\Controllers'], function($subroutes) {
+    $subroutes->get('login', 'Login::index');
+    $subroutes->post('login', 'Login::login');
+
 });

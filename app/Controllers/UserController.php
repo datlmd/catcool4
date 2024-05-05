@@ -22,14 +22,14 @@ class UserController extends MyController
     }
 
     /**
-     * User ID
-     *
+     * Get Customer ID
+     * 
      * @return \CodeIgniter\Session\Session|mixed|null
      */
-    public function getUserId()
+    public function getCustomerId()
     {
-        if (!empty(session('user.user_id'))) {
-            return session('user.user_id');
+        if (!empty(session('customer.customer_id'))) {
+            return session('customer.customer_id');
         }
 
         return NULL;

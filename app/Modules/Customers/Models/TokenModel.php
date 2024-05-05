@@ -11,7 +11,7 @@ class TokenModel extends MyModel
         'customer_id',
         'remember_selector',
         'remember_code',
-        'user_ip',
+        'ip',
         'agent',
         'platform',
         'browser',
@@ -38,22 +38,22 @@ class TokenModel extends MyModel
             $getloc = json_decode(file_get_contents("http://ipinfo.io/"));
 
             $data_token = [
-                'customer_id'           => $customer_id,
+                'customer_id'       => $customer_id,
                 'remember_selector' => $token['selector'],
                 'remember_code'     => $token['validator_hashed'],
-                'user_ip'           => get_client_ip(),
+                'ip'                => get_client_ip(),
                 'agent'             => $agent->getAgentString(),
                 'platform'          => $agent->getPlatform(),
                 'browser'           => $agent->getBrowser() . '/' . $agent->getVersion(),
                 'location'          => sprintf("%s, %s, %s", $getloc->city, $getloc->region, $getloc->country) ,
             ];
 
-            $user_token = $this->where(['customer_id' => $customer_id, 'remember_selector' => $token['selector']])->first();
-            if (empty($user_token)) {
+            $customer_token = $this->where(['customer_id' => $customer_id, 'remember_selector' => $token['selector']])->first();
+            if (empty($customer_token)) {
                 $data_token['ctime'] = get_date();
                 $this->insert($data_token);
             } else {
-                $this->where(['remember_selector' => $user_token['remember_selector']])->update($customer_id, $data_token);
+                $this->where(['remember_selector' => $customer_token['remember_selector']])->update($customer_id, $data_token);
             }
         } catch (\Exception $ex) {
             error_log($ex->getMessage());
@@ -67,8 +67,8 @@ class TokenModel extends MyModel
             return false;
         }
 
-        $user_token = $this->where(['remember_selector' => $token['selector']])->findAll();
-        if (empty($user_token)) {
+        $customer_token = $this->where(['remember_selector' => $token['selector']])->findAll();
+        if (empty($customer_token)) {
             return false;
         }
 

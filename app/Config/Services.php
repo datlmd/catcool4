@@ -13,6 +13,7 @@ use App\Libraries\Facebook;
 use App\Libraries\ZaloApi;
 use App\Libraries\Robot;
 use App\Libraries\Currency;
+use App\Libraries\Customer;
 
 /**
  * Services Configuration file.
@@ -151,5 +152,10 @@ class Services extends BaseService
     public static function currency($getShared = true)
     {
         return ($getShared === true ? static::getSharedInstance('currency') : new Currency());
+    }
+
+    public static function customer($getShared = true)
+    {
+        return ($getShared === true ? static::getSharedInstance('customer') : new Customer());
     }
 }

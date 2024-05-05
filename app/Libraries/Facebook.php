@@ -24,7 +24,7 @@ class Facebook
 
     public function __construct()
     {
-        if (!isset($this->fb)) {
+        if (!isset($this->_fb)) {
             $this->_fb = new FB([
                 'app_id' => config_item('fb_app_id'),
                 'app_secret' => config_item('fb_app_secret'),

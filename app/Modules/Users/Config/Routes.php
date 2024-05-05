@@ -28,8 +28,8 @@ $routes->group('users', ['namespace' => 'App\Modules\Users\Controllers'], functi
     $subroutes->add('post_register', 'Register::postRegister');
     $subroutes->add('register', 'Register::index');
 
-    $subroutes->add('login', 'Login::index');
-    $subroutes->add('post_login', 'Login::postLogin');
+    $subroutes->get('login', 'Login::index');
+    $subroutes->post('post_login', 'Login::postLogin');
     $subroutes->add('social_login', 'Login::socialLogin');
 
     $subroutes->add('profile', 'Profile::index');
