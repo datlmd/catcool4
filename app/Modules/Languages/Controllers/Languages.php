@@ -18,9 +18,6 @@ class Languages extends MyController
     {
         set_lang($code);
 
-        $menu_model = new  \App\Modules\Menus\Models\MenuModel();
-        $menu_model->deleteCache();
-
         return redirect()->back();
     }
 }

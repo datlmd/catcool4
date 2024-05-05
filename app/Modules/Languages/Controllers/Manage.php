@@ -55,9 +55,6 @@ class Manage extends AdminController
     {
         set_lang($code, true);
 
-        $menu_model = new  \App\Modules\Menus\Models\MenuModel();
-        $menu_model->deleteCache(true);
-
         return redirect()->back();
     }
 
