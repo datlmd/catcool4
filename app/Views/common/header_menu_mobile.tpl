@@ -24,7 +24,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link position-relative" href="" title="{lang('Frontend.text_wishlist')}">
+                        <a class="nav-link position-relative" href="{$wishlist}" title="{lang('General.text_wishlist')}">
                             <i class="far fa-heart"></i>
                             <span class="position-absolute top-1 translate-middle badge rounded-pill bg-danger">
                                 0
@@ -32,7 +32,7 @@
                         </a>
                     </li>
                     <li class="nav-item position-relative">
-                        <a class="nav-link" href="" title="{lang('Frontend.text_shopping_cart')}">
+                        <a class="nav-link" href="{$shopping_cart}" title="{lang('General.text_shopping_cart')}">
                             <i class="fas fa-shopping-cart"></i>
                             <span class="position-absolute top-1 translate-middle badge rounded-pill bg-danger">
                                 0
@@ -40,13 +40,19 @@
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="#" title="{lang('Frontend.text_my_account')}" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link" href="#" title="{lang('General.text_my_account')}" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Tên</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            {if !$logged}
+                                <li><a class="dropdown-item" href="{$login}">{lang('General.text_login')}</a></li>
+                                <li><a class="dropdown-item" href="{$register}">{lang('General.text_register')}</a></li>
+                            {else}
+                                <li><a class="dropdown-item" href="{$account}">{lang('General.text_account')}</a></li>
+                                <li><a class="dropdown-item" href="{$order}">{lang('General.text_order')}</a></li>
+                                <li><a class="dropdown-item" href="{$transaction}">{lang('General.text_transaction')}</a></li>
+                                <li><a class="dropdown-item" href="{$logout}">{lang('General.text_logout')}</a></li>
+                            {/if}
                         </ul>
                     </li>
 

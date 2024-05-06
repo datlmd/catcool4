@@ -19,6 +19,7 @@ return [
 	"heading_activate" => "Kích hoạt tài khoản",
 	"heading_title" => "Customers",
 	"text_account_login" => "Đăng nhập",
+	"text_account_logout" => "Đăng xuất tài khoản",
 	"text_email_not_found" => "Username hoặc email không tồn tại",
 	"text_login_identity" => "Tài khoản / Email / Số di động",
 	"text_login_social_unsuccessful" => "Đăng nhập thất bại. Vui lòng thử lại!",
@@ -26,5 +27,8 @@ return [
 	"text_login_timeout" => "Tài khoản này đã tạm thời bị khoá, vui lòng thử lại sau!",
 	"text_login_unsuccessful" => "Tài khoản hoặc mật khẩu không đúng",
 	"text_login_unsuccessful_not_active" => "Tài khoản của bạn đã bị khoá",
+	"text_logout_description" => "Bạn đã đăng xuất khỏi tài khoản của mình. Bây giờ bạn có thể rời khỏi máy tính một cách an toàn.
+<br/>
+Giỏ hàng của bạn đã được lưu, các mặt hàng trong đó sẽ được khôi phục bất cứ khi nào bạn đăng nhập lại.",
 	"text_password" => "Mật khẩu",
 ];

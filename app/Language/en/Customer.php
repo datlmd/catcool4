@@ -19,6 +19,7 @@ return [
 	"heading_activate" => "Account Activation",
 	"heading_title" => "Customers",
 	"text_account_login" => "Account Login",
+	"text_account_logout" => "Account Logout",
 	"text_email_not_found" => "Username or email does not exist",
 	"text_login_identity" => "Username / Email / Phone",
 	"text_login_social_unsuccessful" => "Logged In unsuccessfully. Please try again!",
@@ -26,5 +27,8 @@ return [
 	"text_login_timeout" => "Temporarily Locked Out.  Try again later!",
 	"text_login_unsuccessful" => "The account or password is incorrect",
 	"text_login_unsuccessful_not_active" => "Account is inactive",
+	"text_logout_description" => "You have been logged off your account. It is now safe to leave the computer.
+<br/>
+Your shopping cart has been saved, the items inside it will be restored whenever you log back into your account.",
 	"text_password" => "Password",
 ];

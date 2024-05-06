@@ -64,8 +64,7 @@ class Customer
      * 
      * @return   array
      */
-    public function getCustomerInfo(): array
-    {
+    public function getCustomerInfo(): array {
         if (!empty($this->_customer_info)) {
             return $this->_customer_info;
         }
@@ -94,12 +93,50 @@ class Customer
             return false; 
         }
 
+        $customer_info = $this->getCustomerInfo();
+
+        $language_list = get_list_lang();
+        if (is_multi_lang() && !empty($language_list[$customer_info['language_id']])) {
+            set_lang($language_list[$customer_info['language_id']]['code']);
+        }
+
         return true;
     }
 
     public function loginRememberedCustomer(): bool {
         $customer_model = new \App\Modules\Customers\Models\CustomerModel();
-        return $customer_model->loginRememberedCustomer();
+        
+        if (!$customer_model->loginRememberedCustomer()) {
+            $this->_errors = $customer_model->getErrors();
+            return false;
+        }
+
+        $customer_info = $this->getCustomerInfo();
+
+        $language_list = get_list_lang();
+        if (is_multi_lang() && !empty($language_list[$customer_info['language_id']])) {
+            set_lang($language_list[$customer_info['language_id']]['code']);
+        }
+
+        return true;
+    }
+
+    public function loginSocial(string $social_type, array $data): bool {
+        $customer_model = new \App\Modules\Customers\Models\CustomerModel();
+
+        if (!$customer_model->loginSocial($social_type, $data)) {
+            $this->_errors = $customer_model->getErrors();
+            return false;
+        }
+
+        $customer_info = $this->getCustomerInfo();
+
+        $language_list = get_list_lang();
+        if (is_multi_lang() && !empty($language_list[$customer_info['language_id']])) {
+            set_lang($language_list[$customer_info['language_id']]['code']);
+        }
+
+        return true;
     }
 
 	/**

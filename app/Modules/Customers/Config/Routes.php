@@ -27,5 +27,6 @@ $routes->group('customers', ['namespace' => 'App\Modules\Customers\Controllers']
 $routes->group('account', ['namespace' => 'App\Modules\Customers\Controllers'], function($subroutes) {
     $subroutes->get('login', 'Login::index');
     $subroutes->post('login', 'Login::login');
+    $subroutes->get('logout', 'Logout::index');
 
 });

@@ -29,6 +29,8 @@ class AuthModel extends MyAuthModel
         ];
 
         session()->set(['customer' => $session_data]);
+        session()->set(['customer_token' => $this->token()]);
+
         return true;
     }
 

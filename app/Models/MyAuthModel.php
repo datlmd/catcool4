@@ -98,4 +98,8 @@ class MyAuthModel extends MyModel
 
         return password_verify(md5($password) . md5(config_item('catcool_hash')), $password_db);
     }
+
+    public function token(int $length = 40): string {
+        return $this->_randomToken($length);
+    }
 }

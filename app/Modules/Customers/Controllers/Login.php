@@ -18,6 +18,8 @@ class Login extends MyController
         $this->themes->addPartial('header_top')
             ->addPartial('header_bottom')
             ->addPartial('content_left')
+            ->addPartial('content_top')
+            ->addPartial('content_bottom')
             ->addPartial('content_right')
             ->addPartial('footer_top')
             ->addPartial('footer_bottom');
@@ -29,13 +31,13 @@ class Login extends MyController
             $return_url = site_url('account/profile');
         }
 
-        if (service('customer')->isLogged()) {
-            //return redirect()->to($return_url);
+        if (service('customer')->isLogged() && !empty($this->request->getPost('remember'))  && !empty(session('customer_token')) && ($this->request->getPost('remember') == session('customer_token'))) {
+            return redirect()->to($return_url . '?customer_token=' . session('customer_token'));
         } else {
             //neu da logout thi check auto login
             $recheck = service('customer')->loginRememberedCustomer();
             if ($recheck) {
-               // return redirect()->to($return_url);
+                return redirect()->to($return_url . '?customer_token=' . session('customer_token'));
             }
         }
 
@@ -74,14 +76,18 @@ class Login extends MyController
             ]);
         }
 
-        $success = lang('Customer.text_login_successful');
+        $return_url = $this->request->getPost('return_url');
+        if (empty($return_url)) {
+            $return_url = site_url('account/profile');
+        }
 
+        $success = lang('Customer.text_login_successful');
         set_alert($success, ALERT_SUCCESS);
 
         json_output([
             'success' => $success,
             'alert' => print_alert($success),
-            'redirect' => site_url('account/profile')
+            'redirect' => $return_url
         ]);
     }
 }
