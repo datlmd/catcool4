@@ -719,7 +719,7 @@ if (!function_exists('image_action'))
      * @param null $height
      * @return null|string
      */
-    function image_action($image = null, $width = null, $height = null)
+    function image_action($image = '', $width = null, $height = null)
     {
         if (stripos($image, "https://") !== false || stripos($image, "http://") !== false) {
             return $image;
@@ -2106,5 +2106,19 @@ if (!function_exists('format_product_variant_row')) {
 
 
         return sprintf(PRODUCT_VARIANT_ROW_NAME, $variant_id);
+    }
+}
+
+if (!function_exists('get_module')) {
+    function get_module()
+    {
+        $router          = service('router');
+        $controller_full = $router->controllerName();//\App\Modules\Dummy\Controllers\Manage
+        $controller_full = explode('\\', $controller_full);
+
+        $module = !empty($controller_full[3]) ? $controller_full[3] : null;
+
+
+        return $module;
     }
 }

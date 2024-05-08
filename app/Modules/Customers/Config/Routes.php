@@ -31,5 +31,6 @@ $routes->group('account', ['namespace' => 'App\Modules\Customers\Controllers'], 
     $subroutes->add('social_login', 'Login::socialLogin');
     $subroutes->get('register', 'Register::index');
     $subroutes->post('register', 'Register::register');
+    $subroutes->get('profile', 'Profile::index');
 });
 

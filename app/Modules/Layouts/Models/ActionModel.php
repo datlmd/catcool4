@@ -40,7 +40,7 @@ class ActionModel extends MyModel
         return $this->orderBy($sort, $order);
     }
 
-    public function getList($is_cache = true)
+    public function getActions($is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::CACHE_NAME_LIST) : null;
         if (empty($result)) {

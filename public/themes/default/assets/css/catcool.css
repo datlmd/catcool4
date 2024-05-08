@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 :root {
-    --body-font-size: 12px;
+    --body-font-size: 14px;
     --body-color-main: #444444;
     --text-color-main-rgb: 208 47 152;
     --text-color-main: #8a3f7f;
@@ -194,11 +194,16 @@ header .header-bottom.fixed, #header_main_mobile.fixed .header-mobile-content {
 .header-top .header-top-account a {
     padding-right: 0;
     padding-left: 15px;
-    font-size: 12px;
+    font-size: var(--body-font-size);
 }
 
 .header-top .header-top-account a:hover i {
     color: var(--text-color-main);
+}
+
+.header-top .header-top-account .customer-avatar {
+    width: 25px;
+    margin-top: -7px;
 }
 
 .header-center {
@@ -389,6 +394,11 @@ header .header-bottom.fixed, #header_main_mobile.fixed .header-mobile-content {
 
 .header-mobile-content .header-mobile-menu-icon div:hover i {
     color: var(--text-color-main);
+}
+
+.header-mobile-content .header-mobile-menu-icon .customer-avatar {
+    width: 30px;
+    margin-top: -4px;
 }
 
 .header-mobile-content .header-logo img {

@@ -321,6 +321,16 @@ class CustomerModel extends MyModel
         return $this->errors;
     }
 
+    function getAvatar($avatar = '')
+    {
+        $avatar = empty($avatar) ? 'customers/' . session('customer.customer_id') . '.jpg' : $avatar;
+        if (!is_file(get_upload_path($avatar))) {
+            return (session('customer.gender') == GENDER_MALE) ? base_url('common/'.config_item('avatar_default_male')) : base_url('common/'.config_item('avatar_default_female'));
+        }
+
+        return $avatar;
+    }
+
     public function getCustomerInfo($customer_id)
     {
         if (empty($customer_id)) {

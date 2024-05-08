@@ -130,12 +130,23 @@ class Register extends MyController
             }
 
             $success = lang('Customer.activation_email_successful');
+        }
+
+        session()->remove([
+            'guest',
+            'register_token',
+            'shipping_method',
+            'shipping_methods',
+            'payment_method',
+            'payment_methods',
+        ]);
+
+        if (!empty($success)) {
             json_output([
                 'success' => $success,
                 'alert' => print_alert($success),
             ]);
         }
-
 
         $success = lang('Customer.account_creation_successful');
         set_alert($success, ALERT_SUCCESS);
@@ -143,7 +154,7 @@ class Register extends MyController
         json_output([
             'success' => $success,
             'alert' => print_alert($success),
-            'redirect' => site_url('customers/profile') . '?customer_token=' . session('customer_token')
+            'redirect' => site_url('account/profile') . '?customer_token=' . session('customer_token')
         ]);
     }
 }

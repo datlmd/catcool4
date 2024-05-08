@@ -1,0 +1,1 @@
+{view_cell('Common::contentLeft')}

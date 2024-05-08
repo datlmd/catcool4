@@ -22,7 +22,7 @@ class ModuleModel extends MyModel
         parent::__construct();
     }
 
-    public function getList($is_cache = true)
+    public function getModules($is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::CACHE_NAME_LIST) : null;
         if (empty($result)) {
@@ -39,9 +39,9 @@ class ModuleModel extends MyModel
         return $result;
     }
 
-    public function getListByLayout($layout_id, $is_cache = true)
+    public function getModulesByLayoutId($layout_id, $is_cache = true)
     {
-        $list = $this->getList($is_cache);
+        $list = $this->getModules($is_cache);
         if (empty($list)) {
             return [];
         }

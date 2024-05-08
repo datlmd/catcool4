@@ -80,8 +80,13 @@
                         
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user"></i>
-                                <span class="d-none d-md-inline ms-1">{lang('General.text_my_account')}</span>
+                                {if !$logged}
+                                    <i class="fas fa-user"></i>
+                                    <span class="d-none d-md-inline ms-1">{lang('General.text_my_account')}</span>
+                                {else}
+                                    <img src="{image_url($customer_avatar, 45, 45)}" alt="{$customer_name}" class="rounded-circle customer-avatar" >
+                                    <span class="d-none d-md-inline ms-1">{$customer_name}</span>
+                                {/if}
                             </a>
                             <ul class="dropdown-menu">
                                 {if !$logged}

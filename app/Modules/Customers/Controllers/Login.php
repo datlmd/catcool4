@@ -31,14 +31,11 @@ class Login extends MyController
             $return_url = site_url('account/profile');
         }
 
-        if (service('customer')->isLogged() && !empty($this->request->getPost('remember'))  && !empty(session('customer_token')) && ($this->request->getPost('remember') == session('customer_token'))) {
+        if (service('customer')->isLogged() && !empty(session('customer_token'))) {
             return redirect()->to($return_url . '?customer_token=' . session('customer_token'));
-        } else {
+        } else if (service('customer')->loginRememberedCustomer()) {
             //neu da logout thi check auto login
-            $recheck = service('customer')->loginRememberedCustomer();
-            if ($recheck) {
-                return redirect()->to($return_url . '?customer_token=' . session('customer_token'));
-            }
+            return redirect()->to($return_url . '?customer_token=' . session('customer_token'));
         }
 
         $data['return_url'] = $return_url;
@@ -108,7 +105,7 @@ class Login extends MyController
         json_output([
             'success' => $success,
             'alert' => print_alert($success),
-            'redirect' => $return_url . '?customer_token=' . session('customer_token')
+            'redirect' => urldecode($return_url) . '?customer_token=' . session('customer_token')
         ]);
     }
 

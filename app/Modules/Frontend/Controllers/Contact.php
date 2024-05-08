@@ -37,6 +37,8 @@ class Contact extends MyController
         $this->themes->addPartial('header_top')
             ->addPartial('header_bottom')
             ->addPartial('content_left')
+            ->addPartial('content_top')
+            ->addPartial('content_bottom')
             ->addPartial('content_right')
             ->addPartial('footer_top')
             ->addPartial('footer_bottom');
@@ -53,7 +55,7 @@ class Contact extends MyController
     public function send(): void
     {
         $this->validator->setRule('name', lang('Contact.text_name'), 'required|min_length[3]|max_length[40]');
-        $this->validator->setRule('email', lang('Contact.text_email'), 'required|valid_emails');
+        $this->validator->setRule('email', lang('Contact.text_email'), 'required|valid_email');
         $this->validator->setRule('message', lang('Contact.text_message'), 'required|min_length[10]|max_length[3000]');
 
         if (!$this->validator->withRequest($this->request)->run()) {

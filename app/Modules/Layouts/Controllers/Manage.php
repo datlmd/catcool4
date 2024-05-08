@@ -93,7 +93,7 @@ class Manage extends AdminController
 
             $modules = $this->request->getPost('modules');
             if (!empty($modules)) {
-                $actions = $this->model_action->getList();
+                $actions = $this->model_action->getActions();
 
                 $data_modules = [];
                 foreach ($modules as $position => $value) {
@@ -160,7 +160,7 @@ class Manage extends AdminController
             $this->module_model->where('layout_id', $id)->delete();
             $modules = $this->request->getPost('modules');
             if (!empty($modules)) {
-                $actions = $this->model_action->getList();
+                $actions = $this->model_action->getActions();
 
                 $data_modules = [];
                 foreach ($modules as $position => $value) {
@@ -239,14 +239,14 @@ class Manage extends AdminController
 
     private function _getForm($id = null)
     {
-        $data['actions'] = $this->model_action->getList();
+        $data['actions'] = $this->model_action->getActions();
 
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form'] = lang('LayoutAdmin.text_edit');
             $breadcrumb_url    = site_url(self::MANAGE_URL . "/edit/$id");
 
-            $data_form = $this->model->getInfo($id);
+            $data_form = $this->model->getLayout($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->to(site_url(self::MANAGE_URL));

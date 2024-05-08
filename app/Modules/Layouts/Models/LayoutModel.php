@@ -38,7 +38,7 @@ class LayoutModel extends MyModel
         return $this->orderBy($sort, $order);
     }
 
-    public function getList($is_cache = true)
+    public function getLayouts($is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::CACHE_NAME_LIST) : null;
         if (empty($result)) {
@@ -61,9 +61,9 @@ class LayoutModel extends MyModel
         return $result;
     }
 
-    public function getInfo($id, $is_cache = true)
+    public function getLayout($id, $is_cache = true)
     {
-        $list = $this->getList($is_cache);
+        $list = $this->getLayouts($is_cache);
         if (empty($list[$id])) {
             return null;
         }
@@ -72,8 +72,8 @@ class LayoutModel extends MyModel
         $module_model = new ModuleModel();
 
         $info = $list[$id];
-        $info['routes']  = $route_model->getListByLayout($info['layout_id']);
-        $info['modules'] = $module_model->getListByLayout($info['layout_id']);
+        $info['routes']  = $route_model->getRoutesByLayoutId($info['layout_id']);
+        $info['modules'] = $module_model->getModulesByLayoutId($info['layout_id']);
 
         return $info;
     }
@@ -88,5 +88,55 @@ class LayoutModel extends MyModel
 
         cache()->delete(self::CACHE_NAME_LIST);
         return true;
+    }
+
+    public function getLayoutsByPostion($route, $position, $is_cache = true)
+    {
+        if (empty($route)) {
+            return [];
+        }
+
+        $position_list = [
+            'column_left',
+            'content_top',
+            'content_bottom',
+            'column_right'
+        ];
+
+        if (!in_array($position, $position_list)) {
+            return [];
+        }
+
+        $action_model = new ActionModel();
+        $route_model = new RouteModel();
+        $module_model = new ModuleModel();
+
+        $layout_list = $this->getLayouts($is_cache);
+        $route_list = $route_model->getRoutes($is_cache);
+        $module_list = $module_model->getModules($is_cache);
+        $action_list = $action_model->getActions($is_cache);
+
+        $layout_id = 0;
+        foreach ($route_list as $value) {
+            if (strtolower($value['route']) == strtolower($route)) {
+                $layout_id = $value['layout_id'];
+                break;
+            }
+        }
+        
+        $list = [];
+        foreach ($module_list as $value) {
+            if ($value['layout_id'] != $layout_id || $value['position'] != $position) {
+                continue;
+            }
+
+            $list[] = array_merge($value, $action_list[$value['layout_action_id']]);
+        }
+
+        $sort_list = array_column($list, 'sort_order');
+
+        array_multisort($sort_list, SORT_DESC, $list);
+
+        return $list;
     }
 }

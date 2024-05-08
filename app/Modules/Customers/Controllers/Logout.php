@@ -9,20 +9,22 @@ class Logout extends MyController
         if (service('customer')->isLogged()) {
 			service('customer')->logout();
 
-            session()->remove(['customer']);
-            session()->remove(['shipping_address']);
-            session()->remove(['shipping_method']);
-            session()->remove(['shipping_methods']);
-            session()->remove(['payment_address']);
-            session()->remove(['payment_method']);
-            session()->remove(['payment_methods']);
-            session()->remove(['comment']);
-            session()->remove(['order_id']);
-            session()->remove(['coupon']);
-            session()->remove(['reward']);
-            session()->remove(['voucher']);
-            session()->remove(['vouchers']);
-            session()->remove(['customer_token']);
+            session()->remove([
+                'customer',
+                'shipping_address',
+                'shipping_method',
+                'shipping_methods',
+                'payment_address',
+                'payment_method',
+                'payment_methods',
+                'comment',
+                'order_id',
+                'coupon',
+                'reward',
+                'voucher',
+                'vouchers',
+                'customer_token',
+            ]);
 
             redirect()->to(site_url('account/logout'));
 		}

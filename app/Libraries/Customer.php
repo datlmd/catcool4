@@ -35,6 +35,8 @@ class Customer
 
     private array $_errors = [];
 
+	private string $_image = '';
+
 	/**
 	 * Constructor
 	 *
@@ -48,7 +50,7 @@ class Customer
 			if (!empty($customer_info)) {
                 $update = [
                     'language_id' => get_lang_id(),
-                    'ip'     => get_client_ip(),
+                    'ip'          => get_client_ip(),
                 ];
         
                 $customer_model->update($customer_info['customer_id'], $update);
@@ -82,6 +84,7 @@ class Customer
         $this->_email             = $this->_customer_info['email'];
         $this->_telephone         = $this->_customer_info['phone'];
         $this->_newsletter        = $this->_customer_info['newsletter'];
+		$this->_image       	  = $customer_model->getAvatar($this->_customer_info['image']);
 
         return $this->_customer_info;
     }
@@ -156,6 +159,7 @@ class Customer
 		$this->_customer_group_id = 0;
 		$this->_email = '';
 		$this->_telephone = '';
+		$this->_image = '';
 		$this->_newsletter = false;
 	}
 
@@ -233,6 +237,10 @@ class Customer
 	 */
 	public function getNewsletter(): bool {
 		return $this->_newsletter;
+	}
+
+	public function getImage(): string {
+		return $this->_image;
 	}
 
 	/**

@@ -21,7 +21,7 @@ class RouteModel extends MyModel
         parent::__construct();
     }
 
-    public function getList($is_cache = true)
+    public function getRoutes($is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::CACHE_NAME_LIST) : null;
         if (empty($result)) {
@@ -38,9 +38,9 @@ class RouteModel extends MyModel
         return $result;
     }
 
-    public function getListByLayout($layout_id, $is_cache = true)
+    public function getRoutesByLayoutId($layout_id, $is_cache = true)
     {
-        $list = $this->getList($is_cache);
+        $list = $this->getRoutes($is_cache);
         if (empty($list)) {
             return [];
         }

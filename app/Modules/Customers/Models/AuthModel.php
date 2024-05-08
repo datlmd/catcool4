@@ -19,13 +19,15 @@ class AuthModel extends MyAuthModel
         $session_data = [
             'username'       => $customer_info['username'] ?? null,
             'email'          => $customer_info['email'] ?? null,
+            'phone'          => $customer_info['phone'] ?? null,
             'customer_id'    => $customer_info['customer_id'],
             'gender'         => $customer_info['gender'] ?? null,
             'full_name'      => full_name($customer_info['first_name'], $customer_info['last_name']),
             'first_name'     => $customer_info['first_name'],
-            'last_name'      => $customer_info['last_name'],
+            'last_name'      => $customer_info['last_name'] ?? '',
             'old_last_login' => $customer_info['last_login'] ?? null,
             'last_login'     => time(),
+            'image'          => $customer_info['image'] ?? '',
         ];
 
         session()->set([

@@ -13,8 +13,6 @@
 
             <div class="header-mobile-menu-icon">
 
-
-
                 <ul class="nav">
 
                     <li class="nav-item">
@@ -41,14 +39,22 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="#" title="{lang('General.text_my_account')}" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user"></i>
+                            {if !$logged}
+                                <i class="fas fa-user"></i>
+                            {else}
+                                <img src="{$customer_avatar}" alt="{$customer_name}" class="rounded-circle customer-avatar" >
+                            {/if}
+                            
                         </a>
                         <ul class="dropdown-menu">
                             {if !$logged}
                                 <li><a class="dropdown-item" href="{$login}">{lang('General.text_login')}</a></li>
                                 <li><a class="dropdown-item" href="{$register}">{lang('General.text_register')}</a></li>
                             {else}
-                                <li><a class="dropdown-item" href="{$account}">{lang('General.text_account')}</a></li>
+                                <li><a class="dropdown-item text-uppercase text-primary" href="{$account}">
+                                {* {lang('General.text_account')} *}
+                                    {$customer_name}
+                                </a></li>
                                 <li><a class="dropdown-item" href="{$order}">{lang('General.text_order')}</a></li>
                                 <li><a class="dropdown-item" href="{$transaction}">{lang('General.text_transaction')}</a></li>
                                 <li><a class="dropdown-item" href="{$logout}">{lang('General.text_logout')}</a></li>
@@ -141,7 +147,6 @@
                 </div>
 
             </div>
-
 
         </div>
     </div>
