@@ -21,15 +21,17 @@ class AuthModel extends MyAuthModel
             'email'          => $customer_info['email'] ?? null,
             'customer_id'    => $customer_info['customer_id'],
             'gender'         => $customer_info['gender'] ?? null,
-            //'full_name'      => full_name($customer_info['first_name'], $customer_info['last_name']),
+            'full_name'      => full_name($customer_info['first_name'], $customer_info['last_name']),
             'first_name'     => $customer_info['first_name'],
             'last_name'      => $customer_info['last_name'],
             'old_last_login' => $customer_info['last_login'] ?? null,
             'last_login'     => time(),
         ];
 
-        session()->set(['customer' => $session_data]);
-        session()->set(['customer_token' => $this->token()]);
+        session()->set([
+            'customer' => $session_data,
+            'customer_token' => $this->token()
+        ]);
 
         return true;
     }

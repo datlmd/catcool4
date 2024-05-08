@@ -2023,9 +2023,11 @@ if (!function_exists('full_name'))
     function full_name($first_name, $last_name)
     {
         if (empty(config_item('display_full_name'))) {
+            //0: Họ trước, Tên sau
             return trim(sprintf("%s %s", $last_name, $first_name));
         }
 
+        //1: Tên trước, họ sau
         return trim(sprintf("%s %s", $first_name, $last_name));
     }
 }

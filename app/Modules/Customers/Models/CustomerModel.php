@@ -1,6 +1,7 @@
 <?php namespace App\Modules\Customers\Models;
 
 use App\Models\MyModel;
+use CodeIgniter\Database\RawSql;
 
 class CustomerModel extends MyModel
 {
@@ -107,6 +108,7 @@ class CustomerModel extends MyModel
 
         if ($attempt_model->isMaxLoginAttemptsExceeded($customer_info['customer_id'])) {
             $this->errors[] = lang('Customer.text_login_timeout');
+            $this->errors[] = lang('Customer.error_attempts', [config_item('lockout_time')/60]);
 
             return false;
         }
@@ -116,10 +118,16 @@ class CustomerModel extends MyModel
             return false;
         }
 
-        if ($this->auth_model->checkPassword($password, $customer_info['password']) === FALSE) {
+        if (!$this->auth_model->checkPassword($password, $customer_info['password'])) {
             $attempt_model->increaseLoginAttempts($customer_info['customer_id']);
 
             $this->errors[] = lang('Customer.error_login_password_incorrect');
+
+            $total_attempt = $attempt_model->getRemainingAttempts($customer_info['customer_id']);
+            if ($total_attempt > 0 && $total_attempt < 3) {
+                $this->errors[] = lang('Customer.error_attempt_time', [$total_attempt]);    
+            }
+
             return false;
         }
 
@@ -423,39 +431,41 @@ class CustomerModel extends MyModel
         return true;
     }
 
-    public function register($data)
+    public function addCustomer($data)
     {
-        if (empty($data) || empty($data['identity']) || empty($data['password'])) {
+        if (empty($data) || empty($data['password'])) {
             return false;
         }
 
         $this->errors = [];
-        $identity     = '';
         $email        = $data['email'] ?? null;
         $phone        = $data['phone'] ?? null;
 
-        if (filter_var($data['identity'], FILTER_VALIDATE_EMAIL)) {
-            $identity = 'email';
-            $email    = $data['identity'];
-        } elseif (filter_var($data['identity'], FILTER_SANITIZE_NUMBER_INT)) {
-            $phone_to_check = str_replace("-", "", $data['identity']);
+        $sql = [];
 
-            if (strlen($phone_to_check) < 10 || strlen($phone_to_check) > 14) {
-
-            }
-
-            $identity = 'phone';
-            $phone    = $data['identity'];
+        if (!empty($email)) {
+            $sql[] = " email=" . $this->db->escape($email) . " "; 
         }
 
-        $customer_info = $this->where($identity, $data['identity'])->first();
+        if (!empty($phone)) {
+            $sql[] = " phone=$phone "; 
+        }
+
+        $customer_info = $this->where(new RawSql(implode('OR', $sql)))->first();
+
         if (!empty($customer_info)) {
-            $this->errors[] = lang("Customer.account_creation_duplicate_$identity");
+            if (!empty($customer_info['email'])) {
+                $this->errors[] = lang("Customer.account_creation_duplicate_email");
+            }
+            
+            if (!empty($customer_info['phone'])) {
+                $this->errors[] = lang("Customer.account_creation_duplicate_phone");
+            }
+
             return false;
         }
 
         $add_data = [
-            $identity    => $data['identity'],
             'username'   => $data['username'] ?? null,
             'email'      => strtolower($email),
             'password'   => $this->auth_model->hashPassword($data['password']),
@@ -466,6 +476,7 @@ class CustomerModel extends MyModel
             'address_id' => $data['address_id'] ?? null,
             'active'     => config_item('manual_activation'),
             'ip'         => $data['ip'] ?? null,
+            'active'     => STATUS_ON
         ];
 
         if (!empty($data['dob'])) {
@@ -476,7 +487,7 @@ class CustomerModel extends MyModel
 
         $add_data['customer_id'] = $customer_id;
 
-        return (!empty($id)) ? $add_data : false;
+        return (!empty($customer_id)) ? $add_data : false;
     }
 
     public function deactivate($customer_id)

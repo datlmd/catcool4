@@ -5,6 +5,9 @@
     
     <div class="mx-auto" style="max-width:500px;">
         {form_open(site_url("account/login"), ["id" => "login_form", "method" => "post", "data-cc-toggle" => "ajax", "data-alert" => "#login_alert"])}
+            
+            <input type="hidden" name="return_url" value="{$return_url}">
+
             <div id="login_alert"></div>
 
             <div class="form-group row">
@@ -30,43 +33,21 @@
                 </div>
             </div>
             <div class="fform-group row my-2">
-                <div class="col-12 text-center">
+                <div class="col-6 text-start">
                     <input type="submit" value="{lang('General.button_login')}" class="btn btn-primary" data-loading-text="Loading...">
+                </div>
+                <div class="col-6 text-end">
+                    <a class="" href="#">{lang('General.text_lost_password')}</a>
                 </div>
             </div>
 
         {form_close()}
 
         <div class="col-12 text-center mt-3">
-            <a class="" href="#">{lang('General.text_lost_password')}</a>
+            
         </div> 
         <div class="text-center-line mt-3">{lang('General.text_or')}</div>
 
-        {include file=get_module_path("Users/Views/inc/login_social.tpl")}
-    </div>
-{/strip}
-
-{strip}
-
-    
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="featured-boxes">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="featured-box featured-box-primary text-start mt-5">
-                                <div class="box-content">
-                                    {include file=get_module_path("Users/Views/inc/form_register.tpl") register_title_class='font-weight-semibold'}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {include file=get_module_path("Customers/Views/inc/login_social.tpl")}
     </div>
 {/strip}

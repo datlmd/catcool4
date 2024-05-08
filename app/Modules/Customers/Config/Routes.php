@@ -28,5 +28,8 @@ $routes->group('account', ['namespace' => 'App\Modules\Customers\Controllers'], 
     $subroutes->get('login', 'Login::index');
     $subroutes->post('login', 'Login::login');
     $subroutes->get('logout', 'Logout::index');
-
+    $subroutes->add('social_login', 'Login::socialLogin');
+    $subroutes->get('register', 'Register::index');
+    $subroutes->post('register', 'Register::register');
 });
+

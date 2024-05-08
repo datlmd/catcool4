@@ -18,7 +18,7 @@
                         {/if}
                         {if !empty(config_item('store_phone'))}
                             <li class="nav-item contact-phone">
-                                <a href="tel:{lang('Frontend.text_phone_value')}" class="nav-link">
+                                <a href="tel:{config_item('store_phone')}" class="nav-link">
                                     <i class="fas fa-phone me-1"></i>
                                    {config_item('store_phone')}
                                 </a>
@@ -26,7 +26,7 @@
                         {/if}
                         {if !empty(config_item('store_email'))}
                             <li class="nav-item">
-                                <a href="mailto:{lang('Frontend.text_email_value')}" class="nav-link">
+                                <a href="mailto:{config_item('store_email')}" class="nav-link">
                                     <i class="far fa-envelope me-1"></i>
                                     {config_item('store_email')}
                                 </a>

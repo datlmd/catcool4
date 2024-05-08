@@ -39,6 +39,20 @@ class LoginAttemptModel extends MyModel
         return 0;
     }
 
+    public function getRemainingAttempts($customer_id, $ip_address = NULL)
+    {
+        if (!empty(config_item('track_login_attempts'))) {
+            $max_attempts = config_item('maximum_login_attempts');
+            if ($max_attempts > 0) {
+                $attempts = $this->getTotalAttempts($customer_id, $ip_address);
+                return ($max_attempts - $attempts);
+            }
+        }
+
+        return 0;
+    }
+
+
     public function isMaxLoginAttemptsExceeded($customer_id, $ip_address = NULL)
     {
         if (!empty(config_item('track_login_attempts'))) {

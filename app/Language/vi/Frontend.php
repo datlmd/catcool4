@@ -19,6 +19,5 @@ Giấy chứng nhận Đăng ký Kinh doanh số 01234556 do Sở Kế hoạch v
 	"text_newsletter" => "Đăng ký nhận bản tin mới nhất",
 	"text_newsletter_description" => "Đừng bỏ lỡ hàng ngàn sản phẩm và chương trình siêu hấp dẫn",
 	"text_phone" => "Gọi ngay",
-	"text_register_policy" => "Bằng cách tạo một tài khoản, tôi đồng ý với Điều khoản dịch vụ, Chính sách riêng tư Và Quyền sở hữu trí tuệ",
 	"text_search_title" => "Tìm kiếm Sản phẩm",
 ];
