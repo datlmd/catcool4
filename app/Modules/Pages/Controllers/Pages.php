@@ -10,37 +10,40 @@ class Pages extends MyController
     public function __construct()
     {
         parent::__construct();
-
-        //set theme
-        $this->themes->setTheme(config_item('theme_frontend'));
-
-        $this->themes->addPartial('header_top')
-            ->addPartial('header_bottom')
-            ->addPartial('content_left')
-            ->addPartial('content_right')
-            ->addPartial('footer_top')
-            ->addPartial('footer_bottom');
-
-        $this->mode = new PageModel();
     }
 
     public function detail($id = null)
     {
+         //set theme
+         $this->themes->setTheme(config_item('theme_frontend'));
+        
+         $this->mode = new PageModel();
 
         $detail = $this->mode->getPageInfo($id);
         if (empty($detail)) {
             page_not_found();
         }
 
-        //cc_debug($detail);
-
         $data = [
             'detail' => $detail,
         ];
 
+        //breadcrumb
         $this->breadcrumb->add(lang('General.text_home'), base_url());
         $this->breadcrumb->add($detail['name'], site_url($detail['slug']));
-        breadcrumb($this->breadcrumb, $this->themes, $detail['name']);
+
+        $data['params'] = [
+            'breadcrumb' => $this->breadcrumb->render(),
+        ];
+        
+        $this->themes->addPartial('header_top', $data)
+             ->addPartial('header_bottom', $data)
+             ->addPartial('content_left', $data)
+             ->addPartial('content_top', $data)
+             ->addPartial('content_bottom', $data)
+             ->addPartial('content_right', $data)
+             ->addPartial('footer_top', $data)
+             ->addPartial('footer_bottom', $data);
 
         $meta = [
             'url'         => site_url($detail['slug']),

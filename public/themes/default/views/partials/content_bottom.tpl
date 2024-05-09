@@ -1,1 +1,1 @@
-{view_cell('Common::contentBottom')}
+{view_cell('Common::contentBottom', $params)}

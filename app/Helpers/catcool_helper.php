@@ -2117,8 +2117,12 @@ if (!function_exists('get_module')) {
         $controller_full = explode('\\', $controller_full);
 
         $module = !empty($controller_full[3]) ? $controller_full[3] : null;
+        $controller = !empty($controller_full[5]) ? $controller_full[5] : $module;
 
+        if (empty($module) && empty($controller)) {
+            return 'frontend/error404';
+        }
 
-        return $module;
+        return "$module/$controller";
     }
 }

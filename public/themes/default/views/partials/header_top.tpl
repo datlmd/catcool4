@@ -1,1 +1,1 @@
-{view_cell('Common::headerTop')}
+{view_cell('Common::headerTop', $params)}

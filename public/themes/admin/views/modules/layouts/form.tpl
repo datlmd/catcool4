@@ -61,11 +61,110 @@
                             </div>
 
                             <div class="row border-top pt-4 mt-3">
+
+                                <div class="col-12 mb-4">
+                                    <table id="module_header_top" class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <td class="text-center text-white bg-primary fw-bold">{lang('LayoutAdmin.text_header_top')}</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {if !empty($edit_data.modules)}
+                                                {foreach $edit_data.modules as $module}
+                                                    {if $module.position == 'header_top'}
+                                                        <tr>
+                                                            <td class="text-left">
+                                                                <div class="input-group">
+                                                                    <select name="modules[header_top][]" class="form-control">
+                                                                        {if !empty($actions)}
+                                                                            {foreach $actions as $action}
+                                                                                <option value="{$action.layout_action_id}" {if $action.layout_action_id eq $module.layout_action_id}selected{/if}>{$action.name}</option>
+                                                                            {/foreach}
+                                                                        {/if}
+                                                                    </select>
+                                                                    <button type="button" onclick="removeModule(this);" title="{lang('Admin.button_delete')}" class="btn btn-danger btn-sm"><i class="fa fa fa-minus-circle"></i></button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    {/if}
+                                                {/foreach}
+                                            {/if}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td class="text-left">
+                                                    <div class="input-group">
+                                                        <select class="form-control" style="background-color: #d1d1d1;">
+                                                            <option value=""></option>
+                                                            {if !empty($actions)}
+                                                                {foreach $actions as $action}
+                                                                    <option value="{$action.layout_action_id}">{$action.name}</option>
+                                                                {/foreach}
+                                                            {/if}
+                                                        </select>
+                                                        <button type="button" onclick="addModule('header_top');" title="{lang('Admin.button_add')}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle"></i></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+
+                                <div class="col-12 mb-4">
+                                    <table id="module_header_bottom" class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <td class="text-center text-white bg-primary fw-bold">{lang('LayoutAdmin.text_header_bottom')}</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {if !empty($edit_data.modules)}
+                                                {foreach $edit_data.modules as $module}
+                                                    {if $module.position == 'header_bottom'}
+                                                        <tr>
+                                                            <td class="text-left">
+                                                                <div class="input-group">
+                                                                    <select name="modules[header_bottom][]" class="form-control">
+                                                                        {if !empty($actions)}
+                                                                            {foreach $actions as $action}
+                                                                                <option value="{$action.layout_action_id}" {if $action.layout_action_id eq $module.layout_action_id}selected{/if}>{$action.name}</option>
+                                                                            {/foreach}
+                                                                        {/if}
+                                                                    </select>
+                                                                    <button type="button" onclick="removeModule(this);" title="{lang('Admin.button_delete')}" class="btn btn-danger btn-sm"><i class="fa fa fa-minus-circle"></i></button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    {/if}
+                                                {/foreach}
+                                            {/if}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td class="text-left">
+                                                    <div class="input-group">
+                                                        <select class="form-control" style="background-color: #d1d1d1;">
+                                                            <option value=""></option>
+                                                            {if !empty($actions)}
+                                                                {foreach $actions as $action}
+                                                                    <option value="{$action.layout_action_id}">{$action.name}</option>
+                                                                {/foreach}
+                                                            {/if}
+                                                        </select>
+                                                        <button type="button" onclick="addModule('header_bottom');" title="{lang('Admin.button_add')}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle"></i></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+
                                 <div class="col-lg-3 col-md-4 col-sm-12">
                                     <table id="module_column_left" class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <td class="text-center">{lang('LayoutAdmin.text_column_left')}</td>
+                                                <td class="text-center text-white bg-danger fw-bold">{lang('LayoutAdmin.text_column_left')}</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -79,7 +178,7 @@
                                                                     <select name="modules[column_left][]" class="form-control">
                                                                         {if !empty($actions)}
                                                                             {foreach $actions as $action}
-                                                                                <option value="{$action.layout_action_id}" {if $action.layout_action_id}selected{/if}>{$action.name}</option>
+                                                                                <option value="{$action.layout_action_id}" {if $action.layout_action_id eq $module.layout_action_id}selected{/if}>{$action.name}</option>
                                                                             {/foreach}
                                                                         {/if}
                                                                     </select>
@@ -117,7 +216,7 @@
                                     <table id="module_content_top" class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <td class="text-center">{lang('LayoutAdmin.text_content_top')}</td>
+                                                <td class="text-center text-white bg-success fw-bold">{lang('LayoutAdmin.text_content_top')}</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -130,7 +229,7 @@
                                                                 <select name="modules[content_top][]" class="form-control">
                                                                     {if !empty($actions)}
                                                                         {foreach $actions as $action}
-                                                                            <option value="{$action.layout_action_id}" {if $action.layout_action_id}selected{/if}>{$action.name}</option>
+                                                                            <option value="{$action.layout_action_id}" {if $action.layout_action_id eq $module.layout_action_id}selected{/if}>{$action.name}</option>
                                                                         {/foreach}
                                                                     {/if}
                                                                 </select>
@@ -160,10 +259,13 @@
                                             </tr>
                                         </tfoot>
                                     </table>
+
+                                    <div style="height: 150px;"></div>
+
                                     <table id="module_content_bottom" class="table table-striped table-bordered table-hover mt-3">
                                         <thead>
                                             <tr>
-                                                <td class="text-center">{lang('LayoutAdmin.text_content_bottom')}</td>
+                                                <td class="text-center text-white bg-success fw-bold">{lang('LayoutAdmin.text_content_bottom')}</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -176,7 +278,7 @@
                                                                     <select name="modules[content_bottom][]" class="form-control">
                                                                         {if !empty($actions)}
                                                                             {foreach $actions as $action}
-                                                                                <option value="{$action.layout_action_id}" {if $action.layout_action_id}selected{/if}>{$action.name}</option>
+                                                                                <option value="{$action.layout_action_id}" {if $action.layout_action_id eq $module.layout_action_id}selected{/if}>{$action.name}</option>
                                                                             {/foreach}
                                                                         {/if}
                                                                     </select>
@@ -213,7 +315,7 @@
                                     <table id="module_column_right" class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <td class="text-center">{lang('LayoutAdmin.text_column_right')}</td>
+                                                <td class="text-center text-white bg-danger fw-bold">{lang('LayoutAdmin.text_column_right')}</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -226,7 +328,7 @@
                                                                     <select name="modules[column_right][]" class="form-control">
                                                                         {if !empty($actions)}
                                                                             {foreach $actions as $action}
-                                                                                <option value="{$action.layout_action_id}" {if $action.layout_action_id}selected{/if}>{$action.name}</option>
+                                                                                <option value="{$action.layout_action_id}" {if $action.layout_action_id eq $module.layout_action_id}selected{/if}>{$action.name}</option>
                                                                             {/foreach}
                                                                         {/if}
                                                                     </select>
@@ -256,8 +358,106 @@
                                             </tr>
                                         </tfoot>
                                     </table>
-
                                 </div>
+
+                                <div class="col-12 mt-4">
+                                    <table id="module_footer_top" class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <td class="text-center text-white bg-dark fw-bold">{lang('LayoutAdmin.text_footer_top')}</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {if !empty($edit_data.modules)}
+                                                {foreach $edit_data.modules as $module}
+                                                    {if $module.position == 'footer_top'}
+                                                        <tr>
+                                                            <td class="text-left">
+                                                                <div class="input-group">
+                                                                    <select name="modules[footer_top][]" class="form-control">
+                                                                        {if !empty($actions)}
+                                                                            {foreach $actions as $action}
+                                                                                <option value="{$action.layout_action_id}" {if $action.layout_action_id eq $module.layout_action_id}selected{/if}>{$action.name}</option>
+                                                                            {/foreach}
+                                                                        {/if}
+                                                                    </select>
+                                                                    <button type="button" onclick="removeModule(this);" title="{lang('Admin.button_delete')}" class="btn btn-danger btn-sm"><i class="fa fa fa-minus-circle"></i></button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    {/if}
+                                                {/foreach}
+                                            {/if}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td class="text-left">
+                                                    <div class="input-group">
+                                                        <select class="form-control" style="background-color: #d1d1d1;">
+                                                            <option value=""></option>
+                                                            {if !empty($actions)}
+                                                                {foreach $actions as $action}
+                                                                    <option value="{$action.layout_action_id}">{$action.name}</option>
+                                                                {/foreach}
+                                                            {/if}
+                                                        </select>
+                                                        <button type="button" onclick="addModule('footer_top');" title="{lang('Admin.button_add')}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle"></i></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+
+                                <div class="col-12 mt-4">
+                                    <table id="module_footer_bottom" class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <td class="text-center text-white bg-dark fw-bold">{lang('LayoutAdmin.text_footer_bottom')}</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {if !empty($edit_data.modules)}
+                                                {foreach $edit_data.modules as $module}
+                                                    {if $module.position == 'footer_bottom'}
+                                                        <tr>
+                                                            <td class="text-left">
+                                                                <div class="input-group">
+                                                                    <select name="modules[footer_bottom][]" class="form-control">
+                                                                        {if !empty($actions)}
+                                                                            {foreach $actions as $action}
+                                                                                <option value="{$action.layout_action_id}" {if $action.layout_action_id eq $module.layout_action_id}selected{/if}>{$action.name}</option>
+                                                                            {/foreach}
+                                                                        {/if}
+                                                                    </select>
+                                                                    <button type="button" onclick="removeModule(this);" title="{lang('Admin.button_delete')}" class="btn btn-danger btn-sm"><i class="fa fa fa-minus-circle"></i></button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    {/if}
+                                                {/foreach}
+                                            {/if}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td class="text-left">
+                                                    <div class="input-group">
+                                                        <select class="form-control" style="background-color: #d1d1d1;">
+                                                            <option value=""></option>
+                                                            {if !empty($actions)}
+                                                                {foreach $actions as $action}
+                                                                    <option value="{$action.layout_action_id}">{$action.name}</option>
+                                                                {/foreach}
+                                                            {/if}
+                                                        </select>
+                                                        <button type="button" onclick="addModule('footer_bottom');" title="{lang('Admin.button_add')}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle"></i></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+
                             </div>
                             
                         </div>
