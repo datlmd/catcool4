@@ -9,6 +9,9 @@ class Profile extends UserController
     public function __construct()
     {
         parent::__construct();
+
+        //set theme
+        $this->themes->setTheme(config_item('theme_frontend'));
     }
 
     public function index()
@@ -20,18 +23,6 @@ class Profile extends UserController
         
             return redirect()->to(site_url("account/login?return_url=" . current_url()));
 		}
-
-        $this->themes->setTheme(config_item('theme_frontend'));
-        $this->themes->addPartial('header_top')
-            ->addPartial('header_bottom')
-            ->addPartial('content_left')
-            ->addPartial('content_top')
-            ->addPartial('content_bottom')
-            ->addPartial('content_right')
-            ->addPartial('footer_top')
-            ->addPartial('footer_bottom');
-
-
         
         $data['edit'] = site_url('account/edit') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
         $data['password'] = site_url('account/password') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
@@ -46,9 +37,24 @@ class Profile extends UserController
         $data['newsletter'] = site_url('account/newsletter') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
         $data['subscription'] = site_url('account/subscription') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
 
+        //breadcrumb
         $this->breadcrumb->add(lang('General.text_home'), base_url());
         $this->breadcrumb->add(lang('Customer.text_profile'), site_url('account/profile') . '?customer_token=' . session('customer_token'));
-        breadcrumb($this->breadcrumb, $this->themes, lang("Customer.text_profile"));
+
+        //set params khi call cell
+        $params['params'] = [
+            'breadcrumb' => $this->breadcrumb->render(),
+            'breadcrumb_title' => lang('Customer.text_profile'),
+        ];
+        
+        $this->themes->addPartial('header_top', $params)
+             ->addPartial('header_bottom', $params)
+             ->addPartial('content_left', $params)
+             ->addPartial('content_top', $params)
+             ->addPartial('content_bottom', $params)
+             ->addPartial('content_right', $params)
+             ->addPartial('footer_top', $params)
+             ->addPartial('footer_bottom', $params);
 
         add_meta(['title' => lang("Customer.text_profile")], $this->themes);
 

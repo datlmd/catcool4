@@ -73,7 +73,12 @@ class LayoutModel extends MyModel
 
         $info = $list[$id];
         $info['routes']  = $route_model->getRoutesByLayoutId($info['layout_id']);
-        $info['modules'] = $module_model->getModulesByLayoutId($info['layout_id']);
+
+        $modules = $module_model->getModulesByLayoutId($info['layout_id']);
+        $sort_list = array_column($modules, 'sort_order');
+        array_multisort($sort_list, SORT_DESC, $modules);
+
+        $info['modules'] = $modules;
 
         return $info;
     }
@@ -97,10 +102,14 @@ class LayoutModel extends MyModel
         }
 
         $position_list = [
+            'header_top',
+            'header_bottom',
             'column_left',
+            'column_right',
             'content_top',
             'content_bottom',
-            'column_right'
+            'footer_top',
+            'footer_bottom',
         ];
 
         if (!in_array($position, $position_list)) {
@@ -117,9 +126,12 @@ class LayoutModel extends MyModel
         $action_list = $action_model->getActions($is_cache);
 
         $layout_id = 0;
-        foreach ($route_list as $value) {
-            if (strtolower($value['route']) == strtolower($route)) {
-                $layout_id = $value['layout_id'];
+        $route = strtolower($route);
+
+        foreach ($route_list as $route_value) {
+            $route_value['route'] = strtolower($route_value['route']);
+            if (strrpos($route, $route_value['route']) !== FALSE) {
+                $layout_id = $route_value['layout_id'];
                 break;
             }
         }

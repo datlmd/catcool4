@@ -13,9 +13,13 @@ class Error404 extends MyController
         $this->themes->setTheme(config_item('theme_frontend'));
 
         $this->themes->addPartial('header_top')
-            ->addPartial('header_bottom')
-            ->addPartial('footer_top')
-            ->addPartial('footer_bottom');
+             ->addPartial('header_bottom')
+             ->addPartial('content_left')
+             ->addPartial('content_top')
+             ->addPartial('content_bottom')
+             ->addPartial('content_right')
+             ->addPartial('footer_top')
+             ->addPartial('footer_bottom');
     }
 
     public function index()

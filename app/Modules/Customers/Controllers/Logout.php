@@ -32,20 +32,26 @@ class Logout extends MyController
         //set theme
         $this->themes->setTheme(config_item('theme_frontend'));
 
-        $this->themes->addPartial('header_top')
-            ->addPartial('header_bottom')
-            ->addPartial('content_left')
-            ->addPartial('content_top')
-            ->addPartial('content_bottom')
-            ->addPartial('content_right')
-            ->addPartial('footer_top')
-            ->addPartial('footer_bottom');
-
         $data = [];
 
+        //breadcrumb
         $this->breadcrumb->add(lang('General.text_home'), base_url());
         $this->breadcrumb->add(lang('General.text_logout'), base_url('account/logout'));
-        breadcrumb($this->breadcrumb, $this->themes, lang("General.text_logout"));
+
+        //set params khi call cell
+        $params['params'] = [
+            'breadcrumb' => $this->breadcrumb->render(),
+            'breadcrumb_title' => lang('General.text_logout'),
+        ];
+        
+        $this->themes->addPartial('header_top', $params)
+             ->addPartial('header_bottom', $params)
+             ->addPartial('content_left', $params)
+             ->addPartial('content_top', $params)
+             ->addPartial('content_bottom', $params)
+             ->addPartial('content_right', $params)
+             ->addPartial('footer_top', $params)
+             ->addPartial('footer_bottom', $params);
 
         add_meta(['title' => lang("Customer.text_account_logout")], $this->themes);
 

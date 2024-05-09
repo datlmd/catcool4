@@ -32,18 +32,19 @@ class Pages extends MyController
         $this->breadcrumb->add(lang('General.text_home'), base_url());
         $this->breadcrumb->add($detail['name'], site_url($detail['slug']));
 
-        $data['params'] = [
+        $params['params'] = [
             'breadcrumb' => $this->breadcrumb->render(),
+            'breadcrumb_title' => $detail['name'],
         ];
         
-        $this->themes->addPartial('header_top', $data)
-             ->addPartial('header_bottom', $data)
-             ->addPartial('content_left', $data)
-             ->addPartial('content_top', $data)
-             ->addPartial('content_bottom', $data)
-             ->addPartial('content_right', $data)
-             ->addPartial('footer_top', $data)
-             ->addPartial('footer_bottom', $data);
+        $this->themes->addPartial('header_top', $params)
+             ->addPartial('header_bottom', $params)
+             ->addPartial('content_left', $params)
+             ->addPartial('content_top', $params)
+             ->addPartial('content_bottom', $params)
+             ->addPartial('content_right', $params)
+             ->addPartial('footer_top', $params)
+             ->addPartial('footer_bottom', $params);
 
         $meta = [
             'url'         => site_url($detail['slug']),

@@ -514,7 +514,7 @@ class Themes
         {
             foreach ($data AS $key => $val)
             {
-                service('SmartyEngine')->assign($key, $val);
+                service('smartyEngine')->assign($key, $val);
             }
         }
 
@@ -522,7 +522,7 @@ class Themes
         $template = $view;
         if ( !stripos($view, '.'))
         {
-            $template = $view.".".service('SmartyEngine')->template_ext;
+            $template = $view.".".service('smartyEngine')->template_ext;
         }
 
         $output = '';
@@ -551,7 +551,7 @@ class Themes
                         if (file_exists($path . $template))
                         {
                             $found  = true;
-                            $output = service('SmartyEngine')->fetch($path . $template);
+                            $output = service('smartyEngine')->fetch($path . $template);
                             break;
                         }
                     }
@@ -585,7 +585,7 @@ class Themes
                         if (file_exists($path . $template))
                         {
                             $found  = true;
-                            $output = service('SmartyEngine')->fetch($path . $template);
+                            $output = service('smartyEngine')->fetch($path . $template);
                             break;
                         }
                     }
@@ -620,7 +620,7 @@ class Themes
                         if (file_exists($path . $template))
                         {
                             $found  = true;
-                            $output = service('SmartyEngine')->fetch($path . $template);
+                            $output = service('smartyEngine')->fetch($path . $template);
                             break;
                         }
                     }
@@ -658,7 +658,7 @@ class Themes
                         if (file_exists($path . $template))
                         {
                             $found  = true;
-                            $output = service('SmartyEngine')->fetch($path . $template);
+                            $output = service('smartyEngine')->fetch($path . $template);
                             break;
                         }
                     }

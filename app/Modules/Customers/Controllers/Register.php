@@ -10,6 +10,8 @@ class Register extends MyController
     {
         parent::__construct();
 
+        //set theme
+        $this->themes->setTheme(config_item('theme_frontend'));
     }
 
     public function index()
@@ -18,27 +20,30 @@ class Register extends MyController
             return redirect()->to(site_url('account/profile') . '?customer_token=' . session('customer_token'));
         }
 
-        //set theme
-        $this->themes->setTheme(config_item('theme_frontend'));
-
-        $this->themes->addPartial('header_top')
-            ->addPartial('header_bottom')
-            ->addPartial('content_left')
-            ->addPartial('content_top')
-            ->addPartial('content_bottom')
-            ->addPartial('content_right')
-            ->addPartial('footer_top')
-            ->addPartial('footer_bottom');
-
         session()->set('register_token', substr(bin2hex(openssl_random_pseudo_bytes(26)), 0, 26));
 
         $data = [
             'register' => site_url('account/register') . "?register_token=" . session('register_token'),
         ];
 
+        //breadcrumb
         $this->breadcrumb->add(lang('General.text_home'), base_url());
         $this->breadcrumb->add(lang('Customer.title_register'), base_url('account/login'));
-        breadcrumb($this->breadcrumb, $this->themes, lang("Customer.title_register"));
+
+        //set params khi call cell
+        $params['params'] = [
+            'breadcrumb' => $this->breadcrumb->render(),
+            'breadcrumb_title' => lang('Customer.title_register'),
+        ];
+        
+        $this->themes->addPartial('header_top', $params)
+             ->addPartial('header_bottom', $params)
+             ->addPartial('content_left', $params)
+             ->addPartial('content_top', $params)
+             ->addPartial('content_bottom', $params)
+             ->addPartial('content_right', $params)
+             ->addPartial('footer_top', $params)
+             ->addPartial('footer_bottom', $params);
 
         add_meta(['title' => lang("Customer.text_register")], $this->themes);
 

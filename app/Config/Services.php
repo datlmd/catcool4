@@ -41,14 +41,14 @@ class Services extends BaseService
      * }
      */
 
-    public static function SmartyEngine($getShared = true)
+    public static function smartyEngine($getShared = true)
     {
-        return ($getShared === true ? static::getSharedInstance('SmartyEngine') : new CI4Smarty());
+        return ($getShared === true ? static::getSharedInstance('smartyEngine') : new CI4Smarty());
     }
 
-    public static function Breadcrumb($getShared = true)
+    public static function breadcrumb($getShared = true)
     {
-        return ($getShared === true ? static::getSharedInstance('Breadcrumb') : new Breadcrumb());
+        return ($getShared === true ? static::getSharedInstance('breadcrumb') : new Breadcrumb());
     }
 
     public static function reCaptcha2($getShared = true)

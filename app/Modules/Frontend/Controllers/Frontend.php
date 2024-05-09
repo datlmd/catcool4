@@ -11,22 +11,28 @@ class Frontend extends MyController
 
         //set theme
         $this->themes->setTheme(config_item('theme_frontend'));
-
-        $this->themes->addPartial('header_top')
-            ->addPartial('header_bottom')
-            ->addPartial('content_left')
-            ->addPartial('content_right')
-            ->addPartial('footer_top')
-            ->addPartial('footer_bottom');
-
-        $this->breadcrumb->openTag(config_item('breadcrumb_open'));
-        $this->breadcrumb->closeTag(config_item('breadcrumb_close'));
-        $this->breadcrumb->add(lang('General.text_home'), base_url());
     }
 
     public function index()
     {
         $data = [];
+
+
+        $this->breadcrumb->add(lang('General.text_home'), base_url());
+        
+        $params['params'] = [
+            'breadcrumb' => $this->breadcrumb->render(),
+            'breadcrumb_title' => lang('General.text_home'),
+        ];
+        
+        $this->themes->addPartial('header_top', $params)
+             ->addPartial('header_bottom', $params)
+             ->addPartial('content_left', $params)
+             ->addPartial('content_top', $params)
+             ->addPartial('content_bottom', $params)
+             ->addPartial('content_right', $params)
+             ->addPartial('footer_top', $params)
+             ->addPartial('footer_bottom', $params);
 
         add_meta(['title' => lang("Frontend.heading_title")], $this->themes);
 

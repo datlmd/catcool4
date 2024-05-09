@@ -8,22 +8,12 @@ class Login extends MyController
     {
         parent::__construct();
 
+        //set theme
+        $this->themes->setTheme(config_item('theme_frontend'));
     }
 
     public function index()
     {
-        //set theme
-        $this->themes->setTheme(config_item('theme_frontend'));
-
-        $this->themes->addPartial('header_top')
-            ->addPartial('header_bottom')
-            ->addPartial('content_left')
-            ->addPartial('content_top')
-            ->addPartial('content_bottom')
-            ->addPartial('content_right')
-            ->addPartial('footer_top')
-            ->addPartial('footer_bottom');
-
         $data = [];
 
         $return_url = $this->request->getGet('return_url');
@@ -40,9 +30,23 @@ class Login extends MyController
 
         $data['return_url'] = $return_url;
 
+        //breadcrumb
         $this->breadcrumb->add(lang('General.text_home'), base_url());
         $this->breadcrumb->add(lang('Customer.text_account_login'), base_url('account/login'));
-        breadcrumb($this->breadcrumb, $this->themes, lang("Customer.text_account_login"));
+
+        $params['params'] = [
+            'breadcrumb' => $this->breadcrumb->render(),
+            'breadcrumb_title' => lang('Customer.text_account_login'),
+        ];
+        
+        $this->themes->addPartial('header_top', $params)
+             ->addPartial('header_bottom', $params)
+             ->addPartial('content_left', $params)
+             ->addPartial('content_top', $params)
+             ->addPartial('content_bottom', $params)
+             ->addPartial('content_right', $params)
+             ->addPartial('footer_top', $params)
+             ->addPartial('footer_bottom', $params);
 
         add_meta(['title' => lang("Customer.text_account_login")], $this->themes);
 

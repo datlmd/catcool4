@@ -70,13 +70,7 @@ class Template
 
     public function breadcrumb(array $params): string
     {
-        $data['breadcrumb']       = $params['breadcrumb'];
-        // cc_debug(service('Breadcrumb'));
-        // //$data['breadcrumb_title'] = $title;
-
-        $footer_bottom = \App\Libraries\Themes::init()::partial('cells/breadcrumb', $data, true);
-
-        return $footer_bottom;
+        return \App\Libraries\Themes::init()::partial('cells/breadcrumb', $params, true);
     }
 }
 

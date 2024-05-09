@@ -110,8 +110,8 @@ class MyController extends Controller
         $this->site_lang = \Config\Services::language()->getLocale();
 
         $this->themes     = Themes::init();
-        $this->breadcrumb = service('Breadcrumb');
-        $this->smarty     = service('SmartyEngine');
+        $this->breadcrumb = service('breadcrumb');
+        $this->smarty     = service('smartyEngine');
 
         $this->validator = \Config\Services::validation();
         $this->smarty->assign('validator', $this->validator);
