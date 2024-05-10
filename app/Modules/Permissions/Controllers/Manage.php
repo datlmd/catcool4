@@ -137,7 +137,6 @@ class Manage extends AdminController
             'validate',
             'isSuperAdmin',
             'getUserId',
-            'getUserIdAdmin'
         ];
 
         if (!empty($module)) {

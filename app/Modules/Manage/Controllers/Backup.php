@@ -448,8 +448,8 @@ class Backup extends AdminController
 
         $filename = $this->request->getGet('filename');
 
-        $is_super_admin = session('admin.super_admin');
-        if (empty($is_super_admin) || $is_super_admin !== TRUE) {
+        $is_super_admin = service('user')->getSuperAdmin();
+        if (empty($is_super_admin)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_permission_execute')]);
         }
 

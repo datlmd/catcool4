@@ -99,16 +99,16 @@ class PermissionModel extends MyModel
     public function checkPermission($permission_name = null)
     {
         try {
-            if (empty(session('admin.is_admin')) || empty(session('admin.user_id'))) {
+            if (empty(session('user_info.is_admin')) || empty(session('user_info.user_id'))) {
                 return false;
             }
 
-            $is_super_admin = session('admin.super_admin');
+            $is_super_admin = session('user_info.super_admin');
             if (!empty($is_super_admin) && $is_super_admin === TRUE) {
                 return true;
             }
 
-            $user_id         = session('admin.user_id');
+            $user_id         = session('user_info.user_id');
             $permission      = [];
             $permission_name = (!empty($permission_name)) ? $permission_name : uri_string();
             $permission_name = explode('/', $permission_name);

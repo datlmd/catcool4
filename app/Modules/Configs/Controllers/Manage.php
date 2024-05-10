@@ -162,7 +162,7 @@ class Manage extends AdminController
                 $data_edit[] = [
                     'id'           => $list_config[$key]['id'],
                     'config_value' => $val,
-                    'user_id'      => $this->getUserIdAdmin(),
+                    'user_id'      => $this->user->getId(),
                 ];
             }
 
@@ -310,7 +310,7 @@ class Manage extends AdminController
                 'config_key'   => $this->request->getPost('config_key'),
                 'config_value' => $this->request->getPost('config_value'),
                 'description'  => $this->request->getPost('description'),
-                'user_id'      => $this->getUserIdAdmin(),
+                'user_id'      => $this->user->getId(),
                 'group_id'     => $this->request->getPost('group_id'),
                 'published'    => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
@@ -344,7 +344,7 @@ class Manage extends AdminController
                 'config_key'   => $this->request->getPost('config_key'),
                 'config_value' => $this->request->getPost('config_value'),
                 'description'  => $this->request->getPost('description'),
-                'user_id'      => $this->getUserIdAdmin(),
+                'user_id'      => $this->user->getId(),
                 'group_id'     => $this->request->getPost('group_id'),
                 'published'    => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];

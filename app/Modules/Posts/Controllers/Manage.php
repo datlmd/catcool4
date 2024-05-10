@@ -160,7 +160,7 @@ class Manage extends AdminController
                 'is_disable_follow' => !empty($this->request->getPost('is_disable_follow')) ? STATUS_ON : STATUS_OFF,
                 'is_disable_robot'  => !empty($this->request->getPost('is_disable_robot')) ? STATUS_ON : STATUS_OFF,
                 'ip'                => $this->request->getIPAddress(),
-                'user_id'           => $this->getUserIdAdmin(),
+                'user_id'           => $this->user->getId(),
                 'is_comment'        => $this->request->getPost('is_comment'),
                 'published'         => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
                 'language_id'       => get_lang_id(true),
@@ -261,7 +261,7 @@ class Manage extends AdminController
                     'is_disable_follow' => !empty($this->request->getPost('is_disable_follow')) ? STATUS_ON : STATUS_OFF,
                     'is_disable_robot'  => !empty($this->request->getPost('is_disable_robot')) ? STATUS_ON : STATUS_OFF,
                     'ip'                => $this->request->getIPAddress(),
-                    'user_id'           => $this->getUserIdAdmin(),
+                    'user_id'           => $this->user->getId(),
                     'is_comment'        => $this->request->getPost('is_comment'),
                     'published'         => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
                 ];

@@ -17,7 +17,7 @@
 				<div class="card">
 					<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('MenuAdmin.text_list')} {if !empty(session('is_menu_admin'))}(Admin){else}(Frontend){/if}</h5>
 					<div class="card-body">
-						{if !empty(session('admin.super_admin'))}
+						{if !empty(session('user_info.super_admin'))}
 							<div class="mb-3">
 								<a href="{site_url($manage_url|cat:"?is_admin=1")}" class="btn btn-sm btn-light {if $is_admin eq 1}active{/if}">Admin</a>
 								<a href="{site_url($manage_url|cat:"?is_admin=0")}" class="btn btn-sm btn-light ms-2 {if $is_admin eq 0}active{/if}">Frontend</a>

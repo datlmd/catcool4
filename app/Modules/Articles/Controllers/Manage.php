@@ -107,7 +107,7 @@ class Manage extends AdminController
                 'author'       => $this->request->getPost('author'),
                 'source'       => $this->request->getPost('source'),
                 'user_ip'      => $this->request->getIPAddress(),
-                'user_id'      => $this->getUserIdAdmin(),
+                'user_id'      => $this->user->getId(),
                 'is_comment'   => $this->request->getPost('is_comment'),
                 'published'    => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
@@ -216,7 +216,7 @@ class Manage extends AdminController
                     'author' => $this->request->getPost('author'),
                     'source' => $this->request->getPost('source'),
                     'user_ip' => $this->request->getIPAddress(),
-                    'user_id' => $this->getUserIdAdmin(),
+                    'user_id' => $this->user->getId(),
                     'is_comment' => $this->request->getPost('is_comment'),
                     'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
                 ];

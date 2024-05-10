@@ -134,7 +134,7 @@ class Manage extends AdminController
                 'lang_value' => str_replace('"', "'", $values[$lang['id']]),
                 'lang_id'    => $lang['id'],
                 'module_id'  => $module_id,
-                'user_id'    => $this->getUserIdAdmin(),
+                'user_id'    => $this->user->getId(),
             ];
             $this->model->insert($data_add);
         }
@@ -191,7 +191,7 @@ class Manage extends AdminController
                     'lang_value' => str_replace('"', "'", $values[$lang['id']]),
                     'lang_id'    => $lang['id'],
                     'module_id'  => $module_id,
-                    'user_id'    => $this->getUserIdAdmin(),
+                    'user_id'    => $this->user->getId(),
                 ];
 
                 //add
@@ -201,7 +201,7 @@ class Manage extends AdminController
                 $data_edit['lang_value'] = str_replace('"', "'", $values[$lang['id']]);
                 $data_edit['lang_key']   = $key_new;
                 $data_edit['module_id']  = $module_id;
-                $data_edit['user_id']    = $this->getUserIdAdmin();
+                $data_edit['user_id']    = $this->user->getId();
 
                 //update
                 $this->model->update($data_edit['id'], $data_edit);
@@ -250,7 +250,7 @@ class Manage extends AdminController
                         'lang_value' => str_replace('"', "'", $value[$lang['id']]),
                         'lang_id'    => $lang['id'],
                         'module_id'  => $module_id,
-                        'user_id'    => $this->getUserIdAdmin(),
+                        'user_id'    => $this->user->getId(),
                     ];
 
                     //add
@@ -258,7 +258,7 @@ class Manage extends AdminController
                 } else {
                     $data_edit               = $translation_list[$translation_key]['list'][$lang['id']];
                     $data_edit['lang_value'] = str_replace('"', "'", $value[$lang['id']]);
-                    $data_edit['user_id']    = $this->getUserIdAdmin();
+                    $data_edit['user_id']    = $this->user->getId();
 
                     //update
                     $this->model->update($data_edit['id'], $data_edit);

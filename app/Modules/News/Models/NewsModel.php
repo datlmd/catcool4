@@ -525,7 +525,7 @@ class NewsModel extends FarmModel
                 'is_disable_follow' => STATUS_OFF,
                 'is_disable_robot'  => STATUS_OFF,
                 'ip'                => get_client_ip(), //\CodeIgniter\HTTP\Request::getIPAddress()
-                'user_id'           => 0,//session('admin.user_id'),
+                'user_id'           => 0,//session('user_info.user_id'),
                 'is_comment'        => COMMENT_STATUS_ON,
                 'published'         => $status,
                 'sort_order'        => 0,

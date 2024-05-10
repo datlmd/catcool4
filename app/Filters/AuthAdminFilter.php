@@ -17,7 +17,7 @@ class AuthAdminFilter implements FilterInterface
         }
 
         //check login
-        $user_id = session('admin.user_id');
+        $user_id = session('user_info.user_id');
         if (empty($user_id)) {
             helper(['cookie', 'catcool', 'inflector']);
             $user_model = new UserModel();
@@ -39,7 +39,7 @@ class AuthAdminFilter implements FilterInterface
             }
         }
 
-        if (empty(session('admin.is_admin'))) {
+        if (empty(session('user_info.is_admin'))) {
 
             if (\Config\Services::request()->isAJAX()) {
                 header('content-type: application/json; charset=utf8');

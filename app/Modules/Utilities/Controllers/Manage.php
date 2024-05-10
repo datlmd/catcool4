@@ -187,7 +187,7 @@ class Manage extends AdminController
 
         //check delete & clear
         if ($type == 1 && !empty($list[$name])) {
-            $is_super_admin = session('admin.super_admin');
+            $is_super_admin = session('user_info.super_admin');
             if (empty($is_super_admin) || $is_super_admin !== TRUE) {
                 return redirect()->back();
             }
@@ -200,7 +200,7 @@ class Manage extends AdminController
             }
             return redirect()->back();
         } elseif ($type == 2) {
-            $is_super_admin = session('admin.super_admin');
+            $is_super_admin = session('user_info.super_admin');
             if (empty($is_super_admin) || $is_super_admin !== TRUE) {
                 return redirect()->back();
             }

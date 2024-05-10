@@ -7,6 +7,11 @@ defined('IS_ADMIN') || define('IS_ADMIN', true);
 
 class AdminController extends UserController
 {
+    /**
+     * @var mixed|null
+     */
+    protected $user = null;
+
     public function initController(\CodeIgniter\HTTP\RequestInterface $request, \CodeIgniter\HTTP\ResponseInterface $response, \Psr\Log\LoggerInterface $logger)
     {
         // Do Not Edit This Line
@@ -33,6 +38,9 @@ class AdminController extends UserController
 
         //tracking log access
         $this->trackingLogAccess(true);
+
+        $this->user = service('user');
+        $this->smarty->assign('user', $this->user);
 
         $error_token = session()->getFlashdata('error_token');
         if (!empty($error_token)) {

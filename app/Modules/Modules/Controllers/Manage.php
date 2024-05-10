@@ -66,7 +66,7 @@ class Manage extends AdminController
             $add_data = [
                 'module'     => $this->request->getPost('module'),
                 'sub_module' => $this->request->getPost('sub_module'),
-                'user_id'    => $this->getUserIdAdmin(),
+                'user_id'    => $this->user->getId(),
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
@@ -98,7 +98,7 @@ class Manage extends AdminController
             $edit_data = [
                 'module'     => $this->request->getPost('module'),
                 'sub_module' => $this->request->getPost('sub_module'),
-                'user_id'    => $this->getUserIdAdmin(),
+                'user_id'    => $this->user->getId(),
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 

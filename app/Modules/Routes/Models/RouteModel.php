@@ -180,7 +180,7 @@ class RouteModel extends MyModel
                 'resource'    => $resource,
                 'language_id' => get_lang_id(true),
                 'route'       => $urls['route'],
-                'user_id'     => session('admin.user_id'),
+                'user_id'     => session('user_info.user_id'),
                 'published'   => STATUS_ON,
             ];
             $this->insert($route_data);
@@ -200,7 +200,7 @@ class RouteModel extends MyModel
                     'resource'    => $resource,
                     'language_id' => $key,
                     'route'       => $urls[$key]['route'],
-                    'user_id'     => session('admin.user_id'),
+                    'user_id'     => session('user_info.user_id'),
                     'published'   => STATUS_ON,
                 ];
                 $this->insert($route_data);

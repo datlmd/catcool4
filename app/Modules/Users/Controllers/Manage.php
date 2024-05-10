@@ -44,7 +44,7 @@ class Manage extends AdminController
         $this->smarty->assign('manage_root', self::MANAGE_ROOT);
 
         //set supper admin
-        $this->smarty->assign('is_super_admin', $this->isSuperAdmin());
+        $this->smarty->assign('is_super_admin', $this->user->getSuperAdmin());
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
@@ -56,7 +56,7 @@ class Manage extends AdminController
         $limit       = $this->request->getGet('limit');
         $sort        = $this->request->getGet('sort');
         $order       = $this->request->getGet('order');
-        $filter_keys = ['id', 'name', 'limit'];
+        $filter_keys = ['user_id', 'name', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
@@ -64,7 +64,7 @@ class Manage extends AdminController
             'breadcrumb'    => $this->breadcrumb->render(),
             'list'          => $list->paginate($limit),
             'pager'         => $list->pager,
-            'sort'          => empty($sort) ? 'id' : $sort,
+            'sort'          => empty($sort) ? 'user_id' : $sort,
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'           => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
@@ -80,7 +80,7 @@ class Manage extends AdminController
 
     public function add()
     {
-        if (!$this->isSuperAdmin()) {
+        if (!$this->user->getSuperAdmin()) {
             set_alert(lang('Admin.error_permission_super_admin'), ALERT_ERROR, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
@@ -108,7 +108,7 @@ class Manage extends AdminController
                     mkdir(get_upload_path() . self::FOLDER_UPLOAD, 0777, true);
                 }
 
-                $avatar_name = self::FOLDER_UPLOAD . $username . '_ad.jpg'; //pathinfo($avatar, PATHINFO_EXTENSION);
+                $avatar_name = self::FOLDER_UPLOAD . $username . '.jpg'; //pathinfo($avatar, PATHINFO_EXTENSION);
 
                 $width  = !empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH;
                 $height = !empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT;
@@ -132,10 +132,10 @@ class Manage extends AdminController
                 'gender'     => $this->request->getPost('gender'),
                 'image'      => $avatar,
                 'active'     => !empty($this->request->getPost('active')) ? STATUS_ON : STATUS_OFF,
-                'user_ip'    => $this->request->getIPAddress(),
+                'ip'    => $this->request->getIPAddress(),
             ];
 
-            if ($this->isSuperAdmin()) {
+            if ($this->user->getSuperAdmin()) {
                 $add_data['super_admin'] = !empty($this->request->getPost('super_admin')) ? STATUS_ON : STATUS_OFF;
             }
 
@@ -257,8 +257,8 @@ class Manage extends AdminController
         }
 
         if (!empty($this->request->getPost('email'))) {
-            if (!empty($this->request->getPost('id'))) {
-                $email = $this->model->where(['email' => $this->request->getPost('email'), 'id !=' => $this->request->getPost('id')])->findAll();
+            if (!empty($this->request->getPost('user_id'))) {
+                $email = $this->model->where(['email' => $this->request->getPost('email'), 'user_id !=' => $this->request->getPost('user_id')])->findAll();
             } else {
                 $email = $this->model->where('email', $this->request->getPost('email'))->findAll();
             }
@@ -276,7 +276,7 @@ class Manage extends AdminController
 
     public function edit($id = null)
     {
-        if (!$this->isSuperAdmin()) {
+        if (!$this->user->getSuperAdmin()) {
             set_alert(lang('Admin.error_permission_super_admin'), ALERT_ERROR, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
@@ -286,7 +286,7 @@ class Manage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()) && $id == $this->request->getPost('id')) {
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('user_id')) {
             if (!$this->_validateForm($id)) {
                 set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
@@ -337,13 +337,13 @@ class Manage extends AdminController
                 'dob'        => $dob,
                 'gender'     => $this->request->getPost('gender'),
                 'image'      => $avatar,
-                'user_ip'    => $this->request->getIPAddress(),
+                'ip'    => $this->request->getIPAddress(),
             ];
 
-            if ($id != $this->getUserIdAdmin()) {
+            if ($id != $this->user->getId()) {
                 $edit_data['active'] = !empty($this->request->getPost('active')) ? STATUS_ON : STATUS_OFF;
             }
-            if ($this->isSuperAdmin()) {
+            if ($this->user->getSuperAdmin()) {
                 $edit_data['super_admin'] = !empty($this->request->getPost('super_admin')) ? STATUS_ON : STATUS_OFF;
             }
 
@@ -458,7 +458,7 @@ class Manage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!$this->isSuperAdmin()) {
+        if (!$this->user->getSuperAdmin()) {
             set_alert(lang('Admin.error_permission_super_admin'), ALERT_ERROR, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
@@ -509,7 +509,7 @@ class Manage extends AdminController
 
         $token = csrf_hash();
 
-        if (!$this->isSuperAdmin()) {
+        if (!$this->user->getSuperAdmin()) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_permission_super_admin')]);
         }
 
@@ -519,17 +519,17 @@ class Manage extends AdminController
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
-            $list_delete = $this->model->whereIn('id', $ids)->findAll();
+            $list_delete = $this->model->whereIn('user_id', $ids)->findAll();
             if (empty($list_delete)) {
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
 
             try {
                 foreach($list_delete as $value) {
-                    if ((!empty($value['super_admin']) && empty($this->isSuperAdmin())) || $value['id'] == $this->getUserIdAdmin()) {
+                    if ((!empty($value['super_admin']) && empty($this->user->getSuperAdmin())) || $value['user_id'] == $this->user->getId()) {
                         continue;
                     }
-                    $this->model->delete($value['id']);
+                    $this->model->delete($value['user_id']);
                 }
 
                 json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
@@ -552,7 +552,7 @@ class Manage extends AdminController
         }
 
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->whereIn('id', $delete_ids)->findAll();
+        $list_delete = $this->model->whereIn('user_id', $delete_ids)->findAll();
 
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
@@ -560,7 +560,7 @@ class Manage extends AdminController
 
         $list_undelete = [];
         foreach ($list_delete as $key => $value) {
-            if ((!empty($value['super_admin']) && empty($this->isSuperAdmin())) || $value['id'] == $this->getUserIdAdmin()) {
+            if ((!empty($value['super_admin']) && empty($this->user->getSuperAdmin())) || $value['user_id'] == $this->user->getId()) {
                 $list_undelete[] = $value;
                 unset($list_delete[$key]);
             }
@@ -586,7 +586,7 @@ class Manage extends AdminController
         }
 
         $id = $this->request->getPost('id');
-        if ($id == $this->getUserIdAdmin()) {
+        if ($id == $this->user->getId()) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('UserAdmin.error_permission_owner')]);
         }
 
@@ -617,7 +617,7 @@ class Manage extends AdminController
         $redirect = empty($this->request->getGetPost('redirect')) ? site_url(CATCOOL_DASHBOARD) : $this->request->getGetPost('redirect');
         $redirect = urldecode($redirect);
 
-        if (!empty(session('admin.user_id'))) {
+        if (!empty(session('user_info.user_id'))) {
             return redirect()->to($redirect);
         } else {
             //neu da logout thi check auto login
@@ -647,7 +647,7 @@ class Manage extends AdminController
         $redirect = empty($this->request->getPost('redirect')) ? site_url(CATCOOL_DASHBOARD) : $this->request->getPost('redirect');
         $redirect = urldecode($redirect);
 
-        if (!empty(session('admin.user_id'))) {
+        if (!empty(session('user_info.user_id'))) {
             json_output([
                 'redirect' => $redirect
             ]);
@@ -772,9 +772,9 @@ class Manage extends AdminController
 
         if (!empty($this->request->getPost()) && $this->validator->withRequest($this->request)->run()) {
             // do we have a valid request?
-            if ($user['id'] != $this->request->getPost('id')) {
+            if ($user['user_id'] != $this->request->getPost('id')) {
                 // something fishy might be up
-                $this->model->clearForgottenPasswordCode($user['id']);
+                $this->model->clearForgottenPasswordCode($user['user_id']);
                 set_alert(lang('Admin.error_token'), ALERT_ERROR);
             } else {
                 // finally change the password
@@ -786,14 +786,14 @@ class Manage extends AdminController
                     'forgotten_password_time'     => NULL
                 ];
 
-                $change = $this->model->update($user['id'], $data);
+                $change = $this->model->update($user['user_id'], $data);
                 if (!$change) {
                     set_alert(lang('UserAdmin.error_password_change_unsuccessful'), ALERT_ERROR);
                     return redirect()->to( site_url(self::MANAGE_URL . '/reset_password' . $code));
                 }
 
                 $user_token_model = new UserTokenModel();
-                $user_token_model->delete(['user_id' => $user['id']]);
+                $user_token_model->delete(['user_id' => $user['user_id']]);
 
                 // if the password was successfully changed
                 set_alert(lang('UserAdmin.password_change_successful'), ALERT_SUCCESS);

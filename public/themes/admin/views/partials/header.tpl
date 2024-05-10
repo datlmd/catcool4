@@ -94,10 +94,10 @@
 					<a class="nav-link nav-user-img icon-animation" href="#" id="navbar_dropdown_user_info" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{get_avatar()}" alt="" class="user-avatar-md rounded-circle"></a>
 					<div class="dropdown-menu dropdown-menu-end nav-user-dropdown" aria-labelledby="navbar_dropdown_user_info">
 						<div class="nav-user-info">
-							<h5 class="mb-0 text-white nav-user-name">{session('admin.full_name')}</h5>
-							<span class="status"></span><span class="text-dark">{session('admin.username')}</span>
+							<h5 class="mb-0 text-white nav-user-name">{session('user_info.full_name')}</h5>
+							<span class="status"></span><span class="text-dark">{session('user_info.username')}</span>
 						</div>
-						<a class="dropdown-item" href="{site_url('users/manage/edit/'|cat:session('admin.user_id'))}"><i class="fas fa-user-circle me-2"></i>{lang('Admin.text_profile')}</a>
+						<a class="dropdown-item" href="{site_url('users/manage/edit/'|cat:session('user_info.user_id'))}"><i class="fas fa-user-circle me-2"></i>{lang('Admin.text_profile')}</a>
 						{if !empty(config_item('enable_dark_mode'))}
 							<a class="dropdown-item" href="{site_url('configs/manage/config')}?k=dark_mode&v=0"><i class="far fa-lightbulb me-2"></i>{lang('ConfigAdmin.text_light_mode')}</a>
 						{else}

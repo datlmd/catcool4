@@ -5,9 +5,9 @@ use App\Models\MyModel;
 class UserModel extends MyModel
 {
     protected $table      = 'user';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'user_id';
     protected $allowedFields = [
-        'id',
+        'user_id',
         'username',
         'password',
         'email',
@@ -29,8 +29,8 @@ class UserModel extends MyModel
         'last_login',
         'active',
         'deleted',
-        'language',
-        'user_ip',
+        'language_id',
+        'ip',
         'ctime',
         'mtime'
     ];
@@ -53,11 +53,11 @@ class UserModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = empty($sort) ? 'id' : $sort;
+        $sort  = empty($sort) ? 'user_id' : $sort;
         $order = empty($order) ? 'DESC' : $order;
 
-        if (!empty($filter["id"])) {
-            $this->whereIn('id', (!is_array($filter["id"]) ? explode(',', $filter["id"]) : $filter["id"]));
+        if (!empty($filter["user_id"])) {
+            $this->whereIn('user_id', (!is_array($filter["user_id"]) ? explode(',', $filter["user_id"]) : $filter["user_id"]));
         }
 
         if (!empty($filter["name"])) {
@@ -111,33 +111,51 @@ class UserModel extends MyModel
 //        return $return;
 //    }
 //
-    public function login($username, $password, $remember = FALSE)
+    public function login($username, $password, $remember = false)
     {
+        $attempt_model = new LoginAttemptModel();
+
         $this->errors = [];
 
         if (empty($username) || empty($password)) {
             $this->errors[] = lang('User.text_login_unsuccessful');
-            return FALSE;
+            return false;
         }
 
         $user_info = $this->where(['username' => $username])->first();
         if (empty($user_info)) {
             $this->errors[] = lang('User.text_login_unsuccessful');
 
-            return FALSE;
+            return false;
+        }
+
+        if ($attempt_model->isMaxLoginAttemptsExceeded($user_info['user_id'])) {
+            $this->errors[] = lang('User.text_login_timeout');
+            $this->errors[] = lang('User.error_attempts', [config_item('lockout_time')/60]);
+
+            return false;
         }
 
         if (empty($user_info['active'])) {
             $this->errors[] = lang('User.text_login_unsuccessful_not_active');
-            return FALSE;
+            return false;
         }
 
-        if ($this->auth_model->checkPassword($password, $user_info['password']) === FALSE) {
+        if (!$this->auth_model->checkPassword($password, $user_info['password'])) {
+            
+            $attempt_model->increaseLoginAttempts($user_info['user_id']);
+
             $this->errors[] = lang('User.text_login_unsuccessful');
-            return FALSE;
+
+            $total_attempt = $attempt_model->getRemainingAttempts($user_info['user_id']);
+            if ($total_attempt > 0 && $total_attempt < 3) {
+                $this->errors[] = lang('User.error_attempt_time', [$total_attempt]);    
+            }
+
+            return false;
         }
 
-        $this->auth_model->setSession($user_info, true);
+        $this->auth_model->setSession($user_info);
 
         $data_login = [];
         //check remember login
@@ -148,7 +166,11 @@ class UserModel extends MyModel
                 $this->auth_model->setCookie($token, true);
 
                 $user_token_model = new UserTokenModel();
-                $user_token_model->addToken($user_info['id'], $token);
+
+                //delete old token
+                $user_token_model->where(['user_id' => $user_info['user_id']])->delete();
+
+                $user_token_model->addToken($user_info['user_id'], $token);
             }
         }
 
@@ -157,8 +179,12 @@ class UserModel extends MyModel
         $data_login['forgotten_password_code']     = NULL;
         $data_login['forgotten_password_time']     = NULL;
         $data_login['last_login']                  = time(); // last login
+        $data_login['ip']                          = get_client_ip();
 
-        $this->update($user_info['id'], $data_login);
+        $this->update($user_info['user_id'], $data_login);
+
+        //Clear attemt
+        $attempt_model->clearLoginAttempts($user_info['user_id']);
 
         return TRUE;
     }
@@ -169,7 +195,7 @@ class UserModel extends MyModel
 
         $user_token_model = new UserTokenModel();
 
-        $remember_cookie = $this->auth_model->getCookie(true);
+        $remember_cookie = $this->auth_model->getCookie();
         $token           = $this->auth_model->retrieveSelectorValidatorCouple($remember_cookie);
 
         if ($token === FALSE) {
@@ -183,7 +209,7 @@ class UserModel extends MyModel
             return FALSE;
         }
 
-        $user_info = $this->where(['id' => $user_token['user_id']])->first();
+        $user_info = $this->where(['user_id' => $user_token['user_id']])->first();
         if (empty($user_info)) {
             $this->errors[] = lang('User.text_login_unsuccessful');
             return FALSE;
@@ -199,7 +225,7 @@ class UserModel extends MyModel
             return FALSE;
         }
 
-        $this->auth_model->setSession($user_info, true);
+        $this->auth_model->setSession($user_info);
 
         //xoa forgotten pass neu login thanh cong
         $data_login = [
@@ -207,27 +233,28 @@ class UserModel extends MyModel
             'forgotten_password_code'     => NULL,
             'forgotten_password_time'     => NULL,
             'last_login'                  => time(), // last login
+            'ip'                          => get_client_ip()
         ];
-        $this->update($user_info['id'], $data_login);
+        $this->update($user_info['user_id'], $data_login);
 
         return TRUE;
     }
 
     public function logout()
     {
-        $user_id = $this->auth_model->getUserIdAdmin();
+        $user_id = $this->auth_model->getUserId();
         if (empty($user_id)) {
             return FALSE;
         }
 
-        $remember_cookie = $this->auth_model->getCookie(true);
+        $remember_cookie = $this->auth_model->getCookie();
         $token           = $this->auth_model->retrieveSelectorValidatorCouple($remember_cookie);
 
         $user_token_model = new UserTokenModel();
         $user_token_model->deleteToken($token);
 
-        $this->auth_model->clearSession(true);
-        $this->auth_model->deleteCookie(true);
+        $this->auth_model->clearSession();
+        $this->auth_model->deleteCookie();
 
         // Clear all codes
         $data_logout = [
@@ -286,7 +313,7 @@ class UserModel extends MyModel
             'forgotten_password_code'     => $token['validator_hashed'],
             'forgotten_password_time'     => time()
         ];
-        $id = $this->update($user_info['id'], $update);
+        $id = $this->update($user_info['user_id'], $update);
         if (empty($id)) {
             return false;
         }
@@ -330,7 +357,7 @@ class UserModel extends MyModel
             $expiration = config_item('forgotPasswordExpiration');
             if (time() - $user['forgotten_password_time'] > $expiration) {
                 //it has expired, clear_forgotten_password_code
-                $this->clearForgottenPasswordCode($user['id']);
+                $this->clearForgottenPasswordCode($user['user_id']);
                 $this->errors[] = '[005] ' . lang('error_password_code');
                 return FALSE;
             }

@@ -1455,7 +1455,7 @@ if (!function_exists('script_global'))
 {
     function script_global()
     {
-        $username  = !empty(session('admin.is_admin')) ? session('admin.username') : session('user.username');
+        $username  = !empty(session('user_info.is_admin')) ? session('user_info.username') : session('customer.email');
 
         return '
             var base_url = "' . base_url() . '";
@@ -1557,17 +1557,11 @@ if (!function_exists('get_avatar'))
 {
     function get_avatar($avatar = null, $width = 32, $height = 32)
     {
-        $username    = session('user.username');
-        $user_gender = session('user.user_gender');
-
+        $username    = session('user_info.username');
+        $user_gender = session('user_info.user_gender');
         $image_ext = '.jpg';
-        if (session('admin.is_admin')) {
-            $image_ext = '_ad.jpg';
-            $username    = session('admin.username');
-            $user_gender = session('admin.user_gender');
-        }
 
-        $avatar      = empty($avatar) ? 'users/' . $username . $image_ext : $avatar;
+        $avatar = empty($avatar) ? 'users/' . $username . $image_ext : $avatar;
         if (!is_file(get_upload_path($avatar))) {
             return ($user_gender == GENDER_MALE) ? base_url('common/'.config_item('avatar_default_male')) : base_url('common/'.config_item('avatar_default_female'));
         }

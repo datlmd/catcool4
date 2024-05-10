@@ -1,10 +1,8 @@
 <?php namespace App\Modules\Customers\Controllers;
 
 use App\Controllers\AdminController;
-
 use App\Modules\Customers\Models\GroupModel;
 use App\Modules\Customers\Models\CustomerModel;
-
 use App\Modules\Users\Models\AuthModel;
 
 class Manage extends AdminController
@@ -345,7 +343,7 @@ class Manage extends AdminController
 
         $token = csrf_hash();
 
-        if (!$this->isSuperAdmin()) {
+        if (!$this->user->getSuperAdmin()) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_permission_super_admin')]);
         }
 
@@ -362,7 +360,7 @@ class Manage extends AdminController
 
             try {
                 foreach($list_delete as $value) {
-                    if ((!empty($value['super_admin']) && empty($this->isSuperAdmin())) || $value['customer_id'] == $this->getUserIdAdmin()) {
+                    if ((!empty($value['super_admin']) && empty($this->user->getSuperAdmin())) || $value['customer_id'] == $this->user->getId()) {
                         continue;
                     }
                     $this->model->update($value['customer_id'], ['is_deleted' => STATUS_ON]);
@@ -396,7 +394,7 @@ class Manage extends AdminController
 
         $list_undelete = [];
         foreach ($list_delete as $key => $value) {
-            if ((!empty($value['super_admin']) && empty($this->isSuperAdmin())) || $value['customer_id'] == $this->getUserIdAdmin()) {
+            if ((!empty($value['super_admin']) && empty($this->user->getSuperAdmin())) || $value['customer_id'] == $this->user->getId()) {
                 $list_undelete[] = $value;
                 unset($list_delete[$key]);
             }
@@ -422,7 +420,7 @@ class Manage extends AdminController
         }
 
         $id = $this->request->getPost('customer_id');
-        if ($id == $this->getUserIdAdmin()) {
+        if ($id == $this->user->getId()) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('CustomerAdmin.error_permission_owner')]);
         }
 

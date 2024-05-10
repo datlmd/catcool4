@@ -135,7 +135,7 @@ class MyController extends Controller
                 return false;
             }
 
-            $user_id = $is_admin ? $this->getUserIdAdmin() : $this->getUserId();
+            $user_id = $is_admin ? service('user')->getId() : service('customer')->getId();
             if (empty($user_id)) {
                 return false;
             }
@@ -152,9 +152,11 @@ class MyController extends Controller
             $controller = $router->controllerName();
             $controller = str_ireplace("\\App\\Modules\\", "", $controller);
 
+            $username = $is_admin ? service('user')->getUsername() : service('customer')->getEmail();
+
             $data_log = [
                 'user_id' => $user_id,
-                'username' => session('admin.username'),
+                'username' => $username,
                 'module' => $controller,
                 'action' => $router->methodName(),
                 'post_params' => $_POST,

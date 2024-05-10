@@ -13,7 +13,7 @@ class UserController extends MyController
 
     public function isSuperAdmin()
     {
-        $super_admin = session('admin.super_admin');
+        $super_admin = session('user_info.super_admin');
         if (!empty($super_admin) && $super_admin === TRUE) {
             return TRUE;
         }
@@ -40,10 +40,10 @@ class UserController extends MyController
      *
      * @return \CodeIgniter\Session\Session|mixed|null
      */
-    public function getUserIdAdmin()
+    public function getUserId()
     {
-        if (!empty(session('admin.user_id'))) {
-            return session('admin.user_id');
+        if (!empty(session('user_info.user_id'))) {
+            return session('user_info.user_id');
         }
 
         return NULL;
