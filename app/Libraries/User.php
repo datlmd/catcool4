@@ -53,7 +53,7 @@ class User
 			if (!empty($user_info)) {
                 // $update = [
                 //     'language_id' => get_lang_id(),
-                //     'ip'          => get_client_ip(),
+                //     'ip'          => service('request')->getIPAddress(),
                 // ];
         
                 // $user_model->update($customer_info['customer_id'], $update);

@@ -28,7 +28,7 @@ class IpModel extends MyModel
             
         $data = [
             'customer_id' => $customer_id,
-            'ip' => get_client_ip(),
+            'ip' => service('request')->getIPAddress(),
             'agent' => $agent->getAgentString()
         ];
 

@@ -677,7 +677,7 @@ class PostModel extends MyModel
                 'is_homepage'       => STATUS_OFF,
                 'is_disable_follow' => STATUS_OFF,
                 'is_disable_robot'  => STATUS_OFF,
-                'ip'                => get_client_ip(), //\CodeIgniter\HTTP\Request::getIPAddress()
+                'ip'                => service('request')->getIPAddress(), //\CodeIgniter\HTTP\Request::getIPAddress()
                 'user_id'           => session('user_info.user_id'),
                 'is_comment'        => COMMENT_STATUS_ON,
                 'published'         => $status,

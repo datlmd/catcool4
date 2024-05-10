@@ -41,7 +41,7 @@ class UserTokenModel extends MyModel
                 'user_id'           => $user_id,
                 'remember_selector' => $token['selector'],
                 'remember_code'     => $token['validator_hashed'],
-                'ip'                => get_client_ip(),
+                'ip'                => service('request')->getIPAddress(),
                 'agent'             => $agent->getAgentString(),
                 'platform'          => $agent->getPlatform(),
                 'browser'           => $agent->getBrowser() . '/' . $agent->getVersion(),

@@ -179,7 +179,7 @@ class UserModel extends MyModel
         $data_login['forgotten_password_code']     = NULL;
         $data_login['forgotten_password_time']     = NULL;
         $data_login['last_login']                  = time(); // last login
-        $data_login['ip']                          = get_client_ip();
+        $data_login['ip']                          = service('request')->getIPAddress();
 
         $this->update($user_info['user_id'], $data_login);
 
@@ -233,7 +233,7 @@ class UserModel extends MyModel
             'forgotten_password_code'     => NULL,
             'forgotten_password_time'     => NULL,
             'last_login'                  => time(), // last login
-            'ip'                          => get_client_ip()
+            'ip'                          => service('request')->getIPAddress()
         ];
         $this->update($user_info['user_id'], $data_login);
 

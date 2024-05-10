@@ -50,7 +50,7 @@ class Customer
 			if (!empty($customer_info)) {
                 $update = [
                     'language_id' => get_lang_id(),
-                    'ip'          => get_client_ip(),
+                    'ip'          => service('request')->getIPAddress(),
                 ];
         
                 $customer_model->update($customer_info['customer_id'], $update);

@@ -151,7 +151,7 @@ class CustomerModel extends MyModel
         $data_login['forgotten_password_code']     = NULL;
         $data_login['forgotten_password_time']     = NULL;
         $data_login['last_login']                  = time(); // last login
-        $data_login['ip']                          = get_client_ip();
+        $data_login['ip']                          = service('request')->getIPAddress();
 
         $this->update($customer_info['customer_id'], $data_login);
 
@@ -205,7 +205,7 @@ class CustomerModel extends MyModel
             'forgotten_password_code'     => NULL,
             'forgotten_password_time'     => NULL,
             'last_login'                  => time(), // last login
-            'ip'                          => get_client_ip()
+            'ip'                          => service('request')->getIPAddress()
         ];
         $this->update($customer_info['customer_id'], $data_login);
 
@@ -245,7 +245,7 @@ class CustomerModel extends MyModel
                 'gender'      => $data['gender'],
                 'active'      => STATUS_ON,
                 'dob'         => $data['dob'] ?? null,
-                'ip'          => get_client_ip(),
+                'ip'          => service('request')->getIPAddress(),
             ];
 
             if (!empty($data['image'])) {
@@ -270,7 +270,7 @@ class CustomerModel extends MyModel
                 'forgotten_password_code'     => NULL,
                 'forgotten_password_time'     => NULL,
                 'last_login'                  => time(), // last login
-                'ip'                          => get_client_ip()
+                'ip'                          => service('request')->getIPAddress()
             ];
             $this->update($social_info['customer_id'], $data_login);
 

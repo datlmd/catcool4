@@ -26,7 +26,7 @@ class LoginAttemptModel extends MyModel
             if (!empty(config_item('track_login_ip_address'))) {
 
                 if (empty($ip_address)) {
-                    $ip_address = get_client_ip();
+                    $ip_address = service('request')->getIPAddress();
                 }
                 $this->where('ip', $ip_address);
             }
@@ -75,7 +75,7 @@ class LoginAttemptModel extends MyModel
             $this->where('user_id', $user_id);
             if (!empty(config_item('track_login_ip_address'))) {
                 if (empty($ip_address)) {
-                    $ip_address = get_client_ip();
+                    $ip_address = service('request')->getIPAddress();
                 }
                 $this->where('ip', $ip_address);
             }
@@ -96,7 +96,7 @@ class LoginAttemptModel extends MyModel
                 'time'    => time()
             ];
             if (!empty(config_item('track_login_ip_address'))) {
-                $data['ip'] = get_client_ip();
+                $data['ip'] = service('request')->getIPAddress();
             }
             return $this->insert($data);
         }

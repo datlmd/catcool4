@@ -161,7 +161,7 @@ class MyController extends Controller
                 'action' => $router->methodName(),
                 'post_params' => $_POST,
                 'get_params' => $_GET,
-                'ip' => get_client_ip()
+                'ip' => service('request')->getIPAddress()
             ];
 
             $directory = WRITEPATH . "logs/access/";
