@@ -8,11 +8,11 @@
             </div>
             <div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
                 <button type="submit" class="btn btn-sm btn-space btn-primary mb-0"><i class="fas fa-save me-1"></i>{lang('UserAdmin.text_change_password')}</button>
-                <a href="{$manage_url}/edit/{$edit_data.id}" class="btn btn-sm btn-space btn-secondary mb-0"><i class="fas fa-reply me-1"></i>{lang('Admin.text_cancel')}</a>
+                <a href="{$manage_url}/edit/{$edit_data.user_id}" class="btn btn-sm btn-space btn-secondary mb-0"><i class="fas fa-reply me-1"></i>{lang('Admin.text_cancel')}</a>
             </div>
         </div>
-        {if !empty($edit_data.id)}
-            {form_hidden('id', $edit_data.id)}
+        {if !empty($edit_data.user_id)}
+            {form_hidden('user_id', $edit_data.user_id)}
         {/if}
         <div class="row">
             {if !empty(print_flash_alert())}
@@ -32,7 +32,7 @@
                                 {lang('Admin.text_username')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-7 pt-2">
-                                <a href="{site_url($manage_url)}/edit/{$edit_data.id}" class="text-dark"><i class="fas fa-user me-2"></i>{$edit_data.username}</a>
+                                <a href="{site_url($manage_url)}/edit/{$edit_data.user_id}" class="text-dark"><i class="fas fa-user me-2"></i>{$edit_data.username}</a>
                             </div>
                         </div>
                         <div class="form-group row">

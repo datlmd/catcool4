@@ -12,12 +12,13 @@
                     {if !empty($list_delete)}
                         <ul class="list-unstyled bullet-check ms-5">
                             {foreach $list_delete as $item}
-                                <li class="text-danger">#{$item.id}: {$item.username} ({full_name($item.first_name, $item.last_name)})</li>
+                                <li class="text-danger">#{$item.user_id}: {$item.username} ({full_name($item.first_name, $item.last_name)})</li>
                             {/foreach}
                         </ul>
                         <div class="form-group text-center clearfix">
-                            {form_hidden('ids', $ids)}
-                            {form_hidden('is_delete', true)}
+                            <input type="hidden" name="ids" value="{$ids}">
+                            <input type="hidden" name="is_delete" value="1">
+
                             <button type="button" id="submit_delete" onclick="Catcool.submitDelete('delete_validationform');" class="btn btn-sm btn-space btn-danger"><i class="fas fa-trash-alt me-2"></i>{lang('Admin.button_delete')}</button>
                             <button type="button" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</button>
                         </div>
@@ -27,7 +28,7 @@
                     <div class="text-primary">{lang('Admin.error_permission_super_admin')}</div>
                     <ul class="list-unstyled bullet-check font-14">
                         {foreach $list_undelete as $item}
-                            <li class="text-muted">#{$item.id}: {$item.username} ({full_name($item.first_name, $item.last_name)})</li>
+                            <li class="text-muted">#{$item.user_id}: {$item.username} ({full_name($item.first_name, $item.last_name)})</li>
                         {/foreach}
                     </ul>
                     {if empty($list_delete)}

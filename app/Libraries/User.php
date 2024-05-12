@@ -51,12 +51,12 @@ class User
 			
 			$user_info = $this->getUserInfo();
 			if (!empty($user_info)) {
-                // $update = [
-                //     'language_id' => get_lang_id(),
-                //     'ip'          => service('request')->getIPAddress(),
-                // ];
+                $update = [
+                    'language_id' => get_lang_id(),
+                    'ip'          => service('request')->getIPAddress(),
+                ];
         
-                // $user_model->update($customer_info['customer_id'], $update);
+                $user_model->update($user_info['user_id'], $update);
 
 			} else {
 				$this->logout();
@@ -108,10 +108,10 @@ class User
         return true;
     }
 
-    public function loginRememberedCustomer(): bool {
+    public function loginRememberedUser(): bool {
         $user_model = new \App\Modules\Users\Models\UserModel();
         
-        if (!$user_model->loginRememberedCustomer()) {
+        if (!$user_model->loginRememberedUser()) {
             $this->_errors = $user_model->getErrors();
             return false;
         }

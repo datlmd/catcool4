@@ -8,6 +8,7 @@ use App\Modules\Users\Models\UserGroupModel;
 use App\Modules\Users\Models\UserModel;
 use App\Modules\Users\Models\UserPermissionModel;
 use App\Modules\Users\Models\UserTokenModel;
+use Exception;
 
 class Manage extends AdminController
 {
@@ -146,6 +147,7 @@ class Manage extends AdminController
             }
 
             $group_ids = $this->request->getPost('groups');
+            
             if (!empty($group_ids)) {
                 $list_group = $this->group_model->find($group_ids);
                 if (!empty($list_group)) {
@@ -241,12 +243,19 @@ class Manage extends AdminController
     private function _validateForm($id = null)
     {
         $this->validator->setRule('first_name', lang('Admin.text_full_name'), 'required');
-        $this->validator->setRule('email', lang('Admin.text_email'), 'required');
 
         if (empty($id)) {
+            $this->validator->setRule('email', lang('Admin.text_email'), 'required|valid_email|is_unique[user.email]');
             $this->validator->setRule('username', lang('Admin.text_username'), 'required|is_unique[user.username]');
             $this->validator->setRule('password', lang('Admin.text_password'), 'required|min_length[' . config_item('minPasswordLength') . ']|matches[password_confirm]');
             $this->validator->setRule('password_confirm', lang('Admin.text_confirm_password'), 'required');
+        } else {
+            $this->validator->setRule('email', lang('Admin.text_email'), "required|valid_email|is_unique[user.email,user_id,$id]");
+            $this->validator->setRule('username', lang('Admin.text_username'), "required|is_unique[user.username,user_id,$id]");
+        }
+
+        if (!empty($this->request->getPost('phone'))) {
+            $this->validator->setRule('phone', lang('Admin.text_phone'), "required|min_length[3]|max_length[32]|is_unique[user.phone,user_id,$id]");
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
@@ -313,7 +322,7 @@ class Manage extends AdminController
                     mkdir(get_upload_path() . self::FOLDER_UPLOAD, 0777, true);
                 }
 
-                $avatar_name = self::FOLDER_UPLOAD . $item_edit['username'] . '_ad.jpg';
+                $avatar_name = self::FOLDER_UPLOAD . $item_edit['username'] . '.jpg';
 
                 $width  = !empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH;
                 $height = !empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT;
@@ -337,7 +346,7 @@ class Manage extends AdminController
                 'dob'        => $dob,
                 'gender'     => $this->request->getPost('gender'),
                 'image'      => $avatar,
-                'ip'    => $this->request->getIPAddress(),
+                'ip'         => $this->request->getIPAddress(),
             ];
 
             if ($id != $this->user->getId()) {
@@ -357,13 +366,14 @@ class Manage extends AdminController
             $group_ids = $this->request->getPost('groups');
             if (!empty($group_ids)) {
                 $list_group = $this->group_model->find($group_ids);
+                
                 if (!empty($list_group)) {
                     foreach ($list_group as $group) {
                         $this->user_group_model->insert(['user_id' => $id, 'group_id' => $group['id']]);
                     }
                 }
             }
-
+            
             $this->user_permission_model->delete(['user_id' => $id]);
 
             /*
@@ -410,13 +420,13 @@ class Manage extends AdminController
 
         if (!empty($this->request->getPost()) && $id == $this->request->getPost('id') && $this->validator->withRequest($this->request)->run()) {
 
-            if ($this->auth_model->checkPassword($this->request->getPost('password_old'), $data_form['password']) === FALSE) {
+            if ($this->auth_model->checkPassword(html_entity_decode($this->request->getPost('password_old'), ENT_QUOTES, 'UTF-8'), html_entity_decode($data_form['password'], ENT_QUOTES, 'UTF-8')) === FALSE) {
                 set_alert(lang('UserAdmin.error_password_old'), ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
 
             $edit_data = [
-                'password' => $this->auth_model->hashPassword($this->request->getPost('password_new')),
+                'password' => $this->auth_model->hashPassword(html_entity_decode($this->request->getPost('password_new'), ENT_QUOTES, 'UTF-8')),
                 'mtime'    => get_date(),
             ];
             if (!$this->model->update($id, $edit_data)) {
@@ -568,7 +578,7 @@ class Manage extends AdminController
 
         $data['list_delete']   = $list_delete;
         $data['list_undelete'] = $list_undelete;
-        $data['ids']           = $delete_ids;
+        $data['ids']           = $this->request->getPost('delete_ids');
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }
@@ -617,19 +627,22 @@ class Manage extends AdminController
         $redirect = empty($this->request->getGetPost('redirect')) ? site_url(CATCOOL_DASHBOARD) : $this->request->getGetPost('redirect');
         $redirect = urldecode($redirect);
 
-        if (!empty(session('user_info.user_id'))) {
+        if ($this->user->isLogged()) {
             return redirect()->to($redirect);
         } else {
             //neu da logout thi check auto login
-            $recheck = $this->model->loginRememberedUser();
-            if ($recheck) {
+            if ($this->user->loginRememberedUser()) {
                 return redirect()->to($redirect);
             }
         }
 
-        $data['username'] = $this->request->getPost('username');
-        $data['remember'] = $this->request->getPost('remember');
-        $data['redirect'] = $redirect;
+        session()->set('login_token', substr(bin2hex(openssl_random_pseudo_bytes(26)), 0, 26));
+
+        $data = [
+            'redirect' => $redirect,
+            'login' => site_url('users/manage/api_login') . "?login_token=" . session('login_token'),
+        ];
+
 
 //        if (!empty($this->validator->getErrors())) {
 //            $data['errors'] = $this->validator->getErrors();
@@ -647,7 +660,16 @@ class Manage extends AdminController
         $redirect = empty($this->request->getPost('redirect')) ? site_url(CATCOOL_DASHBOARD) : $this->request->getPost('redirect');
         $redirect = urldecode($redirect);
 
-        if (!empty(session('user_info.user_id'))) {
+        if (empty($this->request->getGet('login_token')) || empty(session('login_token')) || $this->request->getGet('login_token') != session('login_token')) {
+		
+            set_alert(lang('User.text_login_unsuccessful'), ALERT_ERROR);
+            json_output([
+                'error66' => lang('User.text_login_unsuccessful'),
+                'redirect' => site_url('users/manage/login') . "?redirect=$redirect" 
+            ]);
+		}
+
+        if ($this->user->isLogged()) {
             json_output([
                 'redirect' => $redirect
             ]);
@@ -677,15 +699,20 @@ class Manage extends AdminController
         }
 
         $remember = (bool)$this->request->getPost('remember');
-        if (!$this->model->login($this->request->getPost('username'), $this->request->getPost('password'), $remember, true)) {
+        if (!$this->user->login($this->request->getPost('username'), html_entity_decode($this->request->getPost('password'), ENT_QUOTES, 'UTF-8'), $remember, true)) {
 
-            $errors = (empty($this->model->getErrors())) ? lang('User.text_login_unsuccessful') : $this->model->getErrors();
+            $errors = (empty($this->user->getErrors())) ? lang('User.text_login_unsuccessful') : $this->user->getErrors();
 
             json_output([
                 'error' => $errors,
                 'alert' => print_alert($errors, 'danger')
             ]);
         }
+
+        session()->remove('login_token');
+        
+        $user_ip_model = new \App\Modules\Users\Models\UserIpModel();
+        $user_ip_model->addLogin($this->user->getId());
 
         set_alert(lang('User.text_login_successful'), ALERT_SUCCESS, ALERT_POPUP);
 
@@ -705,7 +732,8 @@ class Manage extends AdminController
 
         // redirect them to the login page
         set_alert(lang('Admin.text_logout_successful'), ALERT_SUCCESS, ALERT_POPUP);
-        return redirect()->to(site_url(self::MANAGE_URL . '/login'));
+
+        return redirect()->to(site_url(self::MANAGE_URL . '/login?redirect=' . urlencode(previous_url())));
     }
 
     public function forgotPassword()
@@ -813,5 +841,89 @@ class Manage extends AdminController
         add_meta(['title' => lang('UserAdmin.text_reset_password_heading')], $this->themes);
 
         $this->themes->setLayout('empty')::load('reset_password', $data);
+    }
+
+    public function userIpList($user_id)
+    {
+        if (!$this->request->isAJAX()) {
+            page_not_found();
+        }
+
+        $limit = 10;
+   
+        $pager = service('pager');
+        $pager->setPath('users/manage/user_ip_list/' . $user_id, 'user_ip');
+
+        $user_ip_model = new \App\Modules\Users\Models\UserIpModel();
+        
+        $data['user_ips'] = $user_ip_model->where(['user_id' => $user_id])->orderBy('ctime', 'DESC')->paginate($limit, 'user_ip');
+        $data['user_ip_pager'] = $user_ip_model->pager;
+        
+        return $this->themes::view('ip_list', $data);
+    }
+
+    public function tokenList($user_id)
+    {
+        if (!$this->request->isAJAX()) {
+            page_not_found();
+        }
+
+        $limit = 10;
+   
+        $pager = service('pager');
+        $pager->setPath('users/manage/token_list/' . $user_id, 'token');
+
+        $user_token_model = new UserTokenModel();
+        
+        $data['user_tokens'] = $user_token_model->where(['user_id' => $user_id])->orderBy('ctime', 'DESC')->paginate($limit, 'token');
+        $data['user_token_pager'] = $user_token_model->pager;
+
+        
+        return $this->themes::view('token_list', $data);
+    }
+
+    public function deleteToken()
+    {
+        if (!$this->request->isAJAX()) {
+            page_not_found();
+        }
+
+        $token = csrf_hash();
+
+        if (empty($this->request->getPost())) {
+            json_output([
+                'token' => $token, 
+                'error' => lang('Admin.error_json'),
+                'alert' => print_alert(lang('Admin.error_json')),
+            ]);
+        }
+
+        $user_token_model = new UserTokenModel();
+        $user_id = $this->request->getPost('user_id');
+        $remember_selector = $this->request->getPost('remember_selector');
+        
+        $user_tokens = $user_token_model->where(['user_id' => $user_id, 'remember_selector' => $remember_selector])->first();
+        if (empty($user_tokens)) {
+            json_output([
+                'token' => $token, 
+                'error' => lang('Admin.error_empty'),
+                'alert' => print_alert(lang('Admin.error_empty')),
+            ]);
+        }
+
+        try {
+            $user_token_model->where(['user_id' => $user_id, 'remember_selector' => $remember_selector])->delete();
+        } catch (Exception $e) {
+            json_output([
+                'token' => $token, 
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+        json_output([
+            'token' => $token, 
+            'success' => lang('Admin.text_delete_success'),
+            'alert' => print_alert(lang('Admin.text_delete_success')),
+        ]);
     }
 }

@@ -18,6 +18,9 @@ $routes->group('users', ['namespace' => 'App\Modules\Users\Controllers'], functi
     $subroutes->add('manage/change_password/(:num)', 'Manage::changePassword/$1');
     $subroutes->add('manage/forgot_password', 'Manage::forgotPassword');
     $subroutes->add('manage/reset_password/(:any)', 'Manage::resetPassword/$1');
+    $subroutes->get('manage/user_ip_list/(:num)', 'Manage::userIpList/$1');
+    $subroutes->get('manage/token_list/(:num)', 'Manage::tokenList/$1');
+    $subroutes->post('manage/delete_token', 'Manage::deleteToken');
 
     $subroutes->add('groups_manage', 'GroupsManage::index');
     $subroutes->add('groups_manage/add', 'GroupsManage::add');

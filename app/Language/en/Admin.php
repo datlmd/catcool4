@@ -211,6 +211,7 @@ return [
 	"text_dob" => "DOB",
 	"text_edit" => "Edit",
 	"text_edit_success" => "Updated successfully!",
+	"text_email" => "E-mail",
 	"text_empty_trash" => "Empty Trash",
 	"text_enabled" => "Enabled",
 	"text_first_name" => "First name",

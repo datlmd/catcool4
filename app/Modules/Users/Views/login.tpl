@@ -16,18 +16,18 @@
                 {if !empty(print_flash_alert())}
                     {print_flash_alert()}
                 {/if}
-                {form_open(site_url("users/manage/api_login"), ["id" => "login_form", "method" => "post", "data-cc-toggle" => "ajax", "data-alert" => "#login_alert"])}
+                {form_open($login, ["id" => "login_form", "method" => "post", "data-cc-toggle" => "ajax", "data-alert" => "#login_alert"])}
                     <div id="login_alert"></div>
 
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="input_username" name="username" value="{old('username', $username)}" placeholder="{lang('Admin.text_username')}" autocomplete="off">
-                        <label for="username">{lang('Admin.text_username')}</label>
+                        <label for="input_username">{lang('Admin.text_username')}</label>
                         <div class="invalid-feedback" id="error_username"></div>
                     </div>
 
                     <div class="form-floating mb-3">
                         <input type="password" class="form-control" id="input_password" name="password" value="" placeholder="{lang('Admin.text_password')}">
-                        <label for="password">{lang('Admin.text_password')}</label>
+                        <label for="input_password">{lang('Admin.text_password')}</label>
                         <div class="invalid-feedback" id="error_password"></div>
                     </div>
 

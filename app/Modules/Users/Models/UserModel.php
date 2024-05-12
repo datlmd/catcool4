@@ -166,10 +166,6 @@ class UserModel extends MyModel
                 $this->auth_model->setCookie($token, true);
 
                 $user_token_model = new UserTokenModel();
-
-                //delete old token
-                $user_token_model->where(['user_id' => $user_info['user_id']])->delete();
-
                 $user_token_model->addToken($user_info['user_id'], $token);
             }
         }

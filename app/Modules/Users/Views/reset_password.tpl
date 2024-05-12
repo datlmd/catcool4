@@ -26,7 +26,7 @@
 					{lang('UserAdmin.text_reset_password_confirm')}
 					<input type="password" name="new_password_confirm" value='{set_value("new_password_confirm")}' id="new_password_confirm" class="form-control">
 				</div>
-				{form_hidden('id', $user.id)}
+				{form_hidden('user_id', $user.user_id)}
 
 				<button type="submit" class="btn btn-primary btn-lg btn-block mt-2 w-100">{lang('UserAdmin.button_reset_password')}</button>
 			{form_close()}

@@ -2,7 +2,7 @@
     {form_hidden('manage_url', site_url($manage_url))}
     <div class="container-fluid  dashboard-content">
         {form_open(uri_string(), ['id' => 'user_validationform'])}
-            {form_hidden('id', $item_edit.id)}
+            {form_hidden('id', $item_edit.user_id)}
             <div class="row">
                 <div class="col-sm-7 col-12">
                     {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('UserAdmin.text_permission_select')}
@@ -25,7 +25,7 @@
                     <div class="card">
                         <h5 class="card-header"><i class="fas fa-lock-open me-2"></i>{lang('UserAdmin.text_permission_select')}</h5>
                         <div class="card-body">
-                            <h3 class="text-primary">ID#{$item_edit.id} - {$item_edit.username} ({full_name($item_edit.first_name, $item_edit.last_name)})</h3>
+                            <h3 class="text-primary">ID#{$item_edit.user_id} - {$item_edit.username} ({full_name($item_edit.first_name, $item_edit.last_name)})</h3>
                             {if !empty($permissions)}
                                 <div class="border-bottom pb-2">
                                     <div class="form-check form-check-inline">

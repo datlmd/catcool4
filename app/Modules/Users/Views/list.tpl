@@ -25,7 +25,7 @@
 							</div>
 							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 								<label class="form-label">{lang('Admin.filter_id')}</label>
-								{form_input('id', set_value('id', $request->getGet('id'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
+								{form_input('user_id', set_value('user_id', $request->getGet('user_id'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.filter_id')])}
 							</div>
 							<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 								<label class="form-label">{lang('Admin.text_limit')}</label>
@@ -56,9 +56,9 @@
 								<thead>
 									<tr class="text-center">
 										<th width="50">
-											<a href="{site_url($manage_url)}?sort=id&order={$order}{$url}" class="text-dark">
+											<a href="{site_url($manage_url)}?sort=user_id&order={$order}{$url}" class="text-dark">
 												{lang('Admin.column_id')}
-												{if $sort eq 'id'}
+												{if $sort eq 'user_id'}
 													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 												{/if}
 											</a>
@@ -94,8 +94,8 @@
 								</thead>
 								<tbody>
 								{foreach $list as $item}
-									<tr id="item_id_{$item.id}">
-										<td class="text-center">{$item.id}</td>
+									<tr id="item_id_{$item.user_id}">
+										<td class="text-center">{$item.user_id}</td>
 										<td>
 											{if !empty($item.image)}
 												<a href="{image_url($item.image)}" data-lightbox="users"><img src="{image_url($item.image)}" class="avatar"></a>
@@ -105,25 +105,25 @@
 											{else}
 												<span class="badge-dot border border-dark mx-1"></span>
 											{/if}
-											{anchor("$manage_url/edit/`$item.id`", htmlspecialchars($item.username, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}
+											{anchor("$manage_url/edit/`$item.user_id`", htmlspecialchars($item.username, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}
 										</td>
 										<td class="text-start">{full_name($item.first_name, $item.last_name)}</td>
 										<td>{htmlspecialchars($item.email, ENT_QUOTES,'UTF-8')}</td>
 										<td class="text-end">{htmlspecialchars($item.phone, ENT_QUOTES,'UTF-8')}</td>
 										<td>
 											<div class="switch-button switch-button-xs catcool-center">
-												{form_checkbox("published_`$item.id`", $item.active, $item.active, ['id' => 'published_'|cat:$item.id, 'data-id' => $item.id, 'data-published' => $item.active, 'class' => 'change_publish'])}
-												<span><label for="published_{$item.id}"></label></span>
+												{form_checkbox("published_`$item.user_id`", $item.active, $item.active, ['id' => 'published_'|cat:$item.user_id, 'data-id' => $item.user_id, 'data-published' => $item.active, 'class' => 'change_publish'])}
+												<span><label for="published_{$item.user_id}"></label></span>
 											</div>
 										</td>
 										<td class="text-center">
 											<div class="btn-group ms-auto">
-												<a href="{$manage_url}/edit/{$item.id}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
-												<a href="{$manage_url}/change_password/{$item.id}" class="btn btn-sm btn-light text-primary" data-bs-toggle="tooltip" title="{lang('UserAdmin.text_change_password')}"><i class="fas fa-key"></i></a>
+												<a href="{$manage_url}/edit/{$item.user_id}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="{lang('Admin.button_edit')}"><i class="fas fa-edit"></i></a>
+												<a href="{$manage_url}/change_password/{$item.user_id}" class="btn btn-sm btn-light text-primary" data-bs-toggle="tooltip" title="{lang('UserAdmin.text_change_password')}"><i class="fas fa-key"></i></a>
 
-												<a href="{$manage_url}/permission/{$item.id}" class="btn btn-sm btn-light text-dark" data-bs-toggle="tooltip" title="{lang('UserAdmin.text_permission_select')}"><i class="fas fa-lock-open"></i></a>
+												<a href="{$manage_url}/permission/{$item.user_id}" class="btn btn-sm btn-light text-dark" data-bs-toggle="tooltip" title="{lang('UserAdmin.text_permission_select')}"><i class="fas fa-lock-open"></i></a>
 
-												<button type="button" data-id="{$item.id}" class="btn btn-sm btn-light btn_delete_single text-danger" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
+												<button type="button" data-id="{$item.user_id}" class="btn btn-sm btn-light btn_delete_single text-danger" data-bs-toggle="tooltip" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></button>
 											</div>
 										</td>
 									</tr>

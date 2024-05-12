@@ -211,6 +211,7 @@ return [
 	"text_dob" => "Ngày sinh",
 	"text_edit" => "Cập nhật",
 	"text_edit_success" => "Đã cập nhật thành công!",
+	"text_email" => "E-mail",
 	"text_empty_trash" => "Xóa tất cả",
 	"text_enabled" => "Bật",
 	"text_first_name" => "Tên",

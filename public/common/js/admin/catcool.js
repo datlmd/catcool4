@@ -593,7 +593,33 @@ var Catcool = {
         }
         $($(obj).data("target")).html($(obj).val());
     },
-    submitFormAjax: function (e) {
+};
+
+$(document).on('submit', 'form', function (e) {
+
+    var element = this;
+
+    if (e.originalEvent !== undefined && e.originalEvent.submitter !== undefined) {
+        var button = e.originalEvent.submitter;
+    } else {
+        var button = '';
+    }
+
+    var status = false;
+
+    var ajax = $(element).attr('data-cc-toggle');
+
+    if (ajax == 'ajax') {
+        status = true;
+    }
+
+    var ajax = $(button).attr('data-cc-toggle');
+
+    if (ajax == 'ajax') {
+        status = true;
+    }
+
+    if (status) {
 
         if (is_processing) {
             return false;
@@ -602,17 +628,10 @@ var Catcool = {
 
         e.preventDefault();
 
-        var element = this;
-
+        // Form attributes
         var form = e.target;
 
         var action = $(form).attr('action');
-
-        if (e.originalEvent !== undefined && e.originalEvent.submitter !== undefined) {
-            var button = e.originalEvent.submitter;
-        } else {
-            var button = '';
-        }
 
         var method = $(form).attr('method');
 
@@ -620,10 +639,33 @@ var Catcool = {
             method = 'post';
         }
 
-        var enctype = $(element).attr('enctype');
+        var enctype = $(form).attr('enctype');
 
         if (enctype === undefined) {
             enctype = 'application/x-www-form-urlencoded';
+        }
+
+        // Form button overrides
+        var formaction = $(button).attr('formaction');
+
+        if (formaction !== undefined) {
+            action = formaction;
+        }
+
+        var formmethod = $(button).attr('formmethod');
+
+        if (formmethod !== undefined) {
+            method = formmethod;
+        }
+
+        var formenctype = $(button).attr('formenctype');
+
+        if (formenctype !== undefined) {
+            enctype = formenctype;
+        }
+
+        if (button) {
+            var formaction = $(button).attr('data-type');
         }
 
         // https://github.com/opencart/opencart/issues/9690
@@ -632,6 +674,15 @@ var Catcool = {
         //         CKEDITOR.instances[instance].updateElement();
         //     }
         // }
+
+        console.log(e);
+        console.log('element ' + element);
+        console.log('action ' + action);
+        console.log('button ' + button);
+        console.log('formaction ' + formaction);
+        console.log('method ' + method);
+        console.log('enctype ' + enctype);
+        console.log($(element).serialize());
 
         $('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
 
@@ -725,10 +776,9 @@ var Catcool = {
                 );
             }
         });
-
-        return false;
-    },
-};
+    }
+    
+});
 
 /* action - event */
 $(function () {
@@ -741,8 +791,6 @@ $(function () {
     //time out 4s
     setTimeout(function(){
         $('#page_loading').fadeOut();
-
-
     }, 4000);
 
     if (!$(".nav-left-sidebar").length) {
@@ -770,10 +818,6 @@ $(function () {
         e.preventDefault();
         Catcool.showMenuFileManager();
         return false;
-    });
-
-    $(document).on('submit', 'form[data-cc-toggle=\'ajax\']', function (e) {
-        Catcool.submitFormAjax(e);
     });
 
     $(document).on('hidden.bs.modal, hide.bs.modal','#modal_image', function () {
@@ -842,13 +886,13 @@ $(function () {
     }
 
     // Tooltip
-    var oc_tooltip = function () {
+    var cc_tooltip = function () {
         // Apply to all on current page
         tooltip = bootstrap.Tooltip.getOrCreateInstance(this);
         tooltip.show();
     }
 
-    $(document).on('mouseenter', '[data-bs-toggle=\'tooltip\']', oc_tooltip);
+    $(document).on('mouseenter', '[data-bs-toggle=\'tooltip\']', cc_tooltip);
 
     $(document).on('click', 'button', function () {
         $('.tooltip').remove();

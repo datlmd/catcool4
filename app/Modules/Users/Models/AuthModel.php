@@ -32,7 +32,10 @@ class AuthModel extends MyAuthModel
             $session_data['super_admin'] = TRUE;
         }
 
-        session()->set(['user_info' => $session_data]);
+        session()->set([
+            'user_info' => $session_data,
+            'user_token' => $this->token(),
+        ]);
 
         return true;
     }

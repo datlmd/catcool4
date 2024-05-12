@@ -40,7 +40,6 @@ class AdminController extends UserController
         $this->trackingLogAccess(true);
 
         $this->user = service('user');
-        $this->smarty->assign('user', $this->user);
 
         $error_token = session()->getFlashdata('error_token');
         if (!empty($error_token)) {
