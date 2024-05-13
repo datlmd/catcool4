@@ -11,6 +11,8 @@ return [
 	"activation_email_unsuccessful" => "Unable to Send Activation Email",
 	"deactivate_successful" => "Account De-Activated",
 	"deactivate_unsuccessful" => "Unable to De-Activate Account",
+	"error_attempts" => "Your account has exceeded allowed number of login attempts. Please try again in {0} minutes.",
+	"error_attempt_time" => "Please enter valid login details.<br/>{0} attempts remaining.",
 	"error_generate_code" => "Code initialization failed. Please try again",
 	"error_login_account_not_exist" => "The account incorrect. Please try again!",
 	"error_login_password_incorrect" => "The password incorrect. Please try again!",

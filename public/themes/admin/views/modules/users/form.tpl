@@ -36,8 +36,8 @@
                             </label>
                             <div class="col-12 col-sm-8 col-lg-7">
                                 <input type="text" name="username" value='{old("username", $edit_data.username)}'
-                                    id="username" class="form-control {if $validator->hasError('username')}is-invalid{/if}">
-                                <div class="invalid-feedback">{$validator->getError("username")}</div>
+                                    id="username" class="form-control {if validation_show_error('username')}is-invalid{/if}">
+                                <div class="invalid-feedback">{validation_show_error("username")}</div>
                             </div>
                         </div>
                         {if empty($edit_data.user_id)}
@@ -47,8 +47,8 @@
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
                                     <input type="password" name="password" value="" id="password"
-                                        class="form-control {if $validator->hasError('password')}is-invalid{/if}">
-                                    <div class="invalid-feedback">{$validator->getError("password")}</div>
+                                        class="form-control {if validation_show_error('password')}is-invalid{/if}">
+                                    <div class="invalid-feedback">{validation_show_error("password")}</div>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -57,8 +57,8 @@
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
                                     <input type="password" name="password_confirm" value="" id="password_confirm"
-                                        class="form-control {if $validator->hasError('password_confirm')}is-invalid{/if}">
-                                    <div class="invalid-feedback">{$validator->getError("password_confirm")}</div>
+                                        class="form-control {if validation_show_error('password_confirm')}is-invalid{/if}">
+                                    <div class="invalid-feedback">{validation_show_error("password_confirm")}</div>
                                 </div>
                             </div>
                         {/if}
@@ -69,9 +69,9 @@
                             <div class="col-12 col-sm-8 col-lg-7">
                                 <input type="text" name="first_name" value='{old("first_name", $edit_data.first_name)}'
                                     id="first_name"
-                                    class="form-control {if $validator->hasError('first_name')}is-invalid{/if}">
+                                    class="form-control {if validation_show_error('first_name')}is-invalid{/if}">
                                 <small>{lang('Admin.help_first_name')}</small>
-                                <div class="invalid-feedback">{$validator->getError("first_name")}</div>
+                                <div class="invalid-feedback">{validation_show_error("first_name")}</div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -81,9 +81,9 @@
                             <div class="col-12 col-sm-8 col-lg-7">
                                 <input type="text" name="last_name" value='{old("last_name", $edit_data.last_name)}'
                                     id="last_name"
-                                    class="form-control {if $validator->hasError('last_name')}is-invalid{/if}">
+                                    class="form-control {if validation_show_error('last_name')}is-invalid{/if}">
                                 <small>{lang('Admin.help_last_name')}</small>
-                                <div class="invalid-feedback">{$validator->getError("last_name")}</div>
+                                <div class="invalid-feedback">{validation_show_error("last_name")}</div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -92,8 +92,8 @@
                             </label>
                             <div class="col-12 col-sm-8 col-lg-7">
                                 <input type="text" name="email" value='{old("email", $edit_data.email)}' id="email"
-                                    class="form-control {if $validator->hasError('email')}is-invalid{/if}">
-                                <div class="invalid-feedback">{$validator->getError("email")}</div>
+                                    class="form-control {if validation_show_error('email')}is-invalid{/if}">
+                                <div class="invalid-feedback">{validation_show_error("email")}</div>
                             </div>
                         </div>
 
@@ -317,33 +317,36 @@
         </div>
         {form_close()}
 
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <h5 class="card-header">{lang('UserAdmin.text_user_token')}
-                    </h5>
-                    <div class="card-body">
-                        <div id="token_alert"></div>
-                        <div id="user_token_list"></div>
+        {if !empty($edit_data.user_id)}
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <h5 class="card-header">{lang('UserAdmin.text_user_token')}
+                        </h5>
+                        <div class="card-body">
+                            <div id="token_alert"></div>
+                            <div id="user_token_list"></div>
 
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <h5 class="card-header">{lang('UserAdmin.text_user_login_history')}
-                    </h5>
-                    <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <h5 class="card-header">{lang('UserAdmin.text_user_login_history')}
+                        </h5>
+                        <div class="card-body">
 
-                        <div id="user_ip_list"></div>
+                            <div id="user_ip_list"></div>
 
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {/if}
+
 
     </div>
 {/strip}

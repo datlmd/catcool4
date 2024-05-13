@@ -4,7 +4,9 @@ use App\Controllers\AdminController;
 use App\Modules\Permissions\Models\PermissionModel;
 use App\Modules\Users\Models\AuthModel;
 use App\Modules\Users\Models\GroupModel;
+use App\Modules\Users\Models\LoginAttemptModel;
 use App\Modules\Users\Models\UserGroupModel;
+use App\Modules\Users\Models\UserIpModel;
 use App\Modules\Users\Models\UserModel;
 use App\Modules\Users\Models\UserPermissionModel;
 use App\Modules\Users\Models\UserTokenModel;
@@ -88,7 +90,7 @@ class Manage extends AdminController
 
         if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
-                set_alert($this->errors, ALERT_ERROR);
+                set_alert([ALERT_ERROR => $this->errors]);
                 return redirect()->back()->withInput();
             }
             
@@ -133,7 +135,7 @@ class Manage extends AdminController
                 'gender'     => $this->request->getPost('gender'),
                 'image'      => $avatar,
                 'active'     => !empty($this->request->getPost('active')) ? STATUS_ON : STATUS_OFF,
-                'ip'    => $this->request->getIPAddress(),
+                'ip'         => $this->request->getIPAddress(),
             ];
 
             if ($this->user->getSuperAdmin()) {
@@ -245,12 +247,26 @@ class Manage extends AdminController
         $this->validator->setRule('first_name', lang('Admin.text_full_name'), 'required');
 
         if (empty($id)) {
-            $this->validator->setRule('email', lang('Admin.text_email'), 'required|valid_email|is_unique[user.email]');
+            $this->validator->setRule(
+                'email', 
+                lang('Admin.text_email'),
+                'required|valid_email|is_unique[user.email]',
+                [
+                    'is_unique' => lang('User.account_creation_duplicate_email')
+                ]
+            );
             $this->validator->setRule('username', lang('Admin.text_username'), 'required|is_unique[user.username]');
             $this->validator->setRule('password', lang('Admin.text_password'), 'required|min_length[' . config_item('minPasswordLength') . ']|matches[password_confirm]');
             $this->validator->setRule('password_confirm', lang('Admin.text_confirm_password'), 'required');
         } else {
-            $this->validator->setRule('email', lang('Admin.text_email'), "required|valid_email|is_unique[user.email,user_id,$id]");
+            $this->validator->setRule(
+                'email',
+                lang('Admin.text_email'),
+                "required|valid_email|is_unique[user.email,user_id,$id]",
+                [
+                    'is_unique' => lang('User.account_creation_duplicate_email')
+                ]
+            );
             $this->validator->setRule('username', lang('Admin.text_username'), "required|is_unique[user.username,user_id,$id]");
         }
 
@@ -263,17 +279,6 @@ class Manage extends AdminController
 
         if (!empty($this->request->getPost('avatar'))) {
             old('avatar', $this->request->getPost('avatar'));
-        }
-
-        if (!empty($this->request->getPost('email'))) {
-            if (!empty($this->request->getPost('user_id'))) {
-                $email = $this->model->where(['email' => $this->request->getPost('email'), 'user_id !=' => $this->request->getPost('user_id')])->findAll();
-            } else {
-                $email = $this->model->where('email', $this->request->getPost('email'))->findAll();
-            }
-            if (!empty($email)) {
-                $this->errors['email'] = lang('User.account_creation_duplicate_email');
-            }
         }
 
         if (!empty($this->errors)) {
@@ -297,7 +302,7 @@ class Manage extends AdminController
 
         if (!empty($this->request->getPost()) && $id == $this->request->getPost('user_id')) {
             if (!$this->_validateForm($id)) {
-                set_alert($this->errors, ALERT_ERROR);
+                set_alert([ALERT_ERROR => $this->errors]);
                 return redirect()->back()->withInput();
             }
 
@@ -535,11 +540,21 @@ class Manage extends AdminController
             }
 
             try {
+                $user_token_model = new UserTokenModel();
+                $user_login_attempt_model = new LoginAttemptModel();
+                $user_ip_model = new UserIpModel();
+
                 foreach($list_delete as $value) {
                     if ((!empty($value['super_admin']) && empty($this->user->getSuperAdmin())) || $value['user_id'] == $this->user->getId()) {
                         continue;
                     }
                     $this->model->delete($value['user_id']);
+
+                    $this->user_permission_model->where(['user_id' => $value['user_id']])->delete();
+                    $this->user_group_model->where(['user_id' => $value['user_id']])->delete();
+                    $user_token_model->where(['user_id' => $value['user_id']])->delete();
+                    $user_login_attempt_model->where(['user_id' => $value['user_id']])->delete();
+                    $user_ip_model->where(['user_id' => $value['user_id']])->delete();
                 }
 
                 json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);

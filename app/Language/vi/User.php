@@ -11,6 +11,8 @@ return [
 	"activation_email_unsuccessful" => "Không thể gửi mail kích hoạt vào lúc này",
 	"deactivate_successful" => "Đã khoá tài khoản thành công",
 	"deactivate_unsuccessful" => "Không thể huỷ kích hoạt tài khoản",
+	"error_attempts" => "Tài khoản của bạn đã vượt quá số lần đăng nhập cho phép. Vui lòng thử lại sau {0} phút.",
+	"error_attempt_time" => "Vui lòng nhập thông tin đăng nhập chính xác. <br/>Bạn còn {0} lần nhập. ",
 	"error_generate_code" => "Khởi tạo mã thất bại. Vui lòng thử lại",
 	"error_login_account_not_exist" => "Tài khoản không tồn tại. Vui lòng thử lại!",
 	"error_login_password_incorrect" => "Mật khẩu không đúng. Vui lòng thử lại!",
