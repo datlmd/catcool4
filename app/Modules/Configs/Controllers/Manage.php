@@ -133,15 +133,28 @@ class Manage extends AdminController
                 case 'tab_image':
                     $data_settings['file_ext_allowed']  = preg_replace('/\s+/', '|', trim($_POST['file_ext_allowed']));
                     $data_settings['file_mime_allowed'] = preg_replace('/\s+/', '|', trim($_POST['file_mime_allowed']));
+                    $data_settings['file_encrypt_name'] = !empty($this->request->getPost('file_encrypt_name')) ? STATUS_ON : STATUS_OFF;
+                    $data_settings['enable_resize_image'] = !empty($this->request->getPost('enable_resize_image')) ? STATUS_ON : STATUS_OFF;
+                    $data_settings['image_watermar_enable'] = !empty($this->request->getPost('image_watermar_enable')) ? STATUS_ON : STATUS_OFF;
+                    $data_settings['image_watermark_is_shadow'] = !empty($this->request->getPost('image_watermark_is_shadow')) ? STATUS_ON : STATUS_OFF;
                     break;
                 case 'tab_server':
                     $data_settings['robots'] = preg_replace('/\s+/', '|', trim($_POST['robots']));
+                    $data_settings['maintenance'] = !empty($this->request->getPost('maintenance')) ? STATUS_ON : STATUS_OFF;
+                    $data_settings['seo_url'] = !empty($this->request->getPost('seo_url')) ? STATUS_ON : STATUS_OFF;
+                    $data_settings['force_global_secure_requests'] = !empty($this->request->getPost('force_global_secure_requests')) ? STATUS_ON : STATUS_OFF;
                     break;
                 case 'tab_store':
                     $data_settings['store_location'] = implode(',', $this->request->getPost('store_location[]'));
                     break;
-                case 'tab_page':
                 case 'tab_local':
+                    $data_settings['currency_auto'] = !empty($this->request->getPost('currency_auto')) ? STATUS_ON : STATUS_OFF;
+                    break;
+                case 'tab_page':
+                    $data_settings['enable_scroll_menu_admin'] = !empty($this->request->getPost('enable_scroll_menu_admin')) ? STATUS_ON : STATUS_OFF;
+                    $data_settings['enable_icon_menu_admin'] = !empty($this->request->getPost('enable_icon_menu_admin')) ? STATUS_ON : STATUS_OFF;
+                    $data_settings['enable_dark_mode'] = !empty($this->request->getPost('enable_dark_mode')) ? STATUS_ON : STATUS_OFF;
+                    break;
                 default:
                     break;
             }

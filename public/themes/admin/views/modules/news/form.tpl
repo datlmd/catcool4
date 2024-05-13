@@ -210,19 +210,19 @@
                     <div class="card">
                         <h5 class="card-header">{lang('Admin.text_manage_more')}</h5>
                         <div class="card-body">
-                            <div class="form-group">
-                                <label class="form-label">{lang('Admin.text_published')}</label>
-                                <label class="form-check form-check-inline ms-2">
-                                    <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $edit_data.published)|default:1 eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
-                                    <label class="form-check-label" for="published_on">{lang('Admin.text_on')}</label>
-                                </label>
-                                <label class="form-check form-check-inline me-2">
-                                    <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $edit_data.published)|default:1 eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
-                                    <label class="form-check-label" for="published_off">{lang('Admin.text_off')}</label>
-                                </label>
+
+                            <div class="row">
+                                <label class="col-auto fw-bold" for="input_published">{lang('Admin.text_published')}</label>
+                                <div class="col-7 form-control-lg py-0 ">
+                                    <div class="form-check form-switch" style="margin-top: -4px;">
+                                        <input class="form-check-input" type="checkbox" name="published" id="input_published"
+                                            {set_checkbox('published', 1, $edit_data.published|default:false)} value="1">
+                                    </div>
+                                </div>
                             </div>
+
                             <div class="form-group">
-                                <label class="form-label">{lang('Admin.text_is_comment')}</label><br />
+                                <label class="form-label fw-bold">{lang('Admin.text_is_comment')}</label><br />
                                 <label class="form-check ms-2">
                                     <input type="radio" name="is_comment" id="is_comment_off" class="form-check-input" value="{COMMENT_STATUS_OFF}" {set_radio('is_comment', COMMENT_STATUS_OFF, ($edit_data.is_comment == COMMENT_STATUS_OFF))}>
                                     <label class="form-check-label" for="is_comment_off">{lang('Admin.text_comment_status_off')}</label>
@@ -244,7 +244,7 @@
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label class="form-label"><a href="{site_url('news/categories_manage')}" target="_blank" class="link-primary">{lang('Admin.text_category')}</a></label>
 
                                 {$output_html = '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>'}
@@ -255,7 +255,7 @@
                                     {validation_show_error("category_ids")}
                                 </div>
                             </div>
-                            <div class="form-group mt-2">
+                            <div class="form-group mb-3">
                                 <label class="form-label">{lang('NewsAdmin.text_author')}</label>
                                 <input type="text" name="author" value="{old('author', $edit_data.author)}" id="author" class="form-control">
                             </div>
@@ -278,7 +278,7 @@
                                     <input type="text" name="publish_date" id="publish_date" class="form-control datetimepicker-input" {if old('publish_date', $publish_date)}value="{old('publish_date', $publish_date)|date_format:{get_date_format(true)}}"{/if} placeholder="{get_date_format_ajax()}" data-target="#show-date-picker" />
                                     <div class="input-group-text" data-target="#show-date-picker" data-toggle="datetimepicker"><i class="fa fa-calendar-alt"></i></div>
                                 </div>
-                                <label class="form-label mt-2">{lang('NewsAdmin.text_publish_time')}</label>
+                                <label class="form-label mt-3">{lang('NewsAdmin.text_publish_time')}</label>
                                 <div class="input-group date show-time-picker mb-2" id="show-time-picker" data-target-input="nearest" data-date-format="HH:mm">
                                     <input type="text" name="publish_date_hour" id="publish_date_hour" class="form-control datetimepicker-input" {if old('publish_date_hour', $publish_date)}value="{old('publish_date_hour', $publish_date)|date_format:'H:i'}"{/if} placeholder="H:i" data-target="#show-time-picker" />
                                     <div class="input-group-text" data-target="#show-time-picker" data-toggle="datetimepicker"><i class="fa fa-clock"></i></div>
@@ -289,80 +289,71 @@
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <div class="form-group">
-                                <label class="form-label">{lang('NewsAdmin.text_is_ads')}</label><br/>
-                                <label class="form-check form-check-inline">
-                                    <input type="radio" name="is_ads" value="{STATUS_ON}" {if old('is_ads', $edit_data.is_ads)|default:1 eq STATUS_ON}checked="checked"{/if} id="is_ads_on" class="form-check-input">
-                                    <label class="form-check-label" for="is_ads_on">{lang('Admin.text_on')}</label>
-                                </label>
-                                <label class="form-check form-check-inline me-2">
-                                    <input type="radio" name="is_ads" value="{STATUS_OFF}" {if old('is_ads', $edit_data.is_ads)|default:1 eq STATUS_OFF}checked="checked"{/if} id="is_ads_off" class="form-check-input">
-                                    <label class="form-check-label" for="is_ads_off">{lang('Admin.text_off')}</label>
-                                </label>
-                                <br/>
+
+                            <div class="row mb-3">
+                                <label class="col-7 fw-bold" for="input_is_ads">{lang('NewsAdmin.text_is_ads')}</label>
+                                <div class="col-5 form-control-lg py-0 " style="margin-top: -4px; min-height: 30px">
+                                    <div class="form-check form-switch float-end">
+                                        <input class="form-check-input" type="checkbox" name="is_ads" id="input_is_ads"
+                                            {set_checkbox('is_ads', 1, $edit_data.is_ads|default:true)} value="1">
+                                    </div>
+                                </div>
                                 <small>{lang('NewsAdmin.help_is_ads')}</small>
                             </div>
-                            <div class="form-group mt-3">
-                                <label class="form-label">{lang('NewsAdmin.text_is_fb_ia')}</label><br/>
-                                <label class="form-check form-check-inline">
-                                    <input type="radio" name="is_fb_ia" value="{STATUS_ON}" {if old('is_fb_ia', $edit_data.is_fb_ia)|default:1 eq STATUS_ON}checked="checked"{/if} id="is_fb_ia_on" class="form-check-input">
-                                    <label class="form-check-label" for="is_fb_ia_on">{lang('Admin.text_on')}</label>
-                                </label>
-                                <label class="form-check form-check-inline me-2">
-                                    <input type="radio" name="is_fb_ia" value="{STATUS_OFF}" {if old('is_fb_ia', $edit_data.is_fb_ia)|default:1 eq STATUS_OFF}checked="checked"{/if} id="is_fb_ia_off" class="form-check-input">
-                                    <label class="form-check-label" for="is_fb_ia_off">{lang('Admin.text_off')}</label>
-                                </label>
-                                <br/>
+
+                            <div class="row mb-3">
+                                <label class="col-7 fw-bold" for="input_is_fb_ia">{lang('NewsAdmin.text_is_fb_ia')}</label>
+                                <div class="col-5 form-control-lg py-0 " style="margin-top: -4px; min-height: 30px">
+                                    <div class="form-check form-switch float-end">
+                                        <input class="form-check-input" type="checkbox" name="is_fb_ia" id="input_is_fb_ia"
+                                            {set_checkbox('is_fb_ia', 1, $edit_data.is_fb_ia|default:true)} value="1">
+                                    </div>
+                                </div>
                                 <small>{lang('NewsAdmin.help_is_fb_ia')}</small>
                             </div>
-                            <div class="form-group mt-3">
-                                <label class="form-label">{lang('NewsAdmin.text_is_hot')}</label><br/>
-                                <label class="form-check form-check-inline">
-                                    <input type="radio" name="is_hot" value="{STATUS_ON}" {if old('is_hot', $edit_data.is_hot)|default:0 eq STATUS_ON}checked="checked"{/if} id="is_hot_on" class="form-check-input">
-                                    <label class="form-check-label" for="is_hot_on">{lang('Admin.text_on')}</label>
-                                </label>
-                                <label class="form-check form-check-inline me-2">
-                                    <input type="radio" name="is_hot" value="{STATUS_OFF}" {if old('is_hot', $edit_data.is_hot)|default:0 eq STATUS_OFF}checked="checked"{/if} id="is_hot_off" class="form-check-input">
-                                    <label class="form-check-label" for="is_hot_off">{lang('Admin.text_off')}</label>
-                                </label>
+                    
+                            <div class="row mb-3">
+                                <label class="col-7 fw-bold" for="input_is_hot">{lang('NewsAdmin.text_is_hot')}</label>
+                                <div class="col-5 form-control-lg py-0 " style="margin-top: -4px; min-height: 30px">
+                                    <div class="form-check form-switch float-end">
+                                        <input class="form-check-input" type="checkbox" name="is_hot" id="input_is_hot"
+                                            {set_checkbox('is_hot', 1, $edit_data.is_hot|default:false)} value="1">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group mt-3">
-                                <label class="form-label">{lang('NewsAdmin.text_is_homepage')}</label><br/>
-                                <label class="form-check form-check-inline">
-                                    <input type="radio" name="is_homepage" value="{STATUS_ON}" {if old('is_homepage', $edit_data.is_homepage)|default:0 eq STATUS_ON}checked="checked"{/if} id="is_homepage_on" class="form-check-input">
-                                    <label class="form-check-label" for="is_homepage_on">{lang('Admin.text_on')}</label>
-                                </label>
-                                <label class="form-check form-check-inline me-2">
-                                    <input type="radio" name="is_homepage" value="{STATUS_OFF}" {if old('is_homepage', $edit_data.is_homepage)|default:0 eq STATUS_OFF}checked="checked"{/if} id="is_homepage_off" class="form-check-input">
-                                    <label class="form-check-label" for="is_homepage_off">{lang('Admin.text_off')}</label>
-                                </label>
+
+                            <div class="row mb-3">
+                                <label class="col-7 fw-bold" for="input_is_homepage">{lang('NewsAdmin.text_is_homepage')}</label>
+                                <div class="col-5 form-control-lg py-0 " style="margin-top: -4px; min-height: 30px">
+                                    <div class="form-check form-switch float-end">
+                                        <input class="form-check-input" type="checkbox" name="is_homepage" id="input_is_homepage"
+                                            {set_checkbox('is_homepage', 1, $edit_data.is_homepage|default:false)} value="1">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group mt-3">
-                                <label class="form-label">{lang('NewsAdmin.text_is_disable_follow')}</label><br/>
-                                <label class="form-check form-check-inline">
-                                    <input type="radio" name="is_disable_follow" value="{STATUS_ON}" {if old('is_disable_follow', $edit_data.is_disable_follow)|default:0 eq STATUS_ON}checked="checked"{/if} id="is_disable_follow_on" class="form-check-input">
-                                    <label class="form-check-label" for="is_disable_follow_on">{lang('Admin.text_on')}</label>
-                                </label>
-                                <label class="form-check form-check-inline me-2">
-                                    <input type="radio" name="is_disable_follow" value="{STATUS_OFF}" {if old('is_disable_follow', $edit_data.is_disable_follow)|default:0 eq STATUS_OFF}checked="checked"{/if} id="is_disable_follow_off" class="form-check-input">
-                                    <label class="form-check-label" for="is_disable_follow_off">{lang('Admin.text_off')}</label>
-                                </label>
-                                <br/>
+
+                            <div class="row mb-3">
+                                <label class="col-7 fw-bold" for="input_is_disable_follow">{lang('NewsAdmin.text_is_disable_follow')}</label>
+                                <div class="col-5 form-control-lg py-0 " style="margin-top: -4px; min-height: 30px">
+                                    <div class="form-check form-switch float-end">
+                                        <input class="form-check-input" type="checkbox" name="is_disable_follow" id="input_is_disable_follow"
+                                            {set_checkbox('is_disable_follow', 1, $edit_data.is_disable_follow|default:false)} value="1">
+                                    </div>
+                                </div>
                                 <small>{lang('NewsAdmin.help_is_disable_follow')}</small>
                             </div>
-                            <div class="form-group mt-3">
-                                <label class="form-label">{lang('NewsAdmin.text_is_disable_robot')}</label><br/>
-                                <label class="form-check form-check-inline ms-2">
-                                    <input type="radio" name="is_disable_robot" value="{STATUS_ON}" {if old('is_disable_robot', $edit_data.is_disable_robot)|default:0 eq STATUS_ON}checked="checked"{/if} id="is_disable_robot_on" class="form-check-input">
-                                    <label class="form-check-label" for="is_disable_robot_on">{lang('Admin.text_on')}</label>
-                                </label>
-                                <label class="form-check form-check-inline me-2">
-                                    <input type="radio" name="is_disable_robot" value="{STATUS_OFF}" {if old('is_disable_robot', $edit_data.is_disable_robot)|default:0 eq STATUS_OFF}checked="checked"{/if} id="is_disable_robot_off" class="form-check-input">
-                                    <label class="form-check-label" for="is_disable_robot_off">{lang('Admin.text_off')}</label>
-                                </label>
-                                <br/>
+
+                            <div class="row mb-3">
+                                <label class="col-7 fw-bold" for="input_is_disable_robot">{lang('NewsAdmin.text_is_disable_robot')}</label>
+                                <div class="col-5 form-control-lg py-0 " style="margin-top: -4px; min-height: 30px">
+                                    <div class="form-check form-switch float-end">
+                                        <input class="form-check-input" type="checkbox" name="is_disable_robot" id="input_is_disable_robot"
+                                            {set_checkbox('is_disable_robot', 1, $edit_data.is_disable_robot|default:false)} value="1">
+                                    </div>
+                                </div>
                                 <small>{lang('NewsAdmin.help_is_disable_robot')}</small>
                             </div>
+
                         </div>
                     </div>
                     <div class="card">

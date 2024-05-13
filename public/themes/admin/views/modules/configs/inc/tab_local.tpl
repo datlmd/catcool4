@@ -53,20 +53,21 @@
 		</div>
 	</div>
 	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_currency_auto')}</div>
-		<div class="col-12 col-sm-8 col-lg-6 pt-2">
-			<label class="form-check form-check-inline">
-				<input type="radio" name="currency_auto" value="{STATUS_ON}" {if !empty(old('currency_auto', $settings.currency_auto))}checked="checked"{/if} id="currency_auto_on" class="form-check-input">
-				<label class="form-check-label" for="currency_auto_on">{lang('Admin.text_on')}</label>
-			</label>
-			<label class="form-check form-check-inline me-2">
-				<input type="radio" name="currency_auto" value="{STATUS_OFF}" {if empty(old('currency_auto', $settings.currency_auto))}checked="checked"{/if} id="currency_auto_off" class="form-check-input">
-				<label class="form-check-label" for="currency_auto_off">{lang('Admin.text_off')}</label>
-			</label>
-			<br/>
-			<small>{lang('ConfigAdmin.help_currency_auto')}</small>
+		<label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_currency_auto">{lang('ConfigAdmin.text_currency_auto')}</label>
+		<div class="col-12 col-sm-8 col-lg-6 form-control-lg py-1" style="min-height: 25px;">
+
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" name="currency_auto" id="input_currency_auto"
+					{set_checkbox('currency_auto', 1, $settings.currency_auto|default:true)} value="1">
+			</div>
+		
 		</div>
 	</div>
+	<div class="row" style="margin-top: -5px;">
+		<div class="col-12 col-sm-3"></div>
+		<div class="col-12 col-sm-8 col-lg-6 form-text">{lang('ConfigAdmin.help_currency_auto')}</div>
+	</div>
+
 	<div class="border-bottom mx-3 lead pb-1 my-3 fw-bold"></div>
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_length_class')}</div>

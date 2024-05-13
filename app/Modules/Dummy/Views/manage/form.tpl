@@ -63,20 +63,20 @@
                     <div class="card">
                         <h5 class="card-header">{lang('Admin.text_manage_more')}</h5>
                         <div class="card-body">
-                            <div class="form-group">
-                                <label class="form-label">{lang('Admin.text_published')}</label>
-                                <label class="form-check form-check-inline ms-2">
-                                    <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $edit_data.published)|default:1 eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
-                                    <label class="form-check-label" for="published_on">ON</label>
-                                </label>
-                                <label class="form-check form-check-inline me-2">
-                                    <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $edit_data.published)|default:1 eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
-                                    <label class="form-check-label" for="published_off">OFF</label>
-                                </label>
+
+                            <div class="row">
+                                <label class="col-auto fw-bold" for="input_published">{lang('Admin.text_published')}</label>
+                                <div class="col-6 form-control-lg py-0" style="margin-top: -4px;">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" name="published" id="input_published"
+                                            {set_checkbox('published', 1, $edit_data.published|default:true)} value="1">
+                                    </div>
+                                </div>
                             </div>
+
                             {*TPL_DUMMY_ROOT*}
                             <div class="form-group">
-                                <label class="form-label">{lang('Admin.text_sort_order')}</label>
+                                <label class="form-label fw-bold">{lang('Admin.text_sort_order')}</label>
                                 <input type="number" name="sort_order" value="{old('sort_order', $edit_data.sort_order)|default:0}" id="sort_order" min="0" class="form-control">
                             </div>
                         </div>

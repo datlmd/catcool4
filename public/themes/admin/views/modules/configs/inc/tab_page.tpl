@@ -1,35 +1,35 @@
 {strip}
 	{form_open(uri_string(), ['id' => 'form_page'])}
 	{form_hidden('tab_type', 'tab_page')}
-	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_site_name')}</div>
+	<div class="form-group row mb-3">
+		<label class="col-12 col-sm-3 col-form-label required-label text-sm-end" for="input_site_name">{lang('ConfigAdmin.text_site_name')}</label>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<input type="text" name="site_name" value="{old('site_name', $settings.site_name)}" id="site_name" class="form-control {if validation_show_error("site_name")}is-invalid{/if}">
+			<input type="text" name="site_name" value="{old('site_name', $settings.site_name)}" id="input_site_name" class="form-control {if validation_show_error("site_name")}is-invalid{/if}">
 			<div class="invalid-feedback">
 				{validation_show_error("site_name")}
 			</div>
 		</div>
 	</div>
-	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_site_description')}</div>
+	<div class="form-group row mb-3">
+		<label class="col-12 col-sm-3 col-form-label required-label text-sm-end" for="input_site_description">{lang('ConfigAdmin.text_site_description')}</label>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<textarea type="textarea" name="site_description" id="site_description" cols="40" rows="5" class="form-control {if validation_show_error("site_description")}is-invalid{/if}">{old('site_description', $settings.site_description)}</textarea>
+			<textarea type="textarea" name="site_description" id="input_site_description" cols="40" rows="5" class="form-control {if validation_show_error("site_description")}is-invalid{/if}">{old('site_description', $settings.site_description)}</textarea>
 			<div class="invalid-feedback">
 				{validation_show_error("site_description")}
 			</div>
 		</div>
 	</div>
-	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_site_keywords')}</div>
+	<div class="form-group row mb-3">
+		<label class="col-12 col-sm-3 col-form-label required-label text-sm-end" for="input_site_keywords">{lang('ConfigAdmin.text_site_keywords')}</label>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<input type="text" name="site_keywords" value="{old('site_keywords', $settings.site_keywords)}" id="site_keywords" class="form-control {if validation_show_error("site_keywords")}is-invalid{/if}">
+			<input type="text" name="site_keywords" value="{old('site_keywords', $settings.site_keywords)}" id="input_site_keywords" class="form-control {if validation_show_error("site_keywords")}is-invalid{/if}">
 			<div class="invalid-feedback">
 				{validation_show_error("site_keywords")}
 			</div>
 		</div>
 	</div>
-	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_logo')}</div>
+	<div class="form-group row mb-3">
+		<label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_logo')}</label>
 		<div class="col-12 col-sm-8 col-lg-6">
 			<a href="javascript:void(0);" id="image_logo_url" data-target="input_image_logo_url" data-thumb="load_image_logo_url" data-type="image" data-bs-toggle="image" class="mx-0 mt-1">
 				<img src="{if !empty(old('image_logo_url', $settings.image_logo_url))}{image_thumb_url(old('image_logo_url', $settings.image_logo_url))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_image_logo_url" data-placeholder="{image_default_url()}"/>
@@ -54,63 +54,61 @@
 {*			<input type="hidden" name="image_icon_url" value="{old('image_icon_url', $settings.image_icon_url)}" id="input_image_icon_url" />*}
 {*		</div>*}
 {*	</div>*}
-	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_pagination_limit')}</div>
+	<div class="form-group row mb-3">
+		<label class="col-12 col-sm-3 col-form-label required-label text-sm-end" for="input_pagination_limit">{lang('ConfigAdmin.text_pagination_limit')}</label>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<input type="text" name="pagination_limit" value="{old('pagination_limit', $settings.pagination_limit)}" id="pagination_limit" class="form-control {if validation_show_error("pagination_limit")}is-invalid{/if}">
+			<input type="text" name="pagination_limit" value="{old('pagination_limit', $settings.pagination_limit)}" id="input_pagination_limit" class="form-control {if validation_show_error("pagination_limit")}is-invalid{/if}">
 			<div class="invalid-feedback">
 				{validation_show_error("pagination_limit")}
 			</div>
 		</div>
 	</div>
-	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_pagination_limit_admin')}</div>
+	<div class="form-group row mb-3">
+		<label class="col-12 col-sm-3 col-form-label required-label text-sm-end" for="input_pagination_limit_admin">{lang('ConfigAdmin.text_pagination_limit_admin')}</label>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<input type="number" name="pagination_limit_admin" value="{old('pagination_limit_admin', $settings.pagination_limit_admin)}" id="pagination_limit_admin" class="form-control {if validation_show_error("pagination_limit_admin")}is-invalid{/if}">
+			<input type="number" name="pagination_limit_admin" value="{old('pagination_limit_admin', $settings.pagination_limit_admin)}" id="input_pagination_limit_admin" class="form-control {if validation_show_error("pagination_limit_admin")}is-invalid{/if}">
 			<div class="invalid-feedback">
 				{validation_show_error("pagination_limit_admin")}
 			</div>
 		</div>
 	</div>
+
 	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_hide_menu')}</div>
-		<div class="col-12 col-sm-8 col-lg-6 pt-2">
-			<label class="form-check form-check-inline">
-				<input type="radio" name="enable_scroll_menu_admin" value="{STATUS_ON}" {if !empty(old('enable_scroll_menu_admin', $settings.enable_scroll_menu_admin))}checked="checked"{/if} id="enable_scroll_menu_admin_on" class="form-check-input">
-				<label class="form-check-label" for="enable_scroll_menu_admin_on">{lang('Admin.text_on')}</label>
-			</label>
-			<label class="form-check form-check-inline me-2">
-				<input type="radio" name="enable_scroll_menu_admin" value="{STATUS_OFF}" {if empty(old('enable_scroll_menu_admin', $settings.enable_scroll_menu_admin))}checked="checked"{/if} id="enable_scroll_menu_admin_off" class="form-check-input">
-				<label class="form-check-label" for="enable_scroll_menu_admin_off">{lang('Admin.text_off')}</label>
-			</label>
+		<label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_enable_scroll_menu_admin">{lang('ConfigAdmin.text_hide_menu')}</label>
+		<div class="col-12 col-sm-8 col-lg-6 form-control-lg py-0" style="min-height: 25px;">
+
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" name="enable_scroll_menu_admin" id="input_enable_scroll_menu_admin"
+					{set_checkbox('enable_scroll_menu_admin', 1, $settings.enable_scroll_menu_admin|default:true)} value="1">
+			</div>
+
 		</div>
 	</div>
+
 	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_enable_icon_menu_admin')}</div>
-		<div class="col-12 col-sm-8 col-lg-6 pt-2">
-			<label class="form-check form-check-inline">
-				<input type="radio" name="enable_icon_menu_admin" value="{STATUS_ON}" {if !empty(old('enable_icon_menu_admin', $settings.enable_icon_menu_admin))}checked="checked"{/if} id="enable_icon_menu_admin_on" class="form-check-input">
-				<label class="form-check-label" for="enable_icon_menu_admin_on">{lang('Admin.text_on')}</label>
-			</label>
-			<label class="form-check form-check-inline me-2">
-				<input type="radio" name="enable_icon_menu_admin" value="{STATUS_OFF}" {if empty(old('enable_icon_menu_admin', $settings.enable_icon_menu_admin))}checked="checked"{/if} id="enable_icon_menu_admin_off" class="form-check-input">
-				<label class="form-check-label" for="enable_icon_menu_admin_off">{lang('Admin.text_off')}</label>
-			</label>
+		<label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_enable_icon_menu_admin">{lang('ConfigAdmin.text_enable_icon_menu_admin')}</label>
+		<div class="col-12 col-sm-8 col-lg-6 form-control-lg py-0" style="min-height: 25px;">
+
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" name="enable_icon_menu_admin" id="input_enable_icon_menu_admin"
+					{set_checkbox('enable_icon_menu_admin', 1, $settings.enable_icon_menu_admin|default:true)} value="1">
+			</div>
+
 		</div>
 	</div>
+
 	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_enable_dark_mode')}</div>
-		<div class="col-12 col-sm-8 col-lg-6 pt-2">
-			<label class="form-check form-check-inline">
-				<input type="radio" name="enable_dark_mode" value="{STATUS_ON}" {if !empty(old('enable_dark_mode', $settings.enable_dark_mode))}checked="checked"{/if} id="enable_dark_mode_on" class="form-check-input">
-				<label class="form-check-label" for="enable_dark_mode_on">{lang('Admin.text_on')}</label>
-			</label>
-			<label class="form-check form-check-inline me-2">
-				<input type="radio" name="enable_dark_mode" value="{STATUS_OFF}" {if empty(old('enable_dark_mode', $settings.enable_dark_mode))}checked="checked"{/if} id="enable_dark_mode_off" class="form-check-input">
-				<label class="form-check-label" for="enable_dark_mode_off">{lang('Admin.text_off')}</label>
-			</label>
+		<label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_enable_dark_mode">{lang('ConfigAdmin.text_enable_dark_mode')}</label>
+		<div class="col-12 col-sm-8 col-lg-6 form-control-lg py-0" style="min-height: 25px;">
+
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" name="enable_dark_mode" id="input_enable_dark_mode"
+					{set_checkbox('enable_dark_mode', 1, $settings.enable_dark_mode|default:true)} value="1">
+			</div>
+
 		</div>
 	</div>
+	
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_background_admin_path')}</div>
 		<div class="col-12 col-sm-8 col-lg-6 pt-2">

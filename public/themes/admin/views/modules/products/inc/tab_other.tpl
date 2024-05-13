@@ -8,16 +8,14 @@
 	</div>
 
 	<div class="form-group row">
-		<div class="col-12 col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_subtract')}</div>
-		<div class="col-12 col-sm-10 col-lg-10 mt-2 mb-0">
-			<label class="form-check form-check-inline ms-2">
-				<input type="radio" name="subtract" value="{STATUS_ON}" {if old('subtract', $edit_data.subtract)|default:1 eq STATUS_ON}checked="checked"{/if} id="subtract_on" class="form-check-input">
-				<label class="form-check-label" for="subtract_on">{lang('Admin.text_on')}</label>
-			</label>
-			<label class="form-check form-check-inline me-2">
-				<input type="radio" name="subtract" value="{STATUS_OFF}" {if old('subtract', $edit_data.subtract)|default:1 eq STATUS_OFF}checked="checked"{/if} id="subtract_off" class="form-check-input">
-				<label class="form-check-label" for="subtract_off">{lang('Admin.text_off')}</label>
-			</label>
+		<label class="col-12 col-sm-2 col-form-label text-sm-end" for="input_subtract">{lang('ProductAdmin.text_subtract')}</label>
+		<div class="col-12 col-sm-10 col-lg-10 form-control-lg py-1">
+
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" name="subtract" id="input_subtract"
+					{set_checkbox('subtract', 1, $edit_data.subtract|default:true)} value="1">
+			</div>
+			
 		</div>
 	</div>
 

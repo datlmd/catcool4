@@ -1,16 +1,12 @@
 {strip}
 
 	<div class="form-group row">
-		<div class="col-12 col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_shipping')}</div>
-		<div class="col-12 col-sm-10 col-lg-10 mt-2 mb-0">
-			<label class="form-check form-check-inline ms-2">
-				<input type="radio" name="shipping" value="{STATUS_ON}" {if old('shipping', $edit_data.shipping)|default:1 eq STATUS_ON}checked="checked"{/if} id="shipping_on" class="form-check-input">
-				<label class="form-check-label" for="shipping_on">{lang('Admin.text_on')}</label>
-			</label>
-			<label class="form-check form-check-inline me-2">
-				<input type="radio" name="shipping" value="{STATUS_OFF}" {if old('shipping', $edit_data.shipping)|default:1 eq STATUS_OFF}checked="checked"{/if} id="shipping_off" class="form-check-input">
-				<label class="form-check-label" for="shipping_off">{lang('Admin.text_off')}</label>
-			</label>
+		<label class="col-12 col-sm-2 col-form-label text-sm-end" for="input_shipping">{lang('ProductAdmin.text_shipping')}</label>
+		<div class="col-12 col-sm-10 col-lg-10 form-control-lg py-1">
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" name="shipping" id="input_shipping"
+					{set_checkbox('shipping', 1, $edit_data.shipping|default:true)} value="1">
+			</div>
 		</div>
 	</div>
 

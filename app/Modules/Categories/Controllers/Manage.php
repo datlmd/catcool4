@@ -70,7 +70,7 @@ class Manage extends AdminController
                 'sort_order' => $this->request->getPost('sort_order'),
                 'image'      => $this->request->getPost('image'),
                 'context'    => $this->request->getPost('context'),
-                'parent_id'  => $this->request->getPost('parent_id'),
+                'parent_id'  => !empty($this->request->getPost('parent_id')) ? $this->request->getPost('parent_id') : null,
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 

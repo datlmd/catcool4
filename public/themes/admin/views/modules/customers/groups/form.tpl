@@ -66,21 +66,18 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row border-top">
-                                <label class="col-12 col-sm-3 col-form-label text-sm-end">
+                            <div class="form-group row border-top mb-3">
+                                <label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_approval">
                                     {lang('CustomerGroupAdmin.text_approval')}
                                 </label>
-                                <div class="col-12 col-sm-8 col-lg-7">
-                                    <label class="form-check form-check-inline col-form-label ms-2">
-                                        <input type="radio" name="approval" value="{STATUS_ON}" {if old('approval', $edit_data.approval)|default:0 eq STATUS_ON}checked="checked"{/if} id="approval_on" class="form-check-input">
-                                        <label class="form-check-label" for="approval_on">{lang('Admin.text_on')}</label>
-                                    </label>
-                                    <label class="form-check form-check-inline col-form-label me-2">
-                                        <input type="radio" name="approval" value="{STATUS_OFF}" {if old('approval', $edit_data.approval)|default:0 eq STATUS_OFF}checked="checked"{/if} id="approval_off" class="form-check-input">
-                                        <label class="form-check-label" for="approval_off">{lang('Admin.text_off')}</label>
-                                    </label>
-                                    <div class="form-text">{lang('CustomerGroupAdmin.help_approval')}</div>
+                                <div class="col-12 col-sm-8 col-lg-7 form-control-lg py-1" style="min-height: 30px;">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" name="approval" id="input_approval"
+                                            {set_checkbox('approval', 1, $edit_data.approval|default:false)} value="1">
+                                    </div>
                                 </div>
+                                <div class="col-12 col-sm-3"></div>
+                                <div class="col-12 col-sm-8 col-lg-7 form-text">{lang('CustomerGroupAdmin.help_approval')}</div>
                             </div>
 
                         </div>

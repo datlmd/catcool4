@@ -71,17 +71,17 @@
                     <div class="card">
                         <h5 class="card-header">{lang('Admin.text_manage_more')}</h5>
                         <div class="card-body">
-                            <div class="form-group">
-                                <label class="form-label fw-bold">{lang('Admin.text_published')}</label>
-                                <label class="form-check form-check-inline ms-2">
-                                    <input type="radio" name="published" value="{STATUS_ON}" {if old('published', $edit_data.published)|default:1 eq STATUS_ON}checked="checked"{/if} id="published_on" class="form-check-input">
-                                    <label class="form-check-label" for="published_on">{lang('Admin.text_on')}</label>
-                                </label>
-                                <label class="form-check form-check-inline me-2">
-                                    <input type="radio" name="published" value="{STATUS_OFF}" {if old('published', $edit_data.published)|default:1 eq STATUS_OFF}checked="checked"{/if} id="published_off" class="form-check-input">
-                                    <label class="form-check-label" for="published_off">{lang('Admin.text_off')}</label>
-                                </label>
+
+                            <div class="row">
+                                <label class="col-auto fw-bold" for="input_published">{lang('Admin.text_published')}</label>
+                                <div class="col-6 form-control-lg py-0 ">
+                                    <div class="form-check form-switch" style="margin-top: -4px;">
+                                        <input class="form-check-input" type="checkbox" name="published" id="input_published"
+                                            {set_checkbox('published', 1, $edit_data.published|default:true)} value="1">
+                                    </div>
+                                </div>
                             </div>
+
                             <div class="form-group border-top pt-3">
                                 <label class="form-label fw-bold">{lang("Admin.text_image")}</label>
                                 <!-- Drag and Drop container-->
@@ -94,19 +94,18 @@
                                 </a>
                                 <input type="hidden" name="image" value="{old('image', $edit_data.image)}" id="input-image-path" />
                             </div>
-                            <div class="form-group mt-4 border-top pt-3">
-                                <label class="form-label fw-bold">{lang('ProductCategoryAdmin.text_top')}</label>
-                                <label class="form-check form-check-inline ms-2">
-                                    <input type="radio" name="top" value="{STATUS_ON}" {if old('top', $edit_data.top)|default:1 eq STATUS_ON}checked="checked"{/if} id="top_on" class="form-check-input">
-                                    <label class="form-check-label" for="top_on">{lang('Admin.text_on')}</label>
-                                </label>
-                                <label class="form-check form-check-inline me-2">
-                                    <input type="radio" name="top" value="{STATUS_OFF}" {if old('top', $edit_data.top)|default:1 eq STATUS_OFF}checked="checked"{/if} id="top_off" class="form-check-input">
-                                    <label class="form-check-label" for="top_off">{lang('Admin.text_off')}</label>
-                                </label>
-                                <br/>
+
+                            <div class="row mt-4 border-top pt-3">
+                                <label class="col-auto fw-bold" for="input_top">{lang('ProductCategoryAdmin.text_top')}</label>
+                                <div class="col-6 form-control-lg py-0 ">
+                                    <div class="form-check form-switch" style="margin-top: -4px;">
+                                        <input class="form-check-input" type="checkbox" name="top" id="input_top"
+                                            {set_checkbox('top', 1, $edit_data.top|default:false)} value="1">
+                                    </div>
+                                </div>
                                 <small>{lang('ProductCategoryAdmin.help_top')}</small>
                             </div>
+
                             <div class="form-group mt-4 border-top pt-3">
                                 <label class="form-label fw-bold">{lang('ProductCategoryAdmin.text_column')}</label>
                                 <input type="number" name="column" value="{old('column', $edit_data.column)|default:1}" id="column" class="form-control">

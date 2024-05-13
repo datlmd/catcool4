@@ -3,39 +3,41 @@
     {form_hidden('tab_type', 'tab_server')}
     <div class="border-bottom mx-3 lead pb-1 my-3 fw-bold">{lang('ConfigAdmin.text_general')}</div>
     <div class="form-group row">
-        <div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_maintenance')}</div>
-        <div class="col-12 col-sm-8 col-lg-6 pt-2">
-            <label class="form-check form-check-inline">
-                <input type="radio" name="maintenance" value="{STATUS_ON}" {if !empty(old('maintenance', $settings.maintenance))}checked="checked"{/if} id="maintenance_on" class="form-check-input">
-                <label class="form-check-label" for="maintenance_on">{lang('Admin.text_on')}</label>
-            </label>
-            <label class="form-check form-check-inline me-2">
-                <input type="radio" name="maintenance" value="{STATUS_OFF}" {if empty(old('maintenance', $settings.maintenance))}checked="checked"{/if} id="maintenance_off" class="form-check-input">
-                <label class="form-check-label" for="maintenance_off">{lang('Admin.text_off')}</label>
-            </label>
-            <br/>
-            <small>{lang('ConfigAdmin.help_maintenance')}</small>
+        <label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_maintenance">{lang('ConfigAdmin.text_maintenance')}</label>
+        <div class="col-12 col-sm-8 col-lg-6 form-control-lg py-1" style="min-height: 25px;">
+
+            <div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" name="maintenance" id="input_maintenance"
+					{set_checkbox('maintenance', 1, $settings.maintenance|default:false)} value="1">
+			</div>
+
         </div>
     </div>
+    <div class="row" style="margin-top: -5px;">
+		<div class="col-12 col-sm-3"></div>
+		<label class="col-12 col-sm-8 col-lg-6 form-text">{lang('ConfigAdmin.help_maintenance')}</label>
+	</div>
+
     <div class="form-group row">
-        <div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_seo_url')}</div>
-        <div class="col-12 col-sm-8 col-lg-6 pt-2">
-            <label class="form-check form-check-inline">
-                <input type="radio" name="seo_url" value="{STATUS_ON}" {if !empty(old('seo_url', $settings.seo_url))}checked="checked"{/if} id="seo_url_on" class="form-check-input">
-                <label class="form-check-label" for="seo_url_on">{lang('Admin.text_on')}</label>
-            </label>
-            <label class="form-check form-check-inline me-2">
-                <input type="radio" name="seo_url" value="{STATUS_OFF}" {if empty(old('seo_url', $settings.seo_url))}checked="checked"{/if} id="seo_url_off" class="form-check-input">
-                <label class="form-check-label" for="seo_url_off">{lang('Admin.text_off')}</label>
-            </label>
-            <br/>
-            <small>{lang('ConfigAdmin.help_seo_url')}</small>
+        <label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_seo_url">{lang('ConfigAdmin.text_seo_url')}</label>
+        <div class="col-12 col-sm-8 col-lg-6 form-control-lg py-1" style="min-height: 25px;">
+
+            <div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" name="seo_url" id="input_seo_url"
+					{set_checkbox('seo_url', 1, $settings.seo_url|default:false)} value="1">
+			</div>
+
         </div>
     </div>
-    <div class="form-group row">
-        <div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_robots')}</div>
+    <div class="row" style="margin-top: -5px;">
+        <div class="col-12 col-sm-3"></div>
+        <label class="col-12 col-sm-8 col-lg-6 form-text">{lang('ConfigAdmin.help_seo_url')}</label>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_robots">{lang('ConfigAdmin.text_robots')}</label>
         <div class="col-12 col-sm-8 col-lg-6">
-            <textarea type="textarea" name="robots" id="robots" cols="40" rows="5" class="form-control {if validation_show_error("robots")}is-invalid{/if}">{str_replace('|', PHP_EOL, old('robots', $settings.robots))}</textarea>
+            <textarea type="textarea" name="robots" id="input_robots" cols="40" rows="5" class="form-control {if validation_show_error("robots")}is-invalid{/if}">{str_replace('|', PHP_EOL, old('robots', $settings.robots))}</textarea>
             <div class="invalid-feedback">
                 {validation_show_error("robots")}
             </div>
@@ -43,29 +45,30 @@
         </div>
     </div>
     <div class="form-group row">
-        <div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_compression')}</div>
+        <label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_compression">{lang('ConfigAdmin.text_compression')}</label>
         <div class="col-12 col-sm-8 col-lg-6">
-            <input type="number" name="compression" value="{old('compression', $settings.compression)|default:0}" id="compression" class="form-control">
+            <input type="number" name="compression" value="{old('compression', $settings.compression)|default:0}" id="input_compression" class="form-control">
             <small>{lang('ConfigAdmin.help_compression')}</small>
         </div>
     </div>
 
     <div class="border-bottom mx-3 lead pb-1 my-3 fw-bold">{lang(lang('ConfigAdmin.text_security'))}</div>
     <div class="form-group row">
-        <div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_enable_ssl')}</div>
-        <div class="col-12 col-sm-8 col-lg-6 pt-2">
-            <label class="form-check form-check-inline">
-                <input type="radio" name="force_global_secure_requests" value="{STATUS_ON}" {if !empty(old('force_global_secure_requests', $settings.force_global_secure_requests))}checked="checked"{/if} id="force_global_secure_requests_on" class="form-check-input">
-                <label class="form-check-label" for="force_global_secure_requests_on">{lang('Admin.text_on')}</label>
-            </label>
-            <label class="form-check form-check-inline me-2">
-                <input type="radio" name="force_global_secure_requests" value="{STATUS_OFF}" {if empty(old('force_global_secure_requests', $settings.force_global_secure_requests))}checked="checked"{/if} id="force_global_secure_requests_off" class="form-check-input">
-                <label class="form-check-label" for="force_global_secure_requests_off">{lang('Admin.text_off')}</label>
-            </label>
-            <br/>
-            <small>{lang('ConfigAdmin.help_enable_ssl')}</small>
+        <label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_force_global_secure_requests">{lang('ConfigAdmin.text_enable_ssl')}</label>
+        <div class="col-12 col-sm-8 col-lg-6 form-control-lg py-1" style="min-height: 25px;">
+
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" name="force_global_secure_requests" id="input_force_global_secure_requests"
+                    {set_checkbox('force_global_secure_requests', 1, $settings.force_global_secure_requests|default:false)} value="1">
+            </div>
+        
         </div>
     </div>
+    <div class="row" style="margin-top: -5px;">
+        <div class="col-12 col-sm-3"></div>
+        <label class="col-12 col-sm-8 col-lg-6 form-text">{lang('ConfigAdmin.help_enable_ssl')}</label>
+    </div>
+
     <div class="form-group row mt-3">
         <div class="col-12 col-sm-3 col-form-label text-sm-end"></div>
         <div class="col-12 col-sm-8 col-lg-6 ms-0">
