@@ -6,17 +6,20 @@
 </style>
 <div class="splash-container">
 	<div class="card">
-		<div class="card-header">
+		<div class="card-header text-center">
 			{include file=get_theme_path('views/inc/logo.tpl') lodo_sub_class="text-dark"}
 		</div>
 		<div class="card-body pt-4">
 			<div class="splash-description mb-1">{lang('UserAdmin.text_reset_password_heading')}</div>
+			{if !empty(print_flash_alert())}
+                <div class="col-12">{print_flash_alert()}</div>
+            {/if}
 			{if !empty($errors)}
 				{include file=get_theme_path('views/inc/alert.tpl') message=$errors type='danger'}
 			{/if}
-			{form_open(uri_string())}
+			{form_open($reset_password)}
 				<div class="form-group mb-3">
-					{lang('Admin.text_username')}: {$user.username} ({full_name($user.first_name, $user.last_name)})
+					{lang('Admin.text_username')}: <strong>{$user.username}</strong> ({full_name($user.first_name, $user.last_name)})
 				</div>
 				<div class="form-group mb-3">
 					{lang('UserAdmin.text_reset_password')}

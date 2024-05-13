@@ -417,13 +417,18 @@ class Manage extends AdminController
         }
 
         $this->validator->setRules([
-            'id' => ['label' => lang('Admin.text_username'), 'rules' => 'required'],
+            'user_id' => ['label' => lang('Admin.text_username'), 'rules' => 'required'],
             'password_old' => ['label' => lang('UserAdmin.text_password_old'), 'rules' => 'required'],
             'password_new' => ['label' => lang('UserAdmin.text_password_new'), 'rules' => 'required|min_length[' . config_item('minPasswordLength') . ']|matches[password_confirm_new]'],
             'password_confirm_new' => ['label' => lang('UserAdmin.text_confirm_password_new'), 'rules' => 'required'],
         ]);
 
-        if (!empty($this->request->getPost()) && $id == $this->request->getPost('id') && $this->validator->withRequest($this->request)->run()) {
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('user_id')) {
+
+            if (!$this->validator->withRequest($this->request)->run()) {
+                set_alert([ALERT_ERROR => $this->validator->getErrors()]);
+                return redirect()->back()->withInput();
+            }
 
             if ($this->auth_model->checkPassword(html_entity_decode($this->request->getPost('password_old'), ENT_QUOTES, 'UTF-8'), html_entity_decode($data_form['password'], ENT_QUOTES, 'UTF-8')) === FALSE) {
                 set_alert(lang('UserAdmin.error_password_old'), ALERT_ERROR);
@@ -478,7 +483,7 @@ class Manage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()) && $id == $this->request->getPost('id')) {
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('user_id')) {
             $this->user_permission_model->delete(['user_id' => $id]);
 
             $permission_ids = $this->request->getPost('permissions');
@@ -760,25 +765,34 @@ class Manage extends AdminController
         ]);
 
         if (!empty($this->request->getPost()) && $this->validator->withRequest($this->request)->run()) {
+
+            if (empty($this->request->getGet('forgot_token')) || empty(session('forgot_token')) || $this->request->getGet('forgot_token') != session('forgot_token')) {
+                set_alert(lang('UserAdmin.error_forgot_password_unsuccessful'), ALERT_ERROR);
+                return redirect()->to(site_url("users/manage/forgot_password"));
+            }
+
             // Generate code
             $user_info = $this->model->forgotPassword($this->request->getPost('email'));
             if (!empty($user_info)) {
-                $language = $user_info['language'];
+                $language_code = $user_info['language_id'] ? get_list_lang()[$user_info['language_id']]['code'] : get_lang();
                 $data = [
                     'full_name'               => full_name($user_info['first_name'], $user_info['last_name']),
                     'username'                => $user_info['username'],
                     'forgotten_password_code' => $user_info['user_code'],
-                    'language'                => $language
+                    'language'                => $language_code
                 ];
 
                 $message       = $this->themes::view('email/admin/forgot_password', $data);
                 $subject_title = config_item('email_subject_title');
-                $subject       = lang('Email.forgot_password_subject', [$user_info['username']], $language);
+                $subject       = lang('Email.forgot_password_subject', [$user_info['username']], $language_code);
 
                 $send_email = send_email($user_info['email'], config_item('email_from'), $subject, $message, $subject_title);
                 if (!$send_email) {
                     $data['errors'] = lang('UserAdmin.error_forgot_password_unsuccessful');
                 } else {
+
+                    session()->remove('forgot_token');
+
                     $data['success'] = lang('UserAdmin.forgot_password_successful');
                 }
             } else {
@@ -786,6 +800,10 @@ class Manage extends AdminController
             }
 
         }
+
+        session()->set('forgot_token', substr(bin2hex(openssl_random_pseudo_bytes(26)), 0, 26));
+
+        $data['forgot_password'] = site_url("users/manage/forgot_password") . "?forgot_token=" . session('forgot_token');
 
         if (!empty($this->validator->getErrors())) {
             $data['errors'] = $this->validator->getErrors();
@@ -802,6 +820,8 @@ class Manage extends AdminController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
+        $code = html_entity_decode($code, ENT_QUOTES, 'UTF-8');
+
         $user = $this->model->checkForgottenPassword($code);
         if (empty($user)) {
             set_alert($this->model->getErrors(), ALERT_ERROR);
@@ -814,8 +834,14 @@ class Manage extends AdminController
         ]);
 
         if (!empty($this->request->getPost()) && $this->validator->withRequest($this->request)->run()) {
+
+            if (empty($this->request->getGet('reset_token')) || empty(session('reset_token')) || $this->request->getGet('reset_token') != session('reset_token')) {
+                set_alert(lang('Admin.error_token'), ALERT_ERROR);
+                return redirect()->to(site_url("users/manage/reset_password/$code"));
+            }
+
             // do we have a valid request?
-            if ($user['user_id'] != $this->request->getPost('id')) {
+            if ($user['user_id'] != $this->request->getPost('user_id')) {
                 // something fishy might be up
                 $this->model->clearForgottenPasswordCode($user['user_id']);
                 set_alert(lang('Admin.error_token'), ALERT_ERROR);
@@ -832,8 +858,10 @@ class Manage extends AdminController
                 $change = $this->model->update($user['user_id'], $data);
                 if (!$change) {
                     set_alert(lang('UserAdmin.error_password_change_unsuccessful'), ALERT_ERROR);
-                    return redirect()->to( site_url(self::MANAGE_URL . '/reset_password' . $code));
+                    return redirect()->to( site_url(self::MANAGE_URL . '/reset_password/' . $code));
                 }
+
+                session()->remove('reset_token');
 
                 $user_token_model = new UserTokenModel();
                 $user_token_model->delete(['user_id' => $user['user_id']]);
@@ -849,6 +877,9 @@ class Manage extends AdminController
             $data['errors'] = $this->validator->getErrors();
         }
 
+        session()->set('reset_token', substr(bin2hex(openssl_random_pseudo_bytes(26)), 0, 26));
+
+        $data['reset_password'] = site_url("users/manage/reset_password/$code") . "?reset_token=" . session('reset_token');
         $data['min_password_length'] = config_item('minPasswordLength');
         $data['user'] = $user;
         $data['code'] = $code;

@@ -2,7 +2,7 @@
     {form_hidden('manage_url', site_url($manage_url))}
     <div class="container-fluid  dashboard-content">
         {form_open(uri_string(), ['id' => 'user_validationform'])}
-            {form_hidden('id', $item_edit.user_id)}
+            {form_hidden('user_id', $item_edit.user_id)}
             <div class="row">
                 <div class="col-sm-7 col-12">
                     {include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('UserAdmin.text_permission_select')}

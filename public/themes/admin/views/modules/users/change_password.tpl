@@ -40,8 +40,8 @@
                                 {lang('UserAdmin.text_password_old')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-7">
-                                <input type="password" name="password_old" value="" id="password_old" class="form-control {if $validator->hasError('password_old')}is-invalid{/if}">
-                                <div class="invalid-feedback">{$validator->getError("password_old")}</div>
+                                <input type="password" name="password_old" value="" id="password_old" class="form-control {if validation_show_error('password_old')}is-invalid{/if}">
+                                <div class="invalid-feedback">{validation_show_error("password_old")}</div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -49,8 +49,8 @@
                                 {lang('UserAdmin.text_password_new')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-7">
-                                <input type="password" name="password_new" value="" id="password_new" class="form-control {if $validator->hasError('password_new')}is-invalid{/if}">
-                                <div class="invalid-feedback">{$validator->getError("password_new")}</div>
+                                <input type="password" name="password_new" value="" id="password_new" class="form-control {if validation_show_error('password_new')}is-invalid{/if}">
+                                <div class="invalid-feedback">{validation_show_error("password_new")}</div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -58,8 +58,8 @@
                                 {lang('UserAdmin.text_confirm_password_new')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-7">
-                                <input type="password" name="password_confirm_new" value="" id="password_confirm_new" class="form-control {if $validator->hasError('password_confirm_new')}is-invalid{/if}}">
-                                <div class="invalid-feedback">{$validator->getError("password_confirm_new")}</div>
+                                <input type="password" name="password_confirm_new" value="" id="password_confirm_new" class="form-control {if validation_show_error('password_confirm_new')}is-invalid{/if}">
+                                <div class="invalid-feedback">{validation_show_error("password_confirm_new")}</div>
                             </div>
                         </div>
                     </div>

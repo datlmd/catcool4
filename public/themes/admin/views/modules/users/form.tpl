@@ -267,7 +267,7 @@
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" name="super_admin"
                                             id="input_super_admin"
-                                            {set_checkbox('super_admin', 1, $edit_data.active|default:false)} value="1">
+                                            {set_checkbox('super_admin', 1, $edit_data.super_admin|default:false)} value="1">
                                     </div>
                                 </div>
                             </div>
