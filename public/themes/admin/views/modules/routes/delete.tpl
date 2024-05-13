@@ -13,7 +13,7 @@
                 <div class="form-group text-center clearfix">
                     {form_hidden('route', $item_info.route)}
                     {form_hidden('language_id', $item_info.language_id)}
-                    {form_hidden('is_delete', true)}
+                    <input type="hidden" name="is_delete" value="1">
                     <button type="button" id="submit_delete" onclick="Catcool.submitDelete('delete_validationform');" class="btn btn-sm btn-space btn-danger"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete')}</button>
                     <button type="button" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</button>
                 </div>

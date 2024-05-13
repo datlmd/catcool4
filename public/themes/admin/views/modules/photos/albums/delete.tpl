@@ -21,8 +21,8 @@
                     </div>
                 {/if}
                 <div class="form-group text-center">
-                    {form_hidden('ids', $ids)}
-                    {form_hidden('is_delete', true)}
+                    <input type="hidden" name="ids" value="{$ids}">
+                    <input type="hidden" name="is_delete" value="1">
                     {create_input_token($csrf)}
                     <button type="button" id="submit_delete" onclick="Catcool.submitDelete('delete_validationform');" class="btn btn-sm btn-space btn-danger"><i class="fas fa-trash-alt me-2"></i>{lang('button_delete')}</button>
                     <a href="#" class="btn btn-sm btn-space btn-light" data-dismiss="modal" aria-label="Close">

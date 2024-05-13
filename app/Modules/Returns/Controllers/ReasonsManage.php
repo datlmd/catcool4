@@ -219,7 +219,7 @@ class ReasonsManage extends AdminController
         }
 
         $data['list_delete'] = $list_delete;
-        $data['ids']         = $delete_ids;
+        $data['ids']         = $this->request->getPost('delete_ids');
 
         json_output(['token' => $token, 'data' => $this->themes::view('reasons/delete', $data)]);
     }
