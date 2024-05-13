@@ -30,9 +30,9 @@
 
                             <div class="form-group">
                                 <label class="form-label required-label">{lang('Admin.text_name')}</label>
-                                <input type="text" name="name" value='{old("name", $edit_data.name)}' id="input_name" data-slug-id="input_slug" class="form-control {if empty($edit_data.category_id)}make-slug{/if} {if $validator->hasError("name")}is-invalid{/if}">
+                                <input type="text" name="name" value='{old("name", $edit_data.name)}' id="input_name" data-slug-id="input_slug" class="form-control {if empty($edit_data.category_id)}make-slug{/if} {if validation_show_error("name")}is-invalid{/if}">
                                 <div class="invalid-feedback">
-                                    {$validator->getError("name")}
+                                    {validation_show_error("name")}
                                 </div>
                             </div>
                             <div class="form-group">
@@ -52,9 +52,9 @@
                             <div class="form-group mt-3">
                                 <label class="form-label">{lang('Admin.text_slug')}</label>
                                 <input type="hidden" name="route_old" value="{$seo_url.route}">
-                                <input type="text" name="slug" value='{old("slug", $seo_url.route)}' id="input_slug" class="form-control {if $validator->hasError("slug")}is-invalid{/if}">
+                                <input type="text" name="slug" value='{old("slug", $seo_url.route)}' id="input_slug" class="form-control {if validation_show_error("slug")}is-invalid{/if}">
                                 <div class="invalid-feedback">
-                                    {$validator->getError("slug")}
+                                    {validation_show_error("slug")}
                                 </div>
                                 <small>Extension: {get_seo_extension()}</small><br/>
                                 <small>Example: {get_seo_extension('seo-url')}</small>

@@ -39,9 +39,9 @@
                                     <div class="col-12 col-sm-8 col-lg-7">
                                         <div class="input-group">
                                             {if $language_list|count > 1}<span class="input-group-text">{$language.icon}</span>{/if}
-                                            <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang.`$language.id`.name")}is-invalid{/if}">
+                                            <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_name_{$language.id}" class="form-control {if validation_show_error("lang.`$language.id`.name")}is-invalid{/if}">
                                             <div class="invalid-feedback">
-                                                {$validator->getError("lang.`$language.id`.name")}
+                                                {validation_show_error("lang.`$language.id`.name")}
                                             </div>
                                         </div>
                                     </div>

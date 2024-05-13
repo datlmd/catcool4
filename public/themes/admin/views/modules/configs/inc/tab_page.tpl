@@ -4,27 +4,27 @@
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_site_name')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<input type="text" name="site_name" value="{old('site_name', $settings.site_name)}" id="site_name" class="form-control {if $validator->hasError("site_name")}is-invalid{/if}">
+			<input type="text" name="site_name" value="{old('site_name', $settings.site_name)}" id="site_name" class="form-control {if validation_show_error("site_name")}is-invalid{/if}">
 			<div class="invalid-feedback">
-				{$validator->getError("site_name")}
+				{validation_show_error("site_name")}
 			</div>
 		</div>
 	</div>
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_site_description')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<textarea type="textarea" name="site_description" id="site_description" cols="40" rows="5" class="form-control {if $validator->hasError("site_description")}is-invalid{/if}">{old('site_description', $settings.site_description)}</textarea>
+			<textarea type="textarea" name="site_description" id="site_description" cols="40" rows="5" class="form-control {if validation_show_error("site_description")}is-invalid{/if}">{old('site_description', $settings.site_description)}</textarea>
 			<div class="invalid-feedback">
-				{$validator->getError("site_description")}
+				{validation_show_error("site_description")}
 			</div>
 		</div>
 	</div>
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_site_keywords')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<input type="text" name="site_keywords" value="{old('site_keywords', $settings.site_keywords)}" id="site_keywords" class="form-control {if $validator->hasError("site_keywords")}is-invalid{/if}">
+			<input type="text" name="site_keywords" value="{old('site_keywords', $settings.site_keywords)}" id="site_keywords" class="form-control {if validation_show_error("site_keywords")}is-invalid{/if}">
 			<div class="invalid-feedback">
-				{$validator->getError("site_keywords")}
+				{validation_show_error("site_keywords")}
 			</div>
 		</div>
 	</div>
@@ -57,18 +57,18 @@
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_pagination_limit')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<input type="text" name="pagination_limit" value="{old('pagination_limit', $settings.pagination_limit)}" id="pagination_limit" class="form-control {if $validator->hasError("pagination_limit")}is-invalid{/if}">
+			<input type="text" name="pagination_limit" value="{old('pagination_limit', $settings.pagination_limit)}" id="pagination_limit" class="form-control {if validation_show_error("pagination_limit")}is-invalid{/if}">
 			<div class="invalid-feedback">
-				{$validator->getError("pagination_limit")}
+				{validation_show_error("pagination_limit")}
 			</div>
 		</div>
 	</div>
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_pagination_limit_admin')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<input type="number" name="pagination_limit_admin" value="{old('pagination_limit_admin', $settings.pagination_limit_admin)}" id="pagination_limit_admin" class="form-control {if $validator->hasError("pagination_limit_admin")}is-invalid{/if}">
+			<input type="number" name="pagination_limit_admin" value="{old('pagination_limit_admin', $settings.pagination_limit_admin)}" id="pagination_limit_admin" class="form-control {if validation_show_error("pagination_limit_admin")}is-invalid{/if}">
 			<div class="invalid-feedback">
-				{$validator->getError("pagination_limit_admin")}
+				{validation_show_error("pagination_limit_admin")}
 			</div>
 		</div>
 	</div>

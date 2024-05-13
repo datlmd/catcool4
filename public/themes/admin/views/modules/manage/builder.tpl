@@ -15,13 +15,13 @@
 				<h5 class="card-header">{lang('Builder.heading_title')}</h5>
 				<div class="card-body">
 					{ul(explode('||', lang('Builder.builder_caution')), ['class' => 'list-unstyled arrow'])}
-					<ul class="text-danger mb-3">
+					<ul class="text-success mb-3">
 						{foreach $file_list as $file => $permissions}
 							<li>{$file}: <strong>{$permissions}</strong></li>
 						{/foreach}
 					</ul>
-					{if !empty($validator->getErrors())}
-						{$validator->listErrors()}
+					{if !empty(validation_list_errors())}
+						<div class="text-danger">{validation_list_errors()}</div>
 					{elseif !empty($error_created)}
 						{ul($error_created, ['class' => 'text-danger'])}
 					{elseif !empty($success)}
@@ -36,7 +36,8 @@
 								{lang('Builder.module_name')}
 							</label>
 							<div class="col-12 col-sm-8 col-lg-6">
-								<input type="text" name="module_name" value="{old('module_name')}" id="module_name" class="form-control {if $validator->hasError('module_name')}is-invalid{/if}">
+								<input type="text" name="module_name" value="{old('module_name')}" id="module_name" class="form-control {if validation_show_error('module_name')}is-invalid{/if}">
+								<div class="invalid-feedback">{validation_show_error("module_name")}</div>
 								Ex: Tags
 							</div>
 						</div>
@@ -45,7 +46,8 @@
 								{lang('Builder.controller_name')}
 							</label>
 							<div class="col-12 col-sm-8 col-lg-6">
-								<input type="text" name="controller_name" value="{old('controller_name')}" id="controller_name" class="form-control {if $validator->hasError('controller_name')}is-invalid{/if}">
+								<input type="text" name="controller_name" value="{old('controller_name')}" id="controller_name" class="form-control {if validation_show_error('controller_name')}is-invalid{/if}">
+								<div class="invalid-feedback">{validation_show_error("controller_name")}</div>
 								Ex: Tags or Manage - Submodule: Groups
 							</div>
 						</div>
@@ -54,7 +56,8 @@
 								{lang('Builder.model_name')}
 							</label>
 							<div class="col-12 col-sm-8 col-lg-6">
-								<input type="text" name="model_name" value="{old('model_name')}" id="model_name" class="form-control {if $validator->hasError('model_name')}is-invalid{/if}">
+								<input type="text" name="model_name" value="{old('model_name')}" id="model_name" class="form-control {if validation_show_error('model_name')}is-invalid{/if}">
+								<div class="invalid-feedback">{validation_show_error("model_name")}</div>
 								Ex: Tag - Submodule: Group
 							</div>
 						</div>

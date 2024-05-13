@@ -30,8 +30,8 @@
                                     {lang('RouteAdmin.text_route')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="route" value="{old('route', $edit_data.route)}" id="route" class="form-control {if $validator->hasError('route')}is-invalid{/if}">
-                                    <div class="invalid-feedback">{$validator->getError("route")}</div>
+                                    <input type="text" name="route" value="{old('route', $edit_data.route)}" id="route" class="form-control {if validation_show_error('route')}is-invalid{/if}">
+                                    <div class="invalid-feedback">{validation_show_error("route")}</div>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -39,8 +39,8 @@
                                     {lang('RouteAdmin.text_module')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="module" value="{old('module', $edit_data.module)}" id="module" class="form-control {if $validator->hasError('module')}is-invalid{/if}">
-                                    <div class="invalid-feedback">{$validator->getError("module")}</div>
+                                    <input type="text" name="module" value="{old('module', $edit_data.module)}" id="module" class="form-control {if validation_show_error('module')}is-invalid{/if}">
+                                    <div class="invalid-feedback">{validation_show_error("module")}</div>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -48,8 +48,8 @@
                                     {lang('RouteAdmin.text_resource')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="resource" value="{old('resource', $edit_data.resource)}" id="resource" class="form-control {if $validator->hasError('resource')}is-invalid{/if}">
-                                    <div class="invalid-feedback">{$validator->getError("resource")}</div>
+                                    <input type="text" name="resource" value="{old('resource', $edit_data.resource)}" id="resource" class="form-control {if validation_show_error('resource')}is-invalid{/if}">
+                                    <div class="invalid-feedback">{validation_show_error("resource")}</div>
                                 </div>
                             </div>
                             <div class="form-group row">

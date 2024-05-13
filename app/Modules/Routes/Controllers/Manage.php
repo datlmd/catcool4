@@ -73,7 +73,7 @@ class Manage extends AdminController
         if (!empty($this->request->getPost()))
         {
             if (!$this->_validateForm()) {
-                set_alert($this->errors, ALERT_ERROR);
+                set_alert([ALERT_ERROR => $this->errors]);
                 return redirect()->back()->withInput();
             }
 
@@ -107,7 +107,7 @@ class Manage extends AdminController
 
         if (!empty($this->request->getPost())) {
             if (!$this->_validateForm($route, $language_id)) {
-                set_alert($this->errors, ALERT_ERROR);
+                set_alert([ALERT_ERROR => $this->errors]);
                 return redirect()->back()->withInput();
             }
 

@@ -24,9 +24,9 @@
 							{lang("Admin.text_seo_lenght_input")} <span id="seo_meta_title_{$language.id}_length" data-target="input_lang_{$language.id}_meta_title" class="seo-meta-length"></span>/70
 						</div>
 					</div>
-					<input type="text" name="lang[{$language.id}][meta_title]" id="input_lang_{$language.id}_meta_title" data-seo-id="seo_meta_title_{$language.id}" onkeyup="Catcool.setContentSeo(this);" value='{old("lang.`$language.id`.meta_title", $edit_data.lang[$language.id].meta_title)}' placeholder="{$edit_data.lang[$language.id].meta_title}" class="form-control {if $validator->hasError("lang.`$language.id`.meta_title")}is-invalid{/if}">
+					<input type="text" name="lang[{$language.id}][meta_title]" id="input_lang_{$language.id}_meta_title" data-seo-id="seo_meta_title_{$language.id}" onkeyup="Catcool.setContentSeo(this);" value='{old("lang.`$language.id`.meta_title", $edit_data.lang[$language.id].meta_title)}' placeholder="{$edit_data.lang[$language.id].meta_title}" class="form-control {if validation_show_error("lang.`$language.id`.meta_title")}is-invalid{/if}">
 					<div class="invalid-feedback" id="error_lang_{$language.id}_meta_title">
-						{$validator->getError("lang.`$language.id`.meta_title")}
+						{validation_show_error("lang.`$language.id`.meta_title")}
 					</div>
 				</div>
 			</div>
@@ -37,9 +37,9 @@
 						<span class="input-group-text bg-linght pe-1" id="input_group_slug">{if !empty($name_seo_url)}{site_url($name_seo_url)}{else}{site_url()}{/if}</span>
 						<input type="hidden" name="seo_urls[{$language.id}][route_old]" value="{$seo_urls[$language.id].route}">
 						<input type="hidden" name="seo_urls[{$language.id}][language_id]" value="{$seo_urls[$language.id].language_id}">
-						<input type="text" name="seo_urls[{$language.id}][route]" id="input_seo_urls_{$language.id}_route" data-is-slug="false" data-seo-id="seo_meta_url_{$language.id}" onkeyup="Catcool.setContentSeo(this);"  value='{old("seo_urls.`$language.id`.route", $seo_urls[$language.id].route)}' placeholder="{$seo_urls[$language.id].route}" aria-describedby="input_group_slug" class="form-control {if $validator->hasError("seo_urls.`$language.id`.route")}is-invalid{/if}">
+						<input type="text" name="seo_urls[{$language.id}][route]" id="input_seo_urls_{$language.id}_route" data-is-slug="false" data-seo-id="seo_meta_url_{$language.id}" onkeyup="Catcool.setContentSeo(this);"  value='{old("seo_urls.`$language.id`.route", $seo_urls[$language.id].route)}' placeholder="{$seo_urls[$language.id].route}" aria-describedby="input_group_slug" class="form-control {if validation_show_error("seo_urls.`$language.id`.route")}is-invalid{/if}">
 						<div class="invalid-feedback" id="error_seo_urls_{$language.id}_route">
-							{$validator->getError("seo_urls.`$language.id`.route")}
+							{validation_show_error("seo_urls.`$language.id`.route")}
 						</div>
 					</div>
 					<small>Extension: {get_seo_extension()}</small><br/>

@@ -40,8 +40,8 @@
                                 {lang('RelationshipAdmin.text_candidate_table')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="candidate_table" value="{old('candidate_table', $edit_data.candidate_table)}" id="candidate_table" class="form-control {if $validator->hasError('candidate_table')}is-invalid{/if}">
-                                <div class="invalid-feedback">{$validator->getError("candidate_table")}</div>
+                                <input type="text" name="candidate_table" value="{old('candidate_table', $edit_data.candidate_table)}" id="candidate_table" class="form-control {if validation_show_error('candidate_table')}is-invalid{/if}">
+                                <div class="invalid-feedback">{validation_show_error("candidate_table")}</div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -49,8 +49,8 @@
                                 {lang('RelationshipAdmin.text_candidate_key')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="candidate_key" value="{old('candidate_key', $edit_data.candidate_key)}" id="candidate_key" class="form-control {if $validator->hasError('candidate_key')}is-invalid{/if}">
-                                <div class="invalid-feedback">{$validator->getError("candidate_key")}</div>
+                                <input type="text" name="candidate_key" value="{old('candidate_key', $edit_data.candidate_key)}" id="candidate_key" class="form-control {if validation_show_error('candidate_key')}is-invalid{/if}">
+                                <div class="invalid-feedback">{validation_show_error("candidate_key")}</div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -58,8 +58,8 @@
                                 {lang('RelationshipAdmin.text_foreign_table')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="foreign_table" value="{old('foreign_table', $edit_data.foreign_table)}" id="foreign_table" class="form-control {if $validator->hasError('foreign_table')}is-invalid{/if}">
-                                <div class="invalid-feedback">{$validator->getError("foreign_table")}</div>
+                                <input type="text" name="foreign_table" value="{old('foreign_table', $edit_data.foreign_table)}" id="foreign_table" class="form-control {if validation_show_error('foreign_table')}is-invalid{/if}">
+                                <div class="invalid-feedback">{validation_show_error("foreign_table")}</div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -67,8 +67,8 @@
                                 {lang('RelationshipAdmin.text_foreign_key')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="foreign_key" value="{old('foreign_key', $edit_data.foreign_key)}" id="foreign_key" class="form-control {if $validator->hasError('foreign_key')}is-invalid{/if}">
-                                <div class="invalid-feedback">{$validator->getError("foreign_key")}</div>
+                                <input type="text" name="foreign_key" value="{old('foreign_key', $edit_data.foreign_key)}" id="foreign_key" class="form-control {if validation_show_error('foreign_key')}is-invalid{/if}">
+                                <div class="invalid-feedback">{validation_show_error("foreign_key")}</div>
                             </div>
                         </div>
                     </div>

@@ -13,15 +13,15 @@
             <div class="form-group row">
                 <div class=" col-12">
                 
-                    <input type="text" name="login_identity" id="inpu_login_identity" value="" placeholder="{lang('General.text_login_identity')}" class="form-control {if $validator->hasError('login_identity')}is-invalid{/if}">
-                    <div id="error_login_identity" class="invalid-feedback">{$validator->getError("login_identity")}</div>
+                    <input type="text" name="login_identity" id="inpu_login_identity" value="" placeholder="{lang('General.text_login_identity')}" class="form-control {if validation_show_error('login_identity')}is-invalid{/if}">
+                    <div id="error_login_identity" class="invalid-feedback">{validation_show_error("login_identity")}</div>
 
                 </div>
             </div>
             <div class="form-group row mt-3">
                 <div class="col-12">
-                    <input type="password" name="login_password" id="input_login_password" value="" class="form-control {if $validator->hasError('login_password')}is-invalid{/if}" placeholder="{lang('General.text_password')}">
-                    <div id="error_login_password" class="invalid-feedback">{$validator->getError("login_password")}</div>
+                    <input type="password" name="login_password" id="input_login_password" value="" class="form-control {if validation_show_error('login_password')}is-invalid{/if}" placeholder="{lang('General.text_password')}">
+                    <div id="error_login_password" class="invalid-feedback">{validation_show_error("login_password")}</div>
                 </div>
             </div>
             <div class="form-group row mt-2">

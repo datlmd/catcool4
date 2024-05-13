@@ -35,9 +35,9 @@
     <div class="form-group row">
         <div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_robots')}</div>
         <div class="col-12 col-sm-8 col-lg-6">
-            <textarea type="textarea" name="robots" id="robots" cols="40" rows="5" class="form-control {if $validator->hasError("robots")}is-invalid{/if}">{str_replace('|', PHP_EOL, old('robots', $settings.robots))}</textarea>
+            <textarea type="textarea" name="robots" id="robots" cols="40" rows="5" class="form-control {if validation_show_error("robots")}is-invalid{/if}">{str_replace('|', PHP_EOL, old('robots', $settings.robots))}</textarea>
             <div class="invalid-feedback">
-                {$validator->getError("robots")}
+                {validation_show_error("robots")}
             </div>
             <small>{lang('ConfigAdmin.help_robots')}</small>
         </div>

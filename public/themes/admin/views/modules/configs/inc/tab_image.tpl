@@ -5,51 +5,51 @@
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_file_max_size')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<input type="number" name="file_max_size" value="{old('file_max_size', $settings.file_max_size)|default:0}" id="file_max_size" class="form-control {if $validator->hasError("file_max_size")}is-invalid{/if}">
+			<input type="number" name="file_max_size" value="{old('file_max_size', $settings.file_max_size)|default:0}" id="file_max_size" class="form-control {if validation_show_error("file_max_size")}is-invalid{/if}">
 			<small>
 				{lang('ConfigAdmin.help_file_max_size')}<br/>
 				upload_max_filesize: {ini_get('upload_max_filesize')}
 			</small>
 			<div class="invalid-feedback">
-				{$validator->getError("file_max_size")}
+				{validation_show_error("file_max_size")}
 			</div>
 		</div>
 	</div>
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_file_ext_allowed')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<textarea type="textarea" name="file_ext_allowed" id="file_ext_allowed" cols="40" rows="5" class="form-control {if $validator->hasError("file_ext_allowed")}is-invalid{/if}">{str_replace('|', PHP_EOL, old('file_ext_allowed', $settings.file_ext_allowed))}</textarea>
+			<textarea type="textarea" name="file_ext_allowed" id="file_ext_allowed" cols="40" rows="5" class="form-control {if validation_show_error("file_ext_allowed")}is-invalid{/if}">{str_replace('|', PHP_EOL, old('file_ext_allowed', $settings.file_ext_allowed))}</textarea>
 			<div class="invalid-feedback">
-				{$validator->getError("file_ext_allowed")}
+				{validation_show_error("file_ext_allowed")}
 			</div>
 		</div>
 	</div>
 	<div class="form-group row d-none">
 		<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_file_mime_allowed')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<textarea type="textarea" name="file_mime_allowed" id="file_mime_allowed" cols="40" rows="5" class="form-control {if $validator->hasError("file_mime_allowed")}is-invalid{/if}">{str_replace('|', PHP_EOL, old('file_mime_allowed', $settings.file_mime_allowed))}</textarea>
+			<textarea type="textarea" name="file_mime_allowed" id="file_mime_allowed" cols="40" rows="5" class="form-control {if validation_show_error("file_mime_allowed")}is-invalid{/if}">{str_replace('|', PHP_EOL, old('file_mime_allowed', $settings.file_mime_allowed))}</textarea>
 			<div class="invalid-feedback">
-				{$validator->getError("file_mime_allowed")}
+				{validation_show_error("file_mime_allowed")}
 			</div>
 		</div>
 	</div>
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_file_max_width')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<input type="number" name="file_max_width" value="{old('file_max_width', $settings.file_max_width)|default:0}" id="file_max_width" class="form-control {if $validator->hasError("file_max_width")}is-invalid{/if}">
+			<input type="number" name="file_max_width" value="{old('file_max_width', $settings.file_max_width)|default:0}" id="file_max_width" class="form-control {if validation_show_error("file_max_width")}is-invalid{/if}">
 			<small>{lang('ConfigAdmin.help_file_max_width')}</small>
 			<div class="invalid-feedback">
-				{$validator->getError("file_max_width")}
+				{validation_show_error("file_max_width")}
 			</div>
 		</div>
 	</div>
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label required-label text-sm-end">{lang('ConfigAdmin.text_file_max_height')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<input type="number" name="file_max_height" value="{old('file_max_height', $settings.file_max_height)}" id="file_max_height" class="form-control {if $validator->hasError("file_max_height")}is-invalid{/if}">
+			<input type="number" name="file_max_height" value="{old('file_max_height', $settings.file_max_height)}" id="file_max_height" class="form-control {if validation_show_error("file_max_height")}is-invalid{/if}">
 			<small>{lang('ConfigAdmin.help_file_max_height')}</small>
 			<div class="invalid-feedback">
-				{$validator->getError("file_max_height")}
+				{validation_show_error("file_max_height")}
 			</div>
 		</div>
 	</div>
@@ -143,11 +143,11 @@
 				</div>
 				<div class="form-group">
 					{lang('ConfigAdmin.text_image_watermark_hor_offset')}<br/>
-					<input type="number" name="image_watermark_hor_offset" value="{old('image_watermark_hor_offset', $settings.image_watermark_hor_offset)|default:0}" id="image_watermark_hor_offset" class="form-control {if $validator->hasError("image_watermark_hor_offset")}is-invalid{/if}">
+					<input type="number" name="image_watermark_hor_offset" value="{old('image_watermark_hor_offset', $settings.image_watermark_hor_offset)|default:0}" id="image_watermark_hor_offset" class="form-control {if validation_show_error("image_watermark_hor_offset")}is-invalid{/if}">
 				</div>
 				<div class="form-group">
 					{lang('ConfigAdmin.text_image_watermark_vrt_offset')}<br/>
-					<input type="number" name="image_watermark_vrt_offset" value="{old('image_watermark_vrt_offset', $settings.image_watermark_vrt_offset)|default:0}" id="image_watermark_vrt_offset" class="form-control {if $validator->hasError("image_watermark_vrt_offset")}is-invalid{/if}">
+					<input type="number" name="image_watermark_vrt_offset" value="{old('image_watermark_vrt_offset', $settings.image_watermark_vrt_offset)|default:0}" id="image_watermark_vrt_offset" class="form-control {if validation_show_error("image_watermark_vrt_offset")}is-invalid{/if}">
 				</div>
 				<div class="form-group">
 					{lang('ConfigAdmin.text_image_watermark_opacity')}
@@ -177,7 +177,7 @@
 						<input type="radio" name="image_watermark_type" value="text" {if old('image_watermark_type', $settings.image_watermark_type)|default:$image_watermark_type_default eq 'text'}checked="checked"{/if} id="image_watermark_type_text" class="form-check-input">
 						<label class="form-check-label" for="image_watermark_type_text">{lang('ConfigAdmin.text_image_watermark_text')}</label>
 					</label>
-					<input type="text" name="image_watermark_text" value="{old('image_watermark_text', $settings.image_watermark_text)}" id="image_watermark_text" class="form-control {if $validator->hasError("image_watermark_text")}is-invalid{/if}">
+					<input type="text" name="image_watermark_text" value="{old('image_watermark_text', $settings.image_watermark_text)}" id="image_watermark_text" class="form-control {if validation_show_error("image_watermark_text")}is-invalid{/if}">
 				</div>
 				<div class="form-group">
 					{lang('ConfigAdmin.text_image_watermark_font_path')}

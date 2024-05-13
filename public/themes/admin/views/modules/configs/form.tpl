@@ -39,8 +39,8 @@
                                 {lang('ConfigAdmin.text_config_key')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="config_key" value="{old('config_key', $edit_data.config_key)}" id="config_key" class="form-control {if $validator->hasError('config_key')}is-invalid{/if}">
-                                <div class="invalid-feedback">{$validator->getError("config_key")}</div>
+                                <input type="text" name="config_key" value="{old('config_key', $edit_data.config_key)}" id="config_key" class="form-control {if validation_show_error('config_key')}is-invalid{/if}">
+                                <div class="invalid-feedback">{validation_show_error("config_key")}</div>
                             </div>
                         </div>
                         <div class="form-group row">

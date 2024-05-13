@@ -35,8 +35,8 @@
                                     {lang('Admin.text_username')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
-                                    <input type="text" name="username" value='{old("username", $edit_data.username)}' id="input_username" class="form-control {if $validator->hasError('username')}is-invalid{/if}">
-                                    <div id="error_username" class="invalid-feedback">{$validator->getError("username")}</div>
+                                    <input type="text" name="username" value='{old("username", $edit_data.username)}' id="input_username" class="form-control {if validation_show_error('username')}is-invalid{/if}">
+                                    <div id="error_username" class="invalid-feedback">{validation_show_error("username")}</div>
                                 </div>
                             </div>
 
@@ -45,8 +45,8 @@
                                     {lang('CustomerAdmin.text_email')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
-                                    <input type="text" name="email" value='{old("email", $edit_data.email)}' id="input_email" class="form-control {if $validator->hasError('email')}is-invalid{/if}">
-                                    <div id="error_email" class="invalid-feedback">{$validator->getError("email")}</div>
+                                    <input type="text" name="email" value='{old("email", $edit_data.email)}' id="input_email" class="form-control {if validation_show_error('email')}is-invalid{/if}">
+                                    <div id="error_email" class="invalid-feedback">{validation_show_error("email")}</div>
                                 </div>
                             </div>
 
@@ -82,9 +82,9 @@
                                     {lang('Admin.text_first_name')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
-                                    <input type="text" name="first_name" value='{old("first_name", $edit_data.first_name)}' id="input_first_name" class="form-control {if $validator->hasError('first_name')}is-invalid{/if}">
+                                    <input type="text" name="first_name" value='{old("first_name", $edit_data.first_name)}' id="input_first_name" class="form-control {if validation_show_error('first_name')}is-invalid{/if}">
                                     <small>{lang('Admin.help_first_name')}</small>
-                                    <div id="error_first_name" class="invalid-feedback">{$validator->getError("first_name")}</div>
+                                    <div id="error_first_name" class="invalid-feedback">{validation_show_error("first_name")}</div>
                                 </div>
                             </div>
 
@@ -93,9 +93,9 @@
                                     {lang('Admin.text_last_name')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
-                                    <input type="text" name="last_name" value='{old("last_name", $edit_data.last_name)}' id="input_last_name" class="form-control {if $validator->hasError('last_name')}is-invalid{/if}">
+                                    <input type="text" name="last_name" value='{old("last_name", $edit_data.last_name)}' id="input_last_name" class="form-control {if validation_show_error('last_name')}is-invalid{/if}">
                                     <small>{lang('Admin.help_last_name')}</small>
-                                    <div id="error_last_name" class="invalid-feedback">{$validator->getError("last_name")}</div>
+                                    <div id="error_last_name" class="invalid-feedback">{validation_show_error("last_name")}</div>
                                 </div>
                             </div>
 
@@ -124,10 +124,10 @@
                                 </label>
                                 <div class="col-sm-4 col-lg-3 mb-3 mb-sm-0">
                                     <div class="input-group date show-date-picker" id="show_date_picker" data-target-input="nearest" data-date-format="{get_date_format_ajax()|upper}" data-date-locale="{get_lang(true)}">
-                                        <input type="text" name="dob" id="input_dob" class="form-control datetimepicker-input {if $validator->hasError('dob')}is-invalid{/if}" {if old('dob', $edit_data.dob)}value="{old('dob', $edit_data.dob)|date_format:get_date_format(true)}"{/if} placeholder="{get_date_format_ajax()}" data-target="#show_date_picker" />
+                                        <input type="text" name="dob" id="input_dob" class="form-control datetimepicker-input {if validation_show_error('dob')}is-invalid{/if}" {if old('dob', $edit_data.dob)}value="{old('dob', $edit_data.dob)|date_format:get_date_format(true)}"{/if} placeholder="{get_date_format_ajax()}" data-target="#show_date_picker" />
                                         <div class="input-group-text" data-target="#show_date_picker" data-toggle="datetimepicker"><i class="fa fa-calendar-alt"></i></div>
                                     </div>
-                                    <div id="error_dob" class="invalid-feedback">{$validator->getError("dob")}</div>
+                                    <div id="error_dob" class="invalid-feedback">{validation_show_error("dob")}</div>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -153,8 +153,8 @@
                                     {lang('Admin.text_password')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
-                                    <input type="password" name="password" value="" id="input_password" class="form-control {if $validator->hasError('password')}is-invalid{/if}">
-                                    <div id="error_password" class="invalid-feedback">{$validator->getError("password")}</div>
+                                    <input type="password" name="password" value="" id="input_password" class="form-control {if validation_show_error('password')}is-invalid{/if}">
+                                    <div id="error_password" class="invalid-feedback">{validation_show_error("password")}</div>
                                 </div>
                             </div>
 
@@ -163,8 +163,8 @@
                                     {lang('Admin.text_confirm_password')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
-                                    <input type="password" name="password_confirm" value="" id="input_password_confirm" class="form-control {if $validator->hasError('password_confirm')}is-invalid{/if}">
-                                    <div id="error_password_confirm" class="invalid-feedback">{$validator->getError("password_confirm")}</div>
+                                    <input type="password" name="password_confirm" value="" id="input_password_confirm" class="form-control {if validation_show_error('password_confirm')}is-invalid{/if}">
+                                    <div id="error_password_confirm" class="invalid-feedback">{validation_show_error("password_confirm")}</div>
                                 </div>
                             </div>
 

@@ -32,8 +32,8 @@
                                     {lang('Admin.text_name')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="name" value="{old('name', $edit_data.name)}" id="name" class="form-control {if $validator->hasError('name')}is-invalid{/if}">
-                                    <div class="invalid-feedback">{$validator->getError("name")}</div>
+                                    <input type="text" name="name" value="{old('name', $edit_data.name)}" id="name" class="form-control {if validation_show_error('name')}is-invalid{/if}">
+                                    <div class="invalid-feedback">{validation_show_error("name")}</div>
                                 </div>
                             </div>
 
@@ -42,8 +42,8 @@
                                     {lang('LayoutActionAdmin.text_controller')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="controller" value="{old('controller', $edit_data.controller)}" id="controller" class="form-control {if $validator->hasError('controller')}is-invalid{/if}">
-                                    <div class="invalid-feedback">{$validator->getError("controller")}</div>
+                                    <input type="text" name="controller" value="{old('controller', $edit_data.controller)}" id="controller" class="form-control {if validation_show_error('controller')}is-invalid{/if}">
+                                    <div class="invalid-feedback">{validation_show_error("controller")}</div>
                                 </div>
                             </div>
                             
@@ -52,8 +52,8 @@
                                     {lang('LayoutActionAdmin.text_action')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="action" value="{old('action', $edit_data.action)}" id="action" class="form-control {if $validator->hasError('action')}is-invalid{/if}">
-                                    <div class="invalid-feedback">{$validator->getError("action")}</div>
+                                    <input type="text" name="action" value="{old('action', $edit_data.action)}" id="action" class="form-control {if validation_show_error('action')}is-invalid{/if}">
+                                    <div class="invalid-feedback">{validation_show_error("action")}</div>
                                 </div>
                             </div>
 

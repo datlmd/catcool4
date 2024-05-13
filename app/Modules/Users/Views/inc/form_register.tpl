@@ -3,19 +3,19 @@
     <div class="col-12">{print_flash_alert()}</div>
     {form_open({site_url('users/post_register')}, ['id' => 'form_register', 'class' => 'needs-validatio row g-3'])}
         <div class="col-md-6">
-            <input type="text" name="first_name" id="first_name" value="{old('first_name')}" placeholder="{lang('General.text_first_name')}" class="form-control {if $validator->hasError('first_name')}is-invalid{/if}">
-            <div class="invalid-feedback">{$validator->getError("first_name")}</div>
+            <input type="text" name="first_name" id="first_name" value="{old('first_name')}" placeholder="{lang('General.text_first_name')}" class="form-control {if validation_show_error('first_name')}is-invalid{/if}">
+            <div class="invalid-feedback">{validation_show_error("first_name")}</div>
         </div>
         <div class="col-md-6">
             <input type="text" name="last_name" id="last_name" value="{old('last_name')}" placeholder="{lang('General.text_last_name')}" class="form-control">
         </div>
         <div class="col-md-12">
-            <input type="text" name="identity" id="identity" value="{old('identity')}" placeholder="{lang('General.text_identity')}" class="form-control {if $validator->hasError('identity')}is-invalid{/if}">
-            <div class="invalid-feedback">{$validator->getError("identity")}</div>
+            <input type="text" name="identity" id="identity" value="{old('identity')}" placeholder="{lang('General.text_identity')}" class="form-control {if validation_show_error('identity')}is-invalid{/if}">
+            <div class="invalid-feedback">{validation_show_error("identity")}</div>
         </div>
         <div class="col-md-12">
-            <input type="password" name="password" id="password" value="" placeholder="{lang('General.text_password')}" class="form-control {if $validator->hasError('password')}is-invalid{/if}">
-            <div class="invalid-feedback">{$validator->getError("password")}</div>
+            <input type="password" name="password" id="password" value="" placeholder="{lang('General.text_password')}" class="form-control {if validation_show_error('password')}is-invalid{/if}">
+            <div class="invalid-feedback">{validation_show_error("password")}</div>
         </div>
 
         <div class="col-12">
@@ -56,30 +56,30 @@
                 <div class="col-4">
                     <div class="form-check border rounded-1 w-100 p-2 overflow-hidden d-flex flex-row">
                         <label class="form-check-label w-100 ps-1" for="gender_male">{lang('General.text_male')}</label>
-                        <input class="form-check-input {if $validator->hasError('gender')}is-invalid{/if}" type="radio" name="gender" id="gender_male" value="{GENDER_OTHER}" {if old('gender') eq GENDER_MALE || !in_array(old('gender'), [GENDER_MALE,GENDER_FEMALE,GENDER_OTHER])}checked{/if} >
+                        <input class="form-check-input {if validation_show_error('gender')}is-invalid{/if}" type="radio" name="gender" id="gender_male" value="{GENDER_OTHER}" {if old('gender') eq GENDER_MALE || !in_array(old('gender'), [GENDER_MALE,GENDER_FEMALE,GENDER_OTHER])}checked{/if} >
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="form-check border rounded-1 w-100 p-2 overflow-hidden d-flex flex-row">
                         <label class="form-check-label w-100 ps-1" for="gender_female">{lang('General.text_female')}</label>
-                        <input class="form-check-input {if $validator->hasError('gender')}is-invalid{/if}" type="radio" name="gender" id="gender_female" value="{GENDER_FEMALE}" {if old('gender') eq GENDER_FEMALE}checked{/if} >
+                        <input class="form-check-input {if validation_show_error('gender')}is-invalid{/if}" type="radio" name="gender" id="gender_female" value="{GENDER_FEMALE}" {if old('gender') eq GENDER_FEMALE}checked{/if} >
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="form-check border rounded-1 w-100 p-2 overflow-hidden d-flex flex-row">
                         <label class="form-check-label w-100 ps-1" for="gender_other">{lang('General.text_other')}</label>
-                        <input class="form-check-input {if $validator->hasError('gender')}is-invalid{/if}" type="radio" name="gender" id="gender_other" value="{GENDER_OTHER}" {if old('gender') eq GENDER_OTHER}checked{/if} >
+                        <input class="form-check-input {if validation_show_error('gender')}is-invalid{/if}" type="radio" name="gender" id="gender_other" value="{GENDER_OTHER}" {if old('gender') eq GENDER_OTHER}checked{/if} >
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-12">
             <div class="form-check">
-                <input type="checkbox" name="policy" id="cb_policy" value="1" {if !empty(old('policy'))}checked="checked"{/if} class="form-check-input {if $validator->hasError('policy')}is-invalid{/if}">
+                <input type="checkbox" name="policy" id="cb_policy" value="1" {if !empty(old('policy'))}checked="checked"{/if} class="form-check-input {if validation_show_error('policy')}is-invalid{/if}">
                 <label class="form-check-label" for="cb_policy">
                     {lang('Frontend.text_register_policy')}
                 </label>
-                <div class="invalid-feedback">{$validator->getError("policy")}</div>
+                <div class="invalid-feedback">{validation_show_error("policy")}</div>
             </div>
         </div>
         <div class="col-12">

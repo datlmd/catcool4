@@ -34,9 +34,9 @@
                         <div class="card-body collapse show" id="article_content_collapse">
                             <div class="form-group">
                                 <label class="form-label required-label">{lang('NewsAdmin.text_name')}</label>
-                                <input type="text" name="name" value='{old("name", $edit_data.name)}' id="input_name" data-preview-title="seo_meta_title" data-title-id="input_meta_title" data-preview-slug="seo_meta_url" data-slug-id="input_slug" class="form-control {if empty($edit_data.post_id)}make-slug{/if} {if $validator->hasError("name")}is-invalid{/if}">
+                                <input type="text" name="name" value='{old("name", $edit_data.name)}' id="input_name" data-preview-title="seo_meta_title" data-title-id="input_meta_title" data-preview-slug="seo_meta_url" data-slug-id="input_slug" class="form-control {if empty($edit_data.post_id)}make-slug{/if} {if validation_show_error("name")}is-invalid{/if}">
                                 <div class="invalid-feedback">
-                                    {$validator->getError("name")}
+                                    {validation_show_error("name")}
                                 </div>
                             </div>
                             <div class="form-group mt-3">
@@ -45,7 +45,10 @@
                             </div>
                             <div class="form-group mt-3">
                                 <label class="form-label required-label">{lang('NewsAdmin.text_content')}</label>
-                                <textarea name="content" cols="40" rows="5" data-bs-toggle="tinymce" id="input-content" type="textarea" class="form-control">{old("content", $edit_data.content)}</textarea>
+                                <textarea name="content" cols="40" rows="5" data-bs-toggle="tinymce" id="input-content" type="textarea" class="form-control {if validation_show_error("content")}is-invalid{/if}">{old("content", $edit_data.content)}</textarea>
+                                <div class="invalid-feedback">
+                                    {validation_show_error("content")}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -247,10 +250,12 @@
                                 <label class="form-label"><a href="{site_url('posts/categories_manage')}" target="_blank" class="link-primary">{lang('Admin.text_category')}</a></label>
 
                                 {$output_html = '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>'}
-                                <select name="category_ids[]" id="category_ids[]" class="form-control form-control-sm cc-form-select-multi" multiple="multiple" data-placeholder="{lang('Admin.text_select')}">
+                                <select name="category_ids[]" id="category_ids[]" class="form-control form-control-sm cc-form-select-multi {if validation_show_error("category_ids")}is-invalid{/if}" multiple="multiple" data-placeholder="{lang('Admin.text_select')}">
                                     {draw_tree_output_name(['data' => $categories_tree, 'key_id' => 'category_id'], $output_html, 0, old('category_ids', $edit_data.category_ids))}
                                 </select>
-
+                                <div class="invalid-feedback">
+                                    {validation_show_error("category_ids")}
+                                </div>
                             </div>
                             <div class="form-group pt-2">
                                 <label class="form-label">{lang('NewsAdmin.text_author')}</label>

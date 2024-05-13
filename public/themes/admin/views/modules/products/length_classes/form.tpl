@@ -40,9 +40,9 @@
                                     {lang('ProductLengthClassAdmin.text_value')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
-                                    <input type="text" name="value" value="{old('value', $edit_data.value)}" id="value" class="form-control {if $validator->hasError("value")}is-invalid{/if}">
+                                    <input type="text" name="value" value="{old('value', $edit_data.value)}" id="value" class="form-control {if validation_show_error("value")}is-invalid{/if}">
                                     <div class="invalid-feedback">
-                                        {$validator->getError("value")}
+                                        {validation_show_error("value")}
                                     </div>
                                     <small>{lang('ProductLengthClassAdmin.help_length_value')}</small>
                                 </div>
@@ -56,9 +56,9 @@
                                     {foreach $language_list as $language}
                                         <div class="input-group {if !$language@last}mb-2{/if}">
                                             {if $language_list|count > 1}<span class="input-group-text" title="{$language.name}">{$language.icon}</span>{/if}
-                                            <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_name_{$language.id}" class="form-control {if $validator->hasError("lang.`$language.id`.name")}is-invalid{/if}">
+                                            <input type="text" name="lang[{$language.id}][name]" value='{old("lang.`$language.id`.name", $edit_data.lang[$language.id].name)}' id="input_name_{$language.id}" class="form-control {if validation_show_error("lang.`$language.id`.name")}is-invalid{/if}">
                                             <div class="invalid-feedback">
-                                                {$validator->getError("lang.`$language.id`.name")}
+                                                {validation_show_error("lang.`$language.id`.name")}
                                             </div>
                                         </div>
                                     {/foreach}
@@ -73,9 +73,9 @@
                                     {foreach $language_list as $language}
                                         <div class="input-group {if !$language@last}mb-2{/if}">
                                             {if $language_list|count > 1}<span class="input-group-text" title="{$language.name}">{$language.icon}</span>{/if}
-                                            <input type="text" name="lang[{$language.id}][unit]" value="{old("lang.`$language.id`.unit", $edit_data.lang[$language.id].unit)}" id="input_unit_{$language.id}" class="form-control {if $validator->hasError("lang.`$language.id`.unit")}is-invalid{/if}">
+                                            <input type="text" name="lang[{$language.id}][unit]" value="{old("lang.`$language.id`.unit", $edit_data.lang[$language.id].unit)}" id="input_unit_{$language.id}" class="form-control {if validation_show_error("lang.`$language.id`.unit")}is-invalid{/if}">
                                             <div class="invalid-feedback">
-                                                {$validator->getError("lang.`$language.id`.unit")}
+                                                {validation_show_error("lang.`$language.id`.unit")}
                                             </div>
                                         </div>
                                     {/foreach}

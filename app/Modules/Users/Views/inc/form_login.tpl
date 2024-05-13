@@ -5,14 +5,14 @@
     {form_open({site_url('users/post_login')}, ['id' => 'form_login', 'class' => 'needs-validation'])}
         <div class="form-group row">
             <div class=" col-12">
-                <input type="text" name="login_identity" id="login_identity" value="" placeholder="{lang('General.text_login_identity')}" class="form-control {if $validator->hasError('login_identity')}is-invalid{/if}">
-                <div class="invalid-feedback">{$validator->getError("login_identity")}</div>
+                <input type="text" name="login_identity" id="login_identity" value="" placeholder="{lang('General.text_login_identity')}" class="form-control {if validation_show_error('login_identity')}is-invalid{/if}">
+                <div class="invalid-feedback">{validation_show_error("login_identity")}</div>
             </div>
         </div>
         <div class="form-group row mt-3">
             <div class="col-12">
-                <input type="password" name="login_password" id="login_password" value="" class="form-control {if $validator->hasError('login_password')}is-invalid{/if}" placeholder="{lang('General.text_password')}">
-                <div class="invalid-feedback">{$validator->getError("login_password")}</div>
+                <input type="password" name="login_password" id="login_password" value="" class="form-control {if validation_show_error('login_password')}is-invalid{/if}" placeholder="{lang('General.text_password')}">
+                <div class="invalid-feedback">{validation_show_error("login_password")}</div>
             </div>
         </div>
         <div class="form-group row mt-2">

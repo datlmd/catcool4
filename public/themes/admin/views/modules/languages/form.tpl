@@ -39,8 +39,8 @@
                                 {lang('LanguageAdmin.text_name')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="name" value="{old('name', $edit_data.name)}" id="name" class="form-control {if $validator->hasError('name')}is-invalid{/if}">
-                                <div class="invalid-feedback">{$validator->getError("name")}</div>
+                                <input type="text" name="name" value="{old('name', $edit_data.name)}" id="name" class="form-control {if validation_show_error('name')}is-invalid{/if}">
+                                <div class="invalid-feedback">{validation_show_error("name")}</div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -48,8 +48,8 @@
                                 {lang('LanguageAdmin.text_code')}
                             </label>
                             <div class="col-12 col-sm-8 col-lg-6">
-                                <input type="text" name="code" value="{old('code', $edit_data.code)}" id="code" class="form-control {if $validator->hasError('code')}is-invalid{/if}">
-                                <div class="invalid-feedback">{$validator->getError("code")}</div>
+                                <input type="text" name="code" value="{old('code', $edit_data.code)}" id="code" class="form-control {if validation_show_error('code')}is-invalid{/if}">
+                                <div class="invalid-feedback">{validation_show_error("code")}</div>
                             </div>
                         </div>
                         <div class="form-group row">
