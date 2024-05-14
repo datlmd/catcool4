@@ -53,7 +53,7 @@ class GroupModel extends MyModel
         return $this;
     }
 
-    public function getListAll($is_cache = true)
+    public function getCustomerGroups($is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::CUSTOMER_GROUP_CACHE_NAME) : null;
         if (empty($result)) {

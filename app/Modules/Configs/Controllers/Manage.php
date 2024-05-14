@@ -150,6 +150,13 @@ class Manage extends AdminController
                 case 'tab_local':
                     $data_settings['currency_auto'] = !empty($this->request->getPost('currency_auto')) ? STATUS_ON : STATUS_OFF;
                     break;
+                case 'tab_option':
+                        $data_settings['customer_online'] = !empty($this->request->getPost('customer_online')) ? STATUS_ON : STATUS_OFF;
+                        $data_settings['customer_activity'] = !empty($this->request->getPost('customer_activity')) ? STATUS_ON : STATUS_OFF;
+                        $data_settings['customer_price'] = !empty($this->request->getPost('customer_price')) ? STATUS_ON : STATUS_OFF;
+                        $data_settings['customer_search'] = !empty($this->request->getPost('customer_search')) ? STATUS_ON : STATUS_OFF;
+                        $data_settings['customer_group_display'] = implode(',', $this->request->getPost('customer_group_display[]'));
+                        break;
                 case 'tab_page':
                     $data_settings['enable_scroll_menu_admin'] = !empty($this->request->getPost('enable_scroll_menu_admin')) ? STATUS_ON : STATUS_OFF;
                     $data_settings['enable_icon_menu_admin'] = !empty($this->request->getPost('enable_icon_menu_admin')) ? STATUS_ON : STATUS_OFF;
@@ -210,6 +217,7 @@ class Manage extends AdminController
         if (!empty($list_config)) {
             foreach ($list_config as $value) {
                 switch ($value['config_key']) {
+                    case 'customer_group_display':
                     case 'store_location':
                         $settings[$value['config_key']] = explode(',', $value['config_value']);
                         break;
@@ -263,6 +271,12 @@ class Manage extends AdminController
 
         $location_model = new \App\Modules\Locations\Models\LocationModel();
         $data['location_list'] = $location_model->getLocations();
+
+        $customer_group_model        = new \App\Modules\Customers\Models\GroupModel();
+        $data['customer_group_list'] = $customer_group_model->getCustomerGroups();
+        
+        $page_model        = new \App\Modules\Pages\Models\PageModel();
+        $data['page_list'] = $page_model->getPages();
 
         //check permissions
         $key_file = 'config/Config.php';

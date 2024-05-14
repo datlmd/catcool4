@@ -24,7 +24,7 @@ class PageModel extends MyModel
     protected $useSoftDeletes = true;
     protected $deletedField   = 'deleted';
 
-    const PAGE_CACHE_NAME   = 'page_detail_id_';
+    const PAGE_CACHE_NAME   = 'page_list';
     const PAGE_CACHE_EXPIRE = YEAR;
 
     function __construct()
@@ -60,33 +60,44 @@ class PageModel extends MyModel
         return $result;
     }
 
-    public function getPageInfo($id, $is_cache = true)
+    public function getPages($is_cache = true)
     {
-        if (empty($id)) {
-            return [];
-        }
-
-        $result = $is_cache ? cache()->get(self::PAGE_CACHE_NAME . $id) : null;
+        $result = $is_cache ? cache()->get(self::PAGE_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->getDetail($id);
-            if (empty($result)) {
-                return [];
-            }
-
-            foreach ($result['lang'] as $value) {
-                if (strpos(current_url(), $value['slug']) !== FALSE) {
-                    $result = array_merge($result, $value);
-                    break;
-                }
-            }
+            $result = $this->orderBy('sort_order', 'DESC')->where(['published' => STATUS_ON])->findAll();
 
             if ($is_cache) {
                 // Save into the cache for $expire_time 1 month
-                cache()->save(self::PAGE_CACHE_NAME . $id, $result, self::PAGE_CACHE_EXPIRE);
+                cache()->save(self::PAGE_CACHE_NAME, $result, self::PAGE_CACHE_EXPIRE);
             }
         }
 
-        return $result;
+        if (empty($result)) {
+            return [];
+        }
+
+        $page_list = [];
+        $language_id = get_lang_id(true);
+
+        foreach ($result as $key => $value) {
+            $page_list[$value['page_id']] = format_data_lang_id($value, $this->table_lang, $language_id);
+        }
+
+        return $page_list;
+    }
+
+    public function getPageInfo($page_id, $is_cache = true)
+    {
+        if (empty($page_id)) {
+            return [];
+        }
+
+        $page_list = $this->getPages($is_cache);
+        if (empty($page_list[$page_id])) {
+            return [];
+        }
+        
+        return $page_list[$page_id];
     }
 
     public function deleteCache($id = null)

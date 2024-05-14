@@ -110,89 +110,114 @@
 	</div>
 
 	<div class="border-bottom mx-3 lead pb-1 my-3 fw-bold">{lang('ConfigAdmin.text_customer')}</div>
+
 	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_customer_online')}</div>
-		<div class="col-12 col-sm-8 col-lg-6 pt-2">
-			<label class="form-check form-check-inline">
-				<input type="radio" name="customer_online" value="{STATUS_ON}" {if !empty(old('customer_online', $settings.customer_online))}checked="checked"{/if} id="customer_online_on" class="form-check-input">
-				<label class="form-check-label" for="customer_online_on">{lang('Admin.text_on')}</label>
-			</label>
-			<label class="form-check form-check-inline me-2">
-				<input type="radio" name="customer_online" value="{STATUS_OFF}" {if empty(old('customer_online', $settings.customer_online))}checked="checked"{/if} id="customer_online_off" class="form-check-input">
-				<label class="form-check-label" for="customer_online_off">{lang('Admin.text_off')}</label>
-			</label>
-			<br/>
-			<small>{lang('ConfigAdmin.help_customer_online')}</small>
+		<label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_customer_online">{lang('ConfigAdmin.text_customer_online')}</label>
+		<div class="col-12 col-sm-8 col-lg-6 form-control-lg py-1" style="min-height: 25px;">
+
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" name="customer_online" id="input_customer_online"
+					{set_checkbox('customer_online', 1, $settings.customer_online|default:false)} value="1">
+			</div>
+
 		</div>
 	</div>
+	<div class="row" style="margin-top: -5px;">
+		<div class="col-12 col-sm-3"></div>
+		<div class="col-12 col-sm-8 col-lg-6 form-text">{lang('ConfigAdmin.help_customer_online')}</div>
+	</div>
+
 	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_customer_activity')}</div>
-		<div class="col-12 col-sm-8 col-lg-6 pt-2">
-			<label class="form-check form-check-inline">
-				<input type="radio" name="customer_activity" value="{STATUS_ON}" {if !empty(old('customer_activity', $settings.customer_activity))}checked="checked"{/if} id="customer_activity_on" class="form-check-input">
-				<label class="form-check-label" for="customer_activity_on">{lang('Admin.text_on')}</label>
-			</label>
-			<label class="form-check form-check-inline me-2">
-				<input type="radio" name="customer_activity" value="{STATUS_OFF}" {if empty(old('customer_activity', $settings.customer_activity))}checked="checked"{/if} id="customer_activity_off" class="form-check-input">
-				<label class="form-check-label" for="customer_activity_off">{lang('Admin.text_off')}</label>
-			</label>
-			<br/>
-			<small>{lang('ConfigAdmin.help_customer_activity')}</small>
+		<label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_customer_activity">{lang('ConfigAdmin.text_customer_activity')}</label>
+		<div class="col-12 col-sm-8 col-lg-6 form-control-lg py-1" style="min-height: 25px;">
+
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" name="customer_activity" id="input_customer_activity"
+					{set_checkbox('customer_activity', 1, $settings.customer_activity|default:false)} value="1">
+			</div>
+
 		</div>
 	</div>
+	<div class="row" style="margin-top: -5px;">
+		<div class="col-12 col-sm-3"></div>
+		<div class="col-12 col-sm-8 col-lg-6 form-text">{lang('ConfigAdmin.help_customer_activity')}</div>
+	</div>
+
 	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_customer_search')}</div>
-		<div class="col-12 col-sm-8 col-lg-6 pt-2">
-			<label class="form-check form-check-inline">
-				<input type="radio" name="customer_search" value="{STATUS_ON}" {if !empty(old('customer_search', $settings.customer_search))}checked="checked"{/if} id="customer_search_on" class="form-check-input">
-				<label class="form-check-label" for="customer_search_on">{lang('Admin.text_on')}</label>
-			</label>
-			<label class="form-check form-check-inline me-2">
-				<input type="radio" name="customer_search" value="{STATUS_OFF}" {if empty(old('customer_search', $settings.customer_search))}checked="checked"{/if} id="customer_search_off" class="form-check-input">
-				<label class="form-check-label" for="customer_search_off">{lang('Admin.text_off')}</label>
-			</label>
+		<label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_customer_search">{lang('ConfigAdmin.text_customer_search')}</label>
+		<div class="col-12 col-sm-8 col-lg-6 form-control-lg py-1" style="min-height: 25px;">
+
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" name="customer_search" id="input_customer_search"
+					{set_checkbox('customer_search', 1, $settings.customer_search|default:false)} value="1">
+			</div>
+
 		</div>
 	</div>
+
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_customer_group_id')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			{form_dropdown('customer_group_id', $timezone_list, old('customer_group_id', $settings.customer_group_id), ['class' => 'form-control'])}
+			<select name="customer_group_id" class="form-control">
+				{foreach $customer_group_list as $customer_group}
+					<option value="{$customer_group.customer_group_id}" {set_select('customer_group_id', $customer_group.customer_group_id, ($customer_group.customer_group_id == $settings.customer_group_id))}>{$customer_group.name}</option>
+				{/foreach}
+			</select>
+
 			<small>{lang('ConfigAdmin.help_customer_group_id')}</small>
 		</div>
 	</div>
 	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_customer_group_display')}</div>
+		<label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_customer_group_display')}</label>
 		<div class="col-12 col-sm-8 col-lg-6">
-			{form_dropdown('customer_group_display', $timezone_list, old('customer_group_display', $settings.customer_group_display), ['class' => 'form-control'])}
+			<div class="form-control" style="height: 150px; overflow: auto;">
+				{foreach $customer_group_list as $customer_group}
+					<div class="form-check">
+						<input type="checkbox" name="customer_group_display[]" value="{$customer_group.customer_group_id}"
+							id="input_customer_group_display_{$location.location_id}" class="form-check-input"
+							{if in_array($customer_group.customer_group_id, $settings.customer_group_display|default:[])}checked{/if} /> <label for="input_customer_group_display_{$customer_group.customer_group_id}" class="form-check-label">{$customer_group.name}</label>
+					</div>
+				{/foreach}
+			</div>
+			<div class="invalid-feedback">
+				{validation_show_error("customer_group_display")}
+			</div>
+
 			<small>{lang('ConfigAdmin.help_customer_group_display')}</small>
 		</div>
 	</div>
+
 	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_customer_price')}</div>
-		<div class="col-12 col-sm-8 col-lg-6">
-			<label class="form-check form-check-inline">
-				<input type="radio" name="customer_price" value="{STATUS_ON}" {if !empty(old('customer_price', $settings.customer_price))}checked="checked"{/if} id="customer_price_on" class="form-check-input">
-				<label class="form-check-label" for="customer_price_on">{lang('Admin.text_on')}</label>
-			</label>
-			<label class="form-check form-check-inline me-2">
-				<input type="radio" name="customer_price" value="{STATUS_OFF}" {if empty(old('customer_price', $settings.customer_price))}checked="checked"{/if} id="customer_price_off" class="form-check-input">
-				<label class="form-check-label" for="customer_price_off">{lang('Admin.text_off')}</label>
-			</label>
-			<br/>
-			<small>{lang('ConfigAdmin.help_customer_price')}</small>
+		<label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_customer_price">{lang('ConfigAdmin.text_customer_price')}</label>
+		<div class="col-12 col-sm-8 col-lg-6 form-control-lg py-1" style="min-height: 25px;">
+
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" name="customer_price" id="input_customer_price"
+					{set_checkbox('customer_price', 1, $settings.customer_price|default:false)} value="1">
+			</div>
+
 		</div>
 	</div>
+	<div class="row" style="margin-top: -5px;">
+		<div class="col-12 col-sm-3"></div>
+		<div class="col-12 col-sm-8 col-lg-6 form-text">{lang('ConfigAdmin.help_customer_price')}</div>
+	</div>
+	
 	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_login_attempts')}</div>
+		<label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_maximum_login_attempts">{lang('ConfigAdmin.text_login_attempts')}</label>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<input type="number" name="login_attempts" value="{old('login_attempts', $settings.login_attempts)}" id="login_attempts" class="form-control">
+			<input type="number" name="maximum_login_attempts" value="{old('maximum_login_attempts', $settings.maximum_login_attempts)}" id="input_maximum_login_attempts" class="form-control">
 			<small>{lang('ConfigAdmin.help_login_attempts')}</small>
 		</div>
 	</div>
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_account_terms')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			{form_dropdown('account_terms', $timezone_list, old('account_terms', $settings.account_terms), ['class' => 'form-control'])}
+			<select name="account_terms" class="form-control">
+				{foreach $page_list as $page}
+					<option value="{$page.page_id}" {set_select('account_terms', $page.page_id, ($page.page_id == $settings.account_terms))}>{$page.name}</option>
+				{/foreach}
+			</select>
 			<small>{lang('ConfigAdmin.help_account_terms')}</small>
 		</div>
 	</div>
