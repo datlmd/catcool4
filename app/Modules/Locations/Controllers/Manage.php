@@ -137,7 +137,7 @@ class Manage extends AdminController
 
     private function _getForm($id = null)
     {
-        $data['language_list'] = get_list_lang(true);
+        $data['language_list'] = list_language_admin();
 
         //edit
         if (!empty($id) && is_numeric($id)) {

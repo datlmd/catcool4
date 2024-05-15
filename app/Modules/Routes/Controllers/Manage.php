@@ -47,7 +47,7 @@ class Manage extends AdminController
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'           => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
-            'languages'     => get_list_lang(true),
+            'languages'     => list_language_admin(),
         ];
 
         $this->themes
@@ -165,7 +165,7 @@ class Manage extends AdminController
         }
 
         $data['item_info'] = $item_info;
-        $data['languages'] = format_dropdown(get_list_lang(true));
+        $data['languages'] = format_dropdown(list_language_admin());
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }

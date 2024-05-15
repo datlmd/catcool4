@@ -185,7 +185,7 @@ class RouteModel extends MyModel
             ];
             $this->insert($route_data);
         } else {
-            foreach (get_list_lang(true) as $key => $value) {
+            foreach (list_language_admin() as $key => $value) {
                 if (!empty($urls[$key]['language_id']) && !empty($urls[$key]['route_old'])) {
                     $this->where(['route' => $urls[$key]['route_old'], 'language_id' => $key])->delete();
                 }

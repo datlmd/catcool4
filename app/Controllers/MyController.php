@@ -85,7 +85,7 @@ class MyController extends Controller
             force_https();
         }
 
-        \Config\Services::language()->setLocale(get_lang());
+        \Config\Services::language()->setLocale(get_language());
 
         $agent = $this->request->getUserAgent();
         if ($agent->isMobile() && !$agent->isMobile('ipad')) {
@@ -105,7 +105,7 @@ class MyController extends Controller
             date_default_timezone_set('Asia/Saigon');
         }
 
-        \Config\Services::language()->setLocale(get_lang());
+        \Config\Services::language()->setLocale(get_language());
 
         $this->site_lang = \Config\Services::language()->getLocale();
 

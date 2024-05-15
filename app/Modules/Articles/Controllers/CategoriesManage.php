@@ -88,7 +88,7 @@ class CategoriesManage extends AdminController
             $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
 
             $add_data_lang = $this->request->getPost('lang');
-            foreach (get_list_lang(true) as $value) {
+            foreach (list_language_admin() as $value) {
                 $add_data_lang[$value['id']]['language_id'] = $value['id'];
                 $add_data_lang[$value['id']]['category_id'] = $id;
                 $add_data_lang[$value['id']]['slug']        = !empty($seo_urls[$value['id']]['route']) ? get_seo_extension($seo_urls[$value['id']]['route']) : '';
@@ -124,7 +124,7 @@ class CategoriesManage extends AdminController
             $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
 
             $edit_data_lang = $this->request->getPost('lang');
-            foreach (get_list_lang(true) as $value) {
+            foreach (list_language_admin() as $value) {
                 $edit_data_lang[$value['id']]['language_id'] = $value['id'];
                 $edit_data_lang[$value['id']]['category_id'] = $id;
                 $edit_data_lang[$value['id']]['slug']        = !empty($seo_urls[$value['id']]['route']) ? get_seo_extension($seo_urls[$value['id']]['route']) : '';
@@ -221,7 +221,7 @@ class CategoriesManage extends AdminController
         $this->themes->addCSS('common/js/tags/tagsinput');
         $this->themes->addJS('common/js/tags/tagsinput');
 
-        $data['language_list'] = get_list_lang(true);
+        $data['language_list'] = list_language_admin();
 
         $list_all = $this->model->getAllByFilter();
         $data['patent_list'] = format_tree(['data' => $list_all, 'key_id' => 'category_id']);
@@ -264,7 +264,7 @@ class CategoriesManage extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        foreach(get_list_lang(true) as $value) {
+        foreach(list_language_admin() as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name'] . ')', 'required');
             $this->validator->setRule(
                 sprintf('seo_urls.%s.route', $value['id']),

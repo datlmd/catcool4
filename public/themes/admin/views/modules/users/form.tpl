@@ -125,7 +125,7 @@
                             <div class="col-sm-4 col-lg-3 mb-3 mb-sm-0">
                                 <div class="input-group date show-date-picker" id="show-date-picker"
                                     data-target-input="nearest" data-date-format="{get_date_format_ajax()|upper}"
-                                    data-date-locale="{get_lang(true)}">
+                                    data-date-locale="{get_language_admin()}">
                                     <input type="text" name="dob" id="dob" class="form-control datetimepicker-input"
                                         {if old('dob', $edit_data.dob)}value="{old('dob', $edit_data.dob)|date_format:get_date_format(true)}"
                                         {/if} placeholder="{get_date_format_ajax()}" data-target="#show-date-picker" />

@@ -100,9 +100,9 @@ class User
 
         $user_info = $this->getUserInfo();
 
-        $language_list = get_list_lang();
-        if (is_multi_lang() && !empty($language_list[$user_info['language_id']])) {
-            set_lang($language_list[$user_info['language_id']]['code']);
+        $language_list = list_language_admin();
+        if (is_multi_language() && !empty($language_list[$user_info['language_id']])) {
+            set_language_admin($language_list[$user_info['language_id']]['code']);
         }
 
         return true;
@@ -118,9 +118,9 @@ class User
 
         $user_info = $this->getUserInfo();
 
-        $language_list = get_list_lang();
-        if (is_multi_lang() && !empty($language_list[$user_info['language_id']])) {
-            set_lang($language_list[$user_info['language_id']]['code']);
+        $language_list = list_language_admin();
+        if (is_multi_language() && !empty($language_list[$user_info['language_id']])) {
+            set_language_admin($language_list[$user_info['language_id']]['code']);
         }
 
         return true;

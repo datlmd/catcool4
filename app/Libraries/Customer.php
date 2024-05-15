@@ -98,9 +98,9 @@ class Customer
 
         $customer_info = $this->getCustomerInfo();
 
-        $language_list = get_list_lang();
-        if (is_multi_lang() && !empty($language_list[$customer_info['language_id']])) {
-            set_lang($language_list[$customer_info['language_id']]['code']);
+        $language_list = list_language();
+        if (is_multi_language() && !empty($language_list[$customer_info['language_id']])) {
+            set_language($language_list[$customer_info['language_id']]['code']);
         }
 
         return true;
@@ -116,9 +116,9 @@ class Customer
 
         $customer_info = $this->getCustomerInfo();
 
-        $language_list = get_list_lang();
-        if (is_multi_lang() && !empty($language_list[$customer_info['language_id']])) {
-            set_lang($language_list[$customer_info['language_id']]['code']);
+        $language_list = list_language();
+        if (is_multi_language() && !empty($language_list[$customer_info['language_id']])) {
+            set_language($language_list[$customer_info['language_id']]['code']);
         }
 
         return true;
@@ -134,9 +134,9 @@ class Customer
 
         $customer_info = $this->getCustomerInfo();
 
-        $language_list = get_list_lang();
-        if (is_multi_lang() && !empty($language_list[$customer_info['language_id']])) {
-            set_lang($language_list[$customer_info['language_id']]['code']);
+        $language_list = list_language();
+        if (is_multi_language() && !empty($language_list[$customer_info['language_id']])) {
+            set_language($language_list[$customer_info['language_id']]['code']);
         }
 
         return true;

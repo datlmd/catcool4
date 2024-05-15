@@ -222,7 +222,7 @@ class Manage extends AdminController
 
         $this->themes->addJS('common/plugin/datepicker/moment.min');
         $this->themes->addJS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
-        if (get_lang(true) == 'vi') {
+        if (get_language_admin() == 'vi') {
             $this->themes->addJS('common/plugin/datepicker/locale/vi');
         }
 
@@ -233,11 +233,11 @@ class Manage extends AdminController
         $this->themes->addCSS('common/plugin/multi-select/css/select2.min');
         $this->themes->addCSS('common/plugin/multi-select/css/select2-bootstrap-5-theme.min');
         $this->themes->addJS('common/plugin/multi-select/js/select2.min');
-        if (get_lang(true) == 'vi') {
+        if (get_language_admin() == 'vi') {
             $this->themes->addJS('common/plugin/multi-select/js/i18n/vi');
         }
 
-        $data['list_lang'] = get_list_lang(true);
+        $data['list_lang'] = list_language_admin();
 
         $group_list     = $this->group_model->getCustomerGroups();
         $data['groups'] = array_column($group_list, null, 'customer_group_id');

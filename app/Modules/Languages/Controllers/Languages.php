@@ -16,7 +16,7 @@ class Languages extends MyController
 
     public function switch($code)
     {
-        set_lang($code);
+        set_language($code);
 
         return redirect()->back();
     }

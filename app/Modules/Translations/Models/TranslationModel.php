@@ -58,7 +58,7 @@ class TranslationModel extends MyModel
             return null;
         }
 
-        if (is_multi_lang() && !empty($filter["value"])) {
+        if (is_multi_language() && !empty($filter["value"])) {
             $translation_other = [];
             foreach ($result as $value) {
                 $list_other = $this->where(['lang_key' => $value['lang_key'], 'lang_id !=' => $value['lang_id']])->findAll();

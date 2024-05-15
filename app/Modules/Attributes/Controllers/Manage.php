@@ -82,7 +82,7 @@ class Manage extends AdminController
             }
 
             $add_data_lang = $this->request->getPost('lang');
-            foreach (get_list_lang(true) as $language) {
+            foreach (list_language_admin() as $language) {
                 $add_data_lang[$language['id']]['language_id'] = $language['id'];
                 $add_data_lang[$language['id']]['attribute_id'] = $id;
                 $this->model_lang->insert($add_data_lang[$language['id']]);
@@ -111,7 +111,7 @@ class Manage extends AdminController
             }
 
             $edit_data_lang = $this->request->getPost('lang');
-            foreach (get_list_lang(true) as $language) {
+            foreach (list_language_admin() as $language) {
                 $edit_data_lang[$language['id']]['language_id'] = $language['id'];
                 $edit_data_lang[$language['id']]['attribute_id'] = $id;
 
@@ -144,7 +144,7 @@ class Manage extends AdminController
 
     private function _getForm($id = null)
     {
-        $data['language_list'] = get_list_lang(true);
+        $data['language_list'] = list_language_admin();
 
         $group_model = new GroupModel();
         $data['groups'] = format_dropdown($group_model->getAllByFilter(), 'attribute_group_id');
@@ -183,7 +183,7 @@ class Manage extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        foreach(get_list_lang(true) as $value) {
+        foreach(list_language_admin() as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
         }
 

@@ -58,7 +58,7 @@
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     <select name="language_id" id="language_id" class="form-control">
-                                        {foreach get_list_lang(true) as $language}
+                                        {foreach list_language_admin() as $language}
                                             <option value="{$language.id}" {if $edit_data.language_id eq $language.id}selected="selected"{/if}>{$language.name}</option>
                                         {/foreach}
                                     </select>

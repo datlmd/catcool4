@@ -134,7 +134,7 @@ class PlansManage extends AdminController
         }
 
         $edit_data_lang = $this->request->getPost('lang');
-        foreach (get_list_lang(true) as $language) {
+        foreach (list_language_admin() as $language) {
             $edit_data_lang[$language['id']]['language_id']          = $language['id'];
             $edit_data_lang[$language['id']]['subscription_plan_id'] = $subscription_plan_id;
 
@@ -153,7 +153,7 @@ class PlansManage extends AdminController
 
     private function _getForm($id = null)
     {
-        $data['language_list'] = get_list_lang(true);
+        $data['language_list'] = list_language_admin();
 
         //edit
         if (!empty($id) && is_numeric($id)) {
@@ -203,7 +203,7 @@ class PlansManage extends AdminController
         $this->validator->setRule('price', lang('SubscriptionPlanAdmin.text_price'), 'decimal');
         $this->validator->setRule('duration', lang('SubscriptionPlanAdmin.text_duration'), 'is_natural_no_zero');
         $this->validator->setRule('cycle', lang('SubscriptionPlanAdmin.text_cycle'), 'is_natural');
-        foreach(get_list_lang(true) as $value) {
+        foreach(list_language_admin() as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('SubscriptionPlanAdmin.text_plan_name') . ' (' . $value['name']  . ')', 'required|min_length[3]|max_length[255]');
         }
 

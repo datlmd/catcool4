@@ -17,14 +17,16 @@ class AdminController extends UserController
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
 
-        \Config\Services::language()->setLocale(get_lang(true));
+        \Config\Services::language()->setLocale(get_language_admin());
     }
 
     public function __construct()
     {
         parent::__construct();
 
-        \Config\Services::language()->setLocale(get_lang(true));
+        helper('admin');
+        
+        \Config\Services::language()->setLocale(get_language_admin());
 
         $method_name =  service('router')->methodName();
         if (!in_array($method_name, ['login', 'logout', 'forgotPassword', 'resetPassword'])) {

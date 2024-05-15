@@ -78,7 +78,7 @@ class LengthClassesManage extends AdminController
             }
 
             $add_data_lang = $this->request->getPost('lang');
-            foreach (get_list_lang(true) as $language) {
+            foreach (list_language_admin() as $language) {
                 $add_data_lang[$language['id']]['language_id']     = $language['id'];
                 $add_data_lang[$language['id']]['length_class_id'] = $id;
                 $this->model_lang->insert($add_data_lang[$language['id']]);
@@ -107,7 +107,7 @@ class LengthClassesManage extends AdminController
             }
 
             $edit_data_lang = $this->request->getPost('lang');
-            foreach (get_list_lang(true) as $language) {
+            foreach (list_language_admin() as $language) {
                 $edit_data_lang[$language['id']]['language_id']     = $language['id'];
                 $edit_data_lang[$language['id']]['length_class_id'] = $id;
 
@@ -139,7 +139,7 @@ class LengthClassesManage extends AdminController
 
     private function _getForm($id = null)
     {
-        $data['language_list'] = get_list_lang(true);
+        $data['language_list'] = list_language_admin();
 
         //edit
         if (!empty($id) && is_numeric($id)) {
@@ -176,7 +176,7 @@ class LengthClassesManage extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('value', lang('ProductLengthClassAdmin.text_value'), 'required|numeric');
-        foreach(get_list_lang(true) as $value) {
+        foreach(list_language_admin() as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
             $this->validator->setRule(sprintf('lang.%s.unit', $value['id']), lang('ProductLengthClassAdmin.text_unit') . ' (' . $value['name']  . ')', 'required');
         }

@@ -186,7 +186,7 @@ class Manage extends AdminController
 
         $this->themes->addJS('common/plugin/datepicker/moment.min');
         $this->themes->addJS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
-        if (get_lang(true) == 'vi') {
+        if (get_language_admin() == 'vi') {
             $this->themes->addJS('common/plugin/datepicker/locale/vi');
         }
 
@@ -195,11 +195,11 @@ class Manage extends AdminController
         $this->themes->addCSS('common/plugin/multi-select/css/select2.min');
         $this->themes->addCSS('common/plugin/multi-select/css/select2-bootstrap-5-theme.min');
         $this->themes->addJS('common/plugin/multi-select/js/select2.min');
-        if (get_lang(true) == 'vi') {
+        if (get_language_admin() == 'vi') {
             $this->themes->addJS('common/plugin/multi-select/js/i18n/vi');
         }
 
-        $data['list_lang'] = get_list_lang(true);
+        $data['list_lang'] = list_language_admin();
 
         $group_list      = $this->group_model->findAll();
         $permission_list = $this->permission_model->getListPublished();
@@ -774,7 +774,7 @@ class Manage extends AdminController
             // Generate code
             $user_info = $this->model->forgotPassword($this->request->getPost('email'));
             if (!empty($user_info)) {
-                $language_code = $user_info['language_id'] ? get_list_lang()[$user_info['language_id']]['code'] : get_lang();
+                $language_code = $user_info['language_id'] ? list_language()[$user_info['language_id']]['code'] : get_language();
                 $data = [
                     'full_name'               => full_name($user_info['first_name'], $user_info['last_name']),
                     'username'                => $user_info['username'],

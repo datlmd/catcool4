@@ -53,7 +53,7 @@ class Manage extends AdminController
 
     public function switch($code)
     {
-        set_lang($code, true);
+        set_language_admin($code);
 
         return redirect()->back();
     }

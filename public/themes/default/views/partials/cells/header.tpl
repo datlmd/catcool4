@@ -101,7 +101,7 @@
                             </ul>
                         </li>
 
-                        {if is_multi_lang() == true}
+                        {if is_multi_language() == true}
                             <li class="nav-item">
                                 {view_cell('Common::language')}
                             </li>

@@ -24,7 +24,7 @@
 		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('Admin.text_language')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
 			<select name="default_locale" class="form-control">
-				{foreach get_list_lang(true) as $key => $value}
+				{foreach list_language_admin() as $key => $value}
 					<option value={$value.code}  {if $value.code == old('default_locale', $settings.default_locale)}selected="selected"{/if}>
 						{lang("General."|cat:$value.code)}
 					</option>
@@ -36,7 +36,7 @@
 		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_language_admin')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
 			<select name="default_locale_admin" class="form-control">
-				{foreach get_list_lang(true) as $key => $value}
+				{foreach list_language_admin() as $key => $value}
 					<option value={$value.code}  {if $value.code == old('default_locale_admin', $settings.default_locale_admin)}selected="selected"{/if}>
 						{lang("General."|cat:$value.code)}
 					</option>

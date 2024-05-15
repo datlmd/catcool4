@@ -45,7 +45,7 @@
 	<div class="form-group row">
 		<div class="col-12 col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_date_available')}</div>
 		<div class="col-12 col-sm-10 col-lg-10">
-			<div class="input-group date show-date-picker" id="show_date_available" data-target-input="nearest" data-date-format="{get_date_format_ajax()|upper}" data-date-locale="{get_lang(true)}">
+			<div class="input-group date show-date-picker" id="show_date_available" data-target-input="nearest" data-date-format="{get_date_format_ajax()|upper}" data-date-locale="{get_language_admin()}">
 				<input type="text" name="date_available" id="input_date_available" class="form-control datetimepicker-input" value="{old('date_available', $edit_data.date_available|default:get_date())|date_format:{get_date_format(true)}}" placeholder="{get_date_format_ajax()}" data-target="#show_date_available" />
 				<div class="input-group-text" data-target="#show_date_available" data-toggle="datetimepicker"><i class="fa fa-calendar-alt"></i></div>
 			</div>

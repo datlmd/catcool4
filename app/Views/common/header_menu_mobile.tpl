@@ -133,7 +133,7 @@
                 <div class="header-mobile-menu-bottom">
 
                     <ul class="nav header-mobile-menu-main">
-                        {if is_multi_lang() == true}
+                        {if is_multi_language() == true}
                             <li class="nav-item">
                                 {view_cell('Common::language', 'type=collapse')}
                             </li>

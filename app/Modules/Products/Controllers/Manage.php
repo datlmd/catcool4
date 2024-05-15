@@ -216,7 +216,7 @@ class Manage extends AdminController
         }
 
         $edit_data_lang = $this->request->getPost('lang');
-        foreach (get_list_lang(true) as $language) {
+        foreach (list_language_admin() as $language) {
             $edit_data_lang[$language['id']]['language_id'] = $language['id'];
             $edit_data_lang[$language['id']]['product_id']  = $product_id;
             $edit_data_lang[$language['id']]['slug']        = !empty($seo_urls[$language['id']]['route']) ? get_seo_extension($seo_urls[$language['id']]['route']) : '';
@@ -310,7 +310,7 @@ class Manage extends AdminController
         if (!empty($product_attribute_list)) {
             $data_attribute = [];
             foreach ($product_attribute_list as $value) {
-                foreach (get_list_lang(true) as $language) {
+                foreach (list_language_admin() as $language) {
                     if (empty($value['attribute_id']) || empty($value['lang'][$language['id']]['text'])) {
                         continue;
                     }
@@ -441,7 +441,7 @@ class Manage extends AdminController
 
                         $variant_value_id = $variant_value_model->insert($data_variant_value);
                         $data_variant_value_lang = $variant_value['lang'];
-                        foreach (get_list_lang(true) as $language) {
+                        foreach (list_language_admin() as $language) {
                             $data_variant_value_lang[$language['id']]['language_id']      = $language['id'];
                             $data_variant_value_lang[$language['id']]['variant_value_id'] = $variant_value_id;
                             $data_variant_value_lang[$language['id']]['variant_id']       = $variant['variant_id'];
@@ -544,7 +544,7 @@ class Manage extends AdminController
         $this->themes->addCSS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
         $this->themes->addJS('common/plugin/datepicker/moment.min');
         $this->themes->addJS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
-        if (get_lang(true) == 'vi') {
+        if (get_language_admin() == 'vi') {
             $this->themes->addJS('common/plugin/datepicker/locale/vi');
         }
 
@@ -555,7 +555,7 @@ class Manage extends AdminController
         $this->themes->addCSS('common/plugin/multi-select/css/select2.min');
         $this->themes->addCSS('common/plugin/multi-select/css/select2-bootstrap-5-theme.min');
         $this->themes->addJS('common/plugin/multi-select/js/select2.min');
-        if (get_lang(true) == 'vi') {
+        if (get_language_admin() == 'vi') {
             $this->themes->addJS('common/plugin/multi-select/js/i18n/vi');
         }
 
@@ -568,7 +568,7 @@ class Manage extends AdminController
         $this->themes->addCSS('common/js/dropzone/dropdrap');
         $this->themes->addJS('common/js/dropzone/dropdrap');
 
-        $data['language_list'] = get_list_lang(true);
+        $data['language_list'] = list_language_admin();
 
         //edit
         if (!empty($product_id) && is_numeric($product_id)) {
@@ -680,7 +680,7 @@ class Manage extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        foreach(get_list_lang(true) as $value) {
+        foreach(list_language_admin() as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('ProductAdmin.text_name') . ' (' . $value['name']  . ')', 'required');
         }
 
@@ -745,7 +745,7 @@ class Manage extends AdminController
 
 
 
-                        foreach (get_list_lang(true) as $lang_value) {
+                        foreach (list_language_admin() as $lang_value) {
                             $this->validator->setRule(sprintf('product_variant.%s.variant_values.%s.lang.%s.name', $variant_key, $variant_value_key, $lang_value['id']), lang('ProductAdmin.text_variant_value') . ' (' . $lang_value['name'] . ')', 'required|max_length[50]|min_length[1]');
                         }
                     }
@@ -793,7 +793,7 @@ class Manage extends AdminController
 //                if (empty($value['lang'])) {
 //                    continue;
 //                }
-//                foreach(get_list_lang(true) as $lang_value) {
+//                foreach(list_language_admin() as $lang_value) {
 //                    $this->validator->setRule(sprintf('product_attribute.%s.lang.%s.text', $key, $lang_value['id']), lang('ProductAdmin.text_text') . ' (' . $lang_value['name']  . ')', 'required');
 //                }
 //            }

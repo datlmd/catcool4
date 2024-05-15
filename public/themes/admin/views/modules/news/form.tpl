@@ -274,7 +274,7 @@
                                     {assign var="publish_date" value="{get_date()}"}
                                 {/if}
                                 <label class="form-label">{lang('NewsAdmin.text_publish_date')}</label>
-                                <div class="input-group date show-date-picker" id="show-date-picker" data-target-input="nearest" data-date-format="{get_date_format_ajax()|upper}" data-date-locale="{get_lang(true)}">
+                                <div class="input-group date show-date-picker" id="show-date-picker" data-target-input="nearest" data-date-format="{get_date_format_ajax()|upper}" data-date-locale="{get_language_admin()}">
                                     <input type="text" name="publish_date" id="publish_date" class="form-control datetimepicker-input" {if old('publish_date', $publish_date)}value="{old('publish_date', $publish_date)|date_format:{get_date_format(true)}}"{/if} placeholder="{get_date_format_ajax()}" data-target="#show-date-picker" />
                                     <div class="input-group-text" data-target="#show-date-picker" data-toggle="datetimepicker"><i class="fa fa-calendar-alt"></i></div>
                                 </div>

@@ -221,7 +221,7 @@ class CategoriesManage extends AdminController
         $this->themes->addCSS('common/js/tags/tagsinput');
         $this->themes->addJS('common/js/tags/tagsinput');
 
-        $data['language_list'] = get_list_lang(true);
+        $data['language_list'] = list_language_admin();
 
         $list_all = $this->model->getAllByFilter();
         $data['patent_list'] = format_tree(['data' => $list_all, 'key_id' => 'category_id']);

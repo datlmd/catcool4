@@ -137,7 +137,7 @@ class Manage extends AdminController
         }
 
         $edit_data_lang = $this->request->getPost('lang');
-        foreach (get_list_lang(true) as $language) {
+        foreach (list_language_admin() as $language) {
             $edit_data_lang[$language['id']]['language_id'] = $language['id'];
             $edit_data_lang[$language['id']]['option_id']   = $option_id;
 
@@ -166,7 +166,7 @@ class Manage extends AdminController
                 $option_value_id = $this->model_value->insert($data_option_value);
 
                 $data_option_value_lang = $value['lang'];
-                foreach (get_list_lang(true) as $language) {
+                foreach (list_language_admin() as $language) {
                     $data_option_value_lang[$language['id']]['language_id']     = $language['id'];
                     $data_option_value_lang[$language['id']]['option_value_id'] = $option_value_id;
                     $data_option_value_lang[$language['id']]['option_id']       = $option_id;
@@ -190,7 +190,7 @@ class Manage extends AdminController
 
     private function _getForm($id = null)
     {
-        $data['language_list'] = get_list_lang(true);
+        $data['language_list'] = list_language_admin();
 
         //edit
         if (!empty($id) && is_numeric($id)) {
@@ -228,7 +228,7 @@ class Manage extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        foreach(get_list_lang(true) as $value) {
+        foreach(list_language_admin() as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('OptionAdmin.text_option_name') . ' (' . $value['name']  . ')', 'required');
         }
 
@@ -239,7 +239,7 @@ class Manage extends AdminController
                 if (empty($value['lang'])) {
                     continue;
                 }
-                foreach(get_list_lang(true) as $lang_value) {
+                foreach(list_language_admin() as $lang_value) {
                     $this->validator->setRule(sprintf('option_value.%s.lang.%s.name', $key, $lang_value['id']), lang('OptionAdmin.text_option_value_name') . ' (' . $lang_value['name']  . ')', 'required');
                 }
 

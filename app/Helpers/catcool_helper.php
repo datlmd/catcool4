@@ -1,91 +1,59 @@
 <?php
 
-if (!function_exists('get_config_lang'))
+if (!function_exists('key_session_language'))
 {
-    function get_config_lang($is_admin = false)
+    function key_session_language()
     {
-        if (!empty($is_admin)) {
-            return config_item('default_locale_admin');
-        }
-        return config_item('default_locale');
+        return 'site_language';
     }
 }
 
-if (!function_exists('get_name_cookie_lang'))
+if (!function_exists('get_language'))
 {
-    function get_name_cookie_lang($is_admin = false)
+    function get_language()
     {
-        if (!empty($is_admin)) {
-            return 'cc_lang_admin_web_value';
-        }
-        return 'cc_lang_web_value';
-    }
-}
-
-if (!function_exists('get_name_session_lang'))
-{
-    function get_name_session_lang($is_admin = false)
-    {
-        if (!empty($is_admin)) {
-            return 'site_admin_lang';
-        }
-        return 'site_lang';
-    }
-}
-
-if (!function_exists('get_lang'))
-{
-    function get_lang($is_admin = false)
-    {
-        if (is_multi_lang() == false) {
-            return get_config_lang($is_admin);
+        if (!is_multi_language()) {
+            return config_item('default_locale');
         }
 
-        if (!empty(session(get_name_session_lang($is_admin)))) {
-            return session(get_name_session_lang($is_admin));
+        if (!empty(session(key_session_language()))) {
+            return session(key_session_language());
         }
 
         $language_value = '';
-        if (!empty(is_multi_lang()) && is_multi_lang() == true) {
-            $name_cookie_lang = get_name_cookie_lang($is_admin);
-            $language         = get_cookie($name_cookie_lang);
+        if (is_multi_language()) {
+            $language = get_cookie('catcool_language_locale');
             if (!empty($language)) {
                 $language_value = $language;
             }
         }
 
         if (empty($language_value)) {
-            $language_value = get_config_lang($is_admin);
+            $language_value = config_item('default_locale');
         }
 
-        session()->set(get_name_session_lang($is_admin), $language_value);
+        session()->set(key_session_language(), $language_value);
 
         return $language_value;
     }
 }
 
-if (!function_exists('set_lang'))
+if (!function_exists('set_language'))
 {
-    function set_lang($lang, $is_admin = false)
+    function set_language($language_code)
     {
-        if (is_multi_lang() == false || empty($lang)) {
-            return get_config_lang($is_admin);
+        if (!is_multi_language() || empty($language_code)) {
+            return config_item('default_locale');
         }
 
-        $is_lang        = false;
-        $multi_language = get_list_lang($is_admin);
-        foreach($multi_language as $value) {
-            if ($value['code'] == $lang) {
-                $is_lang = true;
-            }
-        }
-        if (!$is_lang) {
-            $lang = get_config_lang($is_admin);
+        $language_codes = array_column(list_language(), 'code');
+        if (!in_array($language_code, $language_codes)) {
+            $language_code = config_item('default_locale');
         }
 
         $cookie_config = [
-            'name' => get_name_cookie_lang($is_admin),
-            'value' => $lang,
+            'name' => 'catcool_language_locale',
+            'value' => $language_code,
             'expire' => 86400 * 30,
             'domain' => '',
             'path' => '/',
@@ -97,17 +65,16 @@ if (!function_exists('set_lang'))
         $response = \Config\Services::response();
         $response->setCookie($cookie_config)->send();
 
-        session()->set(get_name_session_lang($is_admin), $lang);
+        session()->set(key_session_language(), $language_code);
 
         return true;
     }
 }
 
-if (!function_exists('is_multi_lang'))
+if (!function_exists('is_multi_language'))
 {
-    function is_multi_lang()
+    function is_multi_language()
     {
-
         $list_language = json_decode(config_item('list_language_cache'), 1);
         if (count($list_language) >= 2) {
             return true;
@@ -121,7 +88,7 @@ if (!function_exists('is_show_select_language'))
 {
     function is_show_select_language()
     {
-        if (is_multi_lang() == false) {
+        if (!is_multi_language()) {
             return false;
         }
 
@@ -133,15 +100,14 @@ if (!function_exists('is_show_select_language'))
     }
 }
 
-if (!function_exists('get_list_lang'))
+if (!function_exists('list_language'))
 {
     /**
      * Get list language
      *
-     * @param bool $is_admin
      * @return array|bool
      */
-    function get_list_lang($is_admin = false)
+    function list_language()
     {
         //list lang
         $language_list = json_decode(config_item('list_language_cache'), 1);
@@ -158,7 +124,7 @@ if (!function_exists('get_list_lang'))
             }
 
             $language_list[$key]['active'] = false;
-            if ($value['code'] == get_lang($is_admin)) {
+            if ($value['code'] == get_language()) {
                 $language_list[$key]['active'] = true;
                 $language_active[] = $language_list[$key];
                 unset($language_list[$key]);
@@ -189,7 +155,7 @@ if (!function_exists('get_lang_id'))
         //list lang
         $list_language = json_decode(config_item('list_language_cache'), 1);
         foreach ($list_language as $key => $value) {
-            if ($value['code'] == get_lang($is_admin)) {
+            if ($value['code'] == get_language($is_admin)) {
                 $language_id = $value['id'];
                 break;
             }
@@ -240,7 +206,7 @@ if (!function_exists('format_lang_form'))
         }
 
         $input_list = [];
-        foreach (get_list_lang($is_admin) as $lang) {
+        foreach (list_language($is_admin) as $lang) {
             foreach ($data as $key => $value) {
                 if (strrpos($key, $lang['id']) !== FALSE) {
                     $lang_tmp = explode('_', $key);
@@ -1336,7 +1302,7 @@ if (!function_exists('get_today'))
     {
         $timestamp = time();
 
-        if (get_lang() != 'vi') {
+        if (get_language() != 'vi') {
             $format = $format ?? "D, d M Y";
             return date($format, $timestamp);
         }

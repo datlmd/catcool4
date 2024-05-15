@@ -68,8 +68,9 @@ class PermissionModel extends MyModel
 
     public function getTextPermission($permission = null)
     {
-        helper(['cookie', 'catcool', 'inflector']);
-        \Config\Services::language()->setLocale(get_lang(true));
+        helper(['cookie', 'catcool', 'admin', 'inflector']);
+        
+        \Config\Services::language()->setLocale(get_language_admin());
 
         $text_permission = lang('PermissionAdmin.not_permission');
         $permission      = (!empty($permission)) ? $permission : uri_string();

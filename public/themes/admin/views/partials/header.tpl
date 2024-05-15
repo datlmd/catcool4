@@ -15,17 +15,17 @@
 			<ul class="navbar-nav ms-auto navbar-right-top">
 				<li class="nav-item dropdown">
 					<div id="custom_search" class="top-search-bar">
-						{if is_multi_lang() == true}
+						{if is_multi_language() == true}
 							<a class="icon-animation nav-link p-0" href="#" id="navbar_dropdown_menu_language" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 14px !important;">
-								{foreach get_list_lang(true) as $key => $value}
-									{if $value.code == session(get_name_session_lang(true))}
+								{foreach list_language_admin() as $key => $value}
+									{if $value.code == session(key_session_language_admin())}
 										{$value.icon} {lang("General.`$value.code`")}
 									{/if}
 								{/foreach}
 							</a>
 							<div class="dropdown-menu dropdown-menu-end nav-user-dropdown" aria-labelledby="navbar_dropdown_menu_language" style="min-width: 170px;">
 								<div class="px-3 py-1">
-									{foreach get_list_lang(true) as $key => $value}
+									{foreach list_language_admin() as $key => $value}
 										<a href="{site_url("languages/manage/switch/`$value.code`")}" class="overflow-hidden d-block my-2">
 											{$value.icon} {lang("General.`$value.code`")}
 										</a>
