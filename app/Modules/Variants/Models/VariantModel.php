@@ -36,7 +36,7 @@ class VariantModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.$this->primaryKey";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
         if (!empty($filter["$this->primaryKey"])) {
             $this->whereIn("$this->table.$this->primaryKey", (!is_array($filter["$this->primaryKey"]) ? explode(',', $filter["$this->primaryKey"]) : $filter["$this->primaryKey"]));
         }

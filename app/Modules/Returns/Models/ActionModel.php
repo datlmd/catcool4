@@ -32,7 +32,7 @@ class ActionModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.return_action_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
         if (!empty($filter["return_action_id"])) {
             $this->whereIn("$this->table.return_action_id", (!is_array($filter["return_action_id"]) ? explode(',', $filter["return_action_id"]) : $filter["return_action_id"]));
         }

@@ -634,19 +634,19 @@ class Manage extends AdminController
         }
 
         $stock_status_model = new \App\Modules\Products\Models\StockStatusModel();
-        $data['stock_status_list'] = $stock_status_model->getListAll();
+        $data['stock_status_list'] = $stock_status_model->getStockStatuses($this->language_id);
 
         $weight_class_model = new \App\Modules\Products\Models\WeightClassModel();
-        $data['weight_class_list'] = $weight_class_model->getListAll();
+        $data['weight_class_list'] = $weight_class_model->getWeightClasses($this->language_id);
 
         $length_class_model = new \App\Modules\Products\Models\LengthClassModel();
-        $data['length_class_list'] = $length_class_model->getListAll();
+        $data['length_class_list'] = $length_class_model->getLengthClasses($this->language_id);
 
         $manufacturer_model = new \App\Modules\Manufacturers\Models\ManufacturerModel();
         $data['manufacturer_list'] = $manufacturer_model->getManufacturers($this->language_id);
 
         $category_model = new \App\Modules\Products\Models\CategoryModel();
-        $category_list = $category_model->getListAll();
+        $category_list = $category_model->getProductCategories($this->language_id);
         $data['categories_tree'] = format_tree(['data' => $category_list, 'key_id' => 'category_id']);
 
         $filter_model = new \App\Modules\Filters\Models\FilterModel();

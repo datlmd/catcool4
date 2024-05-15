@@ -35,7 +35,7 @@ class StockStatusModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.stock_status_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
         if (!empty($filter["stock_status_id"])) {
             $this->whereIn("$this->table.stock_status_id", (!is_array($filter["stock_status_id"]) ? explode(',', $filter["stock_status_id"]) : $filter["stock_status_id"]));
         }
@@ -52,7 +52,15 @@ class StockStatusModel extends MyModel
         return $this;
     }
 
-    public function getListAll($is_cache = true)
+    public function deleteCache()
+    {
+        cache()->delete(self::STOCK_STATUS_CACHE_NAME);
+        return true;
+    }
+
+    /** ---------- Frontend ----------  **/
+
+    public function getStockStatuses($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::STOCK_STATUS_CACHE_NAME) : null;
         if (empty($result)) {
@@ -71,17 +79,10 @@ class StockStatusModel extends MyModel
             return [];
         }
 
-        $language_id = get_lang_id(true);
         foreach ($result as $key => $value) {
             $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
 
         return $result;
-    }
-
-    public function deleteCache()
-    {
-        cache()->delete(self::STOCK_STATUS_CACHE_NAME);
-        return true;
     }
 }

@@ -32,7 +32,7 @@ class StatusModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.subscription_status_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
         if (!empty($filter["subscription_status_id"])) {
             $this->whereIn("$this->table.subscription_status_id", (!is_array($filter["subscription_status_id"]) ? explode(',', $filter["subscription_status_id"]) : $filter["subscription_status_id"]));
         }

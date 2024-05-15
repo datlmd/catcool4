@@ -68,7 +68,7 @@ class ProductModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.product_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
         if (!empty($filter["product_id"])) {
             $this->whereIn("$this->table.product_id", (!is_array($filter["product_id"]) ? explode(',', $filter["product_id"]) : $filter["product_id"]));
         }

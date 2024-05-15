@@ -261,10 +261,10 @@ class Manage extends AdminController
         $data['currency_list'] = format_dropdown($currency_model->getListPublished(), 'code');
 
         $length_class_model        = new \App\Modules\Products\Models\LengthClassModel();
-        $data['length_class_list'] = format_dropdown($length_class_model->getListALL(), 'length_class_id');
+        $data['length_class_list'] = format_dropdown($length_class_model->getLengthClasses($this->language_id), 'length_class_id');
 
         $weight_class_model        = new \App\Modules\Products\Models\WeightClassModel();
-        $data['weight_class_list'] = format_dropdown($weight_class_model->getListALL(), 'weight_class_id');
+        $data['weight_class_list'] = format_dropdown($weight_class_model->getWeightClasses($this->language_id), 'weight_class_id');
 
         $attribute_group_model        = new \App\Modules\Attributes\Models\GroupModel();
         $data['attribute_group_list'] = format_dropdown($attribute_group_model->getListALL(), 'attribute_group_id');

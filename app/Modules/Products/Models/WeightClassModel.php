@@ -35,7 +35,7 @@ class WeightClassModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.weight_class_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
         if (!empty($filter["weight_class_id"])) {
             $this->whereIn("$this->table.weight_class_id", (!is_array($filter["weight_class_id"]) ? explode(',', $filter["weight_class_id"]) : $filter["weight_class_id"]));
         }
@@ -52,7 +52,15 @@ class WeightClassModel extends MyModel
         return $this;
     }
 
-    public function getListAll($is_cache = true)
+    public function deleteCache()
+    {
+        cache()->delete(self::WEIGHT_CLASS_CACHE_NAME);
+        return true;
+    }
+
+    /** ---------- Frontend ----------  **/
+
+    public function getWeightClasses($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::WEIGHT_CLASS_CACHE_NAME) : null;
         if (empty($result)) {
@@ -73,17 +81,10 @@ class WeightClassModel extends MyModel
 
         $list = [];
 
-        $language_id = get_lang_id(true);
         foreach ($result as $value) {
             $list[$value['weight_class_id']] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
 
         return $list;
-    }
-
-    public function deleteCache()
-    {
-        cache()->delete(self::WEIGHT_CLASS_CACHE_NAME);
-        return true;
     }
 }

@@ -42,7 +42,7 @@ class CategoryModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.category_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
         if (!empty($filter["category_id"])) {
             $this->whereIn("$this->table.category_id", (!is_array($filter["category_id"]) ? explode(',', $filter["category_id"]) : $filter["category_id"]));
         }
@@ -63,7 +63,15 @@ class CategoryModel extends MyModel
         return $result;
     }
 
-    public function getListAll($is_cache = true)
+    public function deleteCache()
+    {
+        cache()->delete(self::CATEGORY_CACHE_NAME);
+        return true;
+    }
+
+    /** -------- Fronted -------- */
+
+    public function getProductCategories($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::CATEGORY_CACHE_NAME) : null;
         if (empty($result)) {
@@ -82,17 +90,10 @@ class CategoryModel extends MyModel
             return [];
         }
 
-        $language_id = get_lang_id(true);
         foreach ($result as $key => $value) {
             $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
 
         return $result;
-    }
-
-    public function deleteCache()
-    {
-        cache()->delete(self::CATEGORY_CACHE_NAME);
-        return true;
     }
 }

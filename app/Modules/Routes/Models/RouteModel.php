@@ -178,7 +178,7 @@ class RouteModel extends MyModel
             $route_data    = [
                 'module'      => $module,
                 'resource'    => $resource,
-                'language_id' => get_lang_id(true),
+                'language_id' => language_id_admin(),
                 'route'       => $urls['route'],
                 'user_id'     => session('user_info.user_id'),
                 'published'   => STATUS_ON,

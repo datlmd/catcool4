@@ -32,7 +32,7 @@ class ReasonModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.return_reason_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
         if (!empty($filter["return_reason_id"])) {
             $this->whereIn("$this->table.return_reason_id", (!is_array($filter["return_reason_id"]) ? explode(',', $filter["return_reason_id"]) : $filter["return_reason_id"]));
         }
