@@ -143,19 +143,19 @@ if (!function_exists('list_language'))
     }
 }
 
-if (!function_exists('get_lang_id'))
+if (!function_exists('language_id'))
 {
     /**
-     * @param bool $is_admin
+     * Get Language Id
      * @return int|mixed
      */
-    function get_lang_id($is_admin = false)
+    function language_id()
     {
         $language_id = 1;
         //list lang
         $list_language = json_decode(config_item('list_language_cache'), 1);
         foreach ($list_language as $key => $value) {
-            if ($value['code'] == get_language($is_admin)) {
+            if ($value['code'] == get_language()) {
                 $language_id = $value['id'];
                 break;
             }
@@ -1571,7 +1571,7 @@ if (!function_exists('get_menu_by_position'))
     {
         $menu_model = new \App\Modules\Menus\Models\MenuModel();
 
-        $menus = $menu_model->getMenuActive(null, 3600*30*12);
+        $menus = $menu_model->getMenusActive(null, 3600*30*12);
         if (empty($menus)) {
             return false;
         }

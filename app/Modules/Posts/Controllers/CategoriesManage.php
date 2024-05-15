@@ -78,7 +78,7 @@ class CategoriesManage extends AdminController
                 'image'            => $this->request->getPost('image'),
                 'context'          => $this->request->getPost('context'),
                 'published'        => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-                'language_id'      => get_lang_id(true),
+                'language_id'      => $this->language_id,
             ];
 
             if (!empty($this->request->getPost('parent_id'))) {
@@ -93,7 +93,7 @@ class CategoriesManage extends AdminController
 
             //save route url
             $seo_urls = [
-                'language_id' => get_lang_id(true),
+                'language_id' => $this->language_id,
                 'route' => $add_data['slug'],
                 'route_old' => $this->request->getPost('route_old'),
             ];
@@ -142,7 +142,7 @@ class CategoriesManage extends AdminController
 
             //save route url
             $seo_urls = [
-                'language_id' => get_lang_id(true),
+                'language_id' => $this->language_id,
                 'route' => $edit_data['slug'],
                 'route_old' => $this->request->getPost('route_old'),
             ];
@@ -202,7 +202,7 @@ class CategoriesManage extends AdminController
         }
 
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->getListDetail($delete_ids, get_lang_id(true));
+        $list_delete = $this->model->getListDetail($delete_ids, $this->language_id);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
@@ -270,7 +270,7 @@ class CategoriesManage extends AdminController
         $this->validator->setRule(
             'slug',
             lang('Admin.text_slug'),
-            sprintf('checkRoute[%s,%s,%s]', $this->request->getPost('slug'), $this->request->getPost('route_old'), get_lang_id(true))
+            sprintf('checkRoute[%s,%s,%s]', $this->request->getPost('slug'), $this->request->getPost('route_old'), $this->language_id)
         );
 
         $is_validation = $this->validator->withRequest($this->request)->run();

@@ -37,7 +37,7 @@ class OptionValueModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.option_value_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
         if (!empty($filter["option_value_id"])) {
             $this->whereIn("$this->table.option_value_id", (!is_array($filter["option_value_id"]) ? explode(',', $filter["option_value_id"]) : $filter["option_value_id"]));
         }
@@ -54,14 +54,13 @@ class OptionValueModel extends MyModel
         return $this;
     }
 
-    public function getListByOptionId($option_id)
+    public function getOptionValueByOptionId($option_id, $language_id)
     {
         $result = $this->orderBy('sort_order', 'DESC')->where('option_id', $option_id)->findAll();
         if (empty($result)) {
             return [];
         }
 
-        $language_id = get_lang_id(IS_ADMIN);
         foreach ($result as $key => $value) {
             $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
@@ -69,7 +68,7 @@ class OptionValueModel extends MyModel
         return $result;
     }
 
-    public function getListAll($is_cache = true)
+    public function getOptionValues($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::OPTION_VALUE_CACHE_NAME) : null;
         if (empty($result)) {
@@ -88,7 +87,6 @@ class OptionValueModel extends MyModel
             return [];
         }
 
-        $language_id = get_lang_id(true);
         foreach ($result as $key => $value) {
             $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }

@@ -48,7 +48,7 @@ class Sitemap extends Controller
     {
         try {
             $post_category_model = new \App\Modules\Posts\Models\CategoryModel();
-            $category_list = $post_category_model->getListPublished();
+            $category_list = $post_category_model->getPostCategories(language_id());
 
             $changefreq = 'daily';
             $priority = '1.0';

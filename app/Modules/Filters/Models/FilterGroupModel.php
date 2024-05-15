@@ -32,7 +32,7 @@ class FilterGroupModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.filter_group_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
         if (!empty($filter["filter_group_id"])) {
             $this->whereIn("$this->table.filter_group_id", (!is_array($filter["filter_group_id"]) ? explode(',', $filter["filter_group_id"]) : $filter["filter_group_id"]));
         }

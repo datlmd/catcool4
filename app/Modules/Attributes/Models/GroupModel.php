@@ -32,7 +32,7 @@ class GroupModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.attribute_group_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
         if (!empty($filter["attribute_group_id"])) {
             $this->whereIn("$this->table.attribute_group_id", (!is_array($filter["attribute_group_id"]) ? explode(',', $filter["attribute_group_id"]) : $filter["attribute_group_id"]));
         }
@@ -52,7 +52,7 @@ class GroupModel extends MyModel
         return $result;
     }
 
-    public function getListAll()
+    public function getAttributeGroups($language_id)
     {
         $result = $this->orderBy('sort_order', 'DESC')->findAll();
         if (empty($result)) {
@@ -61,7 +61,6 @@ class GroupModel extends MyModel
 
         $list = [];
 
-        $language_id = get_lang_id(true);
         foreach ($result as $value) {
             $list[$value['attribute_group_id']] = format_data_lang_id($value, $this->table_lang, $language_id);
         }

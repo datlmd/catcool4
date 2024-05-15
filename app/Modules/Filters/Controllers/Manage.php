@@ -195,7 +195,7 @@ class Manage extends AdminController
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
-            $data_form['filters'] = $this->model_filter->getListByFilterGroupId($id);
+            $data_form['filters'] = $this->model_filter->getFiltersByGroupId($id, $this->language_id);
 
             $data['edit_data'] = $data_form;
         } else {
@@ -282,7 +282,7 @@ class Manage extends AdminController
         }
 
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->getListDetail($delete_ids, get_lang_id(true));
+        $list_delete = $this->model->getListDetail($delete_ids, $this->language_id);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }

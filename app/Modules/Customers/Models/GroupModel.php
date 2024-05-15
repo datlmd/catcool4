@@ -36,7 +36,7 @@ class GroupModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.customer_group_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
         if (!empty($filter["customer_group_id"])) {
             $this->whereIn("$this->table.customer_group_id", (!is_array($filter["customer_group_id"]) ? explode(',', $filter["customer_group_id"]) : $filter["customer_group_id"]));
         }
@@ -53,7 +53,7 @@ class GroupModel extends MyModel
         return $this;
     }
 
-    public function getCustomerGroups($is_cache = true)
+    public function getCustomerGroups($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::CUSTOMER_GROUP_CACHE_NAME) : null;
         if (empty($result)) {
@@ -73,8 +73,6 @@ class GroupModel extends MyModel
         }
 
         $list = [];
-
-        $language_id = get_lang_id(true);
         foreach ($result as $value) {
             $list[$value['customer_group_id']] = format_data_lang_id($value, $this->table_lang, $language_id);
         }

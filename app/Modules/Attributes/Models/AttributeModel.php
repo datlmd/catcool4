@@ -36,7 +36,7 @@ class AttributeModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.attribute_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
         if (!empty($filter["attribute_id"])) {
             $this->whereIn("$this->table.attribute_id", (!is_array($filter["attribute_id"]) ? explode(',', $filter["attribute_id"]) : $filter["attribute_id"]));
         }
@@ -53,7 +53,15 @@ class AttributeModel extends MyModel
         return $this;
     }
 
-    public function getListAll($is_cache = true) : array
+    public function deleteCache()
+    {
+        cache()->delete(self::ATTRIBUTE_CACHE_NAME);
+        return true;
+    }
+
+    /** ------- Frontend ------- */
+
+    public function getAttributes($language_id, $is_cache = true) : array
     {
         $result = $is_cache ? cache()->get(self::ATTRIBUTE_CACHE_NAME) : null;
         if (empty($result)) {
@@ -73,8 +81,6 @@ class AttributeModel extends MyModel
         }
 
         $list = [];
-
-        $language_id = get_lang_id(true);
         foreach ($result as $value) {
             $list[$value['attribute_id']] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
@@ -82,9 +88,9 @@ class AttributeModel extends MyModel
         return $list;
     }
 
-    public function getListAttributeDefault() : array
+    public function getAttributesDefault($language_id) : array
     {
-        $list = $this->getListAll();
+        $list = $this->getAttributes($language_id);
         if (empty($list)) {
             return [];
         }
@@ -96,11 +102,5 @@ class AttributeModel extends MyModel
         }
 
         return $list;
-    }
-
-    public function deleteCache()
-    {
-        cache()->delete(self::ATTRIBUTE_CACHE_NAME);
-        return true;
     }
 }

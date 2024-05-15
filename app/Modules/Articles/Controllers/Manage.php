@@ -52,7 +52,7 @@ class Manage extends AdminController
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
-        $category_list = $this->model_category->getListPublished();
+        $category_list = $this->model_category->getArticleCategories($this->language_id);
 
         $data = [
             'breadcrumb'    => $this->breadcrumb->render(),
@@ -284,7 +284,7 @@ class Manage extends AdminController
         }
 
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->getListDetail($delete_ids, get_lang_id(true));
+        $list_delete = $this->model->getListDetail($delete_ids, $this->language_id);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
@@ -325,7 +325,7 @@ class Manage extends AdminController
 
         $data['language_list'] = list_language_admin();
 
-        $category_list = $this->model_category->getListPublished();
+        $category_list = $this->model_category->getArticleCategories($this->language_id);
         $data['categories_tree'] = format_tree(['data' => $category_list, 'key_id' => 'category_id']);
 
         //edit

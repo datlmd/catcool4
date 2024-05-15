@@ -6,8 +6,6 @@ use App\Modules\News\Models\CategoryModel;
 
 class Detail extends MyController
 {
-    protected $model;
-
     public function __construct()
     {
         parent::__construct();
@@ -19,13 +17,13 @@ class Detail extends MyController
             ->addPartial('header_bottom')
             ->addPartial('footer_top')
             ->addPartial('footer_bottom');
-
-        $this->model = new NewsModel();
     }
 
     public function index($slug, $news_id, $ctime, $type = null)
     {
-        try {
+        $news_model = new NewsModel();
+
+        //try {
             if (!empty($type) && $type !== 'preview') {
                 page_not_found();
             }
@@ -36,12 +34,12 @@ class Detail extends MyController
             }
 
             $category_model = new CategoryModel();
-            $category_list = $category_model->getListPublished();
+            $category_list = $category_model->getNewsCategories($this->language_id);
 
             if ($is_preview) {
-                $detail = $this->model->getNewsInfo($news_id, $ctime, $is_preview, false);
+                $detail = $news_model->getNewsInfo($news_id, $ctime, $is_preview, false);
             } else {
-                $detail = $this->model->getNewsInfo($news_id, $ctime);
+                $detail = $news_model->getNewsInfo($news_id, $ctime);
             }
 
             if (empty($detail)) {
@@ -49,7 +47,7 @@ class Detail extends MyController
             }
 
             $news_the_same_list = [];
-            $data_category_list = $this->model->getListHome();
+            $data_category_list = $news_model->getListHome();
 
             if (!empty($data_category_list) && !empty($detail['category_ids'])) {
                 foreach ($detail['category_ids'] as $category_id) {
@@ -62,19 +60,19 @@ class Detail extends MyController
             shuffle($news_the_same_list);
 
             //count detail
-            $this->model->updateView($news_id, $ctime);
+            $news_model->updateView($news_id, $ctime);
 
             $this->_setMeta($detail);
 
             $data = [
                 'detail'               => $detail,
-                'related_list'         => $this->model->getListByRelatedIds($detail['related_ids'], 3),
+                'related_list'         => $news_model->getListByRelatedIds($detail['related_ids'], 3),
                 'news_the_same_list'   => $news_the_same_list,
                 'news_category_list'   => $category_list,
                 'news_category_tree'   => get_list_tree_selected($category_list, $detail['category_ids'], 'category_id'),
-                'slide_list'           => $this->model->getSlideHome(5),
-                'new_list'             => $this->model->getListNew(5),
-                'counter_list'         => $this->model->getListCounter(6),
+                'slide_list'           => $news_model->getSlideHome(5),
+                'new_list'             => $news_model->getListNew(5),
+                'counter_list'         => $news_model->getListCounter(6),
                 'script_google_search' => $this->_scriptGoogleSearch($detail, $category_list),
             ];
 
@@ -91,10 +89,10 @@ class Detail extends MyController
             $this->themes->addMeta('googlebot', 'noindex,');
 
             theme_load($tpl_name, $data);
-        } catch (\Exception $ex) {
-            log_message('error', $ex->getMessage() . "[ID: $news_id, $ctime, $slug]");
-            page_not_found();
-        }
+        // } catch (\Exception $ex) {
+        //     log_message('error', $ex->getMessage() . "[ID: $news_id, $ctime, $slug]");
+        //     page_not_found();
+        // }
     }
 
     private function _scriptGoogleSearch($detail, $category_list)

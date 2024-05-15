@@ -529,7 +529,7 @@ class NewsModel extends FarmModel
                 'is_comment'        => COMMENT_STATUS_ON,
                 'published'         => $status,
                 'sort_order'        => 0,
-                'language_id'       => get_lang_id(true),
+                'language_id'       => language_id_admin(),
             ];
         }
 
@@ -745,7 +745,7 @@ class NewsModel extends FarmModel
     public function getListHome($limit = 200, $is_cache = true)
     {
         $category_model = new CategoryModel();
-        $category_list = $category_model->getListPublished();
+        $category_list = $category_model->getNewsCategories(language_id());
         
         $list = $is_cache ? cache()->get(self::NEWS_CACHE_CATEGORY_HOME) : null;
         if (empty($list)) {

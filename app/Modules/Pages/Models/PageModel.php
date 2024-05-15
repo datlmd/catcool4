@@ -38,7 +38,7 @@ class PageModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.page_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
 
         if (!empty($filter["page_id"])) {
             $this->whereIn("$this->table.page_id", (!is_array($filter["page_id"]) ? explode(',', $filter["page_id"]) : $filter["page_id"]));
@@ -60,7 +60,7 @@ class PageModel extends MyModel
         return $result;
     }
 
-    public function getPages($is_cache = true)
+    public function getPages($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::PAGE_CACHE_NAME) : null;
         if (empty($result)) {
@@ -77,8 +77,6 @@ class PageModel extends MyModel
         }
 
         $page_list = [];
-        $language_id = get_lang_id(true);
-
         foreach ($result as $key => $value) {
             $page_list[$value['page_id']] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
@@ -86,13 +84,13 @@ class PageModel extends MyModel
         return $page_list;
     }
 
-    public function getPageInfo($page_id, $is_cache = true)
+    public function getPageInfo($page_id, $language_id, $is_cache = true)
     {
         if (empty($page_id)) {
             return [];
         }
 
-        $page_list = $this->getPages($is_cache);
+        $page_list = $this->getPages($language_id, $is_cache);
         if (empty($page_list[$page_id])) {
             return [];
         }

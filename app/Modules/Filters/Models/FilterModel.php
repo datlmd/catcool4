@@ -36,7 +36,7 @@ class FilterModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.filter_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
         if (!empty($filter["filter_id"])) {
             $this->whereIn("$this->table.filter_id", (!is_array($filter["filter_id"]) ? explode(',', $filter["filter_id"]) : $filter["filter_id"]));
         }
@@ -53,14 +53,19 @@ class FilterModel extends MyModel
         return $this;
     }
 
-    public function getListByFilterGroupId($filter_group_id)
+    public function deleteCache()
+    {
+        cache()->delete(self::FILTER_CACHE_NAME);
+        return true;
+    }
+
+    public function getFiltersByGroupId($filter_group_id, $language_id)
     {
         $result = $this->orderBy('sort_order', 'DESC')->where('filter_group_id', $filter_group_id)->findAll();
         if (empty($result)) {
             return [];
         }
 
-        $language_id = get_lang_id(IS_ADMIN);
         foreach ($result as $key => $value) {
             $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
@@ -68,7 +73,7 @@ class FilterModel extends MyModel
         return $result;
     }
 
-    public function getListAll($is_cache = true)
+    public function getFilters($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::FILTER_CACHE_NAME) : null;
         if (empty($result)) {
@@ -87,17 +92,10 @@ class FilterModel extends MyModel
             return [];
         }
 
-        $language_id = get_lang_id(true);
         foreach ($result as $key => $value) {
             $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
 
         return $result;
-    }
-
-    public function deleteCache()
-    {
-        cache()->delete(self::FILTER_CACHE_NAME);
-        return true;
     }
 }

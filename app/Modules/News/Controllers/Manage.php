@@ -50,7 +50,7 @@ class Manage extends AdminController
             $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
         }
 
-        $category_list = $this->model_category->getListPublished();
+        $category_list = $this->model_category->getNewsCategories($this->language_id);
 
         $news_list = $list->paginate($limit);
         foreach ($news_list as $key_news => $value) {
@@ -116,7 +116,7 @@ class Manage extends AdminController
             $category_ids = $this->request->getPost('category_ids');
             if (!empty($category_ids)) {
                 //check parent id and save it
-                $category_list = $this->model_category->getListPublished();
+                $category_list = $this->model_category->getNewsCategories($this->language_id);
                 $parent_ids = [];
                 foreach ($category_ids as $value) {
                     if (empty($category_list[$value])) {
@@ -163,7 +163,7 @@ class Manage extends AdminController
                 'user_id'           => $this->user->getId(),
                 'is_comment'        => $this->request->getPost('is_comment'),
                 'published'         => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-                'language_id'       => get_lang_id(true),
+                'language_id'       => $this->language_id,
             ];
 
             $id = $this->model->insert($add_data);
@@ -217,7 +217,7 @@ class Manage extends AdminController
                 $category_ids = $this->request->getPost('category_ids');
                 if (!empty($category_ids)) {
                     //check parent id and save it
-                    $category_list = $this->model_category->getListPublished();
+                    $category_list = $this->model_category->getNewsCategories($this->language_id);
                     $parent_ids = [];
                     foreach ($category_ids as $value) {
                         if (empty($category_list[$value])) {
@@ -390,7 +390,7 @@ class Manage extends AdminController
 
         $data['language_list'] = list_language_admin();
 
-        $category_list = $this->model_category->getListPublished();
+        $category_list = $this->model_category->getNewsCategories($this->language_id);
         $data['categories_tree'] = format_tree(['data' => $category_list, 'key_id' => 'category_id']);
 
         //edit

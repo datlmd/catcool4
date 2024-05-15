@@ -36,7 +36,7 @@ class Detail extends MyController
             }
 
             $post_category_model = new CategoryModel();
-            $post_category_list  = $post_category_model->getListPublished();
+            $post_category_list  = $post_category_model->getPostCategories($this->language_id);
             
             if ($is_preview) {
                 $detail = $this->model->getPostInfo($post_id, $is_preview, false);

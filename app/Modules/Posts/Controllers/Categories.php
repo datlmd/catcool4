@@ -19,20 +19,21 @@ class Categories extends MyController
             ->addPartial('header_bottom')
             ->addPartial('footer_top')
             ->addPartial('footer_bottom');
-
-        $this->category_model = new CategoryModel();
-        $this->post_model = new PostModel();
     }
 
     public function detail($id = null)
     {
-        $post_category_list = $this->category_model->getListPublished();
+        $category_model = new CategoryModel();
+        $post_model = new PostModel();
+
+        $post_category_list = $category_model->getPostCategories($this->language_id);
+
         $detail = $post_category_list[$id] ?? null;
         if (empty($detail)) {
             $this->pageNotFound();
         }
 
-        list($list, $pager) = $this->post_model->getListByCategory($id);
+        list($list, $pager) = $post_model->getListByCategory($id);
 
         $data = [
             'detail'             => $detail,
@@ -40,8 +41,8 @@ class Categories extends MyController
             'pager'              => $pager,
             'post_category_list' => $post_category_list,
             'post_category_tree' => get_list_tree_selected($post_category_list, $id, 'category_id'),
-            'post_latest_list'   => $this->post_model->getListPostLatest(6),
-            'post_hot_list'      => $this->post_model->getListHot(6),
+            'post_latest_list'   => $post_model->getListPostLatest(6),
+            'post_hot_list'      => $post_model->getListHot(6),
         ];
 
         $this->_setMeta($detail);

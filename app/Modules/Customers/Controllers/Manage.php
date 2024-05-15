@@ -239,7 +239,7 @@ class Manage extends AdminController
 
         $data['list_lang'] = list_language_admin();
 
-        $group_list     = $this->group_model->getCustomerGroups();
+        $group_list     = $this->group_model->getCustomerGroups($this->language_id);
         $data['groups'] = array_column($group_list, null, 'customer_group_id');
 
         $country_model  = model('App\Modules\Countries\Models\CountryModel');

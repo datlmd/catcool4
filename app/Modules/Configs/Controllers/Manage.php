@@ -273,10 +273,10 @@ class Manage extends AdminController
         $data['location_list'] = $location_model->getLocations();
 
         $customer_group_model        = new \App\Modules\Customers\Models\GroupModel();
-        $data['customer_group_list'] = $customer_group_model->getCustomerGroups();
+        $data['customer_group_list'] = $customer_group_model->getCustomerGroups($this->language_id);
         
         $page_model        = new \App\Modules\Pages\Models\PageModel();
-        $data['page_list'] = $page_model->getPages();
+        $data['page_list'] = $page_model->getPages($this->language_id);
 
         //check permissions
         $key_file = 'config/Config.php';

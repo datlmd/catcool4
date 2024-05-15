@@ -49,7 +49,7 @@ class Customer
 			$customer_info = $this->getCustomerInfo();
 			if (!empty($customer_info)) {
                 $update = [
-                    'language_id' => get_lang_id(),
+                    'language_id' => language_id(),
                     'ip'          => service('request')->getIPAddress(),
                 ];
         

@@ -643,21 +643,21 @@ class Manage extends AdminController
         $data['length_class_list'] = $length_class_model->getListAll();
 
         $manufacturer_model = new \App\Modules\Manufacturers\Models\ManufacturerModel();
-        $data['manufacturer_list'] = $manufacturer_model->getListAll();
+        $data['manufacturer_list'] = $manufacturer_model->getManufacturers($this->language_id);
 
         $category_model = new \App\Modules\Products\Models\CategoryModel();
         $category_list = $category_model->getListAll();
         $data['categories_tree'] = format_tree(['data' => $category_list, 'key_id' => 'category_id']);
 
         $filter_model = new \App\Modules\Filters\Models\FilterModel();
-        $data['filter_list'] = $filter_model->getListAll();
+        $data['filter_list'] = $filter_model->getFilters($this->language_id);
 
         $attribute_model = new \App\Modules\Attributes\Models\AttributeModel();
-        $data['attribute_list'] = $attribute_model->getListAll();
-        $data['attribute_default_list'] = $attribute_model->getListAttributeDefault();
+        $data['attribute_list'] = $attribute_model->getAttributes($this->language_id);
+        $data['attribute_default_list'] = $attribute_model->getAttributesDefault($this->language_id);
 
         $option_model = new \App\Modules\Options\Models\OptionModel();
-        $data['option_list'] = $option_model->getListAll();
+        $data['option_list'] = $option_model->getOptions($this->language_id);
 
         $variant_model = new \App\Modules\Variants\Models\VariantModel();
         $data['variant_list'] = $variant_model->getListAll();
@@ -851,7 +851,7 @@ class Manage extends AdminController
         }
 
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->getListDetail($delete_ids, get_lang_id(true));
+        $list_delete = $this->model->getListDetail($delete_ids, $this->language_id);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }

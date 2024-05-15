@@ -20,6 +20,8 @@ class MyController extends Controller
      */
     protected $site_lang = null;
 
+    protected $language_id;
+
     /**
      * @var |null
      */
@@ -108,6 +110,7 @@ class MyController extends Controller
         \Config\Services::language()->setLocale(get_language());
 
         $this->site_lang = \Config\Services::language()->getLocale();
+        $this->language_id = language_id();
 
         $this->themes     = Themes::init();
         $this->breadcrumb = service('breadcrumb');

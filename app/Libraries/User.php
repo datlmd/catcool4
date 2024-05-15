@@ -52,7 +52,7 @@ class User
 			$user_info = $this->getUserInfo();
 			if (!empty($user_info)) {
                 $update = [
-                    'language_id' => get_lang_id(),
+                    'language_id' => language_id_admin(),
                     'ip'          => service('request')->getIPAddress(),
                 ];
         

@@ -26,7 +26,7 @@ class Tag extends MyController
 
     public function index($tag = null)
     {
-        $category_list = $this->category_model->getListPublished();
+        $category_list = $this->category_model->getNewsCategories($this->language_id);
 
         $tag = str_ireplace('-', ' ', $tag);
 

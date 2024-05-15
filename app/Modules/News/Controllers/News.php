@@ -75,7 +75,7 @@ class News extends MyController
     private function _scriptGoogleSearch()
     {
         $category_model = new CategoryModel();
-        $category_list = $category_model->getListPublished();
+        $category_list = $category_model->getNewsCategories($this->language_id);
 
         //GOOGLE BREADCRUMB STRUCTURED DATA
         $script_breadcrumb  = [];

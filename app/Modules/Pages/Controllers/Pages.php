@@ -19,7 +19,7 @@ class Pages extends MyController
         
          $this->mode = new PageModel();
 
-        $detail = $this->mode->getPageInfo($id);
+        $detail = $this->mode->getPageInfo($id, $this->language_id);
         if (empty($detail)) {
             page_not_found();
         }

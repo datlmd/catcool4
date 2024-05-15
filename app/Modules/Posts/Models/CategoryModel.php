@@ -50,7 +50,7 @@ class CategoryModel extends MyModel
         return $result;
     }
 
-    public function getListPublished($is_cache = true)
+    public function getPostCategories($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::CATEGORY_CACHE_NAME) : null;
         if (empty($result)) {
@@ -69,7 +69,7 @@ class CategoryModel extends MyModel
             return [];
         }
 
-        $language_id = get_lang_id(true);
+
         foreach ($result as $key => $value) {
             $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }

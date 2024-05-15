@@ -47,7 +47,7 @@ class MenuModel extends MyModel
         $sort  = in_array($sort, $sort_data) ? $sort : 'sort_order';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
 
         if (!empty($filter["id"])) {
             $this->whereIn("$this->table.menu_id", (!is_array($filter["menu_id"]) ? explode(',', $filter["menu_id"]) : $filter["menu_id"]));
@@ -73,19 +73,22 @@ class MenuModel extends MyModel
         return $result;
     }
 
-    public function getMenuActive($filter = null, $expire_time = MONTH, $is_cache = true)
+    public function getMenusActive($filter = null, $expire_time = MONTH, $is_cache = true)
     {
         $cache_name = SET_CACHE_NAME_MENU;
+
+        //get language id
+        $language_id = !empty($filter['is_admin']) ? language_id_admin() : language_id();
 
         $filter['published'] = isset($filter['published']) ? $filter['published'] : STATUS_ON;
         $filter['is_admin']  = isset($filter['is_admin']) ? $filter['is_admin'] : STATUS_OFF;
 
         if (!empty($filter['is_admin'])) {
-            $cache_name = $cache_name . '_admin' . '_lang_' . get_lang_id(true);
+            $cache_name = $cache_name . '_admin' . '_lang_' . $language_id;
         } else {
             $cache_name = $cache_name . '_frontend';
             $cache_name = (!empty($filter['context'])) ?  $cache_name . '_' . $filter['context'] : $cache_name;
-            $cache_name = $cache_name . '_lang_' . get_lang_id();
+            $cache_name = $cache_name . '_lang_' . $language_id;
         }
 
         $result = $is_cache ? cache()->get($cache_name) : null;
@@ -101,8 +104,6 @@ class MenuModel extends MyModel
         if (empty($result)) {
             return false;
         }
-
-        $language_id = !empty($filter['is_admin']) ? get_lang_id(true) : get_lang_id();
         
         foreach ($result as $key => $value) {
             $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
@@ -131,20 +132,9 @@ class MenuModel extends MyModel
 
         if ($is_admin) {
             //clear cache all
-//            $list_name = [
-//                SET_CACHE_NAME_MENU . '_admin' . '_lang_' . get_lang_id(true),
-//            ];
             cache()->deleteMatching(SET_CACHE_NAME_MENU . '_admin_*');
         } else {
             //clear cache all
-//            $list_name = [
-//                SET_CACHE_NAME_MENU . '_frontend',
-//                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_MAIN . '_lang_' . get_lang_id(),
-//                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_FOOTER . '_lang_' . get_lang_id(),
-//                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_TOP . '_lang_' . get_lang_id(),
-//                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_BOTTOM . '_lang_' . get_lang_id(),
-//                SET_CACHE_NAME_MENU . '_frontend_' . MENU_POSITION_OTHER . '_lang_' . get_lang_id(),
-//            ];
             cache()->deleteMatching(SET_CACHE_NAME_MENU . '_frontend_*');
         }
 

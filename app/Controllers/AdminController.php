@@ -27,12 +27,13 @@ class AdminController extends UserController
         helper('admin');
         
         \Config\Services::language()->setLocale(get_language_admin());
+        $this->language_id = language_id_admin();
 
         $method_name =  service('router')->methodName();
         if (!in_array($method_name, ['login', 'logout', 'forgotPassword', 'resetPassword'])) {
             //get menu
             $menu_model = new \App\Modules\Menus\Models\MenuModel();
-            $menu_admin = $menu_model->getMenuActive(['is_admin' => STATUS_ON]);
+            $menu_admin = $menu_model->getMenusActive(['is_admin' => STATUS_ON]);
             $menu_admin = format_tree(['data' => $menu_admin, 'key_id' => 'menu_id']);
             $this->smarty->assign('menu_admin', $menu_admin);
             $this->smarty->assign('menu_current', service('uri')->getSegment(1));

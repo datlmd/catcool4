@@ -37,7 +37,7 @@ class ManufacturerModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.manufacturer_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
         if (!empty($filter["manufacturer_id"])) {
             $this->whereIn("$this->table.manufacturer_id", (!is_array($filter["manufacturer_id"]) ? explode(',', $filter["manufacturer_id"]) : $filter["manufacturer_id"]));
         }
@@ -54,7 +54,7 @@ class ManufacturerModel extends MyModel
         return $this;
     }
 
-    public function getListAll($is_cache = true)
+    public function getManufacturers($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::MANUFACTURER_CACHE_NAME) : null;
         if (empty($result)) {
@@ -73,7 +73,6 @@ class ManufacturerModel extends MyModel
             return [];
         }
 
-        $language_id = get_lang_id(true);
         foreach ($result as $key => $value) {
             $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }

@@ -118,7 +118,7 @@ class Sitemap extends Controller
     {
         try {
             $category_model = new CategoryModel();
-            $category_list = $category_model->getListPublished();
+            $category_list = $category_model->getNewsCategories(language_id());
 
             $changefreq = 'daily';
             $priority = '1.0';

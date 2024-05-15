@@ -113,3 +113,26 @@ if (!function_exists('list_language_admin'))
         return $result;
     }
 }
+
+if (!function_exists('language_id_admin'))
+{
+    /**
+     * Get Language Id Admin
+     * 
+     * @return int|mixed
+     */
+    function language_id_admin()
+    {
+        $language_id = 1;
+        //list lang
+        $list_language = json_decode(config_item('list_language_cache'), 1);
+        foreach ($list_language as $key => $value) {
+            if ($value['code'] == get_language_admin()) {
+                $language_id = $value['id'];
+                break;
+            }
+        }
+
+        return $language_id;
+    }
+}

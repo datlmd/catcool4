@@ -36,7 +36,7 @@ class OptionModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.option_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
         if (!empty($filter["option_id"])) {
             $this->whereIn("$this->table.option_id", (!is_array($filter["option_id"]) ? explode(',', $filter["option_id"]) : $filter["option_id"]));
         }
@@ -53,7 +53,7 @@ class OptionModel extends MyModel
         return $this;
     }
 
-    public function getListAll($is_cache = true)
+    public function getOptions($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::OPTION_CACHE_NAME) : null;
         if (empty($result)) {
@@ -73,15 +73,13 @@ class OptionModel extends MyModel
         }
 
         $list = [];
-
-        $language_id = get_lang_id(true);
         foreach ($result as $value) {
             $list[$value['option_id']] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
 
         //get list option value
         $option_value_model = new OptionValueModel();
-        $option_value_list = $option_value_model->getListAll();
+        $option_value_list = $option_value_model->getOptionValues($language_id);
         if (!empty($option_value_list)) {
             foreach ($option_value_list as $value) {
                 $list[$value['option_id']]['option_value_list'][$value['option_value_id']] = $value;

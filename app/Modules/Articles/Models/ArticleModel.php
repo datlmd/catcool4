@@ -48,7 +48,7 @@ class ArticleModel extends MyModel
         $sort  = !empty($sort) ? $sort : "$this->table.article_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        $this->where("$this->table_lang.language_id", get_lang_id(true));
+        $this->where("$this->table_lang.language_id", language_id_admin());
 
         if (!empty($filter["article_id"])) {
             $this->whereIn("$this->table.article_id", (!is_array($filter["article_id"]) ? explode(',', $filter["article_id"]) : $filter["article_id"]));
@@ -70,33 +70,6 @@ class ArticleModel extends MyModel
             ->with(false)
             ->join($this->table_lang, "$this->table_lang.article_id = $this->table.article_id")
             ->orderBy($sort, $order);
-
-        return $result;
-    }
-
-    public function getListPublished($is_cache = true)
-    {
-        $result = $is_cache ? cache()->get(self::ARTICLE_CACHE_NAME) : null;
-        if (empty($result)) {
-            $result = $this->orderBy('sort_order', 'DESC')->where(['published' => STATUS_ON])->findAll();
-            if (empty($result)) {
-                return [];
-            }
-
-            if ($is_cache) {
-                // Save into the cache for $expire_time 1 month
-                cache()->save(self::ARTICLE_CACHE_NAME, $result, self::ARTICLE_CACHE_EXPIRE);
-            }
-        }
-
-        if (empty($result)) {
-            return [];
-        }
-
-        $language_id = get_lang_id(true);
-        foreach ($result as $key => $value) {
-            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
-        }
 
         return $result;
     }

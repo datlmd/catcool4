@@ -6,8 +6,6 @@ use App\Modules\News\Models\CategoryModel;
 
 class Categories extends MyController
 {
-    protected $model;
-
     public function __construct()
     {
         parent::__construct();
@@ -19,28 +17,28 @@ class Categories extends MyController
             ->addPartial('header_bottom')
             ->addPartial('footer_top')
             ->addPartial('footer_bottom');
-
-        $this->model = new CategoryModel();
-        $this->news_model = new NewsModel();
     }
 
     public function detail($id = null)
     {
-        $category_list = $this->model->getListPublished();
+        $news_category_model = new CategoryModel();
+        $news_model = new NewsModel();
+
+        $category_list = $news_category_model->getNewsCategories($this->language_id);
         $detail = $category_list[$id] ?? null;
         if (empty($detail)) {
             $this->pageNotFound();
         }
 
-        list($list, $pager) = $this->news_model->getListByCategory($id);
+        list($list, $pager) = $news_model->getListByCategory($id);
 
         $data = [
             'detail'             => $detail,
             'list'               => $list,
             'pager'              => $pager,
-            'slide_list'         => $this->news_model->getSlideHome(5),
-            'new_list'           => $this->news_model->getListNew(5),
-            'counter_list'       => $this->news_model->getListCounter(6),
+            'slide_list'         => $news_model->getSlideHome(5),
+            'new_list'           => $news_model->getListNew(5),
+            'counter_list'       => $news_model->getListCounter(6),
             'news_category_list' => $category_list,
             'news_category_tree' => get_list_tree_selected($category_list, $id, 'category_id'),
         ];

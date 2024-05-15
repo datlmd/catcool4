@@ -223,7 +223,7 @@ class CategoriesManage extends AdminController
 
         //filter
         $filter_model = new \App\Modules\Filters\Models\FilterModel();
-        $data['filter_list'] = $filter_model->getListAll();
+        $data['filter_list'] = $filter_model->getFilters($this->language_id);
 
         $data['errors'] = $this->errors;
 
@@ -301,7 +301,7 @@ class CategoriesManage extends AdminController
         }
 
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->getListDetail($delete_ids, get_lang_id(true));
+        $list_delete = $this->model->getListDetail($delete_ids, $this->language_id);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
