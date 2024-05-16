@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Products\Models;
+<?php
+
+namespace App\Modules\Products\Models;
 
 use App\Models\MyModel;
 
 class ProductVariantValueModel extends MyModel
 {
-    protected $table      = 'product_variant_value';
+    protected $table = 'product_variant_value';
     protected $primaryKey = 'product_id';
 
     protected $returnType = 'array';

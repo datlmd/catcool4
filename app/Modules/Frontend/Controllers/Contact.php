@@ -1,10 +1,11 @@
-<?php namespace App\Modules\Frontend\Controllers;
+<?php
+
+namespace App\Modules\Frontend\Controllers;
 
 use App\Controllers\MyController;
 
 class Contact extends MyController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -14,6 +15,8 @@ class Contact extends MyController
     {
         //set theme
         $this->themes->setTheme(config_item('theme_frontend'));
+
+        $location_list = null;
 
         if (!empty(config_item('store_location'))) {
             $store_location = explode(',', config_item('store_location'));
@@ -26,7 +29,6 @@ class Contact extends MyController
                     unset($location_list[$location_key]);
                 }
             }
-
         }
 
         $data = [
@@ -38,9 +40,9 @@ class Contact extends MyController
 
         $params['params'] = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'breadcrumb_title' => lang('Contact.text_title')
+            'breadcrumb_title' => lang('Contact.text_title'),
         ];
-        
+
         $this->themes->addPartial('header_top', $params)
              ->addPartial('header_bottom', $params)
              ->addPartial('content_left', $params)
@@ -50,7 +52,7 @@ class Contact extends MyController
              ->addPartial('footer_top', $params)
              ->addPartial('footer_bottom', $params);
 
-        add_meta(['title' => lang("Contact.text_title")], $this->themes);
+        add_meta(['title' => lang('Contact.text_title')], $this->themes);
 
         theme_load('contact', $data);
     }
@@ -62,19 +64,18 @@ class Contact extends MyController
         $this->validator->setRule('message', lang('Contact.text_message'), 'required|min_length[10]|max_length[3000]');
 
         if (!$this->validator->withRequest($this->request)->run()) {
-
             $errors = $this->validator->getErrors();
 
             json_output([
                 'error' => $errors,
-                'alert' => print_alert($errors, 'danger')
+                'alert' => print_alert($errors, 'danger'),
             ]);
         }
 
-        $email_to      = config_item('email_from');
-        $email_from    = $this->request->getPost('email');
-        $message       = $this->request->getPost('message');
-        $subject       = lang('Contact.email_subject', [$this->request->getPost('name')]);
+        $email_to = config_item('email_from');
+        $email_from = $this->request->getPost('email');
+        $message = $this->request->getPost('message');
+        $subject = lang('Contact.email_subject', [$this->request->getPost('name')]);
         $subject_title = config_item('email_subject_title');
 
         $send_email = send_email($email_to, $email_from, $subject, $message, $subject_title);
@@ -82,7 +83,7 @@ class Contact extends MyController
             $unsuccess = lang('Email.error_sent_unsuccessful');
             json_output([
                 'error' => $unsuccess,
-                'alert' => print_alert($unsuccess, 'danger')
+                'alert' => print_alert($unsuccess, 'danger'),
             ]);
         }
 
@@ -91,7 +92,7 @@ class Contact extends MyController
         json_output([
             'success' => $success,
             'alert' => print_alert($success),
-            'message' => ""
+            'message' => '',
         ]);
     }
 }

@@ -1,44 +1,46 @@
-<?php namespace App\Modules\Currencies\Models;
+<?php
+
+namespace App\Modules\Currencies\Models;
 
 use App\Models\MyModel;
 
 class CurrencyModel extends MyModel
 {
-    protected $table      = 'currency';
+    protected $table = 'currency';
     protected $primaryKey = 'currency_id';
 
     protected $allowedFields = [
-        "currency_id",
-        "name",
-        "code",
-        "symbol_left",
-        "symbol_right",
-        "decimal_place",
-        "value",
-        "published",
-        "ctime",
-        "mtime",
+        'currency_id',
+        'name',
+        'code',
+        'symbol_left',
+        'symbol_right',
+        'decimal_place',
+        'value',
+        'published',
+        'ctime',
+        'mtime',
     ];
 
-    const CURRENCY_CACHE_NAME   = 'currency_list';
+    const CURRENCY_CACHE_NAME = 'currency_list';
     const CURRENCY_CACHE_EXPIRE = YEAR;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = empty($sort) ? 'currency_id' : $sort;
+        $sort = empty($sort) ? 'currency_id' : $sort;
         $order = empty($order) ? 'DESC' : $order;
 
-        if (!empty($filter["id"])) {
-            $this->whereIn('currency_id', (is_array($filter["id"]) ? implode(',', $filter["id"]) : $filter["id"]));
+        if (!empty($filter['id'])) {
+            $this->whereIn('currency_id', (is_array($filter['id']) ? implode(',', $filter['id']) : $filter['id']));
         }
 
-        if (!empty($filter["name"])) {
-            $this->like('name', $filter["name"]);
+        if (!empty($filter['name'])) {
+            $this->like('name', $filter['name']);
         }
 
         return $this->orderBy($sort, $order)->findAll();
@@ -81,16 +83,18 @@ class CurrencyModel extends MyModel
         return $list[$code];
     }
 
-    public function deleteCache() : bool
+    public function deleteCache(): bool
     {
         cache()->delete(self::CURRENCY_CACHE_NAME);
+
         return true;
     }
 
     /**
-     * updateCurrency
+     * updateCurrency.
      *
      * @return bool
+     *
      * @throws \ReflectionException
      */
     public function updateCurrency()
@@ -98,7 +102,7 @@ class CurrencyModel extends MyModel
         $curl = curl_init();
 
         //&symbols = USD,AUD,CAD,PLN,MXN
-        curl_setopt($curl, CURLOPT_URL, 'http://data.fixer.io/api/latest?access_key=' . config_item('fixer_io_access_key'));
+        curl_setopt($curl, CURLOPT_URL, 'http://data.fixer.io/api/latest?access_key='.config_item('fixer_io_access_key'));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_HEADER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
@@ -113,9 +117,9 @@ class CurrencyModel extends MyModel
 
         if (is_array($response_info) && isset($response_info['rates'])) {
             // Compile all the rates into an array
-            $currencies = array();
+            $currencies = [];
 
-            $default           = config_item('currency');
+            $default = config_item('currency');
             $currencies['EUR'] = 1.0000;
 
             foreach ($response_info['rates'] as $key => $value) {

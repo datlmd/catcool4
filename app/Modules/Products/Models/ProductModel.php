@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Products\Models;
+<?php
+
+namespace App\Modules\Products\Models;
 
 use App\Models\MyModel;
 
 class ProductModel extends MyModel
 {
-    protected $table      = 'product';
+    protected $table = 'product';
     protected $primaryKey = 'product_id';
 
     protected $returnType = 'array';
@@ -44,17 +46,17 @@ class ProductModel extends MyModel
         'viewed',
         'is_comment',
         'ctime',
-        'mtime'
+        'mtime',
     ];
 
-    protected $validationRules    = [];
+    protected $validationRules = [];
     protected $validationMessages = [];
-    protected $skipValidation     = false;
+    protected $skipValidation = false;
 
     protected $table_lang = 'product_lang';
     protected $with = ['product_lang'];
 
-    const CATEGORY_CACHE_NAME   = 'product_list';
+    const CATEGORY_CACHE_NAME = 'product_list';
     const CATEGORY_CACHE_EXPIRE = YEAR;
 
     public function __construct()
@@ -64,17 +66,17 @@ class ProductModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? "$this->table.$sort" : (in_array($sort, ['name']) ? "$this->table_lang.$sort" : "");
-        $sort  = !empty($sort) ? $sort : "$this->table.product_id";
+        $sort = in_array($sort, $this->allowedFields) ? "$this->table.$sort" : (in_array($sort, ['name']) ? "$this->table_lang.$sort" : '');
+        $sort = !empty($sort) ? $sort : "$this->table.product_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
         $this->where("$this->table_lang.language_id", language_id_admin());
-        if (!empty($filter["product_id"])) {
-            $this->whereIn("$this->table.product_id", (!is_array($filter["product_id"]) ? explode(',', $filter["product_id"]) : $filter["product_id"]));
+        if (!empty($filter['product_id'])) {
+            $this->whereIn("$this->table.product_id", (!is_array($filter['product_id']) ? explode(',', $filter['product_id']) : $filter['product_id']));
         }
 
-        if (!empty($filter["name"])) {
-            $this->like("$this->table_lang.name", $filter["name"]);
+        if (!empty($filter['name'])) {
+            $this->like("$this->table_lang.name", $filter['name']);
         }
 
         $this->select("$this->table.*, $this->table_lang.*")
@@ -85,7 +87,7 @@ class ProductModel extends MyModel
         return $this;
     }
 
-    public function findRelated($related, $id = null, $limit = 20)
+    public function findRelated($related, $language_id, $id = null, $limit = 20)
     {
         $this->select("$this->table.*, $this->table_lang.*")
             ->with(false)
@@ -95,7 +97,7 @@ class ProductModel extends MyModel
             ->like("$this->table_lang.name", trim($related))
             ->orLike("$this->table_lang.tag", trim($related))
             ->groupEnd()
-            ->where("$this->table_lang.language_id", get_lang_id(true));
+            ->where("$this->table_lang.language_id", $language_id);
 
         if (!empty($id)) {
             $this->where("$this->table.product_id !=", $id);
@@ -107,7 +109,6 @@ class ProductModel extends MyModel
             return false;
         }
 
-        $language_id = get_lang_id(true);
         foreach ($result as $key => $value) {
             $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
@@ -115,7 +116,7 @@ class ProductModel extends MyModel
         return $result;
     }
 
-    public function getListByRelatedIds($related_ids, $limit = 10)
+    public function getListByRelatedIds($related_ids, $language_id, $limit = 10)
     {
         if (empty($related_ids)) {
             return null;
@@ -126,14 +127,13 @@ class ProductModel extends MyModel
         $result = $this
                 ->orderBy('product_id', 'DESC')
                 //->where(['published' => STATUS_ON])
-                ->whereIn("product_id", $related_ids)
+                ->whereIn('product_id', $related_ids)
                 ->findAll($limit);
 
         if (empty($result)) {
             return false;
         }
 
-        $language_id = get_lang_id(true);
         foreach ($result as $key => $value) {
             $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }

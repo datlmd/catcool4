@@ -312,7 +312,7 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $list = $this->model->getListAll();
+        $list = $this->model->getVatiants();
         if (empty($list[$variant_id])) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }

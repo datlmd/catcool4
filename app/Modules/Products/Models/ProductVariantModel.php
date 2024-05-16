@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Products\Models;
+<?php
+
+namespace App\Modules\Products\Models;
 
 use App\Models\MyModel;
 
 class ProductVariantModel extends MyModel
 {
-    protected $table      = 'product_variant';
+    protected $table = 'product_variant';
     protected $primaryKey = 'product_id';
 
     protected $returnType = 'array';
@@ -20,7 +22,7 @@ class ProductVariantModel extends MyModel
         parent::__construct();
     }
 
-    public function getListVariantByProductId($product_id)
+    public function getListVariantByProductId($product_id, $language_id)
     {
         if (empty($product_id)) {
             return [];
@@ -34,12 +36,12 @@ class ProductVariantModel extends MyModel
         $variant_sort = array_column($result, 'sort_order');
         array_multisort($variant_sort, SORT_DESC, $result);
 
-        $variant_model       = new \App\Modules\Variants\Models\VariantModel();
+        $variant_model = new \App\Modules\Variants\Models\VariantModel();
         $variant_value_model = new \App\Modules\Variants\Models\VariantValueModel();
         $product_variant_value_model = new ProductVariantValueModel();
 
-        $variant_list = $variant_model->getListAll();
-        $variant_value_list = $variant_value_model->getListAll();
+        $variant_list = $variant_model->getVariants($language_id);
+        $variant_value_list = $variant_value_model->getVariantValues($language_id);
 
         $product_variant_value_list = $product_variant_value_model->getListVariantValueByProductId($product_id);
         $product_variant_group_list = [];
@@ -58,7 +60,7 @@ class ProductVariantModel extends MyModel
                 continue;
             }
 
-            $value['name']        = $variant_list[$value['variant_id']]['name'];
+            $value['name'] = $variant_list[$value['variant_id']]['name'];
             $value['variant_row'] = format_product_variant_row($value['variant_id']);
 
             $variant_values = $product_variant_group_list[$value['variant_id']];

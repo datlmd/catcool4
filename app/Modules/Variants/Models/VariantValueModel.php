@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Variants\Models;
+<?php
+
+namespace App\Modules\Variants\Models;
 
 use App\Models\MyModel;
 
 class VariantValueModel extends MyModel
 {
-    protected $table      = 'variant_value';
+    protected $table = 'variant_value';
     protected $primaryKey = 'variant_value_id';
 
     protected $returnType = 'array';
@@ -13,12 +15,12 @@ class VariantValueModel extends MyModel
         'variant_value_id',
         'variant_id',
         'image',
-        'sort_order'
+        'sort_order',
     ];
 
-    protected $validationRules    = [];
+    protected $validationRules = [];
     protected $validationMessages = [];
-    protected $skipValidation     = false;
+    protected $skipValidation = false;
 
     protected $table_lang = 'variant_value_lang';
     protected $with = ['variant_value_lang'];
@@ -33,8 +35,8 @@ class VariantValueModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? "$this->table.$sort" : (in_array($sort, ['name']) ? "$this->table_lang.$sort" : "");
-        $sort  = !empty($sort) ? $sort : "$this->table.$this->primaryKey";
+        $sort = in_array($sort, $this->allowedFields) ? "$this->table.$sort" : (in_array($sort, ['name']) ? "$this->table_lang.$sort" : '');
+        $sort = !empty($sort) ? $sort : "$this->table.$this->primaryKey";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
         $this->where("$this->table_lang.language_id", language_id_admin());
@@ -42,8 +44,8 @@ class VariantValueModel extends MyModel
             $this->whereIn("$this->table.$this->primaryKey", (!is_array($filter["$this->primaryKey"]) ? explode(',', $filter["$this->primaryKey"]) : $filter["$this->primaryKey"]));
         }
 
-        if (!empty($filter["name"])) {
-            $this->like("$this->table_lang.name", $filter["name"]);
+        if (!empty($filter['name'])) {
+            $this->like("$this->table_lang.name", $filter['name']);
         }
 
         $this->select("$this->table.*, $this->table_lang.*")
@@ -54,23 +56,15 @@ class VariantValueModel extends MyModel
         return $this;
     }
 
-    public function getListById($variant_id)
+    public function deleteCache()
     {
-        $result = $this->orderBy('sort_order', 'DESC')->where('variant_id', $variant_id)->findAll();
-        if (empty($result)) {
-            return [];
-        }
+        cache()->delete(self::VALUE_CACHE_NAME);
 
-        $language_id = get_lang_id(IS_ADMIN);
-        foreach ($result as $key => $value) {
-            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
-            $result[$key]['variant_value_row'] = format_product_variant_row($value['variant_value_id']);
-        }
-
-        return $result;
+        return true;
     }
 
-    public function getListAll($is_cache = true)
+    /** ----------- Frontend ----------- **/
+    public function getVariantValues($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::VALUE_CACHE_NAME) : null;
         if (empty($result)) {
@@ -89,7 +83,6 @@ class VariantValueModel extends MyModel
             return [];
         }
 
-        $language_id = get_lang_id(true);
         foreach ($result as $key => $value) {
             $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
@@ -97,9 +90,18 @@ class VariantValueModel extends MyModel
         return $result;
     }
 
-    public function deleteCache()
+    public function getVariantInfo($variant_id, $language_id)
     {
-        cache()->delete(self::VALUE_CACHE_NAME);
-        return true;
+        $result = $this->orderBy('sort_order', 'DESC')->where('variant_id', $variant_id)->findAll();
+        if (empty($result)) {
+            return [];
+        }
+
+        foreach ($result as $key => $value) {
+            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
+            $result[$key]['variant_value_row'] = format_product_variant_row($value['variant_value_id']);
+        }
+
+        return $result;
     }
 }

@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Variants\Models;
+<?php
+
+namespace App\Modules\Variants\Models;
 
 use App\Models\MyModel;
 
 class VariantModel extends MyModel
 {
-    protected $table      = 'variant';
+    protected $table = 'variant';
     protected $primaryKey = 'variant_id';
 
     protected $returnType = 'array';
@@ -12,12 +14,12 @@ class VariantModel extends MyModel
     protected $allowedFields = [
         'variant_id',
         'type',
-        'sort_order'
+        'sort_order',
     ];
 
-    protected $validationRules    = [];
+    protected $validationRules = [];
     protected $validationMessages = [];
-    protected $skipValidation     = false;
+    protected $skipValidation = false;
 
     protected $table_lang = 'variant_lang';
     protected $with = ['variant_lang'];
@@ -32,8 +34,8 @@ class VariantModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? "$this->table.$sort" : (in_array($sort, ['name']) ? "$this->table_lang.$sort" : "");
-        $sort  = !empty($sort) ? $sort : "$this->table.$this->primaryKey";
+        $sort = in_array($sort, $this->allowedFields) ? "$this->table.$sort" : (in_array($sort, ['name']) ? "$this->table_lang.$sort" : '');
+        $sort = !empty($sort) ? $sort : "$this->table.$this->primaryKey";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
         $this->where("$this->table_lang.language_id", language_id_admin());
@@ -41,8 +43,8 @@ class VariantModel extends MyModel
             $this->whereIn("$this->table.$this->primaryKey", (!is_array($filter["$this->primaryKey"]) ? explode(',', $filter["$this->primaryKey"]) : $filter["$this->primaryKey"]));
         }
 
-        if (!empty($filter["name"])) {
-            $this->like("$this->table_lang.name", $filter["name"]);
+        if (!empty($filter['name'])) {
+            $this->like("$this->table_lang.name", $filter['name']);
         }
 
         $this->select("$this->table.*, $this->table_lang.*")
@@ -53,7 +55,18 @@ class VariantModel extends MyModel
         return $this;
     }
 
-    public function getListAll($is_cache = true)
+    public function deleteCache()
+    {
+        cache()->delete(self::CACHE_NAME);
+
+        $value_model = new VariantValueModel();
+        $value_model->deleteCache();
+
+        return true;
+    }
+
+    /** ----------- Frontend ----------- **/
+    public function getVariants($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::CACHE_NAME) : null;
         if (empty($result)) {
@@ -74,14 +87,13 @@ class VariantModel extends MyModel
 
         $list = [];
 
-        $language_id = get_lang_id(true);
         foreach ($result as $value) {
             $list[$value["$this->primaryKey"]] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
 
         //get list value
         $value_model = new VariantValueModel();
-        $value_list = $value_model->getListAll();
+        $value_list = $value_model->getVariantValues($language_id);
         if (!empty($value_list)) {
             foreach ($value_list as $value) {
                 $list[$value["$this->primaryKey"]]['value_list'][$value['variant_value_id']] = $value;
@@ -89,15 +101,5 @@ class VariantModel extends MyModel
         }
 
         return $list;
-    }
-
-    public function deleteCache()
-    {
-        cache()->delete(self::CACHE_NAME);
-
-        $value_model = new VariantValueModel();
-        $value_model->deleteCache();
-
-        return true;
     }
 }

@@ -1,9 +1,10 @@
-<?php namespace App\Modules\Products\Controllers;
+<?php
+
+namespace App\Modules\Products\Controllers;
 
 use App\Controllers\AdminController;
-use App\Modules\Currencies\Models\CurrencyModel;
-use App\Modules\Products\Models\ProductModel;
 use App\Modules\Products\Models\ProductLangModel;
+use App\Modules\Products\Models\ProductModel;
 
 class Manage extends AdminController
 {
@@ -11,11 +12,11 @@ class Manage extends AdminController
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'products/manage';
-    CONST MANAGE_URL  = 'products/manage';
+    const MANAGE_ROOT = 'products/manage';
+    const MANAGE_URL = 'products/manage';
 
-    CONST SEO_URL_MODULE   = 'products';
-    CONST SEO_URL_RESOURCE = 'Products::Detail/%s';
+    const SEO_URL_MODULE = 'products';
+    const SEO_URL_RESOURCE = 'Products::Detail/%s';
 
     const FOLDER_UPLOAD = 'products/';
 
@@ -40,15 +41,15 @@ class Manage extends AdminController
         $this->breadcrumb->add(lang('ProductAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
-	public function index()
-	{
+    public function index()
+    {
         add_meta(['title' => lang('ProductAdmin.heading_title')], $this->themes);
 
         $this->themes->addJS('common/js/common/currency');
 
-        $limit       = $this->request->getGet('limit');
-        $sort        = $this->request->getGet('sort');
-        $order       = $this->request->getGet('order');
+        $limit = $this->request->getGet('limit');
+        $sort = $this->request->getGet('sort');
+        $order = $this->request->getGet('order');
         $filter_keys = ['product_id', 'name', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
@@ -57,12 +58,11 @@ class Manage extends AdminController
 
         $product_ids = array_column($product_list, 'product_id');
 
-        $product_sku_model     = new \App\Modules\Products\Models\ProductSkuModel();
+        $product_sku_model = new \App\Modules\Products\Models\ProductSkuModel();
         $product_sku_list = $product_sku_model->getListSkuByProductIds($product_ids);
 
         if (!empty($product_sku_list)) {
             foreach ($product_list as $product_key => $product) {
-
                 $product_list[$product_key]['price'] = service('currency')->format($product['price'], config_item('currency'));
 
                 if (empty($product['variant'])) {
@@ -94,17 +94,17 @@ class Manage extends AdminController
                 if (count($sku_prices) > 2) {
                     $sku_prices = [$sku_prices[0], $sku_prices[count($sku_prices) - 1]];
                 }
-                $product_list[$product_key]['price'] = implode(" - ", $sku_prices);
+                $product_list[$product_key]['price'] = implode(' - ', $sku_prices);
             }
         }
 
-	    $data = [
-            'breadcrumb'    => $this->breadcrumb->render(),
-            'list'          => $product_list,
-            'pager'         => $list->pager,
-            'sort'          => empty($sort) ? 'product_id' : $sort,
-            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'           => $this->getUrlFilter($filter_keys),
+        $data = [
+            'breadcrumb' => $this->breadcrumb->render(),
+            'list' => $product_list,
+            'pager' => $list->pager,
+            'sort' => empty($sort) ? 'product_id' : $sort,
+            'order' => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url' => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
@@ -117,7 +117,7 @@ class Manage extends AdminController
             ->addPartial('footer')
             ->addPartial('sidebar')
             ::load('product', $data);
-	}
+    }
 
     public function add()
     {
@@ -128,6 +128,7 @@ class Manage extends AdminController
     {
         if (is_null($id)) {
             set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -154,43 +155,43 @@ class Manage extends AdminController
 
         $date_available = $this->request->getPost('date_available');
         if (!empty($date_available)) {
-            $date_available = date("Y-m-d", strtotime($date_available));
+            $date_available = date('Y-m-d', strtotime($date_available));
         }
 
-        $product_id   = $this->request->getPost('product_id');
+        $product_id = $this->request->getPost('product_id');
         $data_product = [
-            'master_id'       => $this->request->getPost('master_id'),
-            'model'           => $this->request->getPost('model'),
-            'sku'             => $this->request->getPost('sku'),
-            'upc'             => $this->request->getPost('upc'),
-            'ean'             => $this->request->getPost('ean'),
-            'jan'             => $this->request->getPost('jan'),
-            'isbn'            => $this->request->getPost('isbn'),
-            'mpn'             => $this->request->getPost('mpn'),
-            'location'        => $this->request->getPost('location'),
+            'master_id' => $this->request->getPost('master_id'),
+            'model' => $this->request->getPost('model'),
+            'sku' => $this->request->getPost('sku'),
+            'upc' => $this->request->getPost('upc'),
+            'ean' => $this->request->getPost('ean'),
+            'jan' => $this->request->getPost('jan'),
+            'isbn' => $this->request->getPost('isbn'),
+            'mpn' => $this->request->getPost('mpn'),
+            'location' => $this->request->getPost('location'),
             //'variant'         => $this->request->getPost('variant'),
             //'override'        => $this->request->getPost('override'),
-            'quantity'        => $this->request->getPost('quantity'),
+            'quantity' => $this->request->getPost('quantity'),
             'stock_status_id' => $this->request->getPost('stock_status_id'),
             //'image'           => $this->request->getPost('image'),
             'manufacturer_id' => $this->request->getPost('manufacturer_id'),
-            'shipping'        => $this->request->getPost('shipping'),
-            'price'           => format_decimal($this->request->getPost('price')),//(float)$this->request->getPost('price'),
-            'points'          => 0,//$this->request->getPost('points'),
-            'tax_class_id'    => $this->request->getPost('tax_class_id'),
-            'date_available'  => $date_available,
-            'weight'          => (float)$this->request->getPost('weight'),
+            'shipping' => $this->request->getPost('shipping'),
+            'price' => format_decimal($this->request->getPost('price')), //(float)$this->request->getPost('price'),
+            'points' => 0, //$this->request->getPost('points'),
+            'tax_class_id' => $this->request->getPost('tax_class_id'),
+            'date_available' => $date_available,
+            'weight' => (float) $this->request->getPost('weight'),
             'weight_class_id' => $this->request->getPost('weight_class_id'),
-            'length'          => (float)$this->request->getPost('length'),
+            'length' => (float) $this->request->getPost('length'),
             'length_class_id' => $this->request->getPost('length_class_id'),
-            'width'           => (float)$this->request->getPost('width'),
-            'height'          => (float)$this->request->getPost('height'),
-            'subtract'        => $this->request->getPost('subtract'),
-            'minimum'         => $this->request->getPost('minimum'),
-            'sort_order'      => $this->request->getPost('sort_order'),
-            'published'       => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-            'viewed'          => $this->request->getPost('viewed'),
-            'is_comment'      => $this->request->getPost('is_comment'),
+            'width' => (float) $this->request->getPost('width'),
+            'height' => (float) $this->request->getPost('height'),
+            'subtract' => $this->request->getPost('subtract'),
+            'minimum' => $this->request->getPost('minimum'),
+            'sort_order' => $this->request->getPost('sort_order'),
+            'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+            'viewed' => $this->request->getPost('viewed'),
+            'is_comment' => $this->request->getPost('is_comment'),
         ];
 
         if (empty($product_id)) {
@@ -218,8 +219,8 @@ class Manage extends AdminController
         $edit_data_lang = $this->request->getPost('lang');
         foreach (list_language_admin() as $language) {
             $edit_data_lang[$language['id']]['language_id'] = $language['id'];
-            $edit_data_lang[$language['id']]['product_id']  = $product_id;
-            $edit_data_lang[$language['id']]['slug']        = !empty($seo_urls[$language['id']]['route']) ? get_seo_extension($seo_urls[$language['id']]['route']) : '';
+            $edit_data_lang[$language['id']]['product_id'] = $product_id;
+            $edit_data_lang[$language['id']]['slug'] = !empty($seo_urls[$language['id']]['route']) ? get_seo_extension($seo_urls[$language['id']]['route']) : '';
 
             $this->model_lang->insert($edit_data_lang[$language['id']]);
         }
@@ -261,7 +262,7 @@ class Manage extends AdminController
         $product_image_model = new \App\Modules\Products\Models\ProductImageModel();
         $product_image_model->where(['product_id' => $product_id])->delete();
 
-        $main_image_url = "";
+        $main_image_url = '';
         $product_image_list = $this->request->getPost('product_image');
 
         if (!empty($product_image_list)) {
@@ -272,14 +273,14 @@ class Manage extends AdminController
                 }
 
                 if (stripos($value['image'], UPLOAD_FILE_TMP_DIR) !== false) {
-                    $product_image_url = str_replace(UPLOAD_FILE_TMP_DIR, self::FOLDER_UPLOAD . "$product_id/", $value['image']);
-                    $value['image']    = move_file_tmp($value['image'], $product_image_url);
+                    $product_image_url = str_replace(UPLOAD_FILE_TMP_DIR, self::FOLDER_UPLOAD."$product_id/", $value['image']);
+                    $value['image'] = move_file_tmp($value['image'], $product_image_url);
                 }
 
                 $product_image_data = [
                     'product_id' => $product_id,
-                    'image'      => $value['image'],
-                    'sort_order' => $product_image_sort_order
+                    'image' => $value['image'],
+                    'sort_order' => $product_image_sort_order,
                 ];
 
                 if (!empty($value['product_image_id'])) {
@@ -288,7 +289,7 @@ class Manage extends AdminController
 
                 $product_image_model->insert($product_image_data);
 
-                $product_image_sort_order--;
+                --$product_image_sort_order;
                 if (!empty($value['image']) && empty($main_image_url)) {
                     $main_image_url = $value['image'];
                 }
@@ -315,10 +316,10 @@ class Manage extends AdminController
                         continue;
                     }
                     $data_attribute[] = [
-                        'product_id'   => $product_id,
-                        'language_id'  => $language['id'],
+                        'product_id' => $product_id,
+                        'language_id' => $language['id'],
                         'attribute_id' => $value['attribute_id'],
-                        'text'         => $value['lang'][$language['id']]['text'],
+                        'text' => $value['lang'][$language['id']]['text'],
                     ];
 
                     //$product_attribute_model->insert($data_attribute);
@@ -331,11 +332,11 @@ class Manage extends AdminController
 
         //save route url
         $route_model = new \App\Modules\Routes\Models\RouteModel();
-        $seo_urls    = $this->request->getPost('seo_urls');
+        $seo_urls = $this->request->getPost('seo_urls');
         $route_model->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $product_id));
 
         //product option
-        $product_option_model       = new \App\Modules\Products\Models\ProductOptionModel();
+        $product_option_model = new \App\Modules\Products\Models\ProductOptionModel();
         $product_option_value_model = new \App\Modules\Products\Models\ProductOptionValueModel();
 
         $product_option_model->where(['product_id' => $product_id])->delete();
@@ -346,8 +347,8 @@ class Manage extends AdminController
             foreach ($product_option_list as $value) {
                 $product_option_data = [
                     'product_id' => $product_id,
-                    'option_id'  => $value['option_id'],
-                    'required'   => $value['required'],
+                    'option_id' => $value['option_id'],
+                    'required' => $value['required'],
                 ];
                 if (!empty($value['product_option_id'])) {
                     $product_option_data['product_option_id'] = $value['product_option_id'];
@@ -358,17 +359,17 @@ class Manage extends AdminController
                     foreach ($value['product_option_value'] as $option_value) {
                         $product_option_value_data = [
                             'product_option_id' => $product_option_id,
-                            'product_id'        => $product_id,
-                            'option_id'         => $value['option_id'],
-                            'option_value_id'   => $option_value['option_value_id'],
-                            'quantity'          => $option_value['quantity'],
-                            'subtract'          => $option_value['subtract'],
-                            'price'             => format_decimal($option_value['price']),
-                            'price_prefix'      => $option_value['price_prefix'],
-                            'points'            => $option_value['points'],
-                            'points_prefix'     => $option_value['points_prefix'],
-                            'weight'            => $option_value['weight'],
-                            'weight_prefix'     => $option_value['weight_prefix'],
+                            'product_id' => $product_id,
+                            'option_id' => $value['option_id'],
+                            'option_value_id' => $option_value['option_value_id'],
+                            'quantity' => $option_value['quantity'],
+                            'subtract' => $option_value['subtract'],
+                            'price' => format_decimal($option_value['price']),
+                            'price_prefix' => $option_value['price_prefix'],
+                            'points' => $option_value['points'],
+                            'points_prefix' => $option_value['points_prefix'],
+                            'weight' => $option_value['weight'],
+                            'weight_prefix' => $option_value['weight_prefix'],
                         ];
                         if (!empty($option_value['product_option_value_id'])) {
                             $product_option_value_data['product_option_value_id'] = $option_value['product_option_value_id'];
@@ -383,13 +384,13 @@ class Manage extends AdminController
         }
 
         //Bat dau Variant
-        $product_variant_model       = new \App\Modules\Products\Models\ProductVariantModel();
+        $product_variant_model = new \App\Modules\Products\Models\ProductVariantModel();
         $product_variant_value_model = new \App\Modules\Products\Models\ProductVariantValueModel();
 
-        $variant_value_model      = new \App\Modules\Variants\Models\VariantValueModel();
+        $variant_value_model = new \App\Modules\Variants\Models\VariantValueModel();
         $variant_value_lang_model = new \App\Modules\Variants\Models\VariantValueLangModel();
 
-        $product_sku_model       = new \App\Modules\Products\Models\ProductSkuModel();
+        $product_sku_model = new \App\Modules\Products\Models\ProductSkuModel();
         $product_sku_value_model = new \App\Modules\Products\Models\ProductSkuValueModel();
 
         //xoa tat ca variant trước khi check, nếu co variant thi them vao lại
@@ -399,7 +400,6 @@ class Manage extends AdminController
         $product_sku_model->where(['product_id' => $product_id])->delete();
 
         if ($this->request->getPost('product_variant') && $this->request->getPost('product_variant_combination')) {
-
             $variant_value_id_list = [];
 
             //delete cache variant value
@@ -414,24 +414,22 @@ class Manage extends AdminController
                     'sort_order' => $sort_product_variant,
                 ];
                 $product_variant_model->insert($data_product_variant);
-                $sort_product_variant--;
+                --$sort_product_variant;
 
                 if (!empty($variant['variant_values'])) {
-
                     $variant_value_model->where(['variant_id' => $variant['variant_id']])->delete();
 
                     $sort_product_variant_value = count($variant['variant_values']);
 
                     foreach ($variant['variant_values'] as $variant_value_key => $variant_value) {
-
                         if (!empty($variant_value['image']) && stripos($variant_value['image'], UPLOAD_FILE_TMP_DIR) !== false) {
-                            $variant_image_url = str_replace(UPLOAD_FILE_TMP_DIR, self::FOLDER_UPLOAD . "$product_id/variant_", $variant_value['image']);
+                            $variant_image_url = str_replace(UPLOAD_FILE_TMP_DIR, self::FOLDER_UPLOAD."$product_id/variant_", $variant_value['image']);
                             $variant_value['image'] = move_file_tmp($variant_value['image'], $variant_image_url);
                         }
 
                         $data_variant_value = [
                             'variant_id' => $variant['variant_id'],
-                            'image'      => !empty($variant_value['image']) ? $variant_value['image'] : "",
+                            'image' => !empty($variant_value['image']) ? $variant_value['image'] : '',
                             'sort_order' => $sort_product_variant_value,
                         ];
 
@@ -442,28 +440,28 @@ class Manage extends AdminController
                         $variant_value_id = $variant_value_model->insert($data_variant_value);
                         $data_variant_value_lang = $variant_value['lang'];
                         foreach (list_language_admin() as $language) {
-                            $data_variant_value_lang[$language['id']]['language_id']      = $language['id'];
+                            $data_variant_value_lang[$language['id']]['language_id'] = $language['id'];
                             $data_variant_value_lang[$language['id']]['variant_value_id'] = $variant_value_id;
-                            $data_variant_value_lang[$language['id']]['variant_id']       = $variant['variant_id'];
-                            $data_variant_value_lang[$language['id']]['name']             = trim($data_variant_value_lang[$language['id']]['name']);
+                            $data_variant_value_lang[$language['id']]['variant_id'] = $variant['variant_id'];
+                            $data_variant_value_lang[$language['id']]['name'] = trim($data_variant_value_lang[$language['id']]['name']);
 
                             $variant_value_lang_model->insert($data_variant_value_lang[$language['id']]);
                         }
 
                         //list variant value row tmp, duoc su dung cho sku
                         $variant_value_id_list[$variant_value_key] = [
-                            'variant_id'       => $variant['variant_id'],
+                            'variant_id' => $variant['variant_id'],
                             'variant_value_id' => $variant_value_id,
                         ];
 
                         $data_product_variant_value = [
-                            'variant_id'       => $variant['variant_id'],
+                            'variant_id' => $variant['variant_id'],
                             'variant_value_id' => $variant_value_id,
-                            'product_id'       => $product_id,
-                            'sort_order'       => $sort_product_variant_value,
+                            'product_id' => $product_id,
+                            'sort_order' => $sort_product_variant_value,
                         ];
                         $product_variant_value_model->insert($data_product_variant_value);
-                        $sort_product_variant_value--;
+                        --$sort_product_variant_value;
                     }
                 }
             }
@@ -472,13 +470,12 @@ class Manage extends AdminController
             $sort_product_variant_combination = count($this->request->getPost('product_variant_combination'));
 
             foreach ($this->request->getPost('product_variant_combination') as $combination_key => $combination_value) {
-
                 $data_product_sku = [
                     'product_id' => $product_id,
-                    'price'      => format_decimal($combination_value['price']),
-                    'quantity'   => $combination_value['quantity'],
-                    'sku'        => $combination_value['sku'],
-                    'published'  => !empty($combination_value['published']) ? STATUS_ON : STATUS_OFF,
+                    'price' => format_decimal($combination_value['price']),
+                    'quantity' => $combination_value['quantity'],
+                    'sku' => $combination_value['sku'],
+                    'published' => !empty($combination_value['published']) ? STATUS_ON : STATUS_OFF,
                     'sort_order' => $sort_product_variant_combination,
                 ];
 
@@ -500,9 +497,9 @@ class Manage extends AdminController
                     }
 
                     $data_product_sku_value[] = [
-                        'product_sku_id'   => $product_sku_id,
-                        'product_id'       => $product_id,
-                        'variant_id'       => $variant_value_id_list[$variant_value_row]['variant_id'],
+                        'product_sku_id' => $product_sku_id,
+                        'product_id' => $product_id,
+                        'variant_id' => $variant_value_id_list[$variant_value_row]['variant_id'],
                         'variant_value_id' => $variant_value_id_list[$variant_value_row]['variant_value_id'],
                     ];
                 }
@@ -511,11 +508,11 @@ class Manage extends AdminController
                     $product_sku_value_model->insertBatch($data_product_sku_value);
                 }
 
-                $sort_product_variant_combination--;
+                --$sort_product_variant_combination;
             }
 
             //update variant
-            $product_variant_list = $product_variant_model->getListVariantByProductId($product_id);
+            $product_variant_list = $product_variant_model->getListVariantByProductId($product_id, $this->language_id);
             $this->model->save(['product_id' => $product_id, 'variant' => json_encode($product_variant_list, JSON_FORCE_OBJECT)]);
         } else {
             //update variant
@@ -573,31 +570,32 @@ class Manage extends AdminController
         //edit
         if (!empty($product_id) && is_numeric($product_id)) {
             $data['text_form'] = lang('ProductAdmin.text_edit');
-            $breadcrumb_url = site_url(self::MANAGE_URL . "/edit/$product_id");
+            $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$product_id");
 
             $data_form = $this->model->getDetail($product_id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR);
+
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
             //product filters
-            $product_filter_model  = new \App\Modules\Products\Models\ProductFilterModel();
+            $product_filter_model = new \App\Modules\Products\Models\ProductFilterModel();
             $filter_ids = $product_filter_model->where(['product_id' => $product_id])->findAll();
             $data_form['filter_ids'] = array_column($filter_ids, 'filter_id');
 
             //product categories
-            $product_category_model  = new \App\Modules\Products\Models\ProductCategoryModel();
+            $product_category_model = new \App\Modules\Products\Models\ProductCategoryModel();
             $category_ids = $product_category_model->where(['product_id' => $product_id])->findAll();
             $data_form['category_ids'] = array_column($category_ids, 'category_id');
 
             //product related
-            $product_related_model  = new \App\Modules\Products\Models\ProductRelatedModel();
+            $product_related_model = new \App\Modules\Products\Models\ProductRelatedModel();
             $related_ids = $product_related_model->where(['product_id' => $product_id])->findAll();
             $data_form['related_ids'] = array_column($related_ids, 'related_id');
 
             if (!empty($data_form['related_ids'])) {
-                $related_list = $this->model->getListByRelatedIds($data_form['related_ids']);
+                $related_list = $this->model->getListByRelatedIds($data_form['related_ids'], $this->language_id);
 
                 if (!empty($related_list)) {
                     $data_form['related_list_html'] = $this->themes::view('inc/related_list', ['related_list' => $related_list, 'is_checked' => true], true);
@@ -605,11 +603,11 @@ class Manage extends AdminController
             }
 
             //product image
-            $product_image_model  = new \App\Modules\Products\Models\ProductImageModel();
+            $product_image_model = new \App\Modules\Products\Models\ProductImageModel();
             $data_form['image_list'] = $product_image_model->getListByProductId($product_id);
 
             //product attribute
-            $product_attribute_model  = new \App\Modules\Products\Models\ProductAttributeModel();
+            $product_attribute_model = new \App\Modules\Products\Models\ProductAttributeModel();
             $data_form['product_attribute_list'] = $product_attribute_model->getListByProductId($product_id);
 
             //lay danh sach seo url tu route
@@ -622,15 +620,15 @@ class Manage extends AdminController
 
             //product variant
             $product_variant_model = new \App\Modules\Products\Models\ProductVariantModel();
-            $product_sku_model     = new \App\Modules\Products\Models\ProductSkuModel();
+            $product_sku_model = new \App\Modules\Products\Models\ProductSkuModel();
 
-            $data_form['product_variant_list'] = $product_variant_model->getListVariantByProductId($product_id);
+            $data_form['product_variant_list'] = $product_variant_model->getListVariantByProductId($product_id, $this->language_id);
             $data_form['product_sku_list'] = $product_sku_model->getListSkuByProductIds([$product_id]);
 
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('ProductAdmin.text_add');
-            $breadcrumb_url = site_url(self::MANAGE_URL . "/add");
+            $breadcrumb_url = site_url(self::MANAGE_URL.'/add');
         }
 
         $stock_status_model = new \App\Modules\Products\Models\StockStatusModel();
@@ -660,14 +658,14 @@ class Manage extends AdminController
         $data['option_list'] = $option_model->getOptions($this->language_id);
 
         $variant_model = new \App\Modules\Variants\Models\VariantModel();
-        $data['variant_list'] = $variant_model->getListAll();
+        $data['variant_list'] = $variant_model->getVariants($this->language_id);
 
         $data['errors'] = $this->errors;
 
         $this->breadcrumb->add($data['text_form'], $breadcrumb_url);
         add_meta(['title' => $data['text_form']], $this->themes);
 
-        $data['tab_type']   = 'tab_general';
+        $data['tab_type'] = 'tab_general';
         $data['breadcrumb'] = $this->breadcrumb->render();
 
         $this->themes
@@ -680,8 +678,8 @@ class Manage extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        foreach(list_language_admin() as $value) {
-            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('ProductAdmin.text_name') . ' (' . $value['name']  . ')', 'required');
+        foreach (list_language_admin() as $value) {
+            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('ProductAdmin.text_name').' ('.$value['name'].')', 'required');
         }
 
         if (!empty($this->request->getPost('shipping'))) {
@@ -695,7 +693,6 @@ class Manage extends AdminController
             $product_variant_list = [];
 
             foreach ($this->request->getPost('product_variant') as $variant_key => $variant) {
-
                 $this->validator->setRule(
                     sprintf('product_variant.%s.variant_id', $variant_key),
                     lang('ProductAdmin.text_variant_name'),
@@ -718,7 +715,6 @@ class Manage extends AdminController
                     }
 
                     foreach ($variant['variant_values'] as $variant_value_key => $variant_value) {
-
                         //kiem tra variant co bi trung nhau khong
                         foreach ($variant_value['lang'] as $lang_key => $lang_value) {
                             $error_variant_values = array_keys($variant_value_name_list, $lang_value['name']);
@@ -743,17 +739,15 @@ class Manage extends AdminController
                             $this->validator->setRule(sprintf('product_variant.%s.variant_values.%s.image', $variant_key, $variant_value_key), lang('ProductAdmin.text_variant_value_image'), 'required');
                         }
 
-
-
                         foreach (list_language_admin() as $lang_value) {
-                            $this->validator->setRule(sprintf('product_variant.%s.variant_values.%s.lang.%s.name', $variant_key, $variant_value_key, $lang_value['id']), lang('ProductAdmin.text_variant_value') . ' (' . $lang_value['name'] . ')', 'required|max_length[50]|min_length[1]');
+                            $this->validator->setRule(sprintf('product_variant.%s.variant_values.%s.lang.%s.name', $variant_key, $variant_value_key, $lang_value['id']), lang('ProductAdmin.text_variant_value').' ('.$lang_value['name'].')', 'required|max_length[50]|min_length[1]');
                         }
                     }
                 }
             }
 
             if (empty($this->request->getPost('product_variant_combination'))) {
-                $this->errors['product_variant_combination'] = lang("Validation.required", ["field" => lang('ProductAdmin.text_variant_list')]);
+                $this->errors['product_variant_combination'] = lang('Validation.required', ['field' => lang('ProductAdmin.text_variant_list')]);
             }
 
             foreach ($this->request->getPost('product_variant_combination') as $combination_key => $combination_value) {
@@ -788,23 +782,23 @@ class Manage extends AdminController
 
         //$this->validator->setRule('model', lang('ProductAdmin.text_model'), 'required');
 
-//        if (!empty($this->request->getPost('product_attribute'))) {
-//            foreach ($this->request->getPost('product_attribute') as $key => $value) {
-//                if (empty($value['lang'])) {
-//                    continue;
-//                }
-//                foreach(list_language_admin() as $lang_value) {
-//                    $this->validator->setRule(sprintf('product_attribute.%s.lang.%s.text', $key, $lang_value['id']), lang('ProductAdmin.text_text') . ' (' . $lang_value['name']  . ')', 'required');
-//                }
-//            }
-//        }
+        //        if (!empty($this->request->getPost('product_attribute'))) {
+        //            foreach ($this->request->getPost('product_attribute') as $key => $value) {
+        //                if (empty($value['lang'])) {
+        //                    continue;
+        //                }
+        //                foreach(list_language_admin() as $lang_value) {
+        //                    $this->validator->setRule(sprintf('product_attribute.%s.lang.%s.text', $key, $lang_value['id']), lang('ProductAdmin.text_text') . ' (' . $lang_value['name']  . ')', 'required');
+        //                }
+        //            }
+        //        }
 
         if (!empty($this->errors)) {
             return false;
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
-        $this->errors  = $this->validator->getErrors();
+        $this->errors = $this->validator->getErrors();
 
         return $is_validation;
     }
@@ -820,7 +814,7 @@ class Manage extends AdminController
         //delete
         if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
-            $ids = (is_array($ids)) ? $ids : explode(",", $ids);
+            $ids = (is_array($ids)) ? $ids : explode(',', $ids);
 
             $list_delete = $this->model->getListDetail($ids);
             if (empty($list_delete)) {
@@ -832,7 +826,7 @@ class Manage extends AdminController
 
             //xoa slug ra khoi route
             $route_model = new \App\Modules\Routes\Models\RouteModel();
-            foreach($list_delete as $value) {
+            foreach ($list_delete as $value) {
                 $route_model->deleteByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $value['product_id']));
             }
 
@@ -850,14 +844,14 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
+        $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
         $list_delete = $this->model->getListDetail($delete_ids, $this->language_id);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $data['list_delete'] = $list_delete;
-        $data['ids']         = $this->request->getPost('delete_ids');
+        $data['ids'] = $this->request->getPost('delete_ids');
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }
@@ -872,11 +866,11 @@ class Manage extends AdminController
             json_output(['status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        $related_list = $this->model->findRelated($this->request->getPost('related'), $this->request->getPost('id'));
+        $related_list = $this->model->findRelated($this->request->getPost('related'), $this->language_id, $this->request->getPost('id'));
 
         $data = [
             'status' => 'ok',
-            'view' => $this->themes::view('inc/related_list', ['related_list' => $related_list], true)
+            'view' => $this->themes::view('inc/related_list', ['related_list' => $related_list], true),
         ];
 
         json_output($data);
@@ -898,9 +892,9 @@ class Manage extends AdminController
         }
 
         $variant_model = new \App\Modules\Variants\Models\VariantModel();
-        $variant_list = $variant_model->getListAll();
+        $variant_list = $variant_model->getVariants($this->language_id);
 
-        $product_sku_model     = new \App\Modules\Products\Models\ProductSkuModel();
+        $product_sku_model = new \App\Modules\Products\Models\ProductSkuModel();
         $product_sku_list = $product_sku_model->getListSkuByProductIds([$product_id]);
 
         foreach ($product_sku_list as $sku_key => $sku) {
@@ -914,7 +908,7 @@ class Manage extends AdminController
                 }
             }
 
-            $product_sku_list[$sku_key]['sku_name'] = implode(" - ", $sku_name);
+            $product_sku_list[$sku_key]['sku_name'] = implode(' - ', $sku_name);
         }
 
         $product_info['sku_list'] = $product_sku_list;
@@ -942,7 +936,6 @@ class Manage extends AdminController
         $this->errors = [];
 
         if (!empty($this->request->getPost('product_sku'))) {
-
             foreach ($this->request->getPost('product_sku') as $sku) {
                 if (format_decimal($sku['price']) < config_item('price_minimum')) {
                     $this->errors[sprintf('product_sku.%s.price', $sku['product_sku_id'])] = lang('Validation.greater_than_equal_to', ['field' => lang('ProductAdmin.text_price'), 'param' => config_item('price_minimum')]);
@@ -956,7 +949,6 @@ class Manage extends AdminController
         }
 
         if (!empty($this->request->getPost('product_info'))) {
-
             if (format_decimal($this->request->getPost('product_info')['price']) < config_item('price_minimum')) {
                 $this->errors['product_info.price'] = lang('Validation.greater_than_equal_to', ['field' => lang('ProductAdmin.text_price'), 'param' => config_item('price_minimum')]);
             }
@@ -974,19 +966,18 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'error' => $this->errors]);
         }
 
-        $product_id   = null;
+        $product_id = null;
         $sku_quantity = 0;
-        $price_show   = "";
+        $price_show = '';
 
         if (!empty($this->request->getPost('product_sku'))) {
-
-            $data_edit    = [];
+            $data_edit = [];
 
             foreach ($this->request->getPost('product_sku') as $sku) {
                 $data_edit[] = [
                     'product_sku_id' => $sku['product_sku_id'],
-                    'price'          => format_decimal($sku['price']),
-                    'quantity'       => $sku['quantity']
+                    'price' => format_decimal($sku['price']),
+                    'quantity' => $sku['quantity'],
                 ];
 
                 $sku_prices[$sku['price']] = service('currency')->format(format_decimal($sku['price']), config_item('currency'));
@@ -1002,24 +993,24 @@ class Manage extends AdminController
                 $sku_prices = [$sku_prices[0], $sku_prices[count($sku_prices) - 1]];
             }
 
-            $price_show = implode(" - ", $sku_prices);
+            $price_show = implode(' - ', $sku_prices);
         } elseif (!empty($this->request->getPost('product_info'))) {
             $data_edit = [
                 'product_id' => $this->request->getPost('product_info')['product_id'],
-                'price'      => format_decimal($this->request->getPost('product_info')['price']),
-                'quantity'   => $this->request->getPost('product_info')['quantity']
+                'price' => format_decimal($this->request->getPost('product_info')['price']),
+                'quantity' => $this->request->getPost('product_info')['quantity'],
             ];
 
             $this->model->save($data_edit);
 
             $sku_quantity = $data_edit['quantity'];
-            $price_show   = service('currency')->format($data_edit['price'], config_item('currency'));
-            $product_id   = $data_edit['product_id'];
+            $price_show = service('currency')->format($data_edit['price'], config_item('currency'));
+            $product_id = $data_edit['product_id'];
         }
 
         $data = [
-            'price'      => $price_show,
-            'quantity'   => $sku_quantity,
+            'price' => $price_show,
+            'quantity' => $sku_quantity,
             'product_id' => $product_id,
         ];
 
@@ -1039,7 +1030,7 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        $id        = $this->request->getPost('id');
+        $id = $this->request->getPost('id');
         $item_edit = $this->model->find($id);
         if (empty($item_edit)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);

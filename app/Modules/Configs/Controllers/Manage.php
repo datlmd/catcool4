@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Configs\Controllers;
+<?php
+
+namespace App\Modules\Configs\Controllers;
 
 use App\Controllers\AdminController;
 use App\Modules\Configs\Models\ConfigModel;
@@ -8,8 +10,8 @@ class Manage extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'configs/manage';
-    CONST MANAGE_URL  = 'configs/manage';
+    const MANAGE_ROOT = 'configs/manage';
+    const MANAGE_URL = 'configs/manage';
 
     protected $model;
     protected $group_model;
@@ -36,29 +38,29 @@ class Manage extends AdminController
     {
         helper('filesystem');
 
-        $sort  = $this->request->getGet('sort');
+        $sort = $this->request->getGet('sort');
         $order = $this->request->getGet('order');
 
         //check permissions
         $key_file = 'config/Config.php';
-        if (is_file(WRITEPATH . $key_file)) {
-            $is_writable = is_writable(WRITEPATH . $key_file) ? "Writable" : "Not writable";
+        if (is_file(WRITEPATH.$key_file)) {
+            $is_writable = is_writable(WRITEPATH.$key_file) ? 'Writable' : 'Not writable';
             $file_permissions = "$key_file: $is_writable";
         } else {
-            $file_permissions = "File not found!";
+            $file_permissions = 'File not found!';
         }
 
         $data = [
-            'breadcrumb'       => $this->breadcrumb->render(),
-            'list'             => $this->model->getAllByFilter(null, $sort, $order),
-            'sort'             => empty($sort) ? 'id' : $sort,
-            'order'            => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'groups'           => $this->group_model->findAll(),
-            'config_group_id'  => session('tab_group_id'),
-            'file_permissions' => $file_permissions
+            'breadcrumb' => $this->breadcrumb->render(),
+            'list' => $this->model->getAllByFilter(null, $sort, $order),
+            'sort' => empty($sort) ? 'id' : $sort,
+            'order' => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'groups' => $this->group_model->findAll(),
+            'config_group_id' => session('tab_group_id'),
+            'file_permissions' => $file_permissions,
         ];
 
-        add_meta(['title' => lang("ConfigAdmin.heading_title")], $this->themes);
+        add_meta(['title' => lang('ConfigAdmin.heading_title')], $this->themes);
 
         $this->themes
             ->addPartial('header')
@@ -72,7 +74,7 @@ class Manage extends AdminController
         if ($this->model->writeFile()) {
             set_alert(lang('ConfigAdmin.created_setting_success'), ALERT_SUCCESS, ALERT_POPUP);
         } else {
-            set_alert(lang('Admin.error'), ALERT_ERROR,ALERT_POPUP);
+            set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
         }
 
         return redirect()->to(site_url(self::MANAGE_URL));
@@ -119,10 +121,9 @@ class Manage extends AdminController
         }
 
         if (!empty($this->request->getPost())) {
-
             if (!$this->validator->withRequest($this->request)->run()) {
                 set_alert([
-                    ALERT_ERROR => $this->validator->getErrors()
+                    ALERT_ERROR => $this->validator->getErrors(),
                 ]);
 
                 return redirect()->back()->withInput();
@@ -131,7 +132,7 @@ class Manage extends AdminController
             $data_settings = $this->request->getPost();
             switch ($this->request->getPost('tab_type')) {
                 case 'tab_image':
-                    $data_settings['file_ext_allowed']  = preg_replace('/\s+/', '|', trim($_POST['file_ext_allowed']));
+                    $data_settings['file_ext_allowed'] = preg_replace('/\s+/', '|', trim($_POST['file_ext_allowed']));
                     $data_settings['file_mime_allowed'] = preg_replace('/\s+/', '|', trim($_POST['file_mime_allowed']));
                     $data_settings['file_encrypt_name'] = !empty($this->request->getPost('file_encrypt_name')) ? STATUS_ON : STATUS_OFF;
                     $data_settings['enable_resize_image'] = !empty($this->request->getPost('enable_resize_image')) ? STATUS_ON : STATUS_OFF;
@@ -175,14 +176,14 @@ class Manage extends AdminController
             }
 
             $data_edit = [];
-            foreach($data_settings as $key => $val) {
+            foreach ($data_settings as $key => $val) {
                 if (empty($list_config[$key])) {
                     continue;
                 }
                 $data_edit[] = [
-                    'id'           => $list_config[$key]['id'],
+                    'id' => $list_config[$key]['id'],
                     'config_value' => $val,
-                    'user_id'      => $this->user->getId(),
+                    'user_id' => $this->user->getId(),
                 ];
             }
 
@@ -190,6 +191,7 @@ class Manage extends AdminController
                 $this->model->updateBatch($data_edit, 'id');
             } catch (\Exception $e) {
                 set_alert($e->getMessage(), ALERT_ERROR);
+
                 return redirect()->back()->withInput();
             }
 
@@ -204,7 +206,8 @@ class Manage extends AdminController
             }
 
             set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
-            return redirect()->to(site_url(self::MANAGE_URL) . '/settings/' . $this->request->getPost('tab_type'));
+
+            return redirect()->to(site_url(self::MANAGE_URL).'/settings/'.$this->request->getPost('tab_type'));
         }
 
         $this->themes->addJS('common/js/country/load');
@@ -212,7 +215,7 @@ class Manage extends AdminController
         $this->themes->addJS('common/plugin/bootstrap-colorpicker/claviska/jquery-minicolors/jquery.minicolors.min');
         $this->themes->addJS('common/js/admin/filemanager');
 
-        $settings     = [];
+        $settings = [];
         $list_config = $this->model->findAll();
         if (!empty($list_config)) {
             foreach ($list_config as $value) {
@@ -225,7 +228,6 @@ class Manage extends AdminController
                         $settings[$value['config_key']] = $value['config_value'];
                         break;
                 }
-            
             }
         }
 
@@ -235,15 +237,15 @@ class Manage extends AdminController
         $data['settings'] = $settings;
 
         $watermark_list = [
-            ""             => lang('Admin.text_none'),
-            'top-left'     => lang('ConfigAdmin.text_top_left'),
-            'top'          => lang('ConfigAdmin.text_top_center'),
-            'top-right'    => lang('ConfigAdmin.text_top_right'),
-            'left'         => lang('ConfigAdmin.text_middle_left'),
-            'center'       => lang('ConfigAdmin.text_center_center'),
-            'right'        => lang('ConfigAdmin.text_middle_right'),
-            'bottom-left'  => lang('ConfigAdmin.text_bottom_left'),
-            'bottom'       => lang('ConfigAdmin.text_bottom_center'),
+            '' => lang('Admin.text_none'),
+            'top-left' => lang('ConfigAdmin.text_top_left'),
+            'top' => lang('ConfigAdmin.text_top_center'),
+            'top-right' => lang('ConfigAdmin.text_top_right'),
+            'left' => lang('ConfigAdmin.text_middle_left'),
+            'center' => lang('ConfigAdmin.text_center_center'),
+            'right' => lang('ConfigAdmin.text_middle_right'),
+            'bottom-left' => lang('ConfigAdmin.text_bottom_left'),
+            'bottom' => lang('ConfigAdmin.text_bottom_center'),
             'bottom-right' => lang('ConfigAdmin.text_bottom_right'),
         ];
         $data['watermark_list'] = $watermark_list;
@@ -251,48 +253,48 @@ class Manage extends AdminController
         $image_tool = new \App\Libraries\ImageTool();
         $data['watermark_bg'] = $image_tool->watermarkDemo();
 
-        $country_model  = new \App\Modules\Countries\Models\CountryModel();
+        $country_model = new \App\Modules\Countries\Models\CountryModel();
         $province_model = new \App\Modules\Countries\Models\ProvinceModel();
         $currency_model = new \App\Modules\Currencies\Models\CurrencyModel();
 
-        $data['country_list']  = $country_model->getListDisplay();
+        $data['country_list'] = $country_model->getListDisplay();
         $data['province_list'] = $province_model->getListDisplay();
         $data['timezone_list'] = $this->_getListTimezone();
         $data['currency_list'] = format_dropdown($currency_model->getListPublished(), 'code');
 
-        $length_class_model        = new \App\Modules\Products\Models\LengthClassModel();
+        $length_class_model = new \App\Modules\Products\Models\LengthClassModel();
         $data['length_class_list'] = format_dropdown($length_class_model->getLengthClasses($this->language_id), 'length_class_id');
 
-        $weight_class_model        = new \App\Modules\Products\Models\WeightClassModel();
+        $weight_class_model = new \App\Modules\Products\Models\WeightClassModel();
         $data['weight_class_list'] = format_dropdown($weight_class_model->getWeightClasses($this->language_id), 'weight_class_id');
 
-        $attribute_group_model        = new \App\Modules\Attributes\Models\GroupModel();
-        $data['attribute_group_list'] = format_dropdown($attribute_group_model->getListALL(), 'attribute_group_id');
+        $attribute_group_model = new \App\Modules\Attributes\Models\GroupModel();
+        $data['attribute_group_list'] = format_dropdown($attribute_group_model->getAttributeGroups($this->language_id), 'attribute_group_id');
 
         $location_model = new \App\Modules\Locations\Models\LocationModel();
         $data['location_list'] = $location_model->getLocations();
 
-        $customer_group_model        = new \App\Modules\Customers\Models\GroupModel();
+        $customer_group_model = new \App\Modules\Customers\Models\GroupModel();
         $data['customer_group_list'] = $customer_group_model->getCustomerGroups($this->language_id);
-        
-        $page_model        = new \App\Modules\Pages\Models\PageModel();
+
+        $page_model = new \App\Modules\Pages\Models\PageModel();
         $data['page_list'] = $page_model->getPages($this->language_id);
 
         //check permissions
         $key_file = 'config/Config.php';
-        if (is_file(WRITEPATH . $key_file)) {
-            $is_writable = is_writable(WRITEPATH . $key_file) ? "Writable" : "Not writable";
+        if (is_file(WRITEPATH.$key_file)) {
+            $is_writable = is_writable(WRITEPATH.$key_file) ? 'Writable' : 'Not writable';
             $data['file_permissions'] = "$key_file: $is_writable";
         } else {
-            $data['file_permissions'] = "File not found!";
+            $data['file_permissions'] = 'File not found!';
         }
 
-        add_meta(['title' => lang("ConfigAdmin.heading_title")], $this->themes);
+        add_meta(['title' => lang('ConfigAdmin.heading_title')], $this->themes);
 
-        $this->smarty->assign('manage_url', self::MANAGE_URL . '/settings');
+        $this->smarty->assign('manage_url', self::MANAGE_URL.'/settings');
         $this->breadcrumb->reset();
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), site_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang("ConfigAdmin.heading_title"), site_url(CATCOOL_DASHBOARD . '/settings'));
+        $this->breadcrumb->add(lang('ConfigAdmin.heading_title'), site_url(CATCOOL_DASHBOARD.'/settings'));
 
         $this->themes
         ->addPartial('header')
@@ -308,16 +310,16 @@ class Manage extends AdminController
 
         $timezones = timezone_identifiers_list();
 
-        foreach($timezones as $timezone) {
+        foreach ($timezones as $timezone) {
             date_default_timezone_set($timezone);
 
-            $hour = ' (' . date('P', $timestamp) . ')';
+            $hour = ' ('.date('P', $timestamp).')';
 
-            $timezone_list[$timezone] = $timezone . $hour;
+            $timezone_list[$timezone] = $timezone.$hour;
         }
 
         if (!empty(config_item('app_timezone'))) {
-            date_default_timezone_set(config_item('app_timezone'));//'Asia/Saigon'
+            date_default_timezone_set(config_item('app_timezone')); //'Asia/Saigon'
         } else {
             date_default_timezone_set('Asia/Saigon');
         }
@@ -330,24 +332,27 @@ class Manage extends AdminController
         if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
+
                 return redirect()->back()->withInput();
             }
 
             $add_data = [
-                'config_key'   => $this->request->getPost('config_key'),
+                'config_key' => $this->request->getPost('config_key'),
                 'config_value' => $this->request->getPost('config_value'),
-                'description'  => $this->request->getPost('description'),
-                'user_id'      => $this->user->getId(),
-                'group_id'     => $this->request->getPost('group_id'),
-                'published'    => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'description' => $this->request->getPost('description'),
+                'user_id' => $this->user->getId(),
+                'group_id' => $this->request->getPost('group_id'),
+                'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
             if (!$this->model->insert($add_data)) {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
+
                 return redirect()->back()->withInput();
             }
 
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -358,22 +363,24 @@ class Manage extends AdminController
     {
         if (is_null($id)) {
             set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
         if (!empty($this->request->getPost()) && $id == $this->request->getPost('id')) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
+
                 return redirect()->back()->withInput();
             }
 
             $edit_data = [
-                'config_key'   => $this->request->getPost('config_key'),
+                'config_key' => $this->request->getPost('config_key'),
                 'config_value' => $this->request->getPost('config_value'),
-                'description'  => $this->request->getPost('description'),
-                'user_id'      => $this->user->getId(),
-                'group_id'     => $this->request->getPost('group_id'),
-                'published'    => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'description' => $this->request->getPost('description'),
+                'user_id' => $this->user->getId(),
+                'group_id' => $this->request->getPost('group_id'),
+                'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
             if (!$this->model->update($id, $edit_data)) {
@@ -383,8 +390,8 @@ class Manage extends AdminController
             }
 
             set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
-            return redirect()->back();
 
+            return redirect()->back();
         }
 
         return $this->_getForm($id);
@@ -399,10 +406,9 @@ class Manage extends AdminController
         $token = csrf_hash();
 
         //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
-            $ids = (is_array($ids)) ? $ids : explode(",", $ids);
+            $ids = (is_array($ids)) ? $ids : explode(',', $ids);
 
             $list_delete = $this->model->find($ids);
             if (empty($list_delete)) {
@@ -425,30 +431,31 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
+        $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
         $list_delete = $this->model->find($delete_ids);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $data['list_delete'] = $list_delete;
-        $data['ids']         = $this->request->getPost('delete_ids');
+        $data['ids'] = $this->request->getPost('delete_ids');
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }
 
     private function _getForm($id = null)
     {
-        $group_list     = $this->group_model->findAll();
+        $group_list = $this->group_model->findAll();
         $data['groups'] = format_dropdown($group_list);
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form'] = lang('ConfigAdmin.text_edit');
-            $breadcrumb_url = site_url(self::MANAGE_URL . "/edit/$id");
+            $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$id");
 
             $data_form = $this->model->find($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
@@ -456,7 +463,7 @@ class Manage extends AdminController
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('ConfigAdmin.text_add');
-            $breadcrumb_url = site_url(self::MANAGE_URL . "/add");
+            $breadcrumb_url = site_url(self::MANAGE_URL.'/add');
         }
 
         $data['errors'] = $this->errors;
@@ -484,12 +491,12 @@ class Manage extends AdminController
         $this->validator->setRule('config_key', lang('ConfigAdmin.text_config_key'), 'required');
 
         $is_validation = $this->validator->withRequest($this->request)->run();
-        $this->errors  = $this->validator->getErrors();
+        $this->errors = $this->validator->getErrors();
 
         //check slug
         if (!empty($this->request->getPost('config_key'))) {
             if (!empty($this->request->getPost('id'))) {
-                $key_list = $this->model->where('config_key', $this->request->getPost('config_key'))->whereNotIn('id', (array)$this->request->getPost('id'))->findAll();
+                $key_list = $this->model->where('config_key', $this->request->getPost('config_key'))->whereNotIn('id', (array) $this->request->getPost('id'))->findAll();
             } else {
                 $key_list = $this->model->where('config_key', $this->request->getPost('config_key'))->findAll();
             }
@@ -500,7 +507,7 @@ class Manage extends AdminController
         }
 
         if (!empty($this->errors)) {
-            return FALSE;
+            return false;
         }
 
         return $is_validation;
@@ -518,7 +525,7 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        $id        = $this->request->getPost('id');
+        $id = $this->request->getPost('id');
         $item_edit = $this->model->find($id);
         if (empty($item_edit)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
@@ -535,9 +542,9 @@ class Manage extends AdminController
     public function config()
     {
         $allow = [
-            'dark_mode'     => 'enable_dark_mode',
+            'dark_mode' => 'enable_dark_mode',
             'collapse_menu' => 'enable_scroll_menu_admin',
-            'style_menu'    => 'enable_icon_menu_admin',
+            'style_menu' => 'enable_icon_menu_admin',
         ];
 
         $key = $this->request->getGet('k');
@@ -557,6 +564,7 @@ class Manage extends AdminController
         if ($this->model->update($config['id'], $config)) {
             $this->model->writeFile();
         }
+
         return redirect()->back();
     }
 }
