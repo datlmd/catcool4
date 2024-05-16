@@ -70,7 +70,7 @@ class PermissionModel extends MyModel
     {
         helper(['cookie', 'catcool', 'admin', 'inflector']);
         
-        \Config\Services::language()->setLocale(get_language_admin());
+        \Config\Services::language()->setLocale(language_code_admin());
 
         $text_permission = lang('PermissionAdmin.not_permission');
         $permission      = (!empty($permission)) ? $permission : uri_string();

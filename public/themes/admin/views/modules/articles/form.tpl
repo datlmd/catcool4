@@ -106,7 +106,7 @@
                             </div>
                             <div class="form-group border-bottom pb-3 mb-3">
                                 <label class="form-label fw-bold" for="input_publish_date">{lang('ArticleAdmin.text_publish_date')}</label>
-                                <div class="input-group date show-date-picker" id="show-date-picker" data-target-input="nearest" data-date-format="{get_date_format_ajax()|upper}" data-date-locale="{get_language_admin()}">
+                                <div class="input-group date show-date-picker" id="show-date-picker" data-target-input="nearest" data-date-format="{get_date_format_ajax()|upper}" data-date-locale="{language_code_admin()}">
                                     <input type="text" name="publish_date" id="input_publish_date" class="form-control datetimepicker-input" value="{old('publish_date', $edit_data.publish_date|default:get_date())|date_format:get_date_format(true)}" placeholder="{get_date_format_ajax()}" data-target="#show-date-picker" />
                                     <div class="input-group-text" data-target="#show-date-picker" data-toggle="datetimepicker"><i class="fa fa-calendar-alt"></i></div>
                                 </div>

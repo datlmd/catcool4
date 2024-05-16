@@ -198,7 +198,7 @@ class Manage extends AdminController
             $this->model->writeFile();
 
             //change language admin
-            if (!empty($data_settings['default_locale_admin']) && $data_settings['default_locale_admin'] != get_language_admin()) {
+            if (!empty($data_settings['default_locale_admin']) && $data_settings['default_locale_admin'] != language_code_admin()) {
                 set_language_admin($data_settings['default_locale_admin']);
 
                 $menu_model = new \App\Modules\Menus\Models\MenuModel();

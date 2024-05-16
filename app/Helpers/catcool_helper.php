@@ -8,9 +8,9 @@ if (!function_exists('key_session_language'))
     }
 }
 
-if (!function_exists('get_language'))
+if (!function_exists('language_code'))
 {
-    function get_language()
+    function language_code()
     {
         if (!is_multi_language()) {
             return config_item('default_locale');
@@ -124,7 +124,7 @@ if (!function_exists('list_language'))
             }
 
             $language_list[$key]['active'] = false;
-            if ($value['code'] == get_language()) {
+            if ($value['code'] == language_code()) {
                 $language_list[$key]['active'] = true;
                 $language_active[] = $language_list[$key];
                 unset($language_list[$key]);
@@ -155,7 +155,7 @@ if (!function_exists('language_id'))
         //list lang
         $list_language = json_decode(config_item('list_language_cache'), 1);
         foreach ($list_language as $key => $value) {
-            if ($value['code'] == get_language()) {
+            if ($value['code'] == language_code()) {
                 $language_id = $value['id'];
                 break;
             }
@@ -1302,7 +1302,7 @@ if (!function_exists('get_today'))
     {
         $timestamp = time();
 
-        if (get_language() != 'vi') {
+        if (language_code() != 'vi') {
             $format = $format ?? "D, d M Y";
             return date($format, $timestamp);
         }

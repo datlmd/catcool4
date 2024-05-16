@@ -17,7 +17,7 @@ class AdminController extends UserController
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
 
-        \Config\Services::language()->setLocale(get_language_admin());
+        \Config\Services::language()->setLocale(language_code_admin());
     }
 
     public function __construct()
@@ -26,7 +26,7 @@ class AdminController extends UserController
 
         helper('admin');
         
-        \Config\Services::language()->setLocale(get_language_admin());
+        \Config\Services::language()->setLocale(language_code_admin());
         $this->language_id = language_id_admin();
 
         $method_name =  service('router')->methodName();

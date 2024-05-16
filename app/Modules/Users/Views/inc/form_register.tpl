@@ -32,7 +32,7 @@
                     <select name="dob_month" class="form-control">
                         {for $m = 1; $m <= 12; $m++}
                             <option value="{$m}" {if $m eq date('m')}selected{/if}>
-                                {if get_language() eq 'vi'}
+                                {if language_code() eq 'vi'}
                                     {lang('General.text_month')} {$m}
                                 {else}
                                     {date("F", mktime(0, 0, 0, $m, 10))}

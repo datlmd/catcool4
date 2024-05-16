@@ -17,7 +17,7 @@
                 {config_item('store_address')}
             </address>
             {if config_item('store_geocode')}
-                <a href="https://maps.google.com/maps?q={config_item('store_geocode')|urlencode}&hl={get_language()}&t=m&z=15" target="_blank" class="btn btn-outline-primary">
+                <a href="https://maps.google.com/maps?q={config_item('store_geocode')|urlencode}&hl={language_code()}&t=m&z=15" target="_blank" class="btn btn-outline-primary">
                     <i class="fas fa-map-marker-alt"></i> {lang('Contact.text_google_map')}
                 </a>
             {/if}
@@ -62,7 +62,7 @@
                         {$location.address}
                     </address>
                     {if $location.geocode}
-                        <a href="https://maps.google.com/maps?q={$location.geocode|urlencode}&hl={get_language()}&t=m&z=15" target="_blank" class="btn btn-outline-primary">
+                        <a href="https://maps.google.com/maps?q={$location.geocode|urlencode}&hl={language_code()}&t=m&z=15" target="_blank" class="btn btn-outline-primary">
                             <i class="fas fa-map-marker-alt"></i> {lang('Contact.text_google_map')}
                         </a>
                     {/if}

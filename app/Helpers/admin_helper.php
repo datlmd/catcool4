@@ -1,16 +1,14 @@
 <?php
 
-if (!function_exists('key_session_language_admin'))
-{
+if (!function_exists('key_session_language_admin')) {
     function key_session_language_admin()
     {
         return 'site_language_admin';
     }
 }
 
-if (!function_exists('get_language_admin'))
-{
-    function get_language_admin()
+if (!function_exists('language_code_admin')) {
+    function language_code_admin()
     {
         if (!is_multi_language()) {
             return config_item('default_locale_admin');
@@ -38,8 +36,7 @@ if (!function_exists('get_language_admin'))
     }
 }
 
-if (!function_exists('set_language_admin'))
-{
+if (!function_exists('set_language_admin')) {
     function set_language_admin($language_code)
     {
         if (!is_multi_language() || empty($language_code)) {
@@ -58,7 +55,7 @@ if (!function_exists('set_language_admin'))
             'domain' => '',
             'path' => '/',
             'prefix' => '',
-            'secure' => (bool)config_item('force_global_secure_requests'),
+            'secure' => (bool) config_item('force_global_secure_requests'),
             'samesite' => \CodeIgniter\Cookie\Cookie::SAMESITE_LAX,
         ];
 
@@ -71,10 +68,9 @@ if (!function_exists('set_language_admin'))
     }
 }
 
-if (!function_exists('list_language_admin'))
-{
+if (!function_exists('list_language_admin')) {
     /**
-     * Get list language admin
+     * Get list language admin.
      *
      * @return array|bool
      */
@@ -89,18 +85,17 @@ if (!function_exists('list_language_admin'))
         $language_active = [];
         foreach ($language_list as $key => $value) {
             if (empty($value['icon'])) {
-                $language_list[$key]['icon'] = '<i class="flag-icon flag-icon-' . (($value['code'] == 'vi') ? 'vn' : $value['code']) . '"></i>';
+                $language_list[$key]['icon'] = '<i class="flag-icon flag-icon-'.(($value['code'] == 'vi') ? 'vn' : $value['code']).'"></i>';
             } else {
-                $language_list[$key]['icon'] = '<i class="' . $value['icon'] . '"></i>';
+                $language_list[$key]['icon'] = '<i class="'.$value['icon'].'"></i>';
             }
 
             $language_list[$key]['active'] = false;
-            if ($value['code'] == get_language_admin()) {
+            if ($value['code'] == language_code_admin()) {
                 $language_list[$key]['active'] = true;
                 $language_active[] = $language_list[$key];
                 unset($language_list[$key]);
             }
-
         }
 
         $language_list = array_merge($language_active, $language_list);
@@ -114,11 +109,10 @@ if (!function_exists('list_language_admin'))
     }
 }
 
-if (!function_exists('language_id_admin'))
-{
+if (!function_exists('language_id_admin')) {
     /**
-     * Get Language Id Admin
-     * 
+     * Get Language Id Admin.
+     *
      * @return int|mixed
      */
     function language_id_admin()
@@ -127,7 +121,7 @@ if (!function_exists('language_id_admin'))
         //list lang
         $list_language = json_decode(config_item('list_language_cache'), 1);
         foreach ($list_language as $key => $value) {
-            if ($value['code'] == get_language_admin()) {
+            if ($value['code'] == language_code_admin()) {
                 $language_id = $value['id'];
                 break;
             }

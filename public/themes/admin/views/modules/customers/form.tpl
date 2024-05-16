@@ -123,7 +123,7 @@
                                     {lang('Admin.text_dob')}
                                 </label>
                                 <div class="col-sm-4 col-lg-3 mb-3 mb-sm-0">
-                                    <div class="input-group date show-date-picker" id="show_date_picker" data-target-input="nearest" data-date-format="{get_date_format_ajax()|upper}" data-date-locale="{get_language_admin()}">
+                                    <div class="input-group date show-date-picker" id="show_date_picker" data-target-input="nearest" data-date-format="{get_date_format_ajax()|upper}" data-date-locale="{language_code_admin()}">
                                         <input type="text" name="dob" id="input_dob" class="form-control datetimepicker-input {if validation_show_error('dob')}is-invalid{/if}" {if old('dob', $edit_data.dob)}value="{old('dob', $edit_data.dob)|date_format:get_date_format(true)}"{/if} placeholder="{get_date_format_ajax()}" data-target="#show_date_picker" />
                                         <div class="input-group-text" data-target="#show_date_picker" data-toggle="datetimepicker"><i class="fa fa-calendar-alt"></i></div>
                                     </div>

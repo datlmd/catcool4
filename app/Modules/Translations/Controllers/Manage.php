@@ -41,7 +41,7 @@ class Manage extends AdminController
         $this->themes->addCSS('common/plugin/multi-select/css/select2.min');
         $this->themes->addCSS('common/plugin/multi-select/css/select2-bootstrap-5-theme.min');
         $this->themes->addJS('common/plugin/multi-select/js/select2.min');
-        if (get_language_admin() == 'vi') {
+        if (language_code_admin() == 'vi') {
             $this->themes->addJS('common/plugin/multi-select/js/i18n/vi');
         }
 
