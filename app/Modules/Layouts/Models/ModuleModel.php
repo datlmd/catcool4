@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Layouts\Models;
+<?php
+
+namespace App\Modules\Layouts\Models;
 
 use App\Models\MyModel;
 
 class ModuleModel extends MyModel
 {
-    protected $table      = 'layout_module';
+    protected $table = 'layout_module';
     protected $primaryKey = 'layout_module_id';
 
     protected $allowedFields = [
@@ -17,7 +19,7 @@ class ModuleModel extends MyModel
     const CACHE_NAME_LIST = 'layout_module_list';
     const CACHE_EXPIRE = YEAR;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -60,6 +62,7 @@ class ModuleModel extends MyModel
     public function deleteCache()
     {
         cache()->delete(self::CACHE_NAME_LIST);
+
         return true;
     }
 }

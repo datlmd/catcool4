@@ -2,14 +2,13 @@
 
 namespace App\Controllers;
 
+use App\Libraries\Themes;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
-
-use App\Libraries\Themes;
 
 defined('IS_ADMIN') || define('IS_ADMIN', false);
 
@@ -38,7 +37,8 @@ class MyController extends Controller
     protected $smarty = null;
 
     /**
-     * set model parent module
+     * set model parent module.
+     *
      * @var null
      */
     protected $model = null;
@@ -63,13 +63,8 @@ class MyController extends Controller
 
     protected $is_mobile;
 
-
     /**
      * Constructor.
-     *
-     * @param RequestInterface $request
-     * @param ResponseInterface $response
-     * @param LoggerInterface $logger
      */
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -102,7 +97,7 @@ class MyController extends Controller
 
         //set time zone
         if (!empty(config_item('app_timezone'))) {
-            date_default_timezone_set(config_item('app_timezone'));//'Asia/Saigon'
+            date_default_timezone_set(config_item('app_timezone')); //'Asia/Saigon'
         } else {
             date_default_timezone_set('Asia/Saigon');
         }
@@ -112,9 +107,9 @@ class MyController extends Controller
         $this->site_lang = \Config\Services::language()->getLocale();
         $this->language_id = language_id();
 
-        $this->themes     = Themes::init();
+        $this->themes = Themes::init();
         $this->breadcrumb = service('breadcrumb');
-        $this->smarty     = service('smartyEngine');
+        $this->smarty = service('smartyEngine');
 
         $this->validator = \Config\Services::validation();
         $this->smarty->assign('validator', $this->validator);
@@ -126,9 +121,10 @@ class MyController extends Controller
     }
 
     /**
-     * Ghi log mọi action trên website của tài khoản admin, nếu tài khoàn user thường thì tuỳ function sẽ gắn hàm
+     * Ghi log mọi action trên website của tài khoản admin, nếu tài khoàn user thường thì tuỳ function sẽ gắn hàm.
      *
      * @param bool|false $is_admin
+     *
      * @return bool
      */
     public function trackingLogAccess($is_admin = false)
@@ -147,13 +143,13 @@ class MyController extends Controller
 
             $router = service('router');
 
-            $file_name = 'log-access-' . date('Y-m-d') . '.log';
+            $file_name = 'log-access-'.date('Y-m-d').'.log';
             if ($is_admin) {
                 $file_name = "admin-$file_name";
             }
 
             $controller = $router->controllerName();
-            $controller = str_ireplace("\\App\\Modules\\", "", $controller);
+            $controller = str_ireplace('\\App\\Modules\\', '', $controller);
 
             $username = $is_admin ? service('user')->getUsername() : service('customer')->getEmail();
 
@@ -164,23 +160,24 @@ class MyController extends Controller
                 'action' => $router->methodName(),
                 'post_params' => $_POST,
                 'get_params' => $_GET,
-                'ip' => service('request')->getIPAddress()
+                'ip' => service('request')->getIPAddress(),
             ];
 
-            $directory = WRITEPATH . "logs/access/";
+            $directory = WRITEPATH.'logs/access/';
             if (!is_dir($directory)) {
-                mkdir($directory, 0777, TRUE);
+                mkdir($directory, 0777, true);
             }
 
             $message = json_encode($data_log);
-            $message = date('Y-m-d H:i:s') . ":\t$message" . ">>>>>" . "\n";
-            write_file($directory . $file_name, $message, 'a');
+            $message = date('Y-m-d H:i:s').":\t$message".'>>>>>'."\n";
+            write_file($directory.$file_name, $message, 'a');
 
             //TODO save data to DB
 
             return true;
         } catch (\Exception $ex) {
             log_message('error', $ex->getMessage());
+
             return false;
         }
     }
@@ -191,7 +188,7 @@ class MyController extends Controller
     }
 
     /**
-     * Xoa data cache cua cac file detail sau 1 thoi gian luu cache, giam dung luong thu muc cache/html
+     * Xoa data cache cua cac file detail sau 1 thoi gian luu cache, giam dung luong thu muc cache/html.
      *
      * @return bool
      */
@@ -203,9 +200,9 @@ class MyController extends Controller
                 return false;
             }
 
-            $day_clear = explode(",", $day_clear);
+            $day_clear = explode(',', $day_clear);
 
-            $day = date("d", time());
+            $day = date('d', time());
             if (!in_array($day, $day_clear)) {
                 return false;
             }
@@ -217,7 +214,7 @@ class MyController extends Controller
 
             foreach (cache()->getCacheInfo() as $value) {
                 switch (true) {
-                    case strpos($value['name'], "detail") !== false:
+                    case strpos($value['name'], 'detail') !== false:
                         cache()->delete($value['name']);
                         break;
                     default:
@@ -228,9 +225,11 @@ class MyController extends Controller
             cache()->save('clear_cache_file_html_auto', true, 2 * DAY);
 
             log_message('info', "Da xoa cache auto ngay $day");
+
             return true;
         } catch (\Exception $ex) {
             log_message('error', $ex->getMessage());
+
             return false;
         }
     }

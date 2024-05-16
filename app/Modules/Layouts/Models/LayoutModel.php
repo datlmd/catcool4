@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Layouts\Models;
+<?php
+
+namespace App\Modules\Layouts\Models;
 
 use App\Models\MyModel;
 
 class LayoutModel extends MyModel
 {
-    protected $table      = 'layout';
+    protected $table = 'layout';
     protected $primaryKey = 'layout_id';
 
     protected $allowedFields = [
@@ -15,23 +17,23 @@ class LayoutModel extends MyModel
     const CACHE_NAME_LIST = 'layout_list';
     const CACHE_EXPIRE = YEAR;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? $sort : "$this->table.layout_id";
+        $sort = in_array($sort, $this->allowedFields) ? $sort : "$this->table.layout_id";
         $order = empty($order) ? 'DESC' : $order;
 
-        if (!empty($filter["layout_id"])) {
-            $this->whereIn("$this->table.layout_id", (is_array($filter["layout_id"])) ? $filter["layout_id"] : explode(',', $filter["layout_id"]));
+        if (!empty($filter['layout_id'])) {
+            $this->whereIn("$this->table.layout_id", (is_array($filter['layout_id'])) ? $filter['layout_id'] : explode(',', $filter['layout_id']));
         }
 
-        if (!empty($filter["name"])) {
-            if (!empty($filter["name"])) {
-                $this->Like("$this->table.name", $filter["name"]);
+        if (!empty($filter['name'])) {
+            if (!empty($filter['name'])) {
+                $this->Like("$this->table.name", $filter['name']);
             }
         }
 
@@ -47,18 +49,17 @@ class LayoutModel extends MyModel
                 return [];
             }
 
-            $list = [];
-            foreach ($result as $value) {
-                $list[$value['layout_id']] = $value;
-            }
-
-            $result = $list;
             if ($is_cache) {
                 cache()->save(self::CACHE_NAME_LIST, $result, self::CACHE_EXPIRE);
             }
         }
 
-        return $result;
+        $list = [];
+        foreach ($result as $value) {
+            $list[$value['layout_id']] = $value;
+        }
+
+        return $list;
     }
 
     public function getLayout($id, $is_cache = true)
@@ -72,9 +73,9 @@ class LayoutModel extends MyModel
         $module_model = new ModuleModel();
 
         $info = $list[$id];
-        $info['routes']  = $route_model->getRoutesByLayoutId($info['layout_id']);
+        $info['routes'] = $route_model->getRoutesByLayoutId($info['layout_id'], $is_cache);
 
-        $modules = $module_model->getModulesByLayoutId($info['layout_id']);
+        $modules = $module_model->getModulesByLayoutId($info['layout_id'], $is_cache);
         $sort_list = array_column($modules, 'sort_order');
         array_multisort($sort_list, SORT_DESC, $modules);
 
@@ -92,6 +93,7 @@ class LayoutModel extends MyModel
         $module_model->deleteCache();
 
         cache()->delete(self::CACHE_NAME_LIST);
+
         return true;
     }
 
@@ -130,15 +132,19 @@ class LayoutModel extends MyModel
 
         foreach ($route_list as $route_value) {
             $route_value['route'] = strtolower($route_value['route']);
-            if (strrpos($route, $route_value['route']) !== FALSE) {
+            if (strrpos($route, $route_value['route']) !== false) {
                 $layout_id = $route_value['layout_id'];
                 break;
             }
         }
-        
+
         $list = [];
         foreach ($module_list as $value) {
             if ($value['layout_id'] != $layout_id || $value['position'] != $position) {
+                continue;
+            }
+
+            if (empty($action_list[$value['layout_action_id']])) {
                 continue;
             }
 

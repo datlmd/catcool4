@@ -1,17 +1,19 @@
-<?php namespace App\Modules\Layouts\Controllers;
+<?php
+
+namespace App\Modules\Layouts\Controllers;
 
 use App\Controllers\AdminController;
-use App\Modules\Layouts\Models\LayoutModel;
 use App\Modules\Layouts\Models\ActionModel;
-use App\Modules\Layouts\Models\RouteModel;
+use App\Modules\Layouts\Models\LayoutModel;
 use App\Modules\Layouts\Models\ModuleModel;
+use App\Modules\Layouts\Models\RouteModel;
 
 class Manage extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'layouts/manage';
-    CONST MANAGE_URL  = 'layouts/manage';
+    const MANAGE_ROOT = 'layouts/manage';
+    const MANAGE_URL = 'layouts/manage';
 
     public function __construct()
     {
@@ -37,20 +39,20 @@ class Manage extends AdminController
     {
         add_meta(['title' => lang('LayoutAdmin.heading_title')], $this->themes);
 
-        $limit       = $this->request->getGet('limit');
-        $sort        = $this->request->getGet('sort');
-        $order       = $this->request->getGet('order');
+        $limit = $this->request->getGet('limit');
+        $sort = $this->request->getGet('sort');
+        $order = $this->request->getGet('order');
         $filter_keys = ['layout_id', 'name', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
         $data = [
-            'breadcrumb'    => $this->breadcrumb->render(),
-            'list'          => $list->paginate($limit),
-            'pager'         => $list->pager,
-            'sort'          => empty($sort) ? 'layout_id' : $sort,
-            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'           => $this->getUrlFilter($filter_keys),
+            'breadcrumb' => $this->breadcrumb->render(),
+            'list' => $list->paginate($limit),
+            'pager' => $list->pager,
+            'sort' => empty($sort) ? 'layout_id' : $sort,
+            'order' => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url' => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
@@ -66,6 +68,7 @@ class Manage extends AdminController
         if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
+
                 return redirect()->back()->withInput();
             }
 
@@ -76,6 +79,7 @@ class Manage extends AdminController
             $id = $this->model->insert($add_data);
             if (!$id) {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
+
                 return redirect()->back()->withInput();
             }
 
@@ -85,7 +89,7 @@ class Manage extends AdminController
                 foreach ($routes as $route) {
                     $data_routes[] = [
                         'layout_id' => $id,
-                        'route'     => $route,
+                        'route' => $route,
                     ];
                 }
                 $this->route_model->ignore(true)->insertBatch($data_routes);
@@ -93,7 +97,7 @@ class Manage extends AdminController
 
             $modules = $this->request->getPost('modules');
             if (!empty($modules)) {
-                $actions = $this->model_action->getActions();
+                $actions = $this->model_action->getActions(false);
 
                 $data_modules = [];
                 foreach ($modules as $position => $value) {
@@ -103,12 +107,12 @@ class Manage extends AdminController
                             continue;
                         }
                         $data_modules[] = [
-                            'layout_id'        => $id,
+                            'layout_id' => $id,
                             'layout_action_id' => $action_id,
-                            'position'         => $position,
-                            'sort_order'       => $sort_order,
+                            'position' => $position,
+                            'sort_order' => $sort_order,
                         ];
-                        $sort_order--;
+                        --$sort_order;
                     }
                 }
                 $this->module_model->ignore(true)->insertBatch($data_modules);
@@ -117,6 +121,7 @@ class Manage extends AdminController
             $this->model->deleteCache();
 
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -127,12 +132,14 @@ class Manage extends AdminController
     {
         if (is_null($id)) {
             set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
         if (!empty($this->request->getPost()) && $id == $this->request->getPost('layout_id')) {
             if (!$this->_validateForm($id)) {
                 set_alert([ALERT_ERROR => $this->errors]);
+
                 return redirect()->back()->withInput();
             }
 
@@ -151,7 +158,7 @@ class Manage extends AdminController
                 foreach ($routes as $route) {
                     $data_routes[] = [
                         'layout_id' => $id,
-                        'route'     => $route,
+                        'route' => $route,
                     ];
                 }
                 $this->route_model->ignore(true)->insertBatch($data_routes);
@@ -160,7 +167,7 @@ class Manage extends AdminController
             $this->module_model->where('layout_id', $id)->delete();
             $modules = $this->request->getPost('modules');
             if (!empty($modules)) {
-                $actions = $this->model_action->getActions();
+                $actions = $this->model_action->getActions(false);
 
                 $data_modules = [];
                 foreach ($modules as $position => $value) {
@@ -170,12 +177,12 @@ class Manage extends AdminController
                             continue;
                         }
                         $data_modules[] = [
-                            'layout_id'        => $id,
+                            'layout_id' => $id,
                             'layout_action_id' => $action_id,
-                            'position'         => $position,
-                            'sort_order'       => $sort_order,
+                            'position' => $position,
+                            'sort_order' => $sort_order,
                         ];
-                        $sort_order--;
+                        --$sort_order;
                     }
                 }
                 $this->module_model->ignore(true)->insertBatch($data_modules);
@@ -184,6 +191,7 @@ class Manage extends AdminController
             $this->model->deleteCache();
 
             set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
+
             return redirect()->back();
         }
 
@@ -201,7 +209,7 @@ class Manage extends AdminController
         //delete
         if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
-            $ids = (is_array($ids)) ? $ids : explode(",", $ids);
+            $ids = (is_array($ids)) ? $ids : explode(',', $ids);
 
             $list_delete = $this->model->find($ids);
             if (empty($list_delete)) {
@@ -225,37 +233,38 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
+        $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
         $list_delete = $this->model->find($delete_ids);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $data['list_delete'] = $list_delete;
-        $data['ids']         = $this->request->getPost('delete_ids');
+        $data['ids'] = $this->request->getPost('delete_ids');
 
         json_output(['token' => $token, 'data' => $this->themes::view('/delete', $data)]);
     }
 
     private function _getForm($id = null)
     {
-        $data['actions'] = $this->model_action->getActions();
+        $data['actions'] = $this->model_action->getActions(false);
 
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form'] = lang('LayoutAdmin.text_edit');
-            $breadcrumb_url    = site_url(self::MANAGE_URL . "/edit/$id");
+            $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$id");
 
-            $data_form = $this->model->getLayout($id);
+            $data_form = $this->model->getLayout($id, false);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('LayoutAdmin.text_add');
-            $breadcrumb_url    = site_url(self::MANAGE_URL . "/add");
+            $breadcrumb_url = site_url(self::MANAGE_URL.'/add');
         }
 
         $data['errors'] = $this->errors;
@@ -277,7 +286,7 @@ class Manage extends AdminController
         $this->validator->setRule('name', lang('Admin.text_name'), 'required');
 
         $is_validation = $this->validator->withRequest($this->request)->run();
-        $this->errors  = $this->validator->getErrors();
+        $this->errors = $this->validator->getErrors();
 
         return $is_validation;
     }

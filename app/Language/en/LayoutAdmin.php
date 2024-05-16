@@ -3,6 +3,7 @@
 return [
 	"column_nane" => "Layout",
 	"heading_title" => "Layouts",
+	"text_action" => "Action",
 	"text_add" => "Add layout",
 	"text_column_left" => "Column Left",
 	"text_column_right" => "Column Right",

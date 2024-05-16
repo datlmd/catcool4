@@ -3,6 +3,7 @@
 return [
 	"column_nane" => "Bố cục",
 	"heading_title" => "Bố cục",
+	"text_action" => "Action",
 	"text_add" => "Thêm Bố cục",
 	"text_column_left" => "Column Left",
 	"text_column_right" => "Column Right",

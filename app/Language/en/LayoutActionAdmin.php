@@ -8,6 +8,7 @@ return [
 	"text_add" => "Add Action",
 	"text_controller" => "Controller",
 	"text_edit" => "Edit Action",
+	"text_layout" => "Layout",
 	"text_list" => "List Action",
 	"translate_admin_id" => "78",
 	"translate_frontend_id" => "78",
