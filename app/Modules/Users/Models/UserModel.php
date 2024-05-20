@@ -197,7 +197,7 @@ class UserModel extends MyModel
         $remember_cookie = $this->auth_model->getCookie();
         $token = $this->auth_model->retrieveSelectorValidatorCouple($remember_cookie);
 
-        if ($token === false) {
+        if (!$token) {
             $this->errors[] = lang('User.text_login_unsuccessful');
 
             return false;

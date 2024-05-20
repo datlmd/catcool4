@@ -55,7 +55,7 @@ class MyAuthModel extends MyModel
             }
         }
 
-        return FALSE;
+        return false;
     }
 
     protected function _randomToken($result_length = 32)

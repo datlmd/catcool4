@@ -175,7 +175,7 @@ class CustomerModel extends MyModel
         $remember_cookie = $this->auth_model->getCookie();
         $token = $this->auth_model->retrieveSelectorValidatorCouple($remember_cookie);
 
-        if ($token === false) {
+        if (!$token) {
             $this->errors[] = lang('Customer.text_login_unsuccessful');
 
             return false;
