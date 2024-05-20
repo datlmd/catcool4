@@ -46,6 +46,7 @@ class Autoload extends AutoloadConfig
         'Tatter\Schemas' => APPPATH . "ThirdParty/Models", //datlm
         'Tatter\Relations' => APPPATH . "ThirdParty/Models", //datlm
         'Intervention\Image' => APPPATH . "ThirdParty/Intervention/Image", //datlm
+        'CodeIgniter\Settings' => APPPATH . 'ThirdParty/Settings/src', //datlm
     ];
 
     /**

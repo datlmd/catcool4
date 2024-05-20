@@ -158,7 +158,7 @@ class Register extends MyController
                 'id' => $customer_info['customer_id'],
                 'email' => $customer_info['email'],
                 'activation' => $activation_code,
-                'active_link' => site_url('account/activate/' . $customer_info['customer_id'] .'/' . $activation_code),
+                'active_link' => site_url('account/activate/'.$customer_info['customer_id'].'/'.$activation_code),
             ];
 
             $message = $this->themes::view('email/activate', $data);
@@ -195,13 +195,12 @@ class Register extends MyController
             'payment_methods',
         ]);
 
-        
         set_alert($success, ALERT_SUCCESS);
 
         json_output([
             'success' => $success,
             'alert' => print_alert($success),
-            'redirect' => site_url('account/alert?type=register') . (!empty(session('customer_token')) ? '&customer_token=' . session('customer_token') : ''),
+            'redirect' => site_url('account/alert?type=register').(!empty(session('customer_token')) ? '&customer_token='.session('customer_token') : ''),
         ]);
     }
 }
