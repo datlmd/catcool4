@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Customers\Models;
+<?php
+
+namespace App\Modules\Customers\Models;
 
 use App\Models\MyModel;
 
 class GroupModel extends MyModel
 {
-    protected $table      = 'customer_group';
+    protected $table = 'customer_group';
     protected $primaryKey = 'customer_group_id';
 
     protected $returnType = 'array';
@@ -15,9 +17,9 @@ class GroupModel extends MyModel
         'sort_order',
     ];
 
-    protected $validationRules    = [];
+    protected $validationRules = [];
     protected $validationMessages = [];
-    protected $skipValidation     = false;
+    protected $skipValidation = false;
 
     protected $table_lang = 'customer_group_lang';
     protected $with = ['customer_group_lang'];
@@ -32,17 +34,17 @@ class GroupModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? "$this->table.$sort" : (in_array($sort, ['name']) ? "$this->table_lang.$sort" : "");
-        $sort  = !empty($sort) ? $sort : "$this->table.customer_group_id";
+        $sort = in_array($sort, $this->allowedFields) ? "$this->table.$sort" : (in_array($sort, ['name']) ? "$this->table_lang.$sort" : '');
+        $sort = !empty($sort) ? $sort : "$this->table.customer_group_id";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
         $this->where("$this->table_lang.language_id", language_id_admin());
-        if (!empty($filter["customer_group_id"])) {
-            $this->whereIn("$this->table.customer_group_id", (!is_array($filter["customer_group_id"]) ? explode(',', $filter["customer_group_id"]) : $filter["customer_group_id"]));
+        if (!empty($filter['customer_group_id'])) {
+            $this->whereIn("$this->table.customer_group_id", (!is_array($filter['customer_group_id']) ? explode(',', $filter['customer_group_id']) : $filter['customer_group_id']));
         }
 
-        if (!empty($filter["name"])) {
-            $this->like("$this->table_lang.name", $filter["name"]);
+        if (!empty($filter['name'])) {
+            $this->like("$this->table_lang.name", $filter['name']);
         }
 
         $this->select("$this->table.*, $this->table_lang.*")
@@ -83,6 +85,7 @@ class GroupModel extends MyModel
     public function deleteCache()
     {
         cache()->delete(self::CUSTOMER_GROUP_CACHE_NAME);
+
         return true;
     }
 }

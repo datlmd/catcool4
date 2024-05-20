@@ -134,6 +134,8 @@ class GroupsManage extends AdminController
 
         $json['customer_group_id'] = $customer_group_id;
 
+        $this->model->deleteCache();
+
         $json['success'] = lang('Admin.text_add_success');
         if (!empty($this->request->getPost('customer_group_id'))) {
             $json['success'] = lang('Admin.text_edit_success');
@@ -209,6 +211,7 @@ class GroupsManage extends AdminController
             }
 
             $this->model->delete($ids);
+            $this->model->deleteCache();
 
             json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
         }

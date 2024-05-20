@@ -32,5 +32,7 @@ $routes->group('account', ['namespace' => 'App\Modules\Customers\Controllers'], 
     $subroutes->get('register', 'Register::index');
     $subroutes->post('register', 'Register::register');
     $subroutes->get('profile', 'Profile::index');
+    $subroutes->get('activate/(:num)/(:any)', 'Activate::index/$1/$2');
+    $subroutes->get('alert', 'Alert::index');
 });
 

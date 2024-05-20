@@ -65,10 +65,10 @@
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-7">
                                     {if !empty($groups)}
-                                        <select name="group_id" id="input_group_id" class="form-control form-control-sm cc-form-select-single" data-placeholder="{lang('Admin.text_select')}">
+                                        <select name="customer_group_id" id="input_customer_group_id" class="form-control form-control-sm cc-form-select-single" data-placeholder="{lang('Admin.text_select')}">
                                             <option value="">{lang('Admin.text_select')}</option>
                                             {foreach $groups as $key => $group}
-                                                <option value="{$key}" {if $key eq $edit_data.group_id}selected{/if}>{$group.name}</option>
+                                                <option value="{$key}" {if $key eq $edit_data.customer_group_id}selected{/if}>{$group.name}</option>
                                             {/foreach}
                                         </select>
                                     {/if}

@@ -8,7 +8,7 @@
             
             <input type="hidden" name="return_url" value="{$return_url}">
 
-            <div id="login_alert"></div>
+            <div id="login_alert">{print_flash_alert()}</div>
 
             <div class="form-group row">
                 <div class=" col-12">

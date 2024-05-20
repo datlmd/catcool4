@@ -9,7 +9,21 @@
         <div id="register_alert">{print_flash_alert()}</div>
 
         <fieldset>
-            <legend class="mb-2">{lang('Customer.text_your_details')}</legend>
+            <legend class="mb-3">{lang('Customer.text_your_details')}</legend>
+
+            {if $customer_group_list|@count > 1}
+                <div class="form-group row mb-3">
+                    <div class="col">
+                        <label for="input_customer_group_id" class="form-label fw-bold required-label">{lang('Customer.text_customer_group')}</label>
+                        <select name="customer_group_id" id="input_customer_group_id" class="form-control">
+                            {foreach $customer_group_list as $customer_group}
+                                <option value="{$customer_group.customer_group_id}" {set_select('customer_group_id', $customer_group.customer_group_id, ($customer_group.customer_group_id == $customer_group_id))}>{$customer_group.name}</option>
+                            {/foreach}
+                        </select>
+                        <div id="error_customer_group_id" class="invalid-feedback"></div>
+                    </div>
+                </div>
+            {/if}
 
             <div class="form-group row mb-3">
                 <div class="col-md-6">
@@ -106,9 +120,9 @@
         </fieldset>
 
         <fieldset class="mt-3">
-            <legend class="mb-2">{lang('Customer.text_your_password')}</legend>
+            <legend class="mb-3">{lang('Customer.text_your_password')}</legend>
             <div class="form-group row mb-3">
-                <label for="input_password" class="form-label fw-bold">{lang('Customer.text_password')}</label>
+                <label for="input_password" class="form-label fw-bold required-label">{lang('Customer.text_password')}</label>
                 <div class="col-12">
                     <input type="password" name="password" id="input_password" value="" placeholder="{lang('Customer.text_password')}" class="form-control {if validation_show_error('password')}is-invalid{/if}">
                     <div id="error_password" class="invalid-feedback">{validation_show_error("password")}</div>
@@ -126,16 +140,18 @@
 
         </fieldset>
 
-        <div class="form-group row mt-4 mb-2">
-            <div class="col-12">
-                <div class="form-check form-switch form-control-lg form-check-inline">
-                    <input class="form-check-input" type="checkbox" name="agree" id="input_agree" value="1">
-                    <label for="input_agree" class="form-check-label">{lang('Customer.text_register_policy')}</label>
+        {if $page_info}
+            <div class="form-group row mt-4 mb-2">
+                <div class="col-12">
+                    <div class="form-check form-switch form-control-lg form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="agree" id="input_agree" value="1">
+                        <label for="input_agree" class="form-check-label">{sprintf(lang('Customer.text_register_policy'), $page_info.link, $page_info.name)}</label>
+                    </div>
+                    <div id="error_agree" class="invalid-feedback">{validation_show_error("agree")}</div>
                 </div>
-                <div id="error_agree" class="invalid-feedback">{validation_show_error("agree")}</div>
             </div>
-        </div>
-
+        {/if}
+        
         <div class="form-group row mb-3">
             <div class="col-12">
                 <input type="submit" class="btn btn-primary" value="{lang('General.button_register')}">

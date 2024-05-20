@@ -14,3 +14,5 @@ $routes->group('pages', ['namespace' => 'App\Modules\Pages\Controllers'], functi
 
     $subroutes->add('detail/(:num)', 'Pages::detail/$1');
 });
+
+$routes->get('information/(:num)', 'Pages::detail/$1', ['namespace' => 'App\Modules\Pages\Controllers']);

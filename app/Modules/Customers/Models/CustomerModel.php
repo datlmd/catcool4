@@ -36,7 +36,7 @@ class CustomerModel extends MyModel
         'active',
         'deleted',
         'language_id',
-        'group_id',
+        'customer_group_id',
         'store_id',
         'ip',
         'ctime',
@@ -475,7 +475,17 @@ class CustomerModel extends MyModel
             return false;
         }
 
+        $customer_group_model = new GroupModel();
+        $customer_group_list = $customer_group_model->getCustomerGroups(language_id());
+
+        if (empty($data['customer_group_id']) || empty(config_item('customer_group_display')) || empty($customer_group_list[$data['customer_group_id']])) {
+            $data['customer_group_id'] = config_item('customer_group_id');
+        }
+
+        $customer_group_info = $customer_group_list[$data['customer_group_id']];
+
         $add_data = [
+            'customer_group_id' => $data['customer_group_id'],
             'username'   => $data['username'] ?? null,
             'email'      => strtolower($email),
             'password'   => $this->auth_model->hashPassword($data['password']),
@@ -484,9 +494,8 @@ class CustomerModel extends MyModel
             'phone'      => $phone,
             'gender'     => $data['gender'],
             'address_id' => $data['address_id'] ?? null,
-            'active'     => config_item('manual_activation'),
             'ip'         => $data['ip'] ?? null,
-            'active'     => STATUS_ON
+            'active'     => (int)!$customer_group_info['approval']
         ];
 
         if (!empty($data['dob'])) {
@@ -494,6 +503,11 @@ class CustomerModel extends MyModel
         }
 
         $customer_id = $this->insert($add_data);
+
+        if ($customer_group_info['approval']) {
+            $customer_group_model = new CustomerApprovalModel();
+            $customer_group_model->insert(['customer_id' => $customer_id]);
+        }
 
         $add_data['customer_id'] = $customer_id;
 

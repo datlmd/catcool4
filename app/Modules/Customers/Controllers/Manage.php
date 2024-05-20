@@ -1,16 +1,18 @@
-<?php namespace App\Modules\Customers\Controllers;
+<?php
+
+namespace App\Modules\Customers\Controllers;
 
 use App\Controllers\AdminController;
-use App\Modules\Customers\Models\GroupModel;
 use App\Modules\Customers\Models\CustomerModel;
+use App\Modules\Customers\Models\GroupModel;
 use App\Modules\Users\Models\AuthModel;
 
 class Manage extends AdminController
 {
     public $errors = [];
 
-    CONST MANAGE_ROOT = 'customers/manage';
-    CONST MANAGE_URL  = 'customers/manage';
+    const MANAGE_ROOT = 'customers/manage';
+    const MANAGE_URL = 'customers/manage';
 
     protected $group_model;
     protected $auth_model;
@@ -27,9 +29,9 @@ class Manage extends AdminController
             ->addPartial('footer')
             ->addPartial('sidebar');
 
-        $this->model       = new CustomerModel();
+        $this->model = new CustomerModel();
         $this->group_model = new GroupModel();
-        $this->auth_model  = new AuthModel();
+        $this->auth_model = new AuthModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -42,48 +44,48 @@ class Manage extends AdminController
 
     public function index()
     {
-        $customer_id    = $this->request->getGet('customer_id');
-        $name  = $this->request->getGet('name');
+        $customer_id = $this->request->getGet('customer_id');
+        $name = $this->request->getGet('name');
         $limit = $this->request->getGet('limit');
-        $sort  = $this->request->getGet('sort');
+        $sort = $this->request->getGet('sort');
         $order = $this->request->getGet('order');
 
         $filter = [
             'active' => count(array_filter($this->request->getGet(['customer_id', 'name', 'limit']))) > 0,
-            'customer_id'     => $customer_id ?? "",
-            'name'   => $name ?? "",
-            'limit'  => $limit,
+            'customer_id' => $customer_id ?? '',
+            'name' => $name ?? '',
+            'limit' => $limit,
         ];
 
         $list = $this->model->getAllByFilter($filter, $sort, $order);
 
-        $url = "";
+        $url = '';
         if (!empty($customer_id)) {
-            $url .= '&customer_id=' . $customer_id;
+            $url .= '&customer_id='.$customer_id;
         }
         if (!empty($name)) {
-            $url .= '&name=' . urlencode(html_entity_decode($name, ENT_QUOTES, 'UTF-8'));
+            $url .= '&name='.urlencode(html_entity_decode($name, ENT_QUOTES, 'UTF-8'));
         }
         if (!empty($limit)) {
-            $url .= '&limit=' . $limit;
+            $url .= '&limit='.$limit;
         }
 
         $data = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => $list->paginate($limit),
-            'pager'      => $list->pager,
-            'filter'     => $filter,
-            'sort'       => empty($sort) ? 'customer_id' : $sort,
-            'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'        => $url,
+            'list' => $list->paginate($limit),
+            'pager' => $list->pager,
+            'filter' => $filter,
+            'sort' => empty($sort) ? 'customer_id' : $sort,
+            'order' => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url' => $url,
         ];
 
-        add_meta(['title' => lang("CustomerAdmin.heading_title")], $this->themes);
+        add_meta(['title' => lang('CustomerAdmin.heading_title')], $this->themes);
 
         if ($this->request->isAJAX()) {
             return $this->themes::view('list', $data);
         }
-        
+
         $this->themes::load('index', $data);
     }
 
@@ -96,6 +98,7 @@ class Manage extends AdminController
     {
         if (is_null($id)) {
             set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -122,20 +125,20 @@ class Manage extends AdminController
 
         $customer_id = $this->request->getPost('customer_id');
         $data_customer = [
-            'username'   => strtolower($this->request->getPost('username')),
-            'email'      => strtolower($this->request->getPost('email')),
+            'username' => strtolower($this->request->getPost('username')),
+            'email' => strtolower($this->request->getPost('email')),
             'first_name' => $this->request->getPost('first_name'),
-            'last_name'  => $this->request->getPost('last_name'),
-            'company'    => $this->request->getPost('company'),
-            'phone'      => $this->request->getPost('phone'),
-            'fax'        => $this->request->getPost('fax'),
-            'group_id'   => $this->request->getPost('group_id'),
-            'store_id'   => $this->request->getPost('store_id'),
-            'dob'        => !empty($this->request->getPost('dob')) ? standar_date($this->request->getPost('dob')) : self::DOB_DEFAULT,
-            'gender'     => $this->request->getPost('gender'),
+            'last_name' => $this->request->getPost('last_name'),
+            'company' => $this->request->getPost('company'),
+            'phone' => $this->request->getPost('phone'),
+            'fax' => $this->request->getPost('fax'),
+            'customer_group_id' => $this->request->getPost('customer_group_id'),
+            'store_id' => $this->request->getPost('store_id'),
+            'dob' => !empty($this->request->getPost('dob')) ? standar_date($this->request->getPost('dob')) : self::DOB_DEFAULT,
+            'gender' => $this->request->getPost('gender'),
             'newsletter' => $this->request->getPost('newsletter'),
-            'active'     => !empty($this->request->getPost('active')) ? STATUS_ON : STATUS_OFF,
-            'safe'       => $this->request->getPost('safe'),
+            'active' => !empty($this->request->getPost('active')) ? STATUS_ON : STATUS_OFF,
+            'safe' => $this->request->getPost('safe'),
             //'custom_field',
             //'active' => !empty($this->request->getPost('active')) ? STATUS_ON : STATUS_OFF,
             //'address_id',
@@ -153,13 +156,13 @@ class Manage extends AdminController
         $avatar = $this->request->getPost('image');
         if (!empty($avatar)) {
             // create folder
-            if (!is_dir(get_upload_path() . self::FOLDER_UPLOAD)) {
-                mkdir(get_upload_path() . self::FOLDER_UPLOAD, 0777, true);
+            if (!is_dir(get_upload_path().self::FOLDER_UPLOAD)) {
+                mkdir(get_upload_path().self::FOLDER_UPLOAD, 0777, true);
             }
 
-            $avatar_name = self::FOLDER_UPLOAD . $data_customer['username'] . '.jpg'; //pathinfo($avatar, PATHINFO_EXTENSION);
+            $avatar_name = self::FOLDER_UPLOAD.$data_customer['username'].'.jpg'; //pathinfo($avatar, PATHINFO_EXTENSION);
 
-            $width  = !empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH;
+            $width = !empty(config_item('image_thumbnail_small_width')) ? config_item('image_thumbnail_small_width') : RESIZE_IMAGE_THUMB_WIDTH;
             $height = !empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT;
 
             $image_tool = new \App\Libraries\ImageTool();
@@ -239,24 +242,25 @@ class Manage extends AdminController
 
         $data['list_lang'] = list_language_admin();
 
-        $group_list     = $this->group_model->getCustomerGroups($this->language_id);
+        $group_list = $this->group_model->getCustomerGroups($this->language_id);
         $data['groups'] = array_column($group_list, null, 'customer_group_id');
 
-        $country_model  = model('App\Modules\Countries\Models\CountryModel');
+        $country_model = model('App\Modules\Countries\Models\CountryModel');
         $province_model = model('App\Modules\Countries\Models\ProvinceModel');
         $district_model = model('App\Modules\Countries\Models\DistrictModel');
-        $ward_model     = model('App\Modules\Countries\Models\WardModel');
+        $ward_model = model('App\Modules\Countries\Models\WardModel');
 
-        $data['country_list']  = $country_model->getListDisplay();
+        $data['country_list'] = $country_model->getListDisplay();
 
         //edit
         if (!empty($customer_id) && is_numeric($customer_id)) {
             $data['text_form'] = lang('CustomerAdmin.text_edit');
-            $breadcrumb_url    = site_url(self::MANAGE_URL . "/edit/$customer_id");
+            $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$customer_id");
 
             $data_form = $this->model->getUserInfo($customer_id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
@@ -266,13 +270,13 @@ class Manage extends AdminController
             foreach ($data_form['address_list'] as $key => $value) {
                 $data_form['address_list'][$key]['province_list'] = $province_model->getListDisplay($value['country_id']);
                 $data_form['address_list'][$key]['district_list'] = $district_model->getListDisplay($value['province_id']);
-                $data_form['address_list'][$key]['ward_list']     = $ward_model->getListDisplay($value['district_id']);
+                $data_form['address_list'][$key]['ward_list'] = $ward_model->getListDisplay($value['district_id']);
             }
 
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('CustomerAdmin.text_add');
-            $breadcrumb_url    = site_url(self::MANAGE_URL . "/add");
+            $breadcrumb_url = site_url(self::MANAGE_URL.'/add');
         }
 
         $data['errors'] = $this->errors;
@@ -299,23 +303,23 @@ class Manage extends AdminController
         }
 
         if (!empty($this->request->getPost('password'))) {
-            $this->validator->setRule('password', lang('Admin.text_password'), 'required|min_length[' . config_item('minPasswordLength') . ']|matches[password_confirm]');
+            $this->validator->setRule('password', lang('Admin.text_password'), 'required|min_length['.config_item('minPasswordLength').']|matches[password_confirm]');
             $this->validator->setRule('password_confirm', lang('Admin.text_confirm_password'), 'required');
         }
 
         if (!empty($this->request->getPost('address'))) {
             foreach ($this->request->getPost('address') as $key => $value) {
-                $this->validator->setRule(sprintf("address.%s.firstname", $key), lang('Admin.text_first_name'), 'required');
-                $this->validator->setRule(sprintf("address.%s.address_1", $key), lang('CustomerAdmin.text_address_1'), 'required');
-                $this->validator->setRule(sprintf("address.%s.country_id", $key), lang('CustomerAdmin.text_country'), 'required|is_natural_no_zero');
-                $this->validator->setRule(sprintf("address.%s.province_id", $key), lang('CustomerAdmin.text_province'), 'required|is_natural_no_zero');
-                $this->validator->setRule(sprintf("address.%s.district_id", $key), lang('CustomerAdmin.text_district'), 'required|is_natural_no_zero');
-                $this->validator->setRule(sprintf("address.%s.ward_id", $key), lang('CustomerAdmin.text_ward'), 'required|is_natural_no_zero');
+                $this->validator->setRule(sprintf('address.%s.firstname', $key), lang('Admin.text_first_name'), 'required');
+                $this->validator->setRule(sprintf('address.%s.address_1', $key), lang('CustomerAdmin.text_address_1'), 'required');
+                $this->validator->setRule(sprintf('address.%s.country_id', $key), lang('CustomerAdmin.text_country'), 'required|is_natural_no_zero');
+                $this->validator->setRule(sprintf('address.%s.province_id', $key), lang('CustomerAdmin.text_province'), 'required|is_natural_no_zero');
+                $this->validator->setRule(sprintf('address.%s.district_id', $key), lang('CustomerAdmin.text_district'), 'required|is_natural_no_zero');
+                $this->validator->setRule(sprintf('address.%s.ward_id', $key), lang('CustomerAdmin.text_ward'), 'required|is_natural_no_zero');
             }
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
-        $this->errors  = $this->validator->getErrors();
+        $this->errors = $this->validator->getErrors();
 
 //        if (!empty($this->request->getPost('email'))) {
 //            if (!empty($this->request->getPost('customer_id'))) {
@@ -329,7 +333,7 @@ class Manage extends AdminController
 //        }
 
         if (!empty($this->errors)) {
-            return FALSE;
+            return false;
         }
 
         return $is_validation;
@@ -349,9 +353,8 @@ class Manage extends AdminController
 
         //delete
         if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
-
             $ids = $this->request->getPost('ids');
-            $ids = (is_array($ids)) ? $ids : explode(",", $ids);
+            $ids = (is_array($ids)) ? $ids : explode(',', $ids);
 
             $list_delete = $this->model->whereIn('customer_id', $ids)->findAll();
             if (empty($list_delete)) {
@@ -359,7 +362,7 @@ class Manage extends AdminController
             }
 
             try {
-                foreach($list_delete as $value) {
+                foreach ($list_delete as $value) {
                     if ((!empty($value['super_admin']) && empty($this->user->getSuperAdmin())) || $value['customer_id'] == $this->user->getId()) {
                         continue;
                     }
@@ -385,7 +388,7 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
+        $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
         $list_delete = $this->model->whereIn('customer_id', $delete_ids)->findAll();
 
         if (empty($list_delete)) {
@@ -400,9 +403,9 @@ class Manage extends AdminController
             }
         }
 
-        $data['list_delete']   = $list_delete;
+        $data['list_delete'] = $list_delete;
         $data['list_undelete'] = $list_undelete;
-        $data['ids']           = $delete_ids;
+        $data['ids'] = $delete_ids;
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }

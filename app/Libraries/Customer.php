@@ -80,10 +80,10 @@ class Customer
         $this->_customer_id       = $this->_customer_info['customer_id'];
         $this->_firstname         = $this->_customer_info['first_name'];
         $this->_lastname          = $this->_customer_info['last_name'];
-        $this->_customer_group_id = $this->_customer_info['group_id'];
+        $this->_customer_group_id = $this->_customer_info['customer_group_id'];
         $this->_email             = $this->_customer_info['email'];
         $this->_telephone         = $this->_customer_info['phone'];
-        $this->_newsletter        = $this->_customer_info['newsletter'];
+        $this->_newsletter        = (bool)$this->_customer_info['newsletter'];
 		$this->_image       	  = $customer_model->getAvatar($this->_customer_info['image']);
 
         return $this->_customer_info;

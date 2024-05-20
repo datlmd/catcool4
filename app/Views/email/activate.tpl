@@ -4,12 +4,12 @@
 			<h3 style="padding:10px 0">{lang('Email.text_welcome', [ucwords(config_item('site_name'))])}</h3>
 			<p>{lang('Email.activate_content_1')}</p>
 			<p>
-				<a href='{site_url("users/activate/$id/$activation")}' style="background:#4184f3;height:46px;margin:10px 0;padding:0 40px;line-height:46px;border-radius:4px;font-size:18px;color:#fff;display:inline-block;text-decoration: none;">
+				<a href='{$active_link}' style="background:#4184f3;height:46px;margin:10px 0;padding:0 40px;line-height:46px;border-radius:4px;font-size:18px;color:#fff;display:inline-block;text-decoration: none;">
 					{lang('Email.activate_link')}
 				</a>
 			</p>
 			<p>
-				<a href='{site_url("users/activate/$id/$activation")}'>{site_url("users/activate/$id/$activation")}</a>
+				<a href='{$active_link}'>{$active_link}</a>
 			</p>
 			<p style="padding-top: 5px;">{lang('Email.activate_content_2')}</p>
 			<p style="padding-top: 10px; color: #76808f;">{lang('Email.text_signature', [ucwords(config_item('site_name'))])}</p>
