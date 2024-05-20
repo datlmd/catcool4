@@ -95,7 +95,7 @@
 											</td>
 											<td>
 												{anchor("$manage_url/edit/`$item.article_id`", htmlspecialchars($item.name, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}<br/>
-												<span class="list_datetime">{$item.ctime}</span><br />
+												<span class="list_datetime">{$item.created_at}</span><br />
 												{$item.description}
 												{if !empty($item.relationship)}
 													<ul class="list-unstyled bullet-check">
