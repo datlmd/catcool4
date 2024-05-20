@@ -1,11 +1,12 @@
-<?php namespace App\Modules\Routes\Models;
+<?php
+
+namespace App\Modules\Routes\Models;
 
 use App\Models\MyModel;
-use App\Modules\Users\Models\UserPermissionModel;
 
 class RouteModel extends MyModel
 {
-    protected $table      = 'route';
+    protected $table = 'route';
     protected $primaryKey = 'route';
 
     protected $allowedFields = [
@@ -15,30 +16,30 @@ class RouteModel extends MyModel
         'resource',
         'user_id',
         'published',
-        'ctime',
-        'mtime',
+        'created_at',
+        'updated_at',
     ];
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? $sort : 'ctime';
+        $sort = in_array($sort, $this->allowedFields) ? $sort : 'created_at';
         $order = empty($order) ? 'DESC' : $order;
 
-        if (!empty($filter["route"])) {
-            $this->like('route', $filter["route"]);
+        if (!empty($filter['route'])) {
+            $this->like('route', $filter['route']);
         }
 
-        if (!empty($filter["module"])) {
-            $this->like('module', $filter["module"]);
+        if (!empty($filter['module'])) {
+            $this->like('module', $filter['module']);
         }
 
-        if (!empty($filter["resource"])) {
-            $this->like('resource', $filter["resource"]);
+        if (!empty($filter['resource'])) {
+            $this->like('resource', $filter['resource']);
         }
 
         $this->orderBy($sort, $order);
@@ -63,11 +64,11 @@ class RouteModel extends MyModel
         }
 
         $data = [
-            'module'   => $module,
-            'resource' => $resource
+            'module' => $module,
+            'resource' => $resource,
         ];
 
-        $result = $this->orderBy('ctime', 'DESC')->where($data)->findAll();
+        $result = $this->orderBy('created_at', 'DESC')->where($data)->findAll();
         if (empty($result)) {
             return false;
         }
@@ -87,8 +88,8 @@ class RouteModel extends MyModel
         }
 
         $data = [
-            'module'   => $module,
-            'resource' => $resource
+            'module' => $module,
+            'resource' => $resource,
         ];
 
         $result = $this->where($data)->first();
@@ -107,8 +108,8 @@ class RouteModel extends MyModel
 
         try {
             $data = [
-                'module'   => $module,
-                'resource' => $resource
+                'module' => $module,
+                'resource' => $resource,
             ];
 
             $routes = $this->where($data)->findAll();
@@ -119,6 +120,7 @@ class RouteModel extends MyModel
             $this->where($data)->delete();
         } catch (\Exception $ex) {
             log_message('error', $ex->getMessage());
+
             return false;
         }
 
@@ -146,13 +148,14 @@ class RouteModel extends MyModel
             $file_content = "<?php \n\nif(!isset(\$routes))\n{\n\t\$routes = \Config\Services::routes(true);\n}\n\n";
             if (!empty($routers)) {
                 foreach ($routers as $router) {
-                   $file_content .= "\$routes->add('" . $router['route'] . "', '" . ucfirst($router['resource']) . "', ['namespace' => 'App\Modules\\" . ucfirst($router['module']) . "\\Controllers']);\n";
+                    $file_content .= "\$routes->add('".$router['route']."', '".ucfirst($router['resource'])."', ['namespace' => 'App\Modules\\".ucfirst($router['module'])."\\Controllers']);\n";
                 }
             }
 
-            write_file(WRITEPATH . 'config/Routes.php', $file_content);
+            write_file(WRITEPATH.'config/Routes.php', $file_content);
         } catch (\Exception $ex) {
             log_message('error', $ex->getMessage());
+
             return false;
         }
 
@@ -175,13 +178,13 @@ class RouteModel extends MyModel
             }
 
             $urls['route'] = get_seo_extension($urls['route']);
-            $route_data    = [
-                'module'      => $module,
-                'resource'    => $resource,
+            $route_data = [
+                'module' => $module,
+                'resource' => $resource,
                 'language_id' => language_id_admin(),
-                'route'       => $urls['route'],
-                'user_id'     => session('user_info.user_id'),
-                'published'   => STATUS_ON,
+                'route' => $urls['route'],
+                'user_id' => session('user_info.user_id'),
+                'published' => STATUS_ON,
             ];
             $this->insert($route_data);
         } else {
@@ -196,12 +199,12 @@ class RouteModel extends MyModel
 
                 $urls[$key]['route'] = get_seo_extension($urls[$key]['route']);
                 $route_data = [
-                    'module'      => $module,
-                    'resource'    => $resource,
+                    'module' => $module,
+                    'resource' => $resource,
                     'language_id' => $key,
-                    'route'       => $urls[$key]['route'],
-                    'user_id'     => session('user_info.user_id'),
-                    'published'   => STATUS_ON,
+                    'route' => $urls[$key]['route'],
+                    'user_id' => session('user_info.user_id'),
+                    'published' => STATUS_ON,
                 ];
                 $this->insert($route_data);
             }
@@ -210,5 +213,4 @@ class RouteModel extends MyModel
 
         return true;
     }
-
 }

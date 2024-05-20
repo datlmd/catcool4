@@ -1,10 +1,12 @@
-<?php namespace App\Modules\News\Models;
+<?php
+
+namespace App\Modules\News\Models;
 
 use App\Models\FarmModel;
 
 class NewsModel extends FarmModel
 {
-    protected $table      = 'news';
+    protected $table = 'news';
     protected $primaryKey = 'news_id';
 
     protected $allowedFields = [
@@ -42,12 +44,12 @@ class NewsModel extends FarmModel
         'published',
         'deleted',
         'language_id',
-        'ctime',
-        'mtime',
+        'created_at',
+        'updated_at',
     ];
 
     protected $useSoftDeletes = true;
-    protected $deletedField   = 'deleted';
+    protected $deletedField = 'deleted';
 
     const NEWS_CACHE_EXPIRE = 10 * MINUTE; //10 phut
     const NEWS_CACHE_DETAIL = 'news_detail_id_%s_%s';
@@ -61,9 +63,9 @@ class NewsModel extends FarmModel
     const SOURCE_TYPE_ROBOT = 1;
     const POST_FORMAT_NORMAL = 1;
 
-    const NEWS_DETAIL_FORMAT = "%s-post%s.html";
+    const NEWS_DETAIL_FORMAT = '%s-post%s.html';
 
-    private $_news_date_from = "3";
+    private $_news_date_from = '3';
 
     private $_queries = [
         'create_table' => "
@@ -102,93 +104,92 @@ class NewsModel extends FarmModel
               `published` tinyint(1) NOT NULL DEFAULT '1',
               `deleted` datetime DEFAULT NULL,
               `language_id` int(11) DEFAULT NULL,
-              `ctime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-              `mtime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+              `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
               PRIMARY KEY (`news_id`),
-              KEY `publish_date` (`publish_date`,`ctime`),
+              KEY `publish_date` (`publish_date`,`created_at`),
               KEY `published` (`published`,`deleted`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
         ",
     ];
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 
         $this->setTableNameYear();
 
         if (ENVIRONMENT == 'development') {
-            $this->_news_date_from = "120"; // so ngay
+            $this->_news_date_from = '120'; // so ngay
         }
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? $sort : "news_id";
+        $sort = in_array($sort, $this->allowedFields) ? $sort : 'news_id';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        if (!empty($filter["ctime"])) {
-            $this->setTableNameYear($filter["ctime"]);
+        if (!empty($filter['created_at'])) {
+            $this->setTableNameYear($filter['created_at']);
         }
 
-        if (!empty($filter["news_id"])) {
-            if (strpos($filter["news_id"], 'c') !== FALSE) {
-                list($news_id, $ctime) = $this->getFormatNewsId($filter["news_id"]);
+        if (!empty($filter['news_id'])) {
+            if (strpos($filter['news_id'], 'c') !== false) {
+                list($news_id, $created_at) = $this->getFormatNewsId($filter['news_id']);
             } else {
-                $news_id = $filter["news_id"];
+                $news_id = $filter['news_id'];
             }
-            if (!empty($ctime)) {
-                $this->setTableNameYear($ctime);
+            if (!empty($created_at)) {
+                $this->setTableNameYear($created_at);
             }
 
-            $this->whereIn("news_id", (!is_array($news_id) ? explode(',', $news_id) : $news_id));
+            $this->whereIn('news_id', (!is_array($news_id) ? explode(',', $news_id) : $news_id));
         }
 
-        if (!empty($filter["name"])) {
-            $this->like("name", $filter["name"]);
+        if (!empty($filter['name'])) {
+            $this->like('name', $filter['name']);
         }
 
-        if (!empty($filter["category_id"])) {
-            $this->like("category_ids", $filter["category_id"]);
+        if (!empty($filter['category_id'])) {
+            $this->like('category_ids', $filter['category_id']);
         }
 
-        if (!empty($filter["published"])) {
-            $this->where("$this->table.published", $filter["published"]);
+        if (!empty($filter['published'])) {
+            $this->where("$this->table.published", $filter['published']);
         }
 
-        $result = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'is_hot', 'is_homepage', 'publish_date', 'published', 'counter_view', 'images', 'ctime'])
+        $result = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'is_hot', 'is_homepage', 'publish_date', 'published', 'counter_view', 'images', 'created_at'])
             ->orderBy($sort, $order);
 
         return $result;
     }
 
-    public function getNewsInfo($news_id, $ctime = null, $is_preview = false, $is_cache = true)
+    public function getNewsInfo($news_id, $created_at = null, $is_preview = false, $is_cache = true)
     {
         if (empty($news_id)) {
             return [];
         }
 
-        if (strpos($news_id, 'c') !== FALSE) {
-            list($news_id, $ctime) = $this->getFormatNewsId($news_id);
+        if (strpos($news_id, 'c') !== false) {
+            list($news_id, $created_at) = $this->getFormatNewsId($news_id);
         }
 
-        $cache_year = !empty($ctime) ? date("Y", $ctime) : date("Y", time());
+        $cache_year = !empty($created_at) ? date('Y', $created_at) : date('Y', time());
 
         $cache_name = sprintf(self::NEWS_CACHE_DETAIL, $cache_year, $news_id);
 
         $result = $is_cache ? cache()->get($cache_name) : null;
         if (empty($result)) {
-
-            $this->setTableNameYear($ctime);
+            $this->setTableNameYear($created_at);
 
             $where = [
-                'news_id'         => $news_id,
-                'published'       => STATUS_ON,
+                'news_id' => $news_id,
+                'published' => STATUS_ON,
                 'publish_date <=' => get_date(),
             ];
             if ($is_preview) {
                 $where = [
-                    'news_id'   => $news_id,
+                    'news_id' => $news_id,
                     'published' => STATUS_OFF,
                 ];
             }
@@ -204,7 +205,7 @@ class NewsModel extends FarmModel
             }
         } else {
             //get couter view
-            $this->setTableNameYear($ctime);
+            $this->setTableNameYear($created_at);
             $counter = $this->select('counter_view')->where('news_id', $news_id)->first();
             if (!empty($counter)) {
                 $result['counter_view'] = $counter['counter_view'];
@@ -215,68 +216,69 @@ class NewsModel extends FarmModel
     }
 
     /**
-     * Su dung admin
+     * Su dung admin.
      *
      * @param $news_id
-     * @param null $ctime
-     * @return array|bool|null|object
+     * @param null $created_at
+     *
+     * @return array|bool|object|null
      */
-    public function getInfo($news_id, $ctime = null)
+    public function getInfo($news_id, $created_at = null)
     {
         if (empty($news_id)) {
             return false;
         }
 
-        if (strpos($news_id, 'c') !== FALSE) {
-            list($news_id, $ctime) = $this->getFormatNewsId($news_id);
+        if (strpos($news_id, 'c') !== false) {
+            list($news_id, $created_at) = $this->getFormatNewsId($news_id);
         }
 
-        $this->setTableNameYear($ctime);
+        $this->setTableNameYear($created_at);
 
         return $this->find($news_id);
     }
 
-    public function deleteInfo($news_id, $ctime = null, $is_trash = false)
+    public function deleteInfo($news_id, $created_at = null, $is_trash = false)
     {
         if (empty($news_id)) {
             return false;
         }
 
-        if (strpos($news_id, 'c') !== FALSE) {
-            list($news_id, $ctime) = $this->getFormatNewsId($news_id);
+        if (strpos($news_id, 'c') !== false) {
+            list($news_id, $created_at) = $this->getFormatNewsId($news_id);
         }
 
-        $this->setTableNameYear($ctime);
+        $this->setTableNameYear($created_at);
 
         return $this->delete($news_id, $is_trash);
     }
 
-    public function updateInfo($data, $news_id, $ctime = null)
+    public function updateInfo($data, $news_id, $created_at = null)
     {
         if (empty($news_id) || empty($data)) {
             return false;
         }
 
-        if (strpos($news_id, 'c') !== FALSE) {
-            list($news_id, $ctime) = $this->getFormatNewsId($news_id);
+        if (strpos($news_id, 'c') !== false) {
+            list($news_id, $created_at) = $this->getFormatNewsId($news_id);
         }
 
-        $this->setTableNameYear($ctime);
+        $this->setTableNameYear($created_at);
 
-        return $this->update($news_id, $data);
+        return $this->update($news_id, $created_at);
     }
 
-    public function updateView($news_id, $ctime = null)
+    public function updateView($news_id, $created_at = null)
     {
         if (empty($news_id)) {
             return false;
         }
 
-        if (strpos($news_id, 'c') !== FALSE) {
-            list($news_id, $ctime) = $this->getFormatNewsId($news_id);
+        if (strpos($news_id, 'c') !== false) {
+            list($news_id, $created_at) = $this->getFormatNewsId($news_id);
         }
 
-        $this->setTableNameYear($ctime);
+        $this->setTableNameYear($created_at);
 
         return $this->set('counter_view', 'counter_view + 1', false)->update($news_id);
     }
@@ -284,13 +286,13 @@ class NewsModel extends FarmModel
     public function deleteCache($news_id = null)
     {
         if (!empty($news_id)) {
-            if (strpos($news_id, 'c') !== FALSE) {
-                list($news_id, $ctime) = $this->getFormatNewsId($news_id);
+            if (strpos($news_id, 'c') !== false) {
+                list($news_id, $created_at) = $this->getFormatNewsId($news_id);
             }
 
-            $ctime = !empty($ctime) ? date("Y", $ctime) : date("Y", time());
+            $created_at = !empty($created_at) ? date('Y', $created_at) : date('Y', time());
 
-            cache()->delete(sprintf(self::NEWS_CACHE_DETAIL, $ctime, $news_id));
+            cache()->delete(sprintf(self::NEWS_CACHE_DETAIL, $created_at, $news_id));
         }
 
         cache()->delete(self::NEWS_CACHE_CATEGORY_HOME);
@@ -302,13 +304,13 @@ class NewsModel extends FarmModel
         return true;
     }
 
-    public function setFormatNewsId($news_id, $ctime)
+    public function setFormatNewsId($news_id, $created_at)
     {
-        if (empty($news_id) || empty($ctime)) {
+        if (empty($news_id) || empty($created_at)) {
             return false;
         }
 
-        return sprintf(self::FORMAT_NEWS_ID, $news_id, strtotime($ctime));
+        return sprintf(self::FORMAT_NEWS_ID, $news_id, strtotime($created_at));
     }
 
     public function getFormatNewsId($news_id)
@@ -318,10 +320,10 @@ class NewsModel extends FarmModel
         }
 
         if (is_numeric($news_id)) {
-            return [$news_id, date("Y", time())];
+            return [$news_id, date('Y', time())];
         }
 
-        $ids = explode("c", $news_id);
+        $ids = explode('c', $news_id);
         if (count($ids) != 2) {
             return false;
         }
@@ -332,11 +334,11 @@ class NewsModel extends FarmModel
     public function formatImageList($images = null)
     {
         return [
-            'thumb'       => $images['thumb'] ?? null, //duong dan hinh tren server thumb small
+            'thumb' => $images['thumb'] ?? null, //duong dan hinh tren server thumb small
             'thumb_large' => $images['thumb_large'] ?? null,
-            'fb'          => $images['fb'] ?? null,
-            'robot'       => $images['robot'] ?? null,
-            'robot_fb'    => $images['robot_fb'] ?? null,
+            'fb' => $images['fb'] ?? null,
+            'robot' => $images['robot'] ?? null,
+            'robot_fb' => $images['robot_fb'] ?? null,
         ];
     }
 
@@ -347,15 +349,15 @@ class NewsModel extends FarmModel
         }
 
         if (isset($data['images']) || isset($data['category_ids']) || isset($data['related_ids'])) {
-            $images       = $data['images'] ?? null;
+            $images = $data['images'] ?? null;
             $category_ids = $data['category_ids'] ?? null;
-            $related_ids  = $data['related_ids'] ?? null;
+            $related_ids = $data['related_ids'] ?? null;
 
             $data['images'] = json_decode($images, true);
             $data['images'] = $this->formatImageList($data['images']);
 
             $data['category_ids'] = json_decode($category_ids, true);
-            $data['related_ids']  = json_decode($related_ids, true);
+            $data['related_ids'] = json_decode($related_ids, true);
         } else {
             foreach ($data as $key => $value) {
                 if (isset($value['images'])) {
@@ -380,7 +382,7 @@ class NewsModel extends FarmModel
             return [];
         }
 
-        $data['news_id'] = $this->setFormatNewsId($data['news_id'], $data['ctime']);
+        $data['news_id'] = $this->setFormatNewsId($data['news_id'], $data['created_at']);
         $data['detail_url'] = sprintf(self::NEWS_DETAIL_FORMAT, $data['slug'], $data['news_id']);
 
         return $this->formatJsonDecode($data);
@@ -404,7 +406,7 @@ class NewsModel extends FarmModel
         $related_list = [];
         $related_result = cache()->get('news_robot_related_list');
         if (empty($related_result)) {
-            $related_result = $this->select(['news_id', 'name', 'tags', 'slug', 'ctime'])
+            $related_result = $this->select(['news_id', 'name', 'tags', 'slug', 'created_at'])
                 ->orderBy('publish_date', 'DESC')
                 ->where(['published' => STATUS_ON])
                 ->findAll(1500);
@@ -416,11 +418,10 @@ class NewsModel extends FarmModel
             cache()->save('news_robot_related_list', $related_result, 30 * MINUTE);
         }
 
-        $date_now = date("Y-m-d H:i:s", strtotime('-40 minutes', time()));
+        $date_now = date('Y-m-d H:i:s', strtotime('-40 minutes', time()));
 
         $insert_list = [];
         foreach ($data as $key => $value) {
-
             if (empty($value['title']) || empty($value['note']) || empty($value['content'])) {
                 continue;
             }
@@ -430,13 +431,13 @@ class NewsModel extends FarmModel
                 continue;
             }
 
-            $image = "";
+            $image = '';
             if (!empty($value['image']) && $is_save_image) {
                 $image = save_image_from_url($value['image'], 'news');
             } else {
                 $image = $value['image'];
             }
-            $image_fb = "";
+            $image_fb = '';
             if (!empty($value['image_fb']) && $is_save_image) {
                 $image_fb = save_image_from_url($value['image_fb'], 'news');
             } else {
@@ -463,7 +464,7 @@ class NewsModel extends FarmModel
 
             $title = html_entity_decode($value['title']);
             foreach ($except_list as $except_text) {
-                if (strpos(strtolower($title), $except_text) !== FALSE) {
+                if (strpos(strtolower($title), $except_text) !== false) {
                     $is_except = true;
                 }
             }
@@ -472,19 +473,19 @@ class NewsModel extends FarmModel
                 continue;
             }
 
-            $date_now = date("Y-m-d H:i:s", strtotime('+10 minutes', strtotime($date_now)));
+            $date_now = date('Y-m-d H:i:s', strtotime('+10 minutes', strtotime($date_now)));
 
             if (!empty($value['tags'])) {
-                $tags = is_array($value['tags']) ? implode(",", $value['tags']) : $value['tags'];
+                $tags = is_array($value['tags']) ? implode(',', $value['tags']) : $value['tags'];
             } else {
-                $tags = "";
+                $tags = '';
             }
             $tags = html_entity_decode($tags);
 
             //check related
             $related_ids = [];
             if (!empty($related_list)) {
-                $tags_tmp = explode(",", $tags);
+                $tags_tmp = explode(',', $tags);
                 if (!empty($tags_tmp[0]) && !empty($tags_tmp[1])) {
                     foreach ($related_list as $related) {
                         if (count($related_ids) >= 4) {
@@ -502,34 +503,34 @@ class NewsModel extends FarmModel
             //end related
 
             $insert_list[] = [
-                'name'              => !empty($value['title']) ? html_entity_decode($value['title']) : "",
-                'slug'              => !empty($value['title']) ? slugify(html_entity_decode($value['title'])) : "",
-                'description'       => !empty($value['note']) ? html_entity_decode($value['note']) : "",
-                'content'           => !empty($value['content']) ? html_entity_decode($value['content']) : "",
-                'meta_title'        => !empty($value['title']) ? html_entity_decode($value['title']) : "",
-                'meta_description'  => !empty($value['meta_description']) ? html_entity_decode($value['meta_description']) : "",
-                'meta_keyword'      => !empty($value['meta_keyword']) ? html_entity_decode($value['meta_keyword']) : "",
-                'related_ids'       => $related_ids,
-                'category_ids'      => !empty($value['category_id']) ? json_encode($value['category_id'], JSON_FORCE_OBJECT) : "",
-                'publish_date'      => $date_now,
-                'images'            => json_encode($this->formatImageList(['robot' => $image, 'robot_fb' => $image_fb]), JSON_FORCE_OBJECT),
-                'tags'              => $tags,
-                'author'            => !empty($value['author']) ? html_entity_decode($value['author']) : "",
-                'source_type'       => self::SOURCE_TYPE_ROBOT,
-                'source'            => !empty($value['href']) ? $value['href'] : "",
-                'post_format'       => self::POST_FORMAT_NORMAL,
-                'is_ads'            => STATUS_ON,
-                'is_fb_ia'          => STATUS_ON,
-                'is_hot'            => STATUS_OFF,
-                'is_homepage'       => $is_homepage,
+                'name' => !empty($value['title']) ? html_entity_decode($value['title']) : '',
+                'slug' => !empty($value['title']) ? slugify(html_entity_decode($value['title'])) : '',
+                'description' => !empty($value['note']) ? html_entity_decode($value['note']) : '',
+                'content' => !empty($value['content']) ? html_entity_decode($value['content']) : '',
+                'meta_title' => !empty($value['title']) ? html_entity_decode($value['title']) : '',
+                'meta_description' => !empty($value['meta_description']) ? html_entity_decode($value['meta_description']) : '',
+                'meta_keyword' => !empty($value['meta_keyword']) ? html_entity_decode($value['meta_keyword']) : '',
+                'related_ids' => $related_ids,
+                'category_ids' => !empty($value['category_id']) ? json_encode($value['category_id'], JSON_FORCE_OBJECT) : '',
+                'publish_date' => $date_now,
+                'images' => json_encode($this->formatImageList(['robot' => $image, 'robot_fb' => $image_fb]), JSON_FORCE_OBJECT),
+                'tags' => $tags,
+                'author' => !empty($value['author']) ? html_entity_decode($value['author']) : '',
+                'source_type' => self::SOURCE_TYPE_ROBOT,
+                'source' => !empty($value['href']) ? $value['href'] : '',
+                'post_format' => self::POST_FORMAT_NORMAL,
+                'is_ads' => STATUS_ON,
+                'is_fb_ia' => STATUS_ON,
+                'is_hot' => STATUS_OFF,
+                'is_homepage' => $is_homepage,
                 'is_disable_follow' => STATUS_OFF,
-                'is_disable_robot'  => STATUS_OFF,
-                'ip'                => service('request')->getIPAddress(), //\CodeIgniter\HTTP\Request::getIPAddress()
-                'user_id'           => 0,//session('user_info.user_id'),
-                'is_comment'        => COMMENT_STATUS_ON,
-                'published'         => $status,
-                'sort_order'        => 0,
-                'language_id'       => language_id_admin(),
+                'is_disable_robot' => STATUS_OFF,
+                'ip' => service('request')->getIPAddress(), //\CodeIgniter\HTTP\Request::getIPAddress()
+                'user_id' => 0, //session('user_info.user_id'),
+                'is_comment' => COMMENT_STATUS_ON,
+                'published' => $status,
+                'sort_order' => 0,
+                'language_id' => language_id_admin(),
             ];
         }
 
@@ -544,36 +545,36 @@ class NewsModel extends FarmModel
     {
         $robot = service('robot');
 
-        $domain         = $attribute['domain'];
-        $url_domain     = $attribute['url_domain'];
-        $domain_id      = $attribute['domain_id'];
+        $domain = $attribute['domain'];
+        $url_domain = $attribute['url_domain'];
+        $domain_id = $attribute['domain_id'];
         $attribute_cate = $attribute['attribute_cate'];
-        $list_menu      = $attribute['attribute_menu'];
+        $list_menu = $attribute['attribute_menu'];
 
         foreach ($list_menu as $key => $menu) {
-            if (stripos($menu['href'], "https://") !== false || stripos($menu['href'], "http://") !== false) {
+            if (stripos($menu['href'], 'https://') !== false || stripos($menu['href'], 'http://') !== false) {
                 $url = $menu['href'];
             } else {
-                $url = $url_domain . str_replace(md5($url_domain), $url_domain, $menu['href']);
+                $url = $url_domain.str_replace(md5($url_domain), $url_domain, $menu['href']);
             }
 
-            $list_news = $robot->getListNews($attribute_cate, $url_domain , $menu['title'], $url, $domain, 8);
+            $list_news = $robot->getListNews($attribute_cate, $url_domain, $menu['title'], $url, $domain, 8);
             if (empty($list_news)) {
                 continue;
             }
 
             foreach ($list_news as $news_key => $news) {
                 try {
-                    if (stripos($news['href'], "https://") !== false || stripos($news['href'], "http://") !== false) {
+                    if (stripos($news['href'], 'https://') !== false || stripos($news['href'], 'http://') !== false) {
                         $url_detail = $news['href'];
                     } else {
-                        $url_detail = $url_domain . $news['href'];
+                        $url_detail = $url_domain.$news['href'];
                     }
 
                     $meta = $robot->getMeta($attribute['attribute_meta'], $url_detail);
                     $detail = $robot->getDetail($attribute['attribute_detail'], $url_detail, $url_domain);
 
-                    $content = "";
+                    $content = '';
                     if (!empty($detail['content'])) {
                         $content = $detail['content'];
                         //$content = $this->robot->convert_image_to_base($detail['content']);
@@ -596,7 +597,7 @@ class NewsModel extends FarmModel
                     $list_news[$news_key]['href'] = $url_detail;
 
                     $list_tags = $robot->getTags($attribute['attribute_tags'], $detail['html']);
-                    $list_news[$news_key]['tags'] = implode(",", $list_tags);
+                    $list_news[$news_key]['tags'] = implode(',', $list_tags);
 
 //                if ($news_key % 10 == 0) {
 //                    sleep(1);
@@ -713,8 +714,8 @@ class NewsModel extends FarmModel
         } catch (\Exception $e) {
             $detail = [];
         }
-        
-        $content = !empty($detail['content']) ? $detail['content'] : "";
+
+        $content = !empty($detail['content']) ? $detail['content'] : '';
 
         //check image
         $content = $robot->convertImageData($content);
@@ -722,21 +723,21 @@ class NewsModel extends FarmModel
         //check video
         $content = $robot->convertVideoData($content);
 
-        $name = !empty($meta['title']) ? $meta['title'] : (!empty($meta['title_fb']) ? $meta['title_fb'] : "");
-        $description = !empty($meta['description']) ? $meta['description'] : (!empty($meta['description_fb']) ? $meta['description_fb'] : "");
-        $keyword = !empty($meta['keywords']) ? $meta['keywords'] : "";
+        $name = !empty($meta['title']) ? $meta['title'] : (!empty($meta['title_fb']) ? $meta['title_fb'] : '');
+        $description = !empty($meta['description']) ? $meta['description'] : (!empty($meta['description_fb']) ? $meta['description_fb'] : '');
+        $keyword = !empty($meta['keywords']) ? $meta['keywords'] : '';
 
         $data = [
-            'name'             => html_entity_decode($name),
-            'description'      => html_entity_decode($description),
-            'meta_title'       => html_entity_decode($name),
+            'name' => html_entity_decode($name),
+            'description' => html_entity_decode($description),
+            'meta_title' => html_entity_decode($name),
             'meta_description' => html_entity_decode($description),
-            'meta_keyword'     => html_entity_decode($keyword),
-            'tags'             => html_entity_decode($keyword),
-            'url_image_fb'     => !empty($meta['image_fb']) ? $meta['image_fb'] : "",
-            'content'          => html_entity_decode($content),
-            'source_type'      => 2,
-            'source'           => $url
+            'meta_keyword' => html_entity_decode($keyword),
+            'tags' => html_entity_decode($keyword),
+            'url_image_fb' => !empty($meta['image_fb']) ? $meta['image_fb'] : '',
+            'content' => html_entity_decode($content),
+            'source_type' => 2,
+            'source' => $url,
         ];
 
         return $data;
@@ -746,19 +747,18 @@ class NewsModel extends FarmModel
     {
         $category_model = new CategoryModel();
         $category_list = $category_model->getNewsCategories(language_id());
-        
+
         $list = $is_cache ? cache()->get(self::NEWS_CACHE_CATEGORY_HOME) : null;
         if (empty($list)) {
-
-            $from_date = date('Y-m-d H:i:s', strtotime('-' . $this->_news_date_from . ' day', time()));
+            $from_date = date('Y-m-d H:i:s', strtotime('-'.$this->_news_date_from.' day', time()));
 
             $where = [
-                'published'       => STATUS_ON,
+                'published' => STATUS_ON,
                 'publish_date <=' => get_date(),
                 'publish_date >=' => $from_date,
             ];
 
-            $list = $this->select(['news_id', 'name', 'slug', 'description', 'publish_date', 'images', 'category_ids', 'ctime'])
+            $list = $this->select(['news_id', 'name', 'slug', 'description', 'publish_date', 'images', 'category_ids', 'created_at'])
                 ->orderBy('publish_date', 'DESC')
                 ->where($where)
                 ->findAll($limit);
@@ -789,15 +789,15 @@ class NewsModel extends FarmModel
     {
         $slides = $is_cache ? cache()->get(self::NEWS_CACHE_SLIDE_HOME) : null;
         if (empty($slides)) {
-            $from_date = date('Y-m-d H:i:s', strtotime('-' . $this->_news_date_from . ' day', time()));
+            $from_date = date('Y-m-d H:i:s', strtotime('-'.$this->_news_date_from.' day', time()));
             $where = [
                 'published' => STATUS_ON,
                 'publish_date <=' => get_date(),
                 'publish_date >=' => $from_date,
-                'is_homepage' => STATUS_ON
+                'is_homepage' => STATUS_ON,
             ];
 
-            $list = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+            $list = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'created_at'])
                 ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
             if (empty($list)) {
                 return [];
@@ -820,7 +820,7 @@ class NewsModel extends FarmModel
     {
         $result = $is_cache ? cache()->get(self::NEWS_CACHE_COUNTER_LIST) : null;
         if (empty($result)) {
-            $from_date = date('Y-m-d H:i:s', strtotime('-' . $this->_news_date_from . ' day', time()));
+            $from_date = date('Y-m-d H:i:s', strtotime('-'.$this->_news_date_from.' day', time()));
 
             $where = [
                 'published' => STATUS_ON,
@@ -828,7 +828,7 @@ class NewsModel extends FarmModel
                 'publish_date >=' => $from_date,
             ];
 
-            $list = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+            $list = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'created_at'])
                 ->orderBy('counter_view', 'DESC')->where($where)->findAll($limit);
             if (empty($list)) {
                 return [];
@@ -851,8 +851,7 @@ class NewsModel extends FarmModel
     {
         $result = $is_cache ? cache()->get(self::NEWS_CACHE_HOT_LIST) : null;
         if (empty($result)) {
-
-            $from_date = date('Y-m-d H:i:s', strtotime('-' . $this->_news_date_from .' day', time()));
+            $from_date = date('Y-m-d H:i:s', strtotime('-'.$this->_news_date_from.' day', time()));
 
             $where = [
                 'published' => STATUS_ON,
@@ -861,7 +860,7 @@ class NewsModel extends FarmModel
                 'is_hot' => STATUS_ON,
             ];
 
-            $list = $this->select(['news_id', 'name', 'slug', 'description', 'content', 'category_ids', 'publish_date', 'images', 'ctime'])
+            $list = $this->select(['news_id', 'name', 'slug', 'description', 'content', 'category_ids', 'publish_date', 'images', 'created_at'])
                 ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
             if (empty($list)) {
                 return [];
@@ -884,7 +883,7 @@ class NewsModel extends FarmModel
     {
         $result = $is_cache ? cache()->get(self::NEWS_CACHE_NEW_LIST) : null;
         if (empty($result)) {
-            $from_date = date('Y-m-d H:i:s', strtotime('-' . $this->_news_date_from . ' day', time()));
+            $from_date = date('Y-m-d H:i:s', strtotime('-'.$this->_news_date_from.' day', time()));
 
             $where = [
                 'published' => STATUS_ON,
@@ -892,7 +891,7 @@ class NewsModel extends FarmModel
                 'publish_date >=' => $from_date,
             ];
 
-            $list = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+            $list = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'created_at'])
                 ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
             if (empty($list)) {
                 return [];
@@ -914,7 +913,7 @@ class NewsModel extends FarmModel
     public function getListByCategory($category_id = null, $limit = PAGINATION_DEFAULF_LIMIT)
     {
         if (empty($category_id)) {
-            return [[],[]];
+            return [[], []];
         }
 
         $where = [
@@ -929,7 +928,7 @@ class NewsModel extends FarmModel
         $category_id_3 = ":$category_id,";
         $category_id_4 = ":\"$category_id\",";
 
-        $result = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+        $result = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'created_at'])
             ->where($where)
             ->groupStart()
             ->like('category_ids', $category_id_1)
@@ -941,7 +940,7 @@ class NewsModel extends FarmModel
 
         $list = $result->paginate($limit);
         if (empty($list)) {
-            return [[],[]];
+            return [[], []];
         }
 
         foreach ($list as $key_news => $value) {
@@ -954,7 +953,7 @@ class NewsModel extends FarmModel
     public function getListByTag($tag = null, $limit = PAGINATION_DEFAULF_LIMIT)
     {
         if (empty($tag)) {
-            return [[],[]];
+            return [[], []];
         }
 
         $where = [
@@ -962,14 +961,14 @@ class NewsModel extends FarmModel
             'publish_date <=' => get_date(),
         ];
 
-        $result = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+        $result = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'created_at'])
             ->where($where)
             ->like('tags', $tag)
             ->orderBy('publish_date', 'DESC');
 
         $list = $result->paginate($limit);
         if (empty($list)) {
-            return [[],[]];
+            return [[], []];
         }
 
         foreach ($list as $key_news => $value) {
@@ -985,11 +984,11 @@ class NewsModel extends FarmModel
             return null;
         }
         $related = trim($related);
-        $result = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+        $result = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'created_at'])
             ->orderBy('publish_date', 'DESC')
             ->groupStart()
-            ->like("name", $related)
-            ->orLike("tags", $related)
+            ->like('name', $related)
+            ->orLike('tags', $related)
             ->groupEnd()
             ->where(['published' => STATUS_ON])
             ->findAll($limit);
@@ -1014,19 +1013,18 @@ class NewsModel extends FarmModel
 
         $related_ids = is_array($related_ids) ? $related_ids : explode(',', $related_ids);
 
-        $ctime = null;
+        $created_at = null;
         $news_ids = [];
-        foreach($related_ids as $value) {
-            list($news_id, $ctime) = $this->getFormatNewsId($value);
+        foreach ($related_ids as $value) {
+            list($news_id, $created_at) = $this->getFormatNewsId($value);
             $news_ids[] = $news_id;
         }
 
-        $result = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+        $result = $this->select(['news_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'created_at'])
             ->orderBy('publish_date', 'DESC')
             ->where(['published' => STATUS_ON])
-            ->whereIn("news_id", $news_ids)
+            ->whereIn('news_id', $news_ids)
             ->findAll($limit);
-
 
         if (empty($result)) {
             return [];
@@ -1047,7 +1045,7 @@ class NewsModel extends FarmModel
         $prefix = $db->getPrefix();
         $tables = $db->listTables();
 
-        $news_year  = date('Y', time());
+        $news_year = date('Y', time());
         $table_name = sprintf('%snews_%s', $prefix, $news_year);
 
         if (in_array($table_name, $tables)) {
@@ -1059,6 +1057,7 @@ class NewsModel extends FarmModel
             $db->query($sql);
         } catch (\Exception $ex) {
             log_message('error', $ex->getMessage());
+
             return false;
         }
 

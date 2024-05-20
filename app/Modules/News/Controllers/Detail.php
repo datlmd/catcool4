@@ -19,7 +19,7 @@ class Detail extends MyController
             ->addPartial('footer_bottom');
     }
 
-    public function index($slug, $news_id, $ctime, $type = null)
+    public function index($slug, $news_id, $created_at, $type = null)
     {
         $news_model = new NewsModel();
 
@@ -37,9 +37,9 @@ class Detail extends MyController
             $category_list = $category_model->getNewsCategories($this->language_id);
 
             if ($is_preview) {
-                $detail = $news_model->getNewsInfo($news_id, $ctime, $is_preview, false);
+                $detail = $news_model->getNewsInfo($news_id, $created_at, $is_preview, false);
             } else {
-                $detail = $news_model->getNewsInfo($news_id, $ctime);
+                $detail = $news_model->getNewsInfo($news_id, $created_at);
             }
 
             if (empty($detail)) {
@@ -60,7 +60,7 @@ class Detail extends MyController
             shuffle($news_the_same_list);
 
             //count detail
-            $news_model->updateView($news_id, $ctime);
+            $news_model->updateView($news_id, $created_at);
 
             $this->_setMeta($detail);
 
@@ -90,7 +90,7 @@ class Detail extends MyController
 
             theme_load($tpl_name, $data);
         // } catch (\Exception $ex) {
-        //     log_message('error', $ex->getMessage() . "[ID: $news_id, $ctime, $slug]");
+        //     log_message('error', $ex->getMessage() . "[ID: $news_id, $created_at, $slug]");
         //     page_not_found();
         // }
     }
@@ -116,7 +116,7 @@ class Detail extends MyController
             'url'            => base_url($detail['detail_url']),
             'image'          => !empty($detail['images']['thumb']) ? $detail['images']['thumb'] : $detail['images']['robot'],
             'published_time' => date('c', strtotime($detail['publish_date'])),
-            'modified_time'  => date('c', strtotime($detail['mtime'])),
+            'modified_time'  => date('c', strtotime($detail['updated_at'])),
             'author'         => !empty($detail['author']) ? $detail['author'] : "Ryan Lee",
         ];
         $script_google_search = script_google_search($script_detail, $script_breadcrumb);
@@ -135,7 +135,7 @@ class Detail extends MyController
             'image'          => !empty($detail['images']['thumb']) ? $detail['images']['thumb'] : $detail['images']['robot'],
             'image_fb'       => !empty($detail['images']['fb']) ? $detail['images']['fb'] : $detail['images']['robot_fb'],
             'published_time' => date('c', strtotime($detail['publish_date'])),
-            'modified_time'  => date('c', strtotime($detail['mtime'])),
+            'modified_time'  => date('c', strtotime($detail['updated_at'])),
         ];
         add_meta($data_meta, $this->themes);
     }

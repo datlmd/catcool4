@@ -1,10 +1,12 @@
-<?php namespace App\Modules\News\Models;
+<?php
+
+namespace App\Modules\News\Models;
 
 use App\Models\MyModel;
 
 class CategoryModel extends MyModel
 {
-    protected $table      = 'news_category';
+    protected $table = 'news_category';
     protected $primaryKey = 'category_id';
 
     protected $allowedFields = [
@@ -20,26 +22,25 @@ class CategoryModel extends MyModel
         'meta_description',
         'meta_keyword',
         'language_id',
-        'ctime',
-        'mtime',
+        'created_at',
+        'updated_at',
     ];
 
-    const CATEGORY_CACHE_NAME   = 'news_category_list';
+    const CATEGORY_CACHE_NAME = 'news_category_list';
     const CATEGORY_CACHE_EXPIRE = YEAR;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? $sort : "sort_order";
+        $sort = in_array($sort, $this->allowedFields) ? $sort : 'sort_order';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-
-        if (!empty($filter["name"])) {
-            $this->like("$this->table_lang.name", $filter["name"]);
+        if (!empty($filter['name'])) {
+            $this->like("$this->table_lang.name", $filter['name']);
         }
 
         $result = $this->orderBy($sort, $order)->findAll();
@@ -53,6 +54,7 @@ class CategoryModel extends MyModel
     public function deleteCache()
     {
         cache()->delete(self::CATEGORY_CACHE_NAME);
+
         return true;
     }
 

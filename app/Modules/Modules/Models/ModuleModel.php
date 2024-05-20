@@ -1,11 +1,12 @@
-<?php namespace App\Modules\Modules\Models;
+<?php
+
+namespace App\Modules\Modules\Models;
 
 use App\Models\MyModel;
-use CodeIgniter\Email\Email;
 
 class ModuleModel extends MyModel
 {
-    protected $table      = 'module';
+    protected $table = 'module';
     protected $primaryKey = 'id';
 
     protected $allowedFields = [
@@ -14,30 +15,30 @@ class ModuleModel extends MyModel
         'sub_module',
         'user_id',
         'published',
-        'ctime',
-        'mtime',
+        'created_at',
+        'updated_at',
     ];
 
-    const MODULE_CACHE_NAME   = 'module_list';
-    const MODULE_CACHE_EXPIRE = 30*MINUTE;
+    const MODULE_CACHE_NAME = 'module_list';
+    const MODULE_CACHE_EXPIRE = 30 * MINUTE;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = empty($sort) ? 'id' : $sort;
+        $sort = empty($sort) ? 'id' : $sort;
         $order = empty($order) ? 'DESC' : $order;
         $where = null;
 
-        if (!empty($filter["module"])) {
-            $this->like('module', $filter["module"]);
+        if (!empty($filter['module'])) {
+            $this->like('module', $filter['module']);
         }
 
-        if (!empty($filter["sub_module"])) {
-            $this->like('sub_module', $filter["sub_module"]);
+        if (!empty($filter['sub_module'])) {
+            $this->like('sub_module', $filter['sub_module']);
         }
 
         if (!empty($where)) {
@@ -75,6 +76,7 @@ class ModuleModel extends MyModel
     public function deleteCache()
     {
         cache()->delete(self::MODULE_CACHE_NAME);
+
         return true;
     }
 }

@@ -1,11 +1,13 @@
-<?php namespace App\Modules\Customers\Models;
+<?php
+
+namespace App\Modules\Customers\Models;
 
 use App\Models\MyModel;
 use CodeIgniter\Database\RawSql;
 
 class CustomerModel extends MyModel
 {
-    protected $table      = 'customer';
+    protected $table = 'customer';
     protected $primaryKey = 'customer_id';
     protected $allowedFields = [
         'customer_id',
@@ -39,12 +41,12 @@ class CustomerModel extends MyModel
         'customer_group_id',
         'store_id',
         'ip',
-        'ctime',
-        'mtime'
+        'created_at',
+        'updated_at',
     ];
 
     protected $useSoftDeletes = true;
-    protected $deletedField   = 'deleted';
+    protected $deletedField = 'deleted';
 
     protected $auth_model;
 
@@ -52,7 +54,7 @@ class CustomerModel extends MyModel
 
     public $activation_code;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 
@@ -61,19 +63,19 @@ class CustomerModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = empty($sort) ? 'customer_id' : $sort;
+        $sort = empty($sort) ? 'customer_id' : $sort;
         $order = empty($order) ? 'DESC' : $order;
 
-        if (!empty($filter["id"])) {
-            $this->whereIn('customer_id', (!is_array($filter["id"]) ? explode(',', $filter["id"]) : $filter["id"]));
+        if (!empty($filter['id'])) {
+            $this->whereIn('customer_id', (!is_array($filter['id']) ? explode(',', $filter['id']) : $filter['id']));
         }
 
-        if (!empty($filter["name"])) {
+        if (!empty($filter['name'])) {
             $this->groupStart();
-            $this->orLike('username', $filter["name"]);
-            $this->orLike('first_name', $filter["name"]);
-            $this->orLike('email', $filter["name"]);
-            $this->orLike('phone', $filter["name"]);
+            $this->orLike('username', $filter['name']);
+            $this->orLike('first_name', $filter['name']);
+            $this->orLike('email', $filter['name']);
+            $this->orLike('phone', $filter['name']);
             $this->groupEnd();
         }
 
@@ -94,6 +96,7 @@ class CustomerModel extends MyModel
 
         if (empty($username) || empty($password)) {
             $this->errors[] = lang('Customer.text_login_unsuccessful');
+
             return false;
         }
 
@@ -103,18 +106,20 @@ class CustomerModel extends MyModel
             ->first();
         if (empty($customer_info)) {
             $this->errors[] = lang('Customer.error_login_account_not_exist');
+
             return false;
         }
 
         if ($attempt_model->isMaxLoginAttemptsExceeded($customer_info['customer_id'])) {
             $this->errors[] = lang('Customer.text_login_timeout');
-            $this->errors[] = lang('Customer.error_attempts', [config_item('lockout_time')/60]);
+            $this->errors[] = lang('Customer.error_attempts', [config_item('lockout_time') / 60]);
 
             return false;
         }
 
         if (empty($customer_info['active'])) {
             $this->errors[] = lang('Customer.text_login_unsuccessful_not_active');
+
             return false;
         }
 
@@ -125,7 +130,7 @@ class CustomerModel extends MyModel
 
             $total_attempt = $attempt_model->getRemainingAttempts($customer_info['customer_id']);
             if ($total_attempt > 0 && $total_attempt < 3) {
-                $this->errors[] = lang('Customer.error_attempt_time', [$total_attempt]);    
+                $this->errors[] = lang('Customer.error_attempt_time', [$total_attempt]);
             }
 
             return false;
@@ -147,11 +152,11 @@ class CustomerModel extends MyModel
         }
 
         //xoa forgotten pass neu login thanh cong
-        $data_login['forgotten_password_selector'] = NULL;
-        $data_login['forgotten_password_code']     = NULL;
-        $data_login['forgotten_password_time']     = NULL;
-        $data_login['last_login']                  = time(); // last login
-        $data_login['ip']                          = service('request')->getIPAddress();
+        $data_login['forgotten_password_selector'] = null;
+        $data_login['forgotten_password_code'] = null;
+        $data_login['forgotten_password_time'] = null;
+        $data_login['last_login'] = time(); // last login
+        $data_login['ip'] = service('request')->getIPAddress();
 
         $this->update($customer_info['customer_id'], $data_login);
 
@@ -168,32 +173,37 @@ class CustomerModel extends MyModel
         $token_model = new TokenModel();
 
         $remember_cookie = $this->auth_model->getCookie();
-        $token           = $this->auth_model->retrieveSelectorValidatorCouple($remember_cookie);
+        $token = $this->auth_model->retrieveSelectorValidatorCouple($remember_cookie);
 
-        if ($token === FALSE) {
+        if ($token === false) {
             $this->errors[] = lang('Customer.text_login_unsuccessful');
+
             return false;
         }
 
         $customer_token = $token_model->where(['remember_selector' => $token['selector']])->first();
         if (empty($customer_token)) {
             $this->errors[] = lang('Customer.text_login_unsuccessful');
+
             return false;
         }
 
         $customer_info = $this->where(['customer_id' => $customer_token['customer_id']])->first();
         if (empty($customer_info)) {
             $this->errors[] = lang('Customer.text_login_unsuccessful');
+
             return false;
         }
 
         if (empty($customer_info['active'])) {
             $this->errors[] = lang('Customer.text_login_unsuccessful_not_active');
+
             return false;
         }
 
-        if ($this->auth_model->checkPassword($token['validator'], $customer_token['remember_code']) === FALSE) {
+        if ($this->auth_model->checkPassword($token['validator'], $customer_token['remember_code']) === false) {
             $this->errors[] = lang('Customer.text_login_unsuccessful');
+
             return false;
         }
 
@@ -201,11 +211,11 @@ class CustomerModel extends MyModel
 
         //xoa forgotten pass neu login thanh cong
         $data_login = [
-            'forgotten_password_selector' => NULL,
-            'forgotten_password_code'     => NULL,
-            'forgotten_password_time'     => NULL,
-            'last_login'                  => time(), // last login
-            'ip'                          => service('request')->getIPAddress()
+            'forgotten_password_selector' => null,
+            'forgotten_password_code' => null,
+            'forgotten_password_time' => null,
+            'last_login' => time(), // last login
+            'ip' => service('request')->getIPAddress(),
         ];
         $this->update($customer_info['customer_id'], $data_login);
 
@@ -236,16 +246,16 @@ class CustomerModel extends MyModel
         $social_info = $social_model->where(['social_id' => $data['id'], 'type' => $social_type])->first();
         if (empty($social_info)) {
             $email = $data['email'] ?? null;
-            
+
             $customer_info = [
-                'email'       => strtolower($email),
-                'first_name'  => $data['first_name'] ?? null,
-                'last_name'   => $data['last_name'] ?? null,
-                'phone'       => $data['last_name'] ?? null,
-                'gender'      => $data['gender'],
-                'active'      => STATUS_ON,
-                'dob'         => $data['dob'] ?? null,
-                'ip'          => service('request')->getIPAddress(),
+                'email' => strtolower($email),
+                'first_name' => $data['first_name'] ?? null,
+                'last_name' => $data['last_name'] ?? null,
+                'phone' => $data['last_name'] ?? null,
+                'gender' => $data['gender'],
+                'active' => STATUS_ON,
+                'dob' => $data['dob'] ?? null,
+                'ip' => service('request')->getIPAddress(),
             ];
 
             if (!empty($data['image'])) {
@@ -253,24 +263,24 @@ class CustomerModel extends MyModel
                 $customer_info['image'] = $data['image'];
             }
 
-            $customer_id                  = $this->insert($customer_info);
+            $customer_id = $this->insert($customer_info);
             $customer_info['customer_id'] = $customer_id;
 
             $social_info = [
-                'social_id'    => $data['id'],
-                'customer_id'  => $customer_id,
-                'type'         => $social_type,
+                'social_id' => $data['id'],
+                'customer_id' => $customer_id,
+                'type' => $social_type,
                 'access_token' => $data['access_token'] ?? null,
             ];
             $social_model->insert($social_info);
         } else {
             //xoa forgotten pass neu login thanh cong
             $data_login = [
-                'forgotten_password_selector' => NULL,
-                'forgotten_password_code'     => NULL,
-                'forgotten_password_time'     => NULL,
-                'last_login'                  => time(), // last login
-                'ip'                          => service('request')->getIPAddress()
+                'forgotten_password_selector' => null,
+                'forgotten_password_code' => null,
+                'forgotten_password_time' => null,
+                'last_login' => time(), // last login
+                'ip' => service('request')->getIPAddress(),
             ];
             $this->update($social_info['customer_id'], $data_login);
 
@@ -296,7 +306,7 @@ class CustomerModel extends MyModel
         }
 
         $remember_cookie = $this->auth_model->getCookie();
-        $token           = $this->auth_model->retrieveSelectorValidatorCouple($remember_cookie);
+        $token = $this->auth_model->retrieveSelectorValidatorCouple($remember_cookie);
 
         $token_model = new TokenModel();
         $token_model->deleteToken($token);
@@ -306,9 +316,9 @@ class CustomerModel extends MyModel
 
         // Clear all codes
         $data_logout = [
-            'forgotten_password_selector' => NULL,
-            'forgotten_password_code'     => NULL,
-            'forgotten_password_time'     => NULL,
+            'forgotten_password_selector' => null,
+            'forgotten_password_code' => null,
+            'forgotten_password_time' => null,
         ];
 
         $this->update($customer_id, $data_logout);
@@ -321,9 +331,9 @@ class CustomerModel extends MyModel
         return $this->errors;
     }
 
-    function getAvatar($avatar = '')
+    public function getAvatar($avatar = '')
     {
-        $avatar = empty($avatar) ? 'customers/' . session('customer.customer_id') . '.jpg' : $avatar;
+        $avatar = empty($avatar) ? 'customers/'.session('customer.customer_id').'.jpg' : $avatar;
         if (!is_file(get_upload_path($avatar))) {
             return (session('customer.gender') == GENDER_MALE) ? base_url('common/'.config_item('avatar_default_male')) : base_url('common/'.config_item('avatar_default_female'));
         }
@@ -351,11 +361,13 @@ class CustomerModel extends MyModel
         $customer_info = $this->where('email', $email)->orWhere('username', $email)->first();
         if (empty($customer_info)) {
             $this->errors[] = lang('Customer.text_email_not_found');
+
             return false;
         }
 
         if (empty($customer_info['active'])) {
             $this->errors[] = lang('Customer.text_login_unsuccessful_not_active');
+
             return false;
         }
 
@@ -363,13 +375,14 @@ class CustomerModel extends MyModel
         $token = $this->auth_model->generateSelectorValidatorCouple(20, 80);
         if (empty($token)) {
             $this->errors[] = lang('Customer.error_generate_code');
+
             return false;
         }
 
         $update = [
             'forgotten_password_selector' => $token['selector'],
-            'forgotten_password_code'     => $token['validator_hashed'],
-            'forgotten_password_time'     => time()
+            'forgotten_password_code' => $token['validator_hashed'],
+            'forgotten_password_time' => time(),
         ];
         $id = $this->update($customer_info['customer_id'], $update);
         if (empty($id)) {
@@ -386,27 +399,31 @@ class CustomerModel extends MyModel
         $this->errors = [];
 
         if (empty($code)) {
-            $this->errors[] = '[001] ' . lang('Customer.error_password_change_unsuccessful');
+            $this->errors[] = '[001] '.lang('Customer.error_password_change_unsuccessful');
+
             return false;
         }
 
         // Retrieve the token object from the code
         $token = $this->auth_model->retrieveSelectorValidatorCouple($code);
         if (empty($token)) {
-            $this->errors[] = '[002] ' . lang('Customer.error_password_code');
+            $this->errors[] = '[002] '.lang('Customer.error_password_code');
+
             return false;
         }
 
         // Retrieve the user according to this selector
         $customer_info = $this->where('forgotten_password_selector', $token['selector'])->first();
         if (empty($customer_info)) {
-            $this->errors[] = '[003] ' . lang('Customer.error_password_code');
+            $this->errors[] = '[003] '.lang('Customer.error_password_code');
+
             return false;
         }
 
         // Check the hash against the validator
         if (!$this->auth_model->checkPassword($token['validator'], $customer_info['forgotten_password_code'])) {
-            $this->errors[] = '[004] ' . lang('Customer.error_password_change_unsuccessful');
+            $this->errors[] = '[004] '.lang('Customer.error_password_change_unsuccessful');
+
             return false;
         }
 
@@ -416,7 +433,8 @@ class CustomerModel extends MyModel
             if (time() - $customer_info['forgotten_password_time'] > $expiration) {
                 //it has expired, clear_forgotten_password_code
                 $this->clearForgottenPasswordCode($customer_info['customer_id']);
-                $this->errors[] = '[005] ' . lang('error_password_code');
+                $this->errors[] = '[005] '.lang('error_password_code');
+
                 return false;
             }
         }
@@ -431,9 +449,9 @@ class CustomerModel extends MyModel
         }
 
         $data = [
-            'forgotten_password_selector' => NULL,
-            'forgotten_password_code' => NULL,
-            'forgotten_password_time' => NULL
+            'forgotten_password_selector' => null,
+            'forgotten_password_code' => null,
+            'forgotten_password_time' => null,
         ];
 
         $this->update($customer_id, $data);
@@ -448,28 +466,28 @@ class CustomerModel extends MyModel
         }
 
         $this->errors = [];
-        $email        = $data['email'] ?? null;
-        $phone        = $data['phone'] ?? null;
+        $email = $data['email'] ?? null;
+        $phone = $data['phone'] ?? null;
 
         $sql = [];
 
         if (!empty($email)) {
-            $sql[] = " email=" . $this->db->escape($email) . " "; 
+            $sql[] = ' email='.$this->db->escape($email).' ';
         }
 
         if (!empty($phone)) {
-            $sql[] = " phone=$phone "; 
+            $sql[] = " phone=$phone ";
         }
 
         $customer_info = $this->where(new RawSql(implode('OR', $sql)))->first();
 
         if (!empty($customer_info)) {
             if (!empty($customer_info['email'])) {
-                $this->errors[] = lang("Customer.account_creation_duplicate_email");
+                $this->errors[] = lang('Customer.account_creation_duplicate_email');
             }
-            
+
             if (!empty($customer_info['phone'])) {
-                $this->errors[] = lang("Customer.account_creation_duplicate_phone");
+                $this->errors[] = lang('Customer.account_creation_duplicate_phone');
             }
 
             return false;
@@ -486,16 +504,16 @@ class CustomerModel extends MyModel
 
         $add_data = [
             'customer_group_id' => $data['customer_group_id'],
-            'username'   => $data['username'] ?? null,
-            'email'      => strtolower($email),
-            'password'   => $this->auth_model->hashPassword($data['password']),
+            'username' => $data['username'] ?? null,
+            'email' => strtolower($email),
+            'password' => $this->auth_model->hashPassword($data['password']),
             'first_name' => $data['first_name'] ?? null,
-            'last_name'  => $data['last_name'] ?? null,
-            'phone'      => $phone,
-            'gender'     => $data['gender'],
+            'last_name' => $data['last_name'] ?? null,
+            'phone' => $phone,
+            'gender' => $data['gender'],
             'address_id' => $data['address_id'] ?? null,
-            'ip'         => $data['ip'] ?? null,
-            'active'     => (int)!$customer_group_info['approval']
+            'ip' => $data['ip'] ?? null,
+            'active' => (int) !$customer_group_info['approval'],
         ];
 
         if (!empty($data['dob'])) {
@@ -523,6 +541,7 @@ class CustomerModel extends MyModel
         $token = $this->auth_model->generateSelectorValidatorCouple(20, 40);
         if (empty($token)) {
             $this->errors[] = lang('Customer.error_generate_code');
+
             return false;
         }
 
@@ -530,8 +549,8 @@ class CustomerModel extends MyModel
 
         $update = [
             'activation_selector' => $token['selector'],
-            'activation_code'     => $token['validator_hashed'],
-            'active'              => STATUS_OFF
+            'activation_code' => $token['validator_hashed'],
+            'active' => STATUS_OFF,
         ];
 
         $this->update($customer_id, $update);
@@ -548,25 +567,28 @@ class CustomerModel extends MyModel
         $customer_info = $this->find($customer_id);
         if (!empty($customer_info) && !empty($customer_info['active'])) {
             $this->errors[] = lang('Customer.activate_successful');
+
             return false;
         }
 
         $token = $this->auth_model->retrieveSelectorValidatorCouple($code);
         if (empty($token)) {
             $this->errors[] = lang('Customer.error_password_code');
+
             return false;
         }
 
         $customer_info = $this->where('activation_selector', $token['selector'])->first();
         if (empty($customer_info) || $customer_info['customer_id'] != $customer_id) {
             $this->errors[] = lang('Customer.activate_unsuccessful');
+
             return false;
         }
 
         $update = [
             'activation_selector' => null,
-            'activation_code'     => null,
-            'active'              => STATUS_ON
+            'activation_code' => null,
+            'active' => STATUS_ON,
         ];
 
         $this->update($customer_id, $update);

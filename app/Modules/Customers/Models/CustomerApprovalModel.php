@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Customers\Models;
+<?php
+
+namespace App\Modules\Customers\Models;
 
 use App\Models\MyModel;
 
 class CustomerApprovalModel extends MyModel
 {
-    protected $table      = 'customer_approval';
+    protected $table = 'customer_approval';
     protected $primaryKey = 'customer_approval_id';
 
     protected $returnType = 'array';
@@ -13,7 +15,7 @@ class CustomerApprovalModel extends MyModel
         'customer_approval_id',
         'customer_id',
         'type',
-        "ctime",
+        'created_at',
     ];
 
     public function __construct()

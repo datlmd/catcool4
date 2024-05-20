@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Customers\Models;
+<?php
+
+namespace App\Modules\Customers\Models;
 
 use App\Models\MyModel;
 
 class LoginSocial extends MyModel
 {
-    protected $table      = 'customer_login_social';
+    protected $table = 'customer_login_social';
     protected $primaryKey = 'social_id';
 
     protected $allowedFields = [
@@ -12,11 +14,11 @@ class LoginSocial extends MyModel
         'customer_id',
         'type',
         'access_token',
-        'ctime',
-        'mtime',
+        'created_at',
+        'updated_at',
     ];
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }

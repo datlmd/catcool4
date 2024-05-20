@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Users\Models;
+<?php
+
+namespace App\Modules\Users\Models;
 
 use App\Models\MyModel;
 
 class UserTokenModel extends MyModel
 {
-    protected $table      = 'user_token';
+    protected $table = 'user_token';
     protected $primaryKey = 'user_id';
 
     protected $allowedFields = [
@@ -16,11 +18,11 @@ class UserTokenModel extends MyModel
         'platform',
         'browser',
         'location',
-        'ctime',
-        'mtime'
+        'created_at',
+        'updated_at',
     ];
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -33,24 +35,24 @@ class UserTokenModel extends MyModel
         try {
             //set token login auto bang cookie
             $request = \Config\Services::request();
-            $agent   = $request->getUserAgent();
+            $agent = $request->getUserAgent();
 
-            $getloc = json_decode(file_get_contents("http://ipinfo.io/"));
+            $getloc = json_decode(file_get_contents('http://ipinfo.io/'));
 
             $data_token = [
-                'user_id'           => $user_id,
+                'user_id' => $user_id,
                 'remember_selector' => $token['selector'],
-                'remember_code'     => $token['validator_hashed'],
-                'ip'                => service('request')->getIPAddress(),
-                'agent'             => $agent->getAgentString(),
-                'platform'          => $agent->getPlatform(),
-                'browser'           => $agent->getBrowser() . '/' . $agent->getVersion(),
-                'location'          => sprintf("%s, %s, %s", $getloc->city, $getloc->region, $getloc->country) ,
+                'remember_code' => $token['validator_hashed'],
+                'ip' => service('request')->getIPAddress(),
+                'agent' => $agent->getAgentString(),
+                'platform' => $agent->getPlatform(),
+                'browser' => $agent->getBrowser().'/'.$agent->getVersion(),
+                'location' => sprintf('%s, %s, %s', $getloc->city, $getloc->region, $getloc->country),
             ];
 
             $user_token = $this->where(['user_id' => $user_id, 'remember_selector' => $token['selector']])->first();
             if (empty($user_token)) {
-                $data_token['ctime'] = get_date();
+                $data_token['created_at'] = get_date();
                 $this->insert($data_token);
             } else {
                 $this->where(['remember_selector' => $user_token['remember_selector']])->update($user_id, $data_token);
@@ -58,6 +60,7 @@ class UserTokenModel extends MyModel
         } catch (\Exception $ex) {
             error_log($ex->getMessage());
         }
+
         return true;
     }
 
@@ -73,6 +76,7 @@ class UserTokenModel extends MyModel
         }
 
         $this->where(['remember_selector' => $token['selector']])->delete();
+
         return true;
     }
 }

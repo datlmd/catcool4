@@ -12,7 +12,7 @@ class UserIpModel extends MyModel
         'user_id',
         'ip',
         'agent',
-        'ctime'
+        'created_at'
     ];
 
     function __construct()

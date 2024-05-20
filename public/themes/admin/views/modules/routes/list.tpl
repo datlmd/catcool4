@@ -82,9 +82,9 @@
 												</a>
 											</th>
 											<th width="200" class="text-end">
-												<a href="{site_url($manage_url)}?sort=ctime&order={$order}{$url}" class="text-dark">
+												<a href="{site_url($manage_url)}?sort=created_at&order={$order}{$url}" class="text-dark">
 													{lang('Admin.text_ctime')}
-													{if $sort eq 'ctime'}
+													{if $sort eq 'created_at'}
 														<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 													{/if}
 												</a>
@@ -102,7 +102,7 @@
 											</td>
 											<td class="text-start">{$item.module}</td>
 											<td class="text-start">{$item.resource}</td>
-											<td class="text-end">{$item.ctime}</td>
+											<td class="text-end">{$item.created_at}</td>
 											<td>
 												<div class="switch-button switch-button-xs catcool-center">
 													{form_checkbox("published_`$item.route`_`$item.language_id`", ($item.published eq STATUS_ON) ? true : false, ($item.published eq STATUS_ON) ? true : false, ['id' => 'published_'|cat:$item.route|cat:"_"|cat:$item.language_id, 'data-route' => $item.route, 'data-language_id' => $item.language_id, 'data-published' => $item.published, 'class' => 'change_publish'])}

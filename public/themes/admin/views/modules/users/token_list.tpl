@@ -33,7 +33,7 @@
 								{$user_token.location}
 							</td>
 							<td class="text-center">
-								{$user_token.ctime}
+								{$user_token.created_at}
 							</td>
 							<td class="text-center">
 								<div class="btn-group ms-auto">

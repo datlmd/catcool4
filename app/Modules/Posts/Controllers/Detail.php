@@ -105,7 +105,7 @@ class Detail extends MyController
             'url'            => base_url($detail['detail_url']),
             'image'          => !empty($detail['images']['thumb']) ? $detail['images']['thumb'] : $detail['images']['robot'],
             'published_time' => date('c', strtotime($detail['publish_date'])),
-            'modified_time'  => date('c', strtotime($detail['mtime'])),
+            'modified_time'  => date('c', strtotime($detail['updated_at'])),
             'author'         => !empty($detail['author']) ? $detail['author'] : "Ryan Lee",
         ];
         $script_google_search = script_google_search($script_detail, $script_breadcrumb);
@@ -124,7 +124,7 @@ class Detail extends MyController
             'image'          => !empty($detail['images']['thumb']) ? $detail['images']['thumb'] : $detail['images']['robot'],
             'image_fb'       => !empty($detail['images']['fb']) ? $detail['images']['fb'] : $detail['images']['robot_fb'],
             'published_time' => date('c', strtotime($detail['publish_date'])),
-            'modified_time'  => date('c', strtotime($detail['mtime'])),
+            'modified_time'  => date('c', strtotime($detail['updated_at'])),
         ];
         add_meta($data_meta, $this->themes);
     }

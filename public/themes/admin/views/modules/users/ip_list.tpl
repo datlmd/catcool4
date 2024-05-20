@@ -26,7 +26,7 @@
 								{$user_ip.agent}
 							</td>
 							<td class="text-center">
-								{$user_ip.ctime}
+								{$user_ip.created_at}
 							</td>
 						</tr>
 					{/foreach}

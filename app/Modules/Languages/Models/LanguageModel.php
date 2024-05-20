@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Languages\Models;
+<?php
+
+namespace App\Modules\Languages\Models;
 
 use App\Models\MyModel;
 
 class LanguageModel extends MyModel
 {
-    protected $table      = 'language';
+    protected $table = 'language';
     protected $primaryKey = 'id';
 
     protected $allowedFields = [
@@ -14,21 +16,21 @@ class LanguageModel extends MyModel
         'icon',
         'user_id',
         'published',
-        'ctime',
-        'mtime',
+        'created_at',
+        'updated_at',
     ];
 
-    const LANGUAGE_CACHE_NAME   = 'language_list';
+    const LANGUAGE_CACHE_NAME = 'language_list';
     const LANGUAGE_CACHE_EXPIRE = YEAR;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? $sort : 'id';
+        $sort = in_array($sort, $this->allowedFields) ? $sort : 'id';
         $order = empty($order) ? 'DESC' : $order;
 
         return $this->orderBy($sort, $order)->findAll();
@@ -55,6 +57,7 @@ class LanguageModel extends MyModel
     public function deleteCache()
     {
         cache()->delete(self::LANGUAGE_CACHE_NAME);
+
         return true;
     }
 }

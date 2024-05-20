@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Posts\Models;
+<?php
+
+namespace App\Modules\Posts\Models;
 
 use App\Models\MyModel;
 
 class CategoryModel extends MyModel
 {
-    protected $table      = 'post_category';
+    protected $table = 'post_category';
     protected $primaryKey = 'category_id';
 
     protected $allowedFields = [
@@ -20,26 +22,25 @@ class CategoryModel extends MyModel
         'meta_description',
         'meta_keyword',
         'language_id',
-        'ctime',
-        'mtime',
+        'created_at',
+        'updated_at',
     ];
 
-    const CATEGORY_CACHE_NAME   = 'post_category_list';
+    const CATEGORY_CACHE_NAME = 'post_category_list';
     const CATEGORY_CACHE_EXPIRE = YEAR;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? $sort : "sort_order";
+        $sort = in_array($sort, $this->allowedFields) ? $sort : 'sort_order';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-
-        if (!empty($filter["name"])) {
-            $this->like("$this->table_lang.name", $filter["name"]);
+        if (!empty($filter['name'])) {
+            $this->like("$this->table_lang.name", $filter['name']);
         }
 
         $result = $this->orderBy($sort, $order)->findAll();
@@ -69,7 +70,6 @@ class CategoryModel extends MyModel
             return [];
         }
 
-
         foreach ($result as $key => $value) {
             $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
@@ -80,6 +80,7 @@ class CategoryModel extends MyModel
     public function deleteCache()
     {
         cache()->delete(self::CATEGORY_CACHE_NAME);
+
         return true;
     }
 }

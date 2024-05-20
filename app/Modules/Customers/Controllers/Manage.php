@@ -149,7 +149,7 @@ class Manage extends AdminController
             //'deleted',
             //'language_id',
             //'ip',
-            //'ctime'      => get_date(),
+            //'created_at'      => get_date(),
         ];
 
         //avatar la hinh sau khi chon input file, avatar_root la hinh goc da luu

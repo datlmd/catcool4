@@ -12,10 +12,10 @@
 				{/if}
 			</div>
 			<div class="my-2">
-				{lang('Admin.text_ctime')}: {if !empty($edit_data.ctime)}{$edit_data.ctime}{/if}
+				{lang('Admin.text_ctime')}: {if !empty($edit_data.created_at)}{$edit_data.created_at}{/if}
 			</div>
 			<div class="my-2">
-				{lang('Admin.text_mtime')}: {if !empty($edit_data.mtime)}{$edit_data.mtime}{/if}
+				{lang('Admin.text_mtime')}: {if !empty($edit_data.updated_at)}{$edit_data.updated_at}{/if}
 			</div>
 		</div>
 	</div>

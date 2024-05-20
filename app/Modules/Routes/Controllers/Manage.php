@@ -43,7 +43,7 @@ class Manage extends AdminController
             'breadcrumb'    => $this->breadcrumb->render(),
             'list'          => $list->paginate($limit),
             'pager'         => $list->pager,
-            'sort'          => empty($sort) ? 'ctime' : $sort,
+            'sort'          => empty($sort) ? 'created_at' : $sort,
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'           => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,

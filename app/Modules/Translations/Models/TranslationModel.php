@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Translations\Models;
+<?php
+
+namespace App\Modules\Translations\Models;
 
 use App\Models\MyModel;
 
 class TranslationModel extends MyModel
 {
-    protected $table      = 'translation';
+    protected $table = 'translation';
     protected $primaryKey = 'id';
 
     protected $allowedFields = [
@@ -15,40 +17,40 @@ class TranslationModel extends MyModel
         'module_id',
         'user_id',
         'published',
-        'ctime',
-        'mtime',
+        'created_at',
+        'updated_at',
     ];
 
     protected $useSoftDeletes = true;
-    protected $deletedField   = 'deleted';
+    protected $deletedField = 'deleted';
 
-    const TRANSLATION_CACHE_NAME   = 'translation_list';
-    const TRANSLATION_CACHE_EXPIRE = 30*MINUTE;
+    const TRANSLATION_CACHE_NAME = 'translation_list';
+    const TRANSLATION_CACHE_EXPIRE = 30 * MINUTE;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        if (empty($filter["module_id"]) && empty($filter["key"]) && empty($filter["value"])) {
+        if (empty($filter['module_id']) && empty($filter['key']) && empty($filter['value'])) {
             return [];
         }
 
-        $sort  = empty($sort) ? 'id' : $sort;
+        $sort = empty($sort) ? 'id' : $sort;
         $order = empty($order) ? 'DESC' : $order;
 
-        if (!empty($filter["module_id"])) {
-            $this->where('module_id', $filter["module_id"]);
+        if (!empty($filter['module_id'])) {
+            $this->where('module_id', $filter['module_id']);
         }
 
-        if (!empty($filter["key"])) {
-            $this->like('lang_key', $filter["key"]);
+        if (!empty($filter['key'])) {
+            $this->like('lang_key', $filter['key']);
         }
 
-        if (!empty($filter["value"])) {
-            $this->like('lang_value', $filter["value"]);
+        if (!empty($filter['value'])) {
+            $this->like('lang_value', $filter['value']);
         }
 
         $this->orderBy($sort, $order);
@@ -58,7 +60,7 @@ class TranslationModel extends MyModel
             return null;
         }
 
-        if (is_multi_language() && !empty($filter["value"])) {
+        if (is_multi_language() && !empty($filter['value'])) {
             $translation_other = [];
             foreach ($result as $value) {
                 $list_other = $this->where(['lang_key' => $value['lang_key'], 'lang_id !=' => $value['lang_id']])->findAll();
@@ -98,17 +100,18 @@ class TranslationModel extends MyModel
     public function deleteCache()
     {
         cache()->delete(self::TRANSLATION_CACHE_NAME);
+
         return true;
     }
 
     public function formatFileName($module = null, $sub_module = null)
     {
-        $language_name = "";
+        $language_name = '';
         if (empty($module) && empty($sub_module)) {
             return null;
         }
 
-        $module     = explode('_', $module);
+        $module = explode('_', $module);
         $sub_module = explode('_', $sub_module);
 
         $module = array_merge($module, $sub_module);
@@ -118,10 +121,10 @@ class TranslationModel extends MyModel
         }
 
         $language_name = pascalize(implode('_', $module));
-        if ($language_name == "CommonFilemanager") {
-            $language_name = "FileManager";
+        if ($language_name == 'CommonFilemanager') {
+            $language_name = 'FileManager';
         } else {
-            $language_name = str_ireplace(["Manage", "Menus"], ["Admin", "Menu"], $language_name);
+            $language_name = str_ireplace(['Manage', 'Menus'], ['Admin', 'Menu'], $language_name);
         }
 
         return $language_name;
@@ -130,7 +133,7 @@ class TranslationModel extends MyModel
     public function writeFile($module_id)
     {
         try {
-            $module_model   = new \App\Modules\Modules\Models\ModuleModel();
+            $module_model = new \App\Modules\Modules\Models\ModuleModel();
             $language_model = new \App\Modules\Languages\Models\LanguageModel();
 
             $module = $module_model->find($module_id);
@@ -161,14 +164,15 @@ class TranslationModel extends MyModel
                 $file_content .= "];\n";
 
                 // create module
-                if (!is_dir(APPPATH . "Language/" . $lang['code'])) {
-                    mkdir(APPPATH . 'Language/' . $lang['code'], 0775, true);
+                if (!is_dir(APPPATH.'Language/'.$lang['code'])) {
+                    mkdir(APPPATH.'Language/'.$lang['code'], 0775, true);
                 }
 
-                write_file(APPPATH . 'Language/' . $lang['code'] . '/' . $this->formatFileName($module['module'], $module['sub_module']) . '.php', $file_content);
+                write_file(APPPATH.'Language/'.$lang['code'].'/'.$this->formatFileName($module['module'], $module['sub_module']).'.php', $file_content);
             }
         } catch (\Exception $ex) {
             die($ex->getMessage());
+
             return false;
         }
 

@@ -18,8 +18,8 @@ class CurrencyModel extends MyModel
         'decimal_place',
         'value',
         'published',
-        'ctime',
-        'mtime',
+        'created_at',
+        'updated_at',
     ];
 
     const CURRENCY_CACHE_NAME = 'currency_list';

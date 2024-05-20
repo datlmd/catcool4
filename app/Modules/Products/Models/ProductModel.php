@@ -45,8 +45,8 @@ class ProductModel extends MyModel
         'published',
         'viewed',
         'is_comment',
-        'ctime',
-        'mtime',
+        'created_at',
+        'updated_at',
     ];
 
     protected $validationRules = [];

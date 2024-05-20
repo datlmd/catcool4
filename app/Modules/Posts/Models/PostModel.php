@@ -42,8 +42,8 @@ class PostModel extends MyModel
         'published',
         'deleted',
         'language_id',
-        'ctime',
-        'mtime',
+        'created_at',
+        'updated_at',
     ];
 
     protected $useSoftDeletes = true;
@@ -98,7 +98,7 @@ class PostModel extends MyModel
             $this->where("$this->table.published", $filter["published"]);
         }
 
-        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'is_hot', 'is_homepage', 'publish_date', 'published', 'counter_view', 'images', 'ctime'])
+        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'is_hot', 'is_homepage', 'publish_date', 'published', 'counter_view', 'images', 'created_at'])
             ->orderBy($sort, $order);
 
         return $result;
@@ -315,7 +315,7 @@ class PostModel extends MyModel
         $category_id_3 = ":$category_id,";
         $category_id_4 = ":\"$category_id\",";
 
-        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'created_at'])
             ->where($where)
             ->groupStart()
             ->like('category_ids', $category_id_1)
@@ -344,7 +344,7 @@ class PostModel extends MyModel
             'publish_date <=' => get_date(),
         ];
 
-        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'created_at'])
             ->where($where)
             ->orderBy('publish_date', 'DESC');
 
@@ -371,7 +371,7 @@ class PostModel extends MyModel
                 'is_hot' => STATUS_ON,
             ];
 
-            $list = $this->select(['post_id', 'name', 'slug', 'description', 'content', 'category_ids', 'publish_date', 'images', 'ctime'])
+            $list = $this->select(['post_id', 'name', 'slug', 'description', 'content', 'category_ids', 'publish_date', 'images', 'created_at'])
                 ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
             if (empty($list)) {
                 return [];
@@ -401,7 +401,7 @@ class PostModel extends MyModel
             'publish_date <=' => get_date(),
         ];
 
-        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'created_at'])
             ->where($where)
             ->like('tags', $tag)
             ->orderBy('publish_date', 'DESC');
@@ -424,7 +424,7 @@ class PostModel extends MyModel
             return null;
         }
         $related = trim($related);
-        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'created_at'])
             ->orderBy('publish_date', 'DESC')
             ->groupStart()
             ->like("name", $related)
@@ -455,7 +455,7 @@ class PostModel extends MyModel
                 'publish_date <=' => get_date(),
             ];
 
-            $list = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+            $list = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'created_at'])
                 ->orderBy('publish_date', 'DESC')->where($where)->findAll($limit);
             if (empty($list)) {
                 return [];
@@ -568,7 +568,7 @@ class PostModel extends MyModel
         $related_list = [];
         $related_result = cache()->get('post_robot_related_list');
         if (empty($related_result)) {
-            $related_result = $this->select(['post_id', 'name', 'tags', 'slug', 'ctime'])
+            $related_result = $this->select(['post_id', 'name', 'tags', 'slug', 'created_at'])
                 ->orderBy('publish_date', 'DESC')
                 ->where(['published' => STATUS_ON])
                 ->findAll(1500);
@@ -699,7 +699,7 @@ class PostModel extends MyModel
             'publish_date <=' => get_date(),
         ];
 
-        $list = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'ctime'])
+        $list = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'created_at'])
             ->orderBy('counter_view', 'DESC')->where($where)->findAll($limit);
         if (empty($list)) {
             return [];

@@ -1,14 +1,16 @@
-<?php namespace App\Modules\Menus\Models;
+<?php
+
+namespace App\Modules\Menus\Models;
 
 use App\Models\MyModel;
 
 class MenuModel extends MyModel
 {
-    protected $table      = 'menu';
+    protected $table = 'menu';
     protected $primaryKey = 'menu_id';
 
     protected $table_lang = 'menu_lang';
-    protected $with       = ['menu_lang'];
+    protected $with = ['menu_lang'];
 
     protected $allowedFields = [
         'menu_id',
@@ -26,11 +28,11 @@ class MenuModel extends MyModel
         'is_admin',
         'hidden',
         'published',
-        'ctime',
-        'mtime',
+        'created_at',
+        'updated_at',
     ];
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -44,21 +46,21 @@ class MenuModel extends MyModel
             'sort_order',
         ];
 
-        $sort  = in_array($sort, $sort_data) ? $sort : 'sort_order';
+        $sort = in_array($sort, $sort_data) ? $sort : 'sort_order';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
         $this->where("$this->table_lang.language_id", language_id_admin());
 
-        if (!empty($filter["id"])) {
-            $this->whereIn("$this->table.menu_id", (!is_array($filter["menu_id"]) ? explode(',', $filter["menu_id"]) : $filter["menu_id"]));
+        if (!empty($filter['id'])) {
+            $this->whereIn("$this->table.menu_id", (!is_array($filter['menu_id']) ? explode(',', $filter['menu_id']) : $filter['menu_id']));
         }
 
-        if (isset($filter["is_admin"])) {
-            $this->where("$this->table.is_admin", $filter["is_admin"]);
+        if (isset($filter['is_admin'])) {
+            $this->where("$this->table.is_admin", $filter['is_admin']);
         }
 
-        if (!empty($filter["name"])) {
-            $this->like("$this->table_lang.name", $filter["name"]);
+        if (!empty($filter['name'])) {
+            $this->like("$this->table_lang.name", $filter['name']);
         }
 
         $result = $this->select("$this->table.*, $this->table_lang.*")
@@ -81,14 +83,14 @@ class MenuModel extends MyModel
         $language_id = !empty($filter['is_admin']) ? language_id_admin() : language_id();
 
         $filter['published'] = isset($filter['published']) ? $filter['published'] : STATUS_ON;
-        $filter['is_admin']  = isset($filter['is_admin']) ? $filter['is_admin'] : STATUS_OFF;
+        $filter['is_admin'] = isset($filter['is_admin']) ? $filter['is_admin'] : STATUS_OFF;
 
         if (!empty($filter['is_admin'])) {
-            $cache_name = $cache_name . '_admin' . '_lang_' . $language_id;
+            $cache_name = $cache_name.'_admin'.'_lang_'.$language_id;
         } else {
-            $cache_name = $cache_name . '_frontend';
-            $cache_name = (!empty($filter['context'])) ?  $cache_name . '_' . $filter['context'] : $cache_name;
-            $cache_name = $cache_name . '_lang_' . $language_id;
+            $cache_name = $cache_name.'_frontend';
+            $cache_name = (!empty($filter['context'])) ? $cache_name.'_'.$filter['context'] : $cache_name;
+            $cache_name = $cache_name.'_lang_'.$language_id;
         }
 
         $result = $is_cache ? cache()->get($cache_name) : null;
@@ -104,7 +106,7 @@ class MenuModel extends MyModel
         if (empty($result)) {
             return false;
         }
-        
+
         foreach ($result as $key => $value) {
             $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
@@ -127,15 +129,16 @@ class MenuModel extends MyModel
     {
         if (!empty($cache_name) && !empty(cache()->get($cache_name))) {
             cache()->save($cache_name, [], 0);
+
             return true;
         }
 
         if ($is_admin) {
             //clear cache all
-            cache()->deleteMatching(SET_CACHE_NAME_MENU . '_admin_*');
+            cache()->deleteMatching(SET_CACHE_NAME_MENU.'_admin_*');
         } else {
             //clear cache all
-            cache()->deleteMatching(SET_CACHE_NAME_MENU . '_frontend_*');
+            cache()->deleteMatching(SET_CACHE_NAME_MENU.'_frontend_*');
         }
 
 //        foreach ($list_name as $name) {
@@ -151,7 +154,7 @@ class MenuModel extends MyModel
             return null;
         }
 
-        if (strpos(strtolower($slug), "http") !== FALSE || strpos(strtolower($slug), "https") !== FALSE) {
+        if (strpos(strtolower($slug), 'http') !== false || strpos(strtolower($slug), 'https') !== false) {
             $url = $slug;
         }
 

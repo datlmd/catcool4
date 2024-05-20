@@ -1,12 +1,13 @@
-<?php namespace App\Modules\Configs\Models;
+<?php
+
+namespace App\Modules\Configs\Models;
 
 use App\Models\MyModel;
-use App\Modules\Languages\Controllers\Manage;
 use App\Modules\Languages\Models\LanguageModel;
 
 class ConfigModel extends MyModel
 {
-    protected $table      = 'config';
+    protected $table = 'config';
     protected $primaryKey = 'id';
 
     protected $allowedFields = [
@@ -17,35 +18,35 @@ class ConfigModel extends MyModel
         'user_id',
         'group_id',
         'published',
-        'ctime',
-        'mtime',
+        'created_at',
+        'updated_at',
     ];
 
-    const CONFIG_CACHE_NAME   = 'config_list';
+    const CONFIG_CACHE_NAME = 'config_list';
     const CONFIG_CACHE_EXPIRE = YEAR;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = empty($sort) ? 'config_key' : $sort;
+        $sort = empty($sort) ? 'config_key' : $sort;
         $order = empty($order) ? 'ASC' : $order;
         $where = null;
 
-        if (!empty($filter["id"])) {
-            $filter["id"] = (!is_array($filter["id"])) ? explode(',', $filter["id"]) : $filter["id"];
-            $this->whereIn($filter["id"]);
+        if (!empty($filter['id'])) {
+            $filter['id'] = (!is_array($filter['id'])) ? explode(',', $filter['id']) : $filter['id'];
+            $this->whereIn($filter['id']);
         }
 
-        if (!empty($filter["config_key"])) {
-            $this->like('config_key', $filter["config_key"]);
+        if (!empty($filter['config_key'])) {
+            $this->like('config_key', $filter['config_key']);
         }
 
-        if (!empty($filter["config_value"])) {
-            $this->like('config_value', $filter["config_value"]);
+        if (!empty($filter['config_value'])) {
+            $this->like('config_value', $filter['config_value']);
         }
 
         if (!empty($where)) {
@@ -84,8 +85,8 @@ class ConfigModel extends MyModel
             $list_language_config = [];
             $list_language = $language_model->getListPublished();
             foreach ($list_language as $key => $value) {
-                unset($value['ctime']);
-                unset($value['mtime']);
+                unset($value['created_at']);
+                unset($value['updated_at']);
                 $list_language_config[$value['id']] = $value;
                 $supported_locales[] = $value['code'];
             }
@@ -96,7 +97,7 @@ class ConfigModel extends MyModel
             $file_content = "<?php namespace Config;\n\nuse CodeIgniter\Config\BaseConfig;\n\nclass CustomConfig extends BaseConfig \n{\n";
 
             // add $supported_locales
-            $file_content .= "\tpublic \$supportedLocales = ['" . implode("','", $supported_locales) . "'];\n\n";
+            $file_content .= "\tpublic \$supportedLocales = ['".implode("','", $supported_locales)."'];\n\n";
 
             if (!empty($settings)) {
                 foreach ($settings as $setting) {
@@ -107,7 +108,7 @@ class ConfigModel extends MyModel
                         || strpos($config_value, '[') !== false
                     ) {
                         $config_value = $config_value;
-                    } else if ($setting['config_key'] == 'file_mime_allowed') {
+                    } elseif ($setting['config_key'] == 'file_mime_allowed') {
                         $config_value = str_replace("'", '"', $config_value);
                         $config_value = sprintf("'%s'", $config_value);
                     } else {
@@ -116,22 +117,23 @@ class ConfigModel extends MyModel
                     }
 
                     if (!empty($list_language_config) && $setting['config_key'] == 'list_language_cache') {
-                        $config_value = "'" . json_encode($list_language_config) . "'";
+                        $config_value = "'".json_encode($list_language_config)."'";
                     }
 
                     if (!empty($setting['description'])) {
-                        $file_content .= "\t/**\n\t * " . $setting['description'] . "\n\t */\n";
+                        $file_content .= "\t/**\n\t * ".$setting['description']."\n\t */\n";
                     }
 
-                    $file_content .= "\tpublic \$" . camelize($setting['config_key']) . " = " . $config_value . ";\n\n";
+                    $file_content .= "\tpublic \$".camelize($setting['config_key']).' = '.$config_value.";\n\n";
                 }
             }
 
             $file_content .= "}\n";
 
-            write_file(WRITEPATH . 'config/Config.php', $file_content);
+            write_file(WRITEPATH.'config/Config.php', $file_content);
         } catch (\Exception $ex) {
             log_message('error', $ex->getMessage());
+
             return false;
         }
 

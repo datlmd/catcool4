@@ -70,9 +70,9 @@
 												</a>
 											</th>
 											<th class="text-end">
-												<a href="{site_url($manage_url)}?sort=ctime&order={$order}{$url}" class="text-dark">
+												<a href="{site_url($manage_url)}?sort=created_at&order={$order}{$url}" class="text-dark">
 													{lang('Admin.text_ctime')}
-													{if $sort eq 'ctime'}
+													{if $sort eq 'created_at'}
 														<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 													{/if}
 												</a>
@@ -97,7 +97,7 @@
 											<td>
 												{anchor("$manage_url/edit/`$item.page_id`", htmlspecialchars($item.name, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}<br/>
 											</td>
-											<td class="text-end">{$item.ctime}</td>
+											<td class="text-end">{$item.created_at}</td>
 											<td class="text-end">{$item.sort_order}</td>
 											<td>
 												<div class="switch-button switch-button-xs catcool-center">

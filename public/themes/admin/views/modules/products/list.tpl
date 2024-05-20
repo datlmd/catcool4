@@ -44,7 +44,7 @@
 							<td>
 								{anchor("$manage_url/edit/`$item.product_id`", $item.name, 'class="text-primary"')}
 								<br/>
-								<small class="fst-italic">{$item.ctime}</small><br/>
+								<small class="fst-italic">{$item.created_at}</small><br/>
 
 								{if !empty($item.is_out_of_stock)}
 									<span class="text-danger">*{lang('ProductAdmin.text_sku_out_of_stock_warning')}</span>

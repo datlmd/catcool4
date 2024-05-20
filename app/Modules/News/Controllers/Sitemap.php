@@ -1,16 +1,17 @@
-<?php namespace App\Modules\News\Controllers;
+<?php
 
-use CodeIgniter\Controller;
-use App\Modules\News\Models\NewsModel;
-use App\Modules\News\Models\CategoryModel;
+namespace App\Modules\News\Controllers;
 
 use App\Libraries\LibSitemap;
+use App\Modules\News\Models\CategoryModel;
+use App\Modules\News\Models\NewsModel;
+use CodeIgniter\Controller;
 
 class Sitemap extends Controller
 {
     protected $model;
 
-    protected $helpers = ['url','date', 'catcool', 'inflector'];
+    protected $helpers = ['url', 'date', 'catcool', 'inflector'];
 
     const SITEMAP_NEWS_FROM = '2021-06-01';
 
@@ -32,21 +33,19 @@ class Sitemap extends Controller
             $news_start = strtotime(self::SITEMAP_NEWS_FROM);
             $news_end = time();
             while ($news_end > $news_start) {
-
                 $new_month = sprintf('sitemap-news-%s.xml', date('Ym', $news_end));
                 $this->libsitemap->add(base_url($new_month), date('c', time()));
 
-                $news_end = strtotime("-1 month", $news_end);
+                $news_end = strtotime('-1 month', $news_end);
             }
 
             $post_start = strtotime(self::SITEMAP_NEWS_FROM);
             $post_end = time();
             while ($post_end > $post_start) {
-
                 $new_year = sprintf('sitemap-post-%s.xml', date('Y', $post_end));
                 $this->libsitemap->add(base_url($new_year), date('c', time()));
 
-                $post_end = strtotime("-1 year", $post_end);
+                $post_end = strtotime('-1 year', $post_end);
             }
 
             $x = $this->libsitemap->output('sitemapindex', 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
@@ -64,7 +63,7 @@ class Sitemap extends Controller
     {
         try {
             if (!empty($month)) {
-                $month = $month . "01";
+                $month = $month.'01';
                 $from_date = date('Y-m-01 00:00:00', strtotime($month));
                 $to_date = date('Y-m-t 23:59:59', strtotime($month));
             } else {
@@ -83,7 +82,7 @@ class Sitemap extends Controller
             $this->model->setTableNameYear(strtotime($from_date));
 
             $news_list = $this->model
-                ->select('news_id, slug, name, tags, meta_keyword, publish_date, ctime, mtime')
+                ->select('news_id, slug, name, tags, meta_keyword, publish_date, created_at, updated_at')
                 ->orderBy('news_id', 'desc')
                 ->where($where)
                 ->findAll();
@@ -96,7 +95,7 @@ class Sitemap extends Controller
                         'publication' => ['name' => config_item('site_name'), 'language' => 'vi'],
                         'publication_date' => date('Y-m-d\TH:i:sP', strtotime($value['publish_date'])),
                         'title' => $this->_utf8ForXml(htmlspecialchars($value['name'])),
-                        'keywords' => !empty($value['meta_keyword']) ? $this->_utf8ForXml(htmlspecialchars($value['meta_keyword'])) : $value['tags']
+                        'keywords' => !empty($value['meta_keyword']) ? $this->_utf8ForXml(htmlspecialchars($value['meta_keyword'])) : $value['tags'],
                     ];
 
                     $this->libsitemap->add(base_url($value['detail_url']), null, null, null, $data_news);
@@ -129,7 +128,7 @@ class Sitemap extends Controller
             //add category
             if (!empty($category_list)) {
                 foreach ($category_list as $value) {
-                    $this->libsitemap->add(base_url($value['slug']), date('Y-m-d\TH:i:sP', strtotime($value['mtime'])), $changefreq, $priority);
+                    $this->libsitemap->add(base_url($value['slug']), date('Y-m-d\TH:i:sP', strtotime($value['updated_at'])), $changefreq, $priority);
                 }
             }
 
@@ -163,7 +162,7 @@ class Sitemap extends Controller
                 'publish_date <=' => $to_date,
             ];
 
-            $post_list = $post_model->select('post_id, slug, name, tags, meta_keyword, publish_date, ctime, mtime')
+            $post_list = $post_model->select('post_id, slug, name, tags, meta_keyword, publish_date, created_at, updated_at')
                 ->orderBy('post_id', 'desc')
                 ->where($where)
                 ->findAll();
@@ -176,7 +175,7 @@ class Sitemap extends Controller
                         'publication' => ['name' => config_item('site_name'), 'language' => 'vi'],
                         'publication_date' => date('Y-m-d\TH:i:sP', strtotime($value['publish_date'])),
                         'title' => $this->_utf8ForXml(htmlspecialchars($value['name'])),
-                        'keywords' => !empty($value['meta_keyword']) ? $this->_utf8ForXml(htmlspecialchars($value['meta_keyword'])) : $value['tags']
+                        'keywords' => !empty($value['meta_keyword']) ? $this->_utf8ForXml(htmlspecialchars($value['meta_keyword'])) : $value['tags'],
                     ];
 
                     $this->libsitemap->add(base_url($value['detail_url']), null, null, null, $data_news);
@@ -196,6 +195,6 @@ class Sitemap extends Controller
 
     private function _utf8ForXml($string)
     {
-        return preg_replace ('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', ' ', $string);
+        return preg_replace('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', ' ', $string);
     }
 }

@@ -1,14 +1,16 @@
-<?php namespace App\Modules\Categories\Models;
+<?php
+
+namespace App\Modules\Categories\Models;
 
 use App\Models\MyModel;
 
 class CategoryModel extends MyModel
 {
-    protected $table      = 'category';
+    protected $table = 'category';
     protected $primaryKey = 'category_id';
 
     protected $table_lang = 'category_lang';
-    protected $with       = ['category_lang'];
+    protected $with = ['category_lang'];
 
     protected $allowedFields = [
         'category_id',
@@ -17,31 +19,31 @@ class CategoryModel extends MyModel
         'sort_order',
         'parent_id',
         'published',
-        'ctime',
-        'mtime',
+        'created_at',
+        'updated_at',
     ];
 
-    const CATEGORY_CACHE_NAME   = 'category_list';
+    const CATEGORY_CACHE_NAME = 'category_list';
     const CATEGORY_CACHE_EXPIRE = YEAR;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? "$this->table.$sort" : (in_array($sort, ['name']) ? "$this->table_lang.$sort" : "");
-        $sort  = !empty($sort) ? $sort : "$this->table.sort_order";
+        $sort = in_array($sort, $this->allowedFields) ? "$this->table.$sort" : (in_array($sort, ['name']) ? "$this->table_lang.$sort" : '');
+        $sort = !empty($sort) ? $sort : "$this->table.sort_order";
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
         $this->where("$this->table_lang.language_id", language_id_admin());
-        if (!empty($filter["category_id"])) {
-            $this->whereIn("$this->table.category_id", (!is_array($filter["category_id"]) ? explode(',', $filter["category_id"]) : $filter["category_id"]));
+        if (!empty($filter['category_id'])) {
+            $this->whereIn("$this->table.category_id", (!is_array($filter['category_id']) ? explode(',', $filter['category_id']) : $filter['category_id']));
         }
 
-        if (!empty($filter["name"])) {
-            $this->like("$this->table_lang.name", $filter["name"]);
+        if (!empty($filter['name'])) {
+            $this->like("$this->table_lang.name", $filter['name']);
         }
 
         $result = $this->select("$this->table.*, $this->table_lang.*")
@@ -85,6 +87,7 @@ class CategoryModel extends MyModel
     public function deleteCache()
     {
         cache()->delete(self::CATEGORY_CACHE_NAME);
+
         return true;
     }
 }
