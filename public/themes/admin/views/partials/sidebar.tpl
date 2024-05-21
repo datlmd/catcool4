@@ -33,7 +33,7 @@
 								{if !empty($item.icon)}<i class="{$item.icon}"></i>{/if}{$item.name}
 							</a>
 							{if !empty($item.subs)}
-								<div id="submenu-{$key}" class="collapse submenu pb-2 {if $item.selected|strstr:$menu_current}show{/if}" style="">
+								<div id="submenu-{$key}" class="collapse submenu pb-2 {if $item.is_active}show{/if}" style="">
 									<ul class="nav flex-column">
 										{foreach $item.subs as $sub}
 											<li class="nav-item">
