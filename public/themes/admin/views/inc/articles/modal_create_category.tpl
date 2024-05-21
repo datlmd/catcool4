@@ -11,7 +11,7 @@
 			<div class="modal-body">
 				<div id="validation_error" class="text-danger"></div>
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    {form_open('categories/manage/api_add', ['id' => 'modal_add_data'])}
+                    {form_open('manage/categories/api_add', ['id' => 'modal_add_data'])}
 						<div class="form-group row">
 							<label class="col-12 col-sm-3 col-form-label text-sm-end">
 								{lang('text_name')}

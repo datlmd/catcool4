@@ -1,19 +1,19 @@
-<?php namespace App\Modules\Categories\Controllers;
+<?php namespace App\Modules\Categories\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Categories\Models\CategoryModel;
 use App\Modules\Categories\Models\CategoryLangModel;
 use App\Modules\Routes\Models\RouteModel;
 
-class Manage extends AdminController
+class Categories extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
     protected $model_route;
 
-    CONST MANAGE_ROOT = 'categories/manage';
-    CONST MANAGE_URL  = 'categories/manage';
+    CONST MANAGE_ROOT = 'manage/categories';
+    CONST MANAGE_URL  = 'manage/categories';
 
     CONST SEO_URL_MODULE   = 'categories';
     CONST SEO_URL_RESOURCE = 'Categories::Detail/%s';
