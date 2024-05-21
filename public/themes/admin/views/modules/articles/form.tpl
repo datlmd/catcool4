@@ -129,7 +129,7 @@
                                 <input type="hidden" name="images" value="{old('images', $edit_data.images)}" id="input-image-path" />
                             </div>
                             <div class="form-group mb-3">
-                                <label class="form-label fw-bold"><a href="{site_url('articles/categories_manage')}" target="_blank" class="link-primary">{lang('Admin.text_category')}</a></label>
+                                <label class="form-label fw-bold"><a href="{site_url('manage/article_categories')}" target="_blank" class="link-primary">{lang('Admin.text_category')}</a></label>
                                 {$output_html = '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>'}
                                 <select name="category_ids[]" id="category_ids[]" class="form-control form-control-sm cc-form-select-multi" multiple="multiple" data-placeholder="{lang('Admin.text_select')}">
                                     {draw_tree_output_name(['data' => $categories_tree, 'key_id' => 'category_id'], $output_html, 0, old('category_ids', $edit_data.categories))}

@@ -1,21 +1,20 @@
 <?php
 
-if(!isset($routes))
-{
+if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('articles', ['namespace' => 'App\Modules\Articles\Controllers'], function($subroutes){
-    $subroutes->add('manage', 'Manage::index');
-    $subroutes->add('manage/add', 'Manage::add');
-    $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
-    $subroutes->add('manage/delete', 'Manage::delete');
-    $subroutes->add('manage/publish', 'Manage::publish');
+$routes->group('manage', ['namespace' => 'App\Modules\Articles\Controllers\Admin'], function ($subroutes) {
+    $subroutes->add('articles', 'Articles::index');
+    $subroutes->add('articles/add', 'Articles::add');
+    $subroutes->add('articles/edit/(:num)', 'Articles::edit/$1');
+    $subroutes->add('articles/delete', 'Articles::delete');
+    $subroutes->add('articles/publish', 'Articles::publish');
 
-    $subroutes->add('categories_manage', 'CategoriesManage::index');
-    $subroutes->add('categories_manage/add', 'CategoriesManage::add');
-    $subroutes->add('categories_manage/edit/(:num)', 'CategoriesManage::edit/$1');
-    $subroutes->add('categories_manage/delete', 'CategoriesManage::delete');
-    $subroutes->add('categories_manage/publish', 'CategoriesManage::publish');
-    $subroutes->add('categories_manage/update_sort', 'CategoriesManage::updateSort');
+    $subroutes->add('article_categories', 'Categories::index');
+    $subroutes->add('article_categories/add', 'Categories::add');
+    $subroutes->add('article_categories/edit/(:num)', 'Categories::edit/$1');
+    $subroutes->add('article_categories/delete', 'Categories::delete');
+    $subroutes->add('article_categories/publish', 'Categories::publish');
+    $subroutes->add('article_categories/update_sort', 'Categories::updateSort');
 });

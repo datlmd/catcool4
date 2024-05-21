@@ -1,4 +1,6 @@
-<?php namespace App\Models;
+<?php
+
+namespace App\Models;
 
 use CodeIgniter\Model;
 
@@ -26,23 +28,23 @@ class MyModel extends Model
         $result = format_data_lang_id($result, $this->table_lang, $language_id);
 
         if (isset($result['price'])) {
-            $result['price']  = (float)$result['price'] ? (float)$result['price'] : 0;
+            $result['price'] = (float) $result['price'] ? (float) $result['price'] : 0;
         }
 
         if (isset($result['weight'])) {
-            $result['weight'] = (float)$result['weight'] ? (float)$result['weight'] : 0;
+            $result['weight'] = (float) $result['weight'] ? (float) $result['weight'] : 0;
         }
 
         if (isset($result['length'])) {
-            $result['length'] = (float)$result['length'] ? (float)$result['length'] : 0;
+            $result['length'] = (float) $result['length'] ? (float) $result['length'] : 0;
         }
 
         if (isset($result['width'])) {
-            $result['width']  = (float)$result['width'] ? (float)$result['width'] : 0;
+            $result['width'] = (float) $result['width'] ? (float) $result['width'] : 0;
         }
 
         if (isset($result['height'])) {
-            $result['height'] = (float)$result['height'] ? (float)$result['height'] : 0;
+            $result['height'] = (float) $result['height'] ? (float) $result['height'] : 0;
         }
 
         return $result;
@@ -54,7 +56,7 @@ class MyModel extends Model
             return null;
         }
 
-        $ids    = (is_array($ids)) ? $ids : explode(",", $ids);
+        $ids = (is_array($ids)) ? $ids : explode(',', $ids);
         $result = $this->find($ids);
         if (empty($result)) {
             return null;
@@ -74,6 +76,7 @@ class MyModel extends Model
         }
 
         $builder = $model->builder();
+
         return $builder->getCompiledSelect();
     }
 }

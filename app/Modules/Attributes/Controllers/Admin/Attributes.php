@@ -1,18 +1,20 @@
-<?php namespace App\Modules\Attributes\Controllers;
+<?php
+
+namespace App\Modules\Attributes\Controllers\Admin;
 
 use App\Controllers\AdminController;
-use App\Modules\Attributes\Models\AttributeModel;
 use App\Modules\Attributes\Models\AttributeLangModel;
+use App\Modules\Attributes\Models\AttributeModel;
 use App\Modules\Attributes\Models\GroupModel;
 
-class Manage extends AdminController
+class Attributes extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'attributes/manage';
-    CONST MANAGE_URL  = 'attributes/manage';
+    const MANAGE_ROOT = 'manage/attributes';
+    const MANAGE_URL = 'manage/attributes';
 
     public function __construct()
     {
@@ -32,28 +34,28 @@ class Manage extends AdminController
         $this->breadcrumb->add(lang('AttributeAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
-	public function index()
-	{
+    public function index()
+    {
         add_meta(['title' => lang('AttributeAdmin.heading_title')], $this->themes);
 
-        $limit       = $this->request->getGet('limit');
-        $sort        = $this->request->getGet('sort');
-        $order       = $this->request->getGet('order');
+        $limit = $this->request->getGet('limit');
+        $sort = $this->request->getGet('sort');
+        $order = $this->request->getGet('order');
         $filter_keys = ['attribute_id', 'name', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
         $group_model = new GroupModel();
 
-	    $data = [
-            'breadcrumb'    => $this->breadcrumb->render(),
-            'list'          => $list->paginate($limit),
-            'pager'         => $list->pager,
-            'sort'          => empty($sort) ? 'attribute_id' : $sort,
-            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'           => $this->getUrlFilter($filter_keys),
+        $data = [
+            'breadcrumb' => $this->breadcrumb->render(),
+            'list' => $list->paginate($limit),
+            'pager' => $list->pager,
+            'sort' => empty($sort) ? 'attribute_id' : $sort,
+            'order' => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url' => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
-            'groups'        => format_dropdown($group_model->getAllByFilter(), 'attribute_group_id')
+            'groups' => format_dropdown($group_model->getAllByFilter(), 'attribute_group_id'),
         ];
 
         $this->themes
@@ -61,13 +63,14 @@ class Manage extends AdminController
             ->addPartial('footer')
             ->addPartial('sidebar')
             ::load('list', $data);
-	}
+    }
 
     public function add()
     {
         if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
+
                 return redirect()->back()->withInput();
             }
 
@@ -76,8 +79,9 @@ class Manage extends AdminController
                 'attribute_group_id' => $this->request->getPost('attribute_group_id'),
             ];
             $id = $this->model->insert($add_data);
-            if ($id === FALSE) {
+            if ($id === false) {
                 set_alert(lang('Admin.error'), ALERT_ERROR);
+
                 return redirect()->back()->withInput();
             }
 
@@ -91,6 +95,7 @@ class Manage extends AdminController
             $this->model->deleteCache();
 
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -101,12 +106,14 @@ class Manage extends AdminController
     {
         if (is_null($id)) {
             set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
         if (!empty($this->request->getPost()) && $id == $this->request->getPost('attribute_id')) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
+
                 return redirect()->back()->withInput();
             }
 
@@ -116,7 +123,7 @@ class Manage extends AdminController
                 $edit_data_lang[$language['id']]['attribute_id'] = $id;
 
                 if (!empty($this->model_lang->where(['attribute_id' => $id, 'language_id' => $language['id']])->find())) {
-                    $this->model_lang->where('language_id', $language['id'])->update($id,$edit_data_lang[$language['id']]);
+                    $this->model_lang->where('language_id', $language['id'])->update($id, $edit_data_lang[$language['id']]);
                 } else {
                     $this->model_lang->insert($edit_data_lang[$language['id']]);
                 }
@@ -127,8 +134,7 @@ class Manage extends AdminController
                 'sort_order' => $this->request->getPost('sort_order'),
                 'attribute_group_id' => $this->request->getPost('attribute_group_id'),
             ];
-            if ($this->model->save($edit_data) !== FALSE) {
-
+            if ($this->model->save($edit_data) !== false) {
                 $this->model->deleteCache();
 
                 set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
@@ -152,18 +158,19 @@ class Manage extends AdminController
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form'] = lang('Admin.text_edit');
-            $breadcrumb_url = site_url(self::MANAGE_URL . "/edit/$id");
+            $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$id");
 
             $data_form = $this->model->getDetail($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR);
+
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('Admin.text_add');
-            $breadcrumb_url = site_url(self::MANAGE_URL . "/add");
+            $breadcrumb_url = site_url(self::MANAGE_URL.'/add');
         }
 
         $data['errors'] = $this->errors;
@@ -183,12 +190,12 @@ class Manage extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        foreach(list_language_admin() as $value) {
-            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
+        foreach (list_language_admin() as $value) {
+            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name').' ('.$value['name'].')', 'required');
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
-        $this->errors  = $this->validator->getErrors();
+        $this->errors = $this->validator->getErrors();
 
         return $is_validation;
     }
@@ -204,7 +211,7 @@ class Manage extends AdminController
         //delete
         if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
-            $ids = (is_array($ids)) ? $ids : explode(",", $ids);
+            $ids = (is_array($ids)) ? $ids : explode(',', $ids);
 
             $list_delete = $this->model->getListDetail($ids);
             if (empty($list_delete)) {
@@ -229,14 +236,14 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
+        $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
         $list_delete = $this->model->getListDetail($delete_ids, language_id_admin());
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $data['list_delete'] = $list_delete;
-        $data['ids']         = $this->request->getPost('delete_ids');
+        $data['ids'] = $this->request->getPost('delete_ids');
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }

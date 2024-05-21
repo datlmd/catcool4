@@ -1,18 +1,17 @@
 <?php
 
-if(!isset($routes))
-{
+if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('attributes', ['namespace' => 'App\Modules\Attributes\Controllers'], function($subroutes){
-    $subroutes->add('manage', 'Manage::index');
-    $subroutes->add('manage/add', 'Manage::add');
-    $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
-    $subroutes->add('manage/delete', 'Manage::delete');
+$routes->group('manage', ['namespace' => 'App\Modules\Attributes\Controllers\Admin'], function ($subroutes) {
+    $subroutes->add('attributes', 'Attributes::index');
+    $subroutes->add('attributes/add', 'Attributes::add');
+    $subroutes->add('attributes/edit/(:num)', 'Attributes::edit/$1');
+    $subroutes->add('attributes/delete', 'Attributes::delete');
 
-    $subroutes->add('groups_manage', 'GroupsManage::index');
-    $subroutes->add('groups_manage/add', 'GroupsManage::add');
-    $subroutes->add('groups_manage/edit/(:num)', 'GroupsManage::edit/$1');
-    $subroutes->add('groups_manage/delete', 'GroupsManage::delete');
+    $subroutes->add('attribute_groups', 'Groups::index');
+    $subroutes->add('attribute_groups/add', 'Groups::add');
+    $subroutes->add('attribute_groups/edit/(:num)', 'Groups::edit/$1');
+    $subroutes->add('attribute_groups/delete', 'Groups::delete');
 });

@@ -9,7 +9,7 @@
 			<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
 				<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
 				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" data-bs-toggle="tooltip" title="{lang('Admin.button_add')}"><i class="fas fa-plus"></i></a>
-				<a href="{site_url()}/attributes/groups_manage" class="btn btn-sm btn-secondary btn-space" data-bs-toggle="tooltip" title="{lang('AttributeGroupAdmin.heading_title')}">{lang('AttributeGroupAdmin.heading_title')}</a>
+				<a href="{site_url('manage/attribute_groups')}" class="btn btn-sm btn-secondary btn-space" data-bs-toggle="tooltip" title="{lang('AttributeGroupAdmin.heading_title')}">{lang('AttributeGroupAdmin.heading_title')}</a>
 				{include file=get_theme_path('views/inc/button_translate.tpl') translate_frontend=lang('AttributeAdmin.translate_frontend_id') translate_admin=lang('AttributeAdmin.translate_admin_id')}
 			</div>
 		</div>
