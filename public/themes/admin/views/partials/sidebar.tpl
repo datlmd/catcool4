@@ -29,7 +29,7 @@
 					</li>
 					{foreach $menu_admin as $key => $item}
 						<li class="nav-item">
-							<a class="nav-link {if $item.selected|strstr:$menu_current}collapsed active show{/if}" {if !empty($item.nav_key)}id={$item.nav_key}{/if} {$item.attributes} {if !empty($item.subs)}data-bs-toggle="collapse" aria-expanded="true" href="#submenu-{$key}"{else}href="{$item.slug}"{/if}  aria-controls="submenu-{$key}">
+							<a class="nav-link {if $item.is_active}collapsed active show{/if}" {if !empty($item.nav_key)}id={$item.nav_key}{/if} {$item.attributes} {if !empty($item.subs)}data-bs-toggle="collapse" aria-expanded="true" href="#submenu-{$key}"{else}href="{$item.slug}"{/if}  aria-controls="submenu-{$key}">
 								{if !empty($item.icon)}<i class="{$item.icon}"></i>{/if}{$item.name}
 							</a>
 							{if !empty($item.subs)}
@@ -37,7 +37,7 @@
 									<ul class="nav flex-column">
 										{foreach $item.subs as $sub}
 											<li class="nav-item">
-												<a class="nav-link {if $sub.selected eq $menu_current}active{/if}" {if !empty($sub.nav_key)}id={$sub.nav_key}{/if} href="{$sub.slug}" {$sub.attributes}><i class="fas fa-angle-double-right me-2"></i>{$sub.name}</a>
+												<a class="nav-link {if $sub.is_active}active{/if}" {if !empty($sub.nav_key)}id={$sub.nav_key}{/if} href="{$sub.slug}" {$sub.attributes}><i class="fas fa-angle-double-right me-2"></i>{$sub.name}</a>
 											</li>
 										{/foreach}
 									</ul>
@@ -57,7 +57,7 @@
 			<div class="d-xl-block d-lg-block d-none">
 				{foreach $menu_admin as $key => $item}
 					<a href="{$item.slug}" {if !empty($item.nav_key)}id={$item.nav_key}{/if} {$item.attributes} {if !empty($item.subs)}data-bs-toggle="modal" data-bs-target="#popup_menu_left_{$key}"{/if}>
-						<div class="menu-left-icon {if strpos($item.selected, $menu_current) !== false}active{/if}">
+						<div class="menu-left-icon {if $item.is_active}active{/if}">
 							<i class="{if !empty($item.icon)}{$item.icon}{else}fas fa-angle-double-right{/if}"></i>
 							<div class="tooltiptext">{$item.name}</div>
 						</div>
@@ -82,7 +82,7 @@
 							<div class="row">
 							{foreach $item.subs as $sub}
 								<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-6 text-center mt-2 mb-4">
-									<a href="{$sub.slug}" {if !empty($sub.nav_key)}id={$sub.nav_key}{/if} class="menu-sub-left-icon {if $sub.selected eq $menu_current}active{/if}" {$sub.attributes}>
+									<a href="{$sub.slug}" {if !empty($sub.nav_key)}id={$sub.nav_key}{/if} class="menu-sub-left-icon {if $sub.is_active}active{/if}" {$sub.attributes}>
 										<i class="{if !empty($sub.icon)}{$sub.icon}{else}fas fa-angle-double-right{/if}"></i>
 									</a>
 									<p class="text-dark mt-2">{$sub.name}</p>
