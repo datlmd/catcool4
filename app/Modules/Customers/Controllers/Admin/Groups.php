@@ -1,17 +1,17 @@
-<?php namespace App\Modules\Customers\Controllers;
+<?php namespace App\Modules\Customers\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Customers\Models\GroupModel;
 use App\Modules\Customers\Models\GroupLangModel;
 
-class GroupsManage extends AdminController
+class Groups extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'customers/groups_manage';
-    CONST MANAGE_URL  = 'customers/groups_manage';
+    CONST MANAGE_ROOT = 'manage/customer_groups';
+    CONST MANAGE_URL  = 'manage/customer_groups';
 
     public function __construct()
     {

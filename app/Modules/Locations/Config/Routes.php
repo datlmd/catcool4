@@ -5,11 +5,11 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('locations', ['namespace' => 'App\Modules\Locations\Controllers'], function($subroutes){
+$routes->group('manage', ['namespace' => 'App\Modules\Locations\Controllers\Admin'], function($subroutes){
 
-    $subroutes->add('manage', 'Manage::index');
-    $subroutes->add('manage/add', 'Manage::add');
-    $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
-    $subroutes->add('manage/delete', 'Manage::delete');
-    $subroutes->add('manage/save', 'Manage::save');
+    $subroutes->add('locations', 'Locations::index');
+    $subroutes->add('locations/add', 'Locations::add');
+    $subroutes->add('locations/edit/(:num)', 'Locations::edit/$1');
+    $subroutes->add('locations/delete', 'Locations::delete');
+    $subroutes->add('locations/save', 'Locations::save');
 });

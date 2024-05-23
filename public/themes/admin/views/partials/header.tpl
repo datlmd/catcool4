@@ -26,7 +26,7 @@
 							<div class="dropdown-menu dropdown-menu-end nav-user-dropdown" aria-labelledby="navbar_dropdown_menu_language" style="min-width: 170px;">
 								<div class="px-3 py-1">
 									{foreach list_language_admin() as $key => $value}
-										<a href="{site_url("languages/manage/switch/`$value.code`")}" class="overflow-hidden d-block my-2">
+										<a href="{site_url("manage/languages/switch/`$value.code`")}" class="overflow-hidden d-block my-2">
 											{$value.icon} {lang("General.`$value.code`")}
 										</a>
 									{/foreach}

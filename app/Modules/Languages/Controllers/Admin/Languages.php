@@ -1,14 +1,14 @@
-<?php namespace App\Modules\Languages\Controllers;
+<?php namespace App\Modules\Languages\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Languages\Models\LanguageModel;
 
-class Manage extends AdminController
+class Languages extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'languages/manage';
-    CONST MANAGE_URL  = 'languages/manage';
+    CONST MANAGE_ROOT = 'manage/languages';
+    CONST MANAGE_URL  = 'manage/languages';
 
     public function __construct()
     {

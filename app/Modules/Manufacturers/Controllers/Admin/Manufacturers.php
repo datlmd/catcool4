@@ -1,18 +1,18 @@
-<?php namespace App\Modules\Manufacturers\Controllers;
+<?php namespace App\Modules\Manufacturers\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Manufacturers\Models\ManufacturerModel;
 use App\Modules\Manufacturers\Models\ManufacturerLangModel;
 use App\Modules\Routes\Models\RouteModel;
 
-class Manage extends AdminController
+class Manufacturers extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'manufacturers/manage';
-    CONST MANAGE_URL  = 'manufacturers/manage';
+    CONST MANAGE_ROOT = 'manage/manufacturers';
+    CONST MANAGE_URL  = 'manage/manufacturers';
 
     CONST SEO_URL_MODULE   = 'manufacturers';
     CONST SEO_URL_RESOURCE = 'Manufacturers::Detail/%s';

@@ -10,7 +10,7 @@
 				<span id="delete_multiple" class="btn btn-sm btn-danger btn-space" style="display: none;" title="{lang('Admin.button_delete_all')}"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete_all')}</span>
 				<a href="{site_url($manage_url)}/add" class="btn btn-sm btn-primary btn-space" data-bs-toggle="tooltip" title="{lang('Admin.button_add')}"><i class="fas fa-plus"></i></a>
 				<button type="button" id="btn_search" class="btn btn-sm btn-brand btn-space" data-bs-toggle="tooltip" title="{lang('Admin.filter_header')}" data-target="#filter_manage"><i class="fas fa-filter"></i></button>
-				<a href="{site_url('layouts/manage')}" class="btn btn-sm btn-light btn-space">{lang('LayoutActionAdmin.text_layout')}</a>
+				<a href="{site_url('manage/layouts')}" class="btn btn-sm btn-light btn-space">{lang('LayoutActionAdmin.text_layout')}</a>
 				{include file=get_theme_path('views/inc/button_translate.tpl') translate_frontend=lang('LayoutActionAdmin.translate_frontend_id') translate_admin=lang('LayoutActionAdmin.translate_admin_id')}
 			</div>
 		</div>

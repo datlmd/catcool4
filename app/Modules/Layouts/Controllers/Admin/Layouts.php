@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Layouts\Controllers;
+namespace App\Modules\Layouts\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Layouts\Models\ActionModel;
@@ -8,12 +8,12 @@ use App\Modules\Layouts\Models\LayoutModel;
 use App\Modules\Layouts\Models\ModuleModel;
 use App\Modules\Layouts\Models\RouteModel;
 
-class Manage extends AdminController
+class Layouts extends AdminController
 {
     protected $errors = [];
 
-    const MANAGE_ROOT = 'layouts/manage';
-    const MANAGE_URL = 'layouts/manage';
+    const MANAGE_ROOT = 'manage/layouts';
+    const MANAGE_URL = 'manage/layouts';
 
     public function __construct()
     {

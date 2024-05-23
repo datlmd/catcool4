@@ -5,23 +5,19 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('customers', ['namespace' => 'App\Modules\Customers\Controllers'], function($subroutes) {
-    $subroutes->add('', 'Customers::index');
-    $subroutes->add('login', 'Login::index');
-    $subroutes->add('profile', 'Profile::index');
+$routes->group('manage', ['namespace' => 'App\Modules\Customers\Controllers\Admin'], function($subroutes) {
+    $subroutes->add('customers', 'Customers::index');
+    $subroutes->add('customers/add', 'Customers::add');
+    $subroutes->add('customers/edit/(:num)', 'Customers::edit/$1');
+    $subroutes->add('customers/delete', 'Customers::delete');
+    $subroutes->add('customers/publish', 'Customers::publish');
+    $subroutes->add('customers/save', 'Customers::save');
 
-    $subroutes->add('manage', 'Manage::index');
-    $subroutes->add('manage/add', 'Manage::add');
-    $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
-    $subroutes->add('manage/delete', 'Manage::delete');
-    $subroutes->add('manage/publish', 'Manage::publish');
-    $subroutes->add('manage/save', 'Manage::save');
-
-    $subroutes->add('groups_manage', 'GroupsManage::index');
-    $subroutes->add('groups_manage/add', 'GroupsManage::add');
-    $subroutes->add('groups_manage/edit/(:num)', 'GroupsManage::edit/$1');
-    $subroutes->add('groups_manage/delete', 'GroupsManage::delete');
-    $subroutes->add('groups_manage/save', 'GroupsManage::save');
+    $subroutes->add('customer_groups', 'Groups::index');
+    $subroutes->add('customer_groups/add', 'Groups::add');
+    $subroutes->add('customer_groups/edit/(:num)', 'Groups::edit/$1');
+    $subroutes->add('customer_groups/delete', 'Groups::delete');
+    $subroutes->add('customer_groups/save', 'Groups::save');
 });
 
 $routes->group('account', ['namespace' => 'App\Modules\Customers\Controllers'], function($subroutes) {

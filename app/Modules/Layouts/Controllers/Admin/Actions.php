@@ -1,14 +1,14 @@
-<?php namespace App\Modules\Layouts\Controllers;
+<?php namespace App\Modules\Layouts\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Layouts\Models\ActionModel;
 
-class ActionsManage extends AdminController
+class Actions extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'layouts/actions_manage';
-    CONST MANAGE_URL  = 'layouts/actions_manage';
+    CONST MANAGE_ROOT = 'manage/layout_actions';
+    CONST MANAGE_URL  = 'manage/layout_actions';
 
     public function __construct()
     {

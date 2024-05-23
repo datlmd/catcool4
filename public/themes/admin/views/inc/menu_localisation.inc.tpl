@@ -8,7 +8,8 @@
 	{/if}
 	<div class="sidebar-nav-fixed {if !empty($is_mobile)}collapse{/if}" id="menu_localisation">
 		<ul class="list-unstyled">
-			<li><a href="{site_url('languages/manage')}" class="{if !empty($active) && $active eq 'languages'}active{/if}">{lang('LanguageAdmin.heading_title')}</a></li>
+			<li><a href="{site_url('manage/locations')}" class="{if !empty($active) && $active eq 'locations'}active{/if}">{lang('LocationAdmin.heading_title')}</a></li>
+			<li><a href="{site_url('manage/languages')}" class="{if !empty($active) && $active eq 'languages'}active{/if}">{lang('LanguageAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('manage/currencies')}" class="{if !empty($active) && $active eq 'currencies'}active{/if}">{lang('CurrencyAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('products/stock_statuses_manage')}" class="{if !empty($active) && $active eq 'stock_statuses'}active{/if}">{lang('ProductStockStatusAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('products/order_statuses_manage')}" class="{if !empty($active) && $active eq 'order_statuses'}active{/if}">{lang('ProductOrderStatusAdmin.heading_title')}</a></li>

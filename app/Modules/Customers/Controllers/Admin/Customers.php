@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Modules\Customers\Controllers;
+namespace App\Modules\Customers\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Customers\Models\CustomerModel;
 use App\Modules\Customers\Models\GroupModel;
 use App\Modules\Users\Models\AuthModel;
 
-class Manage extends AdminController
+class Customers extends AdminController
 {
     public $errors = [];
 
-    const MANAGE_ROOT = 'customers/manage';
-    const MANAGE_URL = 'customers/manage';
+    const MANAGE_ROOT = 'manage/customers';
+    const MANAGE_URL = 'manage/customers';
 
     protected $group_model;
     protected $auth_model;

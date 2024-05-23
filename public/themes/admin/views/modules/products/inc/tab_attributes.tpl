@@ -119,7 +119,7 @@
 				{/foreach}
 			</select>
 			<div id="error_manufacturer_id" class="invalid-feedback"></div>
-			<a href="{site_url('manufacturers/manage/add')}" class="link-primary mt-1 d-block">{lang('ProductAdmin.text_manufacturer_add')}</a>
+			<a href="{site_url('manage/manufacturers/add')}" class="link-primary mt-1 d-block">{lang('ProductAdmin.text_manufacturer_add')}</a>
 		</div>
 		<label class="col-sm-2 col-form-label text-sm-end">{lang('ProductAdmin.text_category')}</label>
 		<div class="col-sm-4">
