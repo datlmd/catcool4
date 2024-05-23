@@ -1,14 +1,14 @@
-<?php namespace App\Modules\Currencies\Controllers;
+<?php namespace App\Modules\Configs\Controllers\Admin;
 
 use App\Controllers\AdminController;
-use App\Modules\Currencies\Models\CurrencyModel;
+use App\Modules\Configs\Models\GroupModel;
 
-class Manage extends AdminController
+class Groups extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'currencies/manage';
-    CONST MANAGE_URL  = 'currencies/manage';
+    CONST MANAGE_ROOT = 'manage/config_groups';
+    CONST MANAGE_URL  = 'manage/config_groups';
 
     public function __construct()
     {
@@ -16,21 +16,25 @@ class Manage extends AdminController
 
         $this->themes->setTheme(config_item('theme_admin'));
 
-        $this->model = new CurrencyModel();
+        $this->model = new GroupModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
         $this->smarty->assign('manage_root', self::MANAGE_ROOT);
 
         //add breadcrumb
-        $this->breadcrumb->add(lang('Admin.catcool_dashboard'), site_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('CurrencyAdmin.heading_title'), site_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
+        $this->breadcrumb->add(lang('ConfigGroupAdmin.module_configs'), site_url('manage/configs'));
+        $this->breadcrumb->add(lang('ConfigGroupAdmin.heading_title'), base_url(self::MANAGE_URL));
     }
 
     public function index()
     {
-        $sort   = $this->request->getGet('sort');
-        $order  = $this->request->getGet('order');
+        add_meta(['title' => lang("ConfigGroupAdmin.heading_title")], $this->themes);
+
+        $sort  = $this->request->getGet('sort');
+        $order = $this->request->getGet('order');
+
         $filter = [];
 
         $list = $this->model->getAllByFilter($filter, $sort, $order);
@@ -42,39 +46,31 @@ class Manage extends AdminController
             'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
         ];
 
-        add_meta(['title' => lang("CurrencyAdmin.heading_title")], $this->themes);
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
-            ::load('list', $data);
+            ::load('groups/list', $data);
     }
 
     public function add()
     {
-        if (!empty($this->request->getPost())) {
+        if (!empty($this->request->getPost()))
+        {
             if (!$this->_validateForm()) {
-                set_alert([ALERT_ERROR => $this->errors]);
+                set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
 
             $add_data = [
-                'name'          => $this->request->getPost('name'),
-                'code'          => $this->request->getPost('code'),
-                'symbol_left'   => $this->request->getPost('symbol_left'),
-                'symbol_right'  => $this->request->getPost('symbol_right'),
-                'decimal_place' => $this->request->getPost('decimal_place'),
-                'value'         => $this->request->getPost('value'),
-                'published'     => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'name'        => $this->request->getPost('name'),
+                'description' => $this->request->getPost('description')
             ];
 
             if (!$this->model->insert($add_data)) {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->back()->withInput();
             }
-
-            //reset cache
-            $this->model->deleteCache();
 
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
@@ -85,35 +81,28 @@ class Manage extends AdminController
 
     public function edit($id = null)
     {
-        if (empty($id)) {
+        if (is_null($id)) {
             set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()) && $id == $this->request->getPost('currency_id')) {
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('id')) {
             if (!$this->_validateForm()) {
-                set_alert([ALERT_ERROR => $this->errors]);
+                set_alert($this->errors, ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
 
             $edit_data = [
-                'name'          => $this->request->getPost('name'),
-                'code'          => $this->request->getPost('code'),
-                'symbol_left'   => $this->request->getPost('symbol_left'),
-                'symbol_right'  => $this->request->getPost('symbol_right'),
-                'decimal_place' => $this->request->getPost('decimal_place'),
-                'value'         => $this->request->getPost('value'),
-                'published'     => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'description' => $this->request->getPost('description'),
+                'name'        => $this->request->getPost('name')
             ];
 
-            if (!$this->model->update($id, $edit_data)) {
+            if ($this->model->update($id, $edit_data)) {
+                set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
+            } else {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
             }
 
-            //reset cache
-            $this->model->deleteCache();
-
-            set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->back();
         }
 
@@ -140,9 +129,6 @@ class Manage extends AdminController
             }
             $this->model->delete($ids);
 
-            //reset cache
-            $this->model->deleteCache();
-
             set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
             json_output(['token' => $token, 'status' => 'redirect', 'url' => site_url(self::MANAGE_URL)]);
         }
@@ -167,15 +153,15 @@ class Manage extends AdminController
         $data['list_delete'] = $list_delete;
         $data['ids']         = $this->request->getPost('delete_ids');
 
-        json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
+        json_output(['token' => $token, 'data' => $this->themes::view('groups/delete', $data)]);
     }
 
     private function _getForm($id = null)
     {
+        //edit
         if (!empty($id) && is_numeric($id)) {
-            $data['text_form']   = lang('CurrencyAdmin.text_edit');
-            $data['text_submit'] = lang('CurrencyAdmin.button_save');
-            $breadcrumb_url      = site_url(self::MANAGE_URL . "/edit/$id");
+            $data['text_form'] = lang('ConfigGroupAdmin.text_edit');
+            $breadcrumb_url = site_url(self::MANAGE_URL . "/edit/$id");
 
             $data_form = $this->model->find($id);
             if (empty($data_form)) {
@@ -183,12 +169,10 @@ class Manage extends AdminController
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
-            // display the edit user form
             $data['edit_data'] = $data_form;
         } else {
-            $data['text_form']   = lang('CurrencyAdmin.text_add');
-            $data['text_submit'] = lang('CurrencyAdmin.button_add');
-            $breadcrumb_url      = site_url(self::MANAGE_URL . "/add");
+            $data['text_form'] = lang('ConfigGroupAdmin.text_add');
+            $breadcrumb_url = site_url(self::MANAGE_URL . "/add");
         }
 
         $data['errors'] = $this->errors;
@@ -202,56 +186,16 @@ class Manage extends AdminController
             ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
-            ::load('form', $data);
+            ::load('groups/form', $data);
     }
 
     private function _validateForm()
     {
-        $this->validator->setRule('name', lang('CurrencyAdmin.text_name'), 'required');
+        $this->validator->setRule('name', lang('Admin.text_name'), 'required');
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();
 
         return $is_validation;
-    }
-
-    public function publish()
-    {
-        if (!$this->request->isAJAX()) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        }
-
-        $token = csrf_hash();
-
-        if (empty($this->request->getPost())) {
-            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
-        }
-
-        $id        = $this->request->getPost('id');
-        $item_edit = $this->model->find($id);
-        if (empty($item_edit)) {
-            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
-        }
-
-        $item_edit['published'] = !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF;
-        if (!$this->model->update($id, $item_edit)) {
-            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
-        }
-
-        $this->model->deleteCache();
-        $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')];
-
-        json_output($data);
-    }
-
-    public function refresh()
-    {
-        if ($this->model->updateCurrency()) {
-            set_alert(lang('CurrencyAdmin.refresh_success'), ALERT_SUCCESS, ALERT_POPUP);
-        } else {
-            set_alert(lang('CurrencyAdmin.error_refresh'), ALERT_ERROR, ALERT_POPUP);
-        }
-
-        return redirect()->to(site_url(self::MANAGE_URL));
     }
 }

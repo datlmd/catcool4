@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Modules\Configs\Controllers;
+namespace App\Modules\Configs\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Configs\Models\ConfigModel;
 use App\Modules\Configs\Models\GroupModel;
 
-class Manage extends AdminController
+class Configs extends AdminController
 {
     protected $errors = [];
 
-    const MANAGE_ROOT = 'configs/manage';
-    const MANAGE_URL = 'configs/manage';
+    const MANAGE_ROOT = 'manage/configs';
+    const MANAGE_URL = 'manage/configs';
 
     protected $model;
     protected $group_model;

@@ -8,7 +8,7 @@
 	{/if}
 	<div class="sidebar-nav-fixed {if !empty($is_mobile)}collapse{/if}" id="menu_utilities">
 		<ul class="list-unstyled">
-			<li><a href="{site_url('configs/manage')}" {if !empty($active) && $active eq 'configs'}class="active"{/if}>Confgs</a></li>
+			<li><a href="{site_url('manage/configs')}" {if !empty($active) && $active eq 'configs'}class="active"{/if}>Confgs</a></li>
 			<li><a href="{site_url('modules/manage')}" {if !empty($active) && $active eq 'modules'}class="active"{/if}>Modules</a></li>
 			<li><a href="{site_url('manage/builder')}" {if !empty($active) && $active eq 'create_module'}class="active"{/if}>Create Module</a></li>
 			<li><a href="{site_url('relationships/manage')}" {if !empty($active) && $active eq 'relationships'}class="active"{/if}>Relationships</a></li>

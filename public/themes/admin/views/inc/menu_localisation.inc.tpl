@@ -9,7 +9,7 @@
 	<div class="sidebar-nav-fixed {if !empty($is_mobile)}collapse{/if}" id="menu_localisation">
 		<ul class="list-unstyled">
 			<li><a href="{site_url('languages/manage')}" class="{if !empty($active) && $active eq 'languages'}active{/if}">{lang('LanguageAdmin.heading_title')}</a></li>
-			<li><a href="{site_url('currencies/manage')}" class="{if !empty($active) && $active eq 'currencies'}active{/if}">{lang('CurrencyAdmin.heading_title')}</a></li>
+			<li><a href="{site_url('manage/currencies')}" class="{if !empty($active) && $active eq 'currencies'}active{/if}">{lang('CurrencyAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('products/stock_statuses_manage')}" class="{if !empty($active) && $active eq 'stock_statuses'}active{/if}">{lang('ProductStockStatusAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('products/order_statuses_manage')}" class="{if !empty($active) && $active eq 'order_statuses'}active{/if}">{lang('ProductOrderStatusAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('subscriptions/statuses_manage')}" class="{if !empty($active) && $active eq 'subscription_statuses'}active{/if}">{lang('SubscriptionStatusAdmin.heading_title')}</a></li>
@@ -27,7 +27,7 @@
 					</li>
 				</ul>
 			</li>
-			<li><a href="{site_url('countries/manage')}" class="{if !empty($active) && $active eq 'countries'}active{/if}">{lang('CountryAdmin.heading_title')}</a></li>
+			<li><a href="{site_url('manage/countries')}" class="{if !empty($active) && $active eq 'countries'}active{/if}">{lang('CountryAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('products/weight_classes_manage')}" class="{if !empty($active) && $active eq 'weight_classes'}active{/if}">{lang('ProductWeightClassAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('products/length_classes_manage')}" class="{if !empty($active) && $active eq 'length_classes'}active{/if}">{lang('ProductLengthClassAdmin.heading_title')}</a></li>
 		</ul>

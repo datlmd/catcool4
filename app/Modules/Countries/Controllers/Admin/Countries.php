@@ -1,14 +1,14 @@
-<?php namespace App\Modules\Countries\Controllers;
+<?php namespace App\Modules\Countries\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Countries\Models\CountryModel;
 
-class Manage extends AdminController
+class Countries extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'countries/manage';
-    CONST MANAGE_URL  = 'countries/manage';
+    CONST MANAGE_ROOT = 'manage/countries';
+    CONST MANAGE_URL  = 'manage/countries';
 
     public function __construct()
     {

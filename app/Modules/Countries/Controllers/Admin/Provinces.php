@@ -1,15 +1,15 @@
-<?php namespace App\Modules\Countries\Controllers;
+<?php namespace App\Modules\Countries\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Countries\Models\ProvinceModel;
 use App\Modules\Countries\Models\CountryModel;
 
-class ProvincesManage extends AdminController
+class Provinces extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'countries/provinces_manage';
-    CONST MANAGE_URL  = 'countries/provinces_manage';
+    CONST MANAGE_ROOT = 'manage/country_provinces';
+    CONST MANAGE_URL  = 'manage/country_provinces';
 
     public function __construct()
     {
@@ -25,7 +25,7 @@ class ProvincesManage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), site_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('CountryAdmin.heading_title'), site_url('countries/manage'));
+        $this->breadcrumb->add(lang('CountryAdmin.heading_title'), site_url('manage/countries'));
         $this->breadcrumb->add(lang('CountryProvinceAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 

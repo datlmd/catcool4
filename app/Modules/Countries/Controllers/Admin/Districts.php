@@ -1,17 +1,16 @@
-<?php namespace App\Modules\Countries\Controllers;
+<?php namespace App\Modules\Countries\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Countries\Models\ProvinceModel;
 use App\Modules\Countries\Models\DistrictModel;
-use App\Modules\Countries\Models\WardModel;
 use App\Modules\Countries\Models\CountryModel;
 
-class WardsManage extends AdminController
+class Districts extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'countries/wards_manage';
-    CONST MANAGE_URL  = 'countries/wards_manage';
+    CONST MANAGE_ROOT = 'manage/country_districts';
+    CONST MANAGE_URL  = 'manage/country_districts';
 
     public function __construct()
     {
@@ -19,7 +18,7 @@ class WardsManage extends AdminController
 
         $this->themes->setTheme(config_item('theme_admin'));
 
-        $this->model = new WardModel();
+        $this->model = new DistrictModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -27,8 +26,8 @@ class WardsManage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), site_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('CountryAdmin.heading_title'), site_url('countries/manage'));
-        $this->breadcrumb->add(lang('CountryWardAdmin.heading_title'), site_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang('CountryAdmin.heading_title'), site_url('manage/countries'));
+        $this->breadcrumb->add(lang('CountryDistrictAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
     public function index()
@@ -36,7 +35,7 @@ class WardsManage extends AdminController
         $sort        = $this->request->getGet('sort');
         $order       = $this->request->getGet('order');
         $limit       = $this->request->getGet('limit');
-        $filter_keys = ['district_id', 'name', 'limit'];
+        $filter_keys = ['province_id', 'name', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
@@ -54,15 +53,12 @@ class WardsManage extends AdminController
         $province_model = new ProvinceModel();
         $data['province_list'] = $province_model->getListDisplay();
 
-        $district_model = new DistrictModel();
-        $data['district_list'] = $district_model->getListDisplay();
-
-        add_meta(['title' => lang("CountryWardAdmin.heading_title")], $this->themes);
+        add_meta(['title' => lang("CountryDistrictAdmin.heading_title")], $this->themes);
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
-            ::load('wards/list', $data);
+            ::load('districts/list', $data);
     }
 
     public function add()
@@ -77,7 +73,7 @@ class WardsManage extends AdminController
                 'name'           => $this->request->getPost('name'),
                 'type'           => $this->request->getPost('type'),
                 'lati_long_tude' => $this->request->getPost('lati_long_tude'),
-                'district_id'    => $this->request->getPost('district_id'),
+                'province_id'    => $this->request->getPost('province_id'),
                 'sort_order'     => $this->request->getPost('sort_order'),
                 'published'      => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
@@ -104,7 +100,7 @@ class WardsManage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()) && $id == $this->request->getPost('ward_id')) {
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('district_id')) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
                 return redirect()->back()->withInput();
@@ -114,7 +110,7 @@ class WardsManage extends AdminController
                 'name'           => $this->request->getPost('name'),
                 'type'           => $this->request->getPost('type'),
                 'lati_long_tude' => $this->request->getPost('lati_long_tude'),
-                'district_id'    => $this->request->getPost('district_id'),
+                'province_id'    => $this->request->getPost('province_id'),
                 'sort_order'     => $this->request->getPost('sort_order'),
                 'published'      => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
@@ -180,7 +176,7 @@ class WardsManage extends AdminController
         $data['list_delete'] = $list_delete;
         $data['ids']         = $this->request->getPost('delete_ids');
 
-        json_output(['token' => $token, 'data' => $this->themes::view('wards/delete', $data)]);
+        json_output(['token' => $token, 'data' => $this->themes::view('districts/delete', $data)]);
     }
 
     private function _getForm($id = null)
@@ -189,15 +185,12 @@ class WardsManage extends AdminController
 
         $country_model  = new CountryModel();
         $province_model = new ProvinceModel();
-        $district_model = new DistrictModel();
 
         $province_list = [];
-        $district_list = [];
-
         //edit
         if (!empty($id) && is_numeric($id)) {
-            $data['text_form']   = lang('CountryWardAdmin.text_edit');
-            $data['text_submit'] = lang('CountryWardAdmin.button_save');
+            $data['text_form']   = lang('CountryDistrictAdmin.text_edit');
+            $data['text_submit'] = lang('CountryDistrictAdmin.button_save');
             $breadcrumb_url      = site_url(self::MANAGE_URL . "/edit/$id");
 
             $data_form = $this->model->find($id);
@@ -206,13 +199,7 @@ class WardsManage extends AdminController
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
-            $district_data = $district_model->where('district_id', $data_form['district_id'])->first();
-            if (!empty($district_data)) {
-                $district_list    = $district_model->getListDisplay($district_data['province_id']);
-                $data_form['province_id'] = $district_data['province_id'];
-            }
-
-            $province_data = $province_model->where('province_id', $district_data['province_id'])->first();
+            $province_data = $province_model->where('province_id', $data_form['province_id'])->first();
             if (!empty($province_data)) {
                 $province_list           = $province_model->getListDisplay($province_data['country_id']);
                 $data_form['country_id'] = $province_data['country_id'];
@@ -221,14 +208,13 @@ class WardsManage extends AdminController
             // display the edit user form
             $data['edit_data'] = $data_form;
         } else {
-            $data['text_form']   = lang('CountryWardAdmin.text_add');
-            $data['text_submit'] = lang('CountryWardAdmin.button_add');
+            $data['text_form']   = lang('CountryDistrictAdmin.text_add');
+            $data['text_submit'] = lang('CountryDistrictAdmin.button_add');
             $breadcrumb_url      = site_url(self::MANAGE_URL . "/add");
         }
 
         $data['country_list']  = $country_model->getListDisplay();
         $data['province_list'] = $province_list;
-        $data['district_list'] = $district_list;
 
         $data['errors'] = $this->errors;
 
@@ -241,14 +227,14 @@ class WardsManage extends AdminController
             ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
-            ::load('wards/form', $data);
+            ::load('districts/form', $data);
     }
 
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         $this->validator->setRule('name', lang('Admin.text_name'), 'required');
-        $this->validator->setRule('district_id', lang('CountryWardAdmin.text_district'), 'required|is_natural_no_zero');
+        $this->validator->setRule('province_id', lang('CountryDistrictAdmin.text_province'), 'required|is_natural_no_zero');
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();

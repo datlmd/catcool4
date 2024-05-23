@@ -5,11 +5,11 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('currencies', ['namespace' => 'App\Modules\Currencies\Controllers'], function($subroutes){
-    $subroutes->add('manage', 'Manage::index');
-    $subroutes->add('manage/add', 'Manage::add');
-    $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
-    $subroutes->add('manage/delete', 'Manage::delete');
-    $subroutes->add('manage/publish', 'Manage::publish');
-    $subroutes->add('manage/refresh', 'Manage::refresh');
+$routes->group('manage', ['namespace' => 'App\Modules\Currencies\Controllers\Admin'], function($subroutes){
+    $subroutes->add('currencies', 'Currencies::index');
+    $subroutes->add('currencies/add', 'Currencies::add');
+    $subroutes->add('currencies/edit/(:num)', 'Currencies::edit/$1');
+    $subroutes->add('currencies/delete', 'Currencies::delete');
+    $subroutes->add('currencies/publish', 'Currencies::publish');
+    $subroutes->add('currencies/refresh', 'Currencies::refresh');
 });

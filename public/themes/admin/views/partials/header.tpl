@@ -99,19 +99,19 @@
 						</div>
 						<a class="dropdown-item" href="{site_url('users/manage/edit/'|cat:session('user_info.user_id'))}"><i class="fas fa-user-circle me-2"></i>{lang('Admin.text_profile')}</a>
 						{if !empty(config_item('enable_dark_mode'))}
-							<a class="dropdown-item" href="{site_url('configs/manage/config')}?k=dark_mode&v=0"><i class="far fa-lightbulb me-2"></i>{lang('ConfigAdmin.text_light_mode')}</a>
+							<a class="dropdown-item" href="{site_url('manage/configs/config')}?k=dark_mode&v=0"><i class="far fa-lightbulb me-2"></i>{lang('ConfigAdmin.text_light_mode')}</a>
 						{else}
-							<a class="dropdown-item" href="{site_url('configs/manage/config')}?k=dark_mode&v=1"><i class="fas fa-moon me-2"></i>{lang('ConfigAdmin.text_dark_mode')}</a>
+							<a class="dropdown-item" href="{site_url('manage/configs/config')}?k=dark_mode&v=1"><i class="fas fa-moon me-2"></i>{lang('ConfigAdmin.text_dark_mode')}</a>
 						{/if}
 						{if !empty(config_item('enable_scroll_menu_admin'))}
-							<a class="dropdown-item" href="{site_url('configs/manage/config')}?k=collapse_menu&v=0"><i class="fas fa-expand me-2"></i>{lang('ConfigAdmin.text_collapse_menu')}</a>
+							<a class="dropdown-item" href="{site_url('manage/configs/config')}?k=collapse_menu&v=0"><i class="fas fa-expand me-2"></i>{lang('ConfigAdmin.text_collapse_menu')}</a>
 						{else}
-							<a class="dropdown-item" href="{site_url('configs/manage/config')}?k=collapse_menu&v=1"><i class="fas fa-expand me-2"></i>{lang('ConfigAdmin.text_expand_menu')}</a>
+							<a class="dropdown-item" href="{site_url('manage/configs/config')}?k=collapse_menu&v=1"><i class="fas fa-expand me-2"></i>{lang('ConfigAdmin.text_expand_menu')}</a>
 						{/if}
 						{if !empty(config_item('enable_icon_menu_admin'))}
-							<a class="dropdown-item" href="{site_url('configs/manage/config')}?k=style_menu&v=0"><i class="fas fa-th-list me-2"></i>{lang('ConfigAdmin.text_list_menu')}</a>
+							<a class="dropdown-item" href="{site_url('manage/configs/config')}?k=style_menu&v=0"><i class="fas fa-th-list me-2"></i>{lang('ConfigAdmin.text_list_menu')}</a>
 						{else}
-							<a class="dropdown-item" href="{site_url('configs/manage/config')}?k=style_menu&v=1"><i class="fas fa-th-large me-2"></i>{lang('ConfigAdmin.text_icon_menu')}</a>
+							<a class="dropdown-item" href="{site_url('manage/configs/config')}?k=style_menu&v=1"><i class="fas fa-th-large me-2"></i>{lang('ConfigAdmin.text_icon_menu')}</a>
 						{/if}
 						<a class="dropdown-item" href="{site_url('users/manage/logout')}"><i class="fas fa-sign-out-alt me-2"></i>{lang('Admin.text_logout')}</a>
 					</div>

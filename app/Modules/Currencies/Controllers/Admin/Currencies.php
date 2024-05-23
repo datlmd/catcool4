@@ -1,16 +1,14 @@
-<?php namespace App\Modules\Countries\Controllers;
+<?php namespace App\Modules\Currencies\Controllers\Admin;
 
 use App\Controllers\AdminController;
-use App\Modules\Countries\Models\ProvinceModel;
-use App\Modules\Countries\Models\DistrictModel;
-use App\Modules\Countries\Models\CountryModel;
+use App\Modules\Currencies\Models\CurrencyModel;
 
-class DistrictsManage extends AdminController
+class Currencies extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'countries/districts_manage';
-    CONST MANAGE_URL  = 'countries/districts_manage';
+    CONST MANAGE_ROOT = 'manage/currencies';
+    CONST MANAGE_URL  = 'manage/currencies';
 
     public function __construct()
     {
@@ -18,7 +16,7 @@ class DistrictsManage extends AdminController
 
         $this->themes->setTheme(config_item('theme_admin'));
 
-        $this->model = new DistrictModel();
+        $this->model = new CurrencyModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -26,39 +24,30 @@ class DistrictsManage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), site_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('CountryAdmin.heading_title'), site_url('countries/manage'));
-        $this->breadcrumb->add(lang('CountryDistrictAdmin.heading_title'), site_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang('CurrencyAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
     public function index()
     {
-        $sort        = $this->request->getGet('sort');
-        $order       = $this->request->getGet('order');
-        $limit       = $this->request->getGet('limit');
-        $filter_keys = ['province_id', 'name', 'limit'];
+        $sort   = $this->request->getGet('sort');
+        $order  = $this->request->getGet('order');
+        $filter = [];
 
-        $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
+        $list = $this->model->getAllByFilter($filter, $sort, $order);
 
         $data = [
-            'breadcrumb'    => $this->breadcrumb->render(),
-            'list'          => $list->paginate($limit),
-            'pager'         => $list->pager,
-            'total'         => $list->pager->getPerPage(),
-            'sort'          => $sort ?? 'district_id',
-            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'           => $this->getUrlFilter($filter_keys),
-            'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
+            'breadcrumb' => $this->breadcrumb->render(),
+            'list'       => $list,
+            'sort'       => empty($sort) ? 'id' : $sort,
+            'order'      => ($order == 'ASC') ? 'DESC' : 'ASC',
         ];
 
-        $province_model = new ProvinceModel();
-        $data['province_list'] = $province_model->getListDisplay();
-
-        add_meta(['title' => lang("CountryDistrictAdmin.heading_title")], $this->themes);
+        add_meta(['title' => lang("CurrencyAdmin.heading_title")], $this->themes);
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
-            ::load('districts/list', $data);
+            ::load('list', $data);
     }
 
     public function add()
@@ -70,12 +59,13 @@ class DistrictsManage extends AdminController
             }
 
             $add_data = [
-                'name'           => $this->request->getPost('name'),
-                'type'           => $this->request->getPost('type'),
-                'lati_long_tude' => $this->request->getPost('lati_long_tude'),
-                'province_id'    => $this->request->getPost('province_id'),
-                'sort_order'     => $this->request->getPost('sort_order'),
-                'published'      => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'name'          => $this->request->getPost('name'),
+                'code'          => $this->request->getPost('code'),
+                'symbol_left'   => $this->request->getPost('symbol_left'),
+                'symbol_right'  => $this->request->getPost('symbol_right'),
+                'decimal_place' => $this->request->getPost('decimal_place'),
+                'value'         => $this->request->getPost('value'),
+                'published'     => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
             if (!$this->model->insert($add_data)) {
@@ -100,19 +90,20 @@ class DistrictsManage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()) && $id == $this->request->getPost('district_id')) {
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('currency_id')) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
                 return redirect()->back()->withInput();
             }
 
             $edit_data = [
-                'name'           => $this->request->getPost('name'),
-                'type'           => $this->request->getPost('type'),
-                'lati_long_tude' => $this->request->getPost('lati_long_tude'),
-                'province_id'    => $this->request->getPost('province_id'),
-                'sort_order'     => $this->request->getPost('sort_order'),
-                'published'      => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'name'          => $this->request->getPost('name'),
+                'code'          => $this->request->getPost('code'),
+                'symbol_left'   => $this->request->getPost('symbol_left'),
+                'symbol_right'  => $this->request->getPost('symbol_right'),
+                'decimal_place' => $this->request->getPost('decimal_place'),
+                'value'         => $this->request->getPost('value'),
+                'published'     => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
             if (!$this->model->update($id, $edit_data)) {
@@ -176,21 +167,14 @@ class DistrictsManage extends AdminController
         $data['list_delete'] = $list_delete;
         $data['ids']         = $this->request->getPost('delete_ids');
 
-        json_output(['token' => $token, 'data' => $this->themes::view('districts/delete', $data)]);
+        json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }
 
     private function _getForm($id = null)
     {
-        $this->themes->addJS('common/js/country/load');
-
-        $country_model  = new CountryModel();
-        $province_model = new ProvinceModel();
-
-        $province_list = [];
-        //edit
         if (!empty($id) && is_numeric($id)) {
-            $data['text_form']   = lang('CountryDistrictAdmin.text_edit');
-            $data['text_submit'] = lang('CountryDistrictAdmin.button_save');
+            $data['text_form']   = lang('CurrencyAdmin.text_edit');
+            $data['text_submit'] = lang('CurrencyAdmin.button_save');
             $breadcrumb_url      = site_url(self::MANAGE_URL . "/edit/$id");
 
             $data_form = $this->model->find($id);
@@ -199,22 +183,13 @@ class DistrictsManage extends AdminController
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
-            $province_data = $province_model->where('province_id', $data_form['province_id'])->first();
-            if (!empty($province_data)) {
-                $province_list           = $province_model->getListDisplay($province_data['country_id']);
-                $data_form['country_id'] = $province_data['country_id'];
-            }
-
             // display the edit user form
             $data['edit_data'] = $data_form;
         } else {
-            $data['text_form']   = lang('CountryDistrictAdmin.text_add');
-            $data['text_submit'] = lang('CountryDistrictAdmin.button_add');
+            $data['text_form']   = lang('CurrencyAdmin.text_add');
+            $data['text_submit'] = lang('CurrencyAdmin.button_add');
             $breadcrumb_url      = site_url(self::MANAGE_URL . "/add");
         }
-
-        $data['country_list']  = $country_model->getListDisplay();
-        $data['province_list'] = $province_list;
 
         $data['errors'] = $this->errors;
 
@@ -227,14 +202,12 @@ class DistrictsManage extends AdminController
             ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
-            ::load('districts/form', $data);
+            ::load('form', $data);
     }
 
     private function _validateForm()
     {
-        $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        $this->validator->setRule('name', lang('Admin.text_name'), 'required');
-        $this->validator->setRule('province_id', lang('CountryDistrictAdmin.text_province'), 'required|is_natural_no_zero');
+        $this->validator->setRule('name', lang('CurrencyAdmin.text_name'), 'required');
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();
@@ -269,5 +242,16 @@ class DistrictsManage extends AdminController
         $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')];
 
         json_output($data);
+    }
+
+    public function refresh()
+    {
+        if ($this->model->updateCurrency()) {
+            set_alert(lang('CurrencyAdmin.refresh_success'), ALERT_SUCCESS, ALERT_POPUP);
+        } else {
+            set_alert(lang('CurrencyAdmin.error_refresh'), ALERT_ERROR, ALERT_POPUP);
+        }
+
+        return redirect()->to(site_url(self::MANAGE_URL));
     }
 }
