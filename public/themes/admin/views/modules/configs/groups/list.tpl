@@ -24,8 +24,8 @@
 					</button>
 					<ul class="dropdown-menu" aria-labelledby="btn_group_drop_setting">
 						<li><a class="dropdown-item" href="{site_url("manage/configs")}">{lang('ConfigGroupAdmin.module_configs')}</a></li>
-						<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('ConfigGroupAdmin.translate_frontend_id')}">{lang("Admin.text_translate")}</a></li>
-						<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('ConfigGroupAdmin.translate_admin_id')}">{lang("Admin.text_translate_admin")}</a></li>
+						<li><a class="dropdown-item" href="{site_url('manage/translations')}?module_id={lang('ConfigGroupAdmin.translate_frontend_id')}">{lang("Admin.text_translate")}</a></li>
+						<li><a class="dropdown-item" href="{site_url('manage/translations')}?module_id={lang('ConfigGroupAdmin.translate_admin_id')}">{lang("Admin.text_translate_admin")}</a></li>
 					</ul>
 				</div>
 			</div>

@@ -5,12 +5,12 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('translations', ['namespace' => 'App\Modules\Translations\Controllers'], function($subroutes){
-    $subroutes->add('manage', 'Manage::index');
-    $subroutes->add('manage/add', 'Manage::add');
-    $subroutes->add('manage/edit', 'Manage::edit');
-    $subroutes->add('manage/save', 'Manage::save');
-    $subroutes->add('manage/delete', 'Manage::delete');
-    $subroutes->add('manage/publish', 'Manage::publish');
-    $subroutes->add('manage/write', 'Manage::write');
+$routes->group('manage', ['namespace' => 'App\Modules\Translations\Controllers\Admin'], function($subroutes){
+    $subroutes->add('translations', 'Translations::index');
+    $subroutes->add('translations/add', 'Translations::add');
+    $subroutes->add('translations/edit', 'Translations::edit');
+    $subroutes->add('translations/save', 'Translations::save');
+    $subroutes->add('translations/delete', 'Translations::delete');
+    $subroutes->add('translations/publish', 'Translations::publish');
+    $subroutes->add('translations/write', 'Translations::write');
 });

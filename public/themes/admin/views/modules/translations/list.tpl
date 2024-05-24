@@ -75,7 +75,7 @@
 
                             <div class="mb-2">{lang("TranslationAdmin.text_total")}: {count($list)}</div>
 
-                            {form_open('translations/manage/save', ['id' => 'save_validationform'])}
+                            {form_open('manage/translations/save', ['id' => 'save_validationform'])}
                                 {form_hidden('module_id', $module.id)}
                                 <div class="table-responsive">
                                     <table class="table table-striped table-hover table-bordered second">
@@ -155,7 +155,7 @@
                 <div class="modal-body">
                     <div id="add_validation_error" class="text-danger"></div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        {form_open('translations/manage/add', ['id' => 'add_lang_form'])}
+                        {form_open('manage/translations/add', ['id' => 'add_lang_form'])}
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
                                     {lang('TranslationAdmin.text_modules')}
@@ -219,7 +219,7 @@
                 <div class="modal-body">
                     <div id="edit_validation_error" class="text-danger"></div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        {form_open('translations/manage/edit', ['id' => 'edit_lang_form'])}
+                        {form_open('manage/translations/edit', ['id' => 'edit_lang_form'])}
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 col-form-label required-label text-sm-end">
                                     {lang('TranslationAdmin.text_modules')}
@@ -439,7 +439,7 @@
                     action: function(){
                         var key = $(obj).data("key");
                         $.ajax({
-                            url: 'translations/manage/delete',
+                            url: 'manage/translations/delete',
                             type: 'POST',
                             data: {
 								module_id: $(obj).data("module"),
@@ -509,7 +509,7 @@
                     keys: ['y', 'enter', 'shift'],
                     action: function(){
                         $.ajax({
-                            url: 'translations/manage/write',
+                            url: 'manage/translations/write',
                             type: 'POST',
                             data: {
                                 module_id: module_id,

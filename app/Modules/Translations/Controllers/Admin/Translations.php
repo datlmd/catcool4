@@ -1,16 +1,16 @@
-<?php namespace App\Modules\Translations\Controllers;
+<?php namespace App\Modules\Translations\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Modules\Models\ModuleModel;
 use App\Modules\Languages\Models\LanguageModel;
 use App\Modules\Translations\Models\TranslationModel;
 
-class Manage extends AdminController
+class Translations extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'translations/manage';
-    CONST MANAGE_URL  = 'translations/manage';
+    CONST MANAGE_ROOT = 'manage/translations';
+    CONST MANAGE_URL  = 'manage/translations';
 
     const FILTER_DEFAULT_FRONTEND = 44;
 

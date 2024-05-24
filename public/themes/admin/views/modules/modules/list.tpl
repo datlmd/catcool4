@@ -97,7 +97,7 @@
 										<td>
 											{$item.sub_module}
 										</td>
-										<td class="text-center">{anchor("translations/manage?module_id=`$item.id`", 'Translation')}</td>
+										<td class="text-center">{anchor("manage/translations?module_id=`$item.id`", 'Translation')}</td>
 										<td>
 											<div class="switch-button switch-button-xs catcool-center">
 												{form_checkbox("published_`$item.id`", ($item.published eq STATUS_ON) ? true : false, ($item.published eq STATUS_ON) ? true : false, ['id' => 'published_'|cat:$item.id, 'data-id' => $item.id, 'data-published' => $item.published, 'class' => 'change_publish'])}
