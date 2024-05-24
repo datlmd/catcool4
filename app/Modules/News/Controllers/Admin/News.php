@@ -1,18 +1,20 @@
-<?php namespace App\Modules\Posts\Controllers;
+<?php
+
+namespace App\Modules\News\Controllers\Admin;
 
 use App\Controllers\AdminController;
-use App\Modules\Posts\Models\PostModel;
-use App\Modules\Posts\Models\CategoryModel;
+use App\Modules\News\Models\CategoryModel;
+use App\Modules\News\Models\NewsModel;
 
-class Manage extends AdminController
+class News extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'posts/manage';
-    CONST MANAGE_URL  = 'posts/manage';
+    const MANAGE_ROOT = 'manage/news';
+    const MANAGE_URL = 'manage/news';
 
-    CONST SEO_URL_MODULE   = 'posts';
-    CONST SEO_URL_RESOURCE = 'Posts::Detail/%s';
+    const SEO_URL_MODULE = 'news';
+    const SEO_URL_RESOURCE = 'News::Detail/%s';
 
     public function __construct()
     {
@@ -20,7 +22,7 @@ class Manage extends AdminController
 
         $this->themes->setTheme(config_item('theme_admin'));
 
-        $this->model = new PostModel();
+        $this->model = new NewsModel();
         $this->model_category = new CategoryModel();
 
         //create url manage
@@ -29,31 +31,31 @@ class Manage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('PostAdmin.heading_title'), base_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang('NewsAdmin.heading_title'), base_url(self::MANAGE_URL));
     }
 
     public function index()
     {
-        add_meta(['title' => lang("PostAdmin.heading_title")], $this->themes);
+        add_meta(['title' => lang('NewsAdmin.heading_title')], $this->themes);
 
-        $limit       = $this->request->getGet('limit');
-        $sort        = $this->request->getGet('sort');
-        $order       = $this->request->getGet('order');
-        $is_trash    = $this->request->getGet('is_trash');
-        $filter_keys = ['post_id', 'name', 'category_id', 'limit'];
+        $limit = $this->request->getGet('limit');
+        $sort = $this->request->getGet('sort');
+        $order = $this->request->getGet('order');
+        $is_trash = $this->request->getGet('is_trash');
+        $filter_keys = ['news_id', 'name', 'category_id', 'limit'];
 
-        $tpl_name = "list";
+        $tpl_name = 'list';
         if (!empty($is_trash) && $is_trash == 1) {
-            $tpl_name = "list_trash";
+            $tpl_name = 'list_trash';
             $list = $this->model->onlyDeleted()->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
         } else {
             $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
         }
 
-        $category_list = $this->model_category->getPostCategories($this->language_id);
+        $category_list = $this->model_category->getNewsCategories($this->language_id);
 
-        $post_list = $list->paginate($limit);
-        foreach ($post_list as $key_news => $value) {
+        $news_list = $list->paginate($limit);
+        foreach ($news_list as $key_news => $value) {
             $value = $this->model->formatDetail($value);
 
             $value['preview_url'] = $value['detail_url'];
@@ -61,21 +63,21 @@ class Manage extends AdminController
                 $value['preview_url'] = str_ireplace(get_seo_extension(), '.preview', $value['detail_url']);
             }
 
-            $post_list[$key_news] = $value;
+            $news_list[$key_news] = $value;
         }
 
         $data = [
-            'breadcrumb'    => $this->breadcrumb->render(),
-            'list'          => $post_list,
-            'pager'         => $list->pager,
-            'sort'          => empty($sort) ? 'post_id' : $sort,
-            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'           => $this->getUrlFilter(array_merge($filter_keys, ['is_trash'])),
+            'breadcrumb' => $this->breadcrumb->render(),
+            'list' => $news_list,
+            'pager' => $list->pager,
+            'sort' => empty($sort) ? 'news_id' : $sort,
+            'order' => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url' => $this->getUrlFilter(array_merge($filter_keys, ['is_trash'])),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
-            'is_trash'      => $is_trash,
-            'count_trash'   => $this->model->onlyDeleted()->countAllResults(),
+            'is_trash' => $is_trash,
+            'count_trash' => $this->model->onlyDeleted()->countAllResults(),
             'category_list' => format_tree(['data' => $category_list, 'key_id' => 'category_id']),
-            'kenh14_list'   => Config('Robot')->pageKenh14Post,
+            'kenh14_list' => Config('Robot')->pageKenh14,
         ];
 
         $this->themes
@@ -90,15 +92,17 @@ class Manage extends AdminController
         if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
-                return redirect()->back()->withInput()->with("errors", $this->errors);
+
+                return redirect()->back()->withInput()->with('errors', $this->errors);
             }
 
             $category_ids = $this->request->getPost('category_ids');
             if (!empty($category_ids)) {
-                $category_ids   = (is_array($category_ids)) ? $category_ids : explode(",", $category_ids);
+                $category_ids = (is_array($category_ids)) ? $category_ids : explode(',', $category_ids);
                 $categorie_list = $this->model_category->find($category_ids);
                 if (!empty($category_ids) && empty($categorie_list)) {
                     set_alert(lang('Admin.error_empty'), ALERT_ERROR);
+
                     return redirect()->back()->withInput();
                 }
             }
@@ -109,14 +113,14 @@ class Manage extends AdminController
             } else {
                 $publish_date_hour = $this->request->getPost('publish_date_hour');
                 $publish_date_hour = empty($publish_date_hour) ? get_date('H:i') : $publish_date_hour;
-                $publish_date      = $publish_date . ' ' . $publish_date_hour;
-                $publish_date      = date('Y-m-d H:i:00', strtotime(str_replace('/', '-', $publish_date)));
+                $publish_date = $publish_date.' '.$publish_date_hour;
+                $publish_date = date('Y-m-d H:i:00', strtotime(str_replace('/', '-', $publish_date)));
             }
 
             $category_ids = $this->request->getPost('category_ids');
             if (!empty($category_ids)) {
                 //check parent id and save it
-                $category_list = $this->model_category->getPostCategories($this->language_id);
+                $category_list = $this->model_category->getNewsCategories($this->language_id);
                 $parent_ids = [];
                 foreach ($category_ids as $value) {
                     if (empty($category_list[$value])) {
@@ -133,48 +137,50 @@ class Manage extends AdminController
                     }
                 }
             }
-            
+
             $add_data = [
-                'name'              => $this->request->getPost('name'),
-                'slug'              => !empty($this->request->getPost('slug')) ? slugify($this->request->getPost('slug')) : slugify($this->request->getPost('name')),
-                'description'       => $this->request->getPost('description'),
-                'content'           => $this->request->getPost('content'),
-                'meta_title'        => $this->request->getPost('meta_title'),
-                'meta_description'  => $this->request->getPost('meta_description'),
-                'meta_keyword'      => $this->request->getPost('meta_keyword'),
-                'publish_date'      => $publish_date,
-                'sort_order'        => $this->request->getPost('sort_order'),
-                'images'            => json_encode($this->request->getPost('images'), JSON_FORCE_OBJECT),
-                'tags'              => $this->request->getPost('tags'),
-                'author'            => $this->request->getPost('author'),
-                'category_ids'      => json_encode($category_ids, JSON_FORCE_OBJECT),
-                'related_ids'       => json_encode($this->request->getPost('related_ids'), JSON_FORCE_OBJECT),
-                'source_type'       => $this->request->getPost('source_type'),
-                'source'            => $this->request->getPost('source'),
-                'tracking_code'     => $this->request->getPost('tracking_code'),
-                'post_format'       => $this->request->getPost('post_format'),
-                'is_ads'            => !empty($this->request->getPost('is_ads')) ? STATUS_ON : STATUS_OFF,
-                'is_fb_ia'          => !empty($this->request->getPost('is_fb_ia')) ? STATUS_ON : STATUS_OFF,
-                'is_hot'            => !empty($this->request->getPost('is_hot')) ? STATUS_ON : STATUS_OFF,
-                'is_homepage'       => !empty($this->request->getPost('is_homepage')) ? STATUS_ON : STATUS_OFF,
+                'name' => $this->request->getPost('name'),
+                'slug' => !empty($this->request->getPost('slug')) ? slugify($this->request->getPost('slug')) : slugify($this->request->getPost('name')),
+                'description' => $this->request->getPost('description'),
+                'content' => $this->request->getPost('content'),
+                'meta_title' => $this->request->getPost('meta_title'),
+                'meta_description' => $this->request->getPost('meta_description'),
+                'meta_keyword' => $this->request->getPost('meta_keyword'),
+                'publish_date' => $publish_date,
+                'sort_order' => $this->request->getPost('sort_order'),
+                'images' => json_encode($this->request->getPost('images'), JSON_FORCE_OBJECT),
+                'tags' => $this->request->getPost('tags'),
+                'author' => $this->request->getPost('author'),
+                'category_ids' => json_encode($category_ids, JSON_FORCE_OBJECT),
+                'related_ids' => json_encode($this->request->getPost('related_ids'), JSON_FORCE_OBJECT),
+                'source_type' => $this->request->getPost('source_type'),
+                'source' => $this->request->getPost('source'),
+                'tracking_code' => $this->request->getPost('tracking_code'),
+                'post_format' => $this->request->getPost('post_format'),
+                'is_ads' => !empty($this->request->getPost('is_ads')) ? STATUS_ON : STATUS_OFF,
+                'is_fb_ia' => !empty($this->request->getPost('is_fb_ia')) ? STATUS_ON : STATUS_OFF,
+                'is_hot' => !empty($this->request->getPost('is_hot')) ? STATUS_ON : STATUS_OFF,
+                'is_homepage' => !empty($this->request->getPost('is_homepage')) ? STATUS_ON : STATUS_OFF,
                 'is_disable_follow' => !empty($this->request->getPost('is_disable_follow')) ? STATUS_ON : STATUS_OFF,
-                'is_disable_robot'  => !empty($this->request->getPost('is_disable_robot')) ? STATUS_ON : STATUS_OFF,
-                'ip'                => $this->request->getIPAddress(),
-                'user_id'           => $this->user->getId(),
-                'is_comment'        => $this->request->getPost('is_comment'),
-                'published'         => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-                'language_id'       => $this->language_id,
+                'is_disable_robot' => !empty($this->request->getPost('is_disable_robot')) ? STATUS_ON : STATUS_OFF,
+                'ip' => $this->request->getIPAddress(),
+                'user_id' => $this->user->getId(),
+                'is_comment' => $this->request->getPost('is_comment'),
+                'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'language_id' => $this->language_id,
             ];
 
             $id = $this->model->insert($add_data);
-            if ($id === FALSE) {
+            if ($id === false) {
                 set_alert(lang('Admin.error'), ALERT_ERROR);
+
                 return redirect()->back()->withInput();
             }
 
             $this->model->deleteCache();
 
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -185,21 +191,24 @@ class Manage extends AdminController
     {
         if (is_null($id)) {
             set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()) && $id == $this->request->getPost('post_id')) {
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('news_id')) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
+
                 return redirect()->back()->withInput();
             }
             try {
                 $category_ids = $this->request->getPost('category_ids');
                 if (!empty($category_ids)) {
-                    $category_ids   = (is_array($category_ids)) ? $category_ids : explode(",", $category_ids);
+                    $category_ids = (is_array($category_ids)) ? $category_ids : explode(',', $category_ids);
                     $categorie_list = $this->model_category->find($category_ids);
                     if (!empty($category_ids) && empty($categorie_list)) {
                         set_alert(lang('Admin.error_empty'), ALERT_ERROR);
+
                         return redirect()->back()->withInput();
                     }
                 }
@@ -210,14 +219,14 @@ class Manage extends AdminController
                 } else {
                     $publish_date_hour = $this->request->getPost('publish_date_hour');
                     $publish_date_hour = empty($publish_date_hour) ? get_date('H:i') : $publish_date_hour;
-                    $publish_date = $publish_date . ' ' . $publish_date_hour;
+                    $publish_date = $publish_date.' '.$publish_date_hour;
                     $publish_date = date('Y-m-d H:i:00', strtotime(str_replace('/', '-', $publish_date)));
                 }
 
                 $category_ids = $this->request->getPost('category_ids');
                 if (!empty($category_ids)) {
                     //check parent id and save it
-                    $category_list = $this->model_category->getPostCategories($this->language_id);
+                    $category_list = $this->model_category->getNewsCategories($this->language_id);
                     $parent_ids = [];
                     foreach ($category_ids as $value) {
                         if (empty($category_list[$value])) {
@@ -236,38 +245,39 @@ class Manage extends AdminController
                 }
 
                 $edit_data = [
-                    'name'              => $this->request->getPost('name'),
-                    'slug'              => !empty($this->request->getPost('slug')) ? slugify($this->request->getPost('slug')) : slugify($this->request->getPost('name')),
-                    'description'       => $this->request->getPost('description'),
-                    'content'           => $this->request->getPost('content'),
-                    'meta_title'        => $this->request->getPost('meta_title'),
-                    'meta_description'  => $this->request->getPost('meta_description'),
-                    'meta_keyword'      => $this->request->getPost('meta_keyword'),
-                    'publish_date'      => $publish_date,
-                    'sort_order'        => $this->request->getPost('sort_order'),
-                    'images'            => json_encode($this->request->getPost('images'), JSON_FORCE_OBJECT),
-                    'tags'              => $this->request->getPost('tags'),
-                    'author'            => $this->request->getPost('author'),
-                    'category_ids'      => json_encode($category_ids, JSON_FORCE_OBJECT),
-                    'related_ids'       => json_encode($this->request->getPost('related_ids'), JSON_FORCE_OBJECT),
-                    'source_type'       => $this->request->getPost('source_type'),
-                    'source'            => $this->request->getPost('source'),
-                    'tracking_code'     => $this->request->getPost('tracking_code'),
-                    'post_format'       => $this->request->getPost('post_format'),
-                    'is_ads'            => !empty($this->request->getPost('is_ads')) ? STATUS_ON : STATUS_OFF,
-                    'is_fb_ia'          => !empty($this->request->getPost('is_fb_ia')) ? STATUS_ON : STATUS_OFF,
-                    'is_hot'            => !empty($this->request->getPost('is_hot')) ? STATUS_ON : STATUS_OFF,
-                    'is_homepage'       => !empty($this->request->getPost('is_homepage')) ? STATUS_ON : STATUS_OFF,
+                    'name' => $this->request->getPost('name'),
+                    'slug' => !empty($this->request->getPost('slug')) ? slugify($this->request->getPost('slug')) : slugify($this->request->getPost('name')),
+                    'description' => $this->request->getPost('description'),
+                    'content' => $this->request->getPost('content'),
+                    'meta_title' => $this->request->getPost('meta_title'),
+                    'meta_description' => $this->request->getPost('meta_description'),
+                    'meta_keyword' => $this->request->getPost('meta_keyword'),
+                    'publish_date' => $publish_date,
+                    'sort_order' => $this->request->getPost('sort_order'),
+                    'images' => json_encode($this->request->getPost('images'), JSON_FORCE_OBJECT),
+                    'tags' => $this->request->getPost('tags'),
+                    'author' => $this->request->getPost('author'),
+                    'category_ids' => json_encode($category_ids, JSON_FORCE_OBJECT),
+                    'related_ids' => json_encode($this->request->getPost('related_ids'), JSON_FORCE_OBJECT),
+                    'source_type' => $this->request->getPost('source_type'),
+                    'source' => $this->request->getPost('source'),
+                    'tracking_code' => $this->request->getPost('tracking_code'),
+                    'post_format' => $this->request->getPost('post_format'),
+                    'is_ads' => !empty($this->request->getPost('is_ads')) ? STATUS_ON : STATUS_OFF,
+                    'is_fb_ia' => !empty($this->request->getPost('is_fb_ia')) ? STATUS_ON : STATUS_OFF,
+                    'is_hot' => !empty($this->request->getPost('is_hot')) ? STATUS_ON : STATUS_OFF,
+                    'is_homepage' => !empty($this->request->getPost('is_homepage')) ? STATUS_ON : STATUS_OFF,
                     'is_disable_follow' => !empty($this->request->getPost('is_disable_follow')) ? STATUS_ON : STATUS_OFF,
-                    'is_disable_robot'  => !empty($this->request->getPost('is_disable_robot')) ? STATUS_ON : STATUS_OFF,
-                    'ip'                => $this->request->getIPAddress(),
-                    'user_id'           => $this->user->getId(),
-                    'is_comment'        => $this->request->getPost('is_comment'),
-                    'published'         => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                    'is_disable_robot' => !empty($this->request->getPost('is_disable_robot')) ? STATUS_ON : STATUS_OFF,
+                    'ip' => $this->request->getIPAddress(),
+                    'user_id' => $this->user->getId(),
+                    'is_comment' => $this->request->getPost('is_comment'),
+                    'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
                 ];
 
-                if (!$this->model->update($id, $edit_data)) {
+                if (!$this->model->updateInfo($edit_data, $id)) {
                     set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
+
                     return redirect()->back()->withInput();
                 }
 
@@ -275,9 +285,11 @@ class Manage extends AdminController
                 $this->model->deleteCache($id);
 
                 set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
+
                 return redirect()->back();
             } catch (\Exception $ex) {
                 set_alert($ex->getMessage(), ALERT_ERROR, ALERT_POPUP);
+
                 return redirect()->back()->withInput();
             }
         }
@@ -298,13 +310,13 @@ class Manage extends AdminController
         //delete
         if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
-            $ids = (is_array($ids)) ? $ids : explode(",", $ids);
+            $ids = (is_array($ids)) ? $ids : explode(',', $ids);
 
             foreach ($ids as $id) {
                 if (!empty($is_trash) && $is_trash == 1) {
-                    $info = $this->model->find($id);
+                    $info = $this->model->getInfo($id);
                 } else {
-                    $info = $this->model->onlyDeleted()->find($id);
+                    $info = $this->model->onlyDeleted()->getInfo($id);
                 }
 
                 if (empty($info)) {
@@ -312,9 +324,9 @@ class Manage extends AdminController
                 }
 
                 if (!empty($is_trash) && $is_trash == 1) {
-                    $this->model->delete($id);
+                    $this->model->deleteInfo($id);
                 } else {
-                    $this->model->delete($id, true);
+                    $this->model->deleteInfo($id, null, true);
                 }
 
                 $this->model->deleteCache($id);
@@ -340,12 +352,12 @@ class Manage extends AdminController
         }
 
         $list_delete = [];
-        $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
+        $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
         foreach ($delete_ids as $id) {
             if (!empty($is_trash) && $is_trash == 1) {
-                $list_delete[] = $this->model->find($id);
+                $list_delete[] = $this->model->getInfo($id);
             } else {
-                $list_delete[] = $this->model->onlyDeleted()->find($id);
+                $list_delete[] = $this->model->onlyDeleted()->getInfo($id);
             }
         }
         if (empty($list_delete)) {
@@ -354,8 +366,8 @@ class Manage extends AdminController
 
         $data = [
             'list_delete' => $list_delete,
-            'ids'         => $delete_ids,
-            'is_trash'    => $is_trash
+            'ids' => $this->request->getPost('delete_ids'),
+            'is_trash' => $is_trash,
         ];
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
@@ -390,14 +402,15 @@ class Manage extends AdminController
 
         $data['language_list'] = list_language_admin();
 
-        $category_list = $this->model_category->getPostCategories($this->language_id);
+        $category_list = $this->model_category->getNewsCategories($this->language_id);
         $data['categories_tree'] = format_tree(['data' => $category_list, 'key_id' => 'category_id']);
 
         //edit
         if (!empty($id)) {
-            $data_form = $this->model->withDeleted()->find($id);
+            $data_form = $this->model->withDeleted()->getInfo($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
@@ -410,21 +423,19 @@ class Manage extends AdminController
                 }
             }
 
-            $data['text_form'] = lang('Admin.text_edit');
-            $breadcrumb_url    = site_url(self::MANAGE_URL . "/edit/$id");
+            $data['text_form'] = lang('NewsAdmin.text_edit');
+            $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$id");
 
             // display the edit user form
             $data['edit_data'] = $data_form;
         } else {
-
             if ($this->request->getGet('url')) {
-                $news_model = new \App\Modules\News\Models\NewsModel();
-                $data['edit_data'] = $news_model->robotDetail($this->request->getGet('url'));
-                $data['url']       = $this->request->getGet('url');
+                $data['edit_data'] = $this->model->robotDetail($this->request->getGet('url'));
+                $data['url'] = $this->request->getGet('url');
             }
 
-            $data['text_form'] = lang('Admin.text_add');
-            $breadcrumb_url    = site_url(self::MANAGE_URL . "/add");
+            $data['text_form'] = lang('NewsAdmin.text_add');
+            $breadcrumb_url = site_url(self::MANAGE_URL.'/add');
         }
 
         $data['errors'] = $this->errors;
@@ -449,7 +460,7 @@ class Manage extends AdminController
         $this->validator->setRule('category_ids', lang('Admin.text_category'), 'required');
 
         $is_validation = $this->validator->withRequest($this->request)->run();
-        $this->errors  = $this->validator->getErrors();
+        $this->errors = $this->validator->getErrors();
 
         return $is_validation;
     }
@@ -466,14 +477,14 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        $id        = $this->request->getPost('id');
-        $item_edit = $this->model->find($id);
+        $id = $this->request->getPost('id');
+        $item_edit = $this->model->getInfo($id);
         if (empty($item_edit)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $item_edit['published'] = !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF;
-        if (!$this->model->update($id, $item_edit)) {
+        if (!$this->model->updateInfo($item_edit, $id)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
@@ -495,11 +506,11 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        $id     = $this->request->getPost('id');
+        $id = $this->request->getPost('id');
         $status = $this->request->getPost('status');
-        $type   = $this->request->getPost('type');
+        $type = $this->request->getPost('type');
 
-        $item_edit = $this->model->find($id);
+        $item_edit = $this->model->getInfo($id);
         if (empty($item_edit)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
@@ -511,8 +522,7 @@ class Manage extends AdminController
             $item_edit['is_homepage'] = !empty($status) ? STATUS_ON : STATUS_OFF;
         }
 
-
-        if (!$this->model->update($id, $item_edit)) {
+        if (!$this->model->updateInfo($item_edit, $id)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
@@ -520,63 +530,6 @@ class Manage extends AdminController
         $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')];
 
         json_output($data);
-    }
-
-    public function related()
-    {
-        if (!$this->request->isAJAX()) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        }
-
-        if (empty($this->request->getPost())) {
-            json_output(['status' => 'ng', 'msg' => lang('Admin.error_json')]);
-        }
-
-        $data = [
-            'status' => 'ok',
-            'view' => $this->themes::view('related_list', ['related_list' => $this->model->findRelated($this->request->getPost('related'))], true)
-        ];
-
-        json_output($data);
-    }
-
-    public function restore($id = null)
-    {
-        try {
-            $data_form = $this->model->onlyDeleted()->find($id);
-            if (empty($data_form)) {
-                set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
-                return redirect()->back();
-            }
-
-            if (!$this->model->update($id, ['deleted' => null])) {
-                set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
-                return redirect()->back()->withInput();
-            }
-
-            //reset cache
-            $this->model->deleteCache($id);
-
-            set_alert(lang('Admin.text_restore_success'), ALERT_SUCCESS, ALERT_POPUP);
-            return redirect()->back();
-
-        } catch (\Exception $ex) {
-            set_alert($ex->getMessage(), ALERT_ERROR, ALERT_POPUP);
-            return redirect()->back();
-        }
-    }
-
-    public function emptyTrash()
-    {
-        try {
-            $this->model->purgeDeleted();
-
-            set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
-            return redirect()->back();
-        } catch (\Exception $ex) {
-            set_alert($ex->getMessage(), ALERT_ERROR, ALERT_POPUP);
-            return redirect()->back();
-        }
     }
 
     public function robot()
@@ -593,13 +546,13 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        $list       = [];
+        $list = [];
         $robot_type = $this->request->getPost('robot_type');
         $robot_href = $this->request->getPost('robot_href');
 
         switch ($robot_type) {
             case 'kenh14':
-                $kenh14 = $robot->pageKenh14Post;
+                $kenh14 = $robot->pageKenh14;
                 if (!empty($robot_href)) {
                     foreach ($kenh14['attribute_menu'] as $key => $value) {
                         if (!in_array($value['href'], $robot_href)) {
@@ -625,5 +578,124 @@ class Manage extends AdminController
         $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('NewsAdmin.text_scanned', [$total])];
 
         json_output($data);
+    }
+
+    public function related()
+    {
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        if (empty($this->request->getPost())) {
+            json_output(['status' => 'ng', 'msg' => lang('Admin.error_json')]);
+        }
+
+        $data = [
+            'status' => 'ok',
+            'view' => $this->themes::view('related_list', ['related_list' => $this->model->findRelated($this->request->getPost('related'))], true),
+        ];
+
+        json_output($data);
+    }
+
+    public function restore($id = null)
+    {
+        try {
+            $data_form = $this->model->onlyDeleted()->getInfo($id);
+            if (empty($data_form)) {
+                set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
+                return redirect()->back();
+            }
+
+            if (!$this->model->updateInfo(['deleted' => null], $id)) {
+                set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
+
+                return redirect()->back()->withInput();
+            }
+
+            //reset cache
+            $this->model->deleteCache($id);
+
+            set_alert(lang('Admin.text_restore_success'), ALERT_SUCCESS, ALERT_POPUP);
+
+            return redirect()->back();
+        } catch (\Exception $ex) {
+            set_alert($ex->getMessage(), ALERT_ERROR, ALERT_POPUP);
+
+            return redirect()->back();
+        }
+    }
+
+    public function emptyTrash()
+    {
+        try {
+            $this->model->purgeDeleted();
+
+            set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
+
+            return redirect()->back();
+        } catch (\Exception $ex) {
+            set_alert($ex->getMessage(), ALERT_ERROR, ALERT_POPUP);
+
+            return redirect()->back();
+        }
+    }
+
+    public function fix()
+    {
+        try {
+            $limit = $this->request->getGet('limit');
+            $limit = !empty($limit) ? $limit : 100;
+
+            $result = $this->model->select(['news_id', 'name', 'slug', 'source', 'images', 'created_at'])
+                ->orderBy('publish_date', 'DESC')
+                ->notLike('images', 'http')
+                ->where(['published' => STATUS_ON])
+                ->findAll($limit);
+
+            $list = [];
+            foreach ($result as $key_news => $value) {
+                $list[] = $this->model->formatJsonDecode($value);
+            }
+
+            if (empty($list)) {
+                cc_debug('Total: 0');
+            }
+
+            $news_delete = [];
+            foreach ($list as $key => $value) {
+                $meta = service('robot')->getMeta(Config('Robot')->pageKenh14['attribute_meta'], $value['source']);
+
+                if (empty($meta['image_fb'])) {
+                    $this->model->delete($value['news_id']);
+                    $news_delete[] = $value['news_id'];
+                    continue;
+                }
+                $value['images']['robot'] = $meta['image_fb'];
+                $value['images']['robot_fb'] = $meta['image_fb'];
+                $img = json_encode($this->model->formatImageList($value['images']), JSON_FORCE_OBJECT);
+
+                $this->model->update($value['news_id'], ['images' => $img]);
+
+                if (is_file(get_upload_path($value['images']['robot']))) {
+                    unlink(get_upload_path($value['images']['robot']));
+                }
+
+                if (is_file(get_upload_path($value['images']['robot_fb']))) {
+                    unlink(get_upload_path($value['images']['robot_fb']));
+                }
+
+                if ($key % 50 == 0) {
+                    usleep(500);
+                }
+            }
+
+            cc_debug('OK', false);
+            cc_debug($news_delete, false);
+            cc_debug($list[0]);
+        } catch (\Exception $ex) {
+            cc_debug($ex->getMessage());
+        }
     }
 }

@@ -1,17 +1,17 @@
-<?php namespace App\Modules\Menus\Controllers;
+<?php namespace App\Modules\Menus\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Menus\Models\MenuModel;
 use App\Modules\Menus\Models\MenuLangModel;
 
-class Manage extends AdminController
+class Menus extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'menus/manage';
-    CONST MANAGE_URL  = 'menus/manage';
+    CONST MANAGE_ROOT = 'manage/menus';
+    CONST MANAGE_URL  = 'manage/menus';
 
     public function __construct()
     {

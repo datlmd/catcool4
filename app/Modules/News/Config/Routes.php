@@ -5,26 +5,28 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
+$routes->group('manage', ['namespace' => 'App\Modules\News\Controllers\Admin'], function($subroutes){
+    $subroutes->add('news', 'News::index');
+    $subroutes->add('news/add', 'News::add');
+    $subroutes->add('news/edit/(:any)', 'News::edit/$1');
+    $subroutes->add('news/delete', 'News::delete');
+    $subroutes->add('news/publish', 'News::publish');
+    $subroutes->add('news/robot', 'News::robot');
+    $subroutes->add('news/status', 'News::status');
+    $subroutes->add('news/related', 'News::related');
+    $subroutes->add('news/fix', 'News::fix');
+    $subroutes->add('news/restore/(:any)', 'News::restore/$1');
+    $subroutes->add('news/empty_trash', 'News::emptyTrash');
+
+    $subroutes->add('news_categories', 'Categories::index');
+    $subroutes->add('news_categories/add', 'Categories::add');
+    $subroutes->add('news_categories/edit/(:num)', 'Categories::edit/$1');
+    $subroutes->add('news_categories/delete', 'Categories::delete');
+    $subroutes->add('news_categories/publish', 'Categories::publish');
+    $subroutes->add('news_categories/update_sort', 'Categories::updateSort');
+});
+
 $routes->group('news', ['namespace' => 'App\Modules\News\Controllers'], function($subroutes){
-    $subroutes->add('manage', 'Manage::index');
-    $subroutes->add('manage/add', 'Manage::add');
-    $subroutes->add('manage/edit/(:any)', 'Manage::edit/$1');
-    $subroutes->add('manage/delete', 'Manage::delete');
-    $subroutes->add('manage/publish', 'Manage::publish');
-    $subroutes->add('manage/robot', 'Manage::robot');
-    $subroutes->add('manage/status', 'Manage::status');
-    $subroutes->add('manage/related', 'Manage::related');
-    $subroutes->add('manage/fix', 'Manage::fix');
-    $subroutes->add('manage/restore/(:any)', 'Manage::restore/$1');
-    $subroutes->add('manage/empty_trash', 'Manage::emptyTrash');
-
-    $subroutes->add('categories_manage', 'CategoriesManage::index');
-    $subroutes->add('categories_manage/add', 'CategoriesManage::add');
-    $subroutes->add('categories_manage/edit/(:num)', 'CategoriesManage::edit/$1');
-    $subroutes->add('categories_manage/delete', 'CategoriesManage::delete');
-    $subroutes->add('categories_manage/publish', 'CategoriesManage::publish');
-    $subroutes->add('categories_manage/update_sort', 'CategoriesManage::updateSort');
-
     $subroutes->add('test/(:any)', 'News::test/$1');
     $subroutes->add('test', 'News::test');
 });

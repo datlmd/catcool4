@@ -15,7 +15,7 @@
 					<i class="fas fa-cog"></i>
 				</button>
 				<ul class="dropdown-menu" aria-labelledby="btn_group_drop_setting">
-					<li><a class="dropdown-item" href="{site_url('news/categories_manage')}">{lang('CategoryAdmin.heading_title')}</a></li>
+					<li><a class="dropdown-item" href="{site_url('manage/news_categories')}">{lang('CategoryAdmin.heading_title')}</a></li>
 					<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('NewsAdmin.translate_frontend_id')}">{lang("Admin.text_translate")}</a></li>
 					<li><a class="dropdown-item" href="{site_url('translations/manage')}?module_id={lang('NewsAdmin.translate_admin_id')}">{lang("Admin.text_translate_admin")}</a></li>
 				</ul>
@@ -151,7 +151,7 @@
 					<div id="robot_validation_error" class="text-danger mb-2"></div>
 
 					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-						{form_open('news/manage/robot', ['id' => 'robot_news_form'])}
+						{form_open('manage/news/robot', ['id' => 'robot_news_form'])}
 
 						<div class="form-group mb-4">
 							<label class="form-label">Url</label>
@@ -204,7 +204,7 @@
 			$("#robot_validation_error").html('');
 
 			if ($('#robot_news input[name="url"]').val() != "") {
-				window.location.href = 'news/manage/add?url=' + $('#robot_news input[name="url"]').val();
+				window.location.href = 'manage/news/add?url=' + $('#robot_news input[name="url"]').val();
 
 				return;
 			} else {

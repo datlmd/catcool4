@@ -5,25 +5,25 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('posts', ['namespace' => 'App\Modules\Posts\Controllers'], function($subroutes){
-    $subroutes->add('manage', 'Manage::index');
-    $subroutes->add('manage/add', 'Manage::add');
-    $subroutes->add('manage/edit/(:any)', 'Manage::edit/$1');
-    $subroutes->add('manage/delete', 'Manage::delete');
-    $subroutes->add('manage/publish', 'Manage::publish');
-    $subroutes->add('manage/status', 'Manage::status');
-    $subroutes->add('manage/related', 'Manage::related');
-    $subroutes->add('manage/fix', 'Manage::fix');
-    $subroutes->add('manage/restore/(:any)', 'Manage::restore/$1');
-    $subroutes->add('manage/empty_trash', 'Manage::emptyTrash');
-    $subroutes->add('manage/robot', 'Manage::robot');
+$routes->group('manage', ['namespace' => 'App\Modules\Posts\Controllers\Admin'], function($subroutes){
+    $subroutes->add('posts', 'Posts::index');
+    $subroutes->add('posts/add', 'Posts::add');
+    $subroutes->add('posts/edit/(:any)', 'Posts::edit/$1');
+    $subroutes->add('posts/delete', 'Posts::delete');
+    $subroutes->add('posts/publish', 'Posts::publish');
+    $subroutes->add('posts/status', 'Posts::status');
+    $subroutes->add('posts/related', 'Posts::related');
+    $subroutes->add('posts/fix', 'Posts::fix');
+    $subroutes->add('posts/restore/(:any)', 'Posts::restore/$1');
+    $subroutes->add('posts/empty_trash', 'Posts::emptyTrash');
+    $subroutes->add('posts/robot', 'Posts::robot');
 
-    $subroutes->add('categories_manage', 'CategoriesManage::index');
-    $subroutes->add('categories_manage/add', 'CategoriesManage::add');
-    $subroutes->add('categories_manage/edit/(:num)', 'CategoriesManage::edit/$1');
-    $subroutes->add('categories_manage/delete', 'CategoriesManage::delete');
-    $subroutes->add('categories_manage/publish', 'CategoriesManage::publish');
-    $subroutes->add('categories_manage/update_sort', 'CategoriesManage::updateSort');
+    $subroutes->add('post_categories', 'Categories::index');
+    $subroutes->add('post_categories/add', 'Categories::add');
+    $subroutes->add('post_categories/edit/(:num)', 'Categories::edit/$1');
+    $subroutes->add('post_categories/delete', 'Categories::delete');
+    $subroutes->add('post_categories/publish', 'Categories::publish');
+    $subroutes->add('post_categories/update_sort', 'Categories::updateSort');
 });
 
 $routes->add('posts', 'Posts::index', ['namespace' => 'App\Modules\Posts\Controllers']);

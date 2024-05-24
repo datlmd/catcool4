@@ -1,14 +1,14 @@
-<?php namespace App\Modules\Modules\Controllers;
+<?php namespace App\Modules\Modules\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Modules\Models\ModuleModel;
 
-class Manage extends AdminController
+class Modules extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'modules/manage';
-    CONST MANAGE_URL  = 'modules/manage';
+    CONST MANAGE_ROOT = 'manage/modules';
+    CONST MANAGE_URL  = 'manage/modules';
 
     public function __construct()
     {

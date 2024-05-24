@@ -1,18 +1,18 @@
-<?php namespace App\Modules\Posts\Controllers;
+<?php namespace App\Modules\Posts\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Posts\Models\CategoryModel;
 use App\Modules\Routes\Models\RouteModel;
 
-class CategoriesManage extends AdminController
+class Categories extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
     protected $model_route;
 
-    CONST MANAGE_ROOT = 'posts/categories_manage';
-    CONST MANAGE_URL  = 'posts/categories_manage';
+    CONST MANAGE_ROOT = 'manage/post_categories';
+    CONST MANAGE_URL  = 'manage/post_categories';
 
     CONST SEO_URL_MODULE   = 'posts';
     CONST SEO_URL_RESOURCE = 'Categories::Detail/%s';
@@ -32,7 +32,7 @@ class CategoriesManage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('PostAdmin.heading_title'), site_url('posts/manage'));
+        $this->breadcrumb->add(lang('PostAdmin.heading_title'), site_url('manage/posts'));
         $this->breadcrumb->add(lang('CategoryAdmin.heading_title'), base_url(self::MANAGE_URL));
     }
 

@@ -1,18 +1,18 @@
-<?php namespace App\Modules\News\Controllers;
+<?php namespace App\Modules\News\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\News\Models\CategoryModel;
 use App\Modules\Routes\Models\RouteModel;
 
-class CategoriesManage extends AdminController
+class Categories extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
     protected $model_route;
 
-    CONST MANAGE_ROOT = 'news/categories_manage';
-    CONST MANAGE_URL  = 'news/categories_manage';
+    CONST MANAGE_ROOT = 'manage/news_categories';
+    CONST MANAGE_URL  = 'manage/news_categories';
 
     CONST SEO_URL_MODULE   = 'news';
     CONST SEO_URL_RESOURCE = 'Categories::Detail/%s';
@@ -32,7 +32,7 @@ class CategoriesManage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('NewsAdmin.heading_title'), site_url('news/manage'));
+        $this->breadcrumb->add(lang('NewsAdmin.heading_title'), site_url('manage/news'));
         $this->breadcrumb->add(lang('CategoryAdmin.heading_title'), base_url(self::MANAGE_URL));
     }
 

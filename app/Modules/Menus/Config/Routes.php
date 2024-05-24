@@ -5,11 +5,11 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('menus', ['namespace' => 'App\Modules\Menus\Controllers'], function($subroutes){
-    $subroutes->add('manage', 'Manage::index');
-    $subroutes->add('manage/add', 'Manage::add');
-    $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
-    $subroutes->add('manage/delete', 'Manage::delete');
-    $subroutes->add('manage/publish', 'Manage::publish');
-    $subroutes->add('manage/update_sort', 'Manage::updateSort');
+$routes->group('manage', ['namespace' => 'App\Modules\Menus\Controllers\Admin'], function($subroutes){
+    $subroutes->add('menus', 'Menus::index');
+    $subroutes->add('menus/add', 'Menus::add');
+    $subroutes->add('menus/edit/(:num)', 'Menus::edit/$1');
+    $subroutes->add('menus/delete', 'Menus::delete');
+    $subroutes->add('menus/publish', 'Menus::publish');
+    $subroutes->add('menus/update_sort', 'Menus::updateSort');
 });

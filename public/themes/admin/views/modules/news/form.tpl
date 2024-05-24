@@ -199,9 +199,9 @@
                         <h5 class="card-header" data-bs-toggle="collapse" data-bs-target="#article_related_collapse" aria-expanded="false" aria-controls="article_related_collapse">{lang('NewsAdmin.text_related')}</h5>
                         <div class="card-body collapse show" id="article_related_collapse">
                             {if !empty($edit_data.related_list_html)}
-                                {include file=get_theme_path('views/inc/articles/find_related.tpl') related_url='news/manage/related' related_list_html=$edit_data.related_list_html}
+                                {include file=get_theme_path('views/inc/articles/find_related.tpl') related_url='manage/news/related' related_list_html=$edit_data.related_list_html}
                             {else}
-                                {include file=get_theme_path('views/inc/articles/find_related.tpl') related_url='news/manage/related'}
+                                {include file=get_theme_path('views/inc/articles/find_related.tpl') related_url='manage/news/related'}
                             {/if}
                         </div>
                     </div>
@@ -245,7 +245,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group mb-3">
-                                <label class="form-label"><a href="{site_url('news/categories_manage')}" target="_blank" class="link-primary">{lang('Admin.text_category')}</a></label>
+                                <label class="form-label"><a href="{site_url('manage/news_categories')}" target="_blank" class="link-primary">{lang('Admin.text_category')}</a></label>
 
                                 {$output_html = '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>'}
                                 <select name="category_ids[]" id="category_ids[]" class="form-control form-control-sm cc-form-select-multi {if validation_show_error("category_ids")}is-invalid{/if}" multiple="multiple" data-placeholder="{lang('Admin.text_select')}">
@@ -382,7 +382,7 @@
                 </div>
                 <div class="modal-body">
 
-                    {form_open('news/manage/add', ['id' => 'robot_news_form', 'method' => 'get'])}
+                    {form_open('manage/news/add', ['id' => 'robot_news_form', 'method' => 'get'])}
                     <div class="form-group">
                         Url
                         <input type="text" name="url" id="url" class="form-control" value="{if !empty($url)}{$url}{/if}" />

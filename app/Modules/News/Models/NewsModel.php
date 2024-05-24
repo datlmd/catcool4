@@ -265,7 +265,7 @@ class NewsModel extends FarmModel
 
         $this->setTableNameYear($created_at);
 
-        return $this->update($news_id, $created_at);
+        return $this->update($news_id, $data);
     }
 
     public function updateView($news_id, $created_at = null)
