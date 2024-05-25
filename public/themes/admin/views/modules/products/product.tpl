@@ -38,7 +38,7 @@
 				</div>
 				<div class="modal-body">
 					<div id="edit_validation_error" class="text-danger"></div>
-					{form_open('products/manage/edit_sku', ['id' => 'edit_product_sku_form'])}
+					{form_open('manage/products/edit_sku', ['id' => 'edit_product_sku_form'])}
 						<div id="load_product_sku" style="max-width: 600px; margin: 0 auto;"></div>
 					{form_close()}
 				</div>
@@ -71,7 +71,7 @@
 		$('body').append('<div class="loading"><span class="dashboard-spinner spinner-xs"></span></div>');
 
 		$.ajax({
-			url: 'products/manage/get_sku_list',
+			url: 'manage/products/get_sku_list',
 			//type: 'POST',
 			//dataType: 'html',
 			data: {

@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Modules\Products\Controllers;
+namespace App\Modules\Products\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Products\Models\ProductLangModel;
 use App\Modules\Products\Models\ProductModel;
 
-class Manage extends AdminController
+class Products extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
 
-    const MANAGE_ROOT = 'products/manage';
-    const MANAGE_URL = 'products/manage';
+    const MANAGE_ROOT = 'manage/products';
+    const MANAGE_URL = 'manage/products';
 
     const SEO_URL_MODULE = 'products';
     const SEO_URL_RESOURCE = 'Products::Detail/%s';
@@ -604,11 +604,11 @@ class Manage extends AdminController
 
             //product image
             $product_image_model = new \App\Modules\Products\Models\ProductImageModel();
-            $data_form['image_list'] = $product_image_model->getListByProductId($product_id);
+            $data_form['image_list'] = $product_image_model->getImagesByProductId($product_id);
 
             //product attribute
             $product_attribute_model = new \App\Modules\Products\Models\ProductAttributeModel();
-            $data_form['product_attribute_list'] = $product_attribute_model->getListByProductId($product_id);
+            $data_form['product_attribute_list'] = $product_attribute_model->getAttributeByProductId($product_id);
 
             //lay danh sach seo url tu route
             $route_model = new \App\Modules\Routes\Models\RouteModel();
@@ -616,7 +616,7 @@ class Manage extends AdminController
 
             //product option
             $product_option_model = new \App\Modules\Products\Models\ProductOptionModel();
-            $data_form['product_option_list'] = $product_option_model->getListByProductId($product_id);
+            $data_form['product_option_list'] = $product_option_model->getOptionsByProductId($product_id, $this->language_id);
 
             //product variant
             $product_variant_model = new \App\Modules\Products\Models\ProductVariantModel();

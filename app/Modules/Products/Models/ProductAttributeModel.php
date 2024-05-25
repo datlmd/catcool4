@@ -21,7 +21,7 @@ class ProductAttributeModel extends MyModel
         parent::__construct();
     }
 
-    public function getListByProductId($product_id)
+    public function getAttributeByProductId($product_id)
     {
         if (empty($product_id)) {
             return [];

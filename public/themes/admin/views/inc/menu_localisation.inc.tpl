@@ -11,8 +11,8 @@
 			<li><a href="{site_url('manage/locations')}" class="{if !empty($active) && $active eq 'locations'}active{/if}">{lang('LocationAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('manage/languages')}" class="{if !empty($active) && $active eq 'languages'}active{/if}">{lang('LanguageAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('manage/currencies')}" class="{if !empty($active) && $active eq 'currencies'}active{/if}">{lang('CurrencyAdmin.heading_title')}</a></li>
-			<li><a href="{site_url('products/stock_statuses_manage')}" class="{if !empty($active) && $active eq 'stock_statuses'}active{/if}">{lang('ProductStockStatusAdmin.heading_title')}</a></li>
-			<li><a href="{site_url('products/order_statuses_manage')}" class="{if !empty($active) && $active eq 'order_statuses'}active{/if}">{lang('ProductOrderStatusAdmin.heading_title')}</a></li>
+			<li><a href="{site_url('manage/product_stock_statuses')}" class="{if !empty($active) && $active eq 'stock_statuses'}active{/if}">{lang('ProductStockStatusAdmin.heading_title')}</a></li>
+			<li><a href="{site_url('manage/product_order_statuses')}" class="{if !empty($active) && $active eq 'order_statuses'}active{/if}">{lang('ProductOrderStatusAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('subscriptions/statuses_manage')}" class="{if !empty($active) && $active eq 'subscription_statuses'}active{/if}">{lang('SubscriptionStatusAdmin.heading_title')}</a></li>
 			<li>
 				<a href="javascript:void(0);" class="{if strpos($active, 'returns') !== false}active{/if}">{lang('ReturnAdmin.heading_title')}</a>
@@ -29,8 +29,8 @@
 				</ul>
 			</li>
 			<li><a href="{site_url('manage/countries')}" class="{if !empty($active) && $active eq 'countries'}active{/if}">{lang('CountryAdmin.heading_title')}</a></li>
-			<li><a href="{site_url('products/weight_classes_manage')}" class="{if !empty($active) && $active eq 'weight_classes'}active{/if}">{lang('ProductWeightClassAdmin.heading_title')}</a></li>
-			<li><a href="{site_url('products/length_classes_manage')}" class="{if !empty($active) && $active eq 'length_classes'}active{/if}">{lang('ProductLengthClassAdmin.heading_title')}</a></li>
+			<li><a href="{site_url('manage/product_weight_classes')}" class="{if !empty($active) && $active eq 'weight_classes'}active{/if}">{lang('ProductWeightClassAdmin.heading_title')}</a></li>
+			<li><a href="{site_url('manage/product_length_classes')}" class="{if !empty($active) && $active eq 'length_classes'}active{/if}">{lang('ProductLengthClassAdmin.heading_title')}</a></li>
 		</ul>
 	</div>
 {/strip}

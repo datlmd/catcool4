@@ -22,7 +22,7 @@ class ProductOptionModel extends MyModel
         parent::__construct();
     }
 
-    public function getListByProductId($product_id)
+    public function getOptionsByProductId($product_id, $language_id)
     {
         if (empty($product_id)) {
             return [];
@@ -35,7 +35,7 @@ class ProductOptionModel extends MyModel
         $product_option_value_model = new ProductOptionValueModel();
         $option_model = new \App\Modules\Options\Models\OptionModel();
 
-        $option_list = $option_model->getListAll();
+        $option_list = $option_model->getOptions($language_id);
         foreach ($result as $key => $value) {
             if (empty($option_list[$value['option_id']])) {
                 unset($result[$key]);

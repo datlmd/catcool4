@@ -5,43 +5,43 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('products', ['namespace' => 'App\Modules\Products\Controllers'], function($subroutes){
-    $subroutes->add('manage', 'Manage::index');
-    $subroutes->add('manage/add', 'Manage::add');
-    $subroutes->add('manage/save', 'Manage::save');
-    $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
-    $subroutes->add('manage/delete', 'Manage::delete');
-    $subroutes->add('manage/publish', 'Manage::publish');
-    $subroutes->add('manage/related', 'Manage::related');
-    $subroutes->add('manage/edit_sku', 'Manage::editSku');
-    $subroutes->add('manage/get_sku_list', 'Manage::getSkuList');
+$routes->group('manage', ['namespace' => 'App\Modules\Products\Controllers\Admin'], function($subroutes){
+    $subroutes->add('products', 'Products::index');
+    $subroutes->add('products/add', 'Products::add');
+    $subroutes->add('products/save', 'Products::save');
+    $subroutes->add('products/edit/(:num)', 'Products::edit/$1');
+    $subroutes->add('products/delete', 'Products::delete');
+    $subroutes->add('products/publish', 'Products::publish');
+    $subroutes->add('products/related', 'Products::related');
+    $subroutes->add('products/edit_sku', 'Products::editSku');
+    $subroutes->add('products/get_sku_list', 'Products::getSkuList');
 
-    $subroutes->add('weight_classes_manage', 'WeightClassesManage::index');
-    $subroutes->add('weight_classes_manage/add', 'WeightClassesManage::add');
-    $subroutes->add('weight_classes_manage/edit/(:num)', 'WeightClassesManage::edit/$1');
-    $subroutes->add('weight_classes_manage/delete', 'WeightClassesManage::delete');
+    $subroutes->add('product_weight_classes', 'WeightClasses::index');
+    $subroutes->add('product_weight_classes/add', 'WeightClasses::add');
+    $subroutes->add('product_weight_classes/edit/(:num)', 'WeightClasses::edit/$1');
+    $subroutes->add('product_weight_classes/delete', 'WeightClasses::delete');
 
-    $subroutes->add('length_classes_manage', 'LengthClassesManage::index');
-    $subroutes->add('length_classes_manage/add', 'LengthClassesManage::add');
-    $subroutes->add('length_classes_manage/edit/(:num)', 'LengthClassesManage::edit/$1');
-    $subroutes->add('length_classes_manage/delete', 'LengthClassesManage::delete');
+    $subroutes->add('product_length_classes', 'LengthClasses::index');
+    $subroutes->add('product_length_classes/add', 'LengthClasses::add');
+    $subroutes->add('product_length_classes/edit/(:num)', 'LengthClasses::edit/$1');
+    $subroutes->add('product_length_classes/delete', 'LengthClasses::delete');
 
-    $subroutes->add('stock_statuses_manage', 'StockStatusesManage::index');
-    $subroutes->add('stock_statuses_manage/add', 'StockStatusesManage::add');
-    $subroutes->add('stock_statuses_manage/edit/(:num)', 'StockStatusesManage::edit/$1');
-    $subroutes->add('stock_statuses_manage/delete', 'StockStatusesManage::delete');
-    $subroutes->add('stock_statuses_manage/publish', 'StockStatusesManage::publish');
+    $subroutes->add('product_stock_statuses', 'StockStatuses::index');
+    $subroutes->add('product_stock_statuses/add', 'StockStatuses::add');
+    $subroutes->add('product_stock_statuses/edit/(:num)', 'StockStatuses::edit/$1');
+    $subroutes->add('product_stock_statuses/delete', 'StockStatuses::delete');
+    $subroutes->add('product_stock_statuses/publish', 'StockStatuses::publish');
 
-    $subroutes->add('order_statuses_manage', 'OrderStatusesManage::index');
-    $subroutes->add('order_statuses_manage/add', 'OrderStatusesManage::add');
-    $subroutes->add('order_statuses_manage/edit/(:num)', 'OrderStatusesManage::edit/$1');
-    $subroutes->add('order_statuses_manage/delete', 'OrderStatusesManage::delete');
-    $subroutes->add('order_statuses_manage/publish', 'OrderStatusesManage::publish');
+    $subroutes->add('product_order_statuses', 'OrderStatuses::index');
+    $subroutes->add('product_order_statuses/add', 'OrderStatuses::add');
+    $subroutes->add('product_order_statuses/edit/(:num)', 'OrderStatuses::edit/$1');
+    $subroutes->add('product_order_statuses/delete', 'OrderStatuses::delete');
+    $subroutes->add('product_order_statuses/publish', 'OrderStatuses::publish');
 
-    $subroutes->add('categories_manage', 'CategoriesManage::index');
-    $subroutes->add('categories_manage/add', 'CategoriesManage::add');
-    $subroutes->add('categories_manage/edit/(:num)', 'CategoriesManage::edit/$1');
-    $subroutes->add('categories_manage/delete', 'CategoriesManage::delete');
-    $subroutes->add('categories_manage/publish', 'CategoriesManage::publish');
-    $subroutes->add('categories_manage/update_sort', 'CategoriesManage::updateSort');
+    $subroutes->add('product_categories', 'Categories::index');
+    $subroutes->add('product_categories/add', 'Categories::add');
+    $subroutes->add('product_categories/edit/(:num)', 'Categories::edit/$1');
+    $subroutes->add('product_categories/delete', 'Categories::delete');
+    $subroutes->add('product_categories/publish', 'Categories::publish');
+    $subroutes->add('product_categories/update_sort', 'Categories::updateSort');
 });

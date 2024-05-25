@@ -1,17 +1,17 @@
-<?php namespace App\Modules\Products\Controllers;
+<?php namespace App\Modules\Products\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Products\Models\OrderStatusModel;
 use App\Modules\Products\Models\OrderStatusLangModel;
 
-class OrderStatusesManage extends AdminController
+class OrderStatuses extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'products/order_statuses_manage';
-    CONST MANAGE_URL  = 'products/order_statuses_manage';
+    CONST MANAGE_ROOT = 'manage/product_order_statuses';
+    CONST MANAGE_URL  = 'manage/product_order_statuses';
 
     public function __construct()
     {

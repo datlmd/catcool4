@@ -1,17 +1,17 @@
-<?php namespace App\Modules\Products\Controllers;
+<?php namespace App\Modules\Products\Controllers\Admin;
 
 use App\Controllers\AdminController;
-use App\Modules\Products\Models\LengthClassModel;
-use App\Modules\Products\Models\LengthClassLangModel;
+use App\Modules\Products\Models\StockStatusModel;
+use App\Modules\Products\Models\StockStatusLangModel;
 
-class LengthClassesManage extends AdminController
+class StockStatuses extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'products/length_classes_manage';
-    CONST MANAGE_URL  = 'products/length_classes_manage';
+    CONST MANAGE_ROOT = 'manage/product_stock_statuses';
+    CONST MANAGE_URL  = 'manage/product_stock_statuses';
 
     public function __construct()
     {
@@ -19,8 +19,8 @@ class LengthClassesManage extends AdminController
 
         $this->themes->setTheme(config_item('theme_admin'));
 
-        $this->model = new LengthClassModel();
-        $this->model_lang = new LengthClassLangModel();
+        $this->model = new StockStatusModel();
+        $this->model_lang = new StockStatusLangModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -28,26 +28,25 @@ class LengthClassesManage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), site_url(CATCOOL_DASHBOARD));
+        $this->breadcrumb->add(lang('ProductStockStatusAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
 	public function index()
 	{
-        add_meta(['title' => lang('ProductLengthClassAdmin.heading_title')], $this->themes);
+        add_meta(['title' => lang('ProductStockStatusAdmin.heading_title')], $this->themes);
 
         $limit       = $this->request->getGet('limit');
         $sort        = $this->request->getGet('sort');
         $order       = $this->request->getGet('order');
-        $filter_keys = ['length_class_id', 'name', 'limit'];
+        $filter_keys = ['stock_status_id', 'name', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
-
-        $this->breadcrumb->add(lang('ProductLengthClassAdmin.heading_title'), site_url(self::MANAGE_URL));
 
 	    $data = [
             'breadcrumb'    => $this->breadcrumb->render(),
             'list'          => $list->paginate($limit),
             'pager'         => $list->pager,
-            'sort'          => empty($sort) ? 'length_class_id' : $sort,
+            'sort'          => empty($sort) ? 'stock_status_id' : $sort,
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'           => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
@@ -57,7 +56,7 @@ class LengthClassesManage extends AdminController
             ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
-            ::load('length_classes/list', $data);
+            ::load('stock_statuses/list', $data);
 	}
 
     public function add()
@@ -69,7 +68,7 @@ class LengthClassesManage extends AdminController
             }
 
             $add_data = [
-                'value' => $this->request->getPost('value'),
+                'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
             $id = $this->model->insert($add_data);
             if ($id === FALSE) {
@@ -79,8 +78,8 @@ class LengthClassesManage extends AdminController
 
             $add_data_lang = $this->request->getPost('lang');
             foreach (list_language_admin() as $language) {
-                $add_data_lang[$language['id']]['language_id']     = $language['id'];
-                $add_data_lang[$language['id']]['length_class_id'] = $id;
+                $add_data_lang[$language['id']]['language_id'] = $language['id'];
+                $add_data_lang[$language['id']]['stock_status_id']    = $id;
                 $this->model_lang->insert($add_data_lang[$language['id']]);
             }
 
@@ -100,7 +99,7 @@ class LengthClassesManage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()) && $id == $this->request->getPost('length_class_id')) {
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('stock_status_id')) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
                 return redirect()->back()->withInput();
@@ -108,29 +107,28 @@ class LengthClassesManage extends AdminController
 
             $edit_data_lang = $this->request->getPost('lang');
             foreach (list_language_admin() as $language) {
-                $edit_data_lang[$language['id']]['language_id']     = $language['id'];
-                $edit_data_lang[$language['id']]['length_class_id'] = $id;
+                $edit_data_lang[$language['id']]['language_id'] = $language['id'];
+                $edit_data_lang[$language['id']]['stock_status_id']    = $id;
 
-                if (!empty($this->model_lang->where(['length_class_id' => $id, 'language_id' => $language['id']])->find())) {
-                    $this->model_lang->where('language_id', $language['id'])->update($id, $edit_data_lang[$language['id']]);
+                if (!empty($this->model_lang->where(['stock_status_id' => $id, 'language_id' => $language['id']])->find())) {
+                    $this->model_lang->where('language_id', $language['id'])->update($id,$edit_data_lang[$language['id']]);
                 } else {
                     $this->model_lang->insert($edit_data_lang[$language['id']]);
                 }
             }
 
             $edit_data = [
-                'length_class_id' => $id,
-                'value'           => $this->request->getPost('value'),
+                'stock_status_id' => $id,
+                'published'       => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                
             ];
-
-            if (!$this->model->save($edit_data)) {
+            if ($this->model->save($edit_data) !== FALSE) {
+                $this->model->deleteCache();
+                set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
+            } else {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
-                return redirect()->back();
             }
 
-            $this->model->deleteCache();
-
-            set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
             return redirect()->back();
         }
 
@@ -144,7 +142,7 @@ class LengthClassesManage extends AdminController
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form'] = lang('Admin.text_edit');
-            $breadcrumb_url    = site_url(self::MANAGE_URL . "/edit/$id");
+            $breadcrumb_url = site_url(self::MANAGE_URL . "/edit/$id");
 
             $data_form = $this->model->getDetail($id);
             if (empty($data_form)) {
@@ -155,12 +153,11 @@ class LengthClassesManage extends AdminController
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('Admin.text_add');
-            $breadcrumb_url    = site_url(self::MANAGE_URL . "/add");
+            $breadcrumb_url = site_url(self::MANAGE_URL . "/add");
         }
 
         $data['errors'] = $this->errors;
 
-        $this->breadcrumb->add(lang('ProductLengthClassAdmin.heading_title'), site_url(self::MANAGE_URL));
         $this->breadcrumb->add($data['text_form'], $breadcrumb_url);
         add_meta(['title' => $data['text_form']], $this->themes);
 
@@ -170,15 +167,13 @@ class LengthClassesManage extends AdminController
             ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
-            ::load('length_classes/form', $data);
+            ::load('stock_statuses/form', $data);
     }
 
     private function _validateForm()
     {
-        $this->validator->setRule('value', lang('ProductLengthClassAdmin.text_value'), 'required|numeric');
         foreach(list_language_admin() as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
-            $this->validator->setRule(sprintf('lang.%s.unit', $value['id']), lang('ProductLengthClassAdmin.text_unit') . ' (' . $value['name']  . ')', 'required');
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
@@ -232,6 +227,34 @@ class LengthClassesManage extends AdminController
         $data['list_delete'] = $list_delete;
         $data['ids']         = $this->request->getPost('delete_ids');
 
-        json_output(['token' => $token, 'data' => $this->themes::view('length_classes/delete', $data)]);
+        json_output(['token' => $token, 'data' => $this->themes::view('stock_statuses/delete', $data)]);
+    }
+
+    public function publish()
+    {
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $token = csrf_hash();
+
+        if (empty($this->request->getPost())) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
+        }
+
+        $id        = $this->request->getPost('id');
+        $item_edit = $this->model->find($id);
+        if (empty($item_edit)) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+        }
+
+        $item_edit['published'] = !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF;
+        if (!$this->model->update($id, $item_edit)) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
+        }
+
+        $this->model->deleteCache();
+
+        json_output(['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')]);
     }
 }
