@@ -1,17 +1,17 @@
-<?php namespace App\Modules\Subscriptions\Controllers;
+<?php namespace App\Modules\Returns\Controllers\Admin;
 
 use App\Controllers\AdminController;
-use App\Modules\Subscriptions\Models\StatusModel;
-use App\Modules\Subscriptions\Models\StatusLangModel;
+use App\Modules\Returns\Models\StatusModel;
+use App\Modules\Returns\Models\StatusLangModel;
 
-class StatusesManage extends AdminController
+class Statuses extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'subscriptions/statuses_manage';
-    CONST MANAGE_URL  = 'subscriptions/statuses_manage';
+    CONST MANAGE_ROOT = 'manage/return_statuses';
+    CONST MANAGE_URL  = 'manage/return_statuses';
 
     public function __construct()
     {
@@ -28,17 +28,17 @@ class StatusesManage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), site_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('SubscriptionStatusAdmin.heading_title'), site_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang('ReturnStatusAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
 	public function index()
 	{
-        add_meta(['title' => lang('SubscriptionStatusAdmin.heading_title')], $this->themes);
+        add_meta(['title' => lang('ReturnStatusAdmin.heading_title')], $this->themes);
 
         $limit       = $this->request->getGet('limit');
         $sort        = $this->request->getGet('sort');
         $order       = $this->request->getGet('order');
-        $filter_keys = ['subscription_status_id', 'name', 'limit'];
+        $filter_keys = ['return_status_id', 'name', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
@@ -46,7 +46,7 @@ class StatusesManage extends AdminController
             'breadcrumb'    => $this->breadcrumb->render(),
             'list'          => $list->paginate($limit),
             'pager'         => $list->pager,
-            'sort'          => empty($sort) ? 'subscription_status_id' : $sort,
+            'sort'          => empty($sort) ? 'return_status_id' : $sort,
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'           => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
@@ -79,7 +79,7 @@ class StatusesManage extends AdminController
             $add_data_lang = $this->request->getPost('lang');
             foreach (list_language_admin() as $language) {
                 $add_data_lang[$language['id']]['language_id'] = $language['id'];
-                $add_data_lang[$language['id']]['subscription_status_id'] = $id;
+                $add_data_lang[$language['id']]['return_status_id'] = $id;
                 $this->model_lang->insert($add_data_lang[$language['id']]);
             }
 
@@ -97,7 +97,7 @@ class StatusesManage extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()) && $id == $this->request->getPost('subscription_status_id')) {
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('return_status_id')) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
                 return redirect()->back()->withInput();
@@ -106,9 +106,9 @@ class StatusesManage extends AdminController
             $edit_data_lang = $this->request->getPost('lang');
             foreach (list_language_admin() as $language) {
                 $edit_data_lang[$language['id']]['language_id'] = $language['id'];
-                $edit_data_lang[$language['id']]['subscription_status_id'] = $id;
+                $edit_data_lang[$language['id']]['return_status_id'] = $id;
 
-                if (!empty($this->model_lang->where(['subscription_status_id' => $id, 'language_id' => $language['id']])->find())) {
+                if (!empty($this->model_lang->where(['return_status_id' => $id, 'language_id' => $language['id']])->find())) {
                     $this->model_lang->where('language_id', $language['id'])->update($id,$edit_data_lang[$language['id']]);
                 } else {
                     $this->model_lang->insert($edit_data_lang[$language['id']]);
@@ -116,8 +116,8 @@ class StatusesManage extends AdminController
             }
 
             $edit_data = [
-                'subscription_status_id' => $id,
-                'published'              => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'return_status_id' => $id,
+                'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
                 
             ];
             if ($this->model->save($edit_data) !== FALSE) {

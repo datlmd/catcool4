@@ -1,14 +1,14 @@
-<?php namespace App\Modules\Routes\Controllers;
+<?php namespace App\Modules\Routes\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Routes\Models\RouteModel;
 
-class Manage extends AdminController
+class Routes extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'routes/manage';
-    CONST MANAGE_URL  = 'routes/manage';
+    CONST MANAGE_ROOT = 'manage/routes';
+    CONST MANAGE_URL  = 'manage/routes';
 
     public function __construct()
     {

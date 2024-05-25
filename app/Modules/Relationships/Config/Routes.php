@@ -5,10 +5,10 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('relationships', ['namespace' => 'App\Modules\Relationships\Controllers'], function($subroutes){
-    $subroutes->add('manage', 'Manage::index');
-    $subroutes->add('manage/add', 'Manage::add');
-    $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
-    $subroutes->add('manage/delete', 'Manage::delete');
-    $subroutes->add('manage/publish', 'Manage::publish');
+$routes->group('manage', ['namespace' => 'App\Modules\Relationships\Controllers\Admin'], function($subroutes){
+    $subroutes->add('relationships', 'Relationships::index');
+    $subroutes->add('relationships/add', 'Relationships::add');
+    $subroutes->add('relationships/edit/(:num)', 'Relationships::edit/$1');
+    $subroutes->add('relationships/delete', 'Relationships::delete');
+    $subroutes->add('relationships/publish', 'Relationships::publish');
 });

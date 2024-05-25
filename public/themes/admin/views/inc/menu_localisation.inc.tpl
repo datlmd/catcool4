@@ -13,18 +13,18 @@
 			<li><a href="{site_url('manage/currencies')}" class="{if !empty($active) && $active eq 'currencies'}active{/if}">{lang('CurrencyAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('manage/product_stock_statuses')}" class="{if !empty($active) && $active eq 'stock_statuses'}active{/if}">{lang('ProductStockStatusAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('manage/product_order_statuses')}" class="{if !empty($active) && $active eq 'order_statuses'}active{/if}">{lang('ProductOrderStatusAdmin.heading_title')}</a></li>
-			<li><a href="{site_url('subscriptions/statuses_manage')}" class="{if !empty($active) && $active eq 'subscription_statuses'}active{/if}">{lang('SubscriptionStatusAdmin.heading_title')}</a></li>
+			<li><a href="{site_url('manage/subscription_statuses')}" class="{if !empty($active) && $active eq 'subscription_statuses'}active{/if}">{lang('SubscriptionStatusAdmin.heading_title')}</a></li>
 			<li>
 				<a href="javascript:void(0);" class="{if strpos($active, 'returns') !== false}active{/if}">{lang('ReturnAdmin.heading_title')}</a>
 				<ul>
 					<li>
-						<a href="{site_url('returns/statuses_manage')}" class="ps-1">{lang('ReturnStatusAdmin.heading_title')}</a>
+						<a href="{site_url('manage/return_statuses')}" class="ps-1">{lang('ReturnStatusAdmin.heading_title')}</a>
 					</li>
 					<li>
-						<a href="{site_url('returns/actions_manage')}" class="ps-1">{lang('ReturnActionAdmin.heading_title')}</a>
+						<a href="{site_url('manage/return_actions')}" class="ps-1">{lang('ReturnActionAdmin.heading_title')}</a>
 					</li>
 					<li>
-						<a href="{site_url('returns/reasons_manage')}" class="ps-1">{lang('ReturnReasonAdmin.heading_title')}</a>
+						<a href="{site_url('manage/return_reasons')}" class="ps-1">{lang('ReturnReasonAdmin.heading_title')}</a>
 					</li>
 				</ul>
 			</li>

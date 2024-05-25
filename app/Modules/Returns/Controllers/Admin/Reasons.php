@@ -1,17 +1,17 @@
-<?php namespace App\Modules\Returns\Controllers;
+<?php namespace App\Modules\Returns\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Returns\Models\ReasonModel;
 use App\Modules\Returns\Models\ReasonLangModel;
 
-class ReasonsManage extends AdminController
+class Reasons extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'returns/reasons_manage';
-    CONST MANAGE_URL  = 'returns/reasons_manage';
+    CONST MANAGE_ROOT = 'manage/return_reasons';
+    CONST MANAGE_URL  = 'manage/return_reasons';
 
     public function __construct()
     {

@@ -1,17 +1,17 @@
-<?php namespace App\Modules\Subscriptions\Controllers;
+<?php namespace App\Modules\Subscriptions\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Subscriptions\Models\PlanModel;
 use App\Modules\Subscriptions\Models\PlanLangModel;
 
-class PlansManage extends AdminController
+class Plans extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'subscriptions/plans_manage';
-    CONST MANAGE_URL  = 'subscriptions/plans_manage';
+    CONST MANAGE_ROOT = 'manage/subscription_plans';
+    CONST MANAGE_URL  = 'manage/subscription_plans';
 
     public function __construct()
     {

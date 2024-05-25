@@ -1,14 +1,14 @@
-<?php namespace App\Modules\Relationships\Controllers;
+<?php namespace App\Modules\Relationships\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Relationships\Models\RelationshipModel;
 
-class Manage extends AdminController
+class Relationships extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'relationships/manage';
-    CONST MANAGE_URL  = 'relationships/manage';
+    CONST MANAGE_ROOT = 'manage/relationships';
+    CONST MANAGE_URL  = 'manage/relationships';
 
     public function __construct()
     {

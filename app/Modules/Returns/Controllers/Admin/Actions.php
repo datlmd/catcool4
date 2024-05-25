@@ -1,17 +1,17 @@
-<?php namespace App\Modules\Returns\Controllers;
+<?php namespace App\Modules\Returns\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Returns\Models\ActionModel;
 use App\Modules\Returns\Models\ActionLangModel;
 
-class ActionsManage extends AdminController
+class Actions extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'returns/actions_manage';
-    CONST MANAGE_URL  = 'returns/actions_manage';
+    CONST MANAGE_ROOT = 'manage/return_actions';
+    CONST MANAGE_URL  = 'manage/return_actions';
 
     public function __construct()
     {
