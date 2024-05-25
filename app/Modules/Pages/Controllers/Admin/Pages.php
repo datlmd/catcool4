@@ -1,19 +1,19 @@
-<?php namespace App\Modules\Pages\Controllers;
+<?php namespace App\Modules\Pages\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Pages\Models\PageModel;
 use App\Modules\Pages\Models\PageLangModel;
 use App\Modules\Routes\Models\RouteModel;
 
-class Manage extends AdminController
+class Pages extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
     protected $model_route;
 
-    CONST MANAGE_ROOT = 'pages/manage';
-    CONST MANAGE_URL  = 'pages/manage';
+    CONST MANAGE_ROOT = 'manage/pages';
+    CONST MANAGE_URL  = 'manage/pages';
 
     CONST SEO_URL_MODULE   = 'pages';
     CONST SEO_URL_RESOURCE = 'Pages::Detail/%s';

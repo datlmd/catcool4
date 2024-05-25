@@ -1,14 +1,14 @@
-<?php namespace App\Modules\Permissions\Controllers;
+<?php namespace App\Modules\Permissions\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Permissions\Models\PermissionModel;
 
-class Manage extends AdminController
+class Permissions extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'permissions/manage';
-    CONST MANAGE_URL  = 'permissions/manage';
+    CONST MANAGE_ROOT = 'manage/permissions';
+    CONST MANAGE_URL  = 'manage/permissions';
 
     public function __construct()
     {
@@ -155,7 +155,7 @@ class Manage extends AdminController
                 $permission_list[$value['name']] = $value;
             }
 
-            $controllers = get_filenames(APPPATH . 'Modules/' . $module . '/Controllers/');
+            $controllers = get_filenames(APPPATH . 'Modules/' . $module . '/Controllers/Admin/');
             foreach ($controllers as $key => $value) {
                 if( strpos( $value, '.php' ) === FALSE) {
                     unset($controllers[$key]);
@@ -163,12 +163,8 @@ class Manage extends AdminController
 
                 foreach ($controllers as $controller) {
 
-                    if (strpos(strtolower($controller), 'manage') === false) {
-                        continue;
-                    }
-
                     $controller = str_replace('.php', '', $controller);
-                    $controller_tmp = "\\App\\Modules\\$module\\Controllers\\$controller";
+                    $controller_tmp = "\\App\\Modules\\$module\\Controllers\\Admin\\$controller";
 
                     $controller_tmp = new $controller_tmp();
                     $methods = get_class_methods($controller_tmp);
@@ -179,10 +175,8 @@ class Manage extends AdminController
                         }
 
                         $action_tmp = str_ireplace("manage", "", strtolower($controller));
-                        if (!empty($action_tmp)) {
-                            $action_tmp = implode("_", array_merge([$action_tmp], ['manage']));
-                        } else {
-                            $action_tmp = "manage";
+                        if (strtolower($action_tmp) != strtolower($module)) {
+                            $action_tmp = singular($module) . "_$action_tmp";
                         }
 
                         preg_match('/[A-Z]/', $method, $match);
@@ -191,8 +185,8 @@ class Manage extends AdminController
                             $method = implode("_$match[0]", $method);
                         }
 
-                        $method = sprintf("%s/%s/%s", strtolower($module), $action_tmp, strtolower($method));
-                        $method = str_ireplace("/index", "", $method);
+                        $method = sprintf("manage/%s/%s", $action_tmp, $method);
+                        $method = str_ireplace("/index", "", strtolower($method));
                         $module_methods[$controller][$method] = !empty($permission_list[$method]) ? $permission_list[$method] : null;
                     }
                 }

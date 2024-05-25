@@ -60,7 +60,7 @@ class AuthAdminFilter implements FilterInterface
                 exit();
             }
 
-            $redirect_url = sprintf('permissions/manage/not_allowed?p=%s', $name_permission);
+            $redirect_url = sprintf('manage/permissions/not_allowed?p=%s', $name_permission);
             return redirect()->to(site_url($redirect_url));
         }
     }

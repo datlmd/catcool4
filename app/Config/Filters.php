@@ -98,7 +98,7 @@ class Filters extends BaseFilters
                     '*/logout',
                     '*/forgot_password',
                     '*/reset_password/*',
-                    'permissions/manage/not_allowed',
+                    'manage/permissions/not_allowed',
                 ]
             ],
         ],

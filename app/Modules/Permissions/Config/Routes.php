@@ -5,12 +5,12 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('permissions', ['namespace' => 'App\Modules\Permissions\Controllers'], function($subroutes){
-    $subroutes->add('manage', 'Manage::index');
-    $subroutes->add('manage/add', 'Manage::add');
-    $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
-    $subroutes->add('manage/delete', 'Manage::delete');
-    $subroutes->add('manage/publish', 'Manage::publish');
-    $subroutes->add('manage/not_allowed', 'Manage::notAllowed');
-    $subroutes->add('manage/check_module', 'Manage::checkModule');
+$routes->group('manage', ['namespace' => 'App\Modules\Permissions\Controllers\Admin'], function($subroutes){
+    $subroutes->add('permissions', 'Permissions::index');
+    $subroutes->add('permissions/add', 'Permissions::add');
+    $subroutes->add('permissions/edit/(:num)', 'Permissions::edit/$1');
+    $subroutes->add('permissions/delete', 'Permissions::delete');
+    $subroutes->add('permissions/publish', 'Permissions::publish');
+    $subroutes->add('permissions/not_allowed', 'Permissions::notAllowed');
+    $subroutes->add('permissions/check_module', 'Permissions::checkModule');
 });

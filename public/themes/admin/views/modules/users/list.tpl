@@ -47,7 +47,7 @@
 				<div class="card-body">
 					<div class="w-100 text-end mb-2">
 						<a href="{site_url("users/groups_manage")}" class="btn btn-sm btn-primary btn-space ">{lang('UserGroupAdmin.heading_title')}</a>
-						<a href="{site_url("permissions/manage")}" class="btn btn-sm btn-secondary btn-space me-0">{lang('PermissionAdmin.text_list')}</a>
+						<a href="{site_url("manage/permissions")}" class="btn btn-sm btn-secondary btn-space me-0">{lang('PermissionAdmin.text_list')}</a>
 					</div>
 
 					{if !empty($list)}

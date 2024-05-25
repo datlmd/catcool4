@@ -455,7 +455,7 @@
 		}
 
 		$.ajax({
-			url: 'options/manage/get_list',
+			url: 'manage/options/get_list',
 			data: {
 				'option_id': $(this).val(),
 				[$("input[name*='" + csrf_token + "']").attr('name')] : $("input[name*='" + csrf_token + "']").val()

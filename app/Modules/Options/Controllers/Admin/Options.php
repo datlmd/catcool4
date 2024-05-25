@@ -1,4 +1,4 @@
-<?php namespace App\Modules\Options\Controllers;
+<?php namespace App\Modules\Options\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Options\Models\OptionModel;
@@ -6,14 +6,14 @@ use App\Modules\Options\Models\OptionLangModel;
 use App\Modules\Options\Models\OptionValueModel;
 use App\Modules\Options\Models\OptionValueLangModel;
 
-class Manage extends AdminController
+class Options extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'options/manage';
-    CONST MANAGE_URL  = 'options/manage';
+    CONST MANAGE_ROOT = 'manage/options';
+    CONST MANAGE_URL  = 'manage/options';
 
     public function __construct()
     {
