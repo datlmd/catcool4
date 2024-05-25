@@ -9,8 +9,8 @@ class Events extends AdminController
 {
     protected $errors = [];
 
-    const MANAGE_ROOT = 'events/manage';
-    const MANAGE_URL = 'events/manage';
+    const MANAGE_ROOT = 'manage/events';
+    const MANAGE_URL = 'manage/events';
 
     public function __construct()
     {
