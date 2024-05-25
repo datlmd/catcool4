@@ -1,6 +1,6 @@
 {strip}
 	{if !empty($user_tokens)}
-		<form id="form_user_token_list" method="post" data-cc-toggle="ajax" data-cc-load="{site_url("users/manage/delete_token")}" data-cc-target="#user_token_list">
+		<form id="form_user_token_list" method="post" data-cc-toggle="ajax" data-cc-load="{site_url("manage/users/delete_token")}" data-cc-target="#user_token_list">
 			<div class="table-responsive mb-3">
 				<table class="table table-striped table-hover table-bordered second">
 					<thead>

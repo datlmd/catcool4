@@ -5,39 +5,33 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('users', ['namespace' => 'App\Modules\Users\Controllers'], function($subroutes){
-    $subroutes->add('manage', 'Manage::index');
-    $subroutes->add('manage/add', 'Manage::add');
-    $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
-    $subroutes->add('manage/delete', 'Manage::delete');
-    $subroutes->add('manage/publish', 'Manage::publish');
-    $subroutes->add('manage/login', 'Manage::login');
-    $subroutes->post('manage/api_login', 'Manage::apiLogin');
-    $subroutes->add('manage/logout', 'Manage::logout');
-    $subroutes->add('manage/permission/(:num)', 'Manage::permission/$1');
-    $subroutes->add('manage/change_password/(:num)', 'Manage::changePassword/$1');
-    $subroutes->add('manage/forgot_password', 'Manage::forgotPassword');
-    $subroutes->add('manage/reset_password/(:any)', 'Manage::resetPassword/$1');
-    $subroutes->get('manage/user_ip_list/(:num)', 'Manage::userIpList/$1');
-    $subroutes->get('manage/token_list/(:num)', 'Manage::tokenList/$1');
-    $subroutes->post('manage/delete_token', 'Manage::deleteToken');
+$routes->group('manage', ['namespace' => 'App\Modules\Users\Controllers\Admin'], function($subroutes){
+    $subroutes->add('users', 'Users::index');
+    $subroutes->add('users/add', 'Users::add');
+    $subroutes->add('users/edit/(:num)', 'Users::edit/$1');
+    $subroutes->add('users/delete', 'Users::delete');
+    $subroutes->add('users/publish', 'Users::publish');
+    $subroutes->add('users/login', 'Users::login');
+    $subroutes->post('users/api_login', 'Users::apiLogin');
+    $subroutes->add('users/logout', 'Users::logout');
+    $subroutes->add('users/permission/(:num)', 'Users::permission/$1');
+    $subroutes->add('users/change_password/(:num)', 'Users::changePassword/$1');
+    $subroutes->add('users/forgot_password', 'Users::forgotPassword');
+    $subroutes->add('users/reset_password/(:any)', 'Users::resetPassword/$1');
+    $subroutes->get('users/user_ip_list/(:num)', 'Users::userIpList/$1');
+    $subroutes->get('users/token_list/(:num)', 'Users::tokenList/$1');
+    $subroutes->post('users/delete_token', 'Users::deleteToken');
 
-    $subroutes->add('groups_manage', 'GroupsManage::index');
-    $subroutes->add('groups_manage/add', 'GroupsManage::add');
-    $subroutes->add('groups_manage/edit/(:num)', 'GroupsManage::edit/$1');
-    $subroutes->add('groups_manage/delete', 'GroupsManage::delete');
-    $subroutes->add('groups_manage/publish', 'GroupsManage::publish');
-
-    $subroutes->add('post_register', 'Register::postRegister');
-    $subroutes->add('register', 'Register::index');
-
-    $subroutes->get('login', 'Login::index');
-    $subroutes->post('post_login', 'Login::postLogin');
-    $subroutes->add('social_login', 'Login::socialLogin');
-
-    $subroutes->add('profile', 'Profile::index');
-    $subroutes->add('activate/(:num)/(:any)', 'Activate::index/$1/$2');
+    $subroutes->add('user_groups', 'Groups::index');
+    $subroutes->add('user_groups/add', 'Groups::add');
+    $subroutes->add('user_groups/edit/(:num)', 'Groups::edit/$1');
+    $subroutes->add('user_groups/delete', 'Groups::delete');
+    $subroutes->add('user_groups/publish', 'Groups::publish');
 });
 
 $routes->add('manage/login', 'Manage::login', ['namespace' => 'App\Modules\Users\Controllers']);
 $routes->add('root', 'Manage::login', ['namespace' => 'App\Modules\Users\Controllers']);
+
+$routes->get('users/login', 'Login::index', ['namespace' => 'App\Modules\Users\Controllers']);
+$routes->post('users/post_login', 'Login::postLogin', ['namespace' => 'App\Modules\Users\Controllers']);
+$routes->get('users/social_login', 'Login::socialLogin', ['namespace' => 'App\Modules\Users\Controllers']);

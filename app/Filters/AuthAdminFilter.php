@@ -27,7 +27,7 @@ class AuthAdminFilter implements FilterInterface
                     $query_string = (strpos(site_url(), '?') === FALSE) ? '?' : '&amp;';
                     $query_string = $query_string . http_build_query(\Config\Services::request()->getGet());
                 }
-                $redirect = 'users/manage/login?redirect=' . urlencode(current_url() . $query_string);
+                $redirect = 'manage/users/login?redirect=' . urlencode(current_url() . $query_string);
 
                 if (\Config\Services::request()->isAJAX()) {
                     header('content-type: application/json; charset=utf8');

@@ -352,8 +352,8 @@
 {/strip}
 {if !empty($edit_data.user_id)}
     <script type="text/javascript">
-        $('#user_token_list').load('{{site_url('users/manage/token_list/'|cat:{$edit_data.user_id})}}');
-        $('#user_ip_list').load('{{site_url('users/manage/user_ip_list/'|cat:{$edit_data.user_id})}}');
+        $('#user_token_list').load('{{site_url('manage/users/token_list/'|cat:{$edit_data.user_id})}}');
+        $('#user_ip_list').load('{{site_url('manage/users/user_ip_list/'|cat:{$edit_data.user_id})}}');
 
         $('#user_ip_list').on('click', 'thead a, .pagination a', function (e) {
             e.preventDefault();
@@ -390,7 +390,7 @@
                         keys: ['y', 'enter', 'shift'],
                         action: function() {
                             $.ajax({
-                                url: 'users/manage/delete_token',
+                                url: 'manage/users/delete_token',
                                 type: 'POST',
                                 data: {
                                     user_id: {{$edit_data.user_id}},
@@ -427,7 +427,7 @@
 
                                     if (json['success']) {
                                         $.notify(json['success']);
-                                        $('#user_token_list').load('{{site_url('users/manage/token_list/'|cat:{$edit_data.user_id})}}');
+                                        $('#user_token_list').load('{{site_url('manage/users/token_list/'|cat:{$edit_data.user_id})}}');
                                     }
                                 },
                                 error: function (xhr, errorType, error) {

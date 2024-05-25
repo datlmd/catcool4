@@ -97,7 +97,7 @@
 							<h5 class="mb-0 text-white nav-user-name">{session('user_info.full_name')}</h5>
 							<span class="status"></span><span class="text-dark">{session('user_info.username')}</span>
 						</div>
-						<a class="dropdown-item" href="{site_url('users/manage/edit/'|cat:session('user_info.user_id'))}"><i class="fas fa-user-circle me-2"></i>{lang('Admin.text_profile')}</a>
+						<a class="dropdown-item" href="{site_url('manage/users/edit/'|cat:session('user_info.user_id'))}"><i class="fas fa-user-circle me-2"></i>{lang('Admin.text_profile')}</a>
 						{if !empty(config_item('enable_dark_mode'))}
 							<a class="dropdown-item" href="{site_url('manage/configs/config')}?k=dark_mode&v=0"><i class="far fa-lightbulb me-2"></i>{lang('ConfigAdmin.text_light_mode')}</a>
 						{else}
@@ -113,7 +113,7 @@
 						{else}
 							<a class="dropdown-item" href="{site_url('manage/configs/config')}?k=style_menu&v=1"><i class="fas fa-th-large me-2"></i>{lang('ConfigAdmin.text_icon_menu')}</a>
 						{/if}
-						<a class="dropdown-item" href="{site_url('users/manage/logout')}"><i class="fas fa-sign-out-alt me-2"></i>{lang('Admin.text_logout')}</a>
+						<a class="dropdown-item" href="{site_url('manage/users/logout')}"><i class="fas fa-sign-out-alt me-2"></i>{lang('Admin.text_logout')}</a>
 					</div>
 				</li>
 				{if config_item('enable_icon_menu_admin')}

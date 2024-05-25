@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Users\Controllers;
+namespace App\Modules\Users\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Permissions\Models\PermissionModel;
@@ -14,12 +14,12 @@ use App\Modules\Users\Models\UserPermissionModel;
 use App\Modules\Users\Models\UserTokenModel;
 use Exception;
 
-class Manage extends AdminController
+class Users extends AdminController
 {
     public $errors = [];
 
-    const MANAGE_ROOT = 'users/manage';
-    const MANAGE_URL = 'users/manage';
+    const MANAGE_ROOT = 'manage/users';
+    const MANAGE_URL = 'manage/users';
 
     protected $group_model;
     protected $user_group_model;
@@ -679,7 +679,7 @@ class Manage extends AdminController
 
         $data = [
             'redirect' => $redirect,
-            'login' => site_url('users/manage/api_login').'?login_token='.session('login_token'),
+            'login' => site_url('manage/users/api_login').'?login_token='.session('login_token'),
         ];
 
 //        if (!empty($this->validator->getErrors())) {
@@ -702,7 +702,7 @@ class Manage extends AdminController
             set_alert(lang('User.text_login_unsuccessful'), ALERT_ERROR);
             json_output([
                 'error66' => lang('User.text_login_unsuccessful'),
-                'redirect' => site_url('users/manage/login')."?redirect=$redirect",
+                'redirect' => site_url('manage/users/login')."?redirect=$redirect",
             ]);
         }
 
@@ -782,7 +782,7 @@ class Manage extends AdminController
             if (empty($this->request->getGet('forgot_token')) || empty(session('forgot_token')) || $this->request->getGet('forgot_token') != session('forgot_token')) {
                 set_alert(lang('UserAdmin.error_forgot_password_unsuccessful'), ALERT_ERROR);
 
-                return redirect()->to(site_url('users/manage/forgot_password'));
+                return redirect()->to(site_url('manage/users/forgot_password'));
             }
 
             // Generate code
@@ -815,7 +815,7 @@ class Manage extends AdminController
 
         session()->set('forgot_token', substr(bin2hex(openssl_random_pseudo_bytes(26)), 0, 26));
 
-        $data['forgot_password'] = site_url('users/manage/forgot_password').'?forgot_token='.session('forgot_token');
+        $data['forgot_password'] = site_url('manage/users/forgot_password').'?forgot_token='.session('forgot_token');
 
         if (!empty($this->validator->getErrors())) {
             $data['errors'] = $this->validator->getErrors();
@@ -850,7 +850,7 @@ class Manage extends AdminController
             if (empty($this->request->getGet('reset_token')) || empty(session('reset_token')) || $this->request->getGet('reset_token') != session('reset_token')) {
                 set_alert(lang('Admin.error_token'), ALERT_ERROR);
 
-                return redirect()->to(site_url("users/manage/reset_password/$code"));
+                return redirect()->to(site_url("manage/users/reset_password/$code"));
             }
 
             // do we have a valid request?
@@ -894,7 +894,7 @@ class Manage extends AdminController
 
         session()->set('reset_token', substr(bin2hex(openssl_random_pseudo_bytes(26)), 0, 26));
 
-        $data['reset_password'] = site_url("users/manage/reset_password/$code").'?reset_token='.session('reset_token');
+        $data['reset_password'] = site_url("manage/users/reset_password/$code").'?reset_token='.session('reset_token');
         $data['min_password_length'] = config_item('minPasswordLength');
         $data['user'] = $user;
         $data['code'] = $code;
@@ -913,7 +913,7 @@ class Manage extends AdminController
         $limit = 10;
 
         $pager = service('pager');
-        $pager->setPath('users/manage/user_ip_list/'.$user_id, 'user_ip');
+        $pager->setPath('manage/users/user_ip_list/'.$user_id, 'user_ip');
 
         $user_ip_model = new \App\Modules\Users\Models\UserIpModel();
 
@@ -932,7 +932,7 @@ class Manage extends AdminController
         $limit = 10;
 
         $pager = service('pager');
-        $pager->setPath('users/manage/token_list/'.$user_id, 'token');
+        $pager->setPath('manage/users/token_list/'.$user_id, 'token');
 
         $user_token_model = new UserTokenModel();
 

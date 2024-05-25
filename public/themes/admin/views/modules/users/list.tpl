@@ -46,7 +46,7 @@
 				<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('UserAdmin.text_list')}</h5>
 				<div class="card-body">
 					<div class="w-100 text-end mb-2">
-						<a href="{site_url("users/groups_manage")}" class="btn btn-sm btn-primary btn-space ">{lang('UserGroupAdmin.heading_title')}</a>
+						<a href="{site_url("manage/user_groups")}" class="btn btn-sm btn-primary btn-space ">{lang('UserGroupAdmin.heading_title')}</a>
 						<a href="{site_url("manage/permissions")}" class="btn btn-sm btn-secondary btn-space me-0">{lang('PermissionAdmin.text_list')}</a>
 					</div>
 

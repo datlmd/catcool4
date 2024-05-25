@@ -1,6 +1,6 @@
 {strip}
 	{if !empty($user_ips)}
-		<form id="form_user_token_list" method="post" data-cc-toggle="ajax" data-cc-load="{site_url("users/manage/user_ip_list")}" data-cc-target="#user_ip_list">
+		<form id="form_user_token_list" method="post" data-cc-toggle="ajax" data-cc-load="{site_url("manage/users/user_ip_list")}" data-cc-target="#user_ip_list">
 			<div class="table-responsive mb-3">
 				<table class="table table-striped table-hover table-bordered second">
 					<thead>

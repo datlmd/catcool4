@@ -1,14 +1,14 @@
-<?php namespace App\Modules\Users\Controllers;
+<?php namespace App\Modules\Users\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Users\Models\GroupModel;
 
-class GroupsManage extends AdminController
+class Groups extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'users/groups_manage';
-    CONST MANAGE_URL  = 'users/groups_manage';
+    CONST MANAGE_ROOT = 'manage/user_groups';
+    CONST MANAGE_URL  = 'manage/user_groups';
 
     public function __construct()
     {
@@ -24,7 +24,7 @@ class GroupsManage extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), base_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('Admin.module_user'), site_url('users/manage'));
+        $this->breadcrumb->add(lang('Admin.module_user'), site_url('manage/users'));
         $this->breadcrumb->add(lang('UserGroupAdmin.heading_title'), base_url(self::MANAGE_URL));
     }
 

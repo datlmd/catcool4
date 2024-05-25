@@ -20,7 +20,7 @@
 			<div class="collapse navbar-collapse" id="menu_admin">
 				<ul class="navbar-nav flex-column">
 					<li class="nav-divider pb-0 d-xl-none d-lg-none">
-						<a class="" href="{site_url('users/manage/edit/'|cat:session('user_info.user_id'))}">
+						<a class="" href="{site_url('manage/users/edit/'|cat:session('user_info.user_id'))}">
 							<span class="badge badge-info"><i class="fas fa-user-circle me-1"></i>{session('user_info.full_name')} ({session('user_info.username')})</span>
 						</a>
 					</li>
@@ -46,7 +46,7 @@
 						</li>
 					{/foreach}
 					<li class="nav-item d-xl-none d-lg-none">
-						<a class="nav-link" href="{site_url('users/manage/logout')}"><i class="fas fa-power-off"></i>{lang('Admin.text_logout')}</a>
+						<a class="nav-link" href="{site_url('manage/users/logout')}"><i class="fas fa-power-off"></i>{lang('Admin.text_logout')}</a>
 					</li>
 				</ul>
 			</div>
