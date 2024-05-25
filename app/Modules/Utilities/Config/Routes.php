@@ -5,11 +5,11 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('utilities', ['namespace' => 'App\Modules\Utilities\Controllers'], function($subroutes){
-    $subroutes->add('manage', 'Manage::index');
-    $subroutes->add('manage/php_info', 'Manage::phpInfo');
-    $subroutes->add('manage/list_file', 'Manage::listFile');
-    $subroutes->add('manage/load_fba', 'Manage::loadFba');
-    $subroutes->add('manage/logs', 'Manage::logs');
-    $subroutes->add('manage/email', 'Manage::email');
+$routes->group('manage', ['namespace' => 'App\Modules\Utilities\Controllers\Admin'], function($subroutes){
+    $subroutes->add('utilities', 'Utilities::index');
+    $subroutes->add('utility_php_info', 'Utilities::phpInfo');
+    $subroutes->add('utility_list_file', 'Utilities::listFile');
+    $subroutes->add('utility_load_fba', 'Utilities::loadFba');
+    $subroutes->add('utility_logs', 'Utilities::logs');
+    $subroutes->add('utility_email', 'Utilities::email');
 });

@@ -1,19 +1,21 @@
-<?php namespace App\Modules\Variants\Controllers;
+<?php
+
+namespace App\Modules\Variants\Controllers\Admin;
 
 use App\Controllers\AdminController;
-use App\Modules\Variants\Models\VariantModel;
 use App\Modules\Variants\Models\VariantLangModel;
-use App\Modules\Variants\Models\VariantValueModel;
+use App\Modules\Variants\Models\VariantModel;
 use App\Modules\Variants\Models\VariantValueLangModel;
+use App\Modules\Variants\Models\VariantValueModel;
 
-class Manage extends AdminController
+class Variants extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'variants/manage';
-    CONST MANAGE_URL  = 'variants/manage';
+    const MANAGE_ROOT = 'manage/variants';
+    const MANAGE_URL = 'manage/variants';
 
     public function __construct()
     {
@@ -35,24 +37,24 @@ class Manage extends AdminController
         $this->breadcrumb->add(lang('VariantAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
-	public function index()
-	{
+    public function index()
+    {
         add_meta(['title' => lang('VariantAdmin.heading_title')], $this->themes);
 
-        $limit       = $this->request->getGet('limit');
-        $sort        = $this->request->getGet('sort');
-        $order       = $this->request->getGet('order');
+        $limit = $this->request->getGet('limit');
+        $sort = $this->request->getGet('sort');
+        $order = $this->request->getGet('order');
         $filter_keys = ['variant_id', 'name', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
-	    $data = [
-            'breadcrumb'    => $this->breadcrumb->render(),
-            'list'          => $list->paginate($limit),
-            'pager'         => $list->pager,
-            'sort'          => empty($sort) ? 'variant_id' : $sort,
-            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'           => $this->getUrlFilter($filter_keys),
+        $data = [
+            'breadcrumb' => $this->breadcrumb->render(),
+            'list' => $list->paginate($limit),
+            'pager' => $list->pager,
+            'sort' => empty($sort) ? 'variant_id' : $sort,
+            'order' => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url' => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
@@ -65,7 +67,7 @@ class Manage extends AdminController
             ->addPartial('footer')
             ->addPartial('sidebar')
             ::load('variant', $data);
-	}
+    }
 
     public function add()
     {
@@ -76,6 +78,7 @@ class Manage extends AdminController
     {
         if (is_null($id)) {
             set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -102,10 +105,9 @@ class Manage extends AdminController
             json_output($json);
         }
 
-        $variant_id   = $this->request->getPost('variant_id');
+        $variant_id = $this->request->getPost('variant_id');
         $data_variant = [
             'sort_order' => $this->request->getPost('sort_order'),
-
         ];
 
         if (empty($variant_id)) {
@@ -133,7 +135,7 @@ class Manage extends AdminController
         $edit_data_lang = $this->request->getPost('lang');
         foreach (list_language_admin() as $language) {
             $edit_data_lang[$language['id']]['language_id'] = $language['id'];
-            $edit_data_lang[$language['id']]['variant_id']   = $variant_id;
+            $edit_data_lang[$language['id']]['variant_id'] = $variant_id;
 
             $this->model_lang->insert($edit_data_lang[$language['id']]);
         }
@@ -191,11 +193,12 @@ class Manage extends AdminController
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form'] = lang('Admin.text_edit');
-            $breadcrumb_url = site_url(self::MANAGE_URL . "/edit/$id");
+            $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$id");
 
             $data_form = $this->model->getDetail($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR);
+
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
@@ -204,7 +207,7 @@ class Manage extends AdminController
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('Admin.text_add');
-            $breadcrumb_url = site_url(self::MANAGE_URL . "/add");
+            $breadcrumb_url = site_url(self::MANAGE_URL.'/add');
         }
 
         $data['errors'] = $this->errors;
@@ -224,8 +227,8 @@ class Manage extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        foreach(list_language_admin() as $value) {
-            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('VariantAdmin.text_variant_name') . ' (' . $value['name']  . ')', 'required');
+        foreach (list_language_admin() as $value) {
+            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('VariantAdmin.text_variant_name').' ('.$value['name'].')', 'required');
         }
 
         if (!empty($this->request->getPost('variant_value'))) {
@@ -235,15 +238,14 @@ class Manage extends AdminController
                 if (empty($value['lang'])) {
                     continue;
                 }
-                foreach(list_language_admin() as $lang_value) {
-                    $this->validator->setRule(sprintf('variant_value.%s.lang.%s.name', $key, $lang_value['id']), lang('VariantAdmin.text_variant_value_name') . ' (' . $lang_value['name']  . ')', 'required');
+                foreach (list_language_admin() as $lang_value) {
+                    $this->validator->setRule(sprintf('variant_value.%s.lang.%s.name', $key, $lang_value['id']), lang('VariantAdmin.text_variant_value_name').' ('.$lang_value['name'].')', 'required');
                 }
-
             }
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
-        $this->errors  = $this->validator->getErrors();
+        $this->errors = $this->validator->getErrors();
 
         return $is_validation;
     }
@@ -259,7 +261,7 @@ class Manage extends AdminController
         //delete
         if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
-            $ids = (is_array($ids)) ? $ids : explode(",", $ids);
+            $ids = (is_array($ids)) ? $ids : explode(',', $ids);
 
             $list_delete = $this->model->getListDetail($ids);
             if (empty($list_delete)) {
@@ -287,14 +289,14 @@ class Manage extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
+        $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
         $list_delete = $this->model->getListDetail($delete_ids, $this->language_id);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $data['list_delete'] = $list_delete;
-        $data['ids']         = $this->request->getPost('delete_ids');
+        $data['ids'] = $this->request->getPost('delete_ids');
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }

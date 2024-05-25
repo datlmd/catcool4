@@ -9,8 +9,8 @@
 	<div class="sidebar-nav-fixed {if !empty($is_mobile)}collapse{/if}" id="menu_utilities">
 		<ul class="list-unstyled">
 			<li><a href="{site_url('manage/backup')}" {if !empty($active) && $active eq 'backup'}class="active"{/if}>{lang('Backup.heading_title')}</a></li>
-			<li><a href="{site_url('utilities/manage/logs')}" {if !empty($active) && $active eq 'logs'}class="active"{/if}>Logs</a></li>
-			<li><a href="{site_url('utilities/manage/logs')}" {if !empty($active) && $active eq 'uploads'}class="active"{/if}>Uploads</a>
+			<li><a href="{site_url('manage/utility_logs')}" {if !empty($active) && $active eq 'logs'}class="active"{/if}>Logs</a></li>
+			<li><a href="{site_url('manage/logs')}" {if !empty($active) && $active eq 'uploads'}class="active"{/if}>Uploads</a>
 		</ul>
 	</div>
 {/strip}

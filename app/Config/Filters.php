@@ -84,7 +84,7 @@ class Filters extends BaseFilters
                     'countries/provinces',
                     'countries/districts',
                     'countries/wards',
-                    'utilities/manage/load_fba',
+                    'manage/utility_load_fba',
                     'users/social_login',
                     '*/manage/related',
                     'manage/backup/upload',

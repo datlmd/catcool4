@@ -1,13 +1,13 @@
-<?php namespace App\Modules\Utilities\Controllers;
+<?php namespace App\Modules\Utilities\Controllers\Admin;
 
 use App\Controllers\AdminController;
 
-class Manage extends AdminController
+class Utilities extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'utilities/manage';
-    CONST MANAGE_URL  = 'utilities/manage';
+    CONST MANAGE_ROOT = 'manage/utilities';
+    CONST MANAGE_URL  = 'manage/utilities';
 
     public function __construct()
     {
@@ -99,8 +99,8 @@ class Manage extends AdminController
         }
 
         $data = [
-            "api"      => "utilities/manage/load_fba?dir=" . urldecode($dir),
-            "route"    => "utilities/manage/list_file?dir=" . urldecode($dir),
+            "api"      => "manage/utility_load_fba?dir=" . urldecode($dir),
+            "route"    => "manage/utility_load_fba?dir=" . urldecode($dir),
             "dir_list" => $dir_list,
             "dir"      => urldecode($dir),
         ];
