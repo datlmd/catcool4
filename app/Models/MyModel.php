@@ -6,9 +6,33 @@ use CodeIgniter\Model;
 
 class MyModel extends Model
 {
-    use \Tatter\Relations\Traits\ModelTrait;
+    //use \Tatter\Relations\Traits\ModelTrait;
 
-    protected $table_lang;
+    protected $returnType = 'array';
+    protected $useAutoIncrement = false;
+    protected $useSoftDeletes = false;
+    protected bool $allowEmptyInserts = false;
+    protected bool $updateOnlyChanged = true;
+
+    // Dates
+    protected $useTimestamps = false;
+    protected $dateFormat    = 'datetime';
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
+
+    // Callbacks
+    protected $allowCallbacks = true;
+    protected $beforeInsert   = [];
+    protected $afterInsert    = [];
+    protected $beforeUpdate   = [];
+    protected $afterUpdate    = [];
+    protected $beforeFind     = [];
+    protected $afterFind      = [];
+    protected $beforeDelete   = [];
+    protected $afterDelete    = [];
+
+    protected $table_lang = '';
 
     public function __construct()
     {

@@ -164,7 +164,8 @@ defined('MENU_POSITION_BOTTOM') OR define('MENU_POSITION_BOTTOM', 'bottom');
 defined('MENU_POSITION_OTHER')  OR define('MENU_POSITION_OTHER', 'other');
 
 //cache name
-defined('SET_CACHE_NAME_MENU') OR define('SET_CACHE_NAME_MENU', 'menu_position');
+defined('PREFIX_CACHE_NAME_MYSQL') OR define('PREFIX_CACHE_NAME_MYSQL', 'mysql_');
+defined('SET_CACHE_NAME_MENU') OR define('SET_CACHE_NAME_MENU', PREFIX_CACHE_NAME_MYSQL.'menu_position');
 
 //social
 defined('LOGIN_SOCIAL_TYPE_FACEBOOK')  OR define('LOGIN_SOCIAL_TYPE_FACEBOOK', 'fb');

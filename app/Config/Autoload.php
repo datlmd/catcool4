@@ -43,8 +43,8 @@ class Autoload extends AutoloadConfig
         APP_NAMESPACE => APPPATH,
         //'Config'      => APPPATH . 'Config', //datlm
         'App\Modules' => APPPATH . 'Modules', //datlm
-        'Tatter\Schemas' => APPPATH . "ThirdParty/Models", //datlm
-        'Tatter\Relations' => APPPATH . "ThirdParty/Models", //datlm
+        //'Tatter\Schemas' => APPPATH . "ThirdParty/Models", //datlm
+        //'Tatter\Relations' => APPPATH . "ThirdParty/Models", //datlm
         'Intervention\Image' => APPPATH . "ThirdParty/Intervention/Image", //datlm
         'CodeIgniter\Settings' => APPPATH . 'ThirdParty/Settings/src', //datlm
     ];

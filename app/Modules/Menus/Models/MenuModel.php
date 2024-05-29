@@ -8,9 +8,9 @@ class MenuModel extends MyModel
 {
     protected $table = 'menu';
     protected $primaryKey = 'menu_id';
+    protected $useAutoIncrement = true;
 
     protected $table_lang = 'menu_lang';
-    protected $with = ['menu_lang'];
 
     protected $allowedFields = [
         'menu_id',
@@ -64,13 +64,23 @@ class MenuModel extends MyModel
         }
 
         $result = $this->select("$this->table.*, $this->table_lang.*")
-            ->with(false)
             ->join($this->table_lang, "$this->table_lang.menu_id = $this->table.menu_id")
             ->orderBy($sort, $order)->findAll();
 
         if (empty($result)) {
             return null;
         }
+
+        return $result;
+    }
+
+    public function getMenusByIds(array $menu_ids, ?int $language_id): array
+    {
+        $result = $this->join($this->table_lang, "$this->table_lang.menu_id = $this->table.menu_id")
+                ->orderBy('sort_order', 'DESC')
+                ->where(["$this->table_lang.language_id" => $language_id])
+                ->whereIn("$this->table.menu_id", $menu_ids)
+                ->findAll();
 
         return $result;
     }
@@ -82,9 +92,6 @@ class MenuModel extends MyModel
         //get language id
         $language_id = !empty($filter['is_admin']) ? language_id_admin() : language_id();
 
-        $filter['published'] = isset($filter['published']) ? $filter['published'] : STATUS_ON;
-        $filter['is_admin'] = isset($filter['is_admin']) ? $filter['is_admin'] : STATUS_OFF;
-
         if (!empty($filter['is_admin'])) {
             $cache_name = $cache_name.'_admin'.'_lang_'.$language_id;
         } else {
@@ -93,9 +100,16 @@ class MenuModel extends MyModel
             $cache_name = $cache_name.'_lang_'.$language_id;
         }
 
+        $filter['published'] = isset($filter['published']) ? $filter['published'] : STATUS_ON;
+        $filter['is_admin'] = isset($filter['is_admin']) ? $filter['is_admin'] : STATUS_OFF;
+        $filter["$this->table_lang.language_id"] = $language_id;
+
         $result = $is_cache ? cache()->get($cache_name) : null;
         if (empty($result)) {
-            $result = $this->orderBy('sort_order', 'DESC')->where($filter)->findAll();
+            $result = $this->join($this->table_lang, "$this->table_lang.menu_id = $this->table.menu_id")
+                ->orderBy('sort_order', 'DESC')
+                ->where($filter)
+                ->findAll();
 
             if ($is_cache) {
                 // Save into the cache for $expire_time 1 month
@@ -107,16 +121,7 @@ class MenuModel extends MyModel
             return false;
         }
 
-        foreach ($result as $key => $value) {
-            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
-        }
-
         foreach ($result as $key => $menu) {
-            if (empty($menu['lang'])) {
-                foreach ($menu['lang'] as $key_lang => $lang) {
-                    $result[$key]['lang'][$key_lang]['slug'] = $this->_getFullUrl($lang['slug']);
-                }
-            }
             if (!empty($menu['slug'])) {
                 $result[$key]['slug'] = $this->_getFullUrl($menu['slug']);
             }
@@ -140,10 +145,6 @@ class MenuModel extends MyModel
             //clear cache all
             cache()->deleteMatching(SET_CACHE_NAME_MENU.'_frontend_*');
         }
-
-//        foreach ($list_name as $name) {
-//            cache()->delete($name);
-//        }
 
         return true;
     }

@@ -185,40 +185,6 @@ if (!function_exists('format_data_lang_id')) {
     }
 }
 
-if (!function_exists('format_lang_form')) {
-    /**
-     * @param $data
-     * @param bool $is_admin
-     *
-     * @return array
-     */
-    function format_lang_form($data, $is_admin = true)
-    {
-        if (empty($data)) {
-            return $data;
-        }
-
-        $input_list = [];
-        foreach (list_language($is_admin) as $lang) {
-            foreach ($data as $key => $value) {
-                if (strrpos($key, $lang['id']) !== false) {
-                    $lang_tmp = explode('_', $key);
-                    if (empty($lang_tmp) || count($lang_tmp) < 3) {
-                        continue;
-                    }
-                    $lang_id = $lang_tmp[1];
-                    unset($lang_tmp[0],$lang_tmp[1]);
-
-                    //lang_{$language.id}_description
-                    $input_list[$lang_id][implode('_', $lang_tmp)] = $value;
-                }
-            }
-        }
-
-        return $input_list;
-    }
-}
-
 if (!function_exists('http_get_query')) {
     function http_get_query()
     {

@@ -1,8 +1,10 @@
-<?php namespace App\Modules\Menus\Controllers\Admin;
+<?php
+
+namespace App\Modules\Menus\Controllers\Admin;
 
 use App\Controllers\AdminController;
-use App\Modules\Menus\Models\MenuModel;
 use App\Modules\Menus\Models\MenuLangModel;
+use App\Modules\Menus\Models\MenuModel;
 
 class Menus extends AdminController
 {
@@ -10,8 +12,8 @@ class Menus extends AdminController
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'manage/menus';
-    CONST MANAGE_URL  = 'manage/menus';
+    const MANAGE_ROOT = 'manage/menus';
+    const MANAGE_URL = 'manage/menus';
 
     public function __construct()
     {
@@ -33,7 +35,7 @@ class Menus extends AdminController
 
     public function index()
     {
-        add_meta(['title' => lang("MenuAdmin.heading_title")], $this->themes);
+        add_meta(['title' => lang('MenuAdmin.heading_title')], $this->themes);
 
         $this->themes->addJS('common/plugin/shortable-nestable/jquery.nestable.js');
         $this->themes->addJS('common/js/admin/category.js');
@@ -47,8 +49,8 @@ class Menus extends AdminController
 
         $data = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'list'       => format_tree(['data' => $list, 'key_id' => 'menu_id']),
-            'is_admin'   => session('is_menu_admin'),
+            'list' => format_tree(['data' => $list, 'key_id' => 'menu_id']),
+            'is_admin' => session('is_menu_admin'),
         ];
 
         $this->themes
@@ -63,22 +65,23 @@ class Menus extends AdminController
         if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
+
                 return redirect()->back()->withInput();
             }
 
             $add_data = [
-                'context'    => $this->request->getPost('context'),
-                'icon'       => $this->request->getPost('icon'),
-                'image'      => $this->request->getPost('image'),
-                'nav_key'    => $this->request->getPost('nav_key'),
-                'label'      => $this->request->getPost('label'),
+                'context' => $this->request->getPost('context'),
+                'icon' => $this->request->getPost('icon'),
+                'image' => $this->request->getPost('image'),
+                'nav_key' => $this->request->getPost('nav_key'),
+                'label' => $this->request->getPost('label'),
                 'attributes' => $this->request->getPost('attributes'),
-                'selected'   => $this->request->getPost('selected'),
-                'user_id'    => $this->user->getId(),
+                'selected' => $this->request->getPost('selected'),
+                'user_id' => $this->user->getId(),
                 'sort_order' => $this->request->getPost('sort_order'),
-                'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-                'is_admin'   => !empty(session('is_menu_admin')) ? STATUS_ON : STATUS_OFF,
-                'hidden'     => !empty($this->request->getPost('hidden')) ? STATUS_ON : STATUS_OFF,
+                'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'is_admin' => !empty(session('is_menu_admin')) ? STATUS_ON : STATUS_OFF,
+                'hidden' => !empty($this->request->getPost('hidden')) ? STATUS_ON : STATUS_OFF,
             ];
 
             if (!empty($this->request->getPost('parent_id'))) {
@@ -86,15 +89,16 @@ class Menus extends AdminController
             }
 
             $id = $this->model->insert($add_data);
-            if ($id === FALSE) {
+            if ($id === false) {
                 set_alert(lang('Admin.error'), ALERT_ERROR);
+
                 return redirect()->back()->withInput();
             }
 
             $add_data_lang = $this->request->getPost('lang');
             foreach (list_language_admin() as $language) {
                 $add_data_lang[$language['id']]['language_id'] = $language['id'];
-                $add_data_lang[$language['id']]['menu_id']     = $id;
+                $add_data_lang[$language['id']]['menu_id'] = $id;
                 $this->model_lang->insert($add_data_lang[$language['id']]);
             }
 
@@ -102,6 +106,7 @@ class Menus extends AdminController
             $this->model->deleteCache(session('is_menu_admin'));
 
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -112,19 +117,21 @@ class Menus extends AdminController
     {
         if (is_null($id)) {
             set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
         if (!empty($this->request->getPost()) && $id == $this->request->getPost('menu_id')) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
+
                 return redirect()->back()->withInput();
             }
 
             $edit_data_lang = $this->request->getPost('lang');
             foreach (list_language_admin() as $language) {
                 $edit_data_lang[$language['id']]['language_id'] = $language['id'];
-                $edit_data_lang[$language['id']]['menu_id']     = $id;
+                $edit_data_lang[$language['id']]['menu_id'] = $id;
 
                 if (!empty($this->model_lang->where(['menu_id' => $id, 'language_id' => $language['id']])->find())) {
                     $this->model_lang->where('language_id', $language['id'])->update($id, $edit_data_lang[$language['id']]);
@@ -134,23 +141,24 @@ class Menus extends AdminController
             }
 
             $edit_data = [
-                'context'    => $this->request->getPost('context'),
-                'icon'       => $this->request->getPost('icon'),
-                'image'      => $this->request->getPost('image'),
-                'nav_key'    => $this->request->getPost('nav_key'),
-                'label'      => $this->request->getPost('label'),
+                'context' => $this->request->getPost('context'),
+                'icon' => $this->request->getPost('icon'),
+                'image' => $this->request->getPost('image'),
+                'nav_key' => $this->request->getPost('nav_key'),
+                'label' => $this->request->getPost('label'),
                 'attributes' => $this->request->getPost('attributes'),
-                'selected'   => $this->request->getPost('selected'),
-                'user_id'    => $this->user->getId(),
+                'selected' => $this->request->getPost('selected'),
+                'user_id' => $this->user->getId(),
                 'sort_order' => $this->request->getPost('sort_order'),
-                'parent_id'  => !empty($this->request->getPost('parent_id')) ? $this->request->getPost('parent_id') : null,
-                'is_admin'   => !empty(session('is_menu_admin')) ? STATUS_ON : STATUS_OFF,
-                'hidden'     => !empty($this->request->getPost('hidden')) ? STATUS_ON : STATUS_OFF,
-                'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'parent_id' => !empty($this->request->getPost('parent_id')) ? $this->request->getPost('parent_id') : null,
+                'is_admin' => !empty(session('is_menu_admin')) ? STATUS_ON : STATUS_OFF,
+                'hidden' => !empty($this->request->getPost('hidden')) ? STATUS_ON : STATUS_OFF,
+                'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
             if (!$this->model->update($id, $edit_data)) {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
+
                 return redirect()->back()->withInput();
             }
 
@@ -158,6 +166,7 @@ class Menus extends AdminController
             $this->model->deleteCache(session('is_menu_admin'));
 
             set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
+
             return redirect()->back();
         }
 
@@ -175,9 +184,9 @@ class Menus extends AdminController
         //delete
         if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
-            $ids = (is_array($ids)) ? $ids : explode(",", $ids);
+            $ids = (is_array($ids)) ? $ids : explode(',', $ids);
 
-            $list_delete = $this->model->getListDetail($ids);
+            $list_delete = $this->model->getMenusByIds($ids, $this->language_id);
             if (empty($list_delete)) {
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
@@ -202,14 +211,14 @@ class Menus extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->getListDetail($delete_ids, $this->language_id);
+        $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
+        $list_delete = $this->model->getMenusByIds($delete_ids, $this->language_id);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $data['list_delete'] = $list_delete;
-        $data['ids']         = $this->request->getPost('delete_ids');
+        $data['ids'] = $this->request->getPost('delete_ids');
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }
@@ -227,20 +236,26 @@ class Menus extends AdminController
 
         //edit
         if (!empty($id) && is_numeric($id)) {
-            $data['text_form'] = lang('MenuAdmin.text_edit') . (!empty(session('is_menu_admin')) ? ' (Admin)' : '');
-            $breadcrumb_url    = site_url(self::MANAGE_URL . "/edit/$id");
+            $data['text_form'] = lang('MenuAdmin.text_edit').(!empty(session('is_menu_admin')) ? ' (Admin)' : '');
+            $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$id");
 
-            $data_form = $this->model->getDetail($id);
+            $data_form = $this->model->find($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
                 return redirect()->to(site_url(self::MANAGE_URL));
+            }
+
+            $menu_languages = $this->model_lang->where('menu_id', $id)->findAll();
+            foreach ($menu_languages as $menu_language) {
+                $data_form['lang'][$menu_language['language_id']] = $menu_language;
             }
 
             // display the edit user form
             $data['edit_data'] = $data_form;
         } else {
-            $data['text_form'] = lang('MenuAdmin.text_add') . (!empty(session('is_menu_admin')) ? ' (Admin)' : '');
-            $breadcrumb_url    = site_url(self::MANAGE_URL . "/add");
+            $data['text_form'] = lang('MenuAdmin.text_add').(!empty(session('is_menu_admin')) ? ' (Admin)' : '');
+            $breadcrumb_url = site_url(self::MANAGE_URL.'/add');
         }
 
         $data['errors'] = $this->errors;
@@ -260,12 +275,12 @@ class Menus extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        foreach(list_language_admin() as $value) {
-            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
+        foreach (list_language_admin() as $value) {
+            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name').' ('.$value['name'].')', 'required');
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
-        $this->errors  = $this->validator->getErrors();
+        $this->errors = $this->validator->getErrors();
 
         return $is_validation;
     }
@@ -282,7 +297,7 @@ class Menus extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        $id        = $this->request->getPost('id');
+        $id = $this->request->getPost('id');
         $item_edit = $this->model->find($id);
         if (empty($item_edit)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
@@ -311,7 +326,7 @@ class Menus extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        $data_sort = filter_sort_array(json_decode($this->request->getPost('ids'), true), 0 , "menu_id");
+        $data_sort = filter_sort_array(json_decode($this->request->getPost('ids'), true), 0, 'menu_id');
         if (!$this->model->updateBatch($data_sort, 'menu_id')) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
