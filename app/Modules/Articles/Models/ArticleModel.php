@@ -7,10 +7,10 @@ use App\Models\MyModel;
 class ArticleModel extends MyModel
 {
     protected $table = 'article';
-    protected $primaryKey = 'article_id';
-
     protected $table_lang = 'article_lang';
-    protected $with = ['article_lang', 'article_categories'];
+    protected $primaryKey = 'article_id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = true;
 
     protected $allowedFields = [
         'article_id',
@@ -33,10 +33,7 @@ class ArticleModel extends MyModel
         'updated_at',
     ];
 
-    protected $useSoftDeletes = true;
-    protected $deletedField = 'deleted';
-
-    const ARTICLE_CACHE_NAME = 'article_list';
+    const ARTICLE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'article_list';
     const ARTICLE_CACHE_EXPIRE = HOUR;
 
     public function __construct()
@@ -69,7 +66,6 @@ class ArticleModel extends MyModel
         }
 
         $result = $this->select("$this->table.*, $this->table_lang.*")
-            ->with(false)
             ->join($this->table_lang, "$this->table_lang.article_id = $this->table.article_id")
             ->orderBy($sort, $order);
 
@@ -81,5 +77,16 @@ class ArticleModel extends MyModel
         cache()->delete(self::ARTICLE_CACHE_NAME);
 
         return true;
+    }
+
+    public function getArticlesByIds(array $article_ids, ?int $language_id): array
+    {
+        $result = $this->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->orderBy('sort_order', 'DESC')
+                ->where(["$this->table_lang.language_id" => $language_id])
+                ->whereIn("$this->table.$this->primaryKey", $article_ids)
+                ->findAll();
+
+        return $result;
     }
 }

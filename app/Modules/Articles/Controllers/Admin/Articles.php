@@ -85,7 +85,7 @@ class Articles extends AdminController
 
             $category_ids = $this->request->getPost('category_ids');
             if (!empty($category_ids)) {
-                $categorie_list = $this->model_category->getListDetail($category_ids);
+                $categorie_list = $this->model_category->find($category_ids);
                 if (!empty($category_ids) && empty($categorie_list)) {
                     set_alert(lang('Admin.error_empty'), ALERT_ERROR);
 
@@ -130,9 +130,12 @@ class Articles extends AdminController
             if (!empty($categorie_list)) {
                 $relationship_add = [];
                 foreach ($categorie_list as $val) {
-                    $relationship_add[] = ['article_id' => $id, 'category_id' => $val['category_id']];
+                    $relationship_add[] = [
+                        'article_id' => $id,
+                        'category_id' => $val['category_id'],
+                    ];
                 }
-                $this->model_categories->insert($relationship_add);
+                $this->model_categories->insertBatch($relationship_add);
             }
 
             $add_data_lang = $this->request->getPost('lang');
@@ -171,8 +174,9 @@ class Articles extends AdminController
             }
             try {
                 $category_ids = $this->request->getPost('category_ids');
+
                 if (!empty($category_ids)) {
-                    $categorie_list = $this->model_category->getListDetail($category_ids);
+                    $categorie_list = $this->model_category->find($category_ids);
                     if (!empty($category_ids) && empty($categorie_list)) {
                         set_alert(lang('Admin.error_empty'), ALERT_ERROR);
 
@@ -212,9 +216,12 @@ class Articles extends AdminController
 
                     $relationship_add = [];
                     foreach ($categorie_list as $val) {
-                        $relationship_add[] = ['article_id' => $id, 'category_id' => $val['category_id']];
+                        $relationship_add[] = [
+                            'article_id' => $id,
+                            'category_id' => $val['category_id'],
+                        ];
                     }
-                    $this->model_categories->insert($relationship_add);
+                    $this->model_categories->insertBatch($relationship_add);
                 }
 
                 $edit_data = [
@@ -265,7 +272,7 @@ class Articles extends AdminController
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(',', $ids);
 
-            $list_delete = $this->model->getListDetail($ids);
+            $list_delete = $this->model->getArticlesByIds($ids, $this->language_id);
             if (empty($list_delete)) {
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
@@ -296,7 +303,7 @@ class Articles extends AdminController
         }
 
         $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->getListDetail($delete_ids, $this->language_id);
+        $list_delete = $this->model->getArticlesByIds($delete_ids, $this->language_id);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
@@ -344,11 +351,16 @@ class Articles extends AdminController
             $data['text_form'] = lang('ArticleAdmin.text_edit');
             $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$id");
 
-            $data_form = $this->model->getDetail($id);
+            $data_form = $this->model->find($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
 
                 return redirect()->to(site_url(self::MANAGE_URL));
+            }
+
+            $article_languages = $this->model_lang->where('article_id', $id)->findAll();
+            foreach ($article_languages as $article_language) {
+                $data_form['lang'][$article_language['language_id']] = $article_language;
             }
 
             $categories = $this->model_categories->where('article_id', $id)->findAll();

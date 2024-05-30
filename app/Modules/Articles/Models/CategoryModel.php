@@ -8,9 +8,9 @@ class CategoryModel extends MyModel
 {
     protected $table = 'article_category';
     protected $primaryKey = 'category_id';
+    protected $useAutoIncrement = true;
 
     protected $table_lang = 'article_category_lang';
-    protected $with = ['article_category_lang'];
 
     protected $allowedFields = [
         'category_id',
@@ -22,7 +22,7 @@ class CategoryModel extends MyModel
         'updated_at',
     ];
 
-    const CATEGORY_CACHE_NAME = 'category_list';
+    const CATEGORY_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'category_list';
     const CATEGORY_CACHE_EXPIRE = YEAR;
 
     public function __construct()
@@ -46,7 +46,6 @@ class CategoryModel extends MyModel
         }
 
         $result = $this->select("$this->table.*, $this->table_lang.*")
-            ->with(false)
             ->join($this->table_lang, "$this->table_lang.category_id = $this->table.category_id")
             ->orderBy($sort, $order)->findAll();
 
@@ -64,12 +63,28 @@ class CategoryModel extends MyModel
         return true;
     }
 
+    public function getArticleCategoriesByIds(array $category_ids, ?int $language_id): array
+    {
+        $result = $this->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->orderBy('sort_order', 'DESC')
+                ->where(["$this->table_lang.language_id" => $language_id])
+                ->whereIn("$this->table.$this->primaryKey", $category_ids)
+                ->findAll();
+
+        return $result;
+    }
+
     /** ------- Frontend ------- */
     public function getArticleCategories($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::CATEGORY_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->orderBy('sort_order', 'DESC')->where(['published' => STATUS_ON])->findAll();
+            $result = $this->select('*')
+                ->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->orderBy('sort_order', 'DESC')
+                ->where(['published' => STATUS_ON])
+                ->findAll();
+
             if (empty($result)) {
                 return [];
             }
@@ -85,7 +100,9 @@ class CategoryModel extends MyModel
         }
 
         foreach ($result as $key => $value) {
-            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
+            if ($value['language_id'] != $language_id) {
+                unset($result[$key]);
+            }
         }
 
         return $result;

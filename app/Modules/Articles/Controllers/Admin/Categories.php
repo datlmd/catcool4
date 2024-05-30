@@ -181,7 +181,7 @@ class Categories extends AdminController
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(',', $ids);
 
-            $list_delete = $this->model->getListDetail($ids);
+            $list_delete = $this->model->getArticleCategoriesByIds($ids, $this->language_id);
             if (empty($list_delete)) {
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
@@ -212,7 +212,7 @@ class Categories extends AdminController
         }
 
         $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->getListDetail($delete_ids, language_id_admin());
+        $list_delete = $this->model->getArticleCategoriesByIds($delete_ids, $this->language_id);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
@@ -241,11 +241,16 @@ class Categories extends AdminController
             $data['text_form'] = lang('CategoryAdmin.text_edit');
             $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$id");
 
-            $data_form = $this->model->getDetail($id);
+            $data_form = $this->model->find($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
 
                 return redirect()->to(site_url(self::MANAGE_URL));
+            }
+
+            $article_category_languages = $this->model_lang->where('category_id', $id)->findAll();
+            foreach ($article_category_languages as $value) {
+                $data_form['lang'][$value['language_id']] = $value;
             }
 
             //lay danh sach seo url tu route
