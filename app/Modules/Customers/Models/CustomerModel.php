@@ -34,19 +34,19 @@ class CustomerModel extends MyModel
         'forgotten_password_selector',
         'forgotten_password_code',
         'forgotten_password_time',
-        'last_login',
         'active',
-        'deleted',
         'language_id',
         'customer_group_id',
         'store_id',
         'ip',
+        'last_login',
+        'deleted_at',
         'created_at',
         'updated_at',
     ];
 
     protected $useSoftDeletes = true;
-    protected $deletedField = 'deleted';
+    protected $deletedField = 'deleted_at';
 
     protected $auth_model;
 

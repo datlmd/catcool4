@@ -10,7 +10,7 @@ class  ProvinceModel extends MyModel
     protected $useAutoIncrement = true;
 
     protected $useSoftDeletes = true;
-    protected $deletedField   = 'deleted';
+    protected $deletedField   = 'deleted_at';
 
     protected $allowedFields = [
         'province_id',
@@ -22,7 +22,7 @@ class  ProvinceModel extends MyModel
         'country_code',
         'sort_order',
         'published',
-        'deleted',
+        'deleted_at',
     ];
 
     const COUNTRY_PROVINCE_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_province_list';

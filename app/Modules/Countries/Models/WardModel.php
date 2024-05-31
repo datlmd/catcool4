@@ -10,7 +10,7 @@ class  WardModel extends MyModel
     protected $useAutoIncrement = true;
 
     protected $useSoftDeletes = true;
-    protected $deletedField   = 'deleted';
+    protected $deletedField   = 'deleted_at';
 
     protected $allowedFields = [
         'ward_id',
@@ -20,7 +20,7 @@ class  WardModel extends MyModel
         'lati_long_tude',
         'sort_order',
         'published',
-        'deleted',
+        'deleted_at',
     ];
 
     const COUNTRY_WARD_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_ward_list';

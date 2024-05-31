@@ -42,14 +42,14 @@ class NewsModel extends FarmModel
         'counter_comment',
         'counter_like',
         'published',
-        'deleted',
+        'deleted_at',
         'language_id',
         'created_at',
         'updated_at',
     ];
 
     protected $useSoftDeletes = true;
-    protected $deletedField = 'deleted';
+    protected $deletedField = 'deleted_at';
 
     const NEWS_CACHE_EXPIRE = 10 * MINUTE; //10 phut
     const NEWS_CACHE_DETAIL = PREFIX_CACHE_NAME_MYSQL.'news_detail_id_%s_%s';

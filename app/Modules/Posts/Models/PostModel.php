@@ -40,14 +40,14 @@ class PostModel extends MyModel
         'counter_comment',
         'counter_like',
         'published',
-        'deleted',
         'language_id',
+        'deleted_at',
         'created_at',
         'updated_at',
     ];
 
     protected $useSoftDeletes = true;
-    protected $deletedField = 'deleted';
+    protected $deletedField = 'deleted_at';
 
     const POST_CACHE_EXPIRE = DAY;
     const POST_CACHE_CATEGORY_HOME = PREFIX_CACHE_NAME_MYSQL.'post_category_home_list';

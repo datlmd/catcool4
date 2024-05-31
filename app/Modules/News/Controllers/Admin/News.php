@@ -608,7 +608,7 @@ class News extends AdminController
                 return redirect()->back();
             }
 
-            if (!$this->model->updateInfo(['deleted' => null], $id)) {
+            if (!$this->model->updateInfo(['deleted_at' => null], $id)) {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
 
                 return redirect()->back()->withInput();

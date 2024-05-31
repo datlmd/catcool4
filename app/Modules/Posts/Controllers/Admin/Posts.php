@@ -549,7 +549,7 @@ class Posts extends AdminController
                 return redirect()->back();
             }
 
-            if (!$this->model->update($id, ['deleted' => null])) {
+            if (!$this->model->update($id, ['deleted_at' => null])) {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->back()->withInput();
             }

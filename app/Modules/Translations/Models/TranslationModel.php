@@ -22,7 +22,7 @@ class TranslationModel extends MyModel
     ];
 
     protected $useSoftDeletes = true;
-    protected $deletedField = 'deleted';
+    protected $deletedField = 'deleted_at';
 
     const TRANSLATION_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'translation_list';
     const TRANSLATION_CACHE_EXPIRE = 30 * MINUTE;

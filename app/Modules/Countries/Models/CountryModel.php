@@ -1,16 +1,18 @@
-<?php namespace App\Modules\Countries\Models;
+<?php
+
+namespace App\Modules\Countries\Models;
 
 use App\Models\MyModel;
 
 class CountryModel extends MyModel
 {
-    protected $table      = 'country';
+    protected $table = 'country';
     protected $primaryKey = 'country_id';
 
     protected $useAutoIncrement = true;
 
     protected $useSoftDeletes = true;
-    protected $deletedField   = 'deleted';
+    protected $deletedField = 'deleted_at';
 
     protected $allowedFields = [
         'country_id',
@@ -30,32 +32,32 @@ class CountryModel extends MyModel
         'sort_order',
         'published',
         'flags',
-        'deleted',
+        'deleted_at',
     ];
 
-    const COUNTRY_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_list';
+    const COUNTRY_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'country_list';
     const COUNTRY_CACHE_EXPIRE = YEAR;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? $sort : 'country_id';
+        $sort = in_array($sort, $this->allowedFields) ? $sort : 'country_id';
         $order = empty($order) ? 'DESC' : $order;
 
-        if (!empty($filter["country_id"])) {
-            $this->whereIn('country_id', (is_array($filter["country_id"])) ? $filter["country_id"] : explode(',', $filter["country_id"]));
+        if (!empty($filter['country_id'])) {
+            $this->whereIn('country_id', (is_array($filter['country_id'])) ? $filter['country_id'] : explode(',', $filter['country_id']));
         }
 
-        if (!empty($filter["name"])) {
+        if (!empty($filter['name'])) {
             $this->groupStart();
-            $this->Like('name', $filter["name"]);
-            $this->orLike('formal_name', $filter["name"]);
-            $this->orLike('country_code', $filter["name"]);
-            $this->orLike('currency_code', $filter["name"]);
+            $this->Like('name', $filter['name']);
+            $this->orLike('formal_name', $filter['name']);
+            $this->orLike('country_code', $filter['name']);
+            $this->orLike('currency_code', $filter['name']);
             $this->groupEnd();
         }
 
@@ -83,6 +85,7 @@ class CountryModel extends MyModel
     public function deleteCache()
     {
         cache()->delete(self::COUNTRY_CACHE_NAME);
+
         return true;
     }
 
