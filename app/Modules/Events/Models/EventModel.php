@@ -47,7 +47,7 @@ class EventModel extends MyModel
     {
         $result = $is_cache ? cache()->get(self::EVENTS_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->orderBy('event_id', 'DESC')->findAll();
+            $result = $this->where(['published' => STATUS_ON])->orderBy('event_id', 'DESC')->findAll();
             if (empty($result)) {
                 return [];
             }

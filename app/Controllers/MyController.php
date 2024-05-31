@@ -118,7 +118,27 @@ class MyController extends Controller
 
         //check clear cache
         $this->clearCacheAuto();
+
+        //load event
+        $this->_getEvents();
     }
+
+    private function _getEvents()
+    {
+        $event_model = new \App\Modules\Events\Models\EventModel();
+        $event_list = $event_model->getEvents();
+        if (!empty($event_list)) {
+            foreach ($event_list as $event) {
+                if (empty($event['code']) || empty($event['action'])) {
+                    continue;
+                }
+                
+                $priority = ($event['priority'] && $event['priority'] > 0) ? $event['priority'] : \CodeIgniter\Events\Events::PRIORITY_NORMAL;
+                //Call on a static method
+                \CodeIgniter\Events\Events::on($event['code'], $event['action'], $priority);
+            }
+        }
+    } 
 
     /**
      * Ghi log mọi action trên website của tài khoản admin, nếu tài khoàn user thường thì tuỳ function sẽ gắn hàm.

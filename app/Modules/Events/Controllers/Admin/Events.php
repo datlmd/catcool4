@@ -16,6 +16,12 @@ class Events extends AdminController
     {
         parent::__construct();
 
+        if (!$this->user->getSuperAdmin()) {
+            set_alert(lang('Admin.error_permission_super_admin'), ALERT_ERROR, ALERT_POPUP);
+
+            return redirect()->to(site_url(self::MANAGE_URL));
+        }
+
         $this->themes->setTheme(config_item('theme_admin'));
 
         $this->model = new EventModel();
