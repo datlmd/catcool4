@@ -9,28 +9,6 @@ class MyModel extends Model
     //use \Tatter\Relations\Traits\ModelTrait;
 
     protected $returnType = 'array';
-    protected $useAutoIncrement = false;
-    protected $useSoftDeletes = false;
-    protected bool $allowEmptyInserts = false;
-    protected bool $updateOnlyChanged = true;
-
-    // Dates
-    protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
-
-    // Callbacks
-    protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
-    protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
-    protected $beforeFind     = [];
-    protected $afterFind      = [];
-    protected $beforeDelete   = [];
-    protected $afterDelete    = [];
 
     protected $table_lang = '';
 
@@ -39,58 +17,24 @@ class MyModel extends Model
         parent::__construct();
     }
 
-    public function getDetail($id, $language_id = null)
+    public function formatDataLanguage($data, $language_id)
     {
-        if (empty($id) || !is_numeric($id)) {
-            return null;
+        if (empty($data)) {
+            return [];
         }
 
-        $result = $this->find($id);
-        if (empty($result)) {
-            return null;
-        }
-        $result = format_data_lang_id($result, $this->table_lang, $language_id);
-
-        if (isset($result['price'])) {
-            $result['price'] = (float) $result['price'] ? (float) $result['price'] : 0;
-        }
-
-        if (isset($result['weight'])) {
-            $result['weight'] = (float) $result['weight'] ? (float) $result['weight'] : 0;
+        $list = [];
+        foreach ($data as $value) {
+            if (!isset($value['language_id'])) {
+                continue;
+            }
+            if ($value['language_id'] == $language_id) {
+                $list[$value[$this->primaryKey]] = isset($list[$value[$this->primaryKey]]) ? array_merge($list[$value[$this->primaryKey]], $value) : $value;
+            }
+            $list[$value[$this->primaryKey]]['lang'][$value['language_id']] = $value;
         }
 
-        if (isset($result['length'])) {
-            $result['length'] = (float) $result['length'] ? (float) $result['length'] : 0;
-        }
-
-        if (isset($result['width'])) {
-            $result['width'] = (float) $result['width'] ? (float) $result['width'] : 0;
-        }
-
-        if (isset($result['height'])) {
-            $result['height'] = (float) $result['height'] ? (float) $result['height'] : 0;
-        }
-
-        return $result;
-    }
-
-    public function getListDetail($ids, $language_id = null)
-    {
-        if (empty($ids)) {
-            return null;
-        }
-
-        $ids = (is_array($ids)) ? $ids : explode(',', $ids);
-        $result = $this->find($ids);
-        if (empty($result)) {
-            return null;
-        }
-
-        foreach ($result as $key => $value) {
-            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
-        }
-
-        return $result;
+        return $list;
     }
 
     public function showSQL(\CodeIgniter\Model $model)

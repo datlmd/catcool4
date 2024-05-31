@@ -23,7 +23,7 @@ class  WardModel extends MyModel
         'deleted',
     ];
 
-    const COUNTRY_WARD_CACHE_NAME   = 'country_ward_list';
+    const COUNTRY_WARD_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_ward_list';
     const COUNTRY_WARD_CACHE_EXPIRE = YEAR;
 
     function __construct()

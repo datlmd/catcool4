@@ -25,7 +25,7 @@ class  ProvinceModel extends MyModel
         'deleted',
     ];
 
-    const COUNTRY_PROVINCE_CACHE_NAME   = 'country_province_list';
+    const COUNTRY_PROVINCE_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_province_list';
     const COUNTRY_PROVINCE_CACHE_EXPIRE = YEAR;
 
     function __construct()

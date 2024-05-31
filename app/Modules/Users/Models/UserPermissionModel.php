@@ -12,7 +12,7 @@ class UserPermissionModel extends MyModel
         'permission_id',
     ];
 
-    const USER_PERMISSION_CACHE_NAME   = 'user_permission_%d';
+    const USER_PERMISSION_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'user_permission_%d';
     const USER_PERMISSION_CACHE_EXPIRE = HOUR;
 
     function __construct()

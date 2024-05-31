@@ -28,9 +28,8 @@ class CategoryModel extends MyModel
     protected $skipValidation = false;
 
     protected $table_lang = 'product_category_lang';
-    protected $with = ['product_category_lang'];
 
-    const CATEGORY_CACHE_NAME = 'product_category_list';
+    const CATEGORY_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'product_category_list';
     const CATEGORY_CACHE_EXPIRE = YEAR;
 
     public function __construct()
@@ -54,13 +53,22 @@ class CategoryModel extends MyModel
         }
 
         $result = $this->select("$this->table.*, $this->table_lang.*")
-            ->with(false)
             ->join($this->table_lang, "$this->table_lang.category_id = $this->table.category_id")
             ->orderBy($sort, $order)->findAll();
 
         if (empty($result)) {
             return null;
         }
+
+        return $result;
+    }
+
+    public function getProductCategoriesByIds(array $category_ids, int $language_id): array
+    {
+        $result = $this->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->where(["$this->table_lang.language_id" => $language_id])
+                ->whereIn("$this->table.$this->primaryKey", $category_ids)
+                ->findAll();
 
         return $result;
     }
@@ -77,7 +85,11 @@ class CategoryModel extends MyModel
     {
         $result = $is_cache ? cache()->get(self::CATEGORY_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->orderBy('sort_order', 'DESC')->where(['published' => STATUS_ON])->findAll();
+            $result = $this
+                ->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->orderBy('sort_order', 'DESC')
+                ->where(['published' => STATUS_ON])
+                ->findAll();
             if (empty($result)) {
                 return [];
             }
@@ -88,14 +100,6 @@ class CategoryModel extends MyModel
             }
         }
 
-        if (empty($result)) {
-            return [];
-        }
-
-        foreach ($result as $key => $value) {
-            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
-        }
-
-        return $result;
+        return $this->formatDataLanguage($result, $language_id);
     }
 }

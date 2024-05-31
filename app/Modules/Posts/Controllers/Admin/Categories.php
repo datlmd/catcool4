@@ -171,7 +171,7 @@ class Categories extends AdminController
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
-            $list_delete = $this->model->getListDetail($ids);
+            $list_delete = $this->model->find($ids);
             if (empty($list_delete)) {
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
@@ -202,7 +202,7 @@ class Categories extends AdminController
         }
 
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->getListDetail($delete_ids, $this->language_id);
+        $list_delete = $this->model->find($delete_ids);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
@@ -231,7 +231,7 @@ class Categories extends AdminController
             $data['text_form'] = lang('CategoryAdmin.text_edit');
             $breadcrumb_url    = site_url(self::MANAGE_URL . "/edit/$id");
 
-            $data_form = $this->model->getDetail($id);
+            $data_form = $this->model->find($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->to(site_url(self::MANAGE_URL));

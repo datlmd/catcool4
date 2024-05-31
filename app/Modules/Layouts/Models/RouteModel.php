@@ -13,7 +13,7 @@ class RouteModel extends MyModel
         'route',
     ];
 
-    const CACHE_NAME_LIST = 'layout_route_list';
+    const CACHE_NAME_LIST = PREFIX_CACHE_NAME_MYSQL.'layout_route_list';
     const CACHE_EXPIRE = YEAR;
 
     function __construct()

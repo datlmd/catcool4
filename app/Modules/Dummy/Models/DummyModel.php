@@ -25,7 +25,6 @@ class DummyModel extends MyModel
     protected $skipValidation = false;
 
     protected $table_lang = 'dummy_lang';
-    protected $with = ['dummy_lang'];
 
     public function __construct()
     {
@@ -48,10 +47,20 @@ class DummyModel extends MyModel
         }
 
         $this->select("$this->table.*, $this->table_lang.*")
-            ->with(false)
             ->join($this->table_lang, "$this->table_lang.dummy_id = $this->table.dummy_id")
             ->orderBy($sort, $order);
 
         return $this;
+    }
+
+    public function getDummyByIds(array $dummy_ids, int $language_id): array
+    {
+        $result = $this->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->orderBy('sort_order', 'DESC')
+                ->where(["$this->table_lang.language_id" => $language_id])
+                ->whereIn("$this->table.$this->primaryKey", $dummy_ids)
+                ->findAll();
+
+        return $result;
     }
 }

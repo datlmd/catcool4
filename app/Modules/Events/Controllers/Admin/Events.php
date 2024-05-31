@@ -142,7 +142,7 @@ class Events extends AdminController
             $data['text_form'] = lang('Admin.text_edit');
             $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$id");
 
-            $data_form = $this->model->getDetail($id);
+            $data_form = $this->model->find($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR);
 

@@ -19,7 +19,6 @@ class ReasonModel extends MyModel
     protected $skipValidation     = false;
 
     protected $table_lang = 'return_reason_lang';
-    protected $with = ['return_reason_lang'];
 
     public function __construct()
     {
@@ -42,10 +41,19 @@ class ReasonModel extends MyModel
         }
 
         $this->select("$this->table.*, $this->table_lang.*")
-            ->with(false)
             ->join($this->table_lang, "$this->table_lang.return_reason_id = $this->table.return_reason_id")
             ->orderBy($sort, $order);
 
         return $this;
+    }
+
+    public function getReturnReasonsByIds(array $return_reason_ids, int $language_id): array
+    {
+        $result = $this->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->where(["$this->table_lang.language_id" => $language_id])
+                ->whereIn("$this->table.$this->primaryKey", $return_reason_ids)
+                ->findAll();
+
+        return $result;
     }
 }

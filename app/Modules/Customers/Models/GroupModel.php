@@ -22,9 +22,8 @@ class GroupModel extends MyModel
     protected $skipValidation = false;
 
     protected $table_lang = 'customer_group_lang';
-    protected $with = ['customer_group_lang'];
 
-    const CUSTOMER_GROUP_CACHE_NAME = 'customer_group_list_all';
+    const CUSTOMER_GROUP_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'customer_group_list_all';
     const CUSTOMER_GROUP_CACHE_EXPIRE = YEAR;
 
     public function __construct()
@@ -48,18 +47,30 @@ class GroupModel extends MyModel
         }
 
         $this->select("$this->table.*, $this->table_lang.*")
-            ->with(false)
             ->join($this->table_lang, "$this->table_lang.customer_group_id = $this->table.customer_group_id")
             ->orderBy($sort, $order);
 
         return $this;
     }
 
+    public function getCustomerGroupsByIds(array $customer_group_ids, int $language_id): array
+    {
+        $result = $this->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->orderBy('sort_order', 'DESC')
+                ->where(["$this->table_lang.language_id" => $language_id])
+                ->whereIn("$this->table.$this->primaryKey", $customer_group_ids)
+                ->findAll();
+
+        return $result;
+    }
+
     public function getCustomerGroups($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::CUSTOMER_GROUP_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->orderBy('sort_order', 'DESC')->findAll();
+            $result = $this->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->orderBy('sort_order', 'DESC')
+                ->findAll();
             if (empty($result)) {
                 return [];
             }
@@ -70,16 +81,7 @@ class GroupModel extends MyModel
             }
         }
 
-        if (empty($result)) {
-            return [];
-        }
-
-        $list = [];
-        foreach ($result as $value) {
-            $list[$value['customer_group_id']] = format_data_lang_id($value, $this->table_lang, $language_id);
-        }
-
-        return $list;
+        return $this->formatDataLanguage($result, $language_id);
     }
 
     public function deleteCache()

@@ -17,7 +17,7 @@ class EventModel extends MyModel
         'priority',
     ];
 
-    const EVENTS_CACHE_NAME = 'events_list';
+    const EVENTS_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'events_list';
     const EVENTS_CACHE_EXPIRE = YEAR;
 
     public function __construct()

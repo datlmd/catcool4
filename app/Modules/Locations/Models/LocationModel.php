@@ -20,7 +20,7 @@ class LocationModel extends MyModel
         'comment',
     ];
 
-    const LOCATION_CACHE_NAME = 'location_list_all';
+    const LOCATION_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'location_list_all';
     const LOCATION_CACHE_EXPIRE = YEAR;
 
     public function __construct()

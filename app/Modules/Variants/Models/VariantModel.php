@@ -22,9 +22,8 @@ class VariantModel extends MyModel
     protected $skipValidation = false;
 
     protected $table_lang = 'variant_lang';
-    protected $with = ['variant_lang'];
 
-    const CACHE_NAME = 'variant_list_all';
+    const CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'variant_list_all';
     const CACHE_EXPIRE = DAY;
 
     public function __construct()
@@ -48,7 +47,6 @@ class VariantModel extends MyModel
         }
 
         $this->select("$this->table.*, $this->table_lang.*")
-            ->with(false)
             ->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
             ->orderBy($sort, $order);
 
@@ -65,12 +63,25 @@ class VariantModel extends MyModel
         return true;
     }
 
+    public function getVariantsByIds(array $variant_ids, int $language_id): array
+    {
+        $result = $this->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->where(["$this->table_lang.language_id" => $language_id])
+                ->whereIn("$this->table.$this->primaryKey", $variant_ids)
+                ->findAll();
+
+        return $result;
+    }
+
     /** ----------- Frontend ----------- **/
     public function getVariants($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->orderBy('sort_order', 'DESC')->findAll();
+            $result = $this
+                ->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->orderBy('sort_order', 'DESC')
+                ->findAll();
             if (empty($result)) {
                 return [];
             }
@@ -85,11 +96,7 @@ class VariantModel extends MyModel
             return [];
         }
 
-        $list = [];
-
-        foreach ($result as $value) {
-            $list[$value["$this->primaryKey"]] = format_data_lang_id($value, $this->table_lang, $language_id);
-        }
+        $list = $this->formatDataLanguage($result, $language_id);
 
         //get list value
         $value_model = new VariantValueModel();

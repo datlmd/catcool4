@@ -52,12 +52,12 @@ class NewsModel extends FarmModel
     protected $deletedField = 'deleted';
 
     const NEWS_CACHE_EXPIRE = 10 * MINUTE; //10 phut
-    const NEWS_CACHE_DETAIL = 'news_detail_id_%s_%s';
-    const NEWS_CACHE_CATEGORY_HOME = 'news_category_home_list';
-    const NEWS_CACHE_SLIDE_HOME = 'news_slide_home_list';
-    const NEWS_CACHE_COUNTER_LIST = 'news_counter_list';
-    const NEWS_CACHE_HOT_LIST = 'news_hot_list';
-    const NEWS_CACHE_NEW_LIST = 'news_new_list';
+    const NEWS_CACHE_DETAIL = PREFIX_CACHE_NAME_MYSQL.'news_detail_id_%s_%s';
+    const NEWS_CACHE_CATEGORY_HOME = PREFIX_CACHE_NAME_MYSQL.'news_category_home_list';
+    const NEWS_CACHE_SLIDE_HOME = PREFIX_CACHE_NAME_MYSQL.'news_slide_home_list';
+    const NEWS_CACHE_COUNTER_LIST = PREFIX_CACHE_NAME_MYSQL.'news_counter_list';
+    const NEWS_CACHE_HOT_LIST = PREFIX_CACHE_NAME_MYSQL.'news_hot_list';
+    const NEWS_CACHE_NEW_LIST = PREFIX_CACHE_NAME_MYSQL.'news_new_list';
 
     const FORMAT_NEWS_ID = '%sc%s';
     const SOURCE_TYPE_ROBOT = 1;

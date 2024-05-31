@@ -6,7 +6,6 @@ class MenuLangModel extends MyModel
 {
     protected $table      = 'menu_lang';
     protected $primaryKey = 'menu_id';
-    protected $with       = ['menu'];
 
     protected $allowedFields = [
         'menu_id',

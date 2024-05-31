@@ -1,8 +1,10 @@
-<?php namespace App\Modules\Customers\Controllers\Admin;
+<?php
+
+namespace App\Modules\Customers\Controllers\Admin;
 
 use App\Controllers\AdminController;
-use App\Modules\Customers\Models\GroupModel;
 use App\Modules\Customers\Models\GroupLangModel;
+use App\Modules\Customers\Models\GroupModel;
 
 class Groups extends AdminController
 {
@@ -10,8 +12,8 @@ class Groups extends AdminController
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'manage/customer_groups';
-    CONST MANAGE_URL  = 'manage/customer_groups';
+    const MANAGE_ROOT = 'manage/customer_groups';
+    const MANAGE_URL = 'manage/customer_groups';
 
     public function __construct()
     {
@@ -31,24 +33,24 @@ class Groups extends AdminController
         $this->breadcrumb->add(lang('CustomerGroupAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
-	public function index()
-	{
+    public function index()
+    {
         add_meta(['title' => lang('CustomerGroupAdmin.heading_title')], $this->themes);
 
-        $limit       = $this->request->getGet('limit');
-        $sort        = $this->request->getGet('sort');
-        $order       = $this->request->getGet('order');
+        $limit = $this->request->getGet('limit');
+        $sort = $this->request->getGet('sort');
+        $order = $this->request->getGet('order');
         $filter_keys = ['customer_group_id', 'name', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
-	    $data = [
-            'breadcrumb'    => $this->breadcrumb->render(),
-            'list'          => $list->paginate($limit),
-            'pager'         => $list->pager,
-            'sort'          => empty($sort) ? 'customer_group_id' : $sort,
-            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'           => $this->getUrlFilter($filter_keys),
+        $data = [
+            'breadcrumb' => $this->breadcrumb->render(),
+            'list' => $list->paginate($limit),
+            'pager' => $list->pager,
+            'sort' => empty($sort) ? 'customer_group_id' : $sort,
+            'order' => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url' => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
@@ -61,7 +63,7 @@ class Groups extends AdminController
             ->addPartial('footer')
             ->addPartial('sidebar')
             ::load('groups/index', $data);
-	}
+    }
 
     public function add()
     {
@@ -72,6 +74,7 @@ class Groups extends AdminController
     {
         if (is_null($id)) {
             set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -98,7 +101,7 @@ class Groups extends AdminController
 
         $customer_group_id = $this->request->getPost('customer_group_id');
         $data_group = [
-            'approval'   => !empty($this->request->getPost('approval')) ? STATUS_ON : STATUS_OFF,
+            'approval' => !empty($this->request->getPost('approval')) ? STATUS_ON : STATUS_OFF,
             'sort_order' => $this->request->getPost('sort_order'),
         ];
 
@@ -126,7 +129,7 @@ class Groups extends AdminController
 
         $edit_data_lang = $this->request->getPost('lang');
         foreach (list_language_admin() as $language) {
-            $edit_data_lang[$language['id']]['language_id']   = $language['id'];
+            $edit_data_lang[$language['id']]['language_id'] = $language['id'];
             $edit_data_lang[$language['id']]['customer_group_id'] = $customer_group_id;
 
             $this->model_lang->insert($edit_data_lang[$language['id']]);
@@ -151,18 +154,24 @@ class Groups extends AdminController
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form'] = lang('Admin.text_edit');
-            $breadcrumb_url = site_url(self::MANAGE_URL . "/edit/$id");
+            $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$id");
 
-            $data_form = $this->model->getDetail($id);
+            $data_form = $this->model->find($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR);
+
                 return redirect()->to(site_url(self::MANAGE_URL));
+            }
+
+            $data_languages = $this->model_lang->where('customer_group_id', $id)->findAll();
+            foreach ($data_languages as $value) {
+                $data_form['lang'][$value['language_id']] = $value;
             }
 
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('Admin.text_add');
-            $breadcrumb_url = site_url(self::MANAGE_URL . "/add");
+            $breadcrumb_url = site_url(self::MANAGE_URL.'/add');
         }
 
         $data['errors'] = $this->errors;
@@ -182,12 +191,12 @@ class Groups extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        foreach(list_language_admin() as $value) {
-            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('CustomerGroupAdmin.text_name') . ' (' . $value['name']  . ')', 'required|min_length[3]|max_length[32]');
+        foreach (list_language_admin() as $value) {
+            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('CustomerGroupAdmin.text_name').' ('.$value['name'].')', 'required|min_length[3]|max_length[32]');
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
-        $this->errors  = $this->validator->getErrors();
+        $this->errors = $this->validator->getErrors();
 
         return $is_validation;
     }
@@ -203,9 +212,9 @@ class Groups extends AdminController
         //delete
         if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
-            $ids = (is_array($ids)) ? $ids : explode(",", $ids);
+            $ids = (is_array($ids)) ? $ids : explode(',', $ids);
 
-            $list_delete = $this->model->getListDetail($ids);
+            $list_delete = $this->model->getCustomerGroupsByIds($ids, $this->language_id);
             if (empty($list_delete)) {
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
@@ -227,14 +236,14 @@ class Groups extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->getListDetail($delete_ids, $this->language_id);
+        $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
+        $list_delete = $this->model->getCustomerGroupsByIds($delete_ids, $this->language_id);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $data['list_delete'] = $list_delete;
-        $data['ids']         = $this->request->getPost('delete_ids');
+        $data['ids'] = $this->request->getPost('delete_ids');
 
         json_output(['token' => $token, 'data' => $this->themes::view('groups/delete', $data)]);
     }

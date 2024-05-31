@@ -23,7 +23,7 @@ class  DistrictModel extends MyModel
         'deleted',
     ];
 
-    const COUNTRY_DISTRICT_CACHE_NAME   = 'country_district_list';
+    const COUNTRY_DISTRICT_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_district_list';
     const COUNTRY_DISTRICT_CACHE_EXPIRE = YEAR;
 
     function __construct()

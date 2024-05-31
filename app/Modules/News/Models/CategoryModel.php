@@ -26,7 +26,7 @@ class CategoryModel extends MyModel
         'updated_at',
     ];
 
-    const CATEGORY_CACHE_NAME = 'news_category_list';
+    const CATEGORY_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'news_category_list';
     const CATEGORY_CACHE_EXPIRE = YEAR;
 
     public function __construct()
@@ -71,14 +71,6 @@ class CategoryModel extends MyModel
                 // Save into the cache for $expire_time 1 month
                 cache()->save(self::CATEGORY_CACHE_NAME, $result, self::CATEGORY_CACHE_EXPIRE);
             }
-        }
-
-        if (empty($result)) {
-            return [];
-        }
-
-        foreach ($result as $key => $value) {
-            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
         }
 
         return $result;

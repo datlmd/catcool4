@@ -9,7 +9,6 @@ class ArticleModel extends MyModel
     protected $table = 'article';
     protected $table_lang = 'article_lang';
     protected $primaryKey = 'article_id';
-    protected $useAutoIncrement = true;
     protected $useSoftDeletes = true;
 
     protected $allowedFields = [
@@ -28,7 +27,7 @@ class ArticleModel extends MyModel
         'counter_comment',
         'counter_like',
         'published',
-        'deleted',
+        'deleted_at',
         'created_at',
         'updated_at',
     ];

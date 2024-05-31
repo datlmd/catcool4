@@ -195,11 +195,16 @@ class Variants extends AdminController
             $data['text_form'] = lang('Admin.text_edit');
             $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$id");
 
-            $data_form = $this->model->getDetail($id);
+            $data_form = $this->model->find($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR);
 
                 return redirect()->to(site_url(self::MANAGE_URL));
+            }
+
+            $data_languages = $this->model_lang->where('variant_id', $id)->findAll();
+            foreach ($data_languages as $value) {
+                $data_form['lang'][$value['language_id']] = $value;
             }
 
             //$data_form['variant_values'] = $this->model_value->getListById($id);
@@ -263,7 +268,7 @@ class Variants extends AdminController
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(',', $ids);
 
-            $list_delete = $this->model->getListDetail($ids);
+            $list_delete = $this->model->getVariantsByIds($ids, $this->language_id);
             if (empty($list_delete)) {
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
@@ -290,7 +295,7 @@ class Variants extends AdminController
         }
 
         $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->getListDetail($delete_ids, $this->language_id);
+        $list_delete = $this->model->getVariantsByIds($delete_ids, $this->language_id);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }

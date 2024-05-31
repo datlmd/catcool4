@@ -29,7 +29,6 @@ class PlanModel extends MyModel
     protected $skipValidation     = false;
 
     protected $table_lang = 'subscription_plan_lang';
-    protected $with = ['subscription_plan_lang'];
 
     public function __construct()
     {
@@ -52,10 +51,19 @@ class PlanModel extends MyModel
         }
 
         $this->select("$this->table.*, $this->table_lang.*")
-            ->with(false)
             ->join($this->table_lang, "$this->table_lang.subscription_plan_id = $this->table.subscription_plan_id")
             ->orderBy($sort, $order);
 
         return $this;
+    }
+
+    public function getSubscriptionPlansByIds(array $subscription_plan_ids, int $language_id): array
+    {
+        $result = $this->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->where(["$this->table_lang.language_id" => $language_id])
+                ->whereIn("$this->table.$this->primaryKey", $subscription_plan_ids)
+                ->findAll();
+
+        return $result;
     }
 }

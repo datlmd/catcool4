@@ -158,33 +158,6 @@ if (!function_exists('language_id')) {
     }
 }
 
-if (!function_exists('format_data_lang_id')) {
-    /**
-     * @param $data
-     * @param $key_sort
-     *
-     * @return array
-     */
-    function format_data_lang_id($data, $key_sort, $language_id = null)
-    {
-        if (empty($data[$key_sort])) {
-            return $data;
-        }
-
-        $data[$key_sort] = array_column($data[$key_sort], null, 'language_id');
-        if (!empty($language_id) && !empty($data[$key_sort][$language_id])) {
-            if (!empty($language_id) && !empty($data[$key_sort][$language_id])) {
-                $data = array_merge($data, $data[$key_sort][$language_id]);
-            }
-        }
-
-        $data['lang'] = $data[$key_sort];
-        unset($data[$key_sort]);
-
-        return $data;
-    }
-}
-
 if (!function_exists('http_get_query')) {
     function http_get_query()
     {

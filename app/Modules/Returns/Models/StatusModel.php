@@ -19,7 +19,6 @@ class StatusModel extends MyModel
     protected $skipValidation     = false;
 
     protected $table_lang = 'return_status_lang';
-    protected $with = ['return_status_lang'];
 
     public function __construct()
     {
@@ -42,10 +41,19 @@ class StatusModel extends MyModel
         }
 
         $this->select("$this->table.*, $this->table_lang.*")
-            ->with(false)
             ->join($this->table_lang, "$this->table_lang.return_status_id = $this->table.return_status_id")
             ->orderBy($sort, $order);
 
         return $this;
+    }
+
+    public function getReturnStatusesByIds(array $return_status_ids, int $language_id): array
+    {
+        $result = $this->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->where(["$this->table_lang.language_id" => $language_id])
+                ->whereIn("$this->table.$this->primaryKey", $return_status_ids)
+                ->findAll();
+
+        return $result;
     }
 }

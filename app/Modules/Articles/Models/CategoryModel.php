@@ -8,7 +8,6 @@ class CategoryModel extends MyModel
 {
     protected $table = 'article_category';
     protected $primaryKey = 'category_id';
-    protected $useAutoIncrement = true;
 
     protected $table_lang = 'article_category_lang';
 
@@ -95,16 +94,6 @@ class CategoryModel extends MyModel
             }
         }
 
-        if (empty($result)) {
-            return [];
-        }
-
-        foreach ($result as $key => $value) {
-            if ($value['language_id'] != $language_id) {
-                unset($result[$key]);
-            }
-        }
-
-        return $result;
+        return $this->formatDataLanguage($result, $language_id);
     }
 }

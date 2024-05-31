@@ -15,7 +15,7 @@ class PermissionModel extends MyModel
         'published',
     ];
 
-    const PERMISSION_CACHE_NAME   = 'permission_list';
+    const PERMISSION_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'permission_list';
     const PERMISSION_CACHE_EXPIRE = YEAR;
 
     function __construct()

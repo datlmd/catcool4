@@ -50,10 +50,10 @@ class PostModel extends MyModel
     protected $deletedField = 'deleted';
 
     const POST_CACHE_EXPIRE = DAY;
-    const POST_CACHE_CATEGORY_HOME = 'post_category_home_list';
-    const POST_CACHE_HOT_LIST = 'post_hot_list';
-    const POST_CACHE_DETAIL = 'post_detail_id_%s';
-    const POST_CACHE_LATEST_LIST = 'post_latest_list';
+    const POST_CACHE_CATEGORY_HOME = PREFIX_CACHE_NAME_MYSQL.'post_category_home_list';
+    const POST_CACHE_HOT_LIST = PREFIX_CACHE_NAME_MYSQL.'post_hot_list';
+    const POST_CACHE_DETAIL = PREFIX_CACHE_NAME_MYSQL.'post_detail_id_%s';
+    const POST_CACHE_LATEST_LIST = PREFIX_CACHE_NAME_MYSQL.'post_latest_list';
 
     const POST_DETAIL_FORMAT = "%s-post%s.html";
 

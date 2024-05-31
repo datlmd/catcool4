@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Options\Controllers\Admin;
+<?php
+
+namespace App\Modules\Options\Controllers\Admin;
 
 use App\Controllers\AdminController;
-use App\Modules\Options\Models\OptionModel;
 use App\Modules\Options\Models\OptionLangModel;
-use App\Modules\Options\Models\OptionValueModel;
+use App\Modules\Options\Models\OptionModel;
 use App\Modules\Options\Models\OptionValueLangModel;
+use App\Modules\Options\Models\OptionValueModel;
 
 class Options extends AdminController
 {
@@ -12,8 +14,8 @@ class Options extends AdminController
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'manage/options';
-    CONST MANAGE_URL  = 'manage/options';
+    const MANAGE_ROOT = 'manage/options';
+    const MANAGE_URL = 'manage/options';
 
     public function __construct()
     {
@@ -35,24 +37,24 @@ class Options extends AdminController
         $this->breadcrumb->add(lang('OptionAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
-	public function index()
-	{
+    public function index()
+    {
         add_meta(['title' => lang('OptionAdmin.heading_title')], $this->themes);
 
-        $limit       = $this->request->getGet('limit');
-        $sort        = $this->request->getGet('sort');
-        $order       = $this->request->getGet('order');
+        $limit = $this->request->getGet('limit');
+        $sort = $this->request->getGet('sort');
+        $order = $this->request->getGet('order');
         $filter_keys = ['option_id', 'name', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
-	    $data = [
-            'breadcrumb'    => $this->breadcrumb->render(),
-            'list'          => $list->paginate($limit),
-            'pager'         => $list->pager,
-            'sort'          => empty($sort) ? 'option_id' : $sort,
-            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'           => $this->getUrlFilter($filter_keys),
+        $data = [
+            'breadcrumb' => $this->breadcrumb->render(),
+            'list' => $list->paginate($limit),
+            'pager' => $list->pager,
+            'sort' => empty($sort) ? 'option_id' : $sort,
+            'order' => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url' => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
@@ -65,7 +67,7 @@ class Options extends AdminController
             ->addPartial('footer')
             ->addPartial('sidebar')
             ::load('option', $data);
-	}
+    }
 
     public function add()
     {
@@ -76,6 +78,7 @@ class Options extends AdminController
     {
         if (is_null($id)) {
             set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -107,11 +110,10 @@ class Options extends AdminController
             json_output($json);
         }
 
-        $option_id   = $this->request->getPost('option_id');
+        $option_id = $this->request->getPost('option_id');
         $data_option = [
-            'type'       => $this->request->getPost('type'),
+            'type' => $this->request->getPost('type'),
             'sort_order' => $this->request->getPost('sort_order'),
-
         ];
 
         if (empty($option_id)) {
@@ -139,7 +141,7 @@ class Options extends AdminController
         $edit_data_lang = $this->request->getPost('lang');
         foreach (list_language_admin() as $language) {
             $edit_data_lang[$language['id']]['language_id'] = $language['id'];
-            $edit_data_lang[$language['id']]['option_id']   = $option_id;
+            $edit_data_lang[$language['id']]['option_id'] = $option_id;
 
             $this->model_lang->insert($edit_data_lang[$language['id']]);
         }
@@ -152,10 +154,9 @@ class Options extends AdminController
         if (($type == 'select' || $type == 'radio' || $type == 'checkbox') && !empty($this->request->getPost('option_value'))) {
             $option_value = $this->request->getPost('option_value');
             foreach ($option_value as $value) {
-
                 $data_option_value = [
-                    'option_id'  => $option_id,
-                    'image'      => $value['image'],
+                    'option_id' => $option_id,
+                    'image' => $value['image'],
                     'sort_order' => $value['sort_order'],
                 ];
 
@@ -167,9 +168,9 @@ class Options extends AdminController
 
                 $data_option_value_lang = $value['lang'];
                 foreach (list_language_admin() as $language) {
-                    $data_option_value_lang[$language['id']]['language_id']     = $language['id'];
+                    $data_option_value_lang[$language['id']]['language_id'] = $language['id'];
                     $data_option_value_lang[$language['id']]['option_value_id'] = $option_value_id;
-                    $data_option_value_lang[$language['id']]['option_id']       = $option_id;
+                    $data_option_value_lang[$language['id']]['option_id'] = $option_id;
 
                     $this->model_value_lang->insert($data_option_value_lang[$language['id']]);
                 }
@@ -195,12 +196,18 @@ class Options extends AdminController
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form'] = lang('Admin.text_edit');
-            $breadcrumb_url = site_url(self::MANAGE_URL . "/edit/$id");
+            $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$id");
 
-            $data_form = $this->model->getDetail($id);
+            $data_form = $this->model->find($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR);
+
                 return redirect()->to(site_url(self::MANAGE_URL));
+            }
+
+            $data_languages = $this->model_lang->where('option_id', $id)->findAll();
+            foreach ($data_languages as $value) {
+                $data_form['lang'][$value['language_id']] = $value;
             }
 
             $data_form['option_value'] = $this->model_value->getOptionValueByOptionId($id, $this->language_id);
@@ -208,7 +215,7 @@ class Options extends AdminController
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('Admin.text_add');
-            $breadcrumb_url = site_url(self::MANAGE_URL . "/add");
+            $breadcrumb_url = site_url(self::MANAGE_URL.'/add');
         }
 
         $data['errors'] = $this->errors;
@@ -228,8 +235,8 @@ class Options extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        foreach(list_language_admin() as $value) {
-            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('OptionAdmin.text_option_name') . ' (' . $value['name']  . ')', 'required');
+        foreach (list_language_admin() as $value) {
+            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('OptionAdmin.text_option_name').' ('.$value['name'].')', 'required');
         }
 
         if (!empty($this->request->getPost('option_value'))) {
@@ -239,15 +246,14 @@ class Options extends AdminController
                 if (empty($value['lang'])) {
                     continue;
                 }
-                foreach(list_language_admin() as $lang_value) {
-                    $this->validator->setRule(sprintf('option_value.%s.lang.%s.name', $key, $lang_value['id']), lang('OptionAdmin.text_option_value_name') . ' (' . $lang_value['name']  . ')', 'required');
+                foreach (list_language_admin() as $lang_value) {
+                    $this->validator->setRule(sprintf('option_value.%s.lang.%s.name', $key, $lang_value['id']), lang('OptionAdmin.text_option_value_name').' ('.$lang_value['name'].')', 'required');
                 }
-
             }
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
-        $this->errors  = $this->validator->getErrors();
+        $this->errors = $this->validator->getErrors();
 
         return $is_validation;
     }
@@ -263,9 +269,9 @@ class Options extends AdminController
         //delete
         if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
-            $ids = (is_array($ids)) ? $ids : explode(",", $ids);
+            $ids = (is_array($ids)) ? $ids : explode(',', $ids);
 
-            $list_delete = $this->model->getListDetail($ids);
+            $list_delete = $this->model->getOptionsByIds($ids, $this->language_id);
             if (empty($list_delete)) {
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
@@ -291,14 +297,14 @@ class Options extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->getListDetail($delete_ids, $this->language_id);
+        $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
+        $list_delete = $this->model->getOptionsByIds($delete_ids, $this->language_id);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $data['list_delete'] = $list_delete;
-        $data['ids']         = $this->request->getPost('delete_ids');
+        $data['ids'] = $this->request->getPost('delete_ids');
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }

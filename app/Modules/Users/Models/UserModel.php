@@ -30,17 +30,15 @@ class UserModel extends MyModel
         'forgotten_password_time',
         'last_login',
         'active',
-        'deleted',
         'language_id',
         'ip',
+        'deleted_at',
         'created_at',
         'updated_at',
     ];
 
     protected $useSoftDeletes = true;
-    protected $deletedField = 'deleted';
-
-    //protected $with = ['user_groups', 'user_permissions'];
+    protected $deletedField = 'deleted_at';
 
     protected $auth_model;
 

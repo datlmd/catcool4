@@ -22,7 +22,7 @@ class CurrencyModel extends MyModel
         'updated_at',
     ];
 
-    const CURRENCY_CACHE_NAME = 'currency_list';
+    const CURRENCY_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'currency_list';
     const CURRENCY_CACHE_EXPIRE = YEAR;
 
     public function __construct()

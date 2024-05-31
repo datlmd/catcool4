@@ -141,10 +141,15 @@ class Statuses extends AdminController
             $data['text_form'] = lang('Admin.text_edit');
             $breadcrumb_url = site_url(self::MANAGE_URL . "/edit/$id");
 
-            $data_form = $this->model->getDetail($id);
+            $data_form = $this->model->find($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR);
                 return redirect()->to(site_url(self::MANAGE_URL));
+            }
+
+            $data_languages = $this->model_lang->where('subscription_status_id', $id)->findAll();
+            foreach ($data_languages as $value) {
+                $data_form['lang'][$value['language_id']] = $value;
             }
 
             $data['edit_data'] = $data_form;
@@ -192,7 +197,7 @@ class Statuses extends AdminController
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
-            $list_delete = $this->model->getListDetail($ids);
+            $list_delete = $this->model->getSubscriptionStatusesByIds($ids, $this->language_id);
             if (empty($list_delete)) {
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
@@ -214,7 +219,7 @@ class Statuses extends AdminController
         }
 
         $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->getListDetail($delete_ids, $this->language_id);
+        $list_delete = $this->model->getSubscriptionStatusesByIds($delete_ids, $this->language_id);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }

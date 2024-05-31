@@ -16,7 +16,7 @@ class ActionModel extends MyModel
         'action',
     ];
 
-    const CACHE_NAME_LIST = 'layout_action_list';
+    const CACHE_NAME_LIST = PREFIX_CACHE_NAME_MYSQL.'layout_action_list';
     const CACHE_EXPIRE = YEAR;
 
     public function __construct()

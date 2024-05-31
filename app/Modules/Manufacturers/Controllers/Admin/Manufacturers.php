@@ -1,8 +1,10 @@
-<?php namespace App\Modules\Manufacturers\Controllers\Admin;
+<?php
+
+namespace App\Modules\Manufacturers\Controllers\Admin;
 
 use App\Controllers\AdminController;
-use App\Modules\Manufacturers\Models\ManufacturerModel;
 use App\Modules\Manufacturers\Models\ManufacturerLangModel;
+use App\Modules\Manufacturers\Models\ManufacturerModel;
 use App\Modules\Routes\Models\RouteModel;
 
 class Manufacturers extends AdminController
@@ -11,11 +13,11 @@ class Manufacturers extends AdminController
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'manage/manufacturers';
-    CONST MANAGE_URL  = 'manage/manufacturers';
+    const MANAGE_ROOT = 'manage/manufacturers';
+    const MANAGE_URL = 'manage/manufacturers';
 
-    CONST SEO_URL_MODULE   = 'manufacturers';
-    CONST SEO_URL_RESOURCE = 'Manufacturers::Detail/%s';
+    const SEO_URL_MODULE = 'manufacturers';
+    const SEO_URL_RESOURCE = 'Manufacturers::Detail/%s';
 
     public function __construct()
     {
@@ -36,24 +38,24 @@ class Manufacturers extends AdminController
         $this->breadcrumb->add(lang('ManufacturerAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
-	public function index()
-	{
+    public function index()
+    {
         add_meta(['title' => lang('ManufacturerAdmin.heading_title')], $this->themes);
 
-        $limit       = $this->request->getGet('limit');
-        $sort        = $this->request->getGet('sort');
-        $order       = $this->request->getGet('order');
+        $limit = $this->request->getGet('limit');
+        $sort = $this->request->getGet('sort');
+        $order = $this->request->getGet('order');
         $filter_keys = ['manufacturer_id', 'name', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
-	    $data = [
-            'breadcrumb'    => $this->breadcrumb->render(),
-            'list'          => $list->paginate($limit),
-            'pager'         => $list->pager,
-            'sort'          => empty($sort) ? 'manufacturer_id' : $sort,
-            'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url'           => $this->getUrlFilter($filter_keys),
+        $data = [
+            'breadcrumb' => $this->breadcrumb->render(),
+            'list' => $list->paginate($limit),
+            'pager' => $list->pager,
+            'sort' => empty($sort) ? 'manufacturer_id' : $sort,
+            'order' => ($order == 'ASC') ? 'DESC' : 'ASC',
+            'url' => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
@@ -62,24 +64,26 @@ class Manufacturers extends AdminController
             ->addPartial('footer')
             ->addPartial('sidebar')
             ::load('list', $data);
-	}
+    }
 
     public function add()
     {
         if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
+
                 return redirect()->back()->withInput();
             }
 
             $add_data = [
                 'sort_order' => $this->request->getPost('sort_order'),
-                'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-                'image'      => $this->request->getPost('image'),
+                'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'image' => $this->request->getPost('image'),
             ];
             $id = $this->model->insert($add_data);
-            if ($id === FALSE) {
+            if ($id === false) {
                 set_alert(lang('Admin.error'), ALERT_ERROR);
+
                 return redirect()->back()->withInput();
             }
 
@@ -89,9 +93,9 @@ class Manufacturers extends AdminController
 
             $add_data_lang = $this->request->getPost('lang');
             foreach (list_language_admin() as $language) {
-                $add_data_lang[$language['id']]['language_id']     = $language['id'];
+                $add_data_lang[$language['id']]['language_id'] = $language['id'];
                 $add_data_lang[$language['id']]['manufacturer_id'] = $id;
-                $add_data_lang[$language['id']]['slug']            = !empty($seo_urls[$language['id']]['route']) ? get_seo_extension($seo_urls[$language['id']]['route']) : '';
+                $add_data_lang[$language['id']]['slug'] = !empty($seo_urls[$language['id']]['route']) ? get_seo_extension($seo_urls[$language['id']]['route']) : '';
                 $this->model_lang->insert($add_data_lang[$language['id']]);
             }
 
@@ -99,6 +103,7 @@ class Manufacturers extends AdminController
             $this->model->deleteCache();
 
             set_alert(lang('Admin.text_add_success'), ALERT_SUCCESS, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
@@ -109,12 +114,14 @@ class Manufacturers extends AdminController
     {
         if (is_null($id)) {
             set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
         if (!empty($this->request->getPost()) && $id == $this->request->getPost('manufacturer_id')) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
+
                 return redirect()->back()->withInput();
             }
 
@@ -124,12 +131,12 @@ class Manufacturers extends AdminController
 
             $edit_data_lang = $this->request->getPost('lang');
             foreach (list_language_admin() as $language) {
-                $edit_data_lang[$language['id']]['language_id']     = $language['id'];
+                $edit_data_lang[$language['id']]['language_id'] = $language['id'];
                 $edit_data_lang[$language['id']]['manufacturer_id'] = $id;
-                $edit_data_lang[$language['id']]['slug']            = !empty($seo_urls[$language['id']]['route']) ? get_seo_extension($seo_urls[$language['id']]['route']) : '';
+                $edit_data_lang[$language['id']]['slug'] = !empty($seo_urls[$language['id']]['route']) ? get_seo_extension($seo_urls[$language['id']]['route']) : '';
 
                 if (!empty($this->model_lang->where(['manufacturer_id' => $id, 'language_id' => $language['id']])->find())) {
-                    $this->model_lang->where('language_id', $language['id'])->update($id,$edit_data_lang[$language['id']]);
+                    $this->model_lang->where('language_id', $language['id'])->update($id, $edit_data_lang[$language['id']]);
                 } else {
                     $this->model_lang->insert($edit_data_lang[$language['id']]);
                 }
@@ -137,11 +144,11 @@ class Manufacturers extends AdminController
 
             $edit_data = [
                 'manufacturer_id' => $id,
-                'sort_order'      => $this->request->getPost('sort_order'),
-                'published'       => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-                'image'           => $this->request->getPost('image'),
+                'sort_order' => $this->request->getPost('sort_order'),
+                'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'image' => $this->request->getPost('image'),
             ];
-            if ($this->model->save($edit_data) !== FALSE) {
+            if ($this->model->save($edit_data) !== false) {
                 //reset cache
                 $this->model->deleteCache();
 
@@ -163,12 +170,18 @@ class Manufacturers extends AdminController
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form'] = lang('Admin.text_edit');
-            $breadcrumb_url = site_url(self::MANAGE_URL . "/edit/$id");
+            $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$id");
 
-            $data_form = $this->model->getDetail($id);
+            $data_form = $this->model->find($id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR);
+
                 return redirect()->to(site_url(self::MANAGE_URL));
+            }
+
+            $data_languages = $this->model_lang->where('manufacturer_id', $id)->findAll();
+            foreach ($data_languages as $value) {
+                $data_form['lang'][$value['language_id']] = $value;
             }
 
             //lay danh sach seo url tu route
@@ -177,7 +190,7 @@ class Manufacturers extends AdminController
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('Admin.text_add');
-            $breadcrumb_url = site_url(self::MANAGE_URL . "/add");
+            $breadcrumb_url = site_url(self::MANAGE_URL.'/add');
         }
 
         $data['errors'] = $this->errors;
@@ -197,17 +210,17 @@ class Manufacturers extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        foreach(list_language_admin() as $value) {
-            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
+        foreach (list_language_admin() as $value) {
+            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name').' ('.$value['name'].')', 'required');
             $this->validator->setRule(
                 sprintf('seo_urls.%s.route', $value['id']),
-                sprintf("%s (%s)", lang('Admin.text_slug'), $value['name']),
-                sprintf('checkRoute[%s,%s,%s,%s]', $this->request->getPost('seo_urls[' . $value['id'] . '][route]'), $this->request->getPost('seo_urls[' . $value['id'] . '][route_old]'), $value['id'], $value['name'])
+                sprintf('%s (%s)', lang('Admin.text_slug'), $value['name']),
+                sprintf('checkRoute[%s,%s,%s,%s]', $this->request->getPost('seo_urls['.$value['id'].'][route]'), $this->request->getPost('seo_urls['.$value['id'].'][route_old]'), $value['id'], $value['name'])
             );
         }
 
         $is_validation = $this->validator->withRequest($this->request)->run();
-        $this->errors  = $this->validator->getErrors();
+        $this->errors = $this->validator->getErrors();
 
         return $is_validation;
     }
@@ -223,9 +236,9 @@ class Manufacturers extends AdminController
         //delete
         if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
-            $ids = (is_array($ids)) ? $ids : explode(",", $ids);
+            $ids = (is_array($ids)) ? $ids : explode(',', $ids);
 
-            $list_delete = $this->model->getListDetail($ids);
+            $list_delete = $this->model->getManufacturersByIds($ids, $this->language_id);
             if (empty($list_delete)) {
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
@@ -236,7 +249,7 @@ class Manufacturers extends AdminController
             $this->model->deleteCache();
 
             //xoa slug ra khoi route
-            foreach($list_delete as $value) {
+            foreach ($list_delete as $value) {
                 $this->model_route->deleteByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $value['manufacturer_id']));
             }
 
@@ -254,14 +267,14 @@ class Manufacturers extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
-        $delete_ids  = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->getListDetail($delete_ids, $this->language_id);
+        $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
+        $list_delete = $this->model->getManufacturersByIds($delete_ids, $this->language_id);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
 
         $data['list_delete'] = $list_delete;
-        $data['ids']         = $this->request->getPost('delete_ids');
+        $data['ids'] = $this->request->getPost('delete_ids');
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }
@@ -278,7 +291,7 @@ class Manufacturers extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        $id        = $this->request->getPost('id');
+        $id = $this->request->getPost('id');
         $item_edit = $this->model->find($id);
         if (empty($item_edit)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);

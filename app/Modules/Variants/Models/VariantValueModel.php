@@ -23,9 +23,8 @@ class VariantValueModel extends MyModel
     protected $skipValidation = false;
 
     protected $table_lang = 'variant_value_lang';
-    protected $with = ['variant_value_lang'];
 
-    const VALUE_CACHE_NAME = 'variant_value_list_all';
+    const VALUE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'variant_value_list_all';
     const VALUE_CACHE_EXPIRE = YEAR;
 
     public function __construct()
@@ -49,7 +48,6 @@ class VariantValueModel extends MyModel
         }
 
         $this->select("$this->table.*, $this->table_lang.*")
-            ->with(false)
             ->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
             ->orderBy($sort, $order);
 
@@ -68,7 +66,10 @@ class VariantValueModel extends MyModel
     {
         $result = $is_cache ? cache()->get(self::VALUE_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->orderBy('sort_order', 'ASC')->findAll();
+            $result = $this
+                ->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->orderBy('sort_order', 'ASC')
+                ->findAll();
             if (empty($result)) {
                 return [];
             }
@@ -79,26 +80,22 @@ class VariantValueModel extends MyModel
             }
         }
 
-        if (empty($result)) {
-            return [];
-        }
-
-        foreach ($result as $key => $value) {
-            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
-        }
-
-        return $result;
+        return $this->formatDataLanguage($result, $language_id);
     }
 
     public function getVariantInfo($variant_id, $language_id)
     {
-        $result = $this->orderBy('sort_order', 'DESC')->where('variant_id', $variant_id)->findAll();
+        $result = $this
+            ->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+            ->orderBy('sort_order', 'DESC')
+            ->where("$this->table.variant_id", $variant_id)
+            ->findAll();
         if (empty($result)) {
             return [];
         }
 
+        $result = $this->formatDataLanguage($result, $language_id);
         foreach ($result as $key => $value) {
-            $result[$key] = format_data_lang_id($value, $this->table_lang, $language_id);
             $result[$key]['variant_value_row'] = format_product_variant_row($value['variant_value_id']);
         }
 

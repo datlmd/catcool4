@@ -10,7 +10,6 @@ class PageModel extends MyModel
     protected $primaryKey = 'page_id';
 
     protected $table_lang = 'page_lang';
-    protected $with = ['page_lang'];
 
     protected $allowedFields = [
         'page_id',
@@ -18,15 +17,15 @@ class PageModel extends MyModel
         'layout',
         'sort_order',
         'published',
-        'deleted',
+        'deleted_at',
         'created_at',
         'updated_at',
     ];
 
     protected $useSoftDeletes = true;
-    protected $deletedField = 'deleted';
+    protected $deletedField = 'deleted_at';
 
-    const PAGE_CACHE_NAME = 'page_list';
+    const PAGE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'page_list';
     const PAGE_CACHE_EXPIRE = YEAR;
 
     public function __construct()
@@ -55,9 +54,18 @@ class PageModel extends MyModel
         }
 
         $result = $this->select("$this->table.*, $this->table_lang.*")
-            ->with(false)
             ->join($this->table_lang, "$this->table_lang.page_id = $this->table.page_id")
             ->orderBy($sort, $order);
+
+        return $result;
+    }
+
+    public function getPagesByIds(array $page_ids, int $language_id): array
+    {
+        $result = $this->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->where(["$this->table_lang.language_id" => $language_id])
+                ->whereIn("$this->table.$this->primaryKey", $page_ids)
+                ->findAll();
 
         return $result;
     }
@@ -66,7 +74,11 @@ class PageModel extends MyModel
     {
         $result = $is_cache ? cache()->get(self::PAGE_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->orderBy('sort_order', 'DESC')->where(['published' => STATUS_ON])->findAll();
+            $result = $this
+                ->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->orderBy('sort_order', 'DESC')
+                ->where(['published' => STATUS_ON])
+                ->findAll();
 
             if ($is_cache) {
                 // Save into the cache for $expire_time 1 month
@@ -74,16 +86,7 @@ class PageModel extends MyModel
             }
         }
 
-        if (empty($result)) {
-            return [];
-        }
-
-        $page_list = [];
-        foreach ($result as $key => $value) {
-            $page_list[$value['page_id']] = format_data_lang_id($value, $this->table_lang, $language_id);
-        }
-
-        return $page_list;
+        return $this->formatDataLanguage($result, $language_id);
     }
 
     public function getPageInfo($page_id, $language_id, $is_cache = true)

@@ -572,11 +572,16 @@ class Products extends AdminController
             $data['text_form'] = lang('ProductAdmin.text_edit');
             $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$product_id");
 
-            $data_form = $this->model->getDetail($product_id);
+            $data_form = $this->model->find($product_id);
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR);
 
                 return redirect()->to(site_url(self::MANAGE_URL));
+            }
+
+            $data_languages = $this->model_lang->where('product_id', $product_id)->findAll();
+            foreach ($data_languages as $value) {
+                $data_form['lang'][$value['language_id']] = $value;
             }
 
             //product filters
@@ -816,7 +821,7 @@ class Products extends AdminController
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(',', $ids);
 
-            $list_delete = $this->model->getListDetail($ids);
+            $list_delete = $this->model->getProductsByIds($ids, $this->language_id);
             if (empty($list_delete)) {
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
@@ -845,7 +850,7 @@ class Products extends AdminController
         }
 
         $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->getListDetail($delete_ids, $this->language_id);
+        $list_delete = $this->model->getProductsByIds($delete_ids, $this->language_id);
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
