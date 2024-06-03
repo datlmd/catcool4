@@ -490,7 +490,7 @@ if (!function_exists('slugify')) {
         helper(['text', 'url']);
 
         // Replace unsupported characters (add your owns if necessary)
-        $string = str_replace("'", '-', $string);
+        $string = str_replace("'", '-', (string)$string);
         $string = str_replace('.', '-', $string);
         //$string = str_replace("?", '2', $string);
 
@@ -1327,7 +1327,7 @@ if (!function_exists('json_output')) {
 }
 
 if (!function_exists('send_email')) {
-    function send_email($email_to, $email_from, $subject, $content, $subject_title = null, $reply_to = null, $bcc = null, $config = null)
+    function send_email($email_to, $email_from, $subject, $content, $subject_title = '', $reply_to = null, $bcc = null, $config = null)
     {
         //Gửi mail
         try {
@@ -1362,7 +1362,12 @@ if (!function_exists('send_email')) {
 
             $email->setNewline("\r\n");
 
-            $email->setFrom($email_from, $subject_title);
+            if ($subject_title) {
+                $email->setFrom($email_from, $subject_title);
+            } else {
+                $email->setFrom($email_from);
+            }
+
             $email->setTo($email_to);
             $email->setSubject($subject);
             $email->setMessage($content);
@@ -1521,7 +1526,7 @@ if (!function_exists('get_fonts')) {
 }
 
 if (!function_exists('add_meta')) {
-    function add_meta($data = null, $theme, $is_admin = false)
+    function add_meta($data, $theme, $is_admin = false)
     {
         try {
             $title = !empty($data['title']) ? $data['title'] : config_item('site_name');
@@ -1821,6 +1826,10 @@ if (!function_exists('page_not_found')) {
 if (!function_exists('get_seo_extension')) {
     function get_seo_extension($url = null)
     {
+        if (is_null($url)) {
+            return $url;
+        }
+
         if (empty(SEO_EXTENSION)) {
             return $url;
         }

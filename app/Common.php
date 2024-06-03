@@ -67,7 +67,11 @@ if ( ! function_exists('build_path'))
         if ( ! empty($args = func_get_args())) {
             // Make sure arguments are an array but not a mutidimensional one
             isset($args[0]) && is_array($args[0]) && $args = $args[0];
-            return implode(DIRECTORY_SEPARATOR, array_map('rtrim', $args, [DIRECTORY_SEPARATOR])) . DIRECTORY_SEPARATOR;
+            //return implode(DIRECTORY_SEPARATOR, array_map('rtrim', $args, [DIRECTORY_SEPARATOR])) . DIRECTORY_SEPARATOR;
+
+            $args = array_map(function ($value) {return rtrim($value, DIRECTORY_SEPARATOR);}, $args);
+
+            return implode(DIRECTORY_SEPARATOR, $args) . DIRECTORY_SEPARATOR;
         }
         return null;
     }
