@@ -510,6 +510,7 @@ class CustomerModel extends MyModel
             'first_name' => $data['first_name'] ?? null,
             'last_name' => $data['last_name'] ?? null,
             'phone' => $phone,
+            'newsletter' => $data['newsletter'] ?? STATUS_OFF,
             'gender' => $data['gender'],
             'address_id' => $data['address_id'] ?? null,
             'ip' => $data['ip'] ?? null,
@@ -521,6 +522,9 @@ class CustomerModel extends MyModel
         }
 
         $customer_id = $this->insert($add_data);
+        if (empty($customer_id)) {
+            return false;
+        }
 
         if ($customer_group_info['approval']) {
             $customer_group_model = new CustomerApprovalModel();
@@ -528,8 +532,14 @@ class CustomerModel extends MyModel
         }
 
         $add_data['customer_id'] = $customer_id;
+        $add_data['approval'] = $customer_group_info['approval'];
+        $add_data['customer_group'] = $customer_group_info['name'];
 
-        return (!empty($customer_id)) ? $add_data : false;
+        //call event
+        \CodeIgniter\Events\Events::trigger('post_account_register_mail', $add_data);
+        \CodeIgniter\Events\Events::trigger('post_account_register_mail_alert', $add_data);
+
+        return $add_data;
     }
 
     public function deactivate($customer_id)

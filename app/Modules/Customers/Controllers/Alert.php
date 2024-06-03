@@ -16,12 +16,21 @@ class Alert extends MyController
         //breadcrumb
         $this->breadcrumb->add(lang('General.text_home'), base_url());
 
+        $data = [];
+
         $type = $this->request->getGet('type');
         switch ($type) {
             case 'register':
                 $heading_title = lang('Customer.title_register');
                 $this->breadcrumb->add(lang('Customer.text_profile'), base_url('account/profile') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''));
+
+                if (service('customer')->isLogged()) {
+                    $data['success'] = sprintf(lang('Customer.text_register_success'), site_url('contact'));
+                } else {
+                    $data['success'] = sprintf(lang('Customer.text_register_approval'), config_item('store_name'), site_url('contact'));
+                }
                 break;
+            case 'register_active':
             case 'activate':
                 $heading_title = lang('Customer.heading_activate');
                 $this->breadcrumb->add(lang('Customer.text_profile'), base_url('account/profile') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''));
@@ -29,8 +38,6 @@ class Alert extends MyController
             default:
                 break;
         }
-
-        $data = [];
 
         //set params khi call cell
         $params['params'] = [

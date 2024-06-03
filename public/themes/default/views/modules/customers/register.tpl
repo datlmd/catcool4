@@ -128,6 +128,13 @@
                     <div id="error_password" class="invalid-feedback">{validation_show_error("password")}</div>
                 </div>
             </div>
+            <div class="form-group row mb-3">
+                <label for="input_password_confirm" class="form-label fw-bold required-label">{lang('Customer.text_password_confirm')}</label>
+                <div class="col-12">
+                    <input type="password" name="password_confirm" id="input_password_confirm" value="" placeholder="{lang('Customer.text_password_confirm')}" class="form-control {if validation_show_error('password_confirm')}is-invalid{/if}">
+                    <div id="error_password_confirm" class="invalid-feedback">{validation_show_error("password_confirm")}</div>
+                </div>
+            </div>
         </fieldset>
 
         <fieldset class="mt-3">
@@ -154,7 +161,7 @@
         
         <div class="form-group row mb-3">
             <div class="col-12">
-                <input type="submit" class="btn btn-primary" value="{lang('General.button_register')}">
+                <button type="submit" class="btn btn-primary">{lang('General.button_register')}</button>
             </div>
         </div>
     {form_close()}

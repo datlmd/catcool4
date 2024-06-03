@@ -220,3 +220,24 @@ select.form-control {
     line-height: 14
 	0px;
 }
+
+.loading {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, .2);
+    top: 0;
+    left: 0;
+    z-index: 2000;
+    position: fixed;
+}
+.loading .spinner-grow {
+    position: fixed;
+    z-index: 1100;
+    top: 50%;
+    left: 50%;
+    transform: translate(0px,0px);
+    -moz-transform: translate(0px,0px);
+    -webkit-transform: translate(0px,0px);
+    -o-transform: translate(0px,0px);
+    -ms-transform: translate(0px,0px);
+}

@@ -85,8 +85,8 @@ class Register extends MyController
         $this->validator->setRule('last_name', lang('Customer.text_last_name'), 'required|min_length[2]|max_length[40]');
         $this->validator->setRule('email', lang('Customer.text_email'), 'required|valid_email|is_unique[customer.email]');
 
-        $this->validator->setRule('password', lang('Customer.text_password'), 'required|min_length['.config_item('min_password_length').']|max_length[40]');
-        $this->validator->setRule('agree', lang('Customer.text_policy'), 'required');
+        $this->validator->setRule('password', lang('Customer.text_password'), 'required|min_length['.config_item('min_password_length').']|max_length[40]|matches[password_confirm]');
+        $this->validator->setRule('password_confirm', lang('Customer.text_password_confirm'), 'required');
         $this->validator->setRule('gender', lang('Customer.text_gender'), 'required');
         $this->validator->setRule('dob_day', lang('Customer.text_day'), 'required|is_natural_no_zero');
         $this->validator->setRule('dob_month', lang('Customer.text_month'), 'required|is_natural_no_zero');
@@ -94,6 +94,14 @@ class Register extends MyController
 
         if (!empty($this->request->getPost('phone'))) {
             $this->validator->setRule('phone', lang('Customer.text_phone'), 'required|min_length[3]|max_length[32]|is_unique[customer.phone]');
+        }
+
+        if (!empty(config_item('account_terms'))) {
+            $page_model = new \App\Modules\Pages\Models\PageModel();
+            $page_info = $page_model->getPageInfo(config_item('account_terms'), $this->language_id);
+            if ($page_info) {
+                $this->validator->setRule('agree', lang('Customer.text_policy'), 'required');
+            }
         }
 
         $customer_group_model = new \App\Modules\Customers\Models\GroupModel();
@@ -175,15 +183,11 @@ class Register extends MyController
             }
 
             $success = lang('Customer.activation_email_successful');
-        } elseif ($customer_group_list[$customer_info['customer_group_id']]['approval']) {
-            service('customer')->login($customer_info['email'], $customer_info['password'], false);
+        } elseif (!$customer_group_list[$customer_info['customer_group_id']]['approval']) {
+            service('customer')->login($customer_info['email'], html_entity_decode($this->request->getPost('password'), ENT_QUOTES, 'UTF-8'), false);
 
             $customer_ip_model = new \App\Modules\Customers\Models\IpModel();
             $customer_ip_model->addLogin(service('customer')->getId());
-
-            $success = lang('Customer.activation_email_successful');
-        } else {
-            $success = lang('Customer.text_creation_approval');
         }
 
         session()->remove([
@@ -195,11 +199,15 @@ class Register extends MyController
             'payment_methods',
         ]);
 
-        set_alert($success, ALERT_SUCCESS);
+        //active from email
+        if (!empty($success)) {
+            set_alert($success, ALERT_SUCCESS);
+            json_output([
+                'redirect' => site_url('account/alert?type=register_active').(!empty(session('customer_token')) ? '&customer_token='.session('customer_token') : ''),
+            ]);
+        }
 
         json_output([
-            'success' => $success,
-            'alert' => print_alert($success),
             'redirect' => site_url('account/alert?type=register').(!empty(session('customer_token')) ? '&customer_token='.session('customer_token') : ''),
         ]);
     }

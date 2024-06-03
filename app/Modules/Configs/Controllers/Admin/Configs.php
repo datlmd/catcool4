@@ -112,6 +112,9 @@ class Configs extends AdminController
                 break;
             case 'tab_mail':
                 $this->validator->setRule('email_engine', lang('ConfigAdmin.text_email_engine'), 'required');
+                if ($this->request->getPost('mail_alert_email')) {
+                    $this->validator->setRule('mail_alert_email', lang('ConfigAdmin.text_email_alert_email'), 'valid_emails');
+                }
                 break;
             case 'tab_server':
                 $this->validator->setRule('robots', lang('ConfigAdmin.text_robots'), 'required');
@@ -162,6 +165,9 @@ class Configs extends AdminController
                     $data_settings['enable_scroll_menu_admin'] = !empty($this->request->getPost('enable_scroll_menu_admin')) ? STATUS_ON : STATUS_OFF;
                     $data_settings['enable_icon_menu_admin'] = !empty($this->request->getPost('enable_icon_menu_admin')) ? STATUS_ON : STATUS_OFF;
                     $data_settings['enable_dark_mode'] = !empty($this->request->getPost('enable_dark_mode')) ? STATUS_ON : STATUS_OFF;
+                    break;
+                case 'tab_mail':
+                    $data_settings['mail_alert'] = $this->request->getPost('mail_alert[]') ? implode(',', $this->request->getPost('mail_alert[]')) : "";
                     break;
                 default:
                     break;
@@ -222,6 +228,7 @@ class Configs extends AdminController
                 switch ($value['config_key']) {
                     case 'customer_group_display':
                     case 'store_location':
+                    case 'mail_alert':
                         $settings[$value['config_key']] = explode(',', $value['config_value']);
                         break;
                     default:
@@ -235,6 +242,14 @@ class Configs extends AdminController
 
         $data['tab_type'] = $tab_type;
         $data['settings'] = $settings;
+
+        $mail_alert_list = [
+            'account' => lang('ConfigAdmin.text_email_alert_account'),
+            'affiliate' => lang('ConfigAdmin.text_email_alert_affiliate'),
+            'order' => lang('ConfigAdmin.text_email_alert_order'),
+            'review' => lang('ConfigAdmin.text_email_alert_review'),
+        ];
+        $data['mail_alert_list'] = $mail_alert_list;
 
         $watermark_list = [
             '' => lang('Admin.text_none'),
