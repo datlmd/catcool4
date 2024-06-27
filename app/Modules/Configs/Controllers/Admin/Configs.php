@@ -112,9 +112,9 @@ class Configs extends AdminController
                 break;
             case 'tab_mail':
                 $this->validator->setRule('email_engine', lang('ConfigAdmin.text_email_engine'), 'required');
-                if ($this->request->getPost('mail_alert_email')) {
-                    $this->validator->setRule('mail_alert_email', lang('ConfigAdmin.text_email_alert_email'), 'valid_emails');
-                }
+                // if ($this->request->getPost('mail_alert_email')) {
+                //     $this->validator->setRule('mail_alert_email', lang('ConfigAdmin.text_email_alert_email'), 'valid_emails');
+                // }
                 break;
             case 'tab_server':
                 $this->validator->setRule('robots', lang('ConfigAdmin.text_robots'), 'required');
@@ -167,7 +167,8 @@ class Configs extends AdminController
                     $data_settings['enable_dark_mode'] = !empty($this->request->getPost('enable_dark_mode')) ? STATUS_ON : STATUS_OFF;
                     break;
                 case 'tab_mail':
-                    $data_settings['mail_alert'] = $this->request->getPost('mail_alert[]') ? implode(',', $this->request->getPost('mail_alert[]')) : "";
+                    $data_settings['mail_alert_email'] = preg_replace('/\s+/', ',', trim($this->request->getPost('mail_alert_email')));
+                    $data_settings['mail_alert'] = $this->request->getPost('mail_alert[]') ? implode(',', $this->request->getPost('mail_alert[]')) : '';
                     break;
                 default:
                     break;
@@ -226,9 +227,12 @@ class Configs extends AdminController
         if (!empty($list_config)) {
             foreach ($list_config as $value) {
                 switch ($value['config_key']) {
-                    case 'customer_group_display':
-                    case 'store_location':
+                    case 'mail_alert_email':
+                        $settings[$value['config_key']] = str_replace(',', PHP_EOL, $value['config_value']);
+                        break;
                     case 'mail_alert':
+                    case 'store_location':
+                    case 'customer_group_display':
                         $settings[$value['config_key']] = explode(',', $value['config_value']);
                         break;
                     default:

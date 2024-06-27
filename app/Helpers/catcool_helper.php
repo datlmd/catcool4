@@ -490,7 +490,7 @@ if (!function_exists('slugify')) {
         helper(['text', 'url']);
 
         // Replace unsupported characters (add your owns if necessary)
-        $string = str_replace("'", '-', (string)$string);
+        $string = str_replace("'", '-', (string) $string);
         $string = str_replace('.', '-', $string);
         //$string = str_replace("?", '2', $string);
 
@@ -1336,7 +1336,7 @@ if (!function_exists('send_email')) {
             if (empty($config)) {
                 //$config = config('Email');
                 $config = [
-                    'userAgent' => 'CatCoolCMS',
+                    'userAgent' => config_item('email_user_agent'),
                     'protocol' => config_item('email_engine'), //'smtp';
                     'SMTPTimeout' => config_item('email_smtp_timeout'),
                     'mailType' => 'html',
@@ -1379,9 +1379,7 @@ if (!function_exists('send_email')) {
                 $email->setReplyTo($reply_to);
             }
 
-            if ($email->send() === true) {
-                return true;
-            } else {
+            if (!$email->send()) {
                 if (ENVIRONMENT == 'development') {
                     die($email->printDebugger());
                 }
@@ -1391,6 +1389,8 @@ if (!function_exists('send_email')) {
 
                 return false;
             }
+
+            return true;
         } catch (\Exception $e) {
             log_message('error', $e->getMessage());
 

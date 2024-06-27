@@ -2,18 +2,13 @@
 
 namespace App\Modules\Events\Controllers;
 
-use App\Controllers\BaseController;
+use Codeigniter\Controller;
 
-class Mail extends BaseController
+class Mail extends Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public static function register($customer_info): void
     {
-        $store_name = config_item("store_name");
+        $store_name = config_item('store_name');
         $data = [
             'store_name' => $store_name,
             'store_url' => site_url(),
@@ -28,14 +23,42 @@ class Mail extends BaseController
         $message = \App\Libraries\Themes::init()::view('email/register', $data);
 
         if (!empty($customer_info['email'])) {
-            send_email($email_to, $email_from, $subject, $message, $email_title);
+            $config_mail = [
+                'userAgent' => config_item('email_user_agent'),
+                'protocol' => config_item('email_engine'),
+                'SMTPTimeout' => config_item('email_smtp_timeout'),
+                'newline' => "\r\n",
+                'mailType' => 'html',
+                'validate' => true,
+                'SMTPHost' => config_item('email_host'),
+                'SMTPPort' => config_item('email_port'),
+                'SMTPCrypto' => config_item('email_smtp_crypto') ?? 'tls',
+                'SMTPUser' => config_item('email_smtp_user'),
+                'SMTPPass' => config_item('email_smtp_pass'),
+            ];
+
+            $mail = \Config\Services::email();
+            $mail->initialize($config_mail);
+
+            $mail->setFrom($email_from, $email_title);
+            $mail->setTo($email_to);
+            $mail->setSubject($subject);
+            $mail->setMessage($message);
+
+            if (!$mail->send()) {
+                if (ENVIRONMENT == 'development') {
+                    die($mail->printDebugger());
+                }
+
+                log_message('error', $mail->printDebugger(['subject']));
+            }
         }
     }
 
     public static function registerAlert($customer_info): void
     {
-        if (in_array('account', explode(',', (string)config_item('mail_alert')))) {
-            $store_name = config_item("store_name");
+        if (in_array('account', explode(',', (string) config_item('mail_alert')))) {
+            $store_name = config_item('store_name');
             $data = [
                 'store_name' => $store_name,
                 'store_url' => site_url(),
@@ -45,20 +68,50 @@ class Mail extends BaseController
                 'phone' => $customer_info['phone'],
                 'customer_group' => $customer_info['customer_group'],
             ];
-    
+
             $email_title = config_item('email_subject_title');
             $subject = lang('Email.text_register_new_customer');
-            $email_to = config_item('email_from');
             $email_from = config_item('email_from');
             $message = \App\Libraries\Themes::init()::view('email/register_alert', $data);
-            
-            send_email($email_to, $email_from, $subject, $message, $email_title);
 
             // Send to additional alert emails if new account email is enabled
-            $emails = explode(',', (string)config_item('mail_alert_email'));
-            foreach ($emails as $email) {
-                if (mb_strlen($email) > 0 && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    send_email(trim($email), $email_from, $subject, $message, $email_title);
+            $config_mail = [
+                'userAgent' => config_item('email_user_agent'),
+                'protocol' => config_item('email_engine'),
+                'SMTPTimeout' => config_item('email_smtp_timeout'),
+                'newline' => "\r\n",
+                'mailType' => 'html',
+                'validate' => true,
+                'SMTPHost' => config_item('email_host'),
+                'SMTPPort' => config_item('email_port'),
+                'SMTPCrypto' => config_item('email_smtp_crypto') ?? 'tls',
+                'SMTPUser' => config_item('email_smtp_user'),
+                'SMTPPass' => config_item('email_smtp_pass'),
+            ];
+
+            $mail = \Config\Services::email();
+            $mail->initialize($config_mail);
+
+            $email_tos[] = config_item('email_from');
+            if (!empty(config_item('mail_alert_email'))) {
+                $email_tos = array_merge($email_tos, explode(',', (string) config_item('mail_alert_email')));
+            }
+
+            foreach ($email_tos as $email_to) {
+                if (mb_strlen($email_to) > 0 && filter_var($email_to, FILTER_VALIDATE_EMAIL)) {
+                    $mail->clear();
+                    $mail->setFrom($email_from, $email_title);
+                    $mail->setTo($email_to);
+                    $mail->setSubject($subject);
+                    $mail->setMessage($message);
+
+                    if (!$mail->send()) {
+                        if (ENVIRONMENT == 'development') {
+                            die($mail->printDebugger());
+                        }
+
+                        log_message('error', $mail->printDebugger(['subject']));
+                    }
                 }
             }
         }
