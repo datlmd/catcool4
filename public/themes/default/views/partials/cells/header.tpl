@@ -4,7 +4,8 @@
         <div class="container-fluid header-top">
             <div class="container-xxl d-flex justify-content-between">
 
-                <div class="header-top-contact animate__animated animate__fadeInDown">
+                {* <div class="header-top-contact animate__animated animate__fadeInDown"> *}
+                <div class="header-top-contact">
 
                     <ul class="nav nav-pills">
                         {if !empty(config_item('store_address'))}
@@ -36,7 +37,8 @@
 
                 </div>
 
-                <div class="header-top-account animate__animated animate__fadeIn">
+                {* animate__animated animate__fadeIn *}
+                <div class="header-top-account">
 
                     <ul class="nav">
 

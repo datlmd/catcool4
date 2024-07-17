@@ -528,7 +528,7 @@ class CustomerModel extends MyModel
 
         if ($customer_group_info['approval']) {
             $customer_group_model = new CustomerApprovalModel();
-            $customer_group_model->insert(['customer_id' => $customer_id]);
+            $customer_group_model->insert(['customer_id' => $customer_id, 'type' => 'customer']);
         }
 
         $add_data['customer_id'] = $customer_id;
