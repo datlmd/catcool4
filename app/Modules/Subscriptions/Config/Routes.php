@@ -6,11 +6,11 @@ if(!isset($routes))
 }
 
 $routes->group('manage', ['namespace' => 'App\Modules\Subscriptions\Controllers\Admin'], function($subroutes){
-    $subroutes->add('subscriptions', 'Manage::index');
-    $subroutes->add('manage/add', 'Manage::add');
-    $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
-    $subroutes->add('manage/delete', 'Manage::delete');
-    $subroutes->add('manage/publish', 'Manage::publish');
+    $subroutes->add('subscriptions', 'Subscriptions::index');
+    $subroutes->add('subscriptions/add', 'Subscriptions::add');
+    $subroutes->add('subscriptions/edit/(:num)', 'Subscriptions::edit/$1');
+    $subroutes->add('subscriptions/delete', 'Subscriptions::delete');
+    $subroutes->add('subscriptions/publish', 'Subscriptions::publish');
 
     $subroutes->add('subscription_statuses', 'Statuses::index');
     $subroutes->add('subscription_statuses/add', 'Statuses::add');

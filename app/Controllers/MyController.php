@@ -22,7 +22,7 @@ class MyController extends Controller
     protected $language_id;
 
     /**
-     * @var |null
+     * @var mixed|null
      */
     protected $themes = null;
 
