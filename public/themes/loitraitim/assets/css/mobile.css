@@ -37,7 +37,6 @@ article.post-detail .post-content h4, article.post-detail .post-content h5, arti
 {
 	padding-left: 15px !important;
 	padding-right: 15px !important;
-	display: block;
 }
 
 article.post-detail .post-content span > p, article.post-detail .post-content span > span, article.post-detail .post-content span > strong,
@@ -49,5 +48,4 @@ article.post-detail .post-content h4 > strong, article.post-detail .post-content
 {
 	padding-left: 0 !important;
 	padding-right: 0 !important;
-	display: block;
 }
