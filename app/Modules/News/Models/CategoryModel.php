@@ -73,6 +73,11 @@ class CategoryModel extends MyModel
             }
         }
 
-        return $result;
+        $list = [];
+        foreach ($result as $value) {
+            $list[$value['category_id']] = $value;
+        }
+
+        return $list;
     }
 }
