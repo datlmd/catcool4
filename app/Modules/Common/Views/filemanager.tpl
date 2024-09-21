@@ -6,9 +6,11 @@
                 <a href="{$display_url}&d={DISPLAY_GRID}" data-bs-toggle="tooltip" title="{lang("Admin.text_grid")}" id="button_display_grid" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-th"></i></a>
                 <a href="{$display_url}&d={DISPLAY_LIST}" data-bs-toggle="tooltip" title="{lang("Admin.text_list")}" id="button_display_list" class="btn btn-sm btn-outline-light btn-space"><i class="fas fa-list"></i></a>
                 <a href="{$refresh}" data-bs-toggle="tooltip" title="{$button_refresh}" id="button_refresh" class="btn btn-sm btn-secondary btn-space"><i class="fas fa-sync"></i></a>
-                <button type="button" title="{$button_upload}" id="button-upload" class="btn btn-sm btn-primary btn-space"><i class="fas fa-upload me-1"></i>{$button_upload}</button>
+                
+                <button type="button" title="{$button_upload}" data-bs-toggle="collapse" data-bs-target="#collapse_filemanager_upload" class="btn btn-sm btn-primary btn-space"><i class="fas fa-upload me-1"></i>{$button_upload}</button>
                 <button type="button" title="{$button_folder}" id="button_folder" class="btn btn-sm btn-success btn-space"><i class="fas fa-folder me-1"></i>{$button_folder}</button>
                 <button type="button" data-bs-toggle="tooltip" title="{$button_delete}" id="button_delete" class="btn btn-sm btn-danger btn-space"><i class="fas fa-trash"></i></button>
+                
                 <a href="{base_url('image/editor')}" data-bs-toggle="tooltip" title="Photo Editor" target="_blank" class="btn btn-sm btn-warning btn-space me-0"><i class="fas fa-pencil-alt"></i></a>
             </div>
             <div class="col-sm-4 col-12 mb-1">
@@ -18,8 +20,22 @@
                 </div>
             </div>
         </div>
-        <div>{lang('Admin.text_upload_drop_drap')} - {lang('Admin.text_maximum_upload')}: {$file_max_size}</div>
-        <div class="border border-bottom my-2"></div>
+        <div class="collapse show border-top mt-1 pt-3" id="collapse_filemanager_upload">
+            <div class="row">
+                <div class="col-sm-5 col-12">
+                    <div class="input-group">
+                        <input type="text" name="input_upload_from_url" value="{$input_upload_from_url}" placeholder="{$entry_upload_url}" style="min-width: 50px;" class="form-control btn-space me-0">
+                        <button type="button" id="button_upload_from_url" data-bs-toggle="tooltip" title="{$button_upload_url}" class="btn btn-sm btn-dark btn-space"><i class="fas fa-upload me-1"></i>{$button_upload_url}</button>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-12">
+                    <button type="button" title="{$button_upload_device}" data-bs-toggle="tooltip" id="button_upload" class="btn btn-sm btn-outline-light active"><i class="fas fa-upload me-1"></i>{$button_upload_device}</button>
+                </div>
+            </div>
+            <p class="text-dark">{lang('Admin.text_upload_drop_drap')} - {lang('Admin.text_maximum_upload')}: {$file_max_size}</p>
+        </div>
+        
+        <div class="border-bottom mt-2 mb-3"></div>
         <div id="msg" class="text-secondary"></div>
         <div class="row" id="filemanager_list">
             {if !empty($directory)}<div class="text-dark fs-6 mb-2"><i class="fas fa-folder me-1"></i>{$directory|urldecode|replace:'/':'<i class=" fas fa-angle-right mx-1"></i>'}</div>{/if}
@@ -380,7 +396,8 @@
         $('#modal_image').load(url);
     });
 
-    $('#filemanager #button-upload').on('click', function() {
+    $('#filemanager #button_upload').on('click', function(e) {
+
         filemanager_dispose_all();
 
         $('[data-bs-toggle=\'tooltip\']').tooltip('dispose');
@@ -428,12 +445,12 @@
                         return xhr;
                     },
                     beforeSend: function() {
-                        $('#button-upload i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
-                        $('#button-upload').prop('disabled', true);
+                        $('#button_upload i').replaceWith('<i class="fas fa-spinner fa-spin"></i>');
+                        $('#button_upload').prop('disabled', true);
                     },
                     complete: function() {
-                        $('#button-upload i').replaceWith('<i class="fas fa-upload"></i>');
-                        $('#button-upload').prop('disabled', false);
+                        $('#button_upload i').replaceWith('<i class="fas fa-upload"></i>');
+                        $('#button_upload').prop('disabled', false);
                     },
                     success: function(json) {
                         $('#filemanager #msg').html(json);
@@ -456,13 +473,57 @@
         }, 500);
     });
 
+    $(document).on('click', '#button_upload_from_url', function(e) {
+        if (!$('input[name=\'input_upload_from_url\']').val()) {
+            $.notify('{{$error_folder_null}}', {
+                'type':'danger'
+            });
+            return false;
+        }
+        if (is_processing) {
+            return false;
+        }
+        is_processing = true;
+        $.ajax({
+            url: base_url + '/common/filemanager/upload_url?directory=' + $('input[name=\'input_directory\']').val(),
+            type: 'post',
+            dataType: 'json',
+            data: 'url=' + $('input[name=\'input_upload_from_url\']').val(),
+            beforeSend: function() {
+                $('#button_upload_from_url').prop('disabled', true);
+            },
+            complete: function() {
+                $('#button_create_folder').prop('disabled', false);
+            },
+            success: function(json) {
+                is_processing = false;
+                is_disposing = false;
+                if (json['error']) {
+                    $.notify(json['error'], {
+                        'type':'danger'
+                    });
+                    return false;
+                }
+                if (json['success']) {
+                    $.notify(json['success']);
+                    $('#button_refresh').trigger('click');
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                is_processing = false;
+                is_disposing = false;
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    });
+
     $('#button_folder').on('click', function (e) {
         var button_folder = $(this);
         var $popover = button_folder.data('bs.popover');
 
         e.preventDefault();
 
-        $('#button-folder').popover('dispose');
+        $('#button_folder').popover('dispose');
 
         if ($popover) {
             is_disposing = false;
@@ -476,7 +537,8 @@
             placement: 'bottom',
             customClass: 'shadow',
             //trigger: true,
-            container: '.modal-body',
+            //container: '.modal-body',
+            container: '#modal_image',
             title: '{{$entry_folder}}',
             content: function () {
                 var html = '<div class="input-group">';
@@ -913,12 +975,12 @@
                             return xhr;
                         },
                         beforeSend: function () {
-                            $('#button-upload i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
-                            $('#button-upload').prop('disabled', true);
+                            $('#button_upload i').replaceWith('<i class="fas fa-spinner fa-spin me-1"></i>');
+                            $('#button_upload').prop('disabled', true);
                         },
                         complete: function () {
-                            $('#button-upload i').replaceWith('<i class="fas fa-upload me-1"></i>');
-                            $('#button-upload').prop('disabled', false);
+                            $('#button_upload i').replaceWith('<i class="fas fa-upload me-1"></i>');
+                            $('#button_upload').prop('disabled', false);
                         },
                         success: function (json) {
                             $('#filemanager #msg').html(json);

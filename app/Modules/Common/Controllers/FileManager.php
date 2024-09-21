@@ -321,10 +321,13 @@ class FileManager extends AdminController
 
         $data['entry_search'] = lang('FileManager.entry_search');
         $data['entry_folder'] = lang('FileManager.entry_folder');
+        $data['entry_upload_url'] = lang('FileManager.entry_upload_url');
 
         $data['button_parent']  = lang('Admin.button_parent');
         $data['button_refresh'] = lang('Admin.button_refresh');
         $data['button_upload']  = lang('Admin.button_upload');
+        $data['button_upload_device']  = lang('FileManager.button_upload_device');
+        $data['button_upload_url']  = lang('FileManager.button_upload_url');
         $data['button_folder']  = lang('Admin.button_folder');
         $data['button_delete']  = lang('Admin.button_delete');
         $data['button_search']  = lang('Admin.button_search');
@@ -343,11 +346,12 @@ class FileManager extends AdminController
         }
 
         //$data['directory']   = !empty($this->request->getGet('directory')) ? urlencode($this->request->getGet('directory')) : "";
-        $data['filter_name'] = $this->request->getGet('filter_name') ?? "";
-        $data['target']      = $this->request->getGet('target') ?? ""; // Return the target ID for the file manager to set the value
-        $data['thumb']       = $this->request->getGet('thumb') ?? ""; // Return the thumbnail for the file manager to show a thumbnail
-        $data['file_type']   = $this->request->getGet('type') ?? "";
-        $data['display']     = empty($this->request->getGet("d")) ? DISPLAY_GRID : $this->request->getGet("d");
+        $data['input_upload_from_url'] = $this->request->getGet('input_upload_from_url') ?? "";
+        $data['filter_name']           = $this->request->getGet('filter_name') ?? "";
+        $data['target']                = $this->request->getGet('target') ?? ""; // Return the target ID for the file manager to set the value
+        $data['thumb']                 = $this->request->getGet('thumb') ?? ""; // Return the thumbnail for the file manager to show a thumbnail
+        $data['file_type']             = $this->request->getGet('type') ?? "";
+        $data['display']               = empty($this->request->getGet("d")) ? DISPLAY_GRID : $this->request->getGet("d");
 
         // Parent
         $url = '';
@@ -557,6 +561,55 @@ class FileManager extends AdminController
                 $json['error'] = lang('FileManager.error_upload');
             }
 
+        } catch (\Exception $e) {
+            $json['error'] = $e->getMessage();
+        }
+
+        json_output($json);
+    }
+
+    public function uploadUrl()
+    {
+        $json = [];
+
+        // create folder
+        if (!is_dir($this->_dir_image_path . self::PATH_SUB_NAME)) {
+            mkdir($this->_dir_image_path . self::PATH_SUB_NAME, 0777, true);
+        }
+
+        // Make sure we have the correct directory
+        $directory = $this->request->getGet('directory');
+        if (isset($directory)) {
+            $directory = rtrim($this->_dir_image_path . self::PATH_SUB_NAME . '/' . $directory, '/');
+        } else {
+            $directory = $this->_dir_image_path . self::PATH_SUB_NAME;
+        }
+
+        try {
+            if (!empty($this->request->getPost())) {
+
+                // Sanitize the folder name
+                $url = $this->request->getPost('url');
+
+                $url_parts = pathinfo($url);
+
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_HEADER, 0);
+                $response = curl_exec($ch);
+                curl_close($ch);
+
+                $file_new = $url_parts['filename'] . '.' . $url_parts['extension'];
+                file_put_contents($directory . '/' . $file_new, $response);
+
+                if (!empty(config_item('enable_resize_image'))) {
+                    $this->_image_tool->resizeUpload($directory . '/' . $file_new);
+                }
+
+                $json['success'] = lang('FileManager.text_uploaded');
+            }
         } catch (\Exception $e) {
             $json['error'] = $e->getMessage();
         }

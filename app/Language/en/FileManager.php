@@ -1,8 +1,11 @@
 <?php
 
 return [
+	"button_upload_device" => "Upload from your device",
+	"button_upload_url" => "Upload your URL",
 	"entry_folder" => "Folder Name",
 	"entry_search" => "Search...",
+	"entry_upload_url" => "Paste your image URL",
 	"error_delete" => "You can not delete this directory!",
 	"error_directory" => "Directory does not exist!",
 	"error_exists" => "A file or directory with the same name already exists!",

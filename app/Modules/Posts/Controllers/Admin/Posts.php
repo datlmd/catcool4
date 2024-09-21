@@ -418,8 +418,21 @@ class Posts extends AdminController
         } else {
 
             if ($this->request->getGet('url')) {
-                $news_model = new \App\Modules\News\Models\NewsModel();
-                $data['edit_data'] = $news_model->robotDetail($this->request->getGet('url'));
+                $scan_model = new \App\Modules\Scan\Models\ScanModel();
+                $scan_content = $scan_model->getUrlData($this->request->getGet('url'));
+                //cc_debug($scan_content);
+                $data['edit_data'] = [
+                    'name' => html_entity_decode($scan_content['title']),
+                    'description' => html_entity_decode($scan_content['meta']['description']['value']),
+                    'meta_title' => html_entity_decode($scan_content['title']),
+                    'meta_description' => html_entity_decode($scan_content['meta']['description']['value']),
+                    'meta_keyword' => html_entity_decode($scan_content['meta']['keywords']['value'] . ($scan_content['meta']['news_keywords']['value'] ?? "")),
+                    'tags' => html_entity_decode($scan_content['meta']['keywords']['value'] . ($scan_content['meta']['news_keywords']['value'] ?? "")),
+                    'url_image_fb' => $scan_content['meta']['image']['value'] ?? '',
+                    'content' => html_entity_decode($scan_content['content']),
+                    'source_type' => 2,
+                    'source' => $this->request->getGet('url'),
+                ];
                 $data['url']       = $this->request->getGet('url');
             }
 

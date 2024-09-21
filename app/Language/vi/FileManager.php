@@ -1,8 +1,11 @@
 <?php
 
 return [
+	"button_upload_device" => "Tải lên từ thiết bị của bạn",
+	"button_upload_url" => "Tải URL của bạn",
 	"entry_folder" => "Tên Thư mục",
 	"entry_search" => "Tìm kiếm...",
+	"entry_upload_url" => "Dán URL hình ảnh của bạn",
 	"error_delete" => "Bạn không thể xóa thư mục này!",
 	"error_directory" => "Hãy chọn một thư mục!",
 	"error_exists" => "Một tập tin hoặc thư mục cùng tên đã tồn tại!",
