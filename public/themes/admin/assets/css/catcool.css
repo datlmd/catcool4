@@ -224,6 +224,7 @@ label {
 }
 .tox-tinymce {
     border-radius: .25rem !important;
+    width: 100% !important;
 }
 #list_category {
 
@@ -749,7 +750,6 @@ a[data-bs-toggle="image"] {
     font-size: 13px;
 }
 /*** end meta seo ***/
-
 .tox-fullscreen .tox.tox-tinymce.tox-fullscreen {
     z-index: 1050 !important;
 }

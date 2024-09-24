@@ -523,7 +523,7 @@ var Catcool = {
 
                 $('body').append('<div id="modal_image" class="modal fade" role="dialog" data-bs-keyboard="false" data-bs-backdrop="static">' + html + '</div>');
 
-                $('html').css('overflow', 'hidden');
+                //$('html').css('overflow', 'hidden');
                 $('#modal_image').modal('show');
             },
             error: function (xhr, errorType, error) {

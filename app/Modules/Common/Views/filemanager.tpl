@@ -211,8 +211,8 @@
             {/if}
         </div>
     {/capture}
-{*    style="max-width: 1200px !important;"*}
-    <div id="filemanager" class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen" >
+{*    style="max-width: 1200px !important;"  modal-fullscreen*}
+    <div id="filemanager" class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable " >
         <div class="modal-content">
             <div class="modal-header bg-dark">
                 <h5 class="modal-title text-white" id="photoModalLabel">{$heading_title}</h5>
