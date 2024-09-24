@@ -1551,13 +1551,13 @@ if (!function_exists('add_meta')) {
                     $theme->addMeta('robots', 'noindex,nofollow');
                 }
                 else {
-                    $theme->addMeta('robots', 'index,follow');
+                    $theme->addMeta('robots', 'index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large');
                 }
                 if (!empty($data['is_disable_follow'])) {
                     $theme->addMeta('googlebot', 'noindex,nofollow');
                 }
                 else {
-                    $theme->addMeta('googlebot', 'index,follow');
+                    $theme->addMeta('googlebot', 'index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large');
                 }
             }
 
@@ -2086,5 +2086,17 @@ if (!function_exists('auto_table_of_contents')) {
         } catch (\Exception $e) {
             return [null, $content];
         }
+    }
+}
+
+if (!function_exists('get_domain')) {
+    function get_domain($url)
+    {
+        $pieces = parse_url($url);
+        $domain = isset($pieces['host']) ? $pieces['host'] : '';
+        if(preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)){
+            return $regs['domain'];
+        }
+        return FALSE;
     }
 }

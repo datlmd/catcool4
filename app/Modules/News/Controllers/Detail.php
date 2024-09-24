@@ -85,8 +85,8 @@ class Detail extends MyController
             $this->themes->addJS('common/plugin/fancybox/fancybox');
 
             //@todo Chan index tam thoi trang news
-            $this->themes->addMeta('robots', 'noindex');
-            $this->themes->addMeta('googlebot', 'noindex,');
+            $this->themes->addMeta('robots', 'noindex,nofollow');
+            $this->themes->addMeta('googlebot', 'noindex,nofollow,');
 
             theme_load($tpl_name, $data);
         // } catch (\Exception $ex) {

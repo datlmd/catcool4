@@ -13,6 +13,10 @@ class ScanModel extends MyModel
     protected $returnType = 'array';
     private $_html_content = "";
 
+    private $_domain_content = [
+        'vzn.vn' => ["ftwp-postcontent", "!--End:Text Content--"], //cat html giua 2 vi tri duoc danh dau
+    ];
+
     public function __construct()
     {
         parent::__construct();
@@ -100,10 +104,19 @@ class ScanModel extends MyModel
             $contents = $match[1];
         }
         
-        $contents = substr($contents, strpos($contents, substr($title, 0, 20)), strlen($contents));
+        //lay noi dung chinh
+        $domain = get_domain($url);
+        $content_temp = substr($contents, strpos($contents, substr($title, 0, 20)), strlen($contents));
+        if (!empty($this->_domain_content[$domain])) {
+            $content_temp = substr($contents, strpos($contents, $this->_domain_content[$domain][0]), strlen($contents));
+            $content_temp = substr($content_temp, 0, strpos($content_temp, $this->_domain_content[$domain][1]));
+        }
+
+        $contents = $content_temp;
         $images = $this->getListImage($contents);
 
-        $contents = strip_tags($contents, "<b><br><p>");
+        $contents = strip_tags($contents, "<strong>><i><b><br><p><h1><h2><h3><h4><h5><h6><img><ul><li><table><span>");
+
         foreach ($images as $iamge) {
             if (empty($iamge)) {
                 continue;
@@ -126,9 +139,6 @@ class ScanModel extends MyModel
         }
 
         try {
-
-           
-
             $bool = true;
             $i = 0;
 

@@ -184,15 +184,19 @@
                                 <label class="form-label">{lang('NewsAdmin.text_post_format')}</label><br/>
                                 <label class="form-check form-check-inline">
                                     <input type="radio" name="post_format" value="1" {if old('post_format', $edit_data.post_format)|default:1 eq 1}checked="checked"{/if} id="post_format_normal" class="form-check-input">
-                                    <label class="form-check-label" for="post_format_normal">Normal</label>
+                                    <label class="form-check-label" for="post_format_normal">{lang("PostAdmin.post_format_normal")}</label>
                                 </label>
                                 <label class="form-check form-check-inline">
                                     <input type="radio" name="post_format" value="2" {if old('post_format', $edit_data.post_format)|default:1 eq 2}checked="checked"{/if} id="post_format_image" class="form-check-input">
-                                    <label class="form-check-label" for="post_format_image">Image</label>
+                                    <label class="form-check-label" for="post_format_image">{lang("PostAdmin.post_format_image")}</label>
                                 </label>
                                 <label class="form-check form-check-inline">
                                     <input type="radio" name="post_format" value="3" {if old('post_format', $edit_data.post_format)|default:1 eq 3}checked="checked"{/if} id="post_format_video" class="form-check-input">
-                                    <label class="form-check-label" for="post_format_video">Video</label>
+                                    <label class="form-check-label" for="post_format_video">{lang("PostAdmin.post_format_video")}</label>
+                                </label>
+                                <label class="form-check form-check-inline">
+                                    <input type="radio" name="post_format" value="4" {if old('post_format', $edit_data.post_format)|default:1 eq 4}checked="checked"{/if} id="post_format_lesson" class="form-check-input">
+                                    <label class="form-check-label" for="post_format_lesson">{lang("PostAdmin.post_format_lesson")}</label>
                                 </label>
                             </div>
                         </div>
