@@ -67,10 +67,17 @@
                         </ul>
                     </div>
                     <div class="post-content-end">
+                        
                         <div class="post-description text-start">
                             <strong>{$detail.description}</strong>
                         </div>
-                        {str_ireplace('<img ', '<img data-fancybox="gallery" ', $detail.content)}
+
+                        {if !empty($detail.table_of_contents)}
+                            <div class="catcool-table-of-contents">{$detail.table_of_contents}</div>
+                        {/if}
+
+                        <div id="article_content_detail" class="article-content-detail mt-3">
+                            {str_ireplace('<img ', '<img data-fancybox="gallery" ', $detail.content)}</div>
                         <br/>
                     </div>
 

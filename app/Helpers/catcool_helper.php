@@ -1544,11 +1544,21 @@ if (!function_exists('add_meta')) {
             $theme->setPageTitle($title);
 
             if ($is_admin) {
-                $theme->addMeta('robots', 'noindex');
-                $theme->addMeta('googlebot', 'noindex,');
+                $theme->addMeta('robots', 'noindex,nofollow');
+                $theme->addMeta('googlebot', 'noindex,nofollow');
             } else {
-                $theme->addMeta('robots', 'index,follow');
-                $theme->addMeta('googlebot', 'index,follow');
+                if (!empty($data['is_disable_robot'])) {
+                    $theme->addMeta('robots', 'noindex,nofollow');
+                }
+                else {
+                    $theme->addMeta('robots', 'index,follow');
+                }
+                if (!empty($data['is_disable_follow'])) {
+                    $theme->addMeta('googlebot', 'noindex,nofollow');
+                }
+                else {
+                    $theme->addMeta('googlebot', 'index,follow');
+                }
             }
 
             $theme->addMeta('revisit-after', '1 days');
@@ -1956,5 +1966,125 @@ if (!function_exists('get_module')) {
         }
 
         return "$module/$controller";
+    }
+}
+
+if (!function_exists('clean')) {
+    function clean($str)
+    {       
+        $str = mb_convert_encoding($str, "UTF-8", mb_detect_encoding($str));
+        $str = str_replace("&nbsp;", " ", $str);
+        $str = preg_replace('/\s+/', ' ', $str);
+        $str = trim($str);
+        return $str;
+    }
+}
+
+if (!function_exists('auto_table_of_contents')) {
+    function auto_table_of_contents($content)
+    {
+        try {
+            // Adding ID slug for heading
+            $content = preg_replace_callback('/(\<h[1-6](.*?))\>(.*)(<\/h[1-6]>)/i', function ($matches) {
+                //str_replace($matches[0], 'id=') !== false) {
+                $matche_3 = strip_tags(mb_convert_encoding($matches[3], "UTF-8", mb_detect_encoding($matches[3])));
+                $matches[0] = $matches[1] . $matches[2] . ' id="content_item_' . strip_tags($matches[1]) . "_" . strlen($matche_3) . '">' . $matche_3 . $matches[4];
+
+                return $matches[0];
+            }, $content);
+
+            //main
+            $text_title = lang("General.text_table_of_contents");
+            $table_of_contents = "";
+            preg_match_all('/<(h[1-6])(?:.* id="(.*?)")?>((.*?))<\/h/', $content, $matches);
+            $levels = $matches[1];
+            $anchors = $matches[2];
+            $headings = $matches[3];
+
+            if (empty($headings)) {
+                return [null, $content];
+            }
+
+
+            foreach ($headings as $key => $value) {
+                $level_temps[] = (int)str_replace('h', '', $levels[$key]);
+
+
+                if (empty(clean($value))) {
+                    unset($levels[$key]);
+                    unset($anchors[$key]);
+                    unset($headings[$key]);
+                }
+            }
+
+            //Tao danh sach muc luc
+            if (!function_exists('collate_row')) {
+                function collate_row($depth, $anchor, $heading)
+                {
+                    $level = substr($depth, 1);
+                    $heading = strip_tags($heading);
+                    if ($anchor) {
+                        return ["<a href='" . current_url() . "?#{$anchor}" . "' class='heading-{$depth} nav-link smooth-scroll'>{$heading}</a>", $level];
+                    }
+
+                    $slug = $heading;
+                    return ["<a href='" . current_url() . "?#{$slug}" . "' class='heading-{$depth} nav-link smooth-scroll'>{$heading}</a>", $level];
+                }
+            }
+
+            $collated = array_map('collate_row', $levels, $anchors, $headings);
+
+            $previous_level = min($level_temps);
+
+            //tao ul
+            $ul_content = '<ul class="nav nav-pills">';
+            foreach ($collated as $row) {
+                $current_level = $row[1];
+                if ($current_level == $previous_level) {
+                    $ul_content .=  "<li>" . $row[0];
+                } else if ($current_level < $previous_level) {
+                    $ul_content .= str_repeat('</ul>', $previous_level - $current_level) . "<li>" . $row[0];
+                } else {
+                    $ul_content .= '<ul class="nav nav-pills"><li>' . $row[0];
+                }
+                $previous_level = $row[1];
+            }
+            $ul_content .= str_repeat('</ul>', $previous_level) . '</li></ul>';
+
+            //Tao html accordion
+            $table_of_contents = '<nav id="catcool_auto_index" class="navbar navbar-light accordion accordion-flush align-items-stretch">';
+            $table_of_contents .= '   <div class="accordion-item w-100">';
+            $table_of_contents .= '       <h4 class="accordion-header navbar-brand m-0" id="flush_collapse_auto_index">';
+            $table_of_contents .= '           <button type="button" class="accordion-button me-2" aria-controls="flush_collapse_auto_index" data-bs-toggle="collapse" data-bs-target="#collapse_table_of_content_list"><i class="fas fa-list-ol me-1"></i>' . $text_title . '</button>';
+            $table_of_contents .= '       </h4>';
+            $table_of_contents .= '       <div id="collapse_table_of_content_list" class="accordion-collapse collapse show" aria-labelledby="flush_collapse_auto_index" data-bs-parent="#catcool_auto_index">';
+            $table_of_contents .= '           <div class="accordion-body">' . $ul_content  . '</div>';
+            $table_of_contents .= '       </div>';
+            $table_of_contents .= '   </div>';
+            $table_of_contents .= '</nav>';
+
+            //Tao html offcanvas
+            $table_of_contents .= '<button class="button-table-of-content" data-bs-toggle="offcanvas" data-bs-target="#canvas_table_of_content_list" aria-controls="canvas_table_of_content_list"><i class="fas fa-list-ol"></i></button>';
+            $table_of_contents .= '<div class="offcanvas offcanvas-start" tabindex="-1" id="canvas_table_of_content_list" aria-labelledby="canvas_table_of_content_label">';
+            $table_of_contents .= '   <div class="offcanvas-header">';
+            $table_of_contents .= '       <h5 class="offcanvas-title" id="canvas_table_of_content_label"></h5>';
+            $table_of_contents .= '       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>';
+            $table_of_contents .= '   </div>';
+            $table_of_contents .= '   <div class="offcanvas-body"><h5 class="text-center"><i class="fas fa-list-ol me-1"></i>' . $text_title . '</h5>' . $ul_content . '</div>';
+            $table_of_contents .= '</div>';
+
+            $content = "<div data-bs-spy='scroll' data-bs-target='#catcool_auto_index' data-bs-offset='0' tabindex='0'>{$content}</div>";
+
+            //Add Toc before first heading
+            // if (preg_match('/(\<h[1-6](.*?))\>(.*)(<\/h[1-6]>)/i', $content)) {
+            //     $content = preg_replace('/(\<h[1-6](.*?))\>(.*)(<\/h[1-6]>)/i', $toc_content . '${0}', $content, 1);
+            // } else {
+            //     $content = $toc_content . $content;
+            // }
+
+            return [$table_of_contents, $content];
+        } catch (\Exception $e) {
+            return [null, $content];
+        }
     }
 }

@@ -230,6 +230,7 @@ select.form-control {
     z-index: 2000;
     position: fixed;
 }
+
 .loading .spinner-grow {
     position: fixed;
     z-index: 1100;
@@ -240,4 +241,150 @@ select.form-control {
     -webkit-transform: translate(0px,0px);
     -o-transform: translate(0px,0px);
     -ms-transform: translate(0px,0px);
+}
+
+.catcool-table-of-contents {
+	font-size: 0.8rem;
+	padding: 5px;
+	margin: 15px auto 20px auto;
+	background-color: #fafafa;
+    border: 1px solid #dadada;
+    border-radius: 5px;
+	width: 100%;
+	max-width: 500px; 
+}
+
+.catcool-table-of-contents .accordion, .catcool-table-of-contents .accordion-body {
+	padding: 0;
+	margin: 0;
+}
+
+.catcool-table-of-contents .accordion-item, .catcool-table-of-contents .accordion-button, .catcool-table-of-contents .accordion-button:not(.collapsed) {
+	background-color: #fafafa;
+}
+.catcool-table-of-contents .accordion {}
+
+.catcool-table-of-contents .accordion-button {
+	margin: 0;
+	padding: 5px 10px 10px 10px;
+}
+
+.catcool-table-of-contents .accordion-button.collapsed {
+	padding: 5px 10px 5px 10px;
+}
+
+.catcool-table-of-contents .accordion-button:not(.collapsed) {
+	color: #5e5e5e;
+}
+
+.catcool-table-of-contents .accordion-button:focus {
+	box-shadow:none;
+}
+
+.catcool-table-of-contents .accordion .accordion-item h4 {
+	border-radius: 0px;
+	padding: 0;
+}
+
+.catcool-table-of-contents .accordion ul, .catcool-table-of-contents .offcanvas ul {
+	display: inline-block;
+	margin: 7px 0 3px 20px;
+	padding: 5px;
+	list-style: decimal;
+}
+
+.catcool-table-of-contents .accordion ul ul, .catcool-table-of-contents .offcanvas ul ul {
+	margin: 10px 0 10px 20px;
+	padding: 0;
+	list-style: lower-alpha;
+}
+
+.catcool-table-of-contents .accordion ul li, .catcool-table-of-contents .offcanvas ul li {
+	margin: 0;
+	padding: 0;
+}
+
+.catcool-table-of-contents .accordion ul li a.nav-link, .catcool-table-of-contents .offcanvas ul li a.nav-link {
+	padding: 5px 0;
+	color: #5e5e5e;
+	border-radius: 0;
+	border-bottom: 1px solid #e3e3e3;
+	position: relative;
+    text-transform: capitalize;
+	display: block;
+}
+
+.catcool-table-of-contents .offcanvas ul li a.nav-link {
+	color: #444444;
+	font-size: 0.9rem;;
+}
+
+.catcool-table-of-contents .offcanvas ul li li a.nav-link {
+	color: #636363;
+}
+
+.catcool-table-of-contents .accordion li li a.nav-link, .catcool-table-of-contents .offcanvas li li a.nav-link {
+	margin: 0;
+	padding: 5px 0 5px 5px;
+	border: none;
+}
+
+.catcool-table-of-contents .accordion ul li a.nav-link:hover, .catcool-table-of-contents .accordion ul li a.nav-link.active,
+.catcool-table-of-contents .offcanvas ul li a.nav-link:hover,.catcool-table-of-contents .offcanvas ul li a.nav-link.active
+{
+	background: none;
+	color: #000000;
+}
+
+.catcool-table-of-contents .accordion ul li a.nav-link:hover:after, .catcool-table-of-contents .accordion ul li a.nav-link.active:after,
+.catcool-table-of-contents .offcanvas ul li a.nav-link:hover:after,.catcool-table-of-contents .offcanvas ul li a.nav-link.active:after
+{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 3.75rem;
+    height: 2px;
+    background: #258ca3;
+}
+
+.catcool-table-of-contents .accordion li li a.nav-link:hover:after, .catcool-table-of-contents .accordion li li a.nav-link.active:after,
+.catcool-table-of-contents .offcanvas li li a.nav-link:hover:after,.catcool-table-of-contents .offcanvas li li a.nav-link.active:after
+{
+	height: 0;
+}
+
+.catcool-table-of-contents .offcanvas {
+	z-index: 2000;
+	max-width: 300px;
+}
+
+.catcool-table-of-contents .offcanvas .offcanvas-body {
+	padding: 30px 0;
+}
+
+.catcool-table-of-contents .button-table-of-content {
+	display: none;
+	position: fixed;
+	bottom: 50%;
+	left: 40px;
+	z-index: 99;
+	outline: none;
+	background-color: rgba(218, 218, 218, 0.302);
+	border: 1px solid #5e5e5e;
+	color: #5e5e5e;
+	cursor: pointer;
+	padding: 2px 10px;
+	border-radius: 10px;
+	font-size: 22px;
+	animation: fadeInBottomRight;
+	-webkit-animation: fadeInBottomRight;
+	-moz-animation: fadeInBottomRight;
+	-ms-animation: fadeInBottomRight;
+	-o-animation: fadeInBottomRight;
+	animation-duration: 1s;
+}
+
+.catcool-table-of-contents .button-table-of-content:hover {
+	background-color: rgb(218 218 218 / 60%);
 }

@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="{base_url('common/css/catcool.css')}">
+
 <link rel="stylesheet" type="text/css" href="{base_url('common/plugin/fonts/fontawesome/css/fontawesome-all.css')}">
 <link rel="stylesheet" type="text/css" href="{base_url('common/plugin/animate/animate.min.css')}">
 

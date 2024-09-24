@@ -55,6 +55,7 @@ return [
 	"text_second" => "Giây",
 	"text_shopping_cart" => "Giỏ Hàng",
 	"text_subscribe_email" => "Địa chỉ email của bạn...",
+	"text_table_of_contents" => "Mục lục",
 	"text_time_ago" => "{0} {1} trước",
 	"text_total" => "Tổng tiền:",
 	"text_transaction" => "Giao Dịch",

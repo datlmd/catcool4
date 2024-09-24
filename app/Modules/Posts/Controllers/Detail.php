@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Posts\Controllers;
+<?php
+
+namespace App\Modules\Posts\Controllers;
 
 use App\Controllers\MyController;
 use App\Modules\Posts\Models\PostModel;
@@ -37,7 +39,7 @@ class Detail extends MyController
 
             $post_category_model = new CategoryModel();
             $post_category_list  = $post_category_model->getPostCategories($this->language_id);
-            
+
             if ($is_preview) {
                 $detail = $this->model->getPostInfo($post_id, $is_preview, false);
             } else {
@@ -47,6 +49,9 @@ class Detail extends MyController
             if (empty($detail)) {
                 page_not_found();
             }
+
+            //Tao muc luc table_of_contents
+            list($detail['table_of_contents'], $detail['content']) = auto_table_of_contents($detail['content']);
 
             //count detail
             $this->model->updateView($post_id);
@@ -69,13 +74,13 @@ class Detail extends MyController
                 'post_hot_list'           => $this->model->getListHot(6),
             ];
 
+            $this->themes->addCSS('common/plugin/fancybox/fancybox');
+            $this->themes->addJS('common/plugin/fancybox/fancybox');
+
             $tpl_name = 'detail';
             if (!empty($this->is_mobile)) {
                 $tpl_name = 'mobile/detail';
             }
-
-            $this->themes->addCSS('common/plugin/fancybox/fancybox');
-            $this->themes->addJS('common/plugin/fancybox/fancybox');
 
             theme_load($tpl_name, $data);
         } catch (\Exception $ex) {
@@ -116,16 +121,15 @@ class Detail extends MyController
     private function _setMeta($detail)
     {
         //META
-        $data_meta = [
-            'title'          => !empty($detail['meta_title']) ? $detail['meta_title'] : $detail['name'],
-            'description'    => !empty($detail['meta_description']) ? $detail['meta_description'] : $detail['description'],
-            'keywords'       => !empty($detail['meta_keyword']) ? $detail['meta_keyword'] : null,
-            'url'            => base_url($detail['detail_url']),
-            'image'          => !empty($detail['images']['thumb']) ? $detail['images']['thumb'] : $detail['images']['robot'],
-            'image_fb'       => !empty($detail['images']['fb']) ? $detail['images']['fb'] : $detail['images']['robot_fb'],
-            'published_time' => date('c', strtotime($detail['publish_date'])),
-            'modified_time'  => date('c', strtotime($detail['updated_at'])),
-        ];
-        add_meta($data_meta, $this->themes);
+        $detail['title']          = !empty($detail['meta_title']) ? $detail['meta_title'] : $detail['name'];
+        $detail['description']    = !empty($detail['meta_description']) ? $detail['meta_description'] : $detail['description'];
+        $detail['keywords']       = !empty($detail['meta_keyword']) ? $detail['meta_keyword'] : null;
+        $detail['url']            = base_url($detail['detail_url']);
+        $detail['image']          = !empty($detail['images']['thumb']) ? $detail['images']['thumb'] : $detail['images']['robot'];
+        $detail['image_fb']       = !empty($detail['images']['fb']) ? $detail['images']['fb'] : $detail['images']['robot_fb'];
+        $detail['published_time'] = date('c', strtotime($detail['publish_date']));
+        $detail['modified_time']  = date('c', strtotime($detail['updated_at']));
+
+        add_meta($detail, $this->themes);
     }
 }

@@ -55,6 +55,7 @@ return [
 	"text_second" => "Second",
 	"text_shopping_cart" => "Shopping Cart",
 	"text_subscribe_email" => "Your email address...",
+	"text_table_of_contents" => "Table of Contents",
 	"text_time_ago" => "{0} {1}(s) ago",
 	"text_total" => "Total:",
 	"text_transaction" => "Transactions",

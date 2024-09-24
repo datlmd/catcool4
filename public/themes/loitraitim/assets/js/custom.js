@@ -1,1 +1,29 @@
-function showButtonScrollTop() {    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {        $('#btn_scroll_to_top').show();    } else {        $('#btn_scroll_to_top').hide();    }}function scrollToTop() {    document.body.scrollTop = 0; /* For Safari */    document.documentElement.scrollTop = 0; /* For Chrome, Firefox, IE and Opera */}$(document).on('show.bs.offcanvas, shown.bs.offcanvas','header#header', function () {    $('html').css({'overflow': 'hidden'});});$(document).on('hidden.bs.offcanvas, hide.bs.offcanvas','header#header', function () {    $('html').css({'overflow': ''});});$(function () {    //hien thi menu scroll    $(window).trigger('scroll');    $(window).bind('scroll', function () {        if ($(window).scrollTop() > 50) {            $('body').addClass('header-body-padding-fixed');            $('#header').addClass('fixed');            $('#header .image-change').attr('src', $('#header .image-change').data('change-src'));        } else {            $('body').removeClass('header-body-padding-fixed');            $('#header').removeClass('fixed');            $('#header .image-change').attr('src', $('#header .image-change').data('change-src-root'));        }        showButtonScrollTop()    });});
+
+
+$(function () {
+    //hien thi menu scroll
+    var last_scroll = 0;
+
+    $(window).trigger('scroll');
+    $(window).bind('scroll', function () {
+        if ($(window).scrollTop() <= 50 || last_scroll <= $(window).scrollTop()) {
+            //down
+            last_scroll = $(window).scrollTop();
+
+            $('body').removeClass('header-body-padding-fixed');
+            $('#header').removeClass('fixed');
+
+            $('#header .image-change').attr('src', $('#header .image-change').data('change-src-root'));
+
+            
+        } else {
+            //up
+            last_scroll = $(window).scrollTop();
+
+            $('body').addClass('header-body-padding-fixed');
+            $('#header').addClass('fixed');
+            $('#header .image-change').attr('src', $('#header .image-change').data('change-src'));
+            
+        }
+    });
+});

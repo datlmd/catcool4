@@ -1,5 +1,5 @@
 {strip}
-    <article class="post-detail my-0 py-2 px-0">
+    <article class="post-detail my-0 p-2">
         <header class="detail padding-x">
 
             <div class="category-tree">
@@ -41,6 +41,10 @@
         {/if}
         <div class="post-content">
 
+            {if !empty($detail.table_of_contents)}
+                <div class="catcool-table-of-contents">{$detail.table_of_contents}</div>
+            {/if}
+
             {str_ireplace('<img ', '<img data-fancybox="gallery" ', $detail.content)}
 
         </div>
@@ -77,7 +81,7 @@
 
     </article>
 
-    <section class="bg-white padding-x pb-3">
+    <section class="bg-white padding-x p-2 pb-3">
 
         {if !empty($related_list)}
             <div class="category-name d-block pt-3 mb-4">
