@@ -1985,6 +1985,18 @@ if (!function_exists('auto_table_of_contents')) {
     {
         try {
             // Adding ID slug for heading
+            $content = preg_replace_callback('/(\<h[1-6](.*?))\>/i', function ($matches) {
+                $matches[0] = str_replace($matches[2], "", $matches[0]);      
+                return $matches[0];
+            }, $content);
+
+            $content = preg_replace_callback('/(\<h[1-6](.*?))\>(.*)(<\/h[1-6]>)/i', function ($matches) {
+                //str_replace($matches[0], 'id=') !== false) {
+                $matche_3 = strip_tags(mb_convert_encoding($matches[3], "UTF-8", mb_detect_encoding($matches[3])));
+                $matches[0] = $matches[1] . $matches[2] . ' id="content_item_' . strip_tags($matches[1]) . "_" . strlen($matche_3) . '">' . $matche_3 . $matches[4];
+
+                return $matches[0];
+            }, $content);
             $content = preg_replace_callback('/(\<h[1-6](.*?))\>(.*)(<\/h[1-6]>)/i', function ($matches) {
                 //str_replace($matches[0], 'id=') !== false) {
                 $matche_3 = strip_tags(mb_convert_encoding($matches[3], "UTF-8", mb_detect_encoding($matches[3])));

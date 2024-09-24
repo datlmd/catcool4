@@ -21,7 +21,7 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0;
 	font-size: 1rem;
 	margin-bottom: 7px;
-	font-weight: 800;
+	font-weight: 500;
 }
 
 dl, ol, ul , p {
@@ -407,24 +407,30 @@ article.post-detail header.detail .post-meta a {
 }
 
 article.post-detail .post-description {
-	margin: 10px 0;
+	margin: 1rem 0;
 	font-size: 1.1rem;
 	/* font-size: calc(1rem + .3vw); */
 }
 
 article.post-detail .post-content {
-	font-size: 1rem;
-	line-height: 22px;
+	font-size: 16px;
+	line-height: 23px;
 	position: relative;
+	text-align: justify;
 }
 
 article.post-detail .post-content .article-content-detail ul {
 	list-style-position: inside;
-	padding: 5px 15px 15px 15px;
+	padding: 0.5rem 0.5rem 0.5rem 2rem;
+}
+
+
+article.post-detail .post-content .article-content-detail ul li {
+	padding-bottom: 0.6rem;
 }
 
 article.post-detail .post-content .article-content-detail ul li::marker {
-	margin-left: 7px;
+	margin-left: 3px;
 	color: #ca1b80;
 }
 
@@ -433,27 +439,37 @@ article.post-detail .post-content .article-content-detail figure figcaption {
 }
 
 article.post-detail .post-content .article-content-detail h1 {
-	font-size: 1.35rem !important;
+	font-size: 1.6rem !important;
+	font-weight: 800;
 }
 
 article.post-detail .post-content .article-content-detail h2 {
-	font-size: 1.3rem !important;
+	font-size: 1.5rem !important;
+	font-weight: 700;
 }
 
 article.post-detail .post-content .article-content-detail h3 {
-	font-size: 1.2rem !important;
+	font-size: 1.4rem !important;
+	font-weight: 600;
 }
 
 article.post-detail .post-content .article-content-detail h4 {
-	font-size: 1.15rem !important;
+	font-size: 1.3rem !important;
 }
 
 article.post-detail .post-content .article-content-detail h5 {
-	font-size: 1.1rem !important;
+	font-size: 1.2rem !important;
 }
 
 article.post-detail .post-content .article-content-detail h6 {
-	font-size: 1.05rem !important;
+	font-size: 1.1rem !important;
+}
+
+article.post-detail .post-content .article-content-detail h1, article.post-detail .post-content .article-content-detail h2,
+article.post-detail .post-content .article-content-detail h3, article.post-detail .post-content .article-content-detail h4,
+article.post-detail .post-content .article-content-detail h5, article.post-detail .post-content .article-content-detail h6
+{
+	margin: 1.3rem 0 1rem 0;
 }
 
 article.post-detail .post-content-start {
@@ -505,8 +521,8 @@ article.post-detail .post-content-end {
 }
 
 article.post-detail .post-content > p, article.post-detail .post-content div > p {
-	margin-bottom: 5px;
-	text-align: left;
+	margin-bottom: 1.1rem;
+	/* text-align: left; */
 }
 
 article.post-detail .post-content img {

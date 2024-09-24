@@ -76,8 +76,9 @@
                         {/if}
 
                         <div id="article_content_detail" class="article-content-detail mt-3">
-                            {str_ireplace('<img ', '<img data-fancybox="gallery" ', $detail.content)}</div>
-                        <br/>
+                            {str_ireplace('<img ', '<img data-fancybox="gallery" ', $detail.content)}
+                        </div>
+
                     </div>
 
                 </div>

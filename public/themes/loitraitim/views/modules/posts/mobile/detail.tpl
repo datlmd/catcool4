@@ -44,7 +44,9 @@
                 <div class="catcool-table-of-contents">{$detail.table_of_contents}</div>
             {/if}
 
-            {str_ireplace('<img ', '<img data-fancybox="gallery" ', $detail.content)}
+            <div id="article_content_detail" class="article-content-detail">
+                {str_ireplace('<img ', '<img data-fancybox="gallery" ', $detail.content)}
+            </div>
 
         </div>
 

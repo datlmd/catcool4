@@ -252,6 +252,7 @@ select.form-control {
     border-radius: 5px;
 	width: 100%;
 	max-width: 500px; 
+	overflow: hidden;
 }
 
 .catcool-table-of-contents .accordion, .catcool-table-of-contents .accordion-body {
@@ -291,10 +292,11 @@ select.form-control {
 	margin: 7px 0 3px 20px;
 	padding: 5px;
 	list-style: decimal;
+	width: 90%;
 }
 
 .catcool-table-of-contents .accordion ul ul, .catcool-table-of-contents .offcanvas ul ul {
-	margin: 7px 0 7px 15px;
+	margin: 5px 0 5px 15px;
 	padding: 0;
 	list-style: lower-alpha;
 }
