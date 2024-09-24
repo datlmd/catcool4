@@ -55,9 +55,6 @@
 	{/if}
 
 	<meta property="fb:pages" content="494134137267796" />
-
-	<!--  https://adcash.myadcash.com/publishers/onboarding -->
-	<meta name="a.validate.02" content="2ecx9O93a73-RqCWirt2fvGoAkA_Z05wn3GR" />
 	
 </head>
 <body class="{if !empty($body_class)}{$body_class}{/if}">

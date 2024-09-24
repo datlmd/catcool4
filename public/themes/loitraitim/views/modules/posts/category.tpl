@@ -8,7 +8,6 @@
                     <a class="me-2" href="{site_url()}">
                         <i class="fas fa-home"></i>
                     </a>
-                    <i class="fas fa-angle-right me-2"></i>
                     {include file=get_theme_path('views/inc/category_tree.tpl') categories=$post_category_tree}
                 </div>
 

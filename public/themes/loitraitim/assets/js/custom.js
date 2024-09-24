@@ -1,5 +1,3 @@
-
-
 $(function () {
     //hien thi menu scroll
     var last_scroll = 0;
