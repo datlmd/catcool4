@@ -15,9 +15,9 @@
 						{include file=get_theme_path('views/inc/breadcrumb.inc.tpl') heading_title=lang('UtilityAdmin.heading_title')}
 					</div>
 					<div class="col-sm-5 col-12 mb-2 mb-sm-0 text-end">
-						<a href="{site_url($manage_url)}/logs" class="btn btn-sm btn-primary me-2" title="Log Access">System Logs</a>
-						<a href="{site_url($manage_url)}/logs?dir=access" class="btn btn-sm btn-primary me-2" title="Log Access">Access Logs</a>
-						<a href="{site_url($manage_url)}/logs?dir={$dir}&type=2" class="btn btn-sm btn-secondary me-0 mb-0" title="Clear">Clear</a>
+						<a href="{site_url()}/manage/utility_logs" class="btn btn-sm btn-primary me-2" title="Log Access">System Logs</a>
+						<a href="{site_url()}/manage/utility_logs?dir=access" class="btn btn-sm btn-primary me-2" title="Log Access">Access Logs</a>
+						<a href="{site_url()}/manage/utility_logs?dir={$dir}&type=2" class="btn btn-sm btn-secondary me-0 mb-0" title="Clear">Clear</a>
 					</div>
 				</div>
 
@@ -46,7 +46,7 @@
 									<thead>
 									<tr class="text-center">
 										<th class="text-start">
-											<a href="{site_url($manage_url)}/logs?sort=name&order={$order}&dir={$dir}" class="text-dark">
+											<a href="{site_url()}/manage/utility_logs?sort=name&order={$order}&dir={$dir}" class="text-dark">
 												{lang('Admin.text_name')}
 												{if $sort eq 'name'}
 													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
@@ -54,7 +54,7 @@
 											</a>
 										</th>
 										<th class="text-start">
-											<a href="{site_url($manage_url)}/logs?sort=size&order={$order}&dir={$dir}" class="text-dark">
+											<a href="{site_url()}/manage/utility_logs?sort=size&order={$order}&dir={$dir}" class="text-dark">
 												Size
 												{if $sort eq 'size'}
 													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
@@ -62,7 +62,7 @@
 											</a>
 										</th>
 										<th class="text-end">
-											<a href="{site_url($manage_url)}/logs?sort=modify&order={$order}&dir={$dir}" class="text-dark">
+											<a href="{site_url()}/manage/utility_logs?sort=modify&order={$order}&dir={$dir}" class="text-dark">
 												Last Modified
 												{if $sort eq 'modify'}
 													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
@@ -77,16 +77,16 @@
 											<tr>
 												<td>
 													{if !empty($item.is_active)}
-														{anchor("$manage_url/logs?name=`$item.name`&dir={$dir}", $item.name, 'class="text-danger"')} <small>({$item.permission})</small>
+														{anchor("manage/utility_logs?name=`$item.name`&dir={$dir}", $item.name, 'class="text-danger"')} <small>({$item.permission})</small>
 													{else}
-														{anchor("$manage_url/logs?name=`$item.name`&dir={$dir}", $item.name, 'class="text-primary"')} <small>({$item.permission})</small>
+														{anchor("/manage/utility_logs?name=`$item.name`&dir={$dir}", $item.name, 'class="text-primary"')} <small>({$item.permission})</small>
 													{/if}
 												</td>
 												<td class="text-start">{$item.size}</td>
 												<td class="text-end">{$item.modify}</td>
 												<td class="text-center">
 													<div class="btn-group ms-auto">
-														<a href="{site_url($manage_url)}/logs?name={$item.name}&dir={$dir}&type=1" class="btn btn-sm btn-light" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></a>
+														<a href="{site_url()}/manage/utility_logs?name={$item.name}&dir={$dir}&type=1" class="btn btn-sm btn-light" title="{lang('Admin.button_delete')}"><i class="fas fa-trash-alt"></i></a>
 													</div>
 												</td>
 											</tr>
