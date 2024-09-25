@@ -11,7 +11,7 @@ var Tiny_content = {
 
         tinymce.init({
             selector: '[data-bs-toggle=\'tinymce\']',
-            skin: 'oxide-dark',
+            //skin: 'oxide-dark',
             themes: "silver",
             //plugins: 'print preview fullpage powerpaste casechange importcss tinydrive searchreplace autolink autosave save directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists checklist wordcount tinymcespellchecker a11ychecker imagetools textpattern noneditable help formatpainter permanentpen pageembed charmap tinycomments mentions quickbars linkchecker emoticons',
             plugins: 'print preview paste searchreplace autolink autosave save hr directionality visualblocks visualchars fullscreen image imagetools responsivefilemanager link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern noneditable help charmap quickbars emoticons code',
@@ -20,8 +20,9 @@ var Tiny_content = {
             language_url: base_url + '/common/js/tinymce/langs/' + lang_code + '.js',
             remove_script_host: false,
             relative_urls: false,
-            menubar: false,
-            toolbar: 'undo redo | fullscreen preview code | formatselect bold italic underline strikethrough | link image myFileManager media pageembed | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist checklist | table | fontselect fontsizeselect | forecolor backcolor casechange permanentpen formatpainter removeformat | hr pagebreak codesample | print emoticons help', /* charmap emoticons a11ycheck ltr rtl */
+            menubar: true,
+            toolbar_mode: 'scrolling',
+            toolbar: 'undo redo | fullscreen preview code | formatselect bold italic underline strikethrough | link image myFileManager media pageembed | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist checklist | table | fontselect fontsizeselect | forecolor backcolor casechange permanentpen formatpainter removeformat | hr pagebreak | codesample searchreplace visualblocks | print emoticons help', /* charmap emoticons a11ycheck ltr rtl */
             fontsize_formats: "8px 9px 10px 11px 12px 14px 16px 18px 20px 24px 30px 36px 48px 64px 72px",
             image_caption: true,
             image_title: true,

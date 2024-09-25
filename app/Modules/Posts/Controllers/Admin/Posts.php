@@ -388,6 +388,9 @@ class Posts extends AdminController
             $this->themes->addJS('common/plugin/multi-select/js/i18n/vi');
         }
 
+        $this->themes->addJS('common/js/prismjs/prism');
+
+
         $data['language_list'] = list_language_admin();
 
         $category_list = $this->model_category->getPostCategories($this->language_id);

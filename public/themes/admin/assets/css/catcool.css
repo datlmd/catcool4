@@ -256,9 +256,12 @@ label {
 #modal-image, #modal_image_crop {
     padding: 0 !important;
 }
-#modal-image #filemanager {
-    width: 95% !important;
-    max-width: 95% !important;
+#modal_image {
+    
+}
+#modal_image #filemanager {
+    width: 90% !important;
+    max-width: 90% !important;
 }
 #modal_image_crop #crop_manager {  }
 .tox-statusbar__branding {
@@ -755,6 +758,10 @@ a[data-bs-toggle="image"] {
 
 .tox-fullscreen .tox.tox-tinymce-aux {
     z-index: 1051 !important;
+}
+
+.tox.tox-tinymce-aux {
+    z-index: 1000;
 }
 
 /*** product ***/

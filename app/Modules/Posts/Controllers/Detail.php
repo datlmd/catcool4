@@ -77,6 +77,9 @@ class Detail extends MyController
             $this->themes->addCSS('common/plugin/fancybox/fancybox');
             $this->themes->addJS('common/plugin/fancybox/fancybox');
 
+            $this->themes->addCSS('common/js/prismjs/prism');
+            $this->themes->addJS('common/js/prismjs/prism');
+
             $tpl_name = 'detail';
             if (!empty($this->is_mobile)) {
                 $tpl_name = 'mobile/detail';

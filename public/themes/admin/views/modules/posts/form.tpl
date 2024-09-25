@@ -45,7 +45,7 @@
                             </div>
                             <div class="form-group mt-3">
                                 <label class="form-label required-label">{lang('NewsAdmin.text_content')}</label>
-                                <textarea name="content" cols="40" rows="5" data-bs-toggle="tinymce" id="input-content" type="textarea" class="form-control {if validation_show_error("content")}is-invalid{/if}">{old("content", $edit_data.content)}</textarea>
+                                <textarea name="content" cols="40" rows="5" data-bs-toggle="tinymce" id="input-content" type="textarea" class="form-control {if validation_show_error("content")}is-invalid{/if}">{old("content", htmlentities($edit_data.content))}</textarea>
                                 <div class="invalid-feedback">
                                     {validation_show_error("content")}
                                 </div>
