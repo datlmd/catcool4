@@ -1,3 +1,16 @@
+{capture name="post_counter_list"}
+    {* Danh sach post duoc xem nhieu nhat *}
+    <div class="position-sticky d-none d-lg-block">
+        {if !empty($post_counter_list)}
+            {foreach $post_counter_list as $post}
+                {if $post.post_id eq $detail.post_id}
+                    {continue}
+                {/if}
+                {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='small' article_class="mb-3" is_show_category=true is_hide_description=true}
+            {/foreach}
+        {/if}
+    </div>
+{/capture}
 {strip}
     <article class="container-xxl post-detail my-0 mt-lg-0 mt-xl-3 py-3 px-5">
         <header class="detail">
@@ -102,18 +115,9 @@
             <aside class="col-sm-3 col-12">
                 {if !empty($lesson_categories)}
                     {include file=get_theme_path('views/modules/posts/inc/lesson_categories.tpl') post_id=$detail.post_id}
+                {else}
+                    {$smarty.capture.post_counter_list}
                 {/if}
-
-                <div class="position-sticky d-none d-lg-block">
-                    {if !empty($post_counter_list)}
-                        {foreach $post_counter_list as $post}
-                            {if $post.post_id eq $detail.post_id}
-                                {continue}
-                            {/if}
-                            {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='top' article_class="mb-3" is_show_category=true is_hide_description=true}
-                        {/foreach}
-                    {/if}
-                </div>
             </aside>
         </div>
     </article>
@@ -142,7 +146,7 @@
                         {if $post.post_id eq $detail.post_id}
                             {continue}
                         {/if}
-                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='small' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
                     {/foreach}
                 {/if}
 
@@ -154,13 +158,15 @@
                         {if $post.post_id eq $detail.post_id}
                             {continue}
                         {/if}
-                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='small' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
                     {/foreach}
                 {/if}
 
             </div>
             <div class="col-md-4 col-12">
-
+                {if !empty($lesson_categories)}
+                    {$smarty.capture.post_counter_list}
+                {/if}
             </div>
         </div>
     </section>
