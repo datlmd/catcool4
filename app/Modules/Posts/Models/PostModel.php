@@ -60,7 +60,9 @@ class PostModel extends MyModel
     private $_post_date_from = "3";
 
     const SOURCE_TYPE_ROBOT = 1;
+
     const POST_FORMAT_NORMAL = 1;
+    const POST_FORMAT_LESSON = 4;
 
     private $_queries = [
         'post_all' => "SELECT * FROM `TABLE_NAME`",
@@ -337,6 +339,59 @@ class PostModel extends MyModel
         return [$list, $result->pager];
     }
 
+    /**
+     * Goi danh sach bai hoc
+     */
+    public function getLessons($category_id)
+    {
+        if (empty($category_id)) {
+            return [];
+        }
+        $where = [
+            'published' => STATUS_ON,
+            'publish_date <=' => get_date(),
+        ];
+
+        //format like: 1 or 10, 11
+        // {"0":1} or {"0":1,"1":4}
+        $category_id_1 = ":$category_id}";
+        $category_id_2 = ":\"$category_id\"}";
+        $category_id_3 = ":$category_id,";
+        $category_id_4 = ":\"$category_id\",";
+
+        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'sort_order'])
+            ->where($where)
+            ->groupStart()
+            ->like('category_ids', $category_id_1)
+            ->orLike('category_ids', $category_id_2)
+            ->orLike('category_ids', $category_id_3)
+            ->orLike('category_ids', $category_id_4)
+            ->groupEnd()
+            ->orderBy('sort_order')
+            ->findAll();
+        
+        if (empty($result)) {
+            return [[]];
+        }
+
+        //array_map formatDetail Post & news
+        $result = array_map(function($value) {
+            return $this->formatDetail($value);
+        }, $result);
+
+        $lesons = [];
+        foreach ($result as $value) {
+            if (empty($value['category_ids'])) {
+                continue;
+            }
+            foreach ($value['category_ids'] as $id) {
+                $lesons[$id][] = $value;
+            }
+        }
+
+        return $lesons;
+    }
+
     public function getListAll($limit = PAGINATION_DEFAULF_LIMIT)
     {
         $where = [
@@ -369,6 +424,7 @@ class PostModel extends MyModel
                 'published' => STATUS_ON,
                 'publish_date <=' => get_date(),
                 'is_hot' => STATUS_ON,
+                'post_format !=' => self::POST_FORMAT_LESSON,
             ];
 
             $list = $this->select(['post_id', 'name', 'slug', 'description', 'content', 'category_ids', 'publish_date', 'images', 'created_at'])
@@ -453,6 +509,7 @@ class PostModel extends MyModel
             $where = [
                 'published' => STATUS_ON,
                 'publish_date <=' => get_date(),
+                'post_format !=' => self::POST_FORMAT_LESSON,
             ];
 
             $list = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'created_at'])
@@ -697,6 +754,7 @@ class PostModel extends MyModel
         $where = [
             'published' => STATUS_ON,
             'publish_date <=' => get_date(),
+            'post_format !=' => self::POST_FORMAT_LESSON,
         ];
 
         $list = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'created_at'])

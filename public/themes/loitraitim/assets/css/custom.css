@@ -416,7 +416,7 @@ article.post-detail .post-content {
 	font-size: 16px;
 	line-height: 23px;
 	position: relative;
-	text-align: justify;
+	margin-bottom: 2rem;
 }
 
 article.post-detail .post-content .article-content-detail ul {
@@ -427,6 +427,7 @@ article.post-detail .post-content .article-content-detail ul {
 
 article.post-detail .post-content .article-content-detail ul li {
 	padding-bottom: 0.6rem;
+	font-size: 1rem;
 }
 
 article.post-detail .post-content .article-content-detail ul li::marker {
@@ -562,8 +563,14 @@ article.post-detail .post-content .PhotoCMS_Caption p, article.post-detail .post
 
 article.post-detail .post-content table {
 	width: 100%;
-	max-width: 700px;
+	max-width: 850px;
+	min-width: 500px;
 	margin: 5px auto;
+}
+article.post-detail .post-content .article-content-detail div:has(> table), article.post-detail .post-content .article-content-detail div div:has(> table),
+article.post-detail .post-content .article-content-detail p:has(> table)
+{
+	overflow-x: auto;
 }
 
 article.post-detail .post-content table tr {
@@ -571,6 +578,11 @@ article.post-detail .post-content table tr {
 }
 
 article.post-detail .post-content table tr:hover {
+	background-color: #f8f8f8;
+}
+
+article.post-detail .post-content table tr th { 
+	padding: 2px 0;
 	background-color: #f8f8f8;
 }
 
@@ -611,6 +623,32 @@ article.post-detail .post-related a::before {
 	position: absolute;
 	top: 4px;
 	left: -12px;
+}
+
+article.post-detail .lesson-list {
+	margin-bottom: 2rem;
+	overflow: hidden;
+}
+
+article.post-detail .lesson-list h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.7rem;
+	font-weight: 600;
+}
+article.post-detail .lesson-list ul {
+	margin-bottom: 1.4rem;
+}
+
+article.post-detail .lesson-list ul li {
+	padding: 3px 0;
+}
+
+article.post-detail .lesson-list ul li a {
+	color: #636363;
+}
+
+article.post-detail .lesson-list ul li:hover a, article.post-detail .lesson-list ul li.active a {
+	color: #DF3062;
 }
 
 .fb-share {

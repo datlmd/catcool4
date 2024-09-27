@@ -26,7 +26,7 @@ class Categories extends MyController
         $category_model = new CategoryModel();
         $post_model = new PostModel();
 
-        $post_category_list = $category_model->getPostCategories($this->language_id);
+        $post_category_list = $category_model->getPostCategories();
 
         $detail = $post_category_list[$id] ?? null;
         if (empty($detail)) {

@@ -6,6 +6,7 @@ return [
 	"post_format_lesson" => "Bài học",
 	"post_format_normal" => "Cơ bản",
 	"post_format_video" => "Video",
+	"text_source" => "Nguồn",
 	"translate_admin_id" => "76",
 	"translate_frontend_id" => "75",
 ];

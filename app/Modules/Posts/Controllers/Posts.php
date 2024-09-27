@@ -30,7 +30,7 @@ class Posts extends MyController
         list($list, $pager) = $this->model->getListAll(30);
 
         $post_category_model = new CategoryModel();
-        $post_category_list = $post_category_model->getPostCategories($this->language_id);
+        $post_category_list = $post_category_model->getPostCategories();
 
 
         $data = [
@@ -56,7 +56,7 @@ class Posts extends MyController
     private function _scriptGoogleSearch()
     {
         $category_model = new CategoryModel();
-        $category_list = $category_model->getPostCategories($this->language_id);
+        $category_list = $category_model->getPostCategories();
 
         //GOOGLE BREADCRUMB STRUCTURED DATA
         $script_breadcrumb  = [];

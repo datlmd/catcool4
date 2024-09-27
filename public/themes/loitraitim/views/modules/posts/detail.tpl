@@ -10,24 +10,26 @@
             </div>
 
             <h2>{$detail.name}</h2>
-            <div class="post-meta padding fs-small py-1 {if !in_array($detail.source_type, [1, 2])}d-none{/if}">
-                <span>{if !empty($detail.author)}{$detail.author}{else}Ryan Lee{/if},</span>
-                {if !empty($detail.source)}
+            
+            <div class="post-meta padding fs-small py-1">
+                {if !empty($detail.source) && in_array($detail.source_type, [1, 2])}
+                    <span>{if !empty($detail.author)}{$detail.author}{else}Ryan Lee{/if},</span>
                     <span>
                         {lang('Post.text_source')}: {str_ireplace('www.', '', parse_url($detail.source, PHP_URL_HOST))}
                     </span>
                 {/if}
-                <span><i class="far fa-clock"></i> {time_ago($detail.publish_date)}</span>
-                <span class="d-none"><i class="fas fa-eye"></i> {$detail.counter_view}</span>
+                <span><i class="far"></i> {time_ago($detail.publish_date)}</span>
+                <span class="mx-3"><i class="fas fa-eye"></i> {$detail.counter_view}</span>
                 {if $detail.is_comment eq COMMENT_STATUS_ON}
                     <span class="d-none" id="detail_total_comment">
                         <i class="far fa-comments"></i> <fb:comments-count href="{$detail.detail_url}"></fb:comments-count> {lang('Post.text_comment')}
                     </span>
                 {/if}
             </div>
+            
         </header>
         <div class="row">
-            <div class="col">
+            <div class="col pe-5">
                 {if !empty($related_list)}
 
                     <ul class="post-related">
@@ -67,7 +69,7 @@
                     </div>
                     <div class="post-content-end">
                         
-                        <div class="post-description text-start">
+                        <div class="post-description text-start mb-3">
                             <strong>{$detail.description}</strong>
                         </div>
 
@@ -75,7 +77,7 @@
                             <div class="catcool-table-of-contents">{$detail.table_of_contents}</div>
                         {/if}
 
-                        <div id="article_content_detail" class="article-content-detail mt-3">
+                        <div id="article_content_detail" class="article-content-detail mt-3 mb-5">
                             {str_ireplace('<img ', '<img data-fancybox="gallery" ', $detail.content)}
                         </div>
 
@@ -86,7 +88,7 @@
                 <div class="fb-like" data-href="{base_url($detail.detail_url)}" data-width="" data-layout="standard" data-action="like" data-size="small" data-share="false"></div>
 
                 {if !empty($detail.tags)}
-                    <div class="mt-2">
+                    <div class="my-4">
                         {include file=get_theme_path('views/modules/posts/inc/list_tags.tpl') tags=explode(',', $detail.tags)}
                     </div>
                 {/if}
@@ -96,14 +98,19 @@
                 {/if}
 
             </div>
-            <aside class="col-md-4 col-12 d-none d-lg-block">
-                <div class="position-sticky">
+
+            <aside class="col-sm-3 col-12">
+                {if !empty($lesson_categories)}
+                    {include file=get_theme_path('views/modules/posts/inc/lesson_categories.tpl') post_id=$detail.post_id}
+                {/if}
+
+                <div class="position-sticky d-none d-lg-block">
                     {if !empty($post_counter_list)}
                         {foreach $post_counter_list as $post}
                             {if $post.post_id eq $detail.post_id}
                                 {continue}
                             {/if}
-                            {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='left' article_class="mb-3" is_show_category=true is_hide_description=true}
+                            {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='top' article_class="mb-3" is_show_category=true is_hide_description=true}
                         {/foreach}
                     {/if}
                 </div>
@@ -127,7 +134,7 @@
                     {/foreach}
                 {/if}
 
-                {if !empty($post_same_category_list)}
+                {if !empty($post_same_category_list) && empty($lesson_categories)}
                     <div class="category-name d-block mt-2 mb-4">
                         <span>{lang('Post.text_same_category')}</span>
                     </div>

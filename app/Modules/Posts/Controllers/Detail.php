@@ -38,7 +38,7 @@ class Detail extends MyController
             }
 
             $post_category_model = new CategoryModel();
-            $post_category_list  = $post_category_model->getPostCategories($this->language_id);
+            $post_category_list  = $post_category_model->getPostCategories();
 
             if ($is_preview) {
                 $detail = $this->model->getPostInfo($post_id, $is_preview, false);
@@ -59,6 +59,28 @@ class Detail extends MyController
             //get the same category
             $post_same_category_list = $this->model->getListTheSameCategory($detail['category_ids'], $detail['post_id'], 6);
 
+            $post_category_tree = get_list_tree_selected($post_category_list, $detail['category_ids'], 'category_id');
+
+            //neu post format la huong dan thi load layout learning
+            $lesson_categories = [];
+            if ($detail['post_format'] && $detail['post_format'] == $this->model::POST_FORMAT_LESSON) {
+                $lesson_parent_id = array_key_first($post_category_tree);
+                $lesson_categories = format_tree(['data' => $post_category_list, 'key_id' => 'category_id']);
+                $learning_list = $this->model->getLessons($lesson_parent_id);
+
+                if (!empty($learning_list) && !empty($lesson_categories[$lesson_parent_id])) {
+                    $lesson_categories[$lesson_parent_id]['lessons'] = $learning_list[$lesson_parent_id] ?? [];
+                    if (!empty($lesson_categories[$lesson_parent_id]['subs'])) {
+                        foreach ($lesson_categories[$lesson_parent_id]['subs'] as $value) {
+                            if (empty($learning_list[$value['category_id']])) {
+                                continue;
+                            }
+                            $lesson_categories[$lesson_parent_id]['subs'][$value['category_id']]['lessons'] = $learning_list[$value['category_id']];
+                        }
+                    }
+                }
+                $lesson_categories = $lesson_categories[$lesson_parent_id];
+            } 
 
             $this->_setMeta($detail);
 
@@ -66,12 +88,13 @@ class Detail extends MyController
                 'detail'                  => $detail,
                 'related_list'            => $this->model->getListByRelatedIds($detail['related_ids'], 5),
                 'post_same_category_list' => $post_same_category_list,
-                'post_category_tree'      => get_list_tree_selected($post_category_list, $detail['category_ids'], 'category_id'),
+                'post_category_tree'      => $post_category_tree,
                 'post_category_list'      => $post_category_list,
                 'script_google_search'    => $this->_scriptGoogleSearch($detail, $post_category_list),
                 'post_latest_list'        => $this->model->getListPostLatest(6),
                 'post_counter_list'       => $this->model->getListCounter(5),
                 'post_hot_list'           => $this->model->getListHot(6),
+                'lesson_categories'       => $lesson_categories,
             ];
 
             $this->themes->addCSS('common/plugin/fancybox/fancybox');

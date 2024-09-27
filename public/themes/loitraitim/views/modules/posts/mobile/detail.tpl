@@ -10,21 +10,24 @@
             </div>
 
             <h2>{$detail.name}</h2>
-            <div class="post-meta padding fs-small py-1 d-none">
-                <span>{if !empty($detail.author)}{$detail.author}{else}Ryan Lee{/if},</span>
-                {if !empty($detail.source)}
+            
+            <div class="post-meta padding fs-small py-1">
+                {if !empty($detail.source) && in_array($detail.source_type, [1, 2])}
+                    <span>{if !empty($detail.author)}{$detail.author}{else}Ryan Lee{/if},</span>
                     <span>
                         {lang('Post.text_source')}: {str_ireplace('www.', '', parse_url($detail.source, PHP_URL_HOST))}
                     </span>
                 {/if}
+
                 <span><i class="far fa-clock"></i> {time_ago($detail.publish_date)}</span>
-                <span class="d-none"><i class="fas fa-eye"></i> {$detail.counter_view}</span>
+                <span class="mx-2"><i class="fas fa-eye"></i> {$detail.counter_view}</span>
                 {if $detail.is_comment eq COMMENT_STATUS_ON}
                     <span class="d-none" id="detail_total_comment">
                         <i class="far fa-comments"></i> <fb:comments-count href="{$detail.detail_url}"></fb:comments-count> {lang('Post.text_comment')}
                     </span>
                 {/if}
             </div>
+        
         </header>
 
         <div class="post-description padding-x">
@@ -47,6 +50,11 @@
             <div id="article_content_detail" class="article-content-detail">
                 {str_ireplace('<img ', '<img data-fancybox="gallery" ', $detail.content)}
             </div>
+
+            {* Lay danh sach bai hoc *}
+            {if !empty($lesson_categories)}
+                {include file=get_theme_path('views/modules/posts/inc/lesson_categories.tpl') post_id=$detail.post_id}
+            {/if}
 
         </div>
 
@@ -97,7 +105,7 @@
             {/foreach}
         {/if}
 
-        {if !empty($post_same_category_list)}
+        {if !empty($post_same_category_list) && empty($lesson_categories)}
             <div class="category-name d-block mt-2 mb-4">
                 <span>{lang('Post.text_same_category')}</span>
             </div>

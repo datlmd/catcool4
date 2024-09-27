@@ -21,6 +21,7 @@ article.post-detail header.detail {
 }
 
 article.post-detail .post-content {
+	font-size: 15px;
 	padding: 0;
 	/* position: inherit; */
 }
@@ -31,6 +32,11 @@ article.post-detail .post-content {
 }
 
 .catcool-table-of-contents .button-table-of-content {
-	bottom: 25px !important;
-	left: 25px !important;
+	bottom: 50px !important;
+	left: 5px !important;
+}
+
+.button-menu-detail {
+	bottom: 5px;
+	left: 5px;
 }

@@ -171,6 +171,10 @@ if (!function_exists('http_get_query')) {
 }
 
 if (!function_exists('format_tree')) {
+    /**
+     * $list_data =['data' => $$post_category_list, 'key_id' => 'category_id']
+     * 
+     */
     function format_tree($list_data, $parent_id = 0)
     {
         if (empty($list_data)) {
@@ -2013,20 +2017,19 @@ if (!function_exists('auto_table_of_contents')) {
             $anchors = $matches[2];
             $headings = $matches[3];
 
-            if (empty($headings)) {
-                return [null, $content];
-            }
-
 
             foreach ($headings as $key => $value) {
                 $level_temps[] = (int)str_replace('h', '', $levels[$key]);
-
 
                 if (empty(clean($value))) {
                     unset($levels[$key]);
                     unset($anchors[$key]);
                     unset($headings[$key]);
                 }
+            }
+
+            if (empty($headings) || count($headings) < 3) {
+                return [null, $content];
             }
 
             //Tao danh sach muc luc

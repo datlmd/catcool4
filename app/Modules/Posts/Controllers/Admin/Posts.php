@@ -50,7 +50,7 @@ class Posts extends AdminController
             $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
         }
 
-        $category_list = $this->model_category->getPostCategories($this->language_id);
+        $category_list = $this->model_category->getPostCategories();
 
         $post_list = $list->paginate($limit);
         foreach ($post_list as $key_news => $value) {
@@ -116,7 +116,7 @@ class Posts extends AdminController
             $category_ids = $this->request->getPost('category_ids');
             if (!empty($category_ids)) {
                 //check parent id and save it
-                $category_list = $this->model_category->getPostCategories($this->language_id);
+                $category_list = $this->model_category->getPostCategories();
                 $parent_ids = [];
                 foreach ($category_ids as $value) {
                     if (empty($category_list[$value])) {
@@ -217,7 +217,7 @@ class Posts extends AdminController
                 $category_ids = $this->request->getPost('category_ids');
                 if (!empty($category_ids)) {
                     //check parent id and save it
-                    $category_list = $this->model_category->getPostCategories($this->language_id);
+                    $category_list = $this->model_category->getPostCategories();
                     $parent_ids = [];
                     foreach ($category_ids as $value) {
                         if (empty($category_list[$value])) {
@@ -393,7 +393,7 @@ class Posts extends AdminController
 
         $data['language_list'] = list_language_admin();
 
-        $category_list = $this->model_category->getPostCategories($this->language_id);
+        $category_list = $this->model_category->getPostCategories();
         $data['categories_tree'] = format_tree(['data' => $category_list, 'key_id' => 'category_id']);
 
         //edit
