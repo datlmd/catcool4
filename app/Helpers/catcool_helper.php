@@ -172,26 +172,21 @@ if (!function_exists('http_get_query')) {
 
 if (!function_exists('format_tree')) {
     /**
-     * $list_data =['data' => $$post_category_list, 'key_id' => 'category_id']
+     * $list_data =['data' => $post_category_list, 'key_id' => 'category_id']
      * 
      */
     function format_tree($list_data, $parent_id = 0)
     {
-        if (empty($list_data)) {
+        if (empty($list_data) || !is_array($list_data) || count($list_data) != 2) {
             return false;
         }
 
-        if (is_array($list_data) && empty($list_data['data'])) {
+        $list_tree = $list_data['data'] ?? ($list_data[0] ?? []);
+        if (empty($list_tree)) {
             return null;
         }
 
-        if (is_array($list_data) && !empty($list_data['data']) && !empty($list_data['key_id'])) {
-            $list_tree = $list_data['data'];
-            $key_id = $list_data['key_id'];
-        } else {
-            $list_tree = $list_data;
-            $key_id = 'id';
-        }
+        $key_id = $list_data['key_id'] ?? ($list_data[1] ?? 'id');
 
         $tree_array = [];
         foreach ($list_tree as $element) {

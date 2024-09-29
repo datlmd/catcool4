@@ -49,6 +49,10 @@ class Tag extends MyController
             $tpl_name = 'mobile/tag';
         }
 
+         //@todo Chan index tam thoi trang news
+         $this->themes->addMeta('robots', 'noindex,nofollow');
+         $this->themes->addMeta('googlebot', 'noindex,nofollow,');
+         
         theme_load($tpl_name, $data);
     }
 

@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Posts\Controllers;
+<?php
+
+namespace App\Modules\Posts\Controllers;
 
 use App\Controllers\MyController;
 use App\Modules\Posts\Models\PostModel;
@@ -6,44 +8,52 @@ use App\Modules\Posts\Models\CategoryModel;
 
 class Posts extends MyController
 {
-    protected $model;
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        //set theme
-        $this->themes->setTheme(config_item('theme_frontend'));
-
-        $this->themes->addPartial('header_top')
-            ->addPartial('header_bottom')
-            ->addPartial('footer_top')
-            ->addPartial('footer_bottom');
-
-        $this->model = new PostModel();
-    }
-
     public function index()
     {
+        $this->themes->setTheme(config_item('theme_frontend'));
+
         //$this->cachePage(180);
 
-        list($list, $pager) = $this->model->getListAll(30);
+        $post_model = new PostModel();
+
+        $list_latest = $post_model->getLatestPostsHome(4);
+
 
         $post_category_model = new CategoryModel();
         $post_category_list = $post_category_model->getPostCategories();
+        $category_tree = format_tree([$post_category_list, 'category_id']);
 
+        $post_group_category_list =  $post_model->getPostsGroupByCategory(2);
 
         $data = [
-            'post_list'            => $list,
-            'pager'                => $pager,
-            'post_category_list'   => $post_category_list,
-            'counter_list'         => $this->model->getListCounter(6),
-            'hot_list'             => $this->model->getListHot(2),
-            'script_google_search' => $this->_scriptGoogleSearch(),
-            'weather'              => $this->_getWeather(),
+            'latest_post_list'         => $list_latest,
+            'post_category_list'       => $post_category_list,
+            'category_tree'            => $category_tree,
+            'counter_list'             => $post_model->getListCounter(6),
+            'post_group_category_list' => $post_group_category_list,
+            'script_google_search'     => $this->_scriptGoogleSearch(),
+            'weather'                  => $this->_getWeather(),
         ];
 
         add_meta(['title' => lang("Post.heading_title")], $this->themes);
+
+        $params['params'] = [
+            'breadcrumb' => $this->breadcrumb->render(),
+            'breadcrumb_title' => lang("Post.heading_title"),
+        ];
+
+        if ($this->request->isAJAX()) {
+            return $this->themes::view('list_latest', $data);
+        }
+
+        $this->themes->addPartial('header_top', $params)
+            ->addPartial('header_bottom', $params)
+            ->addPartial('content_top', $params)
+            ->addPartial('content_left', $params)
+            ->addPartial('content_right', $params)
+            ->addPartial('content_bottom', $params)
+            ->addPartial('footer_top', $params)
+            ->addPartial('footer_bottom', $params);
 
         $tpl_name = 'index';
         if (!empty($this->is_mobile)) {

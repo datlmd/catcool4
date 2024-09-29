@@ -106,7 +106,7 @@
         {/if}
 
         {if !empty($post_same_category_list) && empty($lesson_categories)}
-            <div class="category-name d-block mt-2 mb-4">
+            <div class="category-name d-block mt-3 mb-4">
                 <span>{lang('Post.text_same_category')}</span>
             </div>
             {foreach $post_same_category_list as $post}
@@ -118,7 +118,7 @@
         {/if}
 
         {if !empty($post_counter_list)}
-            <div class="category-name d-block mt-2 mb-4">
+            <div class="category-name d-block mt-3 mb-4">
                 <span>{lang('Post.text_popular_post')}</span>
             </div>
             {foreach $post_counter_list as $post}
@@ -130,8 +130,8 @@
         {/if}
 
         {if !empty($post_latest_list)}
-            <div class="category-name d-block mt-2 mb-4">
-                <span>{lang('Post.text_new_post')}</span>
+            <div class="category-name d-block mt-3 mb-4">
+                <span>{lang('Post.text_latest_post')}</span>
             </div>
             {foreach $post_latest_list as $post}
                 {if $post.post_id eq $detail.post_id}

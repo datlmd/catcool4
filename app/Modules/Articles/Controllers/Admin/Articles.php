@@ -117,7 +117,7 @@ class Articles extends AdminController
             ];
 
             $id = $this->model->insert($add_data);
-            if ($id === false) {
+            if ($id == false) {
                 set_alert(lang('Admin.error'), ALERT_ERROR);
 
                 return redirect()->back()->withInput();

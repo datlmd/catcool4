@@ -152,7 +152,7 @@
 
                 {if !empty($post_latest_list)}
                     <div class="category-name d-block mt-2 mb-4">
-                        <span>{lang('Post.text_new_post')}</span>
+                        <span>{lang('Post.text_latest_post')}</span>
                     </div>
                     {foreach $post_latest_list as $post}
                         {if $post.post_id eq $detail.post_id}

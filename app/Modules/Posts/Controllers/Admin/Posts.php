@@ -3,9 +3,12 @@
 use App\Controllers\AdminController;
 use App\Modules\Posts\Models\PostModel;
 use App\Modules\Posts\Models\CategoryModel;
+use App\Modules\Posts\Models\CategoriesModel;
 
 class Posts extends AdminController
 {
+    protected $model_category;
+    protected $model_categories;
     protected $errors = [];
 
     CONST MANAGE_ROOT = 'manage/posts';
@@ -22,6 +25,7 @@ class Posts extends AdminController
 
         $this->model = new PostModel();
         $this->model_category = new CategoryModel();
+        $this->model_categories = new CategoriesModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -167,9 +171,20 @@ class Posts extends AdminController
             ];
 
             $id = $this->model->insert($add_data);
-            if ($id === FALSE) {
+            if (!$id) {
                 set_alert(lang('Admin.error'), ALERT_ERROR);
                 return redirect()->back()->withInput();
+            }
+
+            if (!empty($category_ids)) {
+                $relationship_add = [];
+                foreach ($category_ids as $category_id) {
+                    $relationship_add[] = [
+                        'post_id' => $id,
+                        'category_id' => $category_id,
+                    ];
+                }
+                $this->model_categories->insertBatch($relationship_add);
             }
 
             $this->model->deleteCache();
@@ -233,6 +248,16 @@ class Posts extends AdminController
                             $category_ids[$value] = $value;
                         }
                     }
+
+                    $this->model_categories->delete($id);
+                    $relationship_add = [];
+                    foreach ($category_ids as $category_id) {
+                        $relationship_add[] = [
+                            'post_id' => $id,
+                            'category_id' => $category_id,
+                        ];
+                    }
+                    $this->model_categories->insertBatch($relationship_add);
                 }
 
                 $edit_data = [

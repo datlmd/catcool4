@@ -1,6 +1,7 @@
 <?php namespace App\Modules\Posts\Models;
 
 use App\Models\MyModel;
+use CodeIgniter\Database\RawSql;
 
 class PostModel extends MyModel
 {
@@ -66,6 +67,15 @@ class PostModel extends MyModel
 
     private $_queries = [
         'post_all' => "SELECT * FROM `TABLE_NAME`",
+        'list_post_group_by_category' => "SELECT `category_id`, `post_id`, `name`, `slug`, `description`, `category_ids`, `publish_date`, `images`, `created_at`, `post_format`, `tags`
+            FROM (
+                SELECT `c`.`category_id`, `p`.`post_id`, `p`.`name`, `p`.`slug`, `p`.`description`, `p`.`category_ids`, `p`.`publish_date`, `p`.`images`, `p`.`created_at`, `p`.`post_format`, `p`.`tags`, 
+                    row_number() OVER (PARTITION BY `c`.`category_id` ORDER BY `p`.`post_id` DESC) AS `row`
+                FROM `post` AS `p` INNER JOIN `post_categories` AS `c` ON `p`.`post_id` = `c`.`post_id` 
+                WHERE `p`.`publish_date` <= ? AND `p`.`published` = 1
+                ORDER BY `p`.`publish_date` DESC
+            ) AS `POST`
+            WHERE `row` <= ?",
         ];
 
     function __construct()
@@ -392,27 +402,32 @@ class PostModel extends MyModel
         return $lesons;
     }
 
-    public function getListAll($limit = PAGINATION_DEFAULF_LIMIT)
+    public function getLatestPostsHome($limit = PAGINATION_DEFAULF_LIMIT, $post_id = null)
     {
         $where = [
             'published' => STATUS_ON,
             'publish_date <=' => get_date(),
+            'post_format !=' => self::POST_FORMAT_LESSON,
         ];
 
-        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'created_at'])
-            ->where($where)
-            ->orderBy('publish_date', 'DESC');
-
-        $list = $result->paginate($limit);
-        if (empty($list)) {
-            return [[],[]];
+        if (!empty($post_id)) {
+            $where['post_id <'] = (int) ($post_id ?? 1);
         }
 
-        foreach ($list as $key_news => $value) {
+        $result = $this->select(['post_id', 'name', 'slug', 'description', 'category_ids', 'publish_date', 'images', 'tags', 'created_at'])
+            ->where($where)
+            ->orderBy('publish_date', 'DESC')->findAll($limit);
+
+        if (empty($result)) {
+            return [];
+        }
+
+        $list = [];
+        foreach ($result as $key_news => $value) {
             $list[$key_news] = $this->formatDetail($value);
         }
 
-        return [$list, $result->pager];
+        return $list;
     }
 
     public function getListHot($limit = 20, $is_cache = true)
@@ -531,224 +546,6 @@ class PostModel extends MyModel
         return $result;
     }
 
-    public function robotGetNews($attribute, $is_insert = true, $status = STATUS_ON, $is_save_image = false)
-    {
-        $robot = service('robot');
-
-        $domain         = $attribute['domain'];
-        $url_domain     = $attribute['url_domain'];
-        $domain_id      = $attribute['domain_id'];
-        $attribute_cate = $attribute['attribute_cate'];
-        $list_menu      = $attribute['attribute_menu'];
-
-        foreach ($list_menu as $key => $menu) {
-            if (stripos($menu['href'], "https://") !== false || stripos($menu['href'], "http://") !== false) {
-                $url = $menu['href'];
-            } else {
-                $url = $url_domain . str_replace(md5($url_domain), $url_domain, $menu['href']);
-            }
-
-            $list_news = $robot->getListNews($attribute_cate, $url_domain , $menu['title'], $url, $domain, 8);
-            if (empty($list_news)) {
-                continue;
-            }
-
-            foreach ($list_news as $news_key => $news) {
-                try {
-                    if (stripos($news['href'], "https://") !== false || stripos($news['href'], "http://") !== false) {
-                        $url_detail = $news['href'];
-                    } else {
-                        $url_detail = $url_domain . $news['href'];
-                    }
-
-                    $meta = $robot->getMeta($attribute['attribute_meta'], $url_detail);
-                    $detail = $robot->getDetail($attribute['attribute_detail'], $url_detail, $url_domain);
-
-                    $content = "";
-                    if (!empty($detail['content'])) {
-                        $content = $detail['content'];
-                        //$content = $this->robot->convert_image_to_base($detail['content']);
-                        if (!empty($attribute['attribute_remove'])) {
-                            $content = $robot->removeContentHtml($content, $attribute['attribute_remove']);
-                        }
-
-                        $content = $robot->convertVideoKenh14($content, $url);
-                    }
-                    //lay hing dau tien trong noi dung
-                    $image_first = $robot->getImageFirst($content);
-
-                    $list_news[$news_key]['content'] = $content;
-                    $list_news[$news_key]['note'] = !empty($meta['description']) ? $meta['description'] : '';
-                    $list_news[$news_key]['meta_description'] = !empty($meta['description']) ? $meta['description'] : '';
-                    $list_news[$news_key]['meta_keyword'] = !empty($meta['keywords']) ? $meta['keywords'] : '';
-                    $list_news[$news_key]['image'] = !empty($news['image']) ? $news['image'] : $image_first;
-                    $list_news[$news_key]['image_fb'] = !empty($meta['image_fb']) ? $meta['image_fb'] : $image_first;
-                    $list_news[$news_key]['category_id'] = $menu['id'];
-                    $list_news[$news_key]['href'] = $url_detail;
-
-                    $list_tags = $robot->getTags($attribute['attribute_tags'], $detail['html']);
-                    $list_news[$news_key]['tags'] = implode(",", $list_tags);
-
-//                if ($news_key % 10 == 0) {
-//                    sleep(1);
-//                }
-                } catch (\Exception $e) {
-                    continue;
-                }
-            }
-            krsort($list_news);
-            $list_menu[$key]['list_news'] = $list_news;
-        }
-
-        if ($is_insert === true) {
-            foreach ($list_menu as $key => $menu) {
-                if (!empty($menu['list_news'])) {
-                    $menu['list_news'] = $this->robotSave($menu['list_news'], $status, $is_save_image);
-                    usleep(500);
-                }
-            }
-            $this->deleteCache();
-        }
-
-        return $list_menu;
-    }
-
-    public function robotSave($data, $status = STATUS_ON, $is_save_image = false)
-    {
-        helper('catcool');
-
-        if (empty($data)) {
-            return [];
-        }
-
-        //lay danh sach tin lien quan, hien tai lay tat ca roi check relate
-        $related_list = [];
-        $related_result = cache()->get('post_robot_related_list');
-        if (empty($related_result)) {
-            $related_result = $this->select(['post_id', 'name', 'tags', 'slug', 'created_at'])
-                ->orderBy('publish_date', 'DESC')
-                ->where(['published' => STATUS_ON])
-                ->findAll(1500);
-            if (!empty($related_result)) {
-                foreach ($related_result as $key_news => $value) {
-                    $related_list[] = $this->formatDetail($value);
-                }
-            }
-            cache()->save('post_robot_related_list', $related_result, 30 * MINUTE);
-        }
-
-        $date_now = date("Y-m-d H:i:s", strtotime('-40 minutes', time()));
-
-        $insert_list = [];
-        foreach ($data as $key => $value) {
-
-            if (empty($value['title']) || empty($value['note']) || empty($value['content'])) {
-                continue;
-            }
-
-            $check_list = $this->where('source', $value['href'])->findAll();
-            if (!empty($check_list)) {
-                continue;
-            }
-
-            $image = "";
-            if (!empty($value['image']) && $is_save_image) {
-                $image = save_image_from_url($value['image'], 'news');
-            } else {
-                $image = $value['image'];
-            }
-            $image_fb = "";
-            if (!empty($value['image_fb']) && $is_save_image) {
-                $image_fb = save_image_from_url($value['image_fb'], 'news');
-            } else {
-                $image_fb = $value['image_fb'];
-            }
-
-            if (empty($image) || empty($image_fb)) {
-                $status = STATUS_OFF;
-            }
-
-            $is_except = false;
-            $except_list = ['quiz'];
-
-            $title = html_entity_decode($value['title']);
-            foreach ($except_list as $except_text) {
-                if (strpos(strtolower($title), $except_text) !== FALSE) {
-                    $is_except = true;
-                }
-            }
-
-            if ($is_except) {
-                continue;
-            }
-
-            $date_now = date("Y-m-d H:i:s", strtotime('+10 minutes', strtotime($date_now)));
-
-            if (!empty($value['tags'])) {
-                $tags = is_array($value['tags']) ? implode(",", $value['tags']) : $value['tags'];
-            } else {
-                $tags = "";
-            }
-            $tags = html_entity_decode($tags);
-
-            //check related
-            $related_ids = [];
-            if (!empty($related_list)) {
-                $tags_tmp = explode(",", $tags);
-                if (!empty($tags_tmp[0]) && !empty($tags_tmp[1])) {
-                    foreach ($related_list as $related) {
-                        if (count($related_ids) >= 4) {
-                            break;
-                        }
-                        if (strpos($related['tags'], $tags_tmp[0]) !== false || strpos($related['name'], $tags_tmp[0]) !== false
-                            || strpos($related['tags'], $tags_tmp[1]) !== false || strpos($related['name'], $tags_tmp[1]) !== false
-                        ) {
-                            $related_ids[] = $related['post_id'];
-                        }
-                    }
-                }
-            }
-            $related_ids = !empty($related_ids) ? json_encode($related_ids, JSON_FORCE_OBJECT) : '';
-            //end related
-
-            $insert_list[] = [
-                'name'              => !empty($value['title']) ? html_entity_decode($value['title']) : "",
-                'slug'              => !empty($value['title']) ? slugify(html_entity_decode($value['title'])) : "",
-                'description'       => !empty($value['note']) ? html_entity_decode($value['note']) : "",
-                'content'           => !empty($value['content']) ? html_entity_decode($value['content']) : "",
-                'meta_title'        => !empty($value['title']) ? html_entity_decode($value['title']) : "",
-                'meta_description'  => !empty($value['meta_description']) ? html_entity_decode($value['meta_description']) : "",
-                'meta_keyword'      => !empty($value['meta_keyword']) ? html_entity_decode($value['meta_keyword']) : "",
-                'related_ids'       => $related_ids,
-                'category_ids'      => !empty($value['category_id']) ? json_encode($value['category_id'], JSON_FORCE_OBJECT) : "",
-                'publish_date'      => $date_now,
-                'images'            => json_encode($this->formatImageList(['robot' => $image, 'robot_fb' => $image_fb]), JSON_FORCE_OBJECT),
-                'tags'              => $tags,
-                'author'            => !empty($value['author']) ? html_entity_decode($value['author']) : "",
-                'source_type'       => self::SOURCE_TYPE_ROBOT,
-                'source'            => !empty($value['href']) ? $value['href'] : "",
-                'post_format'       => self::POST_FORMAT_NORMAL,
-                'is_ads'            => STATUS_ON,
-                'is_fb_ia'          => STATUS_ON,
-                'is_hot'            => STATUS_OFF,
-                'is_homepage'       => STATUS_OFF,
-                'is_disable_follow' => STATUS_OFF,
-                'is_disable_robot'  => STATUS_OFF,
-                'ip'                => service('request')->getIPAddress(), //\CodeIgniter\HTTP\Request::getIPAddress()
-                'user_id'           => session('user_info.user_id'),
-                'is_comment'        => COMMENT_STATUS_ON,
-                'published'         => $status,
-                'sort_order'        => 0,
-            ];
-        }
-
-        if (!empty($insert_list)) {
-            $this->insertBatch($insert_list);
-        }
-
-        return $insert_list;
-    }
-
     public function getListCounter($limit = 20)
     {
         $where = [
@@ -769,5 +566,23 @@ class PostModel extends MyModel
         }
 
         return $result;
+    }
+
+    public function getPostsGroupByCategory($limit = 5)
+    {
+        $list = [];
+        try {
+            $params = [get_date(), $this->db->escape($limit)];
+            $result = $this->db->query($this->_queries['list_post_group_by_category'], $params)->getResultArray();
+            foreach ($result as $value) {
+                $list[$value['category_id']][] = $this->formatDetail($value);
+            }
+        } catch (\Exception $ex) {
+            log_message('error', $ex->getMessage());
+
+            return $list;
+        }
+
+        return $list;
     }
 }

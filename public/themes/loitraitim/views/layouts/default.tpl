@@ -9,7 +9,7 @@
 
             {if !empty($breadcumb)}{$breadcumb}{/if}
 
-            <div class="container-xxl">
+            {* <div class="container-xxl"> *}
                 <div class="row">
                     {if !empty($content_left)}
                         <aside id="content_left" class="col-3 d-none d-md-block">
@@ -29,7 +29,7 @@
                         </aside>
                     {/if}
                 </div>
-            </div>
+            {* </div> *}
 
         </section>
 

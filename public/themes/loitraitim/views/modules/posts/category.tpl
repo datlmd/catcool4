@@ -61,7 +61,7 @@
 
                 {if !empty($post_latest_list)}
                     <div class="category-name d-block mt-2 mb-4">
-                        <span>{lang('Post.text_new_post')}</span>
+                        <span>{lang('Post.text_latest_post')}</span>
                     </div>
                     {foreach $post_latest_list as $post}
                         {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}

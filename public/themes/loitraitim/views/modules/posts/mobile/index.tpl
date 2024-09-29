@@ -9,27 +9,56 @@
 			</div>
 		</div>
 
-		{if !empty($post_list)}
+		<div class="category-name d-block mt-2 mb-4">
+			<span>{lang("Post.text_latest_post")}</span>
+		</div>
+		{include file=get_theme_path('views/modules/posts/list_latest.tpl')}
 
-			{foreach $post_list as $post}
-				{if $post@iteration eq 1}
-					{include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$post article_class="mb-3 home-page"}
-				{else}
-					{include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$post article_type='middle_left' article_class="mb-4 pt-4 border-top category"}
+		<div class="my-4">
+			{foreach $category_tree as $category}
+				{if !empty($post_group_category_list[$category.category_id]) && stripos($category.slug, 'blog') !== false}
+					<div class="category-name d-block mt-2 mb-4">
+						<span>
+							<a href="{site_url($category.slug)}">{$category.name}</a>
+						</span>
+					</div>
+					{foreach $post_group_category_list[$category.category_id] as $post}
+						{include 
+							file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') 
+							article_info=$post 
+							article_type='middle_left' 
+							article_class="mb-3 pb-3 border-bottom"
+							is_show_tag = false
+						}
+					{/foreach}
 				{/if}
 			{/foreach}
+		</div>
 
-			{if !empty($post_list) && !empty($pager->links('default', 'frontend'))}
-				{$pager->links('default', 'frontend')}
-			{/if}
-		{/if}
-
-		{if !empty($hot_list)}
-			<div class="category-name d-block mt-2 mb-4">
-				<span>{lang('Post.text_hot_post')}</span>
-			</div>
-			{foreach $hot_list as $post}
-				{include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$post article_type='middle_left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
+		{if !empty($post_group_category_list)}
+			{foreach $category_tree as $category}
+				{if empty($post_group_category_list[$category.category_id]) || stripos($category.slug, 'blog') !== false}
+					{continue}
+				{/if}
+				<div class="col-md-6 col-12 pe-4 mb-4">
+					<div class="category-name d-block mt-3 mb-4">
+						<span>
+							<a href="{site_url($category.slug)}">{$category.name}</a>
+						</span>
+					</div>
+					{foreach $post_group_category_list[$category.category_id] as $post}
+						{if $post.post_format eq 4}{assign var="is_lesson" value=true}{else}{assign var="is_lesson" value=false}{/if}
+						
+						{include 
+							file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') 
+							article_info=$post 
+							article_type='middle_left' 
+							article_class="mb-3 pb-3 border-bottom"
+							is_hide_image = $is_lesson
+							is_show_tag = false
+						}
+					{/foreach}
+				</div>
 			{/foreach}
 		{/if}
 

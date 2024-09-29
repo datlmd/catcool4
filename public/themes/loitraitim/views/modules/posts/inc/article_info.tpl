@@ -29,6 +29,11 @@
                 {if empty($is_hide_description)}
                     <p class="art-description">{$article_info.description|truncate:160}</p>
                 {/if}
+                {if !empty($is_show_tag) && !empty($article_info.tags)}
+                    <div class="mt-2 padding-x">
+                        {include file=get_theme_path('views/modules/posts/inc/list_tags.tpl') tags=explode(',', $article_info.tags)}
+                    </div>
+                {/if}
             </article>
         {elseif $article_type eq 'left'}
             <article class="{if !empty($article_class)}{$article_class}{/if} overflow-hidden">
@@ -59,6 +64,11 @@
                     {/if}
                     {if empty($is_hide_description)}
                         <p class="art-description">{$article_info.description|truncate:160}</p>
+                    {/if}
+                    {if !empty($is_show_tag) && !empty($article_info.tags)}
+                        <div class="mt-2 padding-x">
+                            {include file=get_theme_path('views/modules/posts/inc/list_tags.tpl') tags=explode(',', $article_info.tags)}
+                        </div>
                     {/if}
                 </header>
             </article>
@@ -93,6 +103,11 @@
                     {/if}
                     {if empty($is_hide_description)}
                         <p class="art-description">{$article_info.description|truncate:160}</p>
+                    {/if}
+                    {if !empty($is_show_tag) && !empty($article_info.tags)}
+                        <div class="mt-2 padding-x">
+                            {include file=get_theme_path('views/modules/posts/inc/list_tags.tpl') tags=explode(',', $article_info.tags)}
+                        </div>
                     {/if}
                 </header>
 
@@ -129,7 +144,11 @@
                 {if empty($is_hide_description)}
                     <p class="art-description">{$article_info.description|truncate:160}</p>
                 {/if}
-
+                {if !empty($is_show_tag) && !empty($article_info.tags)}
+                    <div class="mt-2 padding-x">
+                        {include file=get_theme_path('views/modules/posts/inc/list_tags.tpl') tags=explode(',', $article_info.tags)}
+                    </div>
+                {/if}
             </article>
         {elseif $article_type eq 'middle_right'}
             <article class="{if !empty($article_class)}{$article_class}{/if} overflow-hidden">
@@ -163,7 +182,11 @@
                 {if empty($is_hide_description)}
                     <p class="art-description">{$article_info.description|truncate:160}</p>
                 {/if}
-
+                {if !empty($is_show_tag) && !empty($article_info.tags)}
+                    <div class="mt-2 padding-x">
+                        {include file=get_theme_path('views/modules/posts/inc/list_tags.tpl') tags=explode(',', $article_info.tags)}
+                    </div>
+                {/if}
             </article>
         {elseif $article_type eq 'small'}
             <article class="{if !empty($article_class)}{$article_class}{/if} overflow-hidden">
@@ -194,6 +217,11 @@
                     {/if}
                     {if empty($is_hide_description)}
                         <p class="art-description">{$article_info.description|truncate:160}</p>
+                    {/if}
+                    {if !empty($is_show_tag) && !empty($article_info.tags)}
+                        <div class="mt-2 padding-x">
+                            {include file=get_theme_path('views/modules/posts/inc/list_tags.tpl') tags=explode(',', $article_info.tags)}
+                        </div>
                     {/if}
                 </header>
             </article>

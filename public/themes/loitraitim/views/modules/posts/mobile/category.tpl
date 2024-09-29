@@ -14,18 +14,19 @@
         </div>
 
         {if !empty($list)}
+            <div class="mb-5">
+                {foreach $list as $post}
+                    {if $post@iteration eq 1}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$post article_class="mb-3 home-page"}
+                    {else}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$post article_type='middle_left' article_class="mb-4 pt-4 border-top category"}
+                    {/if}
+                {/foreach}
 
-            {foreach $list as $post}
-                {if $post@iteration eq 1}
-                    {include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$post article_class="mb-3 home-page"}
-                {else}
-                    {include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$post article_type='middle_left' article_class="mb-4 pt-4 border-top category"}
+                {if !empty($list) && !empty($pager->links('default', 'frontend'))}
+                    {$pager->links('default', 'frontend')}
                 {/if}
-            {/foreach}
-
-            {if !empty($list) && !empty($pager->links('default', 'frontend'))}
-                {$pager->links('default', 'frontend')}
-            {/if}
+            </div>
         {/if}
 
         {if !empty($post_hot_list)}
@@ -43,7 +44,7 @@
 
         {if !empty($post_latest_list)}
             <div class="category-name d-block mt-2 mb-4">
-                <span>{lang('Post.text_new_post')}</span>
+                <span>{lang('Post.text_latest_post')}</span>
             </div>
             {foreach $post_latest_list as $post}
                 {include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$post article_type='middle_left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
