@@ -29,31 +29,27 @@
             </div>
         {/if}
 
-        {if !empty($post_hot_list)}
-            <div class="category-name d-block mt-2 mb-4">
-                <span>{lang('Post.text_hot_post')}</span>
-            </div>
-            {foreach $post_hot_list as $post}
-                {include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl')
-                    article_info=$post article_type='middle_left'
-                    article_class="mb-3 pb-3 border-bottom"
-                    is_show_category=true
-                }
-            {/foreach}
-        {/if}
-
         {if !empty($post_latest_list)}
-            <div class="category-name d-block mt-2 mb-4">
+            <div class="category-name d-block mt-4 mb-4">
                 <span>{lang('Post.text_latest_post')}</span>
             </div>
             {foreach $post_latest_list as $post}
                 {include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$post article_type='middle_left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
             {/foreach}
         {/if}
+
+        {if !empty($counter_list)}
+            <div class="category-name d-block mt-4 mb-4">
+                <span>{lang('Post.text_popular_post')}</span>
+            </div>
+            {foreach $counter_list as $post}
+                {include file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') article_info=$post article_type='middle_left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
+            {/foreach}
+        {/if}
     </div>
 
 
-    {include file=get_theme_path('views/modules/news/inc/counter_view.tpl') counter_list=$post_counter_list}
+    {* {include file=get_theme_path('views/modules/news/inc/counter_view.tpl') counter_list=$counter_list} *}
 
 
 {/strip}

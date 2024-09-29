@@ -7,7 +7,7 @@
 				{include 
 					file=get_theme_path('views/modules/posts/inc/article_info_mobile.tpl') 
 					article_info=$post 
-					article_type='small' 
+					article_type='left' 
 					is_show_category=true
 					is_show_tag=false 
 					article_class="mb-4"

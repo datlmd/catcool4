@@ -92,8 +92,7 @@ class Detail extends MyController
                 'post_category_list'      => $post_category_list,
                 'script_google_search'    => $this->_scriptGoogleSearch($detail, $post_category_list),
                 'post_latest_list'        => $this->model->getListPostLatest(6),
-                'post_counter_list'       => $this->model->getListCounter(5),
-                'post_hot_list'           => $this->model->getListHot(6),
+                'counter_list'            => $this->model->getListCounter(5),
                 'lesson_categories'       => $lesson_categories,
             ];
 

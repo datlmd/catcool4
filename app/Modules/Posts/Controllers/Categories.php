@@ -42,7 +42,7 @@ class Categories extends MyController
             'post_category_list' => $post_category_list,
             'post_category_tree' => get_list_tree_selected($post_category_list, $id, 'category_id'),
             'post_latest_list'   => $post_model->getListPostLatest(6),
-            'post_hot_list'      => $post_model->getListHot(6),
+            'counter_list'       => $post_model->getListCounter(6),
         ];
 
         $this->_setMeta($detail);

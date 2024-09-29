@@ -2,15 +2,15 @@
 
     <div class="container-xxl bg-white my-0 mt-lg-0 mt-xl-3 py-3 px-5">
         <div class="row">
-            <div class="col">
-                <div class="category-name d-block mt-4 mb-4 shadow-sm">
+            <div class="col pe-4">
+                <div class="category-name d-block mt-4 mb-4">
                     <span><i class="fas fa-hashtag"></i>{$tag}</span>
                 </div>
 
                 {if !empty($list)}
 
                     {foreach $list as $post}
-                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='left' article_class="mb-4 pb-4 border-bottom category" is_show_category=true}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='small' article_class="mb-4 pb-4 border-bottom category" is_show_category=true}
                     {/foreach}
 
                     {if !empty($list) && !empty($pager->links('default', 'frontend'))}
@@ -21,8 +21,12 @@
             <aside class="col-md-4 col-12 d-none d-lg-block pt-3 ps-4">
 
                 {if !empty($post_counter_list)}
+                    <div class="category-name d-block mt-2 mb-4">
+                        <span>{lang('Post.text_popular_post')}</span>
+                    </div>
+
                     {foreach $post_counter_list as $post}
-                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='left' article_class="mb-3" is_show_category=true is_hide_description=true}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='small' article_class="mb-3" is_show_category=true is_hide_description=true}
                     {/foreach}
                 {/if}
 
@@ -39,7 +43,7 @@
                         <span>{lang('Post.text_latest_post')}</span>
                     </div>
                     {foreach $post_latest_list as $post}
-                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='left' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
+                        {include file=get_theme_path('views/modules/posts/inc/article_info.tpl') article_info=$post article_type='small' article_class="mb-3 pb-3 border-bottom" is_show_category=true}
                     {/foreach}
                 {/if}
 
@@ -51,7 +55,7 @@
     </section>
 
 
-    {include file=get_theme_path('views/modules/news/inc/counter_view.tpl') counter_list=$post_hot_list text_title=lang('Post.text_hot_post')}
+    {* {include file=get_theme_path('views/modules/news/inc/counter_view.tpl') counter_list=$post_hot_list text_title=lang('Post.text_hot_post')} *}
 
 
 {/strip}

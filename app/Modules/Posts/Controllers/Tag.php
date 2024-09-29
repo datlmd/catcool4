@@ -39,7 +39,6 @@ class Tag extends MyController
             'post_category_list' => $post_category_list,
             'post_latest_list'   => $this->model->getListPostLatest(6),
             'post_counter_list'  => $this->model->getListCounter(5),
-            'post_hot_list'      => $this->model->getListHot(6),
         ];
 
         add_meta(['title' => $tag, 'url' => current_url()], $this->themes);
@@ -49,10 +48,6 @@ class Tag extends MyController
             $tpl_name = 'mobile/tag';
         }
 
-         //@todo Chan index tam thoi trang news
-         $this->themes->addMeta('robots', 'noindex,nofollow');
-         $this->themes->addMeta('googlebot', 'noindex,nofollow,');
-         
         theme_load($tpl_name, $data);
     }
 
