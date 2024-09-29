@@ -32,7 +32,10 @@ class Template
 
     public function footer(array $params): string
     {
-        $footer_bottom = \App\Libraries\Themes::init()::partial('cells/footer', [], true);
+        $footer_bottom = "";
+        try {
+            $footer_bottom = \App\Libraries\Themes::init()::partial('cells/footer', [], true);
+        } catch (\Exception $ex) {}
 
         return $footer_bottom;
     }
@@ -41,36 +44,45 @@ class Template
     {
         $data = [];
 
-        $data['wishlist'] = site_url('account/wishlist') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : '');
-		$data['logged'] = service('Customer')->isLogged();
+        //is_no_account = true: khong can check login vaf account cua khach hang
+        if (empty($params['is_no_account'])) {
+            $data['wishlist'] = site_url('account/wishlist') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : '');
+            $data['logged'] = service('Customer')->isLogged();
 
-        if (!service('Customer')->isLogged()) {
-			$data['register'] = site_url('account/register');
-			$data['login'] = site_url('account/login');
-		} else {
-			$data['account'] = site_url('account/profile' . '?customer_token=' . session('customer_token'));
-			$data['order'] = site_url('account/order' . '?customer_token=' . session('customer_token'));
-			$data['transaction'] = site_url('account/transaction' . '?customer_token=' . session('customer_token'));
-			$data['download'] = site_url('account/download' . '?customer_token=' . session('customer_token'));
-			$data['logout'] = site_url('account/logout' . '?customer_token=' . session('customer_token'));
+            if (!service('Customer')->isLogged()) {
+                $data['register'] = site_url('account/register');
+                $data['login'] = site_url('account/login');
+            } else {
+                $data['account'] = site_url('account/profile' . '?customer_token=' . session('customer_token'));
+                $data['order'] = site_url('account/order' . '?customer_token=' . session('customer_token'));
+                $data['transaction'] = site_url('account/transaction' . '?customer_token=' . session('customer_token'));
+                $data['download'] = site_url('account/download' . '?customer_token=' . session('customer_token'));
+                $data['logout'] = site_url('account/logout' . '?customer_token=' . session('customer_token'));
 
-            $data['customer_name'] = full_name(service('Customer')->getFirstName(), service('Customer')->getLastName());
-            $data['customer_avatar'] = image_url(service('Customer')->getImage(), 45, 45);
- 		}
+                $data['customer_name'] = full_name(service('Customer')->getFirstName(), service('Customer')->getLastName());
+                $data['customer_avatar'] = image_url(service('Customer')->getImage(), 45, 45);
+            }
 
+            $data['shopping_cart'] = site_url('checkout/cart');
+            $data['checkout'] = site_url('checkout/checkout');
+        }
 
+        $header_top = "";
 
-        $data['shopping_cart'] = site_url('checkout/cart');
-		$data['checkout'] = site_url('checkout/checkout');
-
-        $header_top = \App\Libraries\Themes::init()::partial('cells/header', $data, true);
+        try {
+            $header_top = \App\Libraries\Themes::init()::partial('cells/header', $data, true);
+        } catch (\Exception $ex) {}
 
         return $header_top;
     }
 
     public function breadcrumb(array $params): string
     {
-        return \App\Libraries\Themes::init()::partial('cells/breadcrumb', $params, true);
+        try {
+            return \App\Libraries\Themes::init()::partial('cells/breadcrumb', $params, true);
+        } catch (\Exception $ex) {
+            return "";
+        }
     }
 }
 

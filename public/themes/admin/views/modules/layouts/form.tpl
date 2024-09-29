@@ -54,7 +54,7 @@
                                     </div>
 
                                     <div class="input-group">
-                                        <span class="form-control" style="background-color: #d1d1d1;"></span>
+                                        <span class="form-control border-0" style="background-color: #f6f6f6;"></span>
                                         <button class="btn btn-sm btn-primary" type="button" onclick="addRoute();" title="{lang('Admin.button_add')}"><i class="fa fa-plus-circle"></i></button>
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@
                                     <table id="module_header_top" class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <td class="text-center text-white bg-primary fw-bold">{lang('LayoutAdmin.text_header_top')}</td>
+                                                <td class="text-center text-dark bg-light fw-bold"><h3 class="mb-0">{lang('LayoutAdmin.text_header_top')}</h3></td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -95,7 +95,7 @@
                                             <tr>
                                                 <td class="text-left">
                                                     <div class="input-group">
-                                                        <select class="form-control" style="background-color: #d1d1d1;">
+                                                        <select class="form-control border-0" style="background-color: #f6f6f6;" disabled>
                                                             <option value=""></option>
                                                             {if !empty($actions)}
                                                                 {foreach $actions as $action}
@@ -111,11 +111,11 @@
                                     </table>
                                 </div>
 
-                                <div class="col-12 mb-4">
+                                <div class="col-12 mb-4 border-bottom pb-4">
                                     <table id="module_header_bottom" class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <td class="text-center text-white bg-primary fw-bold">{lang('LayoutAdmin.text_header_bottom')}</td>
+                                                <td class="text-center text-dark bg-light fw-bold"><h3 class="mb-0">{lang('LayoutAdmin.text_header_bottom')}</h3></td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -144,7 +144,7 @@
                                             <tr>
                                                 <td class="text-left">
                                                     <div class="input-group">
-                                                        <select class="form-control" style="background-color: #d1d1d1;">
+                                                        <select class="form-control border-0" style="background-color: #f6f6f6;" disabled>
                                                             <option value=""></option>
                                                             {if !empty($actions)}
                                                                 {foreach $actions as $action}
@@ -164,7 +164,7 @@
                                     <table id="module_column_left" class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <td class="text-center text-white bg-danger fw-bold">{lang('LayoutAdmin.text_column_left')}</td>
+                                                <td class="text-center bg-light fw-bold"><h3 class="mb-0">{lang('LayoutAdmin.text_column_left')}</h3></td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -195,7 +195,7 @@
                                             <tr>
                                                 <td class="text-left">
                                                     <div class="input-group">
-                                                        <select class="form-control" style="background-color: #d1d1d1;">
+                                                        <select class="form-control border-0" style="background-color: #f6f6f6;" disabled>
                                                             <option value=""></option>
                                                             {if !empty($actions)}
                                                                 {foreach $actions as $action}
@@ -216,7 +216,7 @@
                                     <table id="module_content_top" class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <td class="text-center text-white bg-success fw-bold">{lang('LayoutAdmin.text_content_top')}</td>
+                                                <td class="text-center bg-dark fw-bold"><h3 class="mb-0 text-white">{lang('LayoutAdmin.text_content_top')}</h3></td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -245,7 +245,7 @@
                                             <tr>
                                                 <td class="text-left">
                                                     <div class="input-group">
-                                                        <select class="form-control" style="background-color: #d1d1d1;">
+                                                        <select class="form-control border-0" style="background-color: #f6f6f6;" disabled>
                                                             <option value=""></option>
                                                             {if !empty($actions)}
                                                                 {foreach $actions as $action}
@@ -265,7 +265,7 @@
                                     <table id="module_content_bottom" class="table table-striped table-bordered table-hover mt-3">
                                         <thead>
                                             <tr>
-                                                <td class="text-center text-white bg-success fw-bold">{lang('LayoutAdmin.text_content_bottom')}</td>
+                                                <td class="text-center bg-dark fw-bold"><h3 class="mb-0 text-white">{lang('LayoutAdmin.text_content_bottom')}</h3></td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -294,7 +294,7 @@
                                             <tr>
                                                 <td class="text-left">
                                                     <div class="input-group">
-                                                        <select class="form-control" style="background-color: #d1d1d1;">
+                                                        <select class="form-control border-0" style="background-color: #f6f6f6;" disabled>
                                                             <option value=""></option>
                                                             {if !empty($actions)}
                                                                 {foreach $actions as $action}
@@ -315,7 +315,7 @@
                                     <table id="module_column_right" class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <td class="text-center text-white bg-danger fw-bold">{lang('LayoutAdmin.text_column_right')}</td>
+                                                <td class="text-center bg-light fw-bold"><h3 class="mb-0">{lang('LayoutAdmin.text_column_right')}</h3></td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -344,7 +344,7 @@
                                             <tr>
                                                 <td class="text-left">
                                                     <div class="input-group">
-                                                        <select class="form-control" style="background-color: #d1d1d1;">
+                                                        <select class="form-control border-0" style="background-color: #f6f6f6;" disabled>
                                                             <option value=""></option>
                                                             {if !empty($actions)}
                                                                 {foreach $actions as $action}
@@ -360,11 +360,11 @@
                                     </table>
                                 </div>
 
-                                <div class="col-12 mt-4">
+                                <div class="col-12 mt-4 border-top pt-4">
                                     <table id="module_footer_top" class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <td class="text-center text-white bg-dark fw-bold">{lang('LayoutAdmin.text_footer_top')}</td>
+                                                <td class="text-center text-white bg-light fw-bold"><h3 class="mb-0">{lang('LayoutAdmin.text_footer_top')}</h3></td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -393,7 +393,7 @@
                                             <tr>
                                                 <td class="text-left">
                                                     <div class="input-group">
-                                                        <select class="form-control" style="background-color: #d1d1d1;">
+                                                        <select class="form-control border-0" style="background-color: #f6f6f6;" disabled>
                                                             <option value=""></option>
                                                             {if !empty($actions)}
                                                                 {foreach $actions as $action}
@@ -413,7 +413,7 @@
                                     <table id="module_footer_bottom" class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <td class="text-center text-white bg-dark fw-bold">{lang('LayoutAdmin.text_footer_bottom')}</td>
+                                                <td class="text-center text-white bg-light fw-bold"><h3 class="mb-0">{lang('LayoutAdmin.text_footer_bottom')}</h3></td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -442,7 +442,7 @@
                                             <tr>
                                                 <td class="text-left">
                                                     <div class="input-group">
-                                                        <select class="form-control" style="background-color: #d1d1d1;">
+                                                        <select class="form-control border-0" style="background-color: #f6f6f6;" disabled>
                                                             <option value=""></option>
                                                             {if !empty($actions)}
                                                                 {foreach $actions as $action}

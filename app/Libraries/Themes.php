@@ -125,7 +125,12 @@ class Themes
 			}
 		}
 
-		self::$instance->setTheme(self::$config[THEME]);
+		if (!empty(config_item('theme_frontend'))) {
+			self::$instance->setTheme(config_item('theme_frontend'));
+		} else {
+			self::$instance->setTheme(self::$config[THEME]);
+		}
+		
 
         $router          = service('router');
         $controller_full = $router->controllerName();//\App\Modules\Dummy\Controllers\Manage
