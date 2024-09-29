@@ -16,14 +16,14 @@ class Posts extends MyController
 
         $post_model = new PostModel();
 
-        $list_latest = $post_model->getLatestPostsHome(4);
+        $list_latest = $post_model->getLatestPostsHome(5);
 
 
         $post_category_model = new CategoryModel();
         $post_category_list = $post_category_model->getPostCategories();
         $category_tree = format_tree([$post_category_list, 'category_id']);
 
-        $post_group_category_list =  $post_model->getPostsGroupByCategory(2);
+        $post_group_category_list =  $post_model->getPostsGroupByCategory(5);
 
         $data = [
             'latest_post_list'         => $list_latest,
