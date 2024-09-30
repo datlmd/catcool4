@@ -115,7 +115,8 @@ class ScanModel extends MyModel
         $contents = $content_temp;
         $images = $this->getListImage($contents);
 
-        $contents = strip_tags($contents, "<strong>><i><b><br><p><h1><h2><h3><h4><h5><h6><img><ul><li><table><span><code><pre>");
+        $allowed_tags = ["strong", "i", "b", "s", "em", "hr", "br", "p", "h1", "h2", "h3", "h4", "h5", "h6", "img", "table", "th", "tr", "td", "u", "ol", "ul", "li", "span", "code", "pre"];
+        $contents = strip_tags($contents, $allowed_tags);
 
         foreach ($images as $iamge) {
             if (empty($iamge)) {

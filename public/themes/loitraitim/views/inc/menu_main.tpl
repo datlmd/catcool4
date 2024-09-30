@@ -2,7 +2,8 @@
 	{assign var="menu_main" value=get_menu_by_position()}
 
 	{if !empty($menu_type) && $menu_type eq 'mobile'}
-		<div class="list-group list-group-flush d-flex-row h-100 justify-content-center" id="menu_main_mobile">
+		<ul class="list-group list-group-flush d-flex-row h-100 justify-content-center" id="menu_main_mobile">
+
 			<li class="list-group-item text-start">
 				<a href="{site_url()}">
 					{lang('General.text_home')}
@@ -10,13 +11,13 @@
 			</li>
 			{if !empty($menu_main)}
 				{foreach $menu_main as $key => $item}
-
 						{if !empty($item.subs)}
 							<li class="list-group-item text-start" data-bs-toggle="collapse" data-bs-target="#menu_main_{$item.menu_id}" aria-controls="menu_main_{$item.menu_id}" aria-expanded="false">
 								{$item.name}
 								<span><i class="fas fa-chevron-down float-end"></i></span>
 							</li>
-							<div class="collapse item-sub" id="menu_main_{$item.menu_id}">
+							<ul class="collapse item-sub" id="menu_main_{$item.menu_id}">
+						
 								{foreach $item.subs as $sub}
 									<li class="list-group-item text-start">
 										<a href="{$sub.slug}">
@@ -24,7 +25,8 @@
 										</a>
 									</li>
 								{/foreach}
-							</div>
+							
+							</ul>
 						{else}
 							<li class="list-group-item text-start">
 								<a href="{$item.slug}">
@@ -35,7 +37,7 @@
 
 				{/foreach}
 			{/if}
-		</div>
+		</ul>
 	{else}
 		<ul class="nav nav-pills" id="menu_main">
 			<li class="nav-item text-center">

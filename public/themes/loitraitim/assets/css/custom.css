@@ -582,12 +582,13 @@ article.post-detail .post-content table tr:hover {
 }
 
 article.post-detail .post-content table tr th { 
-	padding: 2px 0;
+	padding: 1rem;
+	text-align: center;
 	background-color: #f8f8f8;
 }
 
 article.post-detail .post-content table tr td {
-	padding: 3px;
+	padding: 0.8rem;
 }
 
 article.post-detail .post-related {
@@ -723,6 +724,10 @@ article.post-detail .lesson-list ul li:hover a, article.post-detail .lesson-list
 #menu_main_mobile li {
 	padding-left: 40px;
 	color: #248aa2;
+}
+
+#menu_main_mobile ul li.list-group-item:first-child {
+	border-top: none;
 }
 
 #menu_main_mobile li a {
