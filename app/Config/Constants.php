@@ -96,7 +96,7 @@ define('EVENT_PRIORITY_HIGH', 10);
 //datlm custom
 
 //cache browser js css loader
-defined('CACHE_TIME_CSS') OR define('CACHE_TIME_CSS', '20240928');
+defined('CACHE_TIME_CSS') OR define('CACHE_TIME_CSS', '20240928_2');
 defined('CACHE_TIME_JS') OR define('CACHE_TIME_JS', '20240928');
 
 // CAT COOL

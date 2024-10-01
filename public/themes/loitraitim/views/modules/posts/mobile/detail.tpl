@@ -70,15 +70,15 @@
 
         <div class="row padding-x">
 
-            <div class="col-sm-6 mt-2">
+            <div class="col my-2">
                 <a target="_blank" class="fb-share" href="https://www.facebook.com/sharer/sharer.php?u={base_url($detail.detail_url)}">Chia sẻ Facebook</a>
             </div>
-            <div class="col-sm-6 mt-2 zalo-share">
+            {* <div class="col-sm-6 mt-2 zalo-share">
                 <script src="https://sp.zalo.me/plugins/sdk.js"></script>
                 <div class="zalo-share-button share-button-zalo" data-href="{base_url($detail.detail_url)}" data-oaid="579745863508352884" data-layout="3" data-color="blue" data-customize="true">
                     <a href="javascript:void(0);">Chia sẻ Zalo</a>
                 </div>
-            </div>
+            </div> *}
         </div>
 
         {if $detail.is_comment eq COMMENT_STATUS_ON}

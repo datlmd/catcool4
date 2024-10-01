@@ -24,9 +24,9 @@
 {strip}
 	{if !empty($lesson_categories)}
 		<div class="lesson-list">
-			<div class="d-none d-lg-block">{$smarty.capture.lesson_list}</div>
+			<div class="d-none {if empty($is_mobile)}d-md-block{/if}">{$smarty.capture.lesson_list}</div>
 
-			<button class="button-menu-detail d-lg-none d-block" data-bs-toggle="offcanvas" data-bs-target="#lesson_list" aria-controls="lesson_list">
+			<button class="button-menu-detail {if empty($is_mobile)}d-md-none{/if} d-block" data-bs-toggle="offcanvas" data-bs-target="#lesson_list" aria-controls="lesson_list">
 				<i class="fas fa-arrows-alt-v"></i>
 			</button>
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="lesson_list" aria-labelledby="lesson_list_label">

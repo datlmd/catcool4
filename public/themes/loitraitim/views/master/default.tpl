@@ -47,7 +47,7 @@
 	<!-- GOOGLE SEARCH STRUCTURED DATA FOR ARTICLE -->
 	{if !empty($script_google_search)}{$script_google_search}{/if}
 
-	{if !empty(config_item('google_adsend_enabled')) && !empty(config_item('google_adsend_client'))}
+	{if ENVIRONMENT === 'production' && !empty(config_item('google_adsend_enabled')) && !empty(config_item('google_adsend_client'))}
 		<!--- google adsend -->
 		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={config_item('google_adsend_client')}"
 				crossorigin="anonymous"></script>
@@ -67,11 +67,11 @@
 
 	{if !empty($js_files)}{$js_files}{/if}
 
-	{if !empty(config_item('google_optimize'))}
+	{if ENVIRONMENT === 'production' && !empty(config_item('google_optimize'))}
 		<script src="https://www.googleoptimize.com/optimize.js?id={config_item('google_optimize')}"></script>
 	{/if}
 
-	{if !empty(config_item('ga_enabled')) && !empty(config_item('ga_siteid'))}
+	{if ENVIRONMENT === 'production' && !empty(config_item('ga_enabled')) && !empty(config_item('ga_siteid'))}
 		<!-- Global site tag (gtag.js) - Google Analytics -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id={config_item('ga_siteid')}"></script>
 		{literal}

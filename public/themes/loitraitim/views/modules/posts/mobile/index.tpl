@@ -17,7 +17,7 @@
 		<div class="my-4">
 			{foreach $category_tree as $category}
 				{if !empty($post_group_category_list[$category.category_id]) && stripos($category.slug, 'blog') !== false}
-					<div class="category-name d-block mt-2 mb-4">
+					<div class="category-name d-block mt-2 mb-2">
 						<span>
 							<a href="{site_url($category.slug)}">{$category.name}</a>
 						</span>
@@ -40,7 +40,7 @@
 				{if empty($post_group_category_list[$category.category_id]) || stripos($category.slug, 'blog') !== false}
 					{continue}
 				{/if}
-				<div class="col-md-6 col-12 pe-4 mb-4">
+				<div class="col-md-6 col-12 pe-2 mb-4">
 					<div class="category-name d-block mt-3 mb-4">
 						<span>
 							<a href="{site_url($category.slug)}">{$category.name}</a>

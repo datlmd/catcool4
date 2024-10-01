@@ -1,6 +1,7 @@
+
 {capture name="post_counter_list"}
     {* Danh sach post duoc xem nhieu nhat *}
-    <div class="position-sticky d-none d-lg-block">
+    <div class="position-sticky">
         {if !empty($counter_list)}
             <div class="category-name d-block my-4">
                 <span>{lang('Post.text_popular_post')}</span>
@@ -45,7 +46,7 @@
             
         </header>
         <div class="row">
-            <div class="col pe-5">
+            <div class="col-sm-9 col-12 pe-5">
                 {if !empty($related_list)}
 
                     <ul class="post-related">
@@ -75,12 +76,12 @@
                                     <i class="fab fa-facebook-f"></i>
                                 </a>
                             </li>
-                            <li>
+                            {* <li>
                                 <script src="https://sp.zalo.me/plugins/sdk.js"></script>
                                 <div class="zalo-share-button share-button-zalo" data-href="{base_url($detail.detail_url)}" data-oaid="579745863508352884" data-layout="3" data-color="blue" data-customize="true">
                                     <a title="Share Zalo" href="javascript:void(0);"><i>Zalo</i></a>
                                 </div>
-                            </li>
+                            </li> *}
                         </ul>
                     </div>
                     <div class="post-content-end">
@@ -127,7 +128,7 @@
 
     <section class="container-xxl bg-white px-5 pb-3">
         <div class="row">
-            <div class="col">
+            <div class="col-md-6 col-12">
                 {if !empty($related_list)}
                     <div class="category-name d-block mt-2 mb-4">
                         <span>{lang('Post.text_related')}</span>
@@ -166,7 +167,7 @@
                 {/if}
 
             </div>
-            <div class="col-md-4 col-12">
+            <div class="col-md-6 col-12">
                 {if !empty($lesson_categories)}
                     {$smarty.capture.post_counter_list}
                 {/if}
