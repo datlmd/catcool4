@@ -23,6 +23,10 @@ $routes->group('manage', ['namespace' => 'App\Modules\Customers\Controllers\Admi
 $routes->group('account', ['namespace' => 'App\Modules\Customers\Controllers'], function($subroutes) {
     $subroutes->get('login', 'Login::index');
     $subroutes->post('login', 'Login::login');
+    $subroutes->get('forgotten', 'Forgotten::index');
+    $subroutes->post('forgotten', 'Forgotten::confirm');
+    $subroutes->get('forgotten/reset/(:any)', 'Forgotten::reset/$1');
+    $subroutes->post('forgotten/password/(:any)', 'Forgotten::password/$1');
     $subroutes->get('logout', 'Logout::index');
     $subroutes->add('social_login', 'Login::socialLogin');
     $subroutes->get('register', 'Register::index');

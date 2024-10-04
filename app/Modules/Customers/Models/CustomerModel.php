@@ -391,6 +391,9 @@ class CustomerModel extends MyModel
 
         $customer_info['user_code'] = $token['user_code'];
 
+         //call event
+         \CodeIgniter\Events\Events::trigger('post_account_forgotten_mail', $customer_info);
+
         return $customer_info;
     }
 
@@ -449,6 +452,24 @@ class CustomerModel extends MyModel
         }
 
         $data = [
+            'forgotten_password_selector' => null,
+            'forgotten_password_code' => null,
+            'forgotten_password_time' => null,
+        ];
+
+        $this->update($customer_id, $data);
+
+        return true;
+    }
+
+    public function editPassword($customer_id, $password)
+    {
+        if (empty($customer_id) || empty($password)) {
+            return false;
+        }
+
+        $data = [
+            'password' => $this->auth_model->hashPassword($password),
             'forgotten_password_selector' => null,
             'forgotten_password_code' => null,
             'forgotten_password_time' => null,

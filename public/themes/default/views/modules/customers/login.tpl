@@ -37,7 +37,7 @@
                     <input type="submit" value="{lang('General.button_login')}" class="btn btn-primary" data-loading-text="Loading...">
                 </div>
                 <div class="col-6 text-end">
-                    <a class="" href="#">{lang('General.text_lost_password')}</a>
+                    <a class="" href="{site_url('account/forgotten')}">{lang('General.text_lost_password')}</a>
                 </div>
             </div>
 

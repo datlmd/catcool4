@@ -13,5 +13,5 @@
 	<br/>
 	<br/>
 	{$store_name}<br/>
-	{$store_url}
+	<a href="{$store_url}" target="_blank">{$store_url}</a>
 {/strip}

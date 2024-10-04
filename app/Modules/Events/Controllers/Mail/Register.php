@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Modules\Events\Controllers;
+namespace App\Modules\Events\Controllers\Mail;
 
 use Codeigniter\Controller;
 
-class Mail extends Controller
+class Register extends Controller
 {
-    public static function register($customer_info): void
+    public static function index($customer_info): void
     {
         $store_name = config_item('store_name');
         $data = [
@@ -55,7 +55,7 @@ class Mail extends Controller
         }
     }
 
-    public static function registerAlert($customer_info): void
+    public static function alert($customer_info): void
     {
         if (in_array('account', explode(',', (string) config_item('mail_alert')))) {
             $store_name = config_item('store_name');
