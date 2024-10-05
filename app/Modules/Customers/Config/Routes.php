@@ -38,5 +38,7 @@ $routes->group('account', ['namespace' => 'App\Modules\Customers\Controllers'], 
     $subroutes->post('edit/save', 'Edit::save');
     $subroutes->get('newsletter', 'Newsletter::index');
     $subroutes->post('newsletter/save', 'Newsletter::save');
+    $subroutes->get('password', 'Password::index');
+    $subroutes->post('password/save', 'Password::save');
 });
 

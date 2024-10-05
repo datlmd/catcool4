@@ -126,7 +126,7 @@ class Edit extends UserController
             $errors = $this->validator->getErrors();
             json_output([
                 'error' => $errors,
-                'alert' => print_alert($errors, 'danger'),
+                'alert' => print_alert($errors, ALERT_ERROR),
             ]);
         }
 
@@ -140,7 +140,7 @@ class Edit extends UserController
             $errors = lang('Customer.error_account_edit');
             json_output([
                 'error' => $errors,
-                'alert' => print_alert($errors, 'danger'),
+                'alert' => print_alert($errors, ALERT_ERROR),
             ]);
         }
 
@@ -165,7 +165,7 @@ class Edit extends UserController
         $success = lang('Customer.text_account_edit_success');
         json_output([
             'success' => $success,
-            'alert' => print_alert($success),
+            'alert' => print_alert($success, ALERT_SUCCESS),
         ]);
     }
 }

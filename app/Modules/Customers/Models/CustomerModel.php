@@ -462,7 +462,7 @@ class CustomerModel extends MyModel
         return true;
     }
 
-    public function editPassword($customer_id, $password)
+    public function editPasswordForgotten($customer_id, $password)
     {
         if (empty($customer_id) || empty($password)) {
             return false;
@@ -582,6 +582,31 @@ class CustomerModel extends MyModel
         if (!empty($data['dob'])) {
             $edit_data['dob'] = standar_date($data['dob']);
         }
+
+        return $this->update($customer_id, $edit_data);
+    }
+    
+    public function changePassword($customer_id, $password_old, $password_new)
+    {
+        if (empty($password_old) || empty($password_new)) {
+            return false;
+        }
+
+        $this->errors = [];
+
+        $customer_info = $this->getCustomerInfo($customer_id);
+        if (empty($customer_info)) {
+            return false;
+        }
+
+        if ($this->auth_model->checkPassword(html_entity_decode($password_old, ENT_QUOTES, 'UTF-8'), $customer_info['password']) === false) {
+            $this->errors[] = lang('Customer.error_password_old');
+            return false;
+        }
+
+        $edit_data = [
+            'password' => $this->auth_model->hashPassword(html_entity_decode($password_new, ENT_QUOTES, 'UTF-8')),
+        ];
 
         return $this->update($customer_id, $edit_data);
     }

@@ -65,7 +65,7 @@ class Forgotten extends UserController
 
             json_output([
                 'error' => $errors,
-                'alert' => print_alert($errors, 'danger'),
+                'alert' => print_alert($errors, ALERT_ERROR),
             ]);
         }
 
@@ -75,7 +75,7 @@ class Forgotten extends UserController
             $errors = $customer_model->getErrors() ?? lang('Customer.error_forgotten_not_found');
             json_output([
                 'error' => $errors,
-                'alert' => print_alert($errors, 'danger'),
+                'alert' => print_alert($errors, ALERT_ERROR),
             ]);
         }
 
@@ -166,11 +166,11 @@ class Forgotten extends UserController
             $errors = $this->validator->getErrors();
             json_output([
                 'error' => $errors,
-                'alert' => print_alert($errors, 'danger'),
+                'alert' => print_alert($errors, ALERT_ERROR),
             ]);
         }
 
-        $customer_model->editPassword($customer_info['customer_id'], html_entity_decode($this->request->getPost('password'), ENT_QUOTES, 'UTF-8'));
+        $customer_model->editPasswordForgotten($customer_info['customer_id'], html_entity_decode($this->request->getPost('password'), ENT_QUOTES, 'UTF-8'));
 
         session()->remove('reset_token');
 

@@ -17,7 +17,7 @@ class Register extends MyController
     public function index()
     {
         if (service('customer')->isLogged()) {
-            return redirect()->to(site_url('account/profile').'?customer_token='.session('customer_token'));
+            return redirect()->to(site_url('account/profile') . '?customer_token=' . session('customer_token'));
         }
 
         session()->set('register_token', substr(bin2hex(openssl_random_pseudo_bytes(26)), 0, 26));
@@ -37,13 +37,13 @@ class Register extends MyController
         }
 
         $data['customer_group_id'] = config_item('customer_group_id');
-        $data['register'] = site_url('account/register').'?register_token='.session('register_token');
+        $data['register'] = site_url('account/register') . '?register_token=' . session('register_token');
 
         if (!empty(config_item('account_terms'))) {
             $page_model = new \App\Modules\Pages\Models\PageModel();
             $page_info = $page_model->getPageInfo(config_item('account_terms'), $this->language_id);
             if ($page_info) {
-                $page_info['link'] = site_url('information/'.$page_info['page_id']);
+                $page_info['link'] = site_url('information/' . $page_info['page_id']);
             }
             $data['page_info'] = $page_info;
         }
@@ -59,13 +59,13 @@ class Register extends MyController
         ];
 
         $this->themes->addPartial('header_top', $params)
-             ->addPartial('header_bottom', $params)
-             ->addPartial('content_left', $params)
-             ->addPartial('content_top', $params)
-             ->addPartial('content_bottom', $params)
-             ->addPartial('content_right', $params)
-             ->addPartial('footer_top', $params)
-             ->addPartial('footer_bottom', $params);
+            ->addPartial('header_bottom', $params)
+            ->addPartial('content_left', $params)
+            ->addPartial('content_top', $params)
+            ->addPartial('content_bottom', $params)
+            ->addPartial('content_right', $params)
+            ->addPartial('footer_top', $params)
+            ->addPartial('footer_bottom', $params);
 
         //load datepicker
         $this->themes->addJS('common/plugin/datepicker/moment.min');
@@ -93,7 +93,7 @@ class Register extends MyController
         $this->validator->setRule('last_name', lang('Customer.text_last_name'), 'required|min_length[2]|max_length[40]');
         $this->validator->setRule('email', lang('Customer.text_email'), 'required|valid_email|is_unique[customer.email]');
 
-        $this->validator->setRule('password', lang('Customer.text_password'), 'required|min_length['.config_item('min_password_length').']|max_length[40]|matches[password_confirm]');
+        $this->validator->setRule('password', lang('Customer.text_password'), 'required|min_length[' . config_item('min_password_length') . ']|max_length[40]|matches[password_confirm]');
         $this->validator->setRule('password_confirm', lang('Customer.text_password_confirm'), 'required');
         $this->validator->setRule('gender', lang('Customer.text_gender'), 'required');
         $this->validator->setRule('dob', lang('General.text_dob'), 'required|valid_date[d/m/Y]');
@@ -123,7 +123,7 @@ class Register extends MyController
                 }
             }
 
-            $this->validator->setRule('customer_group_id', lang('Customer.text_customer_group'), 'required|in_list['.implode(',', $customer_group_ids).']');
+            $this->validator->setRule('customer_group_id', lang('Customer.text_customer_group'), 'required|in_list[' . implode(',', $customer_group_ids) . ']');
         }
 
         if (!$this->validator->withRequest($this->request)->run()) {
@@ -131,7 +131,7 @@ class Register extends MyController
 
             json_output([
                 'error' => $errors,
-                'alert' => print_alert($errors, 'danger'),
+                'alert' => print_alert($errors, ALERT_ERROR),
             ]);
         }
 
@@ -149,7 +149,7 @@ class Register extends MyController
             $errors = $customer_model->getErrors() ?? lang('Customer.error_register');
             json_output([
                 'error' => $errors,
-                'alert' => print_alert($errors, 'danger'),
+                'alert' => print_alert($errors, ALERT_ERROR),
             ]);
         }
 
@@ -161,7 +161,7 @@ class Register extends MyController
                 $errors = $customer_model->getErrors() ?? lang('Customer.deactivate_unsuccessful');
                 json_output([
                     'error' => $errors,
-                    'alert' => print_alert($errors, 'danger'),
+                    'alert' => print_alert($errors, ALERT_ERROR),
                 ]);
             }
 
@@ -172,7 +172,7 @@ class Register extends MyController
                 'id' => $customer_info['customer_id'],
                 'email' => $customer_info['email'],
                 'activation' => $activation_code,
-                'active_link' => site_url('account/activate/'.$customer_info['customer_id'].'/'.$activation_code),
+                'active_link' => site_url('account/activate/' . $customer_info['customer_id'] . '/' . $activation_code),
             ];
 
             $message = $this->themes::view('email/activate', $data);
@@ -184,7 +184,7 @@ class Register extends MyController
                 $errors = $customer_model->getErrors() ?? lang('Customer.activation_email_unsuccessful');
                 json_output([
                     'error' => $errors,
-                    'alert' => print_alert($errors, 'danger'),
+                    'alert' => print_alert($errors, ALERT_ERROR),
                 ]);
             }
 
@@ -209,12 +209,12 @@ class Register extends MyController
         if (!empty($success)) {
             set_alert($success, ALERT_SUCCESS);
             json_output([
-                'redirect' => site_url('account/alert?type=register_active').(!empty(session('customer_token')) ? '&customer_token='.session('customer_token') : ''),
+                'redirect' => site_url('account/alert?type=register_active') . (!empty(session('customer_token')) ? '&customer_token=' . session('customer_token') : ''),
             ]);
         }
 
         json_output([
-            'redirect' => site_url('account/alert?type=register').(!empty(session('customer_token')) ? '&customer_token='.session('customer_token') : ''),
+            'redirect' => site_url('account/alert?type=register') . (!empty(session('customer_token')) ? '&customer_token=' . session('customer_token') : ''),
         ]);
     }
 }

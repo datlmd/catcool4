@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Customers\Controllers;
+<?php
+
+namespace App\Modules\Customers\Controllers;
 
 use App\Controllers\MyController;
 
@@ -38,15 +40,15 @@ class Login extends MyController
             'breadcrumb' => $this->breadcrumb->render(),
             'breadcrumb_title' => lang('Customer.text_account_login'),
         ];
-        
+
         $this->themes->addPartial('header_top', $params)
-             ->addPartial('header_bottom', $params)
-             ->addPartial('content_left', $params)
-             ->addPartial('content_top', $params)
-             ->addPartial('content_bottom', $params)
-             ->addPartial('content_right', $params)
-             ->addPartial('footer_top', $params)
-             ->addPartial('footer_bottom', $params);
+            ->addPartial('header_bottom', $params)
+            ->addPartial('content_left', $params)
+            ->addPartial('content_top', $params)
+            ->addPartial('content_bottom', $params)
+            ->addPartial('content_right', $params)
+            ->addPartial('footer_top', $params)
+            ->addPartial('footer_bottom', $params);
 
         add_meta(['title' => lang("Customer.text_account_login")], $this->themes);
 
@@ -63,7 +65,7 @@ class Login extends MyController
 
             json_output([
                 'error' => $errors,
-                'alert' => print_alert($errors, 'danger')
+                'alert' => print_alert($errors, ALERT_ERROR)
             ]);
         }
 
@@ -73,7 +75,7 @@ class Login extends MyController
 
             json_output([
                 'error' => $errors,
-                'alert' => print_alert($errors, 'danger')
+                'alert' => print_alert($errors, ALERT_ERROR)
             ]);
         }
 
@@ -108,7 +110,7 @@ class Login extends MyController
 
         json_output([
             'success' => $success,
-            'alert' => print_alert($success),
+            'alert' => print_alert($success, ALERT_SUCCESS),
             'redirect' => urldecode($return_url) . '?customer_token=' . session('customer_token')
         ]);
     }
@@ -132,7 +134,7 @@ class Login extends MyController
                     $facebook = service('facebook');
 
                     // Authenticate user with facebook
-                    $access_token = $this->request->getPost('access_token');//$facebook->isAuthenticated();
+                    $access_token = $this->request->getPost('access_token'); //$facebook->isAuthenticated();
                     if (!empty($access_token)) {
                         // Get user info from facebook
                         //$fb_user   = $facebook->getUserInfor($user_id, $access_token);
@@ -156,11 +158,11 @@ class Login extends MyController
 
                     // Load zalo oauth library
                     $google = service('google');
-                    if(!empty($this->request->getGet('code'))) {
+                    if (!empty($this->request->getGet('code'))) {
 
                         // Authenticate user with google
                         $access_token = $google->getAuthenticate($this->request->getGet('code'));
-                        if($access_token) {
+                        if ($access_token) {
 
                             // Get user info from google
                             $gg_user = $google->getUserInfo();
@@ -223,7 +225,7 @@ class Login extends MyController
         //check token login
         if (!empty($auth_url)) {
             json_output([
-                'status' => 'ok', 
+                'status' => 'ok',
                 'auth_url' => $auth_url
             ]);
         }
