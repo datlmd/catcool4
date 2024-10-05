@@ -103,6 +103,10 @@ class Edit extends UserController
             $this->validator->setRule('phone', lang('Customer.text_phone'), "required|min_length[3]|max_length[32]|is_unique[customer.phone,customer_id,$customer_id]");
         }
 
+        if (!empty($this->request->getPost('username'))) {
+            $this->validator->setRule('username', lang('Customer.text_username'), "required|min_length[3]|max_length[32]|is_unique[customer.username,customer_id,$customer_id]");
+        }
+
         $customer_group_model = new \App\Modules\Customers\Models\GroupModel();
         $customer_group_list = $customer_group_model->getCustomerGroups($this->language_id);
         if (!empty($this->request->getPost('customer_group_id'))) {

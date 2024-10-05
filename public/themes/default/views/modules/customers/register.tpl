@@ -12,7 +12,7 @@
             <legend class="mb-3">{lang('Customer.text_your_details')}</legend>
 
             {if $customer_group_list|@count > 1}
-                <div class="form-group row mb-3 px-4">
+                <div class="form-group row mb-4 px-4">
                     <div class="col">
                         <label for="input_customer_group_id" class="form-label fw-bold required-label">{lang('Customer.text_customer_group')}</label>
                         <select name="customer_group_id" id="input_customer_group_id" class="form-control">
@@ -25,14 +25,14 @@
                 </div>
             {/if}
 
-            <div class="form-group row mb-3 px-4">
-                <div class="col-md-6">
+            <div class="form-group row px-4">
+                <div class="col-md-6 mb-4">
                     <label for="input_first_name" class="form-label fw-bold required-label">{lang('Customer.text_first_name')}</label>
                     <input type="text" name="first_name" id="input_first_name" value="{old('first_name')}" placeholder="{lang('Customer.text_first_name')}" class="form-control {if validation_show_error('first_name')}is-invalid{/if}">
                     <div id="error_first_name" class="invalid-feedback">{validation_show_error("first_name")}</div>
                     <div class="form-text">{lang('Customer.help_first_name')}</div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 mb-4">
                     <label for="input_last_name" class="form-label fw-bold required-label">{lang('Customer.text_last_name')}</label>
                     <input type="text" name="last_name" id="input_last_name" value="{old('last_name')}" placeholder="{lang('Customer.holder_last_name')}" class="form-control {if validation_show_error('last_name')}is-invalid{/if}">
                     <div id="error_last_name" class="invalid-feedback">{validation_show_error("last_name")}</div>
@@ -40,9 +40,9 @@
                 </div>
             </div>
 
-            <div class="form-group row mb-3 px-4">
+            <div class="form-group row mb-4 px-4">
                 
-                <label class="form-label fw-bold">{lang('General.text_gender')}</label>
+                <label class="form-label fw-bold required-label">{lang('General.text_gender')}</label>
                     
                 <div class="col-6">
                     <div class="form-check border rounded-1 w-100 p-2 overflow-hidden d-flex flex-row">
@@ -65,42 +65,29 @@
                 
             </div>
 
-            <div class="form-group row mb-3 px-4">
+            <div class="form-group row mb-4 px-4">
                 <div class="col-12">
-                    <label class="form-label fw-bold">{lang('General.text_dob')}</label>
-                    <div class="row">
-                        <div class="col-4">
-                            <select name="dob_day" class="form-control">
-                                {for $d = 1; $d <= 31; $d++}
-                                    <option value="{$d}" {if $d eq date('d')}selected{/if}>{$d}</option>
-                                {/for}
-                            </select>
-                        </div>
-                        <div class="col-4">
-                            <select name="dob_month" class="form-control">
-                                {for $m = 1; $m <= 12; $m++}
-                                    <option value="{$m}" {if $m eq date('m')}selected{/if}>
-                                        {if language_code() eq 'vi'}
-                                            {lang('General.text_month')} {$m}
-                                        {else}
-                                            {date("F", mktime(0, 0, 0, $m, 10))}
-                                        {/if}
-                                    </option>
-                                {/for}
-                            </select>
-                        </div>
-                        <div class="col-4">
-                            <select name="dob_year" class="form-control">
-                                {for $y = date("Y"); $y >= 1900; $y--}
-                                    <option value="{$y}">{$y}</option>
-                                {/for}
-                            </select>
-                        </div>
+                    <label for="input_dob" class="form-label fw-bold required-label">{lang('General.text_dob')}</label>
+
+                    <div class="input-group date show-date-picker" id="show-date-picker"
+                        data-target-input="nearest" data-date-format="{get_date_format_ajax()|upper}"
+                        data-date-locale="{language_code()}">
+                        <input type="text" 
+                            name="dob" 
+                            id="input_dob" 
+                            class="form-control datetimepicker-input"
+                            {if old('dob', $customer_info.dob)}value="{old('dob')|date_format:get_date_format(true)}"{/if} 
+                            placeholder="{get_date_format_ajax()}" 
+                            data-target="#show-date-picker" 
+                        />
+                        <div class="input-group-text" data-target="#show-date-picker"
+                            data-toggle="datetimepicker"><i class="fa fa-calendar-alt"></i></div>
                     </div>
+                    <div id="error_dob" class="invalid-feedback">{validation_show_error("dob")}</div>
                 </div>
             </div>
 
-            <div class="form-group row mb-3 px-4">
+            <div class="form-group row mb-4 px-4">
                 <label for="input_email" class="form-label fw-bold required-label">{lang('Customer.text_email')}</label>
                 <div class="col-12">
                     <input type="text" name="email" id="input_email" value="{old('email')}" placeholder="{lang('Customer.text_email')}" class="form-control {if validation_show_error('email')}is-invalid{/if}">
@@ -108,7 +95,7 @@
                 </div>
             </div>
 
-            <div class="form-group row mb-3 px-4">
+            <div class="form-group row mb-4 px-4">
                 <label for="input_phone" class="form-label fw-bold">{lang('Customer.text_phone')}</label>
                 <div class="col-12">
                     <input type="text" name="phone" id="input_phone" value="{old('phone')}" placeholder="{lang('Customer.text_phone')}" class="form-control {if validation_show_error('phone')}is-invalid{/if}">
@@ -121,14 +108,14 @@
 
         <fieldset class="mt-3">
             <legend class="mb-3">{lang('Customer.text_your_password')}</legend>
-            <div class="form-group row mb-3 px-4">
+            <div class="form-group row mb-4 px-4">
                 <label for="input_password" class="form-label fw-bold required-label">{lang('Customer.text_password')}</label>
                 <div class="col-12">
                     <input type="password" name="password" id="input_password" value="" placeholder="{lang('Customer.text_password')}" class="form-control {if validation_show_error('password')}is-invalid{/if}">
                     <div id="error_password" class="invalid-feedback">{validation_show_error("password")}</div>
                 </div>
             </div>
-            <div class="form-group row mb-3 px-4">
+            <div class="form-group row mb-4 px-4">
                 <label for="input_password_confirm" class="form-label fw-bold required-label">{lang('Customer.text_password_confirm')}</label>
                 <div class="col-12">
                     <input type="password" name="password_confirm" id="input_password_confirm" value="" placeholder="{lang('Customer.text_password_confirm')}" class="form-control {if validation_show_error('password_confirm')}is-invalid{/if}">

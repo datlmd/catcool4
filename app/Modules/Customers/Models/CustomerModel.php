@@ -571,7 +571,7 @@ class CustomerModel extends MyModel
 
         $edit_data = [
             'customer_group_id' => $data['customer_group_id'],
-            //'username' => $data['username'] ?? null,
+            'username' => $data['username'] ?? null,
             'email' => strtolower($data['email']),
             'first_name' => $data['first_name'] ?? null,
             'last_name' => $data['last_name'] ?? null,
@@ -582,7 +582,6 @@ class CustomerModel extends MyModel
         if (!empty($data['dob'])) {
             $edit_data['dob'] = standar_date($data['dob']);
         }
-
 
         return $this->update($customer_id, $edit_data);
     }

@@ -101,6 +101,11 @@ label {
     font-weight: normal;
 }
 
+.btn-light {
+    --bs-btn-color: #000;
+    --bs-btn-bg: #dddddd;
+}
+
 #btn_scroll_to_top {
     display: none;
     position: fixed;

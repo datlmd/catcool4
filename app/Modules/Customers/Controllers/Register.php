@@ -67,6 +67,14 @@ class Register extends MyController
              ->addPartial('footer_top', $params)
              ->addPartial('footer_bottom', $params);
 
+        //load datepicker
+        $this->themes->addJS('common/plugin/datepicker/moment.min');
+        $this->themes->addCSS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
+        $this->themes->addJS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
+        if (language_code() == 'vi') {
+            $this->themes->addJS('common/plugin/datepicker/locale/vi');
+        }
+
         add_meta(['title' => lang('Customer.text_register')], $this->themes);
 
         theme_load('register', $data);
@@ -88,9 +96,7 @@ class Register extends MyController
         $this->validator->setRule('password', lang('Customer.text_password'), 'required|min_length['.config_item('min_password_length').']|max_length[40]|matches[password_confirm]');
         $this->validator->setRule('password_confirm', lang('Customer.text_password_confirm'), 'required');
         $this->validator->setRule('gender', lang('Customer.text_gender'), 'required');
-        $this->validator->setRule('dob_day', lang('Customer.text_day'), 'required|is_natural_no_zero');
-        $this->validator->setRule('dob_month', lang('Customer.text_month'), 'required|is_natural_no_zero');
-        $this->validator->setRule('dob_year', lang('Customer.text_year'), 'required|is_natural_no_zero');
+        $this->validator->setRule('dob', lang('General.text_dob'), 'required|valid_date[d/m/Y]');
 
         if (!empty($this->request->getPost('phone'))) {
             $this->validator->setRule('phone', lang('Customer.text_phone'), 'required|min_length[3]|max_length[32]|is_unique[customer.phone]');

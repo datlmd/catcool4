@@ -8,4 +8,4 @@
 <link rel="stylesheet" type="text/css" href="{base_url('common/plugin/owl.carousel/assets/owl.carousel.css')}">
 <link rel="stylesheet" type="text/css" href="{base_url('common/plugin/owl.carousel/assets/owl.theme.default.css')}">
 
-<link rel="stylesheet" type="text/css" href="{theme_url('assets/css/catcool.css')}">
+<link rel="stylesheet" type="text/css" href="{theme_url('assets/css/style.css')}">

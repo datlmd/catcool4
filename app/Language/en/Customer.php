@@ -96,6 +96,7 @@ Your shopping cart has been saved, the items inside it will be restored whenever
 	"text_subscribe" => "Subscribe",
 	"text_subscription" => "Subscriptions",
 	"text_transaction" => "Transactions",
+	"text_username" => "Username",
 	"text_wishlist" => "Wish List",
 	"text_your_details" => "Your Personal Details",
 	"text_your_email" => "Your E-Mail Address",

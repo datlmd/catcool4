@@ -96,6 +96,7 @@ Giỏ hàng của bạn đã được lưu, các mặt hàng trong đó sẽ đ�
 	"text_subscribe" => "Đăng ký",
 	"text_subscription" => "Subscriptions",
 	"text_transaction" => "Giao Dịch",
+	"text_username" => "Username",
 	"text_wishlist" => "Yêu Thích",
 	"text_your_details" => "Chi tiết thông tin cá nhân",
 	"text_your_email" => "Địa chỉ email của bạn",
