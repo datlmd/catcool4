@@ -75,7 +75,7 @@ class Register extends MyController
     public function register()
     {
         if (empty($this->request->getGet('register_token')) || empty(session('register_token')) || (session('register_token') != $this->request->getGet('register_token'))) {
-            set_alert(lang('Customer.error_token'), ALERT_ERROR);
+            set_alert(lang('Customer.error_register_token'), ALERT_ERROR);
             json_output([
                 'redirect' => site_url('account/register'),
             ]);

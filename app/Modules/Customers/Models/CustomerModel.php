@@ -333,9 +333,9 @@ class CustomerModel extends MyModel
 
     public function getAvatar($avatar = '')
     {
-        $avatar = empty($avatar) ? 'customers/'.session('customer.customer_id').'.jpg' : $avatar;
+        $avatar = empty($avatar) ? 'customers/' . session('customer.customer_id') . '.jpg' : $avatar;
         if (!is_file(get_upload_path($avatar))) {
-            return (session('customer.gender') == GENDER_MALE) ? base_url('common/'.config_item('avatar_default_male')) : base_url('common/'.config_item('avatar_default_female'));
+            return (session('customer.gender') == GENDER_MALE) ? base_url('common/' . config_item('avatar_default_male')) : base_url('common/' . config_item('avatar_default_female'));
         }
 
         return $avatar;
@@ -391,8 +391,8 @@ class CustomerModel extends MyModel
 
         $customer_info['user_code'] = $token['user_code'];
 
-         //call event
-         \CodeIgniter\Events\Events::trigger('post_account_forgotten_mail', $customer_info);
+        //call event
+        \CodeIgniter\Events\Events::trigger('post_account_forgotten_mail', $customer_info);
 
         return $customer_info;
     }
@@ -402,7 +402,7 @@ class CustomerModel extends MyModel
         $this->errors = [];
 
         if (empty($code)) {
-            $this->errors[] = '[001] '.lang('Customer.error_password_change_unsuccessful');
+            $this->errors[] = '[001] ' . lang('Customer.error_password_change_unsuccessful');
 
             return false;
         }
@@ -410,7 +410,7 @@ class CustomerModel extends MyModel
         // Retrieve the token object from the code
         $token = $this->auth_model->retrieveSelectorValidatorCouple($code);
         if (empty($token)) {
-            $this->errors[] = '[002] '.lang('Customer.error_password_code');
+            $this->errors[] = '[002] ' . lang('Customer.error_password_code');
 
             return false;
         }
@@ -418,14 +418,14 @@ class CustomerModel extends MyModel
         // Retrieve the user according to this selector
         $customer_info = $this->where('forgotten_password_selector', $token['selector'])->first();
         if (empty($customer_info)) {
-            $this->errors[] = '[003] '.lang('Customer.error_password_code');
+            $this->errors[] = '[003] ' . lang('Customer.error_password_code');
 
             return false;
         }
 
         // Check the hash against the validator
         if (!$this->auth_model->checkPassword($token['validator'], $customer_info['forgotten_password_code'])) {
-            $this->errors[] = '[004] '.lang('Customer.error_password_change_unsuccessful');
+            $this->errors[] = '[004] ' . lang('Customer.error_password_change_unsuccessful');
 
             return false;
         }
@@ -436,7 +436,7 @@ class CustomerModel extends MyModel
             if (time() - $customer_info['forgotten_password_time'] > $expiration) {
                 //it has expired, clear_forgotten_password_code
                 $this->clearForgottenPasswordCode($customer_info['customer_id']);
-                $this->errors[] = '[005] '.lang('error_password_code');
+                $this->errors[] = '[005] ' . lang('error_password_code');
 
                 return false;
             }
@@ -493,7 +493,7 @@ class CustomerModel extends MyModel
         $sql = [];
 
         if (!empty($email)) {
-            $sql[] = ' email='.$this->db->escape($email).' ';
+            $sql[] = ' email=' . $this->db->escape($email) . ' ';
         }
 
         if (!empty($phone)) {
@@ -561,6 +561,39 @@ class CustomerModel extends MyModel
         \CodeIgniter\Events\Events::trigger('post_account_register_mail_alert', $add_data);
 
         return $add_data;
+    }
+
+    public function editCustomer($customer_id, $data)
+    {
+        if (empty($data)) {
+            return false;
+        }
+
+        $edit_data = [
+            'customer_group_id' => $data['customer_group_id'],
+            //'username' => $data['username'] ?? null,
+            'email' => strtolower($data['email']),
+            'first_name' => $data['first_name'] ?? null,
+            'last_name' => $data['last_name'] ?? null,
+            'phone' => $data['phone'],
+            'gender' => $data['gender'],
+        ];
+
+        if (!empty($data['dob'])) {
+            $edit_data['dob'] = standar_date($data['dob']);
+        }
+
+
+        return $this->update($customer_id, $edit_data);
+    }
+
+    public function editNewsletter($customer_id, $newsletter = false)
+    {
+        if (empty($customer_id)) {
+            return false;
+        }
+
+        return $this->update($customer_id, ['newsletter' => $newsletter]);
     }
 
     public function deactivate($customer_id)

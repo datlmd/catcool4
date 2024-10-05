@@ -1,8 +1,10 @@
 <?php
 
 return [
+	"button_back" => "Trở lại",
 	"button_login" => "Đăng nhập",
 	"button_register" => "Đăng ký",
+	"button_save" => "Lưu",
 	"button_subscribe" => "Đăng ký",
 	"code" => "vi",
 	"datetime_format" => "d/m/Y H:i:s",
@@ -12,6 +14,7 @@ return [
 	"decimal_point" => ",",
 	"direction" => "ltr",
 	"en" => "English",
+	"error_token" => "Token không hợp lệ!",
 	"heading_home" => "Trang chủ",
 	"heading_page404" => "Trang không tồn tại ",
 	"heading_register" => "Đăng nhập / Đăng ký",

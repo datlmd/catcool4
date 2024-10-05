@@ -1,8 +1,10 @@
 <?php
 
 return [
+	"button_back" => "Back",
 	"button_login" => "Login",
 	"button_register" => "Register",
+	"button_save" => "Save",
 	"button_subscribe" => "Subscribe",
 	"code" => "en",
 	"datetime_format" => "d/m/Y H:i:s",
@@ -12,6 +14,7 @@ return [
 	"decimal_point" => ".",
 	"direction" => "ltr",
 	"en" => "English",
+	"error_token" => "Token invalid!",
 	"heading_home" => "Home",
 	"heading_page404" => "Page not found",
 	"heading_register" => "Login / Register",

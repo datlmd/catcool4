@@ -34,5 +34,9 @@ $routes->group('account', ['namespace' => 'App\Modules\Customers\Controllers'], 
     $subroutes->get('profile', 'Profile::index');
     $subroutes->get('activate/(:num)/(:any)', 'Activate::index/$1/$2');
     $subroutes->get('alert', 'Alert::index');
+    $subroutes->get('edit', 'Edit::index');
+    $subroutes->post('edit/save', 'Edit::save');
+    $subroutes->get('newsletter', 'Newsletter::index');
+    $subroutes->post('newsletter/save', 'Newsletter::save');
 });
 

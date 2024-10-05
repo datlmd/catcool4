@@ -8,6 +8,8 @@
         </div>
 
         <div class="col-sm-9">
+            <div id="register_alert" class="mb-4">{print_flash_alert()}</div>
+
             <h2 class="mb-2">{lang('Customer.text_my_account')}</h2>
             <ul class="list-unstyled">
                 <li class="pb-2"><a href="{$edit}">{lang('Customer.text_profile_edit')}</a></li>

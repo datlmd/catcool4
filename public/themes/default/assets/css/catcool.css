@@ -91,7 +91,7 @@ button:focus {
     outline: none !important;
 }
 legend {
-    font-size: 18px;
+    font-size: 1.4rem;
     padding: 7px 0;
     margin-bottom: 20px;
     border-bottom: 1px solid #e5e5e5;

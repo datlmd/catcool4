@@ -159,7 +159,7 @@ body {
     /*font-family: Arial,sans-serif;*/
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 15px;
     color: #71748d;
     background-color: #efeff6;
     -webkit-font-smoothing: antialiased;
@@ -1932,7 +1932,7 @@ Container / Wrapper
 
 .dashboard-content {
     padding: 20px 30px 30px 30px;
-    max-width: 1200px;
+    max-width: 1400px;
 }
 
 

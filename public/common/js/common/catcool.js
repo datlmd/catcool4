@@ -1,10 +1,58 @@
 
 var is_processing = false;
 var Catcool = {
-    submitFormAjax: function (e) {
-
-
-        //return false;
+    showDatetime: function () {
+        if ($('.show-datetime-picker').length) {
+            var option = {
+                sideBySide: false,
+                icons: {
+                    time: "far fa-clock active",
+                    date: "fa fa-calendar-alt",
+                    up: "fa fa-arrow-up",
+                    down: "fa fa-arrow-down"
+                },
+                daysOfWeekDisabled: [0, 6]
+            };
+            if ($('.show-datetime-picker').data('date-locale') == 'vi') {
+                option = {
+                    sideBySide: false,
+                    icons: {
+                        time: "far fa-clock active",
+                        date: "fa fa-calendar-alt",
+                        up: "fa fa-arrow-up",
+                        down: "fa fa-arrow-down"
+                    },
+                    daysOfWeekDisabled: [0, 6],
+                    locale: 'vi',
+                };
+            }
+            $('.show-datetime-picker').datetimepicker(option);
+        }
+    },
+    showDate: function () {
+        if ($('.show-date-picker').length) {
+            var option = {
+                sideBySide: false,
+            };
+            if ($('.show-date-picker').data('date-locale') == 'vi') {
+                 option = {
+                    sideBySide: false,
+                    locale: 'vi',
+                };
+            }
+            $('.show-date-picker').datetimepicker(option);
+        }
+    },
+    showTime: function () {
+        if ($('.show-time-picker').length) {
+            $('.show-time-picker').datetimepicker({
+                sideBySide: false,
+                format: $('.show-time-picker').data('date-format'),
+                pickDate: false,
+                pickSeconds: false,
+                pick12HourFormat: false
+            });
+        }
     },
 };
 
@@ -268,9 +316,9 @@ $(function () {
         showButtonTableOfContens();
     });
 
-    $(document).on('submit', 'form', function (e) {
-        Catcool.submitFormAjax(e);
-    });
+    Catcool.showDatetime();
+    Catcool.showDate();//only date
+    Catcool.showTime();//only time
 
     /* set gia tri mac dinh alert */
     $.notifyDefaults({

@@ -34,6 +34,11 @@
 
 	{if !empty($css_files)}{$css_files}{/if}
 
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="{base_url('common/js/html5shiv-3.7.3.min.js')}"></script>
+	<script type="text/javascript" src="{base_url('common/js/respond-1.4.2.min.js')}"></script>
+	<![endif]-->
+
 	{include file=get_theme_path('views/master/common/css.tpl')}
 
 	<link rel="stylesheet" href="{base_url('common/css/catcool.css')}" type="text/css">
@@ -59,7 +64,7 @@
 	{include file=get_theme_path('views/master/common/js_theme.tpl')}
 	{if !empty($js_files)}{$js_files}{/if}
 
-	{if !empty(config_item('ga_enabled')) && !empty(config_item('ga_siteid'))}
+	{if ENVIRONMENT === 'production' && !empty(config_item('ga_enabled')) && !empty(config_item('ga_siteid'))}
 		<!-- Global site tag (gtag.js) - Google Analytics -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id={config_item('ga_siteid')}"></script>
 		{literal}
