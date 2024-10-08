@@ -112,9 +112,9 @@ if (!function_exists('list_language')) {
         $language_active = [];
         foreach ($language_list as $key => $value) {
             if (empty($value['icon'])) {
-                $language_list[$key]['icon'] = '<i class="flag-icon flag-icon-'.(($value['code'] == 'vi') ? 'vn' : $value['code']).'"></i>';
+                $language_list[$key]['icon'] = '<i class="flag-icon flag-icon-' . (($value['code'] == 'vi') ? 'vn' : $value['code']) . '"></i>';
             } else {
-                $language_list[$key]['icon'] = '<i class="'.$value['icon'].'"></i>';
+                $language_list[$key]['icon'] = '<i class="' . $value['icon'] . '"></i>';
             }
 
             $language_list[$key]['active'] = false;
@@ -163,7 +163,7 @@ if (!function_exists('http_get_query')) {
     {
         $query_string_sep = (strpos(base_url(), '?') === false) ? '?' : '&amp;';
         if (!empty(\Config\Services::request()->getGet())) {
-            return $query_string_sep.http_build_query(\Config\Services::request()->getGet());
+            return $query_string_sep . http_build_query(\Config\Services::request()->getGet());
         }
 
         return false;
@@ -397,7 +397,7 @@ if (!function_exists('draw_tree_output_name')) {
             $output .= strtr($each_category_html, $find_replace);
 
             if (isset($value['subs'])) {
-                $indent = $indent.$name.' > ';
+                $indent = $indent . $name . ' > ';
                 if ($value['parent_id'] == $id_root) {
                     $id_root = $value[$key_id];
                 }
@@ -522,7 +522,7 @@ if (!function_exists('image_domain')) {
     function image_domain($path = null)
     {
         if (!empty(config_item('image_domain'))) {
-            return config_item('image_domain').$path;
+            return config_item('image_domain') . $path;
         }
 
         return base_url($path);
@@ -533,10 +533,10 @@ if (!function_exists('image_default_url')) {
     function image_default_url()
     {
         if (!empty(config_item('image_none')) && is_file(get_upload_path(config_item('image_none')))) {
-            return image_domain(get_upload_url().config_item('image_none'));
+            return image_domain(get_upload_url() . config_item('image_none'));
         }
 
-        return base_url('common/'.UPLOAD_IMAGE_DEFAULT);
+        return base_url('common/' . UPLOAD_IMAGE_DEFAULT);
     }
 }
 
@@ -547,7 +547,7 @@ if (!function_exists('image_default_path')) {
             return get_upload_path(config_item('image_none'));
         }
 
-        return ROOTPATH.'public/common/'.UPLOAD_IMAGE_DEFAULT;
+        return ROOTPATH . 'public/common/' . UPLOAD_IMAGE_DEFAULT;
     }
 }
 
@@ -611,11 +611,11 @@ if (!function_exists('image_action')) {
         if (!is_null($width) && is_numeric($width) && !is_null($height) && is_numeric($height)) {
             $image = sprintf('%dx%d/%s', $width, $height, $image);
         }
-        $image = 'img/'.$image;
+        $image = 'img/' . $image;
 
         $mtime = filemtime($image);
 
-        return image_domain($image)."?$mtime";
+        return image_domain($image) . "?$mtime";
     }
 }
 
@@ -639,11 +639,11 @@ if (!function_exists('image_url')) {
         $image_tool = new \App\Libraries\ImageTool();
         $image_resize = $image_tool->resize($image, $width, $height);
 
-        $image_resize = get_upload_url().$image_resize;
+        $image_resize = get_upload_url() . $image_resize;
 
         $mtime = filemtime($image_resize);
 
-        return image_domain($image_resize)."?$mtime";
+        return image_domain($image_resize) . "?$mtime";
     }
 }
 
@@ -656,7 +656,7 @@ if (!function_exists('image_root')) {
 
         $mtime = filemtime(get_upload_path($image));
 
-        return image_domain(get_upload_url().$image)."?$mtime";
+        return image_domain(get_upload_url() . $image) . "?$mtime";
     }
 }
 
@@ -688,10 +688,10 @@ if (!function_exists('image_thumb_url')) {
             $image_tool->resizeFit($image, $width, $height, $position)
             : $image_tool->resize($image, $width, $height);
 
-        $image_resize = get_upload_url().$image_resize;
+        $image_resize = get_upload_url() . $image_resize;
         $mtime = filemtime($image_resize);
 
-        return image_domain($image_resize)."?$mtime";
+        return image_domain($image_resize) . "?$mtime";
     }
 }
 
@@ -714,11 +714,11 @@ if (!function_exists('img_alt')) {
             $params['foreground'] = $foreground;
         }
         $params['height'] = (empty($params['height'])) ? $params['width'] : $params['height'];
-        $params['text'] = (empty($params['text'])) ? $params['width'].' x '.$params['height'] : $params['text'];
+        $params['text'] = (empty($params['text'])) ? $params['width'] . ' x ' . $params['height'] : $params['text'];
         $params['background'] = (empty($params['background'])) ? 'CCCCCC' : $params['background'];
         $params['foreground'] = (empty($params['foreground'])) ? '969696' : $params['foreground'];
 
-        return '<img src="'.base_url('img-alt').'/'.$params['width'].'x'.$params['height'].'/'.$params['background'].'/'.$params['foreground'].'?text='.$params['text'].'" alt="CatCool CMS">';
+        return '<img src="' . base_url('img-alt') . '/' . $params['width'] . 'x' . $params['height'] . '/' . $params['background'] . '/' . $params['foreground'] . '?text=' . $params['text'] . '" alt="CatCool CMS">';
     }
 }
 
@@ -741,11 +741,11 @@ if (!function_exists('img_alt_url')) {
             $params['foreground'] = $foreground;
         }
         $params['height'] = (empty($params['height'])) ? $params['width'] : $params['height'];
-        $params['text'] = (empty($params['text'])) ? $params['width'].' x '.$params['height'] : $params['text'];
+        $params['text'] = (empty($params['text'])) ? $params['width'] . ' x ' . $params['height'] : $params['text'];
         $params['background'] = (empty($params['background'])) ? 'CCCCCC' : $params['background'];
         $params['foreground'] = (empty($params['foreground'])) ? '969696' : $params['foreground'];
 
-        return  base_url('img-alt').'/'.$params['width'].'x'.$params['height'].'/'.$params['background'].'/'.$params['foreground'].'?text='.$params['text'];
+        return  base_url('img-alt') . '/' . $params['width'] . 'x' . $params['height'] . '/' . $params['background'] . '/' . $params['foreground'] . '?text=' . $params['text'];
     }
 }
 
@@ -764,7 +764,7 @@ if (!function_exists('get_image_data_url')) {
         curl_setopt($ch, CURLOPT_HEADER, 0);
         $response = curl_exec($ch);
         curl_close($ch);
-        $base64 = 'data:image/'.$extension.';base64,'.base64_encode($response);
+        $base64 = 'data:image/' . $extension . ';base64,' . base64_encode($response);
 
         return $base64;
     }
@@ -786,7 +786,7 @@ if (!function_exists('save_image_from_url')) {
         $response = curl_exec($ch);
         curl_close($ch);
 
-        $folder_name = $folder_name.'/'.date('Y');
+        $folder_name = $folder_name . '/' . date('Y');
         $folder_path = get_upload_path($folder_name);
 
         // make dir
@@ -794,11 +794,11 @@ if (!function_exists('save_image_from_url')) {
             mkdir($folder_path, 0775, true);
         }
 
-        $file_new = $url_parts['filename'].'.'.$url_parts['extension'];
+        $file_new = $url_parts['filename'] . '.' . $url_parts['extension'];
 
-        file_put_contents($folder_path.'/'.$file_new, $response);
+        file_put_contents($folder_path . '/' . $file_new, $response);
 
-        return $folder_name.'/'.$file_new;
+        return $folder_name . '/' . $file_new;
     }
 }
 
@@ -820,9 +820,9 @@ if (!function_exists('move_file_tmp')) {
         helper('filesystem');
 
         $upload_path = get_upload_path();
-        $file_info = pathinfo($upload_path.$field_name_tmp);
+        $file_info = pathinfo($upload_path . $field_name_tmp);
 
-        if (!is_file($upload_path.$field_name_tmp)) {
+        if (!is_file($upload_path . $field_name_tmp)) {
             return false;
         }
 
@@ -837,15 +837,15 @@ if (!function_exists('move_file_tmp')) {
         $path = '';
         $directories = explode('/', dirname($name_file_new));
         foreach ($directories as $directory) {
-            $path = $path.'/'.$directory;
+            $path = $path . '/' . $directory;
 
-            if (!is_dir($upload_path.$path)) {
-                mkdir($upload_path.$path, 0777);
+            if (!is_dir($upload_path . $path)) {
+                mkdir($upload_path . $path, 0777);
             }
         }
 
-        if (write_file($upload_path.$file_new, file_get_contents($upload_path.$field_name_tmp))) {
-            delete_files(unlink($upload_path.$field_name_tmp));
+        if (write_file($upload_path . $file_new, file_get_contents($upload_path . $field_name_tmp))) {
+            delete_files(unlink($upload_path . $field_name_tmp));
 
             return $file_new;
         }
@@ -862,10 +862,10 @@ if (!function_exists('delete_cache')) {
 
         if ($is_all) {
             //delete cache html
-            delete_files(WRITEPATH.'cache/html/');
+            delete_files(WRITEPATH . 'cache/html/');
 
             //delete cache smarty
-            delete_files(WRITEPATH.'cache/smarty/cache/');
+            delete_files(WRITEPATH . 'cache/smarty/cache/');
         }
 
         //clear file upload
@@ -892,9 +892,9 @@ if (!function_exists('delete_file_upload_tmp')) {
         foreach ($list_file as $folder => $filename) {
             if (is_array($filename)) {
                 //folder
-                delete_file_upload_tmp($upload_path.DIRECTORY_SEPARATOR.$folder);
+                delete_file_upload_tmp($upload_path . DIRECTORY_SEPARATOR . $folder);
             } else {
-                $file_tmp = $upload_path.DIRECTORY_SEPARATOR.$filename;
+                $file_tmp = $upload_path . DIRECTORY_SEPARATOR . $filename;
                 if (is_file($file_tmp)) {
                     $file_info_tmp = get_file_info($file_tmp);
                     if (time() > $file_info_tmp['date'] + $expired_time) {
@@ -913,11 +913,11 @@ if (!function_exists('delete_file_upload')) {
     {
         $upload_path = get_upload_path();
 
-        if (!is_file($upload_path.$file_name)) {
+        if (!is_file($upload_path . $file_name)) {
             return false;
         }
 
-        return delete_files(unlink($upload_path.$file_name));
+        return delete_files(unlink($upload_path . $file_name));
     }
 }
 
@@ -932,7 +932,7 @@ if (!function_exists('get_folder_upload')) {
     function get_folder_upload($folder_uri, $is_make_ymd_folder = true)
     {
         // get dir path
-        $dir = get_upload_path().$folder_uri;
+        $dir = get_upload_path() . $folder_uri;
 
         // get date
         $sub_folder = ($is_make_ymd_folder) ? date('Ym') : '';
@@ -941,7 +941,7 @@ if (!function_exists('get_folder_upload')) {
             mkdir($dir, 0775, true);
         }
 
-        $dir_all = ($is_make_ymd_folder) ? $dir.'/'.$sub_folder : $dir;
+        $dir_all = ($is_make_ymd_folder) ? $dir . '/' . $sub_folder : $dir;
 
         // get folder path
         $dir_all = str_replace('//', '/', $dir_all);
@@ -951,7 +951,7 @@ if (!function_exists('get_folder_upload')) {
             mkdir($dir_all, 0775, true);
         }
 
-        $sub_dir = $folder_uri.'/'.$sub_folder;
+        $sub_dir = $folder_uri . '/' . $sub_folder;
 
         return [
             'dir' => str_replace('//', '/', $dir_all),
@@ -966,19 +966,19 @@ if (!function_exists('get_upload_path')) {
     function get_upload_path($upload_uri = null)
     {
         if (!empty($upload_uri)) {
-            return ROOTPATH.UPLOAD_FILE_DIR.$upload_uri;
+            return ROOTPATH . UPLOAD_FILE_DIR . $upload_uri;
         }
 
-        return ROOTPATH.UPLOAD_FILE_DIR;
+        return ROOTPATH . UPLOAD_FILE_DIR;
     }
 }
 
 if (!function_exists('get_upload_url')) {
     function get_upload_url($upload_uri = null)
     {
-        $dir = !empty($upload_uri) ? UPLOAD_FILE_DIR.$upload_uri : UPLOAD_FILE_DIR;
+        $dir = !empty($upload_uri) ? UPLOAD_FILE_DIR . $upload_uri : UPLOAD_FILE_DIR;
         $dir = str_ireplace('public/', '', $dir);
-        $dir = preg_replace('@/+$@', '', $dir).'/';
+        $dir = preg_replace('@/+$@', '', $dir) . '/';
 
         return $dir;
     }
@@ -1048,9 +1048,9 @@ if (!function_exists('standar_date')) {
             $date_array = explode($char_standar, $date);
 
             // return date dd/mm/yy
-            $return_date = $date_array[2].$char.$date_array[1].$char.$date_array[0];
+            $return_date = $date_array[2] . $char . $date_array[1] . $char . $date_array[0];
 
-            if ($return_date != $char.$char) {
+            if ($return_date != $char . $char) {
                 return $return_date;
             }
         } else { // insert db
@@ -1063,9 +1063,9 @@ if (!function_exists('standar_date')) {
             $date_array = explode($char, $date);
 
             // return date yyyy/mm/dd
-            $return_date = $date_array[2].$char_standar.$date_array[1].$char_standar.$date_array[0];
+            $return_date = $date_array[2] . $char_standar . $date_array[1] . $char_standar . $date_array[0];
 
-            if ($return_date != $char_standar.$char_standar) {
+            if ($return_date != $char_standar . $char_standar) {
                 return $return_date;
             }
         }
@@ -1089,7 +1089,7 @@ if (!function_exists('format_date')) {
         switch ($style) {
             case 1:
                 if ($today < $date) {
-                    $format_date = 'Hôm nay '.date('H:i', strtotime($date));
+                    $format_date = 'Hôm nay ' . date('H:i', strtotime($date));
                 } else {
                     $format_date = date($format, strtotime($date));
                 }
@@ -1271,7 +1271,7 @@ if (!function_exists('filter_bad_word_comment_content')) {
         static $filter;
 
         if (!$filter) {
-            $filter = file_get_contents(APPPATH.'Modules/Comments/Config/Filter_comment.txt');
+            $filter = file_get_contents(APPPATH . 'Modules/Comments/Config/Filter_comment.txt');
 
             $filter = explode(';', $filter);
 
@@ -1299,15 +1299,15 @@ if (!function_exists('script_global')) {
         $username = !empty(session('user_info.is_admin')) ? session('user_info.username') : session('customer.email');
 
         return '
-            var base_url = "'.base_url().'";
-            var current_url = "'.current_url().'";
-            var image_url = "'.base_url('img').'";
-            var image_root_url = "'.get_upload_url().'";
-            var username = "'.$username.'";
-            var csrf_token = "'.csrf_token().'";
-            var decimal_point = "'.config_item('decimal_point').'";
-            var thousand_point = "'.config_item('thousand_point').'";
-            var decimal_place = "'.config_item('decimal_place').'";
+            var base_url = "' . base_url() . '";
+            var current_url = "' . current_url() . '";
+            var image_url = "' . base_url('img') . '";
+            var image_root_url = "' . get_upload_url() . '";
+            var username = "' . $username . '";
+            var csrf_token = "' . csrf_token() . '";
+            var decimal_point = "' . config_item('decimal_point') . '";
+            var thousand_point = "' . config_item('thousand_point') . '";
+            var decimal_place = "' . config_item('decimal_place') . '";
         ';
     }
 }
@@ -1405,9 +1405,9 @@ if (!function_exists('get_avatar')) {
         $user_gender = session('user_info.user_gender');
         $image_ext = '.jpg';
 
-        $avatar = empty($avatar) ? 'users/'.$username.$image_ext : $avatar;
+        $avatar = empty($avatar) ? 'users/' . $username . $image_ext : $avatar;
         if (!is_file(get_upload_path($avatar))) {
-            return ($user_gender == GENDER_MALE) ? base_url('common/'.config_item('avatar_default_male')) : base_url('common/'.config_item('avatar_default_female'));
+            return ($user_gender == GENDER_MALE) ? base_url('common/' . config_item('avatar_default_male')) : base_url('common/' . config_item('avatar_default_female'));
         }
 
         return image_url($avatar, $width, $height);
@@ -1425,7 +1425,7 @@ if (!function_exists('filter_sort_array')) {
         $sort_count = count($list);
 
         foreach ($list as $value) {
-            $key = 'id_'.$value['id'];
+            $key = 'id_' . $value['id'];
             $data[$key][$key_name] = $value['id'];
             $data[$key]['sort_order'] = $sort_count;
             $data[$key]['parent_id'] = !empty($parent_id) ? $parent_id : null;
@@ -1548,14 +1548,12 @@ if (!function_exists('add_meta')) {
             } else {
                 if (!empty($data['is_disable_robot'])) {
                     $theme->addMeta('robots', 'noindex,nofollow');
-                }
-                else {
+                } else {
                     $theme->addMeta('robots', 'index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large');
                 }
                 if (!empty($data['is_disable_follow'])) {
                     $theme->addMeta('googlebot', 'noindex,nofollow');
-                }
-                else {
+                } else {
                     $theme->addMeta('googlebot', 'index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large');
                 }
             }
@@ -1615,7 +1613,7 @@ if (!function_exists('add_meta')) {
                         $theme->addMeta('og:image:width', $image_data[0]);
                         $theme->addMeta('og:image:height', $image_data[1]);
                     } else {
-                        log_message('error', 'add_meta - image fb null'.implode('||', $data));
+                        log_message('error', 'add_meta - image fb null' . implode('||', $data));
                     }
                 } else {
                     $image_fb_info = get_upload_path($image_fb);
@@ -1626,7 +1624,7 @@ if (!function_exists('add_meta')) {
                             $theme->addMeta('og:image:width', $image_data[0]);
                             $theme->addMeta('og:image:height', $image_data[1]);
                         } else {
-                            log_message('error', 'add_meta - image fb null'.implode('||', $data));
+                            log_message('error', 'add_meta - image fb null' . implode('||', $data));
                         }
                     }
                 }
@@ -1706,28 +1704,28 @@ if (!function_exists('script_google_search')) {
                         "@type": "NewsArticle",
                         "mainEntityOfPage": {
                             "@type":"WebPage",
-                            "@id":"'.$detail['url'].'"
+                            "@id":"' . $detail['url'] . '"
                         },
-                        "headline": "'.htmlspecialchars($name, ENT_QUOTES).'",
-                        "description": "'.htmlspecialchars($description, ENT_QUOTES).'",
+                        "headline": "' . htmlspecialchars($name, ENT_QUOTES) . '",
+                        "description": "' . htmlspecialchars($description, ENT_QUOTES) . '",
                         "image": {
                             "@type": "ImageObject",
-                            "url": "'.$image.'",
-                            "width": '.$image_data[0].',
-                            "height": '.$image_data[1].'
+                            "url": "' . $image . '",
+                            "width": ' . $image_data[0] . ',
+                            "height": ' . $image_data[1] . '
                         },
-                        "datePublished": "'.$detail['published_time'].'",
-                        "dateModified": "'.$detail['modified_time'].'",
+                        "datePublished": "' . $detail['published_time'] . '",
+                        "dateModified": "' . $detail['modified_time'] . '",
                         "author": {
                             "@type": "Person",
-                            "name": "'.$detail['author'].'"
+                            "name": "' . $detail['author'] . '"
                         },
                         "publisher": {
                             "@type": "Organization",
-                            "name": "'.str_ireplace('www.', '', base_url()).'",
+                            "name": "' . str_ireplace('www.', '', base_url()) . '",
                             "logo": {
                             "@type": "ImageObject",
-                                "url": "'.base_url().(config_item('favicon_16_16') ?? config_item('favicon')).'",
+                                "url": "' . base_url() . (config_item('favicon_16_16') ?? config_item('favicon')) . '",
                                 "width": 60,
                                 "height": 60
                             }
@@ -1735,7 +1733,7 @@ if (!function_exists('script_google_search')) {
                     }
                 </script>';
             } else {
-                log_message('warning', 'script_google_search - image data null'.implode('--||--', $detail));
+                log_message('warning', 'script_google_search - image data null' . implode('--||--', $detail));
             }
         }
 
@@ -1749,8 +1747,8 @@ if (!function_exists('script_google_search')) {
                         "@type": "ListItem",
                         "position": 1,
                         "item": {
-                        "@id": "'.base_url().'",
-                            "name": "'.lang('General.text_home').'"
+                        "@id": "' . base_url() . '",
+                            "name": "' . lang('General.text_home') . '"
                         }
                     },';
 
@@ -1760,17 +1758,17 @@ if (!function_exists('script_google_search')) {
             foreach ($breadcrumb_list as $breadcrumb) {
                 $breadcrumb_str[] = '{
                     "@type": "ListItem",
-                    "position": '.$position.',
+                    "position": ' . $position . ',
                     "item": {
-                        "@id": "'.$breadcrumb['url'].'",
-                        "name": "'.str_ireplace('"', "'", $breadcrumb['name']).'"
+                        "@id": "' . $breadcrumb['url'] . '",
+                        "name": "' . str_ireplace('"', "'", $breadcrumb['name']) . '"
                     }
                 }';
 
                 ++$position;
             }
 
-            $script_str .= implode(',', $breadcrumb_str).
+            $script_str .= implode(',', $breadcrumb_str) .
                 ']
             }
             </script>';
@@ -1843,9 +1841,9 @@ if (!function_exists('get_seo_extension')) {
             return $url;
         }
 
-        if (strpos($url, '.'.SEO_EXTENSION) !== false) {
-            $url = str_ireplace('.'.SEO_EXTENSION, '', $url);
-            $url = slugify($url).'.'.SEO_EXTENSION;
+        if (strpos($url, '.' . SEO_EXTENSION) !== false) {
+            $url = str_ireplace('.' . SEO_EXTENSION, '', $url);
+            $url = slugify($url) . '.' . SEO_EXTENSION;
 
             return $url;
         }
@@ -1889,7 +1887,8 @@ if (!function_exists('back_to')) {
             return $previous_url;
         }
 
-        if (previous_url() == $current_url || strpos($previous_url, $manage_url) === false
+        if (
+            previous_url() == $current_url || strpos($previous_url, $manage_url) === false
             || strpos($previous_url, 'add') !== false
             || strpos($previous_url, 'edit') !== false
             || strpos($previous_url, 'delete') !== false
@@ -1970,7 +1969,7 @@ if (!function_exists('get_module')) {
 
 if (!function_exists('clean')) {
     function clean($str)
-    {       
+    {
         $str = mb_convert_encoding($str, "UTF-8", mb_detect_encoding($str));
         $str = str_replace("&nbsp;", " ", $str);
         $str = preg_replace('/\s+/', ' ', $str);
@@ -1985,7 +1984,7 @@ if (!function_exists('auto_table_of_contents')) {
         try {
             // Adding ID slug for heading
             $content = preg_replace_callback('/(\<h[1-6](.*?))\>/i', function ($matches) {
-                $matches[0] = str_replace($matches[2], "", $matches[0]);      
+                $matches[0] = str_replace($matches[2], "", $matches[0]);
                 return $matches[0];
             }, $content);
 
@@ -2104,7 +2103,7 @@ if (!function_exists('get_domain')) {
     {
         $pieces = parse_url($url);
         $domain = isset($pieces['host']) ? $pieces['host'] : '';
-        if(preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)){
+        if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
             return $regs['domain'];
         }
         return FALSE;
