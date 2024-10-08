@@ -619,6 +619,10 @@ if (!function_exists('image_action')) {
     }
 }
 
+/**
+ * Hien thi hinh anh goc khong cat hinh
+ * 
+ */
 if (!function_exists('image_url')) {
     function image_url($image = null, $width = null, $height = null)
     {
@@ -665,14 +669,12 @@ if (!function_exists('image_thumb_url')) {
      * @param null   $image
      * @param null   $width
      * @param null   $height
-     * @param bool   $is_fit
-     * @param string $position : "top-left", "top", "top-right", "left", "center", "right", "bottom-left", "bottom", "bottom-right"
      *
      * @return string
      */
-    function image_thumb_url($image = null, $width = null, $height = null, $is_fit = false, $position = 'center')
+    function image_thumb_url($image = null, $width = null, $height = null)
     {
-        if (stripos($image, 'https://') !== false || stripos($image, 'http://') !== false) {
+        if (!empty($image) && (stripos($image, 'https://') !== false || stripos($image, 'http://') !== false)) {
             return $image;
         }
 
@@ -682,6 +684,9 @@ if (!function_exists('image_thumb_url')) {
         if (!is_file(get_upload_path($image))) {
             return image_default_url();
         }
+
+        $is_fit = config_item('is_fitting_image') ?? false;
+        $position = config_item('is_fitting_image') ?? 'center'; //$position : "top-left", "top", "top-right", "left", "center", "right", "bottom-left", "bottom", "bottom-right"
 
         $image_tool = new \App\Libraries\ImageTool();
         $image_resize = $is_fit ?
@@ -1604,7 +1609,7 @@ if (!function_exists('add_meta')) {
             $theme->addMeta('og:description', $description);
 
             if (!empty($image_fb)) {
-                $theme->addMeta('og:image', image_thumb_url($image_fb, 600, 315));
+                $theme->addMeta('og:image', image_url($image_fb, 600, 315));
 
                 if (strpos($image_fb, 'http://') !== false || strpos($image_fb, 'https://') !== false) {
                     $image_data = getimagesize($image_fb);
@@ -1629,7 +1634,7 @@ if (!function_exists('add_meta')) {
                     }
                 }
 
-                $theme->addMeta('og:twitter:image', image_thumb_url($image_fb, 600, 315), 'meta', ['property' => 'twitter:image']);
+                $theme->addMeta('og:twitter:image', image_url($image_fb, 600, 315), 'meta', ['property' => 'twitter:image']);
             }
 
             $theme->addMeta('og:twitter:card', 'summary_large_image', 'meta', ['property' => 'twitter:card']);
@@ -1688,7 +1693,7 @@ if (!function_exists('script_google_search')) {
                     $image_data = getimagesize($image_info);
                 }
 
-                $image = image_thumb_url($image, 300, 190);
+                $image = image_url($image, 300, 190);
             }
 
             $name = $detail['name'] ?? null;

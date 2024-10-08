@@ -68,14 +68,13 @@
 		<div class="col-12 col-sm-3"></div>
 		<div class="col-12 col-sm-8 col-lg-6 form-text">{lang('ConfigAdmin.help_file_encrypt_name')}</div>
 	</div>
-	
 
-	<div class="border-bottom lead mx-3 pb-1 my-3 fw-bold">Image</div>
+	<div class="border-bottom lead mx-3 pb-1 my-3 fw-bold">{lang('ConfigAdmin.text_image_default')}</div>
 	<div class="form-group row mb-3">
 		<label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_image_none')}</label>
 		<div class="col-12 col-sm-8 col-lg-6">
 			<a href="javascript:void(0);" id="image_none" data-target="input_image_none" data-thumb="load_image_none" data-bs-toggle="image" data-type="image" class="mx-0 mt-1">
-				<img src="{if !empty(old('image_none', $settings.image_none))}{image_thumb_url(old('image_none', $settings.image_none))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1" alt="" title="" id="load_image_none" data-placeholder="{image_default_url()}"/>
+				<img src="{if !empty(old('image_none', $settings.image_none))}{image_url(old('image_none', $settings.image_none))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1" alt="" title="" id="load_image_none" data-placeholder="{image_default_url()}"/>
 				<div class="btn-group w-100 mt-1" role="group">
 					<button type="button" id="button-image-logo" class="button-image btn btn-xs btn-primary" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
 					<button type="button" id="button-clear-logo" class="button-clear btn btn-xs btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>
@@ -124,6 +123,58 @@
 			</small>
 		</div>
 	</div>
+
+	<div class="border-bottom lead mx-3 pb-1 my-3 fw-bold">{lang('ConfigAdmin.text_image_size')}</div>
+
+	<div class="form-group row">
+		<label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_is_fitting_image">{lang('ConfigAdmin.text_enable_fitting_image')}</label>
+		<div class="col-12 col-sm-8 col-lg-6 form-control-lg py-1" style="min-height: 25px;">
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" name="is_fitting_image" 
+					id="input_is_fitting_image"
+					{set_checkbox('is_fitting_image', 1, $settings.is_fitting_image|default:false)} value="1">
+			</div>
+		</div>
+	</div>
+	<div class="row mb-3" style="margin-top: -5px;">
+		<div class="col-12 col-sm-3"></div>
+		<div class="col-12 col-sm-8 col-lg-6 form-text">{lang('ConfigAdmin.help_enable_fitting_image')}</div>
+	</div>
+
+	<div class="form-group row mb-3">
+		<label class="col-12 col-sm-3 col-form-label text-sm-end required-label" for="input_fitting_image_position">{lang('ConfigAdmin.text_fitting_image_position')}</label>
+		<div class="col-12 col-sm-8 col-lg-6">
+			<select name="fitting_image_position" id="input_fitting_image_position" class="form-control">
+				<option value="'top-left" {if old('fitting_image_position', $settings.fitting_image_position) eq 'top-left'}selected="selected"{/if}>top-left</option>
+				<option value="'top" {if old('fitting_image_position', $settings.fitting_image_position) eq 'top'}selected="selected"{/if}>top</option>
+				<option value="'top-right" {if old('fitting_image_position', $settings.fitting_image_position) eq 'top-right'}selected="selected"{/if}>top-right</option>
+				<option value="'left" {if old('fitting_image_position', $settings.fitting_image_position) eq 'left'}selected="selected"{/if}>left</option>
+				<option value="'center" {if empty(old('fitting_image_position', $settings.fitting_image_position)) || old('fitting_image_position', $settings.fitting_image_position) eq 'center'}selected="selected"{/if}>center</option>
+				<option value="'right" {if old('fitting_image_position', $settings.fitting_image_position) eq 'right'}selected="selected"{/if}>right</option>
+				<option value="'bottom-left" {if old('fitting_image_position', $settings.fitting_image_position) eq 'bottom-left'}selected="selected"{/if}>bottom-left</option>
+				<option value="'bottom" {if old('fitting_image_position', $settings.fitting_image_position) eq 'bottom'}selected="selected"{/if}>bottom</option>
+				<option value="'bottom-right" {if old('fitting_image_position', $settings.fitting_image_position) eq 'bottom-right'}selected="selected"{/if}>bottom-right</option>
+			</select>
+		</div>
+		
+	</div>
+
+	<div class="form-group row mb-3">
+		<label class="col-12 col-sm-3 col-form-label text-sm-end required-label">{lang('ConfigAdmin.text_article_image_thumb')}</label>
+		<div class="col-12 col-sm-8 col-lg-6">
+			<div class="input-group has-validation">
+				<input type="text" name="article_image_thumb_width" value="{old('article_image_thumb_width', $settings.article_image_thumb_width)}" id="input_article_image_thumb_width" class="form-control {if validation_show_error("article_image_thumb_width")}is-invalid{/if}" placeholder="{lang('ConfigAdmin.text_image_thumbnail_large_width')}">
+				<input type="text" name="article_image_thumb_height" value="{old('article_image_thumb_height', $settings.article_image_thumb_height)}" id="input_article_image_thumb_height" class="form-control {if validation_show_error("article_image_thumb_height")}is-invalid{/if}" placeholder="{lang('ConfigAdmin.text_image_thumbnail_large_height')}">
+				<div class="invalid-feedback">
+					{validation_show_error("article_image_thumb_width")}
+					{validation_show_error("article_image_thumb_height")}
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="border-bottom lead mx-3 pb-1 my-3 fw-bold">{lang('ConfigAdmin.text_image_watermark')}</div>
 	<div class="form-group row">
 		<label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_image_watermar_enable">{lang('ConfigAdmin.text_image_watermark')}</label>
 		<div class="col-12 col-sm-8 col-lg-6">
@@ -165,7 +216,7 @@
 					</label>
 
 					<a href="javascript:void(0);" id="image_watermark_path" data-target="input_image_watermark_path" data-thumb="load_image_watermark_path" data-bs-toggle="image" data-type="image" class="mx-0 mt-1">
-						<img src="{if !empty(old('image_watermark_path', $settings.image_watermark_path))}{image_thumb_url(old('image_watermark_path', $settings.image_watermark_path))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1" alt="" title="" id="load_image_watermark_path" data-placeholder="{image_default_url()}"/>
+						<img src="{if !empty(old('image_watermark_path', $settings.image_watermark_path))}{image_url(old('image_watermark_path', $settings.image_watermark_path))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1" alt="" title="" id="load_image_watermark_path" data-placeholder="{image_default_url()}"/>
 						<div class="btn-group w-100 mt-1" role="group">
 							<button type="button" id="button-image-logo" class="button-image btn btn-xs btn-primary" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
 							<button type="button" id="button-clear-logo" class="button-clear btn btn-xs btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>

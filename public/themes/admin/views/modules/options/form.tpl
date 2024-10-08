@@ -114,7 +114,7 @@
                                                 <td class="text-center">
 
                                                     <a href="javascript:void(0);" id="option_value_{$option_value_row}_image" data-target="input_option_value_{$option_value_row}_image" data-thumb="option_value_{$option_value_row}_load_image_url" data-type="image" data-bs-toggle="image">
-                                                        <img src="{if !empty($option_value.image)}{image_thumb_url($option_value.image)}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="option_value_{$option_value_row}_load_image_url" data-placeholder="{image_default_url()}"/>
+                                                        <img src="{if !empty($option_value.image)}{image_url($option_value.image)}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="option_value_{$option_value_row}_load_image_url" data-placeholder="{image_default_url()}"/>
                                                         <div class="btn-group w-100 mt-1" role="group">
                                                             <button type="button" id="button-image-logo" class="button-image btn btn-xs btn-primary" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
                                                             <button type="button" id="button-clear-logo" class="button-clear btn btn-xs btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>

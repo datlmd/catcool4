@@ -83,7 +83,7 @@
 		<div class="col-12 col-sm-8 col-lg-6">
 			<a href="javascript:void(0);" id="store_image" data-target="input_store_image" data-thumb="load_store_image"
 				data-type="image" data-bs-toggle="image" class="mx-0 mt-1">
-				<img src="{if !empty(old('store_image', $settings.store_image))}{image_thumb_url(old('store_image', $settings.store_image))}{else}{image_default_url()}{/if}"
+				<img src="{if !empty(old('store_image', $settings.store_image))}{image_url(old('store_image', $settings.store_image))}{else}{image_default_url()}{/if}"
 					class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_store_image"
 					data-placeholder="{image_default_url()}" />
 				<div class="btn-group w-100 mt-1" role="group">

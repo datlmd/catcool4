@@ -54,7 +54,7 @@ class Facebook extends Controller
 
                     $thumbnail = '';
                     if (!empty($value['images']['thumb'])) {
-                        $thumbnail = image_thumb_url($value['images']['thumb'], 200, 130);
+                        $thumbnail = image_url($value['images']['thumb'], 200, 130);
                     } else {
                         $thumbnail = $value['images']['robot'];
                     }

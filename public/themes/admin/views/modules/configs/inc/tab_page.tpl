@@ -32,7 +32,7 @@
 		<label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_logo')}</label>
 		<div class="col-12 col-sm-8 col-lg-6">
 			<a href="javascript:void(0);" id="image_logo_url" data-target="input_image_logo_url" data-thumb="load_image_logo_url" data-type="image" data-bs-toggle="image" class="mx-0 mt-1">
-				<img src="{if !empty(old('image_logo_url', $settings.image_logo_url))}{image_thumb_url(old('image_logo_url', $settings.image_logo_url))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_image_logo_url" data-placeholder="{image_default_url()}"/>
+				<img src="{if !empty(old('image_logo_url', $settings.image_logo_url))}{image_url(old('image_logo_url', $settings.image_logo_url))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_image_logo_url" data-placeholder="{image_default_url()}"/>
 				<div class="btn-group w-100 mt-1" role="group">
 					<button type="button" id="button-image-logo" class="button-image btn btn-xs btn-primary" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
 					<button type="button" id="button-clear-logo" class="button-clear btn btn-xs btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>
@@ -45,7 +45,7 @@
 {*		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_icon')}</div>*}
 {*		<div class="col-12 col-sm-8 col-lg-6">*}
 {*			<a href="javascript:void(0);" id="image_icon_url" data-target="input_image_icon_url" data-thumb="load_image_icon_url" data-type="image" data-bs-toggle="image" class="mx-0 mt-1">*}
-{*				<img src="{if !empty(old('image_icon_url', $settings.image_icon_url))}{image_thumb_url(old('image_icon_url', $settings.image_icon_url))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1" alt="" title="" id="load_image_icon_url" data-placeholder="{image_default_url()}"/>*}
+{*				<img src="{if !empty(old('image_icon_url', $settings.image_icon_url))}{image_url(old('image_icon_url', $settings.image_icon_url))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1" alt="" title="" id="load_image_icon_url" data-placeholder="{image_default_url()}"/>*}
 {*				<div class="btn-group w-100 mt-1" role="group">*}
 {*					<button type="button" id="button-image-logo" class="button-image btn btn-xs btn-primary" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>*}
 {*					<button type="button" id="button-clear-logo" class="button-clear btn btn-xs btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>*}

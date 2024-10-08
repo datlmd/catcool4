@@ -102,6 +102,8 @@ class Configs extends AdminController
                 $this->validator->setRule('file_ext_allowed', lang('ConfigAdmin.text_file_ext_allowed'), 'required');
                 $this->validator->setRule('file_max_width', lang('ConfigAdmin.text_file_max_width'), 'required|is_natural');
                 $this->validator->setRule('file_max_height', lang('ConfigAdmin.text_file_max_height'), 'required|is_natural');
+                $this->validator->setRule('article_image_thumb_width', lang('ConfigAdmin.text_article_image_thumb'), 'required|is_natural');
+                $this->validator->setRule('article_image_thumb_height', lang('ConfigAdmin.text_article_image_thumb'), 'required|is_natural');
                 break;
             case 'tab_local':
                 $this->validator->setRule('default_locale', lang('Admin.text_language'), 'required');
@@ -137,6 +139,7 @@ class Configs extends AdminController
                 case 'tab_image':
                     $data_settings['file_ext_allowed'] = preg_replace('/\s+/', '|', trim($_POST['file_ext_allowed']));
                     $data_settings['file_mime_allowed'] = preg_replace('/\s+/', '|', trim($_POST['file_mime_allowed']));
+                    $data_settings['is_fitting_image'] = !empty($this->request->getPost('is_fitting_image')) ? STATUS_ON : STATUS_OFF;
                     $data_settings['file_encrypt_name'] = !empty($this->request->getPost('file_encrypt_name')) ? STATUS_ON : STATUS_OFF;
                     $data_settings['enable_resize_image'] = !empty($this->request->getPost('enable_resize_image')) ? STATUS_ON : STATUS_OFF;
                     $data_settings['image_watermar_enable'] = !empty($this->request->getPost('image_watermar_enable')) ? STATUS_ON : STATUS_OFF;

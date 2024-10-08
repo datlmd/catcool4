@@ -122,7 +122,7 @@
             <div class="container-xxl d-flex justify-content-between">
                 <div class="header-logo">
                     <a href="{site_url()}">
-                        <img alt="{config_item('site_name')}" class="" src="{image_thumb_url(config_item('image_logo_url'), 100, 80)}">
+                        <img alt="{config_item('site_name')}" class="" src="{image_url(config_item('image_logo_url'), 100, 80)}">
                     </a>
                 </div>
 

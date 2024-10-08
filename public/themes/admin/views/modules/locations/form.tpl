@@ -94,7 +94,7 @@
                                         </label>
                                         <div class="col-12 col-sm-8 col-lg-7">
                                             <a href="javascript:void(0);" id="image" data-target="input_image" data-thumb="load_image" data-type="image" data-bs-toggle="image" class="mx-0 mt-1">
-                                                <img src="{if !empty(old('image', $edit_data.image))}{image_thumb_url(old('image', $edit_data.image))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_image" data-placeholder="{image_default_url()}"/>
+                                                <img src="{if !empty(old('image', $edit_data.image))}{image_url(old('image', $edit_data.image))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load_image" data-placeholder="{image_default_url()}"/>
                                                 <div class="btn-group w-100 mt-1" role="group">
                                                     <button type="button" class="button-image btn btn-xs btn-primary" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
                                                     <button type="button" class="button-clear btn btn-xs btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>

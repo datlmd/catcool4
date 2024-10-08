@@ -26,7 +26,7 @@
                     <div id="product_variant_{$vof_variant_row}_variant_values_{$vof_variant_value_row}_image" class="text-center drop-drap-image-content" {if empty($data_variant_value.image)}style="display: none;"{/if}>
                         <div class="drop-drap-image">
                             <a href="{image_url($data_variant_value.image|default:"")}" data-lightbox="products">
-                                <img src="{image_thumb_url($data_variant_value.image|default:"")}"
+                                <img src="{image_url($data_variant_value.image|default:"")}"
                                      class="img-thumbnail"
                                 >
                             </a>
