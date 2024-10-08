@@ -1,4 +1,6 @@
-<?php namespace App\Libraries;
+<?php
+
+namespace App\Libraries;
 
 use Intervention\Image\ImageManager;
 
@@ -95,6 +97,8 @@ class ImageTool
             }
         }
 
+        $image_new = str_replace(' ', '%20', $image_new);  // fix bug when attach image on email (gmail.com). it is automatically changing space from " " to +
+
         return $image_new;
     }
 
@@ -154,6 +158,8 @@ class ImageTool
 
             $image_new = $this->thumbFit($image_old, $image_new, $width, $height, $position);
         }
+
+        $image_new = str_replace(' ', '%20', $image_new);  // fix bug when attach image on email (gmail.com). it is automatically changing space from " " to +
 
         return $image_new;
     }
@@ -265,9 +271,7 @@ class ImageTool
             \Config\Services::image($this->_driver)->withFile($this->dir_image_path . $file_name)
                 ->fit($width, $height, $position)
                 ->save($this->dir_image_path . $file_new, $this->_quality);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             log_message('error', $e->getMessage());
             $this->_error = $e->getMessage();
             return false;
@@ -284,13 +288,12 @@ class ImageTool
 
         try {
             // create an image manager instance with favored driver
-            $manager = new ImageManager();//['driver' => $this->_driver]
+            $manager = new ImageManager(); //['driver' => $this->_driver]
 
             // to finally create image instances
             $manager->make($this->dir_image_path . $file_name)
                 ->crop($width, $height, $xOffset, $yOffset)
                 ->save($this->dir_image_path . $file_name, $this->_quality);
-
         } catch (\Exception $e) {
             log_message('error', $e->getMessage());
             $this->_error = $e->getMessage();
@@ -339,10 +342,11 @@ class ImageTool
         }
 
         try {
-            if (!empty(config_item('image_watermark_type'))
+            if (
+                !empty(config_item('image_watermark_type'))
                 && config_item('image_watermark_type') == 'image'
                 && !empty($watermark_path
-                && is_file($this->dir_image_path . $watermark_path))
+                    && is_file($this->dir_image_path . $watermark_path))
             ) {
                 $image_mgr     = new ImageManager();
                 $watermark_mgr = new ImageManager();
@@ -352,7 +356,7 @@ class ImageTool
                     ->opacity(config_item('image_watermark_opacity'));
 
                 if ($watermark_img->width() > $image_new->width() || $watermark_img->height() > $image_new->height()) {
-                    $watermark_img->resize($image_new->width() , $image_new->height(), function ($constraint) {
+                    $watermark_img->resize($image_new->width(), $image_new->height(), function ($constraint) {
                         $constraint->aspectRatio();
                         $constraint->upsize();
                     });
@@ -360,8 +364,8 @@ class ImageTool
 
                 $image_new->insert($watermark_img, $position, config_item('image_watermark_vrt_offset'), config_item('image_watermark_hor_offset'))
                     ->save($this->dir_image_path . $file_name, $this->_quality);
-
-            } elseif (!empty(config_item('image_watermark_type'))
+            } elseif (
+                !empty(config_item('image_watermark_type'))
                 && config_item('image_watermark_type') == 'text'
                 && !empty($watermark_text)
             ) {

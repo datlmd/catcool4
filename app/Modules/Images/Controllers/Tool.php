@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Images\Controllers;
+<?php
+
+namespace App\Modules\Images\Controllers;
 
 use App\Controllers\MyController;
 
@@ -33,19 +35,23 @@ class Tool extends MyController
         }
 
         $params['height']     = (empty($params['height'])) ? $params['width'] : $params['height'];
-        $params['text']       = (empty($this->request->getGet("text"))) ? $params['width'].'x'. $params['height'] : $this->request->getGet("text");
         $params['background'] = (empty($background)) ? 'CCCCCC' : $background;
         $params['foreground'] = (empty($foreground)) ? '969696' : $foreground;
 
-        $alt_url = 'http://placehold.it/'. $params['width'].'x'. $params['height'].'/'.$params['background'].'/'.$params['foreground'].'?text='. $params['text'];
+        $params['text'] = (empty($this->request->getGet("text"))) ? $params['width'] . ' x ' . $params['height'] : $this->request->getGet("text");
+        $params['text'] = str_replace(' ', '%20', $params['text']);
+
+        $alt_url = 'http://via.placeholder.com/' . $params['width'] . 'x' . $params['height'] . '/' . $params['background'] . '/' . $params['foreground'] . '?text=' . $params['text'];
 
         $client = \Config\Services::curlrequest();
         $response_alt = $client->get($alt_url);
 
         $this->response
             ->setStatusCode(200)
-            ->setContentType(preg_replace('/\s+/','', $response_alt->getHeader('Content-Type')->getValue()))
-            ->setBody(file_get_contents_ssl($alt_url))
+            //->setContentType(preg_replace('/\s+/','', $response_alt->header('Content-Type')->getValue()))
+            ->setContentType(preg_replace('/\s+/', '', 'image/png'))
+            ->setBody($response_alt->getBody())
+            //->setBody(file_get_contents_ssl($alt_url))
             ->send();
     }
 
