@@ -90,13 +90,13 @@ class Categories extends AdminController
 
             //save route url
             $seo_urls = $this->request->getPost('seo_urls');
-            $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
+            //$this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
 
             $add_data_lang = $this->request->getPost('lang');
             foreach (list_language_admin() as $value) {
                 $add_data_lang[$value['id']]['language_id'] = $value['id'];
                 $add_data_lang[$value['id']]['category_id'] = $id;
-                $add_data_lang[$value['id']]['slug'] = !empty($seo_urls[$value['id']]['route']) ? get_seo_extension($seo_urls[$value['id']]['route']) : '';
+                $add_data_lang[$value['id']]['slug'] = !empty($seo_urls[$value['id']]['route']) ? clear_seo_extension(get_seo_extension($seo_urls[$value['id']]['route'])) : '';
 
                 $this->model_lang->insert($add_data_lang[$value['id']]);
             }
@@ -129,13 +129,13 @@ class Categories extends AdminController
 
             //save route url
             $seo_urls = $this->request->getPost('seo_urls');
-            $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
+            //$this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
 
             $edit_data_lang = $this->request->getPost('lang');
             foreach (list_language_admin() as $value) {
                 $edit_data_lang[$value['id']]['language_id'] = $value['id'];
                 $edit_data_lang[$value['id']]['category_id'] = $id;
-                $edit_data_lang[$value['id']]['slug'] = !empty($seo_urls[$value['id']]['route']) ? get_seo_extension($seo_urls[$value['id']]['route']) : '';
+                $edit_data_lang[$value['id']]['slug'] = !empty($seo_urls[$value['id']]['route']) ? clear_seo_extension(get_seo_extension($seo_urls[$value['id']]['route'])) : '';
 
                 if (!empty($this->model_lang->where(['category_id' => $id, 'language_id' => $value['id']])->find())) {
                     $this->model_lang->where('language_id', $value['id'])->update($id, $edit_data_lang[$value['id']]);
@@ -189,9 +189,9 @@ class Categories extends AdminController
             $this->model->delete($ids);
 
             //xoa slug ra khoi route
-            foreach ($list_delete as $value) {
-                $this->model_route->deleteByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $value['category_id']));
-            }
+            // foreach ($list_delete as $value) {
+            //     $this->model_route->deleteByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $value['category_id']));
+            // }
 
             //reset cache
             $this->model->deleteCache();
@@ -239,7 +239,7 @@ class Categories extends AdminController
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form'] = lang('CategoryAdmin.text_edit');
-            $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$id");
+            $breadcrumb_url = site_url(self::MANAGE_URL . "/edit/$id");
 
             $data_form = $this->model->find($id);
             if (empty($data_form)) {
@@ -251,16 +251,22 @@ class Categories extends AdminController
             $article_category_languages = $this->model_lang->where('category_id', $id)->findAll();
             foreach ($article_category_languages as $value) {
                 $data_form['lang'][$value['language_id']] = $value;
+
+                $seo_urls = [
+                    'route' => $value['slug'],
+                    'language_id' => $value['language_id']
+                ];
+                $data['seo_urls'][$value['language_id']] = $seo_urls;
             }
 
             //lay danh sach seo url tu route
-            $data['seo_urls'] = $this->model_route->getListByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
+            //$data['seo_urls'] = $this->model_route->getListByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
 
             // display the edit user form
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('CategoryAdmin.text_add');
-            $breadcrumb_url = site_url(self::MANAGE_URL.'/add');
+            $breadcrumb_url = site_url(self::MANAGE_URL . '/add');
         }
 
         $data['errors'] = $this->errors;
@@ -281,11 +287,11 @@ class Categories extends AdminController
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         foreach (list_language_admin() as $value) {
-            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name').' ('.$value['name'].')', 'required');
+            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name'] . ')', 'required');
             $this->validator->setRule(
                 sprintf('seo_urls.%s.route', $value['id']),
                 sprintf('%s (%s)', lang('Admin.text_slug'), $value['name']),
-                sprintf('checkRoute[%s,%s,%s,%s]', $this->request->getPost('seo_urls['.$value['id'].'][route]'), $this->request->getPost('seo_urls['.$value['id'].'][route_old]'), $value['id'], $value['name'])
+                sprintf('checkRoute[%s,%s,%s,%s]', $this->request->getPost('seo_urls[' . $value['id'] . '][route]'), $this->request->getPost('seo_urls[' . $value['id'] . '][route_old]'), $value['id'], $value['name'])
             );
         }
 

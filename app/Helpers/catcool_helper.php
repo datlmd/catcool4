@@ -686,12 +686,16 @@ if (!function_exists('image_thumb_url')) {
         }
 
         $is_fit = config_item('is_fitting_image') ?? false;
-        $position = config_item('is_fitting_image') ?? 'center'; //$position : "top-left", "top", "top-right", "left", "center", "right", "bottom-left", "bottom", "bottom-right"
+        $position = config_item('fitting_image_position') ?? 'center'; //$position : "top-left", "top", "top-right", "left", "center", "right", "bottom-left", "bottom", "bottom-right"
 
         $image_tool = new \App\Libraries\ImageTool();
         $image_resize = $is_fit ?
             $image_tool->resizeFit($image, $width, $height, $position)
             : $image_tool->resize($image, $width, $height);
+
+        if (!empty(config_item('image_watermar_enable'))) {
+            $image_resize = $image_tool->watermark($image_resize);
+        }
 
         $image_resize = get_upload_url() . $image_resize;
         $mtime = filemtime($image_resize);
@@ -1841,21 +1845,19 @@ if (!function_exists('get_seo_extension')) {
         if (is_null($url)) {
             return $url;
         }
-
+        $url = slugify(clear_seo_extension($url));
         if (empty(SEO_EXTENSION)) {
             return $url;
         }
 
-        if (strpos($url, '.' . SEO_EXTENSION) !== false) {
-            $url = str_ireplace('.' . SEO_EXTENSION, '', $url);
-            $url = slugify($url) . '.' . SEO_EXTENSION;
+        return $url . '.' . SEO_EXTENSION;
+    }
+}
 
-            return $url;
-        }
-
-        $url = slugify($url);
-
-        return sprintf("$url.%s", SEO_EXTENSION);
+if (!function_exists('clear_seo_extension')) {
+    function clear_seo_extension($url = null)
+    {
+        return str_ireplace('.' . SEO_EXTENSION, '', $url);
     }
 }
 

@@ -137,6 +137,11 @@ class Configs extends AdminController
             $data_settings = $this->request->getPost();
             switch ($this->request->getPost('tab_type')) {
                 case 'tab_image':
+
+                    //clear file upload
+                    delete_files(get_upload_path('cache'), true);
+                    delete_files(get_upload_path('tmp'), true);
+
                     $data_settings['file_ext_allowed'] = preg_replace('/\s+/', '|', trim($_POST['file_ext_allowed']));
                     $data_settings['file_mime_allowed'] = preg_replace('/\s+/', '|', trim($_POST['file_mime_allowed']));
                     $data_settings['is_fitting_image'] = !empty($this->request->getPost('is_fitting_image')) ? STATUS_ON : STATUS_OFF;
@@ -271,6 +276,7 @@ class Configs extends AdminController
             'bottom-right' => lang('ConfigAdmin.text_bottom_right'),
         ];
         $data['watermark_list'] = $watermark_list;
+        $data['fitting_list'] = $watermark_list;
 
         $image_tool = new \App\Libraries\ImageTool();
         $data['watermark_bg'] = $image_tool->watermarkDemo();

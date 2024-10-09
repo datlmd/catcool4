@@ -21,7 +21,7 @@
 			<div class="form-group row mb-3">
 				<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 					<label for="input_seo_urls_{$language.id}_route" class="fw-bold">{lang('Admin.text_slug')}</label>
-					<div class="input-group">
+					<div class="input-group has-validation">
 						<span class="input-group-text bg-linght pe-1" id="input_group_slug">{if !empty($name_seo_url)}{site_url($name_seo_url)}{else}{site_url()}{/if}</span>
 						<input type="hidden" name="seo_urls[{$language.id}][route_old]" value="{$seo_urls[$language.id].route}">
 						<input type="hidden" name="seo_urls[{$language.id}][language_id]" value="{$seo_urls[$language.id].language_id}">

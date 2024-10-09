@@ -118,15 +118,25 @@
                             </div>
                             <div class="form-group border-bottom pb-3 mb-3">
                                 <label class="form-label fw-bold">{lang("Admin.text_image")}</label>
+                                
                                 <!-- Drag and Drop container-->
                                 <a href="javascript:void(0);" id="thumb-image" data-target="input-image-path" data-thumb="load-thumb-image" data-bs-toggle="image" data-type="image">
-                                    <img src="{if !empty(old('images', $edit_data.images))}{image_url(old('images', $edit_data.images))}{else}{image_default_url()}{/if}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}"/>
+                                    {if !empty(old('images', $edit_data.images))}
+                                        <img src="{image_thumb_url(old('images', $edit_data.images), config_item('article_image_thumb_width'), config_item('article_image_thumb_height'))}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}"/>
+                                    {else}
+                                        {* <img src="{img_alt_url(config_item('article_image_thumb_width'), config_item('article_image_thumb_height'))}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}"> *}
+                                        <img src="{image_default_url()}" class="img-thumbnail w-100 me-1 img-fluid" alt="" title="" id="load-thumb-image" data-placeholder="{image_default_url()}">
+                                    {/if}
                                     <div class="btn-group w-100 mt-1" role="group">
                                         <button type="button" id="button-image-logo" class="button-image btn btn-xs btn-primary" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_edit')}"><i class="fas fa-pencil-alt"></i></button>
                                         <button type="button" id="button-clear-logo" class="button-clear btn btn-xs btn-danger" data-bs-toggle="tooltip" title="{lang('Admin.text_photo_clear')}"><i class="fas fa-trash"></i></button>
                                     </div>
                                 </a>
                                 <input type="hidden" name="images" value="{old('images', $edit_data.images)}" id="input-image-path" />
+                                <div class="text-center">
+                                    <small>{lang("Admin.text_image_size", [config_item('article_image_thumb_width'), config_item('article_image_thumb_height')])}</small><br/>
+                                    
+                                </div>
                             </div>
                             <div class="form-group mb-3">
                                 <label class="form-label fw-bold"><a href="{site_url('manage/article_categories')}" target="_blank" class="link-primary">{lang('Admin.text_category')}</a></label>

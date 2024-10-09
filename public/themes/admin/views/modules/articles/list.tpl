@@ -89,7 +89,7 @@
 											<td class="text-center">
 												<div class="thumbnail">
 													<a href="{image_url($item.images)}" data-lightbox="photos">
-														<img src="{image_url($item.images)}" class="img-thumbnail me-1 img-fluid">
+														<img src="{$item.image}" class="img-thumbnail me-1 img-fluid">
 													</a>
 												</div>
 											</td>

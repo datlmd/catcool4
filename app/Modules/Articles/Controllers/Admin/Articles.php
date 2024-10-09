@@ -52,14 +52,20 @@ class Articles extends AdminController
         $order = $this->request->getGet('order');
         $filter_keys = ['article_id', 'name', 'category', 'limit'];
 
-        $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
+        $result = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
+
+        $list = $result->paginate($limit);
+        foreach ($list as $key => $value) {
+            $list[$key]['image'] = image_thumb_url($value['images'], config_item('article_image_thumb_width'), config_item('article_image_thumb_height'));
+        }
+        
 
         $category_list = $this->model_category->getArticleCategories($this->language_id);
 
         $data = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'list' => $list->paginate($limit),
-            'pager' => $list->pager,
+            'list' => $list,
+            'pager' => $result->pager,
             'sort' => empty($sort) ? 'article_id' : $sort,
             'order' => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url' => $this->getUrlFilter($filter_keys),
@@ -99,7 +105,7 @@ class Articles extends AdminController
             } else {
                 $publish_date_hour = $this->request->getPost('publish_date_hour');
                 $publish_date_hour = empty($publish_date_hour) ? get_date('H:i') : $publish_date_hour;
-                $publish_date = $publish_date.' '.$publish_date_hour;
+                $publish_date = $publish_date . ' ' . $publish_date_hour;
                 $publish_date = date('Y-m-d H:i:00', strtotime(str_replace('/', '-', $publish_date)));
             }
 
@@ -108,9 +114,10 @@ class Articles extends AdminController
                 'sort_order' => $this->request->getPost('sort_order'),
                 'images' => $this->request->getPost('images'),
                 'tags' => $this->request->getPost('tags'),
+                'category_ids' => json_encode($category_ids, JSON_FORCE_OBJECT),
                 'author' => $this->request->getPost('author'),
                 'source' => $this->request->getPost('source'),
-                'user_ip' => $this->request->getIPAddress(),
+                'ip' => $this->request->getIPAddress(),
                 'user_id' => $this->user->getId(),
                 'is_comment' => $this->request->getPost('is_comment'),
                 'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
@@ -125,7 +132,7 @@ class Articles extends AdminController
 
             //save route url
             $seo_urls = $this->request->getPost('seo_urls');
-            $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
+            //$this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
 
             if (!empty($categorie_list)) {
                 $relationship_add = [];
@@ -142,7 +149,7 @@ class Articles extends AdminController
             foreach (list_language_admin() as $value) {
                 $add_data_lang[$value['id']]['language_id'] = $value['id'];
                 $add_data_lang[$value['id']]['article_id'] = $id;
-                $add_data_lang[$value['id']]['slug'] = !empty($seo_urls[$value['id']]['route']) ? get_seo_extension($seo_urls[$value['id']]['route']) : '';
+                $add_data_lang[$value['id']]['slug'] = !empty($seo_urls[$value['id']]['route']) ? clear_seo_extension(get_seo_extension($seo_urls[$value['id']]['route'])) : '';
 
                 $this->model_lang->insert($add_data_lang[$value['id']]);
             }
@@ -190,20 +197,20 @@ class Articles extends AdminController
                 } else {
                     $publish_date_hour = $this->request->getPost('publish_date_hour');
                     $publish_date_hour = empty($publish_date_hour) ? get_date('H:i') : $publish_date_hour;
-                    $publish_date = $publish_date.' '.$publish_date_hour;
+                    $publish_date = $publish_date . ' ' . $publish_date_hour;
                     $publish_date = date('Y-m-d H:i:00', strtotime(str_replace('/', '-', $publish_date)));
                 }
 
                 //save route url
                 $seo_urls = $this->request->getPost('seo_urls');
-                $this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
+                //$this->model_route->saveRoute($seo_urls, self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
 
                 $edit_data_lang = $this->request->getPost('lang');
                 foreach (list_language_admin() as $value) {
                     $edit_data_lang[$value['id']]['language_id'] = $value['id'];
                     $edit_data_lang[$value['id']]['article_id'] = $id;
-                    $edit_data_lang[$value['id']]['slug'] = !empty($seo_urls[$value['id']]['route']) ? get_seo_extension($seo_urls[$value['id']]['route']) : '';
-
+                    $edit_data_lang[$value['id']]['slug'] = !empty($seo_urls[$value['id']]['route']) ? clear_seo_extension(get_seo_extension($seo_urls[$value['id']]['route'])) : '';
+                    
                     if (!empty($this->model_lang->where(['article_id' => $id, 'language_id' => $value['id']])->find())) {
                         $this->model_lang->where('language_id', $value['id'])->update($id, $edit_data_lang[$value['id']]);
                     } else {
@@ -230,8 +237,9 @@ class Articles extends AdminController
                     'images' => $this->request->getPost('images'),
                     'tags' => $this->request->getPost('tags'),
                     'author' => $this->request->getPost('author'),
+                    'category_ids' => json_encode($category_ids, JSON_FORCE_OBJECT),
                     'source' => $this->request->getPost('source'),
-                    'user_ip' => $this->request->getIPAddress(),
+                    'ip' => $this->request->getIPAddress(),
                     'user_id' => $this->user->getId(),
                     'is_comment' => $this->request->getPost('is_comment'),
                     'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
@@ -280,9 +288,9 @@ class Articles extends AdminController
             $this->model->delete($ids);
 
             //xoa slug ra khoi route
-            foreach ($list_delete as $value) {
-                $this->model_route->deleteByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $value['article_id']));
-            }
+            // foreach ($list_delete as $value) {
+            //     $this->model_route->deleteByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $value['article_id']));
+            // }
 
             //reset cache
             $this->model->deleteCache();
@@ -349,7 +357,7 @@ class Articles extends AdminController
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form'] = lang('ArticleAdmin.text_edit');
-            $breadcrumb_url = site_url(self::MANAGE_URL."/edit/$id");
+            $breadcrumb_url = site_url(self::MANAGE_URL . "/edit/$id");
 
             $data_form = $this->model->find($id);
             if (empty($data_form)) {
@@ -361,6 +369,13 @@ class Articles extends AdminController
             $article_languages = $this->model_lang->where('article_id', $id)->findAll();
             foreach ($article_languages as $article_language) {
                 $data_form['lang'][$article_language['language_id']] = $article_language;
+
+                //get lai thong tin slug cho form_seo
+                $seo_urls = [
+                    'route' => $article_language['slug'],
+                    'language_id' => $article_language['language_id']
+                ];
+                $data['seo_urls'][$article_language['language_id']] = $seo_urls;
             }
 
             $categories = $this->model_categories->where('article_id', $id)->findAll();
@@ -369,13 +384,13 @@ class Articles extends AdminController
             }
 
             //lay danh sach seo url tu route
-            $data['seo_urls'] = $this->model_route->getListByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
+            //$data['seo_urls'] = $this->model_route->getListByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $id));
 
             // display the edit user form
             $data['edit_data'] = $data_form;
         } else {
             $data['text_form'] = lang('ArticleAdmin.text_add');
-            $breadcrumb_url = site_url(self::MANAGE_URL.'/add');
+            $breadcrumb_url = site_url(self::MANAGE_URL . '/add');
         }
 
         $data['errors'] = $this->errors;
@@ -396,12 +411,12 @@ class Articles extends AdminController
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         foreach (list_language_admin() as $value) {
-            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('ArticleAdmin.text_name').' ('.$value['name'].')', 'required');
-            $this->validator->setRule(sprintf('lang.%s.content', $value['id']), lang('ArticleAdmin.text_content').' ('.$value['name'].')', 'required');
+            $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('ArticleAdmin.text_name') . ' (' . $value['name'] . ')', 'required');
+            $this->validator->setRule(sprintf('lang.%s.content', $value['id']), lang('ArticleAdmin.text_content') . ' (' . $value['name'] . ')', 'required');
             $this->validator->setRule(
                 sprintf('seo_urls.%s.route', $value['id']),
                 sprintf('%s (%s)', lang('Admin.text_slug'), $value['name']),
-                sprintf('checkRoute[%s,%s,%s,%s]', $this->request->getPost('seo_urls['.$value['id'].'][route]'), $this->request->getPost('seo_urls['.$value['id'].'][route_old]'), $value['id'], $value['name'])
+                sprintf('checkRoute[%s,%s,%s,%s]', $this->request->getPost('seo_urls[' . $value['id'] . '][route]'), $this->request->getPost('seo_urls[' . $value['id'] . '][route_old]'), $value['id'], $value['name'])
             );
         }
 

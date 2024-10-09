@@ -91,10 +91,12 @@ class ImageTool
                 }
             }
 
-            list($width_new, $height_new) = getimagesize($this->dir_image_path . $image_new);
-            if (!empty(config_item('image_watermar_enable')) && $width_new > self::IMAGE_WATER_MINIMUM_WIDTH && $height_new > self::IMAGE_WATER_MINIMUM_HEIGHT) {
-                $image_new = $this->watermark($image_new);
-            }
+            // if (!empty(config_item('image_watermar_enable'))) {
+            //     list($width_new, $height_new) = getimagesize($this->dir_image_path . $image_new);
+            //     if ($width_new > self::IMAGE_WATER_MINIMUM_WIDTH && $height_new > self::IMAGE_WATER_MINIMUM_HEIGHT) {
+            //         $image_new = $this->watermark($image_new);
+            //     }
+            // }
         }
 
         $image_new = str_replace(' ', '%20', $image_new);  // fix bug when attach image on email (gmail.com). it is automatically changing space from " " to +
@@ -426,7 +428,7 @@ class ImageTool
     public function watermarkDemo($file_name = null)
     {
         $file_name = !empty($file_name) ? get_upload_path() . $file_name : FCPATH . 'common/images/watermark_bg.jpg';
-
+        
         if (!is_dir($this->dir_image_path . 'tmp')) {
             mkdir($this->dir_image_path . 'tmp', 0777);
         }
@@ -442,6 +444,7 @@ class ImageTool
 
         \Config\Services::image($this->_driver)
             ->withFile($file_name)
+            ->resize(600, 400, true, 100)
             ->save(get_upload_path() . $watermark);
 
         //$this->resize($watermark, config_item('image_width_pc'), config_item('image_height_pc'));

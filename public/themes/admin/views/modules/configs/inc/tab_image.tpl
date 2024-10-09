@@ -144,19 +144,8 @@
 	<div class="form-group row mb-3">
 		<label class="col-12 col-sm-3 col-form-label text-sm-end required-label" for="input_fitting_image_position">{lang('ConfigAdmin.text_fitting_image_position')}</label>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<select name="fitting_image_position" id="input_fitting_image_position" class="form-control">
-				<option value="'top-left" {if old('fitting_image_position', $settings.fitting_image_position) eq 'top-left'}selected="selected"{/if}>top-left</option>
-				<option value="'top" {if old('fitting_image_position', $settings.fitting_image_position) eq 'top'}selected="selected"{/if}>top</option>
-				<option value="'top-right" {if old('fitting_image_position', $settings.fitting_image_position) eq 'top-right'}selected="selected"{/if}>top-right</option>
-				<option value="'left" {if old('fitting_image_position', $settings.fitting_image_position) eq 'left'}selected="selected"{/if}>left</option>
-				<option value="'center" {if empty(old('fitting_image_position', $settings.fitting_image_position)) || old('fitting_image_position', $settings.fitting_image_position) eq 'center'}selected="selected"{/if}>center</option>
-				<option value="'right" {if old('fitting_image_position', $settings.fitting_image_position) eq 'right'}selected="selected"{/if}>right</option>
-				<option value="'bottom-left" {if old('fitting_image_position', $settings.fitting_image_position) eq 'bottom-left'}selected="selected"{/if}>bottom-left</option>
-				<option value="'bottom" {if old('fitting_image_position', $settings.fitting_image_position) eq 'bottom'}selected="selected"{/if}>bottom</option>
-				<option value="'bottom-right" {if old('fitting_image_position', $settings.fitting_image_position) eq 'bottom-right'}selected="selected"{/if}>bottom-right</option>
-			</select>
+			{form_dropdown('fitting_image_position', $fitting_list, old('fitting_image_position', $settings.fitting_image_position), ['class' => 'form-control'])}
 		</div>
-		
 	</div>
 
 	<div class="form-group row mb-3">
@@ -176,7 +165,7 @@
 
 	<div class="border-bottom lead mx-3 pb-1 my-3 fw-bold">{lang('ConfigAdmin.text_image_watermark')}</div>
 	<div class="form-group row">
-		<label class="col-12 col-sm-3 col-form-label text-sm-end" for="input_image_watermar_enable">{lang('ConfigAdmin.text_image_watermark')}</label>
+		<label class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_image_watermark')}</label>
 		<div class="col-12 col-sm-8 col-lg-6">
 
 			<div class="form-control-lg py-1" style="min-height: 25px;">
