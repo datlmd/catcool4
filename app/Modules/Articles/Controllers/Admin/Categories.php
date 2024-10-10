@@ -17,9 +17,6 @@ class Categories extends AdminController
     const MANAGE_ROOT = 'manage/article_categories';
     const MANAGE_URL = 'manage/article_categories';
 
-    const SEO_URL_MODULE = 'articles';
-    const SEO_URL_RESOURCE = 'Categories::Detail/%s';
-
     public function __construct()
     {
         parent::__construct();

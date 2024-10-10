@@ -226,6 +226,7 @@ return [
 	"text_home" => "Trang chủ",
 	"text_identity" => "Định danh",
 	"text_image" => "Hình ảnh",
+	"text_image_size" => "Kích thước {0} x {1}",
 	"text_is_comment" => "Bình luận?",
 	"text_language" => "Ngôn ngữ",
 	"text_last_name" => "Họ",

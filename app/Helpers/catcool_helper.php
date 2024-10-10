@@ -1956,9 +1956,10 @@ if (!function_exists('get_module')) {
     function get_module()
     {
         $router = service('router');
+        
         $controller_full = $router->controllerName(); //\App\Modules\Dummy\Controllers\Manage
         $controller_full = explode('\\', $controller_full);
-
+        
         $module = !empty($controller_full[3]) ? $controller_full[3] : null;
         $controller = !empty($controller_full[5]) ? $controller_full[5] : $module;
 
@@ -1969,7 +1970,7 @@ if (!function_exists('get_module')) {
         if ($controller == 'Admin') {
             $controller = !empty($controller_full[6]) ? $controller_full[6] : $module;
         }
-
+        
         return "$module/$controller";
     }
 }

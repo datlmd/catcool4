@@ -226,6 +226,7 @@ return [
 	"text_home" => "Home",
 	"text_identity" => "Identity",
 	"text_image" => "Image",
+	"text_image_size" => "Size {0} x {1}",
 	"text_is_comment" => "Comment?",
 	"text_language" => "Language",
 	"text_last_name" => "Last name",

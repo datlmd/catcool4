@@ -16,23 +16,24 @@ class ArticleModel extends MyModel
         'publish_date',
         'is_comment',
         'images',
-        'categories',
         'tags',
         'author',
         'source',
         'sort_order',
-        'user_id',
-        'user_ip',
+        'category_ids',
         'counter_view',
         'counter_comment',
         'counter_like',
         'published',
+        'user_id',
+        'ip',
         'deleted_at',
         'created_at',
         'updated_at',
     ];
 
     const ARTICLE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'article_list';
+    const ARTICLE_DETAIL_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'article_detail_id_';
     const ARTICLE_CACHE_EXPIRE = HOUR;
 
     public function __construct()
@@ -87,5 +88,100 @@ class ArticleModel extends MyModel
                 ->findAll();
 
         return $result;
+    }
+
+    public function getArticles($language_id, $limit = PAGINATION_DEFAULF_LIMIT)
+    {
+        $where = [
+            'published' => STATUS_ON,
+            'publish_date <=' => get_date(),
+            "$this->table_lang.language_id" => $language_id
+        ];
+        
+        $result = $this->select("$this->table.article_id, name, description, slug, tags, author, counter_view, counter_comment, category_ids, publish_date, images")
+            ->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+            ->where($where)
+            ->orderBy('sort_order', 'DESC')
+            ->orderBy('publish_date', 'DESC');
+
+        $list = $result->paginate($limit);
+        if (empty($list)) {
+            return [[],[]];
+        }
+
+        return [$list, $result->pager];
+    }
+
+    public function getArticlesByCategoryId($category_id, $language_id, $limit = PAGINATION_DEFAULF_LIMIT)
+    {
+        $where = [
+            'published' => STATUS_ON,
+            'publish_date <=' => get_date(),
+            "$this->table_lang.language_id" => $language_id
+        ];
+        
+        $result = $this->select("$this->table.article_id, name, description, slug, tags, author, counter_view, counter_comment, category_ids, publish_date, images")
+            ->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+            ->join("article_categories", "article_categories.article_id = $this->table.$this->primaryKey")
+            ->where($where)
+            ->where("article_categories.category_id = $category_id")
+            ->orderBy('sort_order', 'DESC')
+            ->orderBy('publish_date', 'DESC');
+
+        $list = $result->paginate($limit);
+        if (empty($list)) {
+            return [[],[]];
+        }
+        
+        return [$list, $result->pager];
+    }
+
+    public function getArticleInfo($article_id, $language_id, $is_cache = false)
+    {
+        if (empty($article_id)) {
+            return [];
+        }
+
+        $where = [
+            "$this->table.$this->primaryKey" => $article_id,
+            'published' => STATUS_ON, 
+            'publish_date <=' => get_date()
+        ];
+
+        $result = $is_cache ? cache()->get(self::ARTICLE_DETAIL_CACHE_NAME . $article_id) : null;
+        if (empty($result)) {
+            $result = $this
+                ->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
+                ->where($where)
+                ->findAll();
+
+            if ($is_cache) {
+                // Save into the cache for $expire_time 1 month
+                cache()->save(self::ARTICLE_DETAIL_CACHE_NAME . $article_id, $result, self::ARTICLE_CACHE_EXPIRE);
+            }
+        }
+
+        $result = $this->formatDataLanguage($result, $language_id);
+        if (empty($result[$article_id])) {
+            return [];
+        }
+
+        return $result[$article_id];
+    }
+
+    public function getUrl($article)
+    {
+        if (empty($article['article_id'])) {
+            return "";
+        }
+
+        $href = site_url("article/{$article['article_id']}");
+        if (!empty(config_item('seo_url'))) {
+            $href = !empty($article['slug']) ? $article['slug'] : $article['name'];
+            $href = get_seo_extension(clear_seo_extension($href) . "-" . SEO_ARTICLE_ID . $article['article_id']);
+            $href = site_url($href);
+        }
+
+        return $href;
     }
 }

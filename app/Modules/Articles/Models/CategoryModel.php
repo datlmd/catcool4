@@ -96,4 +96,20 @@ class CategoryModel extends MyModel
 
         return $this->formatDataLanguage($result, $language_id);
     }
+
+    public function getUrl($category)
+    {
+        if (empty($category['category_id'])) {
+            return "";
+        }
+
+        $href = site_url("article/category/{$category['category_id']}");
+        if (!empty(config_item('seo_url'))) {
+            $href = !empty($category['slug']) ? $category['slug'] : $category['name'];
+            $href = get_seo_extension(clear_seo_extension($href) . "-" . SEO_ARTICLE_CATEGORY_ID . $category['category_id']);
+            $href = site_url($href);
+        }
+
+        return $href;
+    }
 }

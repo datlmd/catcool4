@@ -66,7 +66,7 @@ function showButtonScrollTop() {
 
 function showButtonTableOfContens() {
     if ($('.catcool-table-of-contents').length) {
-        $('.catcool-table-of-contents .button-table-of-content').css('left', parseInt($('.catcool-table-of-contents').parent().offset().left) - 20);
+        //$('.catcool-table-of-contents .button-table-of-content').css('left', parseInt($('.catcool-table-of-contents').parent().offset().left) - 20);
 
         var button_table_of_content_position = parseInt($('.catcool-table-of-contents').offset().top) + parseInt($('.catcool-table-of-contents').height());
         var content_position = parseInt($('.catcool-table-of-contents').parent().height());

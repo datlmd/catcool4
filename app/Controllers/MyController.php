@@ -63,6 +63,8 @@ class MyController extends Controller
 
     protected $is_mobile;
 
+    protected $is_seo_url = false;
+
     /**
      * Constructor.
      */
@@ -106,6 +108,8 @@ class MyController extends Controller
 
         $this->site_lang = \Config\Services::language()->getLocale();
         $this->language_id = language_id();
+
+        $this->is_seo_url = config_item('seo_url') ?? false;
 
         $this->themes = Themes::init();
         $this->breadcrumb = service('breadcrumb');

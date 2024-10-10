@@ -19,9 +19,6 @@ class Articles extends AdminController
     const MANAGE_ROOT = 'manage/articles';
     const MANAGE_URL = 'manage/articles';
 
-    const SEO_URL_MODULE = 'articles';
-    const SEO_URL_RESOURCE = 'Articles::Detail/%s';
-
     public function __construct()
     {
         parent::__construct();

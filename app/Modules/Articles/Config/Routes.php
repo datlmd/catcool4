@@ -18,3 +18,17 @@ $routes->group('manage', ['namespace' => 'App\Modules\Articles\Controllers\Admin
     $subroutes->add('article_categories/publish', 'Categories::publish');
     $subroutes->add('article_categories/update_sort', 'Categories::updateSort');
 });
+
+$routes->group('article', ['namespace' => 'App\Modules\Articles\Controllers'], function ($subroutes) {
+    $subroutes->add('/', 'Articles::index');
+    $subroutes->add('list', 'Articles::index');
+    $subroutes->add('(:num)', 'Detail::index/$1');
+    $subroutes->add('category/(:num)', 'Articles::index/$1');
+});
+
+$routes->add('(:any)-' . SEO_ARTICLE_ID . '(:num).' . SEO_EXTENSION, 'Detail::index/$1/$2', ['namespace' => 'App\Modules\Articles\Controllers']);
+$routes->add('(:any)-' . SEO_ARTICLE_ID . '(:num)', 'Detail::index/$1/$2', ['namespace' => 'App\Modules\Articles\Controllers']);
+
+//Set route category
+$routes->add('(:any)-' . SEO_ARTICLE_CATEGORY_ID . '(:num).' . SEO_EXTENSION, 'Articles::index/$1/$2', ['namespace' => 'App\Modules\Articles\Controllers']);
+$routes->add('(:any)-' . SEO_ARTICLE_CATEGORY_ID . '(:num)', 'Articles::index/$1/$2', ['namespace' => 'App\Modules\Articles\Controllers']);
