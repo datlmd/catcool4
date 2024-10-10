@@ -53,7 +53,9 @@ class Detail extends MyController
             $article_info['href'] = $article_model->getUrl($article_info);
 
             //Tao muc luc table_of_contents
-            list($article_info['table_of_contents'], $article_info['content']) = auto_table_of_contents($article_info['content']);
+            if (!empty($article_info['is_toc'])) {
+                list($article_info['table_of_contents'], $article_info['content']) = auto_table_of_contents($article_info['content']);
+            }
            
             //get cate
             $article_category_model = new CategoryModel();

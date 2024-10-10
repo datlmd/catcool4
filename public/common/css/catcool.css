@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 :root {
-    --body-font-size: 14px;
+    --body-font-size: 1rem;
     --body-color-main: #414141;
     --text-color-main-rgb: 208 47 152;
     --text-color-main: #8a3f7f;
@@ -13,6 +13,7 @@
 }
 
 html {
+	font-size: 14px;
 }
 
 body {
@@ -811,8 +812,8 @@ header .header-bottom.fixed, #header_main_mobile.fixed .header-mobile-content {
 }
 
 .newsletter-content h5 {
-    font-weight: 600;
-    font-size: 14px;
+    font-weight: 500;
+    font-size: 1.3rem;
 }
 
 .newsletter-content .input-group input {
@@ -835,6 +836,7 @@ footer .menu-footer {
 
 footer .menu-footer .accordion-item {
     border: 0;
+	margin-bottom: 20px;
 }
 
 footer .menu-footer .accordion-item .accordion-button {
@@ -862,10 +864,11 @@ footer .menu-footer h5 {
     position: relative;
     text-transform: capitalize;
     color: var(--body-color-main);
-    font-weight: 600;
+    font-weight: lighter;
     margin: 0 0 15px 0;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e3e3e3
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e3e3e3;
+	font-size: 1.2rem;
 }
 
 footer .menu-footer h5:after {
@@ -930,21 +933,23 @@ footer .footer-copyright img {
 }
 
 .social-icon-title {
-    margin: 0 0 5px 0;
+    margin: 8% 0 7px 0;
     color: var(--text-color-white);
+	font-size: 1rem;
 }
-.social-icon-list ul {
-    flex-wrap: wrap;
-    display: flex;
-    margin: 0;
+
+.social-icon-list {
+    /* flex-wrap: wrap;
+    display: flex; */
+    margin: 0 auto;
     list-style-type: none !important;
     line-height: 1;
+	padding: 0;
 }
 
 .social-icon-list li {
     display: inline-flex;
     margin-right: 5px;
-
 }
 
 .social-icon-list li a {
@@ -1100,6 +1105,10 @@ article.article .article-content figure {
 	.catcool-table-of-contents .button-table-of-content {
 		bottom: 20px;
     	left: 15px;
+	}
+
+	.social-icon-title {
+		margin: 7px 0 7px 0;
 	}
 }
 

@@ -84,6 +84,15 @@
                                 </div>
                             </div>
 
+                            <div class="row">
+                                <label class="col-auto fw-bold">{lang('Admin.text_is_toc')}</label>
+                                <div class="col-6 form-control-lg py-0 " style="margin-top: -4px;">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" name="is_toc" id="input_is_toc"
+                                            {set_checkbox('is_toc', 1, $edit_data.is_toc|default:false)} value="1">
+                                    </div>
+                                </div>
+                            </div>
                             
                             <div class="form-group border-bottom pb-3 mb-3">
                                 <label class="form-label fw-bold">{lang('Admin.text_is_comment')}</label><br />
@@ -104,6 +113,7 @@
                                     <span class="form-check-label" for="is_comment_on">{lang('Admin.text_comment_status_on')}</span>
                                 </label>
                             </div>
+
                             <div class="form-group border-bottom pb-3 mb-3">
                                 <label class="form-label fw-bold" for="input_publish_date">{lang('ArticleAdmin.text_publish_date')}</label>
                                 <div class="input-group date show-date-picker" id="show-date-picker" data-target-input="nearest" data-date-format="{get_date_format_ajax()|upper}" data-date-locale="{language_code_admin()}">

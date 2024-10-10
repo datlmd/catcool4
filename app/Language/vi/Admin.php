@@ -228,6 +228,7 @@ return [
 	"text_image" => "Hình ảnh",
 	"text_image_size" => "Kích thước {0} x {1}",
 	"text_is_comment" => "Bình luận?",
+	"text_is_toc" => "Hiển thị mục lục?",
 	"text_language" => "Ngôn ngữ",
 	"text_last_name" => "Họ",
 	"text_limit" => "Limit",

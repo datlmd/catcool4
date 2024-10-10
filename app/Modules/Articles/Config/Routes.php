@@ -10,6 +10,8 @@ $routes->group('manage', ['namespace' => 'App\Modules\Articles\Controllers\Admin
     $subroutes->add('articles/edit/(:num)', 'Articles::edit/$1');
     $subroutes->add('articles/delete', 'Articles::delete');
     $subroutes->add('articles/publish', 'Articles::publish');
+    $subroutes->add('articles/restore/(:any)', 'Articles::restore/$1');
+    $subroutes->add('articles/empty_trash', 'Articles::emptyTrash');
 
     $subroutes->add('article_categories', 'Categories::index');
     $subroutes->add('article_categories/add', 'Categories::add');

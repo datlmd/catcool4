@@ -2,7 +2,13 @@
     <div id="deletemanager" class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="photoModalLabel">{lang('Admin.text_confirm_delete')}</h5>
+                <h5 class="modal-title" id="photoModalLabel">
+                    {if !empty($is_trash) && $is_trash}
+                        {lang('Admin.text_confirm_delete')}
+                    {else}
+                        {lang('Admin.text_confirm_trash')}
+                    {/if}
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -17,7 +23,16 @@
                 <div class="form-group text-center clearfix">
                     <input type="hidden" name="ids" value="{$ids}">
                     <input type="hidden" name="is_delete" value="1">
-                    <button type="button" id="submit_delete" onclick="Catcool.submitDelete('delete_validationform');" class="btn btn-sm btn-space btn-danger"><i class="fas fa-trash-alt me-1"></i>{lang('Admin.button_delete')}</button>
+                    <input type="hidden" name="is_trash" value="{$is_trash}">
+                    
+                    <button type="button" id="submit_delete" onclick="Catcool.submitDelete('delete_validationform');" class="btn btn-sm btn-space btn-danger">
+                        <i class="fas fa-trash-alt me-1"></i>
+                        {if !empty($is_trash) && $is_trash}
+                            {lang('Admin.button_delete')}
+                        {else}
+                            {lang('Admin.text_move_to_trash')}
+                        {/if}
+                    </button>
                     <button type="button" class="btn btn-sm btn-space btn-light" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-reply"></i> {lang('Admin.button_cancel')}</button>
                 </div>
                 {form_close()}

@@ -15,6 +15,7 @@ class ArticleModel extends MyModel
         'article_id',
         'publish_date',
         'is_comment',
+        'is_toc',
         'images',
         'tags',
         'author',

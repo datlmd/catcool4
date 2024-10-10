@@ -41,7 +41,7 @@ class MyController extends Controller
      *
      * @var null
      */
-    protected $model = null;
+    protected $model;
 
     /**
      * Instance of the main Request object.

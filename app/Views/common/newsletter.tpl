@@ -7,8 +7,8 @@
 
         <form id="newsletter_form" action="php/newsletter-subscribe.php" method="POST" class="mw-100">
             <div class="input-group input-group-rounded">
-                <input class="form-control form-control-sm bg-light px-4 text-3" placeholder="{lang('General.text_subscribe_email')}" name="newsletterEmail" id="newsletterEmail" type="text">
-                <button class="input-group-text py-3 px-4" type="submit"><strong>{lang('General.button_subscribe')|unescape}</strong></button>
+                <input class="form-control bg-light px-3 fs-5" placeholder="{lang('General.text_subscribe_email')}" name="newsletterEmail" id="newsletterEmail" type="text">
+                <button class="input-group-text bg-secondary py-3 px-3" type="submit"><strong>{lang('General.button_subscribe')|unescape}</strong></button>
             </div>
         </form>
     </div>

@@ -15,6 +15,8 @@ class Articles extends AdminController
 
     protected $model_lang;
     protected $model_route;
+    protected $model_category;
+    protected $model_categories;
 
     const MANAGE_ROOT = 'manage/articles';
     const MANAGE_URL = 'manage/articles';
@@ -48,14 +50,18 @@ class Articles extends AdminController
         $sort = $this->request->getGet('sort');
         $order = $this->request->getGet('order');
         $filter_keys = ['article_id', 'name', 'category', 'limit'];
+        $is_trash = $this->request->getGet('is_trash');
 
-        $result = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
+        if (!empty($is_trash) && $is_trash == 1) {
+            $result = $this->model->onlyDeleted()->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
+        } else {
+            $result = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
+        }
 
         $list = $result->paginate($limit);
         foreach ($list as $key => $value) {
             $list[$key]['image'] = image_thumb_url($value['images'], config_item('article_image_thumb_width'), config_item('article_image_thumb_height'));
         }
-        
 
         $category_list = $this->model_category->getArticleCategories($this->language_id);
 
@@ -65,9 +71,11 @@ class Articles extends AdminController
             'pager' => $result->pager,
             'sort' => empty($sort) ? 'article_id' : $sort,
             'order' => ($order == 'ASC') ? 'DESC' : 'ASC',
-            'url' => $this->getUrlFilter($filter_keys),
+            'url'           => $this->getUrlFilter(array_merge($filter_keys, ['is_trash'])),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
             'category_list' => format_tree(['data' => $category_list, 'key_id' => 'category_id']),
+            'is_trash'      => $is_trash,
+            'count_trash'   => $this->model->onlyDeleted()->countAllResults(),
         ];
 
         $this->themes
@@ -117,6 +125,7 @@ class Articles extends AdminController
                 'ip' => $this->request->getIPAddress(),
                 'user_id' => $this->user->getId(),
                 'is_comment' => $this->request->getPost('is_comment'),
+                'is_toc' => !empty($this->request->getPost('is_toc')) ? STATUS_ON : STATUS_OFF,
                 'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
@@ -239,6 +248,7 @@ class Articles extends AdminController
                     'ip' => $this->request->getIPAddress(),
                     'user_id' => $this->user->getId(),
                     'is_comment' => $this->request->getPost('is_comment'),
+                    'is_toc' => !empty($this->request->getPost('is_toc')) ? STATUS_ON : STATUS_OFF,
                     'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
                 ];
 
@@ -262,61 +272,6 @@ class Articles extends AdminController
         }
 
         return $this->_getForm($id);
-    }
-
-    public function delete($id = null)
-    {
-        if (!$this->request->isAJAX()) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        }
-
-        $token = csrf_hash();
-
-        //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
-            $ids = $this->request->getPost('ids');
-            $ids = (is_array($ids)) ? $ids : explode(',', $ids);
-
-            $list_delete = $this->model->getArticlesByIds($ids, $this->language_id);
-            if (empty($list_delete)) {
-                json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
-            }
-
-            $this->model->delete($ids);
-
-            //xoa slug ra khoi route
-            // foreach ($list_delete as $value) {
-            //     $this->model_route->deleteByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $value['article_id']));
-            // }
-
-            //reset cache
-            $this->model->deleteCache();
-
-            set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
-            json_output(['status' => 'redirect', 'url' => site_url(self::MANAGE_URL)]);
-        }
-
-        $delete_ids = $id;
-
-        //truong hop chon xoa nhieu muc
-        if (!empty($this->request->getPost('delete_ids'))) {
-            $delete_ids = $this->request->getPost('delete_ids');
-        }
-
-        if (empty($delete_ids)) {
-            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
-        }
-
-        $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
-        $list_delete = $this->model->getArticlesByIds($delete_ids, $this->language_id);
-        if (empty($list_delete)) {
-            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
-        }
-
-        $data['list_delete'] = $list_delete;
-        $data['ids'] = $this->request->getPost('delete_ids');
-
-        json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }
 
     private function _getForm($id = null)
@@ -450,5 +405,115 @@ class Articles extends AdminController
         $data = ['token' => $token, 'status' => 'ok', 'msg' => lang('Admin.text_published_success')];
 
         json_output($data);
+    }
+
+    public function delete($id = null)
+    {
+        if (!$this->request->isAJAX()) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $token = csrf_hash();
+
+        $is_trash = $this->request->getGetPost('is_trash');
+        
+        //delete
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
+            $ids = $this->request->getPost('ids');
+            $ids = (is_array($ids)) ? $ids : explode(',', $ids);
+            
+            if (!empty($is_trash) && $is_trash == 1) {
+                $list_delete = $this->model->onlyDeleted()->getArticlesByIds($ids, $this->language_id);
+            } else {
+                $list_delete = $this->model->getArticlesByIds($ids, $this->language_id);
+            }
+            
+            if (empty($list_delete)) {
+                json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+            }
+
+            $this->model->delete($ids, $is_trash);
+
+            //xoa slug ra khoi route
+            // foreach ($list_delete as $value) {
+            //     $this->model_route->deleteByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $value['article_id']));
+            // }
+
+            //reset cache
+            $this->model->deleteCache();
+
+            json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
+            
+            // set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
+            // json_output(['status' => 'redirect', 'url' => site_url(self::MANAGE_URL)]);
+        }
+
+        $delete_ids = $id;
+
+        //truong hop chon xoa nhieu muc
+        if (!empty($this->request->getPost('delete_ids'))) {
+            $delete_ids = $this->request->getPost('delete_ids');
+        }
+        
+        if (empty($delete_ids)) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+        }
+
+        $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
+        if (!empty($is_trash) && $is_trash == 1) {
+            $list_delete = $this->model->onlyDeleted()->getArticlesByIds($delete_ids, $this->language_id);
+            
+        } else {
+            $list_delete = $this->model->getArticlesByIds($delete_ids, $this->language_id);
+        }
+        
+        if (empty($list_delete)) {
+            json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
+        }
+
+        $data['list_delete'] = $list_delete;
+        $data['ids'] = implode(',', $delete_ids);
+        $data['is_trash'] = $is_trash;
+
+        json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
+    }
+
+    public function restore($id = null)
+    {
+        try {
+            $data_form = $this->model->onlyDeleted()->find($id);
+            if (empty($data_form)) {
+                set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
+                return redirect()->back();
+            }
+
+            if (!$this->model->update($id, ['deleted_at' => null])) {
+                set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
+                return redirect()->back()->withInput();
+            }
+
+            //reset cache
+            $this->model->deleteCache($id);
+
+            set_alert(lang('Admin.text_restore_success'), ALERT_SUCCESS, ALERT_POPUP);
+            return redirect()->back();
+
+        } catch (\Exception $ex) {
+            set_alert($ex->getMessage(), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->back();
+        }
+    }
+
+    public function emptyTrash()
+    {
+        try {
+            $this->model->purgeDeleted();
+
+            set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
+            return redirect()->back();
+        } catch (\Exception $ex) {
+            set_alert($ex->getMessage(), ALERT_ERROR, ALERT_POPUP);
+            return redirect()->back();
+        }
     }
 }

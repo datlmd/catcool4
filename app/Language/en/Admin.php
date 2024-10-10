@@ -228,6 +228,7 @@ return [
 	"text_image" => "Image",
 	"text_image_size" => "Size {0} x {1}",
 	"text_is_comment" => "Comment?",
+	"text_is_toc" => "Enable Table Of Content?",
 	"text_language" => "Language",
 	"text_last_name" => "Last name",
 	"text_limit" => "Limit",
