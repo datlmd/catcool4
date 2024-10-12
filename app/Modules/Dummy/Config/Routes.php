@@ -5,15 +5,15 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('dummy', ['namespace' => 'App\Modules\Dummy\Controllers', 'filter' => 'auth_admin'], function($subroutes){
-    $subroutes->add('manage', 'Manage::index');
-    $subroutes->add('manage/add', 'Manage::add');
-    $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');
-    $subroutes->add('manage/delete', 'Manage::delete');
-    $subroutes->add('manage/publish', 'Manage::publish');
+$routes->group('manage', ['namespace' => 'App\Modules\Dummy\Controllers', 'filter' => 'auth_admin'], function($subroutes){
+    $subroutes->add('dummy', 'Dummy::index');
+    $subroutes->add('dummy/add', 'Dummy::add');
+    $subroutes->add('dummy/edit/(:num)', 'Dummy::edit/$1');
+    $subroutes->add('dummy/delete', 'Dummy::delete');
+    $subroutes->add('dummy/publish', 'Dummy::publish');
 
-    $subroutes->add('groups_manage', 'GroupsManage::index');
-    $subroutes->add('groups_manage/add', 'GroupsManage::add');
-    $subroutes->add('groups_manage/edit/(:num)', 'GroupsManage::edit/$1');
-    $subroutes->add('groups_manage/delete', 'GroupsManage::delete');
+    $subroutes->add('dummy_groups', 'Groups::index');
+    $subroutes->add('dummy_groups/add', 'Groups::add');
+    $subroutes->add('dummy_groups/edit/(:num)', 'Groups::edit/$1');
+    $subroutes->add('dummy_groups/delete', 'Groups::delete');
 });

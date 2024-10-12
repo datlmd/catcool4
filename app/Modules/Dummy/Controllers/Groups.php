@@ -3,12 +3,12 @@
 use App\Controllers\AdminController;
 use App\Modules\Dummy\Models\GroupModel;
 
-class GroupsManage extends AdminController
+class Groups extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'dummy/groups_manage';
-    CONST MANAGE_URL  = 'dummy/groups_manage';
+    CONST MANAGE_ROOT = 'manage/dummy_groups';
+    CONST MANAGE_URL  = 'manage/dummy_groups';
 
     public function __construct()
     {

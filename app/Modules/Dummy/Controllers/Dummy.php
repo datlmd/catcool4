@@ -1,17 +1,19 @@
-<?php namespace App\Modules\Dummy\Controllers;
+<?php
+
+namespace App\Modules\Dummy\Controllers;
 
 use App\Controllers\AdminController;
 use App\Modules\Dummy\Models\DummyModel;
 use App\Modules\Dummy\Models\DummyLangModel;
 
-class Manage extends AdminController
+class Dummy extends AdminController
 {
     protected $errors = [];
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'dummy/manage';
-    CONST MANAGE_URL  = 'dummy/manage';
+    const MANAGE_ROOT = 'manage/dummy';
+    const MANAGE_URL  = 'manage/dummy';
 
     public function __construct()
     {
@@ -31,8 +33,8 @@ class Manage extends AdminController
         $this->breadcrumb->add(lang('Dummy.heading_title'), site_url(self::MANAGE_URL));
     }
 
-	public function index()
-	{
+    public function index()
+    {
         add_meta(['title' => lang('Dummy.heading_title')], $this->themes);
 
         $limit       = $this->request->getGet('limit');
@@ -42,7 +44,7 @@ class Manage extends AdminController
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
-	    $data = [
+        $data = [
             'breadcrumb'    => $this->breadcrumb->render(),
             'list'          => $list->paginate($limit),
             'pager'         => $list->pager,
@@ -57,7 +59,7 @@ class Manage extends AdminController
             ->addPartial('footer')
             ->addPartial('sidebar')
             ::load('manage/list', $data);
-	}
+    }
 
     public function add()
     {
@@ -111,7 +113,7 @@ class Manage extends AdminController
                 $edit_data_lang[$language['id']]['dummy_id']    = $id;
 
                 if (!empty($this->model_lang->where(['dummy_id' => $id, 'language_id' => $language['id']])->find())) {
-                    $this->model_lang->where('language_id', $language['id'])->update($id,$edit_data_lang[$language['id']]);
+                    $this->model_lang->where('language_id', $language['id'])->update($id, $edit_data_lang[$language['id']]);
                 } else {
                     $this->model_lang->insert($edit_data_lang[$language['id']]);
                 }
@@ -178,7 +180,7 @@ class Manage extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        foreach(list_language_admin() as $value) {
+        foreach (list_language_admin() as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
         }
 
