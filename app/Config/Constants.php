@@ -180,3 +180,5 @@ defined('LOGIN_SOCIAL_TYPE_INSTAGRAM') OR define('LOGIN_SOCIAL_TYPE_INSTAGRAM', 
 defined('SEO_EXTENSION') OR define('SEO_EXTENSION', 'html');
 defined('SEO_ARTICLE_ID') OR define('SEO_ARTICLE_ID', 'a');
 defined('SEO_ARTICLE_CATEGORY_ID') OR define('SEO_ARTICLE_CATEGORY_ID', 'ac');
+defined('SEO_PRODUCT_ID') OR define('SEO_PRODUCT_ID', 'p');
+defined('SEO_PRODUCT_CATEGORY_ID') OR define('SEO_PRODUCT_CATEGORY_ID', 'pc');

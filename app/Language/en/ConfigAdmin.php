@@ -174,6 +174,7 @@ return [
 	"text_pagination_limit_admin" => "Default Items Per Page (Admin)",
 	"text_processing_status" => "Processing Order Status",
 	"text_product" => "Products",
+	"text_product_category_image_thumb" => "Product Category Image Thumb",
 	"text_product_count" => "Category Product Count",
 	"text_product_limit_admin" => "Default Items Per Page (Admin)",
 	"text_product_voucher_max" => "Voucher Max",

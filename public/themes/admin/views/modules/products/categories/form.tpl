@@ -130,7 +130,7 @@
                                 <select name="parent_id" id="parent_id" class="form-control cc-form-select-single" data-placeholder="{lang('Admin.text_select')}">
                                     <option value="">{lang('Admin.text_select')}</option>
                                     {$output_html = '<option ##SELECTED## value="##VALUE##">##INDENT_SYMBOL####NAME##</option>'}
-                                    {draw_tree_output_name(['data' => $patent_list, 'key_id' => 'category_id', 'id_root' => $edit_data.category_id], $output_html, 0, old('parent_id', $edit_data.parent_id))}
+                                    {draw_tree_output_name(['data' => $parent_list, 'key_id' => 'category_id', 'id_root' => $edit_data.category_id], $output_html, 0, old('parent_id', $edit_data.parent_id))}
                                 </select>
                             </div>
                         </div>

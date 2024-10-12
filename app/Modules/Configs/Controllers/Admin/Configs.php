@@ -104,6 +104,8 @@ class Configs extends AdminController
                 $this->validator->setRule('file_max_height', lang('ConfigAdmin.text_file_max_height'), 'required|is_natural');
                 $this->validator->setRule('article_image_thumb_width', lang('ConfigAdmin.text_article_image_thumb'), 'required|is_natural');
                 $this->validator->setRule('article_image_thumb_height', lang('ConfigAdmin.text_article_image_thumb'), 'required|is_natural');
+                $this->validator->setRule('product_category_image_thumb_width', lang('ConfigAdmin.text_product_category_image_thumb'), 'required|is_natural');
+                $this->validator->setRule('product_category_image_thumb_height', lang('ConfigAdmin.text_product_category_image_thumb'), 'required|is_natural');
                 break;
             case 'tab_local':
                 $this->validator->setRule('default_locale', lang('Admin.text_language'), 'required');

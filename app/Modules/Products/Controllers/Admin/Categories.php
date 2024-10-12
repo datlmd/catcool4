@@ -200,7 +200,7 @@ class Categories extends AdminController
         $data['language_list'] = list_language_admin();
 
         $list_all = $this->model->getAllByFilter();
-        $data['patent_list'] = format_tree(['data' => $list_all, 'key_id' => 'category_id']);
+        $data['parent_list'] = format_tree(['data' => $list_all, 'key_id' => 'category_id']);
 
         //edit
         if (!empty($id) && is_numeric($id)) {

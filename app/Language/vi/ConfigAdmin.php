@@ -174,6 +174,7 @@ return [
 	"text_pagination_limit_admin" => "Số lượng trên mỗi trang (Admin)",
 	"text_processing_status" => "Xử lý Trạng thái Đặt hàng",
 	"text_product" => "Sản phẩm",
+	"text_product_category_image_thumb" => "Product Category Image Thumb",
 	"text_product_count" => "Hiển thị số sản phẩm trên Danh mục",
 	"text_product_limit_admin" => "Các mục Mặc định trên Mỗi Trang (Quản trị)",
 	"text_product_voucher_max" => "Giá trị tối Đa",

@@ -84,12 +84,15 @@ class CategoryModel extends MyModel
     public function getProductCategories($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::CATEGORY_CACHE_NAME) : null;
+        
         if (empty($result)) {
-            $result = $this
+            $result = $this->select("$this->table.category_id, name, $this->table_lang.description, slug, image, meta_title, meta_description, meta_keyword, sort_order, language_id, parent_id")
                 ->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
-                ->orderBy('sort_order', 'DESC')
                 ->where(['published' => STATUS_ON])
+                ->orderBy('sort_order', 'DESC')
+                //->orderBy("LCASE($this->table_lang.name)", 'ASC')
                 ->findAll();
+                
             if (empty($result)) {
                 return [];
             }
@@ -99,7 +102,64 @@ class CategoryModel extends MyModel
                 cache()->save(self::CATEGORY_CACHE_NAME, $result, self::CATEGORY_CACHE_EXPIRE);
             }
         }
-
+        
         return $this->formatDataLanguage($result, $language_id);
+    }
+
+    /**
+     * format default: product/category/id - name-pc3(.html)
+     * format slug: seo-title(.html)
+     */
+    public function getUrl($category): string
+    {
+        if (empty($category['category_id'])) {
+            return "";
+        }
+
+        $href = site_url("product/category/{$category['category_id']}");
+        if (!empty(config_item('seo_url'))) {
+            try {
+                $route_url = url_to('\App\Modules\Products\Controllers\Category::index/' . $category['category_id']);
+            } catch (\Exception $ex) {
+                $route_url = "";
+            }
+
+            $href = $category['name'] . "-{$category['category_id']}" . SEO_PRODUCT_CATEGORY_ID;
+            if (!empty($category['slug']) && clear_seo_extension($category['slug']) == clear_seo_extension($route_url)) {
+                $href = $category['slug'];
+            }
+            //url_to('\App\Modules\Products\Controllers\Category::index/' . $category_id);
+            $href = get_seo_extension(clear_seo_extension($href));
+
+            $href = site_url($href);
+        }
+
+        return $href;
+    }
+
+    public function getChildrenQuantity($list, $data_tree)
+    {
+        if (empty($data_tree)) {
+            return $list;
+        }
+
+        foreach ($data_tree as $key => $value) {
+            if (empty($value['subs'])) {
+                $list[$key]['count'] = 0;
+                continue;
+            }
+  
+            $quantity = count($value['subs']);
+
+            $list = $this->getChildrenQuantity($list, $value['subs']);
+            foreach ($value['subs'] as $key_sub => $value_sub) {
+                $quantity += $list[$key_sub]['count'];
+            }
+
+            $list[$key]['subs'] = $value['subs'];
+            $list[$key]['count'] = $quantity;
+        }
+
+        return $list;
     }
 }

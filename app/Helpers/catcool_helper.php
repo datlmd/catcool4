@@ -412,8 +412,8 @@ if (!function_exists('draw_tree_output_name')) {
 if (!function_exists('get_parent_id')) {
     function get_parent_id($list_all, $id, $key_id_name = 'id')
     {
-        if (empty($list_all) || empty($id)) {
-            return false;
+        if (empty($list_all) || empty($id) || empty($list_all[$id])) {
+            return [];
         }
 
         $parent_ids[] = $list_all[$id][$key_id_name];

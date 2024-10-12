@@ -162,6 +162,20 @@
 		</div>
 	</div>
 
+	<div class="form-group row mb-3">
+		<label class="col-12 col-sm-3 col-form-label text-sm-end required-label">{lang('ConfigAdmin.text_product_category_image_thumb')}</label>
+		<div class="col-12 col-sm-8 col-lg-6">
+			<div class="input-group has-validation">
+				<input type="text" name="product_category_image_thumb_width" value="{old('product_category_image_thumb_width', $settings.product_category_image_thumb_width)}" id="input_product_category_image_thumb_width" class="form-control {if validation_show_error("product_category_image_thumb_width")}is-invalid{/if}" placeholder="{lang('ConfigAdmin.text_image_thumbnail_large_width')}">
+				<input type="text" name="product_category_image_thumb_height" value="{old('product_category_image_thumb_height', $settings.product_category_image_thumb_height)}" id="input_product_category_image_thumb_height" class="form-control {if validation_show_error("product_category_image_thumb_height")}is-invalid{/if}" placeholder="{lang('ConfigAdmin.text_image_thumbnail_large_height')}">
+				<div class="invalid-feedback">
+					{validation_show_error("product_category_image_thumb_width")}
+					{validation_show_error("product_category_image_thumb_height")}
+				</div>
+			</div>
+		</div>
+	</div>
+
 
 	<div class="border-bottom lead mx-3 pb-1 my-3 fw-bold">{lang('ConfigAdmin.text_image_watermark')}</div>
 	<div class="form-group row">

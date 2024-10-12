@@ -45,3 +45,17 @@ $routes->group('manage', ['namespace' => 'App\Modules\Products\Controllers\Admin
     $subroutes->add('product_categories/publish', 'Categories::publish');
     $subroutes->add('product_categories/update_sort', 'Categories::updateSort');
 });
+
+$routes->group('product', ['namespace' => 'App\Modules\Products\Controllers'], function ($subroutes) {
+    $subroutes->add('/', 'Articles::index');
+    $subroutes->add('list', 'Articles::index');
+    $subroutes->add('(:num)', 'Detail::index/$1');
+
+    $subroutes->add('category/(:num)', 'Category::index/$1');
+});
+
+//Set route category
+$routes->add('(:any)-' . '(:num)' . SEO_PRODUCT_CATEGORY_ID . '.' . SEO_EXTENSION, 'Category::index/$1/$2', ['namespace' => 'App\Modules\Products\Controllers']);
+$routes->add('(:any)-' . '(:num)' . SEO_PRODUCT_CATEGORY_ID, 'Category::index/$1/$2', ['namespace' => 'App\Modules\Products\Controllers']);
+
+
