@@ -91,16 +91,16 @@ class Filters extends BaseFilters
                 ]
             ],
             //datlm
-            'auth_admin' => [
-                'except' => [
-                    '*/login',
-                    '*/api_login',
-                    '*/logout',
-                    '*/forgot_password',
-                    '*/reset_password/*',
-                    'manage/permissions/not_allowed',
-                ]
-            ],
+            // 'auth_admin' => [
+            //     'except' => [
+            //         '*/login',
+            //         '*/api_login',
+            //         '*/logout',
+            //         '*/forgot_password',
+            //         '*/reset_password/*',
+            //         'manage/permissions/not_allowed',
+            //     ]
+            // ],
         ],
         'after' => [
             // 'honeypot',

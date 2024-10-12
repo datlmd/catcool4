@@ -5,7 +5,7 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('common', ['namespace' => 'App\Modules\Common\Controllers'], function($subroutes){
+$routes->group('common', ['namespace' => 'App\Modules\Common\Controllers', 'filter' => 'auth_admin'], function($subroutes){
     $subroutes->add('filemanager', 'FileManager::index');
     $subroutes->add('filemanager/upload', 'FileManager::upload');
     $subroutes->add('filemanager/upload_url', 'FileManager::uploadUrl');

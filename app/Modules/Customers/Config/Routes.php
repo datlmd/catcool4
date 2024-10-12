@@ -5,7 +5,7 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Customers\Controllers\Admin'], function($subroutes) {
+$routes->group('manage', ['namespace' => 'App\Modules\Customers\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes) {
     $subroutes->add('customers', 'Customers::index');
     $subroutes->add('customers/add', 'Customers::add');
     $subroutes->add('customers/edit/(:num)', 'Customers::edit/$1');

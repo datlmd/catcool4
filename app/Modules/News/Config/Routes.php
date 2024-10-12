@@ -5,7 +5,7 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\News\Controllers\Admin'], function($subroutes){
+$routes->group('manage', ['namespace' => 'App\Modules\News\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes){
     $subroutes->add('news', 'News::index');
     $subroutes->add('news/add', 'News::add');
     $subroutes->add('news/edit/(:any)', 'News::edit/$1');

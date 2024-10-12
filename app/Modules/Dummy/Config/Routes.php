@@ -5,7 +5,7 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('dummy', ['namespace' => 'App\Modules\Dummy\Controllers'], function($subroutes){
+$routes->group('dummy', ['namespace' => 'App\Modules\Dummy\Controllers', 'filter' => 'auth_admin'], function($subroutes){
     $subroutes->add('manage', 'Manage::index');
     $subroutes->add('manage/add', 'Manage::add');
     $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');

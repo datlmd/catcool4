@@ -5,7 +5,7 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Relationships\Controllers\Admin'], function($subroutes){
+$routes->group('manage', ['namespace' => 'App\Modules\Relationships\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes){
     $subroutes->add('relationships', 'Relationships::index');
     $subroutes->add('relationships/add', 'Relationships::add');
     $subroutes->add('relationships/edit/(:num)', 'Relationships::edit/$1');

@@ -5,7 +5,7 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Posts\Controllers\Admin'], function($subroutes){
+$routes->group('manage', ['namespace' => 'App\Modules\Posts\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes){
     $subroutes->add('posts', 'Posts::index');
     $subroutes->add('posts/add', 'Posts::add');
     $subroutes->add('posts/edit/(:any)', 'Posts::edit/$1');

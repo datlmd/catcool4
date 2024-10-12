@@ -5,7 +5,7 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Translations\Controllers\Admin'], function($subroutes){
+$routes->group('manage', ['namespace' => 'App\Modules\Translations\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes){
     $subroutes->add('translations', 'Translations::index');
     $subroutes->add('translations/add', 'Translations::add');
     $subroutes->add('translations/edit', 'Translations::edit');

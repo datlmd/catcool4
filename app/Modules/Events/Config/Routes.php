@@ -4,7 +4,7 @@ if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Events\Controllers\Admin'], function ($subroutes) {
+$routes->group('manage', ['namespace' => 'App\Modules\Events\Controllers\Admin', 'filter' => 'auth_admin'], function ($subroutes) {
     $subroutes->add('events', 'Events::index');
     $subroutes->add('events/add', 'Events::add');
     $subroutes->add('events/edit/(:num)', 'Events::edit/$1');

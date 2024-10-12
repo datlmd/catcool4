@@ -4,7 +4,7 @@ if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Attributes\Controllers\Admin'], function ($subroutes) {
+$routes->group('manage', ['namespace' => 'App\Modules\Attributes\Controllers\Admin', 'filter' => 'auth_admin'], function ($subroutes) {
     $subroutes->add('attributes', 'Attributes::index');
     $subroutes->add('attributes/add', 'Attributes::add');
     $subroutes->add('attributes/edit/(:num)', 'Attributes::edit/$1');

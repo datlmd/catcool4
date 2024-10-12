@@ -4,7 +4,7 @@ if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Variants\Controllers\Admin'], function ($subroutes) {
+$routes->group('manage', ['namespace' => 'App\Modules\Variants\Controllers\Admin', 'filter' => 'auth_admin'], function ($subroutes) {
     $subroutes->add('variants', 'Variants::index');
     $subroutes->add('variants/add', 'Variants::add');
     $subroutes->add('variants/save', 'Variants::save');

@@ -5,7 +5,7 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Scan\Controllers\Admin'], function($subroutes){
+$routes->group('manage', ['namespace' => 'App\Modules\Scan\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes){
     $subroutes->add('scan', 'Scan::index');
     $subroutes->add('scan/get_content', 'Scan::getContent');
     $subroutes->add('manage/edit/(:num)', 'Manage::edit/$1');

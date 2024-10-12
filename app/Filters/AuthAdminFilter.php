@@ -12,9 +12,9 @@ class AuthAdminFilter implements FilterInterface
     {
         $name_permission = uri_string();
         //kiem tra action admin
-        if (strpos($name_permission, 'manage') === false) {
-            return null;
-        }
+        // if (strpos($name_permission, 'manage') === false) {
+        //     return null;
+        // }
 
         //check login
         $user_id = session('user_info.user_id');
@@ -23,10 +23,17 @@ class AuthAdminFilter implements FilterInterface
             $user_model = new UserModel();
             if (!$user_model->loginRememberedUser()) {
                 $query_string = '';
-                if (!empty(\Config\Services::request()->getGet())) {
+                $query_params = \Config\Services::request()->getGet();
+                if (!empty($query_params)) {
+                    unset($query_params['redirect']);
+                    foreach ($query_params as $key => $value) {
+                        $query_params[$key] = $value;
+                    }
+
                     $query_string = (strpos(site_url(), '?') === FALSE) ? '?' : '&amp;';
-                    $query_string = $query_string . http_build_query(\Config\Services::request()->getGet());
+                    $query_string = $query_string . http_build_query($query_params);
                 }
+
                 $redirect = 'manage/users/login?redirect=' . urlencode(current_url() . $query_string);
 
                 if (\Config\Services::request()->isAJAX()) {
