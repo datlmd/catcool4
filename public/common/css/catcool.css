@@ -408,7 +408,7 @@ select.form-control {
 	height: 0;
 }
 
-.catcool-table-of-contents .offcanvas {
+.catcool-table-of-contents .offcanvas, .lesson-list .offcanvas {
 	z-index: 2000;
 	max-width: 300px;
 }
@@ -445,8 +445,8 @@ select.form-control {
 .button-menu-detail {
 	display: none;
 	position: fixed;
-	bottom: 35px;
-	left: 35px;
+	bottom: 30px;
+	left: 15px;
 	font-size: 20px;
     padding: 2px 0 0 0;
 	height: 40px;
@@ -1102,7 +1102,7 @@ article.article .article-content figure {
 /* Small devices (landscape phones, less than 768px) */
 @media (max-width: 767.98px) {
 	.catcool-table-of-contents .button-table-of-content {
-		bottom: 20px;
+		bottom: 30px;
     	left: 15px;
 	}
 

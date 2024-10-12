@@ -46,7 +46,7 @@
             
         </header>
         <div class="row">
-            <div class="col-sm-9 col-12 pe-5">
+            <div class="col-md-9 col-12 pe-md-5">
                 {if !empty($related_list)}
 
                     <ul class="post-related">
@@ -116,7 +116,7 @@
 
             </div>
 
-            <aside class="col-sm-3 col-12">
+            <aside class="col-md-3 col-12">
                 {if !empty($lesson_categories)}
                     {include file=get_theme_path('views/modules/posts/inc/lesson_categories.tpl') post_id=$detail.post_id}
                 {else}
