@@ -1051,7 +1051,6 @@ article.article header .article-meta span.meta-datetime {
 article.article .article-content {
 	margin: 0 auto;
 	width: 100%;
-	max-width: 850px;
 }
 
 article.article .article-content img {

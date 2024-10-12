@@ -32,5 +32,5 @@ $routes->add('(:any)-' . SEO_ARTICLE_ID . '(:num).' . SEO_EXTENSION, 'Detail::in
 $routes->add('(:any)-' . SEO_ARTICLE_ID . '(:num)', 'Detail::index/$1/$2', ['namespace' => 'App\Modules\Articles\Controllers']);
 
 //Set route category
-$routes->add('(:any)-' . SEO_ARTICLE_CATEGORY_ID . '(:num).' . SEO_EXTENSION, 'Articles::index/$1/$2', ['namespace' => 'App\Modules\Articles\Controllers']);
-$routes->add('(:any)-' . SEO_ARTICLE_CATEGORY_ID . '(:num)', 'Articles::index/$1/$2', ['namespace' => 'App\Modules\Articles\Controllers']);
+$routes->add('(:any)-' . '(:num)' . SEO_ARTICLE_CATEGORY_ID . '.' . SEO_EXTENSION, 'Articles::index/$1/$2', ['namespace' => 'App\Modules\Articles\Controllers']);
+$routes->add('(:any)-' . '(:num)' . SEO_ARTICLE_CATEGORY_ID, 'Articles::index/$1/$2', ['namespace' => 'App\Modules\Articles\Controllers']);

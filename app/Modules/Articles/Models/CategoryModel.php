@@ -106,7 +106,7 @@ class CategoryModel extends MyModel
         $href = site_url("article/category/{$category['category_id']}");
         if (!empty(config_item('seo_url'))) {
             $href = !empty($category['slug']) ? $category['slug'] : $category['name'];
-            $href = get_seo_extension(clear_seo_extension($href) . "-" . SEO_ARTICLE_CATEGORY_ID . $category['category_id']);
+            $href = get_seo_extension(clear_seo_extension($href) . "-{$category['category_id']}" . SEO_ARTICLE_CATEGORY_ID);
             $href = site_url($href);
         }
 
