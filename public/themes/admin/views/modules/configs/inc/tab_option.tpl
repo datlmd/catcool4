@@ -1,7 +1,31 @@
 {strip}
 	{form_open(uri_string(), ['id' => 'form_option'])}
 	{form_hidden('tab_type', 'tab_option')}
+
 	<div class="border-bottom mx-3 lead pb-1 my-3 fw-bold">{lang('ConfigAdmin.text_product')}</div>
+
+	<div class="form-group row">
+		<div class="col-12 col-sm-3 col-form-label text-sm-end required-label">{lang('ConfigAdmin.text_product_description_length')}</div>
+		<div class="col-12 col-sm-8 col-lg-6">
+			<input type="number" name="product_description_length" value="{old('product_description_length', $settings.product_description_length)}" id="input_product_description_length" class="form-control{if validation_show_error("product_description_length")} is-invalid{/if}">
+			<small>{lang('ConfigAdmin.help_product_description_length')}</small>
+			<div class="invalid-feedback">
+				{validation_show_error("product_description_length")}
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group row">
+		<div class="col-12 col-sm-3 col-form-label text-sm-end required-label">{lang('ConfigAdmin.text_product_pagination')}</div>
+		<div class="col-12 col-sm-8 col-lg-6">
+			<input type="number" name="product_pagination" value="{old('product_pagination', $settings.product_pagination)}" id="input_product_pagination" class="form-control{if validation_show_error("product_pagination")} is-invalid{/if}">
+			<small>{lang('ConfigAdmin.help_product_pagination')}</small>
+			<div class="invalid-feedback">
+				{validation_show_error("product_pagination")}
+			</div>
+		</div>
+	</div>
+
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_product_count')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
@@ -17,11 +41,15 @@
 			<small>{lang('ConfigAdmin.help_product_count')}</small>
 		</div>
 	</div>
+
 	<div class="form-group row">
-		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_product_limit_admin')}</div>
+		<div class="col-12 col-sm-3 col-form-label text-sm-end required-label">{lang('ConfigAdmin.text_product_limit_admin')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			<input type="number" name="product_limit_admin" value="{old('product_limit_admin', $settings.product_limit_admin)}" id="product_limit_admin" class="form-control">
+			<input type="number" name="product_pagination_admin" value="{old('product_pagination_admin', $settings.product_pagination_admin)}" id="input_product_pagination_admin" class="form-control{if validation_show_error("product_pagination_admin")} is-invalid{/if}">
 			<small>{lang('ConfigAdmin.help_product_limit_admin')}</small>
+			<div class="invalid-feedback">
+				{validation_show_error("product_pagination_admin")}
+			</div>
 		</div>
 	</div>
 

@@ -15,7 +15,11 @@ class Category extends MyController
         //set theme
         $this->themes->setTheme(config_item('theme_frontend'));
 
-        $limit = PAGINATION_DEFAULF_LIMIT;
+        $limit = !empty($this->request->getGet('limit')) ? $this->request->getGet('limit') : config_item('product_pagination');
+        $page = $this->request->getGet('page');
+        $filter = $this->request->getGet('filter');
+        $sort = !empty($this->request->getGet('sort')) ? $this->request->getGet('sort') : 'p.sort_order';
+        $order = !empty($this->request->getGet('order')) ? $this->request->getGet('order') : 'ASC';
 
         if (is_numeric($slug) && empty($category_id)) {
             $category_id = (int) $slug;
@@ -30,8 +34,9 @@ class Category extends MyController
         foreach ($category_list as $key => $value) {
             unset($category_list[$key]['lang']);
             $category_list[$key]['href'] = $category_model->getUrl($value);
-            $category_list[$key]['thumb'] = image_thumb_url($value['image'], config_item('product_category_image_thumb_width'), config_item('product_category_image_thumb_height'));
+            $category_list[$key]['thumb'] = image_thumb_url(html_entity_decode($value['image'], ENT_QUOTES, 'UTF-8'), config_item('product_category_image_thumb_width'), config_item('product_category_image_thumb_height'));
         }
+        $category_info = $category_list[$category_id];
 
         $parent_list = get_list_tree_selected($category_list, $category_id, 'category_id');
         $parent_id = key($parent_list);
@@ -42,25 +47,144 @@ class Category extends MyController
         $category_tree = format_tree([$category_list, 'category_id']);        
         $category_list = $category_model->getChildrenQuantity($category_list, $category_tree);
 
-        // $product_model = new ProductModel();
+        $product_model = new ProductModel();
 
-        // if (!empty($category_id)) {
-        //     list($article_list, $page_list) = $product_model->getArticlesByCategoryId($category_id, $this->language_id, $limit);
-        // } else {
-        //     list($article_list, $page_list) = $product_model->getArticles($this->language_id, $limit);
-        // }
+        $filter_data = [
+            'filter_category_id'  => $category_id,
+            'filter_sub_category' => true,
+            'filter_filter'       => $filter,
+            'sort'                => $sort,
+            'order'               => $order,
+            'start'               => ($page - 1) * $limit,
+            'limit'               => $limit
+        ];
 
-        // foreach ($article_list as $key => $value) {
-        //     $article_list[$key]['image'] = image_thumb_url($value['images'], config_item('article_image_thumb_width'), config_item('article_image_thumb_height'));
-        //     $article_list[$key]['category_ids'] = json_decode($value['category_ids'], true);
-        //     $article_list[$key]['href'] = $product_model->getUrl($value);
-        // }
+        $product_list = [];
+        list($products, $product_pager) = $product_model->getProducts($filter_data, $this->language_id);
+        
+        foreach ($products as $key => $value) {
+            $price = service('currency')->format($value['price'], session('currency'));
+            $special = service('currency')->format(199000, session('currency'));
+            $tax = 10;
+            $product = [
+                'product_id'  => $value['product_id'],
+                'thumb'       => image_thumb_url($value['image'], config_item('product_image_width'), config_item('product_image_height')),
+                'name'        => $value['name'],
+                'description' => mb_substr(trim(strip_tags(html_entity_decode($value['description'], ENT_QUOTES, 'UTF-8'))), 0, config_item('product_description_length')) . '...',
+                'price'       => $price,
+                'special'     => $special,
+                'tax'         => $tax,
+                'minimum'     => $value['minimum'] > 0 ? $value['minimum'] : 1,
+                'rating'      => $value['rating'],
+                'href'        => $product_model->getUrl($value)
+            ];
+            $product_list[] = $this->themes->view('thumb', $product, true);
+        }
+
+        //Sort List
+        $url = '';
+
+        if (!empty($this->request->getGet('filter'))) {
+            $url .= '&filter=' . $filter;
+        }
+
+        if (!empty($this->request->getGet('limit'))) {
+            $url .= '&limit=' . $limit;
+        }
+
+        $sorts = [];
+
+        $sorts[] = [
+            'text'  => lang('ProductCategory.text_default'),
+            'value' => 'p.sort_order-ASC',
+            'href'  => $category_info['href'] . '&sort=p.sort_order&order=ASC' . $url
+        ];
+
+        $sorts[] = [
+            'text'  => lang('ProductCategory.text_name_asc'),
+            'value' => 'pd.name-ASC',
+            'href'  => $category_info['href'] . '&sort=pd.name&order=ASC' . $url
+        ];
+
+        $sorts[] = [
+            'text'  => lang('ProductCategory.text_name_desc'),
+            'value' => 'pd.name-DESC',
+            'href'  => $category_info['href'] . '&sort=pd.name&order=DESC' . $url
+        ];
+
+        $sorts[] = [
+            'text'  => lang('ProductCategory.text_price_asc'),
+            'value' => 'p.price-ASC',
+            'href'  => $category_info['href'] . '&sort=p.price&order=ASC' . $url
+        ];
+
+        $sorts[] = [
+            'text'  => lang('ProductCategory.text_price_desc'),
+            'value' => 'p.price-DESC',
+            'href'  => $category_info['href'] . '&sort=p.price&order=DESC' . $url
+        ];
+
+        if (config_item('config_review_status')) {
+            $sorts[] = [
+                'text'  => lang('ProductCategory.text_rating_desc'),
+                'value' => 'rating-DESC',
+                'href'  => $category_info['href'] . '&sort=rating&order=DESC' . $url
+            ];
+
+            $sorts[] = [
+                'text'  => lang('ProductCategory.text_rating_asc'),
+                'value' => 'rating-ASC',
+                'href'  => $category_info['href'] . '&sort=rating&order=ASC' . $url
+            ];
+        }
+
+        $sorts[] = [
+            'text'  => lang('ProductCategory.text_model_asc'),
+            'value' => 'p.model-ASC',
+            'href'  => $category_info['href'] . '&sort=p.model&order=ASC' . $url
+        ];
+
+        $sorts[] = [
+            'text'  => lang('ProductCategory.text_model_desc'),
+            'value' => 'p.model-DESC',
+            'href'  => $category_info['href'] . '&sort=p.model&order=DESC' . $url
+        ];
+
+        //Limit
+        $url = '';
+
+        if (!empty($this->request->getGet('filter'))) {
+            $url .= '&filter=' . $filter;
+        }
+
+        if (!empty($this->request->getGet('sort'))) {
+            $url .= '&sort=' . $sort;
+        }
+
+        if (!empty($this->request->getGet('order'))) {
+            $url .= '&order=' . $order;
+        }
+
+        $limits = array_unique([(int)config_item('product_pagination'), 25, 50, 75, 100]);
+
+        sort($limits);
+
+        foreach ($limits as $key => $value) {
+            $limits[$key] = [
+                'text'  => $value,
+                'value' => $value,
+                'href'  => $category_info['href'] . $url . '&limit=' . $value
+            ];
+        }
+
 
         $data = [
-            // 'article_list' => $article_list,
+            'product_list' => $product_list,
             // 'page_list' => $page_list,
+            'sorts' => $sorts,
+            'limits' => $limits,
             'category_list' => $category_list,
-            'category' => $category_list[$parent_id],
+            'category_parent' => $category_list[$parent_id],
             'category_id' => $category_id
         ];
 
@@ -71,7 +195,7 @@ class Category extends MyController
         //set params khi call cell
         $params['params'] = [
             'breadcrumb' => $this->breadcrumb->render(),
-            'breadcrumb_title' => $category_list[$category_id]['name'],
+            'breadcrumb_title' => $category_info['name'],
         ];
 
         $this->themes->addPartial('header_top', $params)
@@ -83,7 +207,7 @@ class Category extends MyController
             ->addPartial('footer_top', $params)
             ->addPartial('footer_bottom', $params);
 
-        $this->_setMeta($category_list[$category_id]);
+        $this->_setMeta($category_info);
 
         theme_load('category', $data);
     }

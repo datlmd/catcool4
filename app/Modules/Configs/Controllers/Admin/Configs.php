@@ -106,6 +106,10 @@ class Configs extends AdminController
                 $this->validator->setRule('article_image_thumb_height', lang('ConfigAdmin.text_article_image_thumb'), 'required|is_natural');
                 $this->validator->setRule('product_category_image_thumb_width', lang('ConfigAdmin.text_product_category_image_thumb'), 'required|is_natural');
                 $this->validator->setRule('product_category_image_thumb_height', lang('ConfigAdmin.text_product_category_image_thumb'), 'required|is_natural');
+                $this->validator->setRule('product_image_thumb_width', lang('ConfigAdmin.text_product_image_thumb'), 'required|is_natural');
+                $this->validator->setRule('product_image_thumb_height', lang('ConfigAdmin.text_product_image_thumb'), 'required|is_natural');
+                $this->validator->setRule('product_image_width', lang('ConfigAdmin.text_product_image'), 'required|is_natural');
+                $this->validator->setRule('product_image_height', lang('ConfigAdmin.text_product_image'), 'required|is_natural');
                 break;
             case 'tab_local':
                 $this->validator->setRule('default_locale', lang('Admin.text_language'), 'required');
@@ -113,6 +117,10 @@ class Configs extends AdminController
                 break;
             case 'tab_option':
                 $this->validator->setRule('attribute_default', lang('ConfigAdmin.text_attribute_default'), 'required');
+                $this->validator->setRule('product_description_length', lang('ConfigAdmin.text_product_description_length'), 'required|is_natural_no_zero');
+                $this->validator->setRule('product_pagination', lang('ConfigAdmin.text_product_pagination'), 'required|is_natural_no_zero');
+                $this->validator->setRule('product_pagination', lang('ConfigAdmin.text_product_pagination'), 'required|is_natural_no_zero');
+                $this->validator->setRule('product_pagination_admin', lang('ConfigAdmin.text_product_limit_admin'), 'required|is_natural_no_zero');
                 break;
             case 'tab_mail':
                 $this->validator->setRule('email_engine', lang('ConfigAdmin.text_email_engine'), 'required');

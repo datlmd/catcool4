@@ -47,7 +47,8 @@ class Products extends AdminController
 
         $this->themes->addJS('common/js/common/currency');
 
-        $limit = $this->request->getGet('limit');
+        $limit = !empty($this->request->getGet('limit')) ? (int)$this->request->getGet('limit') : (int)config_item('product_pagination_admin');
+
         $sort = $this->request->getGet('sort');
         $order = $this->request->getGet('order');
         $filter_keys = ['product_id', 'name', 'limit'];
@@ -299,7 +300,7 @@ class Products extends AdminController
         // update image main
         if (!empty($main_image_url)) {
             $data_product_image_main['product_id'] = $product_id;
-            $data_product_image_main['product_id'] = $main_image_url;
+            $data_product_image_main['image'] = $main_image_url;
             $this->model->save($data_product_image_main);
         }
 
