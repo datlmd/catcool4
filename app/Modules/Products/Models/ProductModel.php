@@ -253,25 +253,25 @@ class ProductModel extends MyModel
 
         $sort = "";
 		$sort_data = [
-			'pd.name',
-			'p.model',
-			'p.quantity',
-			'p.price',
+			'`pd`.name',
+			'`p`.model',
+			'`p`.quantity',
+			'`p`.price',
 			'rating',
-			'p.sort_order',
-			'p.date_added'
+			'`p`.sort_order',
+			'`p`.date_added'
 		];
 
 		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
-			if ($data['sort'] == 'pd.name' || $data['sort'] == 'p.model') {
+			if ($data['sort'] == '`pd`.name' || $data['sort'] == '`p`.model') {
 				$sort .= "LCASE(" . $data['sort'] . ")";
-			} elseif ($data['sort'] == 'p.price') {
-				$sort .= "(CASE WHEN `special` IS NOT NULL THEN `special` WHEN `discount` IS NOT NULL THEN `discount` ELSE p.`price` END)";
+			} elseif ($data['sort'] == '`p`.price') {
+				$sort .= "(CASE WHEN `special` IS NOT NULL THEN `special` WHEN `discount` IS NOT NULL THEN `discount` ELSE `p`.`price` END)";
 			} else {
 				$sort .= $data['sort'];
 			}
 		} else {
-			$sort .= "p.`sort_order`";
+			$sort .= "`p`.`sort_order`";
 		}
 
 		if (isset($data['order']) && ($data['order'] == 'DESC')) {
