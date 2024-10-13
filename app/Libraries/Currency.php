@@ -33,13 +33,13 @@ class Currency
         $string = '';
 
         if ($symbol_left) {
-            $string .= $symbol_left;
+            $string .= "<span>$symbol_left</span>";
         }
 
         $string .= number_format($amount, $decimal_place, lang('General.decimal_point'), lang('General.thousand_point'));
 
         if ($symbol_right) {
-            $string .= $symbol_right;
+            $string .= "<span>$symbol_right</span>";
         }
 
         return $string;

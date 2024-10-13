@@ -15,6 +15,7 @@ use App\Libraries\Robot;
 use App\Libraries\Currency;
 use App\Libraries\Customer;
 use App\Libraries\User;
+use App\Libraries\Startup;
 
 /**
  * Services Configuration file.
@@ -163,5 +164,10 @@ class Services extends BaseService
     public static function user($getShared = true)
     {
         return ($getShared === true ? static::getSharedInstance('user') : new User());
+    }
+
+    public static function startup($getShared = true)
+    {
+        return ($getShared === true ? static::getSharedInstance('startup') : new Startup());
     }
 }
