@@ -7,12 +7,18 @@ if(!isset($routes))
 
 $routes->group('manage', ['namespace' => 'App\Modules\Countries\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes){
     
-
     $subroutes->add('countries', 'Countries::index');
     $subroutes->add('countries/add', 'Countries::add');
     $subroutes->add('countries/edit/(:num)', 'Countries::edit/$1');
     $subroutes->add('countries/delete', 'Countries::delete');
     $subroutes->add('countries/publish', 'Countries::publish');
+
+    //backup country old
+    $subroutes->add('countries_full', 'CountriesFull::index');
+    $subroutes->add('countries_full/add', 'CountriesFull::add');
+    $subroutes->add('countries_full/edit/(:num)', 'CountriesFull::edit/$1');
+    $subroutes->add('countries_full/delete', 'CountriesFull::delete');
+    $subroutes->add('countries_full/publish', 'CountriesFull::publish');
 
     $subroutes->add('country_provinces', 'Provinces::index');
     $subroutes->add('country_provinces/add', 'Provinces::add');
