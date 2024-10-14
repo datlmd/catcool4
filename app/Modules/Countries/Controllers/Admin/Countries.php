@@ -64,22 +64,12 @@ class Countries extends AdminController
             }
 
             $add_data = [
-                'name'                  => $this->request->getPost('name'),
-                'formal_name'           => $this->request->getPost('formal_name'),
-                'country_code'          => $this->request->getPost('country_code'),
-                'country_code3'         => $this->request->getPost('country_code3'),
-                'country_type'          => $this->request->getPost('country_type'),
-                'country_sub_type'      => $this->request->getPost('country_sub_type'),
-                'sovereignty'           => $this->request->getPost('sovereignty'),
-                'capital'               => $this->request->getPost('capital'),
-                'currency_code'         => $this->request->getPost('currency_code'),
-                'currency_name'         => $this->request->getPost('currency_name'),
-                'telephone_code'        => $this->request->getPost('telephone_code'),
-                'country_number'        => $this->request->getPost('country_number'),
-                'internet_country_code' => $this->request->getPost('internet_country_code'),
-                'sort_order'            => $this->request->getPost('sort_order'),
-                'flags'                 => $this->request->getPost('flags'),
-                'published'             => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'name'              => $this->request->getPost('name'),
+                'iso_code_2'        => $this->request->getPost('iso_code_2'),
+                'iso_code_3'        => $this->request->getPost('iso_code_3'),
+                'address_format_id' => $this->request->getPost('address_format_id'),
+                'postcode_required' => !empty($this->request->getPost('postcode_required')) ? STATUS_ON : STATUS_OFF,
+                'published'         => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
             if (!$this->model->insert($add_data)) {
@@ -111,22 +101,12 @@ class Countries extends AdminController
             }
 
             $edit_data = [
-                'name'                  => $this->request->getPost('name'),
-                'formal_name'           => $this->request->getPost('formal_name'),
-                'country_code'          => $this->request->getPost('country_code'),
-                'country_code3'         => $this->request->getPost('country_code3'),
-                'country_type'          => $this->request->getPost('country_type'),
-                'country_sub_type'      => $this->request->getPost('country_sub_type'),
-                'sovereignty'           => $this->request->getPost('sovereignty'),
-                'capital'               => $this->request->getPost('capital'),
-                'currency_code'         => $this->request->getPost('currency_code'),
-                'currency_name'         => $this->request->getPost('currency_name'),
-                'telephone_code'        => $this->request->getPost('telephone_code'),
-                'country_number'        => $this->request->getPost('country_number'),
-                'internet_country_code' => $this->request->getPost('internet_country_code'),
-                'sort_order'            => $this->request->getPost('sort_order'),
-                'flags'                 => $this->request->getPost('flags'),
-                'published'             => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'name'              => $this->request->getPost('name'),
+                'iso_code_2'        => $this->request->getPost('iso_code_2'),
+                'iso_code_3'        => $this->request->getPost('iso_code_3'),
+                'address_format_id' => $this->request->getPost('address_format_id'),
+                'postcode_required' => !empty($this->request->getPost('postcode_required')) ? STATUS_ON : STATUS_OFF,
+                'published'         => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
             if (!$this->model->update($id, $edit_data)) {
@@ -200,8 +180,9 @@ class Countries extends AdminController
             $data['text_form']   = lang('CountryAdmin.text_edit');
             $data['text_submit'] = lang('CountryAdmin.button_save');
             $breadcrumb_url      = site_url(self::MANAGE_URL . "/edit/$id");
-
+            
             $data_form = $this->model->find($id);
+            
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->to(site_url(self::MANAGE_URL));
@@ -213,6 +194,14 @@ class Countries extends AdminController
             $data['text_form']   = lang('CountryAdmin.text_add');
             $data['text_submit'] = lang('CountryAdmin.button_add');
             $breadcrumb_url      = site_url(self::MANAGE_URL . "/add");
+        }
+
+        $address_format_model = new \App\Modules\Addresses\Models\AddressFormatModel();
+        $address_format_list = $address_format_model->getAddressFormats();
+        if (!empty($address_format_list)) {
+            foreach ($address_format_list as $value) {
+                $data['address_format_list'][$value['address_format_id']] = $value['name'];
+            }
         }
 
         $data['errors'] = $this->errors;
@@ -231,8 +220,8 @@ class Countries extends AdminController
 
     private function _validateForm()
     {
-        $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        $this->validator->setRule('name', lang('Admin.text_name'), 'required');
+        $this->validator->setRule('address_format_id', lang('Admin.text_address_format'), 'is_natural');
+        $this->validator->setRule('name', lang('Admin.text_name'), 'required|max_length[128]');
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();

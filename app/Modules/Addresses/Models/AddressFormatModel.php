@@ -39,7 +39,7 @@ class AddressFormatModel extends MyModel
         return $this->orderBy($sort, $order)->findAll();
     }
 
-    public function getListPublished($is_cache = true)
+    public function getAddressFormats($is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::ADDRESS_FORMAT_CACHE_NAME) : null;
         if (empty($result)) {

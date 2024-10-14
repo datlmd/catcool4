@@ -32,7 +32,7 @@
                         <div class="card-body">
 
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end required-label col-form-label">
+                                <label class="col-12 col-sm-4 text-sm-end required-label col-form-label fw-bold">
                                     {lang('Admin.text_name')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
@@ -40,120 +40,51 @@
                                     <div class="invalid-feedback">{validation_show_error("name")}</div>
                                 </div>
                             </div>
+             
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryAdmin.text_formal_name')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="formal_name" value="{old('formal_name', $edit_data.formal_name)}" id="formal_name" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                <label class="col-12 col-sm-4 text-sm-end col-form-label fw-bold">
                                     {lang('CountryAdmin.text_country_code')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="country_code" value="{old('country_code', $edit_data.country_code)}" id="country_code" class="form-control">
+                                    <input type="text" name="iso_code_2" value="{old('iso_code_2', $edit_data.iso_code_2)}" id="input_iso_code_2" class="form-control">
                                 </div>
                             </div>
+
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                <label class="col-12 col-sm-4 text-sm-end col-form-label fw-bold">
                                     {lang('CountryAdmin.text_country_code3')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="country_code3" value="{old('country_code3', $edit_data.country_code3)}" id="country_code3" class="form-control">
+                                    <input type="text" name="iso_code_3" value="{old('iso_code_3', $edit_data.iso_code_3)}" id="input_iso_code_3" class="form-control">
                                 </div>
                             </div>
+                            
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryAdmin.text_country_type')}
+                                <label class="col-12 col-sm-4 text-sm-end col-form-label fw-bold">
+                                    {lang('CountryAdmin.text_address_format')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="country_type" value="{old('country_type', $edit_data.country_type)}" id="country_type" class="form-control">
+                                    {form_dropdown('address_format_id', $address_format_list, old('address_format_id', $settings.address_format_id), ['class' => 'form-control'])}                                    
                                 </div>
                             </div>
+
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryAdmin.text_country_sub_type')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="country_sub_type" value="{old('country_sub_type', $edit_data.country_sub_type)}" id="country_sub_type" class="form-control">
+                                <div class="col-12 col-sm-4 text-sm-end ">
+                                    <label class="col-form-label fw-bold" for="input_postcode_required">
+                                        {lang('CountryAdmin.text_postcode_required')}
+                                    </label>
+                                </div>
+                                
+                                <div class="col-12 col-sm-8 col-lg-6 form-control-lg py-1">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" name="postcode_required" id="input_postcode_required"
+                                            {set_checkbox('postcode_required', 1, $edit_data.postcode_required|default:false)} value="1">
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryAdmin.text_sovereignty')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="sovereignty" value="{old('sovereignty', $edit_data.sovereignty)}" id="sovereignty" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryAdmin.text_capital')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="capital" value="{old('capital', $edit_data.capital)}" id="capital" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryAdmin.text_currency_code')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="currency_code" value="{old('currency_code', $edit_data.currency_code)}" id="currency_code" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryAdmin.text_currency_name')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="currency_name" value="{old('currency_name', $edit_data.currency_name)}" id="currency_name" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryAdmin.text_telephone_code')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="telephone_code" value="{old('telephone_code', $edit_data.telephone_code)}" id="telephone_code" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryAdmin.text_country_number')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="country_number" value="{old('country_number', $edit_data.country_number)}" id="country_number" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryAdmin.text_internet_country_code')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="internet_country_code" value="{old('internet_country_code', $edit_data.internet_country_code)}" id="internet_country_code" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryAdmin.text_flags')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="flags" value="{old('flags', $edit_data.flags)}" id="flags" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('Admin.text_sort_order')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="number" name="sort_order" value="{old('sort_order', $edit_data.sort_order)|default:0}" id="sort_order" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label" for="input_published">
+                                <label class="col-12 col-sm-4 text-sm-end col-form-label fw-bold" for="input_published">
                                     {lang('Admin.text_published')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6 form-control-lg py-1">
