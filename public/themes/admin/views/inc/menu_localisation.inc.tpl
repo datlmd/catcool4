@@ -6,16 +6,17 @@
 			</button>
 		</div>
 	{/if}
-	<div class="sidebar-nav-fixed {if !empty($is_mobile)}collapse{/if}" id="menu_localisation">
+	<div class="sidebar-nav-fixed {if !empty($is_mobile)}collapse{/if} card" id="menu_localisation">
+		<div class="card-body px-2">
 		<ul class="list-unstyled">
 			<li><a href="{site_url('manage/locations')}" class="{if !empty($active) && $active eq 'locations'}active{/if}">{lang('LocationAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('manage/languages')}" class="{if !empty($active) && $active eq 'languages'}active{/if}">{lang('LanguageAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('manage/currencies')}" class="{if !empty($active) && $active eq 'currencies'}active{/if}">{lang('CurrencyAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('manage/product_stock_statuses')}" class="{if !empty($active) && $active eq 'stock_statuses'}active{/if}">{lang('ProductStockStatusAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('manage/product_order_statuses')}" class="{if !empty($active) && $active eq 'order_statuses'}active{/if}">{lang('ProductOrderStatusAdmin.heading_title')}</a></li>
-			<li><a href="{site_url('manage/subscription_statuses')}" class="{if !empty($active) && $active eq 'subscription_statuses'}active{/if}">{lang('SubscriptionStatusAdmin.heading_title')}</a></li>
-			<li>
-				<a href="javascript:void(0);" class="{if strpos($active, 'returns') !== false}active{/if}">{lang('ReturnAdmin.heading_title')}</a>
+			<li class="border-bottom pb-1"><a href="{site_url('manage/subscription_statuses')}" class="{if !empty($active) && $active eq 'subscription_statuses'}active{/if}">{lang('SubscriptionStatusAdmin.heading_title')}</a></li>
+			<li class="border-bottom pb-1 my-2">
+				<a href="{site_url('manage/return_statuses')}" class="{if strpos($active, 'returns') !== false}active{/if} fw-bold">{lang('ReturnAdmin.heading_title')}</a>
 				<ul>
 					<li>
 						<a href="{site_url('manage/return_statuses')}" class="ps-1">{lang('ReturnStatusAdmin.heading_title')}</a>
@@ -31,6 +32,8 @@
 			<li><a href="{site_url('manage/countries')}" class="{if !empty($active) && $active eq 'countries'}active{/if}">{lang('CountryAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('manage/product_weight_classes')}" class="{if !empty($active) && $active eq 'weight_classes'}active{/if}">{lang('ProductWeightClassAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('manage/product_length_classes')}" class="{if !empty($active) && $active eq 'length_classes'}active{/if}">{lang('ProductLengthClassAdmin.heading_title')}</a></li>
+			<li><a href="{site_url('manage/addresses_format')}" class="{if !empty($active) && $active eq 'addresses_format'}active{/if}">{lang('AddressFormatAdmin.heading_title')}</a></li>
 		</ul>
+		</div>
 	</div>
 {/strip}
