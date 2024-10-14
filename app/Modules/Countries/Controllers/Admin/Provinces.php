@@ -177,7 +177,7 @@ class Provinces extends AdminController
         }
 
         $data['list_delete'] = $list_delete;
-        $data['ids']         = $this->request->getPost('delete_ids');
+        $data['ids'] = implode(',', $delete_ids);
 
         json_output(['token' => $token, 'data' => $this->themes::view('provinces/delete', $data)]);
     }

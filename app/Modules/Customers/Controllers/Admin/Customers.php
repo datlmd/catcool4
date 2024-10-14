@@ -405,7 +405,7 @@ class Customers extends AdminController
 
         $data['list_delete'] = $list_delete;
         $data['list_undelete'] = $list_undelete;
-        $data['ids'] = $delete_ids;
+        $data['ids'] = implode(',', $delete_ids);
 
         json_output(['token' => $token, 'data' => $this->themes::view('delete', $data)]);
     }
