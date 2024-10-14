@@ -295,8 +295,8 @@ class Configs extends AdminController
         $province_model = new \App\Modules\Countries\Models\ProvinceModel();
         $currency_model = new \App\Modules\Currencies\Models\CurrencyModel();
 
-        $data['country_list'] = $country_model->getListDisplay();
-        $data['province_list'] = $province_model->getListDisplay();
+        $data['country_list'] = $country_model->getCountriesDropdown();
+        $data['province_list'] = $province_model->getProvincesDropdown();
         $data['timezone_list'] = $this->_getListTimezone();
         $data['currency_list'] = format_dropdown($currency_model->getListPublished(), 'code');
 

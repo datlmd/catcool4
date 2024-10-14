@@ -67,7 +67,7 @@ class CountryFullModel extends MyModel
         return $this->orderBy($sort, $order);
     }
 
-    public function getListPublished($is_cache = true)
+    public function getCountries($is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::COUNTRY_CACHE_NAME) : null;
         if (empty($result)) {
@@ -92,9 +92,9 @@ class CountryFullModel extends MyModel
         return true;
     }
 
-    public function getListDisplay()
+    public function getCountriesDropdown()
     {
-        $return = $this->getListPublished();
+        $return = $this->getCountries();
         if (empty($return)) {
             return false;
         }

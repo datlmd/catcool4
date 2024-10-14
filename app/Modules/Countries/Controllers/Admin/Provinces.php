@@ -50,7 +50,7 @@ class Provinces extends AdminController
         ];
 
         $country_model = new CountryModel();
-        $data['country_list'] = $country_model->getListDisplay();
+        $data['country_list'] = $country_model->getCountriesDropdown();
 
         add_meta(['title' => lang("CountryProvinceAdmin.heading_title")], $this->themes);
         $this->themes
@@ -185,7 +185,7 @@ class Provinces extends AdminController
     private function _getForm($id = null)
     {
         $country_model = new CountryModel();
-        $data['country_list'] = $country_model->getListDisplay();
+        $data['country_list'] = $country_model->getCountriesDropdown();
 
         //edit
         if (!empty($id) && is_numeric($id)) {

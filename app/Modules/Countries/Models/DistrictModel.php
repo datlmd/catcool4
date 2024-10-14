@@ -47,7 +47,7 @@ class  DistrictModel extends MyModel
         return $this->orderBy($sort, $order);
     }
 
-    public function getListPublished($is_cache = true)
+    public function getDistricts($is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::COUNTRY_DISTRICT_CACHE_NAME) : null;
         if (empty($result)) {
@@ -71,9 +71,9 @@ class  DistrictModel extends MyModel
         return true;
     }
 
-    public function getListDisplay($province_id = null)
+    public function getDistrictsDropdown($province_id = null)
     {
-        $return = $this->getListPublished();
+        $return = $this->getDistricts();
         if (empty($return)) {
             return false;
         }

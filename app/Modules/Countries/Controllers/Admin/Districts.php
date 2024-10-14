@@ -51,7 +51,7 @@ class Districts extends AdminController
         ];
 
         $province_model = new ProvinceModel();
-        $data['province_list'] = $province_model->getListDisplay();
+        $data['province_list'] = $province_model->getProvincesDropdown();
 
         add_meta(['title' => lang("CountryDistrictAdmin.heading_title")], $this->themes);
         $this->themes
@@ -201,7 +201,7 @@ class Districts extends AdminController
 
             $province_data = $province_model->where('province_id', $data_form['province_id'])->first();
             if (!empty($province_data)) {
-                $province_list           = $province_model->getListDisplay($province_data['country_id']);
+                $province_list           = $province_model->getProvincesDropdown($province_data['country_id']);
                 $data_form['country_id'] = $province_data['country_id'];
             }
 
@@ -213,7 +213,7 @@ class Districts extends AdminController
             $breadcrumb_url      = site_url(self::MANAGE_URL . "/add");
         }
 
-        $data['country_list']  = $country_model->getListDisplay();
+        $data['country_list']  = $country_model->getCountriesDropdown();
         $data['province_list'] = $province_list;
 
         $data['errors'] = $this->errors;

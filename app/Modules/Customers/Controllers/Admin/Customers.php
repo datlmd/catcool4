@@ -250,7 +250,7 @@ class Customers extends AdminController
         $district_model = model('App\Modules\Countries\Models\DistrictModel');
         $ward_model = model('App\Modules\Countries\Models\WardModel');
 
-        $data['country_list'] = $country_model->getListDisplay();
+        $data['country_list'] = $country_model->getCountriesDropdown();
 
         //edit
         if (!empty($customer_id) && is_numeric($customer_id)) {
@@ -268,9 +268,9 @@ class Customers extends AdminController
             $address_model = model('App\Modules\Customers\Models\AddressModel');
             $data_form['address_list'] = $address_model->getListByCustomerId($customer_id);
             foreach ($data_form['address_list'] as $key => $value) {
-                $data_form['address_list'][$key]['province_list'] = $province_model->getListDisplay($value['country_id']);
-                $data_form['address_list'][$key]['district_list'] = $district_model->getListDisplay($value['province_id']);
-                $data_form['address_list'][$key]['ward_list'] = $ward_model->getListDisplay($value['district_id']);
+                $data_form['address_list'][$key]['province_list'] = $province_model->getProvincesDropdown($value['country_id']);
+                $data_form['address_list'][$key]['district_list'] = $district_model->getDistrictsDropdown($value['province_id']);
+                $data_form['address_list'][$key]['ward_list'] = $ward_model->getWardsDropdown($value['district_id']);
             }
 
             $data['edit_data'] = $data_form;

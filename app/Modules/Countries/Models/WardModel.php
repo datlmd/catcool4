@@ -47,7 +47,7 @@ class  WardModel extends MyModel
         return $this->orderBy($sort, $order);
     }
 
-    public function getListPublished($is_cache = true)
+    public function getWards($is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::COUNTRY_WARD_CACHE_NAME) : null;
         if (empty($result)) {
@@ -71,9 +71,9 @@ class  WardModel extends MyModel
         return true;
     }
 
-    public function getListDisplay($district_id = null)
+    public function getWardsDropdown($district_id = null)
     {
-        $return = $this->getListPublished();
+        $return = $this->getWards();
         if (empty($return)) {
             return false;
         }

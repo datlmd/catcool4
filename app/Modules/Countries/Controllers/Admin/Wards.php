@@ -52,10 +52,10 @@ class Wards extends AdminController
         ];
 
         $province_model = new ProvinceModel();
-        $data['province_list'] = $province_model->getListDisplay();
+        $data['province_list'] = $province_model->getProvincesDropdown();
 
         $district_model = new DistrictModel();
-        $data['district_list'] = $district_model->getListDisplay();
+        $data['district_list'] = $district_model->getDistrictsDropdown();
 
         add_meta(['title' => lang("CountryWardAdmin.heading_title")], $this->themes);
         $this->themes
@@ -208,13 +208,13 @@ class Wards extends AdminController
 
             $district_data = $district_model->where('district_id', $data_form['district_id'])->first();
             if (!empty($district_data)) {
-                $district_list    = $district_model->getListDisplay($district_data['province_id']);
+                $district_list    = $district_model->getDistrictsDropdown($district_data['province_id']);
                 $data_form['province_id'] = $district_data['province_id'];
             }
 
             $province_data = $province_model->where('province_id', $district_data['province_id'])->first();
             if (!empty($province_data)) {
-                $province_list           = $province_model->getListDisplay($province_data['country_id']);
+                $province_list           = $province_model->getProvincesDropdown($province_data['country_id']);
                 $data_form['country_id'] = $province_data['country_id'];
             }
 
@@ -226,7 +226,7 @@ class Wards extends AdminController
             $breadcrumb_url      = site_url(self::MANAGE_URL . "/add");
         }
 
-        $data['country_list']  = $country_model->getListDisplay();
+        $data['country_list']  = $country_model->getCountriesDropdown();
         $data['province_list'] = $province_list;
         $data['district_list'] = $district_list;
 

@@ -53,7 +53,7 @@ class  ProvinceModel extends MyModel
         return $this->orderBy($sort, $order);
     }
 
-    public function getListPublished($is_cache = true)
+    public function getProvinces($is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::COUNTRY_PROVINCE_CACHE_NAME) : null;
         if (empty($result)) {
@@ -77,9 +77,9 @@ class  ProvinceModel extends MyModel
         return true;
     }
 
-    public function getListDisplay($country_id = null)
+    public function getProvincesDropdown($country_id = null)
     {
-        $return = $this->getListPublished();
+        $return = $this->getProvinces();
         if (empty($return)) {
             return false;
         }

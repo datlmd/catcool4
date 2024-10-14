@@ -25,7 +25,7 @@ class Countries extends MyController
 
         $province_model = new ProvinceModel();
         $country_id    = $this->request->getPost('country_id');
-        $province_list = $province_model->getListDisplay($country_id);
+        $province_list = $province_model->getProvincesDropdown($country_id);
         if (!empty($province_list)) {
             foreach ($province_list as $key => $value) {
                 $province_list['_'.$key] = $value;
@@ -53,7 +53,7 @@ class Countries extends MyController
         $district_model = new DistrictModel();
 
         $province_id   = $this->request->getPost('province_id');
-        $district_list = $district_model->getListDisplay($province_id);
+        $district_list = $district_model->getDistrictsDropdown($province_id);
         if (!empty($district_list)) {
             foreach ($district_list as $key => $value) {
                 $district_list['_'.$key] = $value;
@@ -81,7 +81,7 @@ class Countries extends MyController
         $ward_model = new WardModel();
 
         $district_id = $this->request->getPost('district_id');
-        $ward_list   = $ward_model->getListDisplay($district_id);
+        $ward_list   = $ward_model->getWardsDropdown($district_id);
         if (!empty($ward_list)) {
             foreach ($ward_list as $key => $value) {
                 $ward_list['_'.$key] = $value;

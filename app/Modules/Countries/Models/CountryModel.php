@@ -11,28 +11,14 @@ class CountryModel extends MyModel
 
     protected $useAutoIncrement = true;
 
-    protected $useSoftDeletes = true;
-    protected $deletedField = 'deleted_at';
-
     protected $allowedFields = [
         'country_id',
         'name',
-        'formal_name',
-        'country_code',
-        'country_code3',
-        'country_type',
-        'country_sub_type',
-        'sovereignty',
-        'capital',
-        'currency_code',
-        'currency_name',
-        'telephone_code',
-        'country_number',
-        'internet_country_code',
-        'sort_order',
+        'iso_code_2',
+        'iso_code_3',
+        'address_format_id',
+        'postcode_required',
         'published',
-        'flags',
-        'deleted_at',
     ];
 
     const COUNTRY_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'country_list';
@@ -55,20 +41,19 @@ class CountryModel extends MyModel
         if (!empty($filter['name'])) {
             $this->groupStart();
             $this->Like('name', $filter['name']);
-            $this->orLike('formal_name', $filter['name']);
-            $this->orLike('country_code', $filter['name']);
-            $this->orLike('currency_code', $filter['name']);
+            $this->orLike('iso_code_2', $filter['name']);
+            $this->orLike('iso_code_3', $filter['name']);
             $this->groupEnd();
         }
 
         return $this->orderBy($sort, $order);
     }
 
-    public function getListPublished($is_cache = true)
+    public function getCountries($is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::COUNTRY_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->orderBy('sort_order', 'ASC')->where(['published' => STATUS_ON])->findAll();
+            $result = $this->from("$this->table `c`")->select('`c`.*, `af`.`name` `address_name`, `af`.`address_format`')->join('address_format `af`', '`af`.`address_format_id` = `c`.`address_format_id`', 'LEFT')->orderBy('`c`.`name`', 'ASC')->where(['`c`.`published`' => STATUS_ON])->findAll();
             if (empty($result)) {
                 return null;
             }
@@ -89,9 +74,9 @@ class CountryModel extends MyModel
         return true;
     }
 
-    public function getListDisplay()
+    public function getCountriesDropdown()
     {
-        $return = $this->getListPublished();
+        $return = $this->getCountries();
         if (empty($return)) {
             return false;
         }
