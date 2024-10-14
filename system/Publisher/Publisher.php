@@ -507,7 +507,7 @@ class Publisher extends FileCollection
 
         // Make sure the directory exists
         if (! is_dir($directory = pathinfo($to, PATHINFO_DIRNAME))) {
-            mkdir($directory, 0775, true);
+            mkdir($directory, 0777, true);
         }
 
         // Allow copy() to throw errors

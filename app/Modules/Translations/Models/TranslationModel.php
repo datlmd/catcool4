@@ -165,7 +165,7 @@ class TranslationModel extends MyModel
 
                 // create module
                 if (!is_dir(APPPATH.'Language/'.$lang['code'])) {
-                    mkdir(APPPATH.'Language/'.$lang['code'], 0775, true);
+                    mkdir(APPPATH.'Language/'.$lang['code'], 0777, true);
                 }
 
                 write_file(APPPATH.'Language/'.$lang['code'].'/'.$this->formatFileName($module['module'], $module['sub_module']).'.php', $file_content);

@@ -800,7 +800,7 @@ if (!function_exists('save_image_from_url')) {
 
         // make dir
         if (!is_dir($folder_path)) {
-            mkdir($folder_path, 0775, true);
+            mkdir($folder_path, 0777, true);
         }
 
         $file_new = $url_parts['filename'] . '.' . $url_parts['extension'];
@@ -947,7 +947,7 @@ if (!function_exists('get_folder_upload')) {
         $sub_folder = ($is_make_ymd_folder) ? date('Ym') : '';
 
         if (!is_dir($dir)) {
-            mkdir($dir, 0775, true);
+            mkdir($dir, 0777, true);
         }
 
         $dir_all = ($is_make_ymd_folder) ? $dir . '/' . $sub_folder : $dir;
@@ -957,7 +957,7 @@ if (!function_exists('get_folder_upload')) {
 
         // make dir
         if (!is_dir($dir_all)) {
-            mkdir($dir_all, 0775, true);
+            mkdir($dir_all, 0777, true);
         }
 
         $sub_dir = $folder_uri . '/' . $sub_folder;
