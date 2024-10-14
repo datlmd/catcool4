@@ -8,11 +8,7 @@
         {/if}
         <div class="row">
 
-            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-12 col-12">
-                {include file=get_theme_path('views/inc/menu_localisation.inc.tpl') active="languages"}
-            </div>
-
-            <div class="col-xl-10 col-lg-10 col-md-9 col-sm-12 col-12">
+            <div class="col-sm-9 col-12">
 
                 <div class="row">
                     <div class="col-sm-7 col-12">
@@ -78,6 +74,11 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-sm-3 col-12">
+                {include file=get_theme_path('views/inc/menu_localisation.inc.tpl') active="languages"}
+            </div>
+            
         </div>
     {form_close()}
 </div>
