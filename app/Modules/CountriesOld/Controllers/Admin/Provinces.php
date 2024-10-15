@@ -1,17 +1,15 @@
-<?php namespace App\Modules\Countries\Controllers\Admin;
+<?php namespace App\Modules\CountriesOld\Controllers\Admin;
 
 use App\Controllers\AdminController;
-use App\Modules\Countries\Models\CountryFullModel;
+use App\Modules\CountriesOld\Models\ProvinceModel;
+use App\Modules\CountriesOld\Models\CountryModel;
 
-/**
- * backup country old
- */
-class CountriesFull extends AdminController
+class Provinces extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/countries_full';
-    CONST MANAGE_URL  = 'manage/countries_full';
+    CONST MANAGE_ROOT = 'manage/old/country_provinces';
+    CONST MANAGE_URL  = 'manage/old/country_provinces';
 
     public function __construct()
     {
@@ -19,7 +17,7 @@ class CountriesFull extends AdminController
 
         $this->themes->setTheme(config_item('theme_admin'));
 
-        $this->model = new CountryFullModel();
+        $this->model = new ProvinceModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -27,7 +25,8 @@ class CountriesFull extends AdminController
 
         //add breadcrumb
         $this->breadcrumb->add(lang('Admin.catcool_dashboard'), site_url(CATCOOL_DASHBOARD));
-        $this->breadcrumb->add(lang('CountryAdmin.heading_title'), site_url(self::MANAGE_URL));
+        $this->breadcrumb->add(lang('CountryAdmin.heading_title'), site_url('manage/countries'));
+        $this->breadcrumb->add(lang('CountryProvinceAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
     public function index()
@@ -44,18 +43,21 @@ class CountriesFull extends AdminController
             'list'          => $list->paginate($limit),
             'pager'         => $list->pager,
             'total'         => $list->pager->getPerPage(),
-            'sort'          => $sort ?? 'country_id',
+            'sort'          => $sort ?? 'province_id',
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'           => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
-        add_meta(['title' => lang("CountryAdmin.heading_title")], $this->themes);
+        $country_model = new CountryModel();
+        $data['country_list'] = $country_model->getCountriesDropdown();
+
+        add_meta(['title' => lang("CountryProvinceAdmin.heading_title")], $this->themes);
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
-            ::load('countries_full/list', $data);
+            ::load('provinces/list', $data);
     }
 
     public function add()
@@ -67,22 +69,14 @@ class CountriesFull extends AdminController
             }
 
             $add_data = [
-                'name'                  => $this->request->getPost('name'),
-                'formal_name'           => $this->request->getPost('formal_name'),
-                'country_code'          => $this->request->getPost('country_code'),
-                'country_code3'         => $this->request->getPost('country_code3'),
-                'country_type'          => $this->request->getPost('country_type'),
-                'country_sub_type'      => $this->request->getPost('country_sub_type'),
-                'sovereignty'           => $this->request->getPost('sovereignty'),
-                'capital'               => $this->request->getPost('capital'),
-                'currency_code'         => $this->request->getPost('currency_code'),
-                'currency_name'         => $this->request->getPost('currency_name'),
-                'telephone_code'        => $this->request->getPost('telephone_code'),
-                'country_number'        => $this->request->getPost('country_number'),
-                'internet_country_code' => $this->request->getPost('internet_country_code'),
-                'sort_order'            => $this->request->getPost('sort_order'),
-                'flags'                 => $this->request->getPost('flags'),
-                'published'             => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'name'           => $this->request->getPost('name'),
+                'type'           => $this->request->getPost('type'),
+                'telephone_code' => $this->request->getPost('telephone_code'),
+                'zip_code'       => $this->request->getPost('zip_code'),
+                'country_code'   => $this->request->getPost('country_code'),
+                'country_id'     => $this->request->getPost('country_id'),
+                'sort_order'     => $this->request->getPost('sort_order'),
+                'published'      => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
             if (!$this->model->insert($add_data)) {
@@ -107,29 +101,21 @@ class CountriesFull extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()) && $id == $this->request->getPost('country_id')) {
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('province_id')) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
                 return redirect()->back()->withInput();
             }
 
             $edit_data = [
-                'name'                  => $this->request->getPost('name'),
-                'formal_name'           => $this->request->getPost('formal_name'),
-                'country_code'          => $this->request->getPost('country_code'),
-                'country_code3'         => $this->request->getPost('country_code3'),
-                'country_type'          => $this->request->getPost('country_type'),
-                'country_sub_type'      => $this->request->getPost('country_sub_type'),
-                'sovereignty'           => $this->request->getPost('sovereignty'),
-                'capital'               => $this->request->getPost('capital'),
-                'currency_code'         => $this->request->getPost('currency_code'),
-                'currency_name'         => $this->request->getPost('currency_name'),
-                'telephone_code'        => $this->request->getPost('telephone_code'),
-                'country_number'        => $this->request->getPost('country_number'),
-                'internet_country_code' => $this->request->getPost('internet_country_code'),
-                'sort_order'            => $this->request->getPost('sort_order'),
-                'flags'                 => $this->request->getPost('flags'),
-                'published'             => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
+                'name'           => $this->request->getPost('name'),
+                'type'           => $this->request->getPost('type'),
+                'telephone_code' => $this->request->getPost('telephone_code'),
+                'zip_code'       => $this->request->getPost('zip_code'),
+                'country_code'   => $this->request->getPost('country_code'),
+                'country_id'     => $this->request->getPost('country_id'),
+                'sort_order'     => $this->request->getPost('sort_order'),
+                'published'      => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
             if (!$this->model->update($id, $edit_data)) {
@@ -193,15 +179,18 @@ class CountriesFull extends AdminController
         $data['list_delete'] = $list_delete;
         $data['ids'] = implode(',', $delete_ids);
 
-        json_output(['token' => $token, 'data' => $this->themes::view('countries_full/delete', $data)]);
+        json_output(['token' => $token, 'data' => $this->themes::view('provinces/delete', $data)]);
     }
 
     private function _getForm($id = null)
     {
+        $country_model = new CountryModel();
+        $data['country_list'] = $country_model->getCountriesDropdown();
+
         //edit
         if (!empty($id) && is_numeric($id)) {
-            $data['text_form']   = lang('CountryAdmin.text_edit');
-            $data['text_submit'] = lang('CountryAdmin.button_save');
+            $data['text_form']   = lang('CountryProvinceAdmin.text_edit');
+            $data['text_submit'] = lang('CountryProvinceAdmin.button_save');
             $breadcrumb_url      = site_url(self::MANAGE_URL . "/edit/$id");
 
             $data_form = $this->model->find($id);
@@ -213,8 +202,8 @@ class CountriesFull extends AdminController
             // display the edit user form
             $data['edit_data'] = $data_form;
         } else {
-            $data['text_form']   = lang('CountryAdmin.text_add');
-            $data['text_submit'] = lang('CountryAdmin.button_add');
+            $data['text_form']   = lang('CountryProvinceAdmin.text_add');
+            $data['text_submit'] = lang('CountryProvinceAdmin.button_add');
             $breadcrumb_url      = site_url(self::MANAGE_URL . "/add");
         }
 
@@ -229,7 +218,7 @@ class CountriesFull extends AdminController
             ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
-            ::load('countries_full/form', $data);
+            ::load('provinces/form', $data);
     }
 
     private function _validateForm()

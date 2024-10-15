@@ -5,7 +5,7 @@ if(!isset($routes))
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Countries\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes){
+$routes->group('manage/old', ['namespace' => 'App\Modules\CountriesOld\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes){
     
     $subroutes->add('countries', 'Countries::index');
     $subroutes->add('countries/add', 'Countries::add');

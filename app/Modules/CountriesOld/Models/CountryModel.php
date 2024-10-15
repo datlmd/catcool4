@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Modules\Countries\Models;
+namespace App\Modules\CountriesOld\Models;
 
 use App\Models\MyModel;
 
 /**
  * backup country old
  */
-class CountryFullModel extends MyModel
+class CountryModel extends MyModel
 {
     protected $table = 'country_full';
     protected $primaryKey = 'country_id';
