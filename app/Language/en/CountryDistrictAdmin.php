@@ -8,6 +8,7 @@ return [
 	"text_edit" => "Edit District",
 	"text_lati_long_tude" => "Latitude  Longtude",
 	"text_list" => "District List",
+	"text_name" => "District Name",
 	"text_province" => "Province",
 	"text_type" => "Type",
 	"text_ward" => "Wards",

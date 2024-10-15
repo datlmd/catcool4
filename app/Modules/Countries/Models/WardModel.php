@@ -9,9 +9,6 @@ class  WardModel extends MyModel
 
     protected $useAutoIncrement = true;
 
-    protected $useSoftDeletes = true;
-    protected $deletedField   = 'deleted_at';
-
     protected $allowedFields = [
         'ward_id',
         'district_id',
@@ -20,7 +17,6 @@ class  WardModel extends MyModel
         'lati_long_tude',
         'sort_order',
         'published',
-        'deleted_at',
     ];
 
     const COUNTRY_WARD_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_ward_list';
@@ -33,16 +29,30 @@ class  WardModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? $sort : 'ward_id';
-        $order = $order ?? 'DESC';
+        $sorts =[
+            'district' => '`d`.`name`',
+            'name' => '`w`.`name`',
+            'ward_id' => '`w`.`ward_id`',
+            'sort_order' => '`w`.`sort_order`',
+            'type' => '`w`.`type`',
+            'lati_long_tude' => '`w`.`lati_long_tude`',
+        ];
 
-        if (!empty($filter["ward_id"])) {
-            $this->whereIn('ward_id', (is_array($filter["ward_id"])) ? $filter["ward_id"] : explode(',', $filter["ward_id"]));
-        }
+        $sort  = !empty($sorts[$sort]) ? $sorts[$sort] : '`w`.`ward_id`';
+        $order = !empty($order) ? $order : 'DESC';
 
         if (!empty($filter["name"])) {
-            $this->Like('name', $filter["name"]);
+            $this->Like('`w`.`name`', $filter["name"]);
         }
+
+        if (!empty($filter["district"])) {
+            $this->Like('`d`.`name`', $filter["district"]);
+        }
+
+        $this->from([], true)->from("`$this->table` `w`")
+        ->select('`w`.*, `d`.`name` `district`, `z`.`name` `zone`')
+        ->join('`country_district` `d`', '`d`.`district_id` = `w`.`district_id`', 'LEFT')
+        ->join('`country_zone` `z`', '`z`.`zone_id` = `d`.`zone_id`', 'LEFT');
 
         return $this->orderBy($sort, $order);
     }
@@ -91,7 +101,7 @@ class  WardModel extends MyModel
             return $ward_list;
         }
 
-        $ward_list[0] = lang('Country.text_select');
+        //$ward_list =  array_unshift($ward_list, [0 => lang('Country.text_select')]);
 
         return $ward_list;
     }

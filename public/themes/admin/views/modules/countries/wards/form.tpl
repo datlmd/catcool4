@@ -32,7 +32,7 @@
                         <div class="card-body">
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 text-sm-end required-label col-form-label">
-                                    {lang('Admin.text_name')}
+                                    {lang('CountryWardAdmin.text_name')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     <input type="text" name="name" value="{old('name', $edit_data.name)}" id="name" class="form-control {if validation_show_error('name')}is-invalid{/if}">
@@ -63,12 +63,13 @@
                                     <input type="text" name="sort_order" value="{old('sort_order', $edit_data.sort_order)|default:0}" id="sort_order" class="form-control">
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 text-sm-end col-form-label">
                                     {lang('CountryWardAdmin.text_country')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {form_dropdown('country_id', $country_list, old('country_id', $edit_data.country_id), ['class' => 'form-control country-changed'])}
+                                    {form_dropdown('country_id', $country_list, old('country_id', $edit_data.country_id), ['class' => 'form-control cc-form-select-single country-changed', 'target_id' => '#input_country_zone'])}
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -76,7 +77,7 @@
                                     {lang('CountryWardAdmin.text_province')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {form_dropdown('zone_id', $zone_list, old('zone_id', $edit_data.zone_id), ['class' => 'form-control zone-changed'])}
+                                    {form_dropdown('zone_id', $zone_list, old('zone_id', $edit_data.zone_id), ['id' => 'input_country_zone', 'class' => 'form-control cc-form-select-single zone-changed', 'target_id' => '#input_country_district'])}
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -84,9 +85,10 @@
                                     {lang('CountryWardAdmin.text_district')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {form_dropdown('district_id', $district_list, old('district_id', $edit_data.district_id), ['class' => 'form-control district-changed'])}
+                                    {form_dropdown('district_id', $district_list, old('district_id', $edit_data.district_id), ['id' => 'input_country_district', 'class' => 'form-control cc-form-select-single district-changed'])}
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 text-sm-end col-form-label" for="input_published">
                                     {lang('Admin.text_published')}
@@ -103,7 +105,7 @@
                 </div>
 
                 <div class="col-sm-3 col-12">
-                    {include file=get_theme_path('views/inc/menu_localisation.inc.tpl') active="countries"}
+                    {include file=get_theme_path('views/inc/menu_localisation.inc.tpl') active="zones"}
                 </div>
                 
             </div>

@@ -8,6 +8,7 @@ return [
 	"text_edit" => "Edit Ward",
 	"text_lati_long_tude" => "Latitude Longtude",
 	"text_list" => "Ward List",
+	"text_name" => "Ward Name",
 	"text_province" => "Province",
 	"text_type" => "Type",
 	"text_ward" => "Wards",

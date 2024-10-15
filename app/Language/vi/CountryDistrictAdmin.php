@@ -8,6 +8,7 @@ return [
 	"text_edit" => "Cập nhật Quận / Huyện",
 	"text_lati_long_tude" => "Latitude  Longtude",
 	"text_list" => "Danh sách Quận / Huyện",
+	"text_name" => "Tên Quận / Huyện",
 	"text_province" => "Tỉnh / Thành",
 	"text_type" => "Loại",
 	"text_ward" => "Phường / Xã",

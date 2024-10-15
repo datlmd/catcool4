@@ -17,7 +17,7 @@
 						{include file=get_theme_path('views/inc/button_translate.tpl') translate_frontend=lang('CountryAdmin.translate_frontend_id') translate_admin=lang('CountryAdmin.translate_admin_id')}
 					</div>
 				</div>
-				<div class="row collapse {if !empty($filter_active)}show{/if}" id="filter_manage">
+				<div class="row collapse show" id="filter_manage">
 					<div class="col-12">
 						<div class="card">
 							<h5 class="card-header"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>

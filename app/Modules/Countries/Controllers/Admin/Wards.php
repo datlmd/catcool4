@@ -36,7 +36,7 @@ class Wards extends AdminController
         $sort        = $this->request->getGet('sort');
         $order       = $this->request->getGet('order');
         $limit       = $this->request->getGet('limit');
-        $filter_keys = ['district_id', 'name', 'limit'];
+        $filter_keys = ['district', 'name', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
@@ -50,12 +50,6 @@ class Wards extends AdminController
             'url'           => $this->getUrlFilter($filter_keys),
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
-
-        $zone_model = new ZoneModel();
-        $data['zone_list'] = $zone_model->getZonesDropdown();
-
-        $district_model = new DistrictModel();
-        $data['district_list'] = $district_model->getDistrictsDropdown();
 
         add_meta(['title' => lang("CountryWardAdmin.heading_title")], $this->themes);
         $this->themes
@@ -187,6 +181,13 @@ class Wards extends AdminController
     {
         $this->themes->addJS('common/js/country/load');
 
+        $this->themes->addCSS('common/plugin/multi-select/css/select2.min');
+        $this->themes->addCSS('common/plugin/multi-select/css/select2-bootstrap-5-theme.min');
+        $this->themes->addJS('common/plugin/multi-select/js/select2.min');
+        if (language_code_admin() == 'vi') {
+            $this->themes->addJS('common/plugin/multi-select/js/i18n/vi');
+        }
+
         $country_model  = new CountryModel();
         $zone_model = new ZoneModel();
         $district_model = new DistrictModel();
@@ -247,7 +248,7 @@ class Wards extends AdminController
     private function _validateForm()
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        $this->validator->setRule('name', lang('Admin.text_name'), 'required');
+        $this->validator->setRule('name', lang('CountryWardAdmin.text_name'), 'required');
         $this->validator->setRule('district_id', lang('CountryWardAdmin.text_district'), 'required|is_natural_no_zero');
 
         $is_validation = $this->validator->withRequest($this->request)->run();

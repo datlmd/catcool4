@@ -30,9 +30,28 @@
                     <div class="card">
                         <h5 class="card-header"><i class="fas {if !empty($edit_data.district_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                         <div class="card-body">
+
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('CountryDistrictAdmin.text_country')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {form_dropdown('country_id', $country_list, old('country_id', $edit_data.country_id), ['class' => 'form-control country-changed cc-form-select-single', 'target_id' => '#input_country_zone'])}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('CountryDistrictAdmin.text_province')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    {form_dropdown('zone_id', $zone_list, old('zone_id', $edit_data.zone_id), ['id' => 'input_country_zone', 'class' => 'form-control zone-changed cc-form-select-single'])}
+                                </div>
+                            </div>
+
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 text-sm-end required-label col-form-label">
-                                    {lang('Admin.text_name')}
+                                    {lang('CountryDistrictAdmin.text_name')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     <input type="text" name="name" value="{old('name', $edit_data.name)}" id="name" class="form-control {if validation_show_error('name')}is-invalid{/if}">
@@ -63,22 +82,7 @@
                                     <input type="number" name="sort_order" value="{old('sort_order', $edit_data.sort_order)|default:0}" id="sort_order" class="form-control">
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryDistrictAdmin.text_country')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    {form_dropdown('country_id', $country_list, old('country_id', $edit_data.country_id), ['class' => 'form-control country-changed'])}
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryDistrictAdmin.text_province')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    {form_dropdown('zone_id', $zone_list, old('zone_id', $edit_data.zone_id), ['class' => 'form-control zone-changed'])}
-                                </div>
-                            </div>
+                            
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 text-sm-end col-form-label" for="input_published">
                                     {lang('Admin.text_published')}
@@ -95,7 +99,7 @@
                 </div>
 
                 <div class="col-sm-3 col-12">
-                    {include file=get_theme_path('views/inc/menu_localisation.inc.tpl') active="countries"}
+                    {include file=get_theme_path('views/inc/menu_localisation.inc.tpl') active="zones"}
                 </div>
                 
             </div>

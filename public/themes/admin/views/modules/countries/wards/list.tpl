@@ -18,7 +18,7 @@
 						{include file=get_theme_path('views/inc/button_translate.tpl') translate_admin=lang('CountryWardAdmin.translate_admin_id')}
 					</div>
 				</div>
-				<div class="row collapse {if !empty($filter_active)}show{/if}" id="filter_manage">
+				<div class="row collapse show" id="filter_manage">
 					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 						<div class="card">
 							<h5 class="card-header"><i class="fas fa-filter me-2"></i>{lang('Admin.filter_header')}</h5>
@@ -26,16 +26,16 @@
 							<div class="card-body">
 								<div class="row">
 									<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
-										{lang('Admin.text_name')}
-										{form_input('name', set_value('name', $request->getGet('name'))|default:'', ['class' => 'form-control form-control-sm', 'placeholder' => lang('Admin.text_name')])}
+										<label>{lang('CountryWardAdmin.text_name')}</label>
+										{form_input('name', set_value('name', $request->getGet('name'))|default:'', ['class' => 'form-control form-control-sm'])}
 									</div>
 									<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
-										{lang('CountryWardAdmin.text_district')}
-										{form_dropdown('district_id', $district_list, set_value('district_id', $request->getGet('district_id'))|default:'', ['class' => 'form-control'])}
+										<label>{lang('CountryWardAdmin.text_district')}</label>
+										{form_input('district', set_value('district', $request->getGet('district'))|default:'', ['class' => 'form-control form-control-sm'])}
 									</div>
 
 									<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
-										{lang('Admin.text_limit')}
+										<label>{lang('Admin.text_limit')}</label>
 										{form_dropdown('limit', get_list_limit(), set_value('limit', $request->getGet('limit')), ['class' => 'form-control form-control-sm'])}
 									</div>
 									<div class="col-12 text-end">
@@ -66,9 +66,19 @@
 												{/if}
 											</a>
 										</th>
+
+										<th class="text-start">
+											<a href="{site_url($manage_url)}?sort=district&order={$order}{$url}" class="text-dark">
+												{lang('CountryWardAdmin.text_district')}
+												{if $sort eq 'district'}
+													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
+												{/if}
+											</a>
+										</th>
+
 										<th class="text-start">
 											<a href="{site_url($manage_url)}?sort=name&order={$order}{$url}" class="text-dark">
-												{lang('Admin.text_name')}
+												{lang('CountryWardAdmin.text_name')}
 												{if $sort eq 'name'}
 													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 												{/if}
@@ -82,14 +92,7 @@
 												{/if}
 											</a>
 										</th>
-										<th class="text-start">
-											<a href="{site_url($manage_url)}?sort=district&order={$order}{$url}" class="text-dark">
-												{lang('CountryWardAdmin.text_district')}
-												{if $sort eq 'district'}
-													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
-												{/if}
-											</a>
-										</th>
+										
 										<th>
 											<a href="{site_url($manage_url)}?sort=lati_long_tude&order={$order}{$url}" class="text-dark">
 												{lang('CountryWardAdmin.text_lati_long_tude')}
@@ -114,10 +117,16 @@
 									{foreach $list as $item}
 										<tr>
 											<td class="text-center">{form_checkbox('manage_ids[]', $item.ward_id)}</td>
-											<td class="text-center">{$item.ward_id}</td>
-											<td>{anchor("$manage_url/edit/`$item.ward_id`", htmlspecialchars($item.name, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}</td>
+											<td class="text-center">{anchor("$manage_url/edit/`$item.ward_id`", $item.ward_id)}</td>
+
+											<td class="text-start">
+												{$item.district}<br/>
+												<small>{$item.zone}</small>
+											</td>
+											
+											<td>{anchor("$manage_url/edit/`$item.ward_id`", $item.name, 'class="text-primary"')}</td>
 											<td class="text-start">{$item.type}</td>
-											<td class="text-start">{$district_list[$item.district_id]}</td>
+											
 											<td class="text-center">{$item.lati_long_tude}</td>
 											<td class="text-center">{$item.sort_order}</td>
 											<td>
@@ -146,7 +155,7 @@
 			</div>
 
 			<div class="col-sm-3 col-12">
-				{include file=get_theme_path('views/inc/menu_localisation.inc.tpl') active="countries"}
+				{include file=get_theme_path('views/inc/menu_localisation.inc.tpl') active="zones"}
 			</div>
 
 		</div>

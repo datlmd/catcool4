@@ -9,9 +9,6 @@ class  DistrictModel extends MyModel
 
     protected $useAutoIncrement = true;
 
-    protected $useSoftDeletes = true;
-    protected $deletedField   = 'deleted_at';
-
     protected $allowedFields = [
         'district_id',
         'zone_id',
@@ -20,7 +17,6 @@ class  DistrictModel extends MyModel
         'lati_long_tude',
         'sort_order',
         'published',
-        'deleted_at',
     ];
 
     const COUNTRY_DISTRICT_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_district_list';
@@ -33,16 +29,30 @@ class  DistrictModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? $sort : 'district_id';
-        $order = $order ?? 'DESC';
+        $sorts =[
+            'zone' => '`z`.`name`',
+            'name' => '`d`.`name`',
+            'district_id' => '`d`.`zone_id`',
+            'sort_order' => '`d`.`sort_order`',
+            'type' => '`d`.`type`',
+            'lati_long_tude' => '`d`.`lati_long_tude`',
+        ];
 
-        if (!empty($filter["zone_id"])) {
-            $this->whereIn('zone_id', (is_array($filter["zone_id"])) ? $filter["zone_id"] : explode(',', $filter["zone_id"]));
+        $sort  = !empty($sorts[$sort]) ? $sorts[$sort] : '`d`.`district_id`';
+        $order = !empty($order) ? $order : 'DESC';
+
+        if (!empty($filter["zone"])) {
+            $this->Like('`z`.`name`', $filter["zone"]);
         }
 
         if (!empty($filter["name"])) {
-            $this->Like('name', $filter["name"]);
+            $this->Like('`d`.`name`', $filter["name"]);
         }
+
+        $this->from([], true)->from("`$this->table` `d`")
+        ->select('`d`.*, `z`.`name` `zone`, `c`.`name` `country`')
+        ->join('`country_zone` `z`', '`z`.`zone_id` = `d`.`zone_id`', 'LEFT')
+        ->join('`country` `c`', '`c`.`country_id` = `z`.`country_id`', 'LEFT');
 
         return $this->orderBy($sort, $order);
     }
@@ -90,8 +100,8 @@ class  DistrictModel extends MyModel
         if (empty($district_list)) {
             return $district_list;
         }
-
-        $district_list[0] = lang('Country.text_select');
+        
+        //$district_list[0] = lang('Country.text_select');
 
         return $district_list;
     }

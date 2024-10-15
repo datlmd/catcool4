@@ -1,7 +1,7 @@
 var is_country_processing = false;
 
 $(function () {
-    if ($('.country-changed').length && $('.zone-changed').length) {
+    if ($('.country-changed').length) {
         $(document).on('change', '.country-changed', function(event) {
             event.preventDefault();
             if (is_country_processing) {
@@ -70,7 +70,7 @@ $(function () {
             });
         });
     }
-    if ($('.zone-changed').length && $('.district-changed').length) {
+    if ($('.zone-changed').length) {
         $(document).on('change', '.zone-changed', function(event) {
             event.preventDefault();
             if (is_country_processing) {
@@ -126,7 +126,7 @@ $(function () {
             });
         });
     }
-    if ($('.district-changed').length && $('.ward-changed').length) {
+    if ($('.district-changed').length) {
         $(document).on('change', '.district-changed', function(event) {
             event.preventDefault();
             if (is_country_processing) {
