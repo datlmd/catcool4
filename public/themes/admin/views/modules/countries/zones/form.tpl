@@ -3,8 +3,8 @@
     <div class="container-fluid  dashboard-content">
         {form_open(uri_string(), ['id' => 'validationform'])}
 
-            {if !empty($edit_data.province_id)}
-                {form_hidden('province_id', $edit_data.province_id)}
+            {if !empty($edit_data.zone_id)}
+                {form_hidden('zone_id', $edit_data.zone_id)}
             {/if}
             <div class="row">
 
@@ -28,31 +28,34 @@
                     {/if}
 
                     <div class="card">
-                        <h5 class="card-header"><i class="fas {if !empty($edit_data.province_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
+                        <h5 class="card-header"><i class="fas {if !empty($edit_data.zone_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                         <div class="card-body">
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryProvinceAdmin.text_country')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    {form_dropdown('country_id', $country_list, old('country_id', $edit_data.country_id), ['class' => 'form-control'])}
-                                </div>
-                            </div>
+
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 text-sm-end required-label col-form-label">
-                                    {lang('Admin.text_name')}
+                                    {lang('CountryProvinceAdmin.text_zone_name')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     <input type="text" name="name" value="{old('name', $edit_data.name)}" id="name" class="form-control {if validation_show_error('name')}is-invalid{/if}">
                                     <div class="invalid-feedback">{validation_show_error("name")}</div>
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryProvinceAdmin.text_type')}
+                                    {lang('CountryProvinceAdmin.text_country')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="type" value="{old('type', $edit_data.type)}" id="type" class="form-control">
+                                    {form_dropdown('country_id', $country_list, old('country_id', $edit_data.country_id), ['class' => 'form-control cc-form-select-single'])}
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
+                                    {lang('CountryProvinceAdmin.text_code')}
+                                </label>
+                                <div class="col-12 col-sm-8 col-lg-6">
+                                    <input type="text" name="code" value="{old('code', $edit_data.code)}" id="type" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -63,30 +66,7 @@
                                     <input type="text" name="telephone_code" value="{old('telephone_code', $edit_data.telephone_code)}" id="telephone_code" class="form-control">
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryProvinceAdmin.text_code')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="zip_code" value="{old('zip_code', $edit_data.zip_code)}" id="zip_code" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('CountryProvinceAdmin.text_country_code')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="text" name="country_code" value="{old('country_code', $edit_data.country_code)}" id="country_code" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-12 col-sm-3 text-sm-end col-form-label">
-                                    {lang('Admin.text_sort_order')}
-                                </label>
-                                <div class="col-12 col-sm-8 col-lg-6">
-                                    <input type="number" name="sort_order" value="{old('sort_order', $edit_data.sort_order)|default:0}" id="sort_order" class="form-control">
-                                </div>
-                            </div>
+                            
                             <div class="form-group row">
                                 <label class="col-12 col-sm-3 text-sm-end col-form-label" for="input_published">
                                     {lang('Admin.text_published')}
@@ -103,7 +83,7 @@
                 </div>
 
                 <div class="col-sm-3 col-12">
-                    {include file=get_theme_path('views/inc/menu_localisation.inc.tpl') active="countries"}
+                    {include file=get_theme_path('views/inc/menu_localisation.inc.tpl') active="zones"}
                 </div>
                 
             </div>

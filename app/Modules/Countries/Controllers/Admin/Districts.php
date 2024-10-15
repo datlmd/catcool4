@@ -1,7 +1,7 @@
 <?php namespace App\Modules\Countries\Controllers\Admin;
 
 use App\Controllers\AdminController;
-use App\Modules\Countries\Models\ProvinceModel;
+use App\Modules\Countries\Models\ZoneModel;
 use App\Modules\Countries\Models\DistrictModel;
 use App\Modules\Countries\Models\CountryModel;
 

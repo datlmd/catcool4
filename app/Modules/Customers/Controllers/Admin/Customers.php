@@ -246,7 +246,7 @@ class Customers extends AdminController
         $data['groups'] = array_column($group_list, null, 'customer_group_id');
 
         $country_model = model('App\Modules\Countries\Models\CountryModel');
-        $province_model = model('App\Modules\Countries\Models\ProvinceModel');
+        $province_model = model('App\Modules\Countries\Models\ZoneModel');
         $district_model = model('App\Modules\Countries\Models\DistrictModel');
         $ward_model = model('App\Modules\Countries\Models\WardModel');
 

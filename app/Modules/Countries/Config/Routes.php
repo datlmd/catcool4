@@ -13,11 +13,11 @@ $routes->group('manage', ['namespace' => 'App\Modules\Countries\Controllers\Admi
     $subroutes->add('countries/delete', 'Countries::delete');
     $subroutes->add('countries/publish', 'Countries::publish');
 
-    $subroutes->add('country_provinces', 'Provinces::index');
-    $subroutes->add('country_provinces/add', 'Provinces::add');
-    $subroutes->add('country_provinces/edit/(:num)', 'Provinces::edit/$1');
-    $subroutes->add('country_provinces/delete', 'Provinces::delete');
-    $subroutes->add('country_provinces/publish', 'Provinces::publish');
+    $subroutes->add('country_zones', 'Zones::index');
+    $subroutes->add('country_zones/add', 'Zones::add');
+    $subroutes->add('country_zones/edit/(:num)', 'Zones::edit/$1');
+    $subroutes->add('country_zones/delete', 'Zones::delete');
+    $subroutes->add('country_zones/publish', 'Zones::publish');
 
     $subroutes->add('country_districts', 'Districts::index');
     $subroutes->add('country_districts/add', 'Districts::add');

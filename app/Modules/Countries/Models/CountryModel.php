@@ -53,7 +53,7 @@ class CountryModel extends MyModel
     {
         $result = $is_cache ? cache()->get(self::COUNTRY_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->from("$this->table `c`")->select('`c`.*, `af`.`name` `address_name`, `af`.`address_format`')->join('address_format `af`', '`af`.`address_format_id` = `c`.`address_format_id`', 'LEFT')->orderBy('`c`.`name`', 'ASC')->where(['`c`.`published`' => STATUS_ON])->findAll();
+            $result = $this->from([], true)->from("$this->table `c`")->select('`c`.*, `af`.`name` `address_name`, `af`.`address_format`')->join('address_format `af`', '`af`.`address_format_id` = `c`.`address_format_id`', 'LEFT')->orderBy('`c`.`name`', 'ASC')->where(['`c`.`published`' => STATUS_ON])->findAll();
             if (empty($result)) {
                 return null;
             }

@@ -1,15 +1,15 @@
 <?php namespace App\Modules\Countries\Controllers\Admin;
 
 use App\Controllers\AdminController;
-use App\Modules\Countries\Models\ProvinceModel;
+use App\Modules\Countries\Models\ZoneModel;
 use App\Modules\Countries\Models\CountryModel;
 
-class Provinces extends AdminController
+class Zones extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/country_provinces';
-    CONST MANAGE_URL  = 'manage/country_provinces';
+    CONST MANAGE_ROOT = 'manage/country_zones';
+    CONST MANAGE_URL  = 'manage/country_zones';
 
     public function __construct()
     {
@@ -17,7 +17,7 @@ class Provinces extends AdminController
 
         $this->themes->setTheme(config_item('theme_admin'));
 
-        $this->model = new ProvinceModel();
+        $this->model = new ZoneModel();
 
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
@@ -34,7 +34,7 @@ class Provinces extends AdminController
         $sort        = $this->request->getGet('sort');
         $order       = $this->request->getGet('order');
         $limit       = $this->request->getGet('limit');
-        $filter_keys = ['country_id', 'name', 'limit'];
+        $filter_keys = ['country', 'zone', 'code', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
@@ -43,21 +43,17 @@ class Provinces extends AdminController
             'list'          => $list->paginate($limit),
             'pager'         => $list->pager,
             'total'         => $list->pager->getPerPage(),
-            'sort'          => $sort ?? 'province_id',
+            'sort'          => $sort ?? 'zone_id',
             'order'         => ($order == 'ASC') ? 'DESC' : 'ASC',
             'url'           => $this->getUrlFilter($filter_keys),
-            'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
-
-        $country_model = new CountryModel();
-        $data['country_list'] = $country_model->getCountriesDropdown();
-
+       
         add_meta(['title' => lang("CountryProvinceAdmin.heading_title")], $this->themes);
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
-            ::load('provinces/list', $data);
+            ::load('zones/list', $data);
     }
 
     public function add()
@@ -69,13 +65,10 @@ class Provinces extends AdminController
             }
 
             $add_data = [
-                'name'           => $this->request->getPost('name'),
-                'type'           => $this->request->getPost('type'),
-                'telephone_code' => $this->request->getPost('telephone_code'),
-                'zip_code'       => $this->request->getPost('zip_code'),
-                'country_code'   => $this->request->getPost('country_code'),
                 'country_id'     => $this->request->getPost('country_id'),
-                'sort_order'     => $this->request->getPost('sort_order'),
+                'name'           => $this->request->getPost('name'),
+                'code'           => $this->request->getPost('code'),
+                'telephone_code' => $this->request->getPost('telephone_code'),
                 'published'      => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
@@ -101,20 +94,17 @@ class Provinces extends AdminController
             return redirect()->to(site_url(self::MANAGE_URL));
         }
 
-        if (!empty($this->request->getPost()) && $id == $this->request->getPost('province_id')) {
+        if (!empty($this->request->getPost()) && $id == $this->request->getPost('zone_id')) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
                 return redirect()->back()->withInput();
             }
 
             $edit_data = [
-                'name'           => $this->request->getPost('name'),
-                'type'           => $this->request->getPost('type'),
-                'telephone_code' => $this->request->getPost('telephone_code'),
-                'zip_code'       => $this->request->getPost('zip_code'),
-                'country_code'   => $this->request->getPost('country_code'),
                 'country_id'     => $this->request->getPost('country_id'),
-                'sort_order'     => $this->request->getPost('sort_order'),
+                'name'           => $this->request->getPost('name'),
+                'code'           => $this->request->getPost('code'),
+                'telephone_code' => $this->request->getPost('telephone_code'),
                 'published'      => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
 
@@ -179,7 +169,7 @@ class Provinces extends AdminController
         $data['list_delete'] = $list_delete;
         $data['ids'] = implode(',', $delete_ids);
 
-        json_output(['token' => $token, 'data' => $this->themes::view('provinces/delete', $data)]);
+        json_output(['token' => $token, 'data' => $this->themes::view('zones/delete', $data)]);
     }
 
     private function _getForm($id = null)
@@ -214,17 +204,24 @@ class Provinces extends AdminController
 
         add_meta(['title' => $data['text_form']], $this->themes);
 
+        $this->themes->addCSS('common/plugin/multi-select/css/select2.min');
+        $this->themes->addCSS('common/plugin/multi-select/css/select2-bootstrap-5-theme.min');
+        $this->themes->addJS('common/plugin/multi-select/js/select2.min');
+        if (language_code_admin() == 'vi') {
+            $this->themes->addJS('common/plugin/multi-select/js/i18n/vi');
+        }
+
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
             ->addPartial('sidebar')
-            ::load('provinces/form', $data);
+            ::load('zones/form', $data);
     }
 
     private function _validateForm()
     {
-        $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
-        $this->validator->setRule('name', lang('Admin.text_name'), 'required');
+        $this->validator->setRule('name', lang('CountryProvinceAdmin.text_zone_name'), 'required|max_length[128]');
+        $this->validator->setRule('country_id', lang('CountryProvinceAdmin.text_country'), 'required|is_natural_no_zero');
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();

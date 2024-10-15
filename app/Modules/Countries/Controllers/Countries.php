@@ -2,7 +2,7 @@
 
 use App\Controllers\MyController;
 use App\Modules\Countries\Models\DistrictModel;
-use App\Modules\Countries\Models\ProvinceModel;
+use App\Modules\Countries\Models\ZoneModel;
 use App\Modules\Countries\Models\WardModel;
 
 class Countries extends MyController
@@ -23,7 +23,7 @@ class Countries extends MyController
             json_output(['status' => 'ng', 'none' => lang('Country.text_none')]);
         }
 
-        $province_model = new ProvinceModel();
+        $province_model = new ZoneModel();
         $country_id    = $this->request->getPost('country_id');
         $province_list = $province_model->getProvincesDropdown($country_id);
         if (!empty($province_list)) {

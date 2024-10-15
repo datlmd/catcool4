@@ -292,7 +292,7 @@ class Configs extends AdminController
         $data['watermark_bg'] = $image_tool->watermarkDemo();
 
         $country_model = new \App\Modules\Countries\Models\CountryModel();
-        $province_model = new \App\Modules\Countries\Models\ProvinceModel();
+        $province_model = new \App\Modules\Countries\Models\ZoneModel();
         $currency_model = new \App\Modules\Currencies\Models\CurrencyModel();
 
         $data['country_list'] = $country_model->getCountriesDropdown();

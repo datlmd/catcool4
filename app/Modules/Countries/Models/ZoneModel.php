@@ -2,30 +2,23 @@
 
 use App\Models\MyModel;
 
-class  ProvinceModel extends MyModel
+class  ZoneModel extends MyModel
 {
-    protected $table      = 'country_province';
-    protected $primaryKey = 'province_id';
+    protected $table      = 'country_zone';
+    protected $primaryKey = 'zone_id';
 
     protected $useAutoIncrement = true;
 
-    protected $useSoftDeletes = true;
-    protected $deletedField   = 'deleted_at';
-
     protected $allowedFields = [
-        'province_id',
+        'zone_id',
         'country_id',
         'name',
-        'type',
+        'code',
         'telephone_code',
-        'zip_code',
-        'country_code',
-        'sort_order',
         'published',
-        'deleted_at',
     ];
 
-    const COUNTRY_PROVINCE_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_province_list';
+    const COUNTRY_PROVINCE_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_zone_list';
     const COUNTRY_PROVINCE_CACHE_EXPIRE = YEAR;
 
     function __construct()
@@ -35,20 +28,31 @@ class  ProvinceModel extends MyModel
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sort  = in_array($sort, $this->allowedFields) ? $sort : 'province_id';
+        $sorts =[
+            'c.name' => '`c`.`name`',
+            'z.name' => '`z`.`name`',
+            'zone_id' => '`z`.`zone_id`',
+            'code' => '`z`.`code`',
+            'telephone_code' => '`z`.`telephone_code`',
+        ];
+        $sort  = !empty($sorts[$sort]) ? $sorts[$sort] : '`z`.`zone_id`';
         $order = empty($order) ? 'DESC' : $order;
 
-        if (!empty($filter["country_id"])) {
-            $this->whereIn('country_id', (is_array($filter["country_id"])) ? $filter["country_id"] : explode(',', $filter["country_id"]));
+        if (!empty($filter["zone"])) {
+            $this->like('`z`.`name`', $filter["zone"]);
         }
 
-        if (!empty($filter["name"])) {
-            $this->groupStart();
-            $this->Like('name', $filter["name"]);
-            $this->orLike('telephone_code', $filter["name"]);
-            $this->orLike('country_code', $filter["name"]);
-            $this->groupEnd();
+        if (!empty($filter["country"])) {
+            $this->like('`c`.`name`', $filter["country"]);
         }
+
+        if (!empty($filter["code"])) {
+            $this->like('`z`.`code`', $filter["code"]);
+        }
+
+        $this->from([], true)->from("`$this->table` `z`")
+        ->select('`z`.*, `c`.`name` `country`')
+        ->join('`country` `c`', '`c`.`country_id` = `z`.`country_id`');
 
         return $this->orderBy($sort, $order);
     }
@@ -57,7 +61,7 @@ class  ProvinceModel extends MyModel
     {
         $result = $is_cache ? cache()->get(self::COUNTRY_PROVINCE_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->orderBy('sort_order', 'ASC')->where(['published' => STATUS_ON])->findAll();
+            $result = $this->orderBy('name', 'ASC')->where(['published' => STATUS_ON])->findAll();
             if (empty($result)) {
                 return null;
             }
@@ -89,7 +93,7 @@ class  ProvinceModel extends MyModel
             if (!empty($country_id) && $value['country_id'] != $country_id) {
                 continue;
             }
-            $province_list[$value['province_id']] = $value['type'] . ' ' . $value['name'];
+            $province_list[$value['zone_id']] = $value['name'];
         }
 
         return $province_list;
