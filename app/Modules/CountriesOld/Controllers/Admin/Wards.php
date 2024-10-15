@@ -55,7 +55,7 @@ class Wards extends AdminController
         $data['province_list'] = $province_model->getProvincesDropdown();
 
         $district_model = new DistrictModel();
-        $data['district_list'] = $district_model->getDistrictsDropdown();
+        $data['district_list'] = $district_model->getDistrictsByZone();
 
         add_meta(['title' => lang("CountryWardAdmin.heading_title")], $this->themes);
         $this->themes
@@ -208,7 +208,7 @@ class Wards extends AdminController
 
             $district_data = $district_model->where('district_id', $data_form['district_id'])->first();
             if (!empty($district_data)) {
-                $district_list    = $district_model->getDistrictsDropdown($district_data['province_id']);
+                $district_list    = $district_model->getDistrictsByZone($district_data['province_id']);
                 $data_form['province_id'] = $district_data['province_id'];
             }
 

@@ -18,7 +18,7 @@ class Zones extends Controller
         }
 
         $zone_model = \CodeIgniter\Config\Factories::models('\App\Modules\Countries\Models\ZoneModel');
-        $zone_list = $zone_model->getZonesDropdown($this->request->getPost('country_id'));
+        $zone_list = $zone_model->getZonesByCountry($this->request->getPost('country_id'));
 
         $data['none'] = lang('Country.text_none');
 

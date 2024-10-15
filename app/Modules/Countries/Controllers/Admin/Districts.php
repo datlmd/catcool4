@@ -205,7 +205,7 @@ class Districts extends AdminController
 
             $zone_data = $zone_model->where('zone_id', $data_form['zone_id'])->first();
             if (!empty($zone_data)) {
-                $zone_list           = $zone_model->getZonesDropdown($zone_data['country_id']);
+                $zone_list           = $zone_model->getZonesByCountry($zone_data['country_id']);
                 $data_form['country_id'] = $zone_data['country_id'];
             }
 

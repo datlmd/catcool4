@@ -71,7 +71,7 @@ class  DistrictModel extends MyModel
         return true;
     }
 
-    public function getDistrictsDropdown($province_id = null)
+    public function getDistrictsByZone($province_id = null)
     {
         $return = $this->getDistricts();
         if (empty($return)) {

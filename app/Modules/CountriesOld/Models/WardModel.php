@@ -71,7 +71,7 @@ class  WardModel extends MyModel
         return true;
     }
 
-    public function getWardsDropdown($district_id = null)
+    public function getWardsByDistrict($district_id = null)
     {
         $return = $this->getWards();
         if (empty($return)) {

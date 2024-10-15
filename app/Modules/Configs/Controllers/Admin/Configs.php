@@ -303,7 +303,7 @@ class Configs extends AdminController
         $currency_model = new \App\Modules\Currencies\Models\CurrencyModel();
 
         $data['country_list'] = $country_model->getCountriesDropdown();
-        $data['zone_list'] = $zone_model->getZonesDropdown();
+        $data['zone_list'] = $zone_model->getZonesByCountry();
         $data['timezone_list'] = $this->_getListTimezone();
         $data['currency_list'] = format_dropdown($currency_model->getListPublished(), 'code');
 

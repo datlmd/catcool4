@@ -81,7 +81,7 @@ class  DistrictModel extends MyModel
         return true;
     }
 
-    public function getDistrictsDropdown($zone_id = null)
+    public function getDistrictsByZone($zone_id = null)
     {
         $district_list = [];
 
@@ -100,7 +100,7 @@ class  DistrictModel extends MyModel
         if (empty($district_list)) {
             return $district_list;
         }
-        
+
         //$district_list[0] = lang('Country.text_select');
 
         return $district_list;

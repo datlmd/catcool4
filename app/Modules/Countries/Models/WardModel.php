@@ -81,7 +81,7 @@ class  WardModel extends MyModel
         return true;
     }
 
-    public function getWardsDropdown($district_id = null)
+    public function getWardsByDistrict($district_id = null)
     {
         $ward_list = [];
 
@@ -100,8 +100,6 @@ class  WardModel extends MyModel
         if (empty($ward_list)) {
             return $ward_list;
         }
-
-        //$ward_list =  array_unshift($ward_list, [0 => lang('Country.text_select')]);
 
         return $ward_list;
     }

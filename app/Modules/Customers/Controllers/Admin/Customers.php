@@ -268,9 +268,9 @@ class Customers extends AdminController
             $address_model = model('App\Modules\Customers\Models\AddressModel');
             $data_form['address_list'] = $address_model->getListByCustomerId($customer_id);
             foreach ($data_form['address_list'] as $key => $value) {
-                $data_form['address_list'][$key]['zone_list'] = $zone_model->getZonesDropdown($value['country_id']);
-                $data_form['address_list'][$key]['district_list'] = $district_model->getDistrictsDropdown($value['province_id']);
-                $data_form['address_list'][$key]['ward_list'] = $ward_model->getWardsDropdown($value['district_id']);
+                $data_form['address_list'][$key]['zone_list'] = $zone_model->getZonesByCountry($value['country_id']);
+                $data_form['address_list'][$key]['district_list'] = $district_model->getDistrictsByZone($value['province_id']);
+                $data_form['address_list'][$key]['ward_list'] = $ward_model->getWardsByDistrict($value['district_id']);
             }
 
             $data['edit_data'] = $data_form;

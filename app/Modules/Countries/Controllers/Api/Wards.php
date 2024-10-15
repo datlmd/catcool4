@@ -18,7 +18,7 @@ class Wards extends Controller
         }
 
         $ward_model = \CodeIgniter\Config\Factories::models('\App\Modules\Countries\Models\WardModel');
-        $ward_list = $ward_model->getWardsDropdown($this->request->getPost('district_id'));
+        $ward_list = $ward_model->getWardsByDistrict($this->request->getPost('district_id'));
        
         $data['none'] = lang('Country.text_none');
 

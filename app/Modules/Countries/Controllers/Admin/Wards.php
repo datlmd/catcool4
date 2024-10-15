@@ -209,13 +209,13 @@ class Wards extends AdminController
 
             $district_data = $district_model->where('district_id', $data_form['district_id'])->first();
             if (!empty($district_data)) {
-                $district_list    = $district_model->getDistrictsDropdown($district_data['zone_id']);
+                $district_list    = $district_model->getDistrictsByZone($district_data['zone_id']);
                 $data_form['zone_id'] = $district_data['zone_id'];
             }
 
             $zone_data = $zone_model->where('zone_id', $district_data['zone_id'])->first();
             if (!empty($zone_data)) {
-                $zone_list           = $zone_model->getZonesDropdown($zone_data['country_id']);
+                $zone_list           = $zone_model->getZonesByCountry($zone_data['country_id']);
                 $data_form['country_id'] = $zone_data['country_id'];
             }
 

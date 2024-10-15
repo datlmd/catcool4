@@ -18,7 +18,7 @@ class Districts extends Controller
         }
 
         $district_model = \CodeIgniter\Config\Factories::models('\App\Modules\Countries\Models\DistrictModel');
-        $district_list = $district_model->getDistrictsDropdown($this->request->getPost('zone_id'));
+        $district_list = $district_model->getDistrictsByZone($this->request->getPost('zone_id'));
        
         $data['none'] = lang('Country.text_none');
         

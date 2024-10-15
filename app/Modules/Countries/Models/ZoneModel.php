@@ -81,7 +81,7 @@ class  ZoneModel extends MyModel
         return true;
     }
 
-    public function getZonesDropdown($country_id = null)
+    public function getZonesByCountry($country_id = null)
     {
         $zones_list = [];
 
@@ -100,8 +100,6 @@ class  ZoneModel extends MyModel
         if (empty($zones_list)) {
             return $zones_list;
         }
-
-        $zones_list[0] = lang('Country.text_select');
 
         return $zones_list;
     }
