@@ -35,7 +35,7 @@ class Districts extends AdminController
         $sort        = $this->request->getGet('sort');
         $order       = $this->request->getGet('order');
         $limit       = $this->request->getGet('limit');
-        $filter_keys = ['province_id', 'name', 'limit'];
+        $filter_keys = ['zone_id', 'name', 'limit'];
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
@@ -50,8 +50,8 @@ class Districts extends AdminController
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
-        $province_model = new ProvinceModel();
-        $data['province_list'] = $province_model->getProvincesDropdown();
+        $zone_model = new ZoneModel();
+        $data['zone_list'] = $zone_model->getZonesDropdown();
 
         add_meta(['title' => lang("CountryDistrictAdmin.heading_title")], $this->themes);
         $this->themes
@@ -73,7 +73,7 @@ class Districts extends AdminController
                 'name'           => $this->request->getPost('name'),
                 'type'           => $this->request->getPost('type'),
                 'lati_long_tude' => $this->request->getPost('lati_long_tude'),
-                'province_id'    => $this->request->getPost('province_id'),
+                'zone_id'    => $this->request->getPost('zone_id'),
                 'sort_order'     => $this->request->getPost('sort_order'),
                 'published'      => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
@@ -110,7 +110,7 @@ class Districts extends AdminController
                 'name'           => $this->request->getPost('name'),
                 'type'           => $this->request->getPost('type'),
                 'lati_long_tude' => $this->request->getPost('lati_long_tude'),
-                'province_id'    => $this->request->getPost('province_id'),
+                'zone_id'    => $this->request->getPost('zone_id'),
                 'sort_order'     => $this->request->getPost('sort_order'),
                 'published'      => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
@@ -184,9 +184,9 @@ class Districts extends AdminController
         $this->themes->addJS('common/js/country/load');
 
         $country_model  = new CountryModel();
-        $province_model = new ProvinceModel();
+        $zone_model = new ZoneModel();
 
-        $province_list = [];
+        $zone_list = [];
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form']   = lang('CountryDistrictAdmin.text_edit');
@@ -199,10 +199,10 @@ class Districts extends AdminController
                 return redirect()->to(site_url(self::MANAGE_URL));
             }
 
-            $province_data = $province_model->where('province_id', $data_form['province_id'])->first();
-            if (!empty($province_data)) {
-                $province_list           = $province_model->getProvincesDropdown($province_data['country_id']);
-                $data_form['country_id'] = $province_data['country_id'];
+            $zone_data = $zone_model->where('zone_id', $data_form['zone_id'])->first();
+            if (!empty($zone_data)) {
+                $zone_list           = $zone_model->getZonesDropdown($zone_data['country_id']);
+                $data_form['country_id'] = $zone_data['country_id'];
             }
 
             // display the edit user form
@@ -214,7 +214,7 @@ class Districts extends AdminController
         }
 
         $data['country_list']  = $country_model->getCountriesDropdown();
-        $data['province_list'] = $province_list;
+        $data['zone_list'] = $zone_list;
 
         $data['errors'] = $this->errors;
 
@@ -234,7 +234,7 @@ class Districts extends AdminController
     {
         $this->validator->setRule('sort_order', lang('Admin.text_sort_order'), 'is_natural');
         $this->validator->setRule('name', lang('Admin.text_name'), 'required');
-        $this->validator->setRule('province_id', lang('CountryDistrictAdmin.text_province'), 'required|is_natural_no_zero');
+        $this->validator->setRule('zone_id', lang('CountryDistrictAdmin.text_province'), 'required|is_natural_no_zero');
 
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors  = $this->validator->getErrors();

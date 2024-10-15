@@ -240,6 +240,13 @@ class Configs extends AdminController
         $this->themes->addJS('common/plugin/bootstrap-colorpicker/claviska/jquery-minicolors/jquery.minicolors.min');
         $this->themes->addJS('common/js/admin/filemanager');
 
+        $this->themes->addCSS('common/plugin/multi-select/css/select2.min');
+        $this->themes->addCSS('common/plugin/multi-select/css/select2-bootstrap-5-theme.min');
+        $this->themes->addJS('common/plugin/multi-select/js/select2.min');
+        if (language_code_admin() == 'vi') {
+            $this->themes->addJS('common/plugin/multi-select/js/i18n/vi');
+        }
+
         $settings = [];
         $list_config = $this->model->findAll();
         if (!empty($list_config)) {
@@ -292,11 +299,11 @@ class Configs extends AdminController
         $data['watermark_bg'] = $image_tool->watermarkDemo();
 
         $country_model = new \App\Modules\Countries\Models\CountryModel();
-        $province_model = new \App\Modules\Countries\Models\ZoneModel();
+        $zone_model = new \App\Modules\Countries\Models\ZoneModel();
         $currency_model = new \App\Modules\Currencies\Models\CurrencyModel();
 
         $data['country_list'] = $country_model->getCountriesDropdown();
-        $data['province_list'] = $province_model->getProvincesDropdown();
+        $data['zone_list'] = $zone_model->getZonesDropdown();
         $data['timezone_list'] = $this->_getListTimezone();
         $data['currency_list'] = format_dropdown($currency_model->getListPublished(), 'code');
 

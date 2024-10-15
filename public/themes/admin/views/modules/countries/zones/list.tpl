@@ -58,7 +58,7 @@
 				<div class="card">
 					<h5 class="card-header"><i class="fas fa-list me-2"></i>{lang('CountryProvinceAdmin.text_list')}</h5>
 					<div class="card-body">
-						{include file=get_theme_path('views/modules/countries/inc/link_list.tpl') active='provinces'}
+						{include file=get_theme_path('views/modules/countries/inc/link_list.tpl') active='zones'}
 						{if !empty($list)}
 							<div class="table-responsive mb-2">
 								<table class="table table-striped table-hover table-bordered second">

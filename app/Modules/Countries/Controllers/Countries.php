@@ -13,7 +13,7 @@ class Countries extends MyController
 
     }
 
-    public function provinces()
+    public function zones()
     {
         if (!$this->request->isAJAX()) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -23,21 +23,21 @@ class Countries extends MyController
             json_output(['status' => 'ng', 'none' => lang('Country.text_none')]);
         }
 
-        $province_model = new ZoneModel();
+        $zone_model = new ZoneModel();
         $country_id    = $this->request->getPost('country_id');
-        $province_list = $province_model->getProvincesDropdown($country_id);
-        if (!empty($province_list)) {
-            foreach ($province_list as $key => $value) {
-                $province_list['_'.$key] = $value;
-                unset($province_list[$key]);
+        $zone_list = $zone_model->getZonesDropdown($country_id);
+        if (!empty($zone_list)) {
+            foreach ($zone_list as $key => $value) {
+                $zone_list['_'.$key] = $value;
+                unset($zone_list[$key]);
             }
         }
 
-        if (empty($province_list)) {
+        if (empty($zone_list)) {
             json_output(['status' => 'ng', 'none' => lang('Country.text_none')]);
         }
 
-        json_output(['status' => 'ok', 'provinces' => $province_list, 'none' => lang('Country.text_none')]);
+        json_output(['status' => 'ok', 'zones' => $zone_list, 'none' => lang('Country.text_none')]);
     }
 
     public function districts()
@@ -52,8 +52,8 @@ class Countries extends MyController
 
         $district_model = new DistrictModel();
 
-        $province_id   = $this->request->getPost('province_id');
-        $district_list = $district_model->getDistrictsDropdown($province_id);
+        $zone_id   = $this->request->getPost('zone_id');
+        $district_list = $district_model->getDistrictsDropdown($zone_id);
         if (!empty($district_list)) {
             foreach ($district_list as $key => $value) {
                 $district_list['_'.$key] = $value;

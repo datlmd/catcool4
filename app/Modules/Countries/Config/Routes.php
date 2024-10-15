@@ -33,7 +33,7 @@ $routes->group('manage', ['namespace' => 'App\Modules\Countries\Controllers\Admi
 });
 
 $routes->group('countries', ['namespace' => 'App\Modules\Countries\Controllers'], function($subroutes){
-    $subroutes->add('provinces', 'Countries::provinces');
+    $subroutes->add('zones', 'Countries::zones');
     $subroutes->add('districts', 'Countries::districts');
     $subroutes->add('wards', 'Countries::wards');
 });

@@ -4,19 +4,19 @@
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_country')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			{form_dropdown('country', $country_list, old('country', $settings.country), ['class' => 'form-control country-changed'])}
+			{form_dropdown('country', $country_list, old('country', $settings.country), ['class' => 'form-control country-changed cc-form-select-single'])}
 		</div>
 	</div>
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_zone')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			{form_dropdown('country_province', $province_list, old('country_province', $settings.country_province), ['class' => 'form-control province-changed'])}
+			{form_dropdown('country_province', $zone_list, old('country_province', $settings.country_province), ['class' => 'form-control province-changed cc-form-select-single'])}
 		</div>
 	</div>
 	<div class="form-group row">
 		<div class="col-12 col-sm-3 col-form-label text-sm-end">{lang('ConfigAdmin.text_timezone')}</div>
 		<div class="col-12 col-sm-8 col-lg-6">
-			{form_dropdown('app_timezone', $timezone_list, old('app_timezone', $settings.app_timezone), ['class' => 'form-control'])}
+			{form_dropdown('app_timezone', $timezone_list, old('app_timezone', $settings.app_timezone), ['class' => 'form-control cc-form-select-single'])}
 		</div>
 	</div>
 	<div class="border-bottom mx-3 lead pb-1 my-3 fw-bold"></div>

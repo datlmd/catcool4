@@ -51,8 +51,8 @@ class Wards extends AdminController
             'filter_active' => count(array_filter($this->request->getGet($filter_keys))) > 0,
         ];
 
-        $province_model = new ProvinceModel();
-        $data['province_list'] = $province_model->getProvincesDropdown();
+        $zone_model = new ZoneModel();
+        $data['zone_list'] = $zone_model->getZonesDropdown();
 
         $district_model = new DistrictModel();
         $data['district_list'] = $district_model->getDistrictsDropdown();
@@ -188,10 +188,10 @@ class Wards extends AdminController
         $this->themes->addJS('common/js/country/load');
 
         $country_model  = new CountryModel();
-        $province_model = new ProvinceModel();
+        $zone_model = new ZoneModel();
         $district_model = new DistrictModel();
 
-        $province_list = [];
+        $zone_list = [];
         $district_list = [];
 
         //edit
@@ -208,14 +208,14 @@ class Wards extends AdminController
 
             $district_data = $district_model->where('district_id', $data_form['district_id'])->first();
             if (!empty($district_data)) {
-                $district_list    = $district_model->getDistrictsDropdown($district_data['province_id']);
-                $data_form['province_id'] = $district_data['province_id'];
+                $district_list    = $district_model->getDistrictsDropdown($district_data['zone_id']);
+                $data_form['zone_id'] = $district_data['zone_id'];
             }
 
-            $province_data = $province_model->where('province_id', $district_data['province_id'])->first();
-            if (!empty($province_data)) {
-                $province_list           = $province_model->getProvincesDropdown($province_data['country_id']);
-                $data_form['country_id'] = $province_data['country_id'];
+            $zone_data = $zone_model->where('zone_id', $district_data['zone_id'])->first();
+            if (!empty($zone_data)) {
+                $zone_list           = $zone_model->getZonesDropdown($zone_data['country_id']);
+                $data_form['country_id'] = $zone_data['country_id'];
             }
 
             // display the edit user form
@@ -227,7 +227,7 @@ class Wards extends AdminController
         }
 
         $data['country_list']  = $country_model->getCountriesDropdown();
-        $data['province_list'] = $province_list;
+        $data['zone_list'] = $zone_list;
         $data['district_list'] = $district_list;
 
         $data['errors'] = $this->errors;

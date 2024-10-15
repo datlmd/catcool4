@@ -18,8 +18,8 @@ class  ZoneModel extends MyModel
         'published',
     ];
 
-    const COUNTRY_PROVINCE_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_zone_list';
-    const COUNTRY_PROVINCE_CACHE_EXPIRE = YEAR;
+    const COUNTRY_ZONE_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_zone_list';
+    const COUNTRY_ZONE_CACHE_EXPIRE = YEAR;
 
     function __construct()
     {
@@ -57,9 +57,9 @@ class  ZoneModel extends MyModel
         return $this->orderBy($sort, $order);
     }
 
-    public function getProvinces($is_cache = true)
+    public function getZones($is_cache = true)
     {
-        $result = $is_cache ? cache()->get(self::COUNTRY_PROVINCE_CACHE_NAME) : null;
+        $result = $is_cache ? cache()->get(self::COUNTRY_ZONE_CACHE_NAME) : null;
         if (empty($result)) {
             $result = $this->orderBy('name', 'ASC')->where(['published' => STATUS_ON])->findAll();
             if (empty($result)) {
@@ -68,7 +68,7 @@ class  ZoneModel extends MyModel
 
             if ($is_cache) {
                 // Save into the cache for $expire_time 1 year
-                cache()->save(self::COUNTRY_PROVINCE_CACHE_NAME, $result, self::COUNTRY_PROVINCE_CACHE_EXPIRE);
+                cache()->save(self::COUNTRY_ZONE_CACHE_NAME, $result, self::COUNTRY_ZONE_CACHE_EXPIRE);
             }
         }
 
@@ -77,25 +77,25 @@ class  ZoneModel extends MyModel
 
     public function deleteCache()
     {
-        cache()->delete(self::COUNTRY_PROVINCE_CACHE_NAME);
+        cache()->delete(self::COUNTRY_ZONE_CACHE_NAME);
         return true;
     }
 
-    public function getProvincesDropdown($country_id = null)
+    public function getZonesDropdown($country_id = null)
     {
-        $return = $this->getProvinces();
+        $return = $this->getZones();
         if (empty($return)) {
             return false;
         }
 
-        $province_list[0] = lang('Country.text_select');
+        $zones_list[0] = lang('Country.text_select');
         foreach ($return as $value) {
             if (!empty($country_id) && $value['country_id'] != $country_id) {
                 continue;
             }
-            $province_list[$value['zone_id']] = $value['name'];
+            $zones_list[$value['zone_id']] = $value['name'];
         }
 
-        return $province_list;
+        return $zones_list;
     }
 }

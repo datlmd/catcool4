@@ -246,7 +246,7 @@ class Customers extends AdminController
         $data['groups'] = array_column($group_list, null, 'customer_group_id');
 
         $country_model = model('App\Modules\Countries\Models\CountryModel');
-        $province_model = model('App\Modules\Countries\Models\ZoneModel');
+        $zone_model = model('App\Modules\Countries\Models\ZoneModel');
         $district_model = model('App\Modules\Countries\Models\DistrictModel');
         $ward_model = model('App\Modules\Countries\Models\WardModel');
 
@@ -268,7 +268,7 @@ class Customers extends AdminController
             $address_model = model('App\Modules\Customers\Models\AddressModel');
             $data_form['address_list'] = $address_model->getListByCustomerId($customer_id);
             foreach ($data_form['address_list'] as $key => $value) {
-                $data_form['address_list'][$key]['province_list'] = $province_model->getProvincesDropdown($value['country_id']);
+                $data_form['address_list'][$key]['zone_list'] = $zone_model->getZonesDropdown($value['country_id']);
                 $data_form['address_list'][$key]['district_list'] = $district_model->getDistrictsDropdown($value['province_id']);
                 $data_form['address_list'][$key]['ward_list'] = $ward_model->getWardsDropdown($value['district_id']);
             }

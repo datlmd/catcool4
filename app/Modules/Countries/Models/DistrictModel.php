@@ -14,7 +14,7 @@ class  DistrictModel extends MyModel
 
     protected $allowedFields = [
         'district_id',
-        'province_id',
+        'zone_id',
         'name',
         'type',
         'lati_long_tude',
@@ -36,8 +36,8 @@ class  DistrictModel extends MyModel
         $sort  = in_array($sort, $this->allowedFields) ? $sort : 'district_id';
         $order = $order ?? 'DESC';
 
-        if (!empty($filter["province_id"])) {
-            $this->whereIn('province_id', (is_array($filter["province_id"])) ? $filter["province_id"] : explode(',', $filter["province_id"]));
+        if (!empty($filter["zone_id"])) {
+            $this->whereIn('zone_id', (is_array($filter["zone_id"])) ? $filter["zone_id"] : explode(',', $filter["zone_id"]));
         }
 
         if (!empty($filter["name"])) {
@@ -71,7 +71,7 @@ class  DistrictModel extends MyModel
         return true;
     }
 
-    public function getDistrictsDropdown($province_id = null)
+    public function getDistrictsDropdown($zone_id = null)
     {
         $return = $this->getDistricts();
         if (empty($return)) {
@@ -80,7 +80,7 @@ class  DistrictModel extends MyModel
 
         $district_list[0] = lang('Country.text_select');
         foreach ($return as $value) {
-            if (!empty($province_id) && $value['province_id'] != $province_id) {
+            if (!empty($zone_id) && $value['zone_id'] != $zone_id) {
                 continue;
             }
             $district_list[$value['district_id']] = $value['type'] . ' ' . $value['name'];

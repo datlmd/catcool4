@@ -32,7 +32,7 @@
 									</div>
 									<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
 										{lang('CountryDistrictAdmin.text_province')}
-										{form_dropdown('province_id', $province_list, old('province_id', $request->getGet('province_id'))|default:'', ['class' => 'form-control'])}
+										{form_dropdown('zone_id', $zone_list, old('zone_id', $request->getGet('zone_id'))|default:'', ['class' => 'form-control'])}
 									</div>
 
 									<div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-2">
@@ -84,9 +84,9 @@
 											</a>
 										</th>
 										<th class="text-start">
-											<a href="{site_url($manage_url)}?sort=province_id&order={$order}{$url}" class="text-dark">
+											<a href="{site_url($manage_url)}?sort=zone_id&order={$order}{$url}" class="text-dark">
 												{lang('CountryDistrictAdmin.text_province')}
-												{if $sort eq 'province_id'}
+												{if $sort eq 'zone_id'}
 													<i class="fas {if $order eq 'DESC'}fa-angle-up{else}fa-angle-down{/if} ms-1"></i>
 												{/if}
 											</a>
@@ -118,7 +118,7 @@
 											<td class="text-center">{$item.district_id}</td>
 											<td>{anchor("$manage_url/edit/`$item.district_id`", htmlspecialchars($item.name, ENT_QUOTES,'UTF-8'), 'class="text-primary"')}</td>
 											<td>{$item.type}</td>
-											<td>{if !empty($province_list[$item.province_id])}{$province_list[$item.province_id]}{/if}</td>
+											<td>{if !empty($zone_list[$item.zone_id])}{$zone_list[$item.zone_id]}{/if}</td>
 											<td class="text-center">{$item.lati_long_tude}</td>
 											<td class="text-center">{$item.sort_order}</td>
 											<td>
