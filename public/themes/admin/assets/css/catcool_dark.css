@@ -72,16 +72,16 @@ body {
     border-right: 1px solid rgba(152, 166, 173, .2);
 }
 
-.sidebar-nav-fixed ul li a {
-    color: #ffffff;
+.pageheader-title a, .page-breadcrumb .breadcrumb-item .breadcrumb-link {
+    color: #f5f5f5 !important;
 }
 
-.pageheader-title .text-dark, .page-breadcrumb .breadcrumb-link, .page-breadcrumb .breadcrumb-item.active {
-    color: #ffffff !important;
+.page-breadcrumb .breadcrumb-item.active .breadcrumb-link {
+    color: #86e1ff !important;
 }
 
-.pageheader-title .text-dark:hover, .page-breadcrumb .breadcrumb-link:hover {
-    color: #31afda !important;
+.pageheader-title a:hover, .page-breadcrumb .breadcrumb-link:hover {
+    color: #86e1ff !important;
 }
 
 .switch-button input[type=checkbox]:checked+span {
