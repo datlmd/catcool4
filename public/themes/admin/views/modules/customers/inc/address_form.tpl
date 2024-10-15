@@ -80,17 +80,17 @@
 		<div class="row mb-3">
 			<label for="input_address_{$address_row}_country_id" class="col-sm-2 col-form-label text-sm-end required-label">{lang('CustomerAdmin.text_country')}</label>
 			<div class="col-sm-4">
-				{form_dropdown("address[{$address_row}][country_id]", $country_list, old("address[{$address_row}][country_id]", $address.country_id|default:''), ["class" => "form-control country-changed cc-form-select-single", "id" => "input_address_{$address_row}_country_id", "target_id" => "#input_address_{$address_row}_province_id", "data-placeholder" => lang('Admin.text_select')])}
+				{form_dropdown("address[{$address_row}][country_id]", $country_list, old("address[{$address_row}][country_id]", $address.country_id|default:''), ["class" => "form-control country-changed cc-form-select-single", "id" => "input_address_{$address_row}_country_id", "target_id" => "#input_address_{$address_row}_zone_id", "data-placeholder" => lang('Admin.text_select')])}
 				<div id="error_address_{$address_row}_country_id" class="invalid-feedback"></div>
 			</div>
-			<label for="input_address_{$address_row}_province_id" class="col-sm-2 col-form-label text-sm-end required-label">{lang('CustomerAdmin.text_province')}</label>
+			<label for="input_address_{$address_row}_zone_id" class="col-sm-2 col-form-label text-sm-end required-label">{lang('CustomerAdmin.text_province')}</label>
 			<div class="col-sm-4">
-				{$province_attributes = ["class" => "form-control province-changed cc-form-select-single", "id" => "input_address_{$address_row}_province_id", "target_id" => "#input_address_{$address_row}_district_id", "data-placeholder" => lang('Admin.text_select')]}
+				{$zone_attributes = ["class" => "form-control zone-changed cc-form-select-single", "id" => "input_address_{$address_row}_zone_id", "target_id" => "#input_address_{$address_row}_district_id", "data-placeholder" => lang('Admin.text_select')]}
 				{if empty($address.address_id)}
-					{$province_attributes["disabled"] = "disabled"}
+					{$zone_attributes["disabled"] = "disabled"}
 				{/if}
-				{form_dropdown("address[{$address_row}][province_id]", $address.province_list, old("address[{$address_row}][province_id]", $address.province_id), $province_attributes)}
-				<div id="error_address_{$address_row}_province_id" class="invalid-feedback"></div>
+				{form_dropdown("address[{$address_row}][zone_id]", $address.zone_list, old("address[{$address_row}][zone_id]", $address.zone_id), $zone_attributes)}
+				<div id="error_address_{$address_row}_zone_id" class="invalid-feedback"></div>
 			</div>
 		</div>
 		<div class="row mb-3">

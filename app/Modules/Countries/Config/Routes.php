@@ -32,8 +32,8 @@ $routes->group('manage', ['namespace' => 'App\Modules\Countries\Controllers\Admi
     $subroutes->add('country_wards/publish', 'Wards::publish');
 });
 
-$routes->group('countries', ['namespace' => 'App\Modules\Countries\Controllers'], function($subroutes){
-    $subroutes->add('zones', 'Countries::zones');
-    $subroutes->add('districts', 'Countries::districts');
-    $subroutes->add('wards', 'Countries::wards');
+$routes->group('countries/api', ['namespace' => 'App\Modules\Countries\Controllers\Api'], function($subroutes) {
+    $subroutes->add('zones', 'Zones::index');
+    $subroutes->add('districts', 'Districts::index');
+    $subroutes->add('wards', 'Wards::index');
 });

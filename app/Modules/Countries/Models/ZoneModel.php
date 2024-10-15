@@ -83,18 +83,25 @@ class  ZoneModel extends MyModel
 
     public function getZonesDropdown($country_id = null)
     {
+        $zones_list = [];
+
         $return = $this->getZones();
         if (empty($return)) {
-            return false;
+            return $zones_list;
         }
 
-        $zones_list[0] = lang('Country.text_select');
         foreach ($return as $value) {
             if (!empty($country_id) && $value['country_id'] != $country_id) {
                 continue;
             }
             $zones_list[$value['zone_id']] = $value['name'];
         }
+
+        if (empty($zones_list)) {
+            return $zones_list;
+        }
+
+        $zones_list[0] = lang('Country.text_select');
 
         return $zones_list;
     }

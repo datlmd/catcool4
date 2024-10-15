@@ -73,18 +73,25 @@ class  WardModel extends MyModel
 
     public function getWardsDropdown($district_id = null)
     {
+        $ward_list = [];
+
         $return = $this->getWards();
         if (empty($return)) {
-            return false;
+            return $ward_list;
         }
 
-        $ward_list[0] = lang('Country.text_select');
         foreach ($return as $value) {
             if (!empty($district_id) && $value['district_id'] != $district_id) {
                 continue;
             }
             $ward_list[$value['ward_id']] = $value['type'] . ' ' . $value['name'];
         }
+
+        if (empty($ward_list)) {
+            return $ward_list;
+        }
+
+        $ward_list[0] = lang('Country.text_select');
 
         return $ward_list;
     }

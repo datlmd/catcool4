@@ -73,18 +73,25 @@ class  DistrictModel extends MyModel
 
     public function getDistrictsDropdown($zone_id = null)
     {
+        $district_list = [];
+
         $return = $this->getDistricts();
         if (empty($return)) {
-            return false;
+            return $district_list;
         }
 
-        $district_list[0] = lang('Country.text_select');
         foreach ($return as $value) {
             if (!empty($zone_id) && $value['zone_id'] != $zone_id) {
                 continue;
             }
             $district_list[$value['district_id']] = $value['type'] . ' ' . $value['name'];
         }
+
+        if (empty($district_list)) {
+            return $district_list;
+        }
+
+        $district_list[0] = lang('Country.text_select');
 
         return $district_list;
     }

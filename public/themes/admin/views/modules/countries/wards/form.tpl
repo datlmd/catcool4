@@ -76,7 +76,7 @@
                                     {lang('CountryWardAdmin.text_province')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {form_dropdown('zone_id', $zone_list, old('zone_id', $edit_data.zone_id), ['class' => 'form-control province-changed'])}
+                                    {form_dropdown('zone_id', $zone_list, old('zone_id', $edit_data.zone_id), ['class' => 'form-control zone-changed'])}
                                 </div>
                             </div>
                             <div class="form-group row">
