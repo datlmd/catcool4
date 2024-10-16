@@ -33,6 +33,7 @@
 			<li><a href="{site_url('manage/product_length_classes')}" class="{if !empty($active) && $active eq 'length_classes'}active{/if}">{lang('ProductLengthClassAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('manage/countries')}" class="{if !empty($active) && $active eq 'countries'}active{/if}">{lang('CountryAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('manage/country_zones')}" class="{if !empty($active) && $active eq 'zones'}active{/if}">{lang('CountryProvinceAdmin.heading_title')}</a></li>
+			<li><a href="{site_url('manage/geo_zones')}" class="{if !empty($active) && $active eq 'geo_zones'}active{/if}">{lang('GeoZoneAdmin.heading_title')}</a></li>
 			<li><a href="{site_url('manage/addresses_format')}" class="{if !empty($active) && $active eq 'addresses_format'}active{/if}">{lang('AddressFormatAdmin.heading_title')}</a></li>
 		</ul>
 		</div>
