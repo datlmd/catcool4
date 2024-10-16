@@ -57,7 +57,7 @@ class CountryModel extends MyModel
 
         if (!empty($filter['name'])) {
             $this->groupStart();
-            $this->Like('name', $filter['name']);
+            $this->like('name', $filter['name']);
             $this->orLike('formal_name', $filter['name']);
             $this->orLike('country_code', $filter['name']);
             $this->orLike('currency_code', $filter['name']);

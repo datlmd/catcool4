@@ -41,7 +41,7 @@ class  DistrictModel extends MyModel
         }
 
         if (!empty($filter["name"])) {
-            $this->Like('name', $filter["name"]);
+            $this->like('name', $filter["name"]);
         }
 
         return $this->orderBy($sort, $order);

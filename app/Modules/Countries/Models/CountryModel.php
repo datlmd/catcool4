@@ -40,7 +40,7 @@ class CountryModel extends MyModel
 
         if (!empty($filter['name'])) {
             $this->groupStart();
-            $this->Like('name', $filter['name']);
+            $this->like('name', $filter['name']);
             $this->orLike('iso_code_2', $filter['name']);
             $this->orLike('iso_code_3', $filter['name']);
             $this->groupEnd();

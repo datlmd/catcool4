@@ -44,7 +44,7 @@ class  ProvinceModel extends MyModel
 
         if (!empty($filter["name"])) {
             $this->groupStart();
-            $this->Like('name', $filter["name"]);
+            $this->like('name', $filter["name"]);
             $this->orLike('telephone_code', $filter["name"]);
             $this->orLike('country_code', $filter["name"]);
             $this->groupEnd();

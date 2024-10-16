@@ -20,7 +20,7 @@ class FarmModel extends MyModel
         $table_suffix   = sprintf($this->_table_suffix_format, $postfix);
 
         $db_table    = explode("_", $this->table);
-        $this->table = $this->db->prefixTable($db_table[0] . $table_suffix);
+        $this->table = $this->db->prefixTable(array_shift($db_table) . $table_suffix);
 
         return $this;
     }

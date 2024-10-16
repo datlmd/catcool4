@@ -39,7 +39,7 @@ class LocationModel extends MyModel
 
         if (!empty($filter['name'])) {
             if (!empty($filter['name'])) {
-                $this->Like("$this->table.name", $filter['name']);
+                $this->like("$this->table.name", $filter['name']);
             }
         }
 

@@ -42,11 +42,11 @@ class  DistrictModel extends MyModel
         $order = !empty($order) ? $order : 'DESC';
 
         if (!empty($filter["zone"])) {
-            $this->Like('`z`.`name`', $filter["zone"]);
+            $this->like('`z`.`name`', $filter["zone"]);
         }
 
         if (!empty($filter["name"])) {
-            $this->Like('`d`.`name`', $filter["name"]);
+            $this->like('`d`.`name`', $filter["name"]);
         }
 
         $this->from([], true)->from("`$this->table` `d`")

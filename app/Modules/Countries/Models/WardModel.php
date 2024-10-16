@@ -42,11 +42,11 @@ class  WardModel extends MyModel
         $order = !empty($order) ? $order : 'DESC';
 
         if (!empty($filter["name"])) {
-            $this->Like('`w`.`name`', $filter["name"]);
+            $this->like('`w`.`name`', $filter["name"]);
         }
 
         if (!empty($filter["district"])) {
-            $this->Like('`d`.`name`', $filter["district"]);
+            $this->like('`d`.`name`', $filter["district"]);
         }
 
         $this->from([], true)->from("`$this->table` `w`")

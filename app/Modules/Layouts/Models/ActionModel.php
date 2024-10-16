@@ -35,7 +35,7 @@ class ActionModel extends MyModel
 
         if (!empty($filter['name'])) {
             if (!empty($filter['name'])) {
-                $this->Like('name', $filter['name']);
+                $this->like('name', $filter['name']);
             }
         }
 
