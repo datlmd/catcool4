@@ -52,7 +52,7 @@ class  ZoneModel extends MyModel
 
         $this->from([], true)->from("`$this->table` `z`")
         ->select('`z`.*, `c`.`name` `country`')
-        ->join('`country` `c`', '`c`.`country_id` = `z`.`country_id`');
+        ->join('`country` `c`', '`c`.`country_id` = `z`.`country_id`', 'LEFT');
 
         return $this->orderBy($sort, $order);
     }
@@ -61,7 +61,7 @@ class  ZoneModel extends MyModel
     {
         $result = $is_cache ? cache()->get(self::COUNTRY_ZONE_CACHE_NAME) : null;
         if (empty($result)) {
-            $result = $this->orderBy('name', 'ASC')->where(['published' => STATUS_ON])->findAll();
+            $result = $this->orderBy('code', 'ASC')->orderBy('name', 'ASC')->where(['published' => STATUS_ON])->findAll();
             if (empty($result)) {
                 return null;
             }

@@ -17,7 +17,7 @@
 			<button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" href="#menu_admin" aria-controls="menu_admin" aria-expanded="false" aria-label="Menu Admin">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="collapse navbar-collapse" id="menu_admin">
+			<div class="collapse navbar-collapse pb-5 mb-5" id="menu_admin">
 				<ul class="navbar-nav flex-column">
 					<li class="nav-divider pb-0 d-xl-none d-lg-none">
 						<a class="" href="{site_url('manage/users/edit/'|cat:session('user_info.user_id'))}">
