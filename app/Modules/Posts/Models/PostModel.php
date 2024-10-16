@@ -67,15 +67,6 @@ class PostModel extends MyModel
 
     private $_queries = [
         'post_all' => "SELECT * FROM `TABLE_NAME`",
-        'list_post_group_by_category' => "SELECT `category_id`, `post_id`, `name`, `slug`, `description`, `category_ids`, `publish_date`, `images`, `created_at`, `post_format`, `tags`
-            FROM (
-                SELECT `c`.`category_id`, `p`.`post_id`, `p`.`name`, `p`.`slug`, `p`.`description`, `p`.`category_ids`, `p`.`publish_date`, `p`.`images`, `p`.`created_at`, `p`.`post_format`, `p`.`tags`, 
-                    row_number() OVER (PARTITION BY `c`.`category_id` ORDER BY `p`.`post_id` DESC) AS `row`
-                FROM `post` AS `p` INNER JOIN `post_categories` AS `c` ON `p`.`post_id` = `c`.`post_id` 
-                WHERE `p`.`publish_date` <= ? AND `p`.`published` = 1
-                ORDER BY `p`.`publish_date` DESC
-            ) AS `POST`
-            WHERE `row` <= ?",
         ];
 
     function __construct()
@@ -85,6 +76,16 @@ class PostModel extends MyModel
         if (ENVIRONMENT == 'development') {
             $this->_post_date_from = "120"; // so ngay
         }
+
+        $this->_queries['list_post_group_by_category'] = "SELECT `category_id`, `post_id`, `name`, `slug`, `description`, `category_ids`, `publish_date`, `images`, `created_at`, `post_format`, `tags`
+            FROM (
+                SELECT `c`.`category_id`, `p`.`post_id`, `p`.`name`, `p`.`slug`, `p`.`description`, `p`.`category_ids`, `p`.`publish_date`, `p`.`images`, `p`.`created_at`, `p`.`post_format`, `p`.`tags`, 
+                    row_number() OVER (PARTITION BY `c`.`category_id` ORDER BY `p`.`post_id` DESC) AS `row`
+                FROM `" . $this->db->prefixTable('post') ."` AS `p` INNER JOIN `" . $this->db->prefixTable('post_categories') . "` AS `c` ON `p`.`post_id` = `c`.`post_id` 
+                WHERE `p`.`publish_date` <= ? AND `p`.`published` = 1
+                ORDER BY `p`.`publish_date` DESC
+            ) AS `POST`
+            WHERE `row` <= ?";
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
