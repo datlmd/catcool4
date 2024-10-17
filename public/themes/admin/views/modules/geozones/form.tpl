@@ -191,7 +191,7 @@
 
         if (!zone[$(element).val()]) {
 
-        $.ajax({
+            $.ajax({
                 url: 'countries/api/zones',
                 data: {
                     'country_id' : $(element).val(),
@@ -235,7 +235,6 @@
                 },
                 error: function (xhr, errorType, error) {
                     console.log(error + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                    is_country_processing = false;
                 }
             });
         } else {

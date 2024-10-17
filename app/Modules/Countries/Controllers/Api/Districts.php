@@ -21,6 +21,7 @@ class Districts extends Controller
         $district_list = $district_model->getDistrictsByZone($this->request->getPost('zone_id'));
        
         $data['none'] = lang('Country.text_none');
+        $data['districts'] = [];
         
         if (empty($district_list)) {
             return $this->respond($data);

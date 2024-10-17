@@ -69,7 +69,16 @@
                                     {lang('CountryWardAdmin.text_country')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {form_dropdown('country_id', $country_list, old('country_id', $edit_data.country_id), ['class' => 'form-control cc-form-select-single country-changed', 'target_id' => '#input_country_zone'])}
+                                    {form_dropdown(
+                                        'country_id',
+                                        $country_list,
+                                        old('country_id', $edit_data.country_id),
+                                        [
+                                            'class' => 'form-control cc-form-select-single country-changed', 
+                                            'data-target' => '#input_country_zone',
+                                            'data-zone-id' => $edit_data.zone_id
+                                        ]
+                                    )}
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -77,7 +86,17 @@
                                     {lang('CountryWardAdmin.text_province')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {form_dropdown('zone_id', $zone_list, old('zone_id', $edit_data.zone_id), ['id' => 'input_country_zone', 'class' => 'form-control cc-form-select-single zone-changed', 'target_id' => '#input_country_district'])}
+                                    {form_dropdown(
+                                        'zone_id', 
+                                        $zone_list, 
+                                        old('zone_id', $edit_data.zone_id), 
+                                        [
+                                            'id' => 'input_country_zone',
+                                            'class' => 'form-control cc-form-select-single zone-changed',
+                                            'data-target' => '#input_country_district',
+                                            'data-is-open' => 1
+                                        ]
+                                    )}
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -85,7 +104,15 @@
                                     {lang('CountryWardAdmin.text_district')}
                                 </label>
                                 <div class="col-12 col-sm-8 col-lg-6">
-                                    {form_dropdown('district_id', $district_list, old('district_id', $edit_data.district_id), ['id' => 'input_country_district', 'class' => 'form-control cc-form-select-single district-changed'])}
+                                    {form_dropdown(
+                                        'district_id', 
+                                        $district_list, 
+                                        old('district_id', $edit_data.district_id), 
+                                        [
+                                            'id' => 'input_country_district', 
+                                            'class' => 'form-control cc-form-select-single district-changed'
+                                        ]
+                                    )}
                                 </div>
                             </div>
 

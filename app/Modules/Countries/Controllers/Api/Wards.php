@@ -21,6 +21,7 @@ class Wards extends Controller
         $ward_list = $ward_model->getWardsByDistrict($this->request->getPost('district_id'));
        
         $data['none'] = lang('Country.text_none');
+        $data['wards'] = [];
 
         if (empty($ward_list)) {
             return $this->respond($data);

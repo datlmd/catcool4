@@ -21,6 +21,7 @@ class Zones extends Controller
         $zone_list = $zone_model->getZonesByCountry($this->request->getPost('country_id'));
 
         $data['none'] = lang('Country.text_none');
+        $data['zones'] = [];
 
         if (empty($zone_list)) {
             return $this->respond($data);
@@ -33,6 +34,6 @@ class Zones extends Controller
         
         $data['zones'] = $zone_list;
         
-        return $this->respond($data, 200);
+        return $this->setResponseFormat('json')->respond($data, 200);
     }
 }
