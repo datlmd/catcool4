@@ -94,7 +94,7 @@ class Sitemap extends Controller
                 'publish_date <=' => $to_date,
             ];
 
-            $post_list = $post_model->select('post_id, slug, name, tags, meta_keyword, publish_date, created_at, updated_at')
+            $post_list = $post_model->select('post_id, slug, name, tags, meta_title, meta_keyword, publish_date, created_at, updated_at')
                 ->orderBy('post_id', 'desc')
                 ->where($where)
                 ->findAll();
@@ -103,10 +103,11 @@ class Sitemap extends Controller
                 foreach ($post_list as $key => $value) {
                     $value = $post_model->formatDetail($value);
 
+                    $value['meta_title'] = empty($value['meta_title']) ?  $value['name'] : $value['meta_title'];
                     $data_news = [
                         'publication' => ['name' => config_item('site_name'), 'language' => 'vi'],
                         'publication_date' => date('Y-m-d\TH:i:sP', strtotime($value['publish_date'])),
-                        'title' => $this->_utf8ForXml(htmlspecialchars($value['name'])),
+                        'title' => $this->_utf8ForXml(htmlspecialchars($value['meta_title'])),
                         'keywords' => !empty($value['meta_keyword']) ? $this->_utf8ForXml(htmlspecialchars($value['meta_keyword'])) : $value['tags'],
                     ];
 

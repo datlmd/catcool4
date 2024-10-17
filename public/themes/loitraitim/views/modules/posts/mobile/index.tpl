@@ -17,7 +17,7 @@
 		<div class="my-4">
 			{foreach $category_tree as $category}
 				{if !empty($post_group_category_list[$category.category_id]) && stripos($category.slug, 'blog') !== false}
-					<div class="category-name d-block mt-2 mb-2">
+					<div class="category-name d-block mt-2 mb-3">
 						<span>
 							<a href="{site_url($category.slug)}">{$category.name}</a>
 						</span>
