@@ -16,7 +16,7 @@ $routes->get('/', 'Posts::index', ['namespace' => 'App\Modules\Posts\Controllers
 
 $routes->add('sitemap.xml', 'Sitemap::index');
 $routes->add('sitemap-category.xml', 'Sitemap::category');
-$routes->add('sitemap-post(:any).xml', 'Sitemap::post/$1');
+$routes->add('sitemap-post-(:any).xml', 'Sitemap::post/$1');
 
 foreach(glob(APPPATH . 'Modules/*', GLOB_ONLYDIR) as $item_dir) {
     if (file_exists($item_dir . '/Config/Routes.php')) {

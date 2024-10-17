@@ -79,11 +79,12 @@ class Sitemap extends Controller
     {
         try {
             $post_model = new \App\Modules\Posts\Models\PostModel();
-
+            
             if (empty($year)) {
                 $year = date('Y', time());
             }
-
+            $year = "$year-01-01 00:00:00";
+            
             $from_date = date('Y-01-01 00:00:00', strtotime($year));
             $to_date = date('Y-12-t 23:59:59', strtotime($year));
 
