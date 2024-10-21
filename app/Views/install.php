@@ -470,6 +470,42 @@
 		</ul>
 	</div>
 
+	<div class="my-2">
+		<h2 data-bs-toggle="collapse" data-bs-target="#collapse_react" aria-expanded="false" aria-controls="collapse_react">
+			- React -
+		</h2>
+		<ul class="list collapse" id="collapse_react">
+			<li>
+				Tạo app 
+				<code>
+					npx create-react-app my-app <br/>
+					cd my-app <br/>
+					npm start <br/>
+				</code>
+				<br/>
+				<code>
+					touch webpack.config.js<br/>
+				</code>
+				<br/>
+				//create react/src directory<br/>
+				<code>
+					$ mkdir -p react/src<br/>
+					$ touch react/src/App.js
+				</code>
+				<br/>
+				<br/>
+				To generate a bundled js file run the following command in your terminal:<br/>
+				<code>
+					$ npx webpack
+					<br/>
+					npx webpack --watch
+				</code>
+				<br/><br/>
+				https://www.twilio.com/en-us/blog/build-single-page-application-php-codeigniter-react
+			</li>
+		</ul>
+	</div>
+
 </div>
 <footer class="container-fluid text-center bg-success py-3">
 	<small class="mb-2">
