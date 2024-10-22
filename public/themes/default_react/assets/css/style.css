@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+:root {
+    --body-font-size: 18px;
+    --body-color-main: #444444;
+    --text-color-main-rgb: 208 47 152;
+    --text-color-main: #8a3f7f;
+    --text-color-gradient: #d09693;
+    --text-color-white: #ffffff;
+    --footer-bg-color: #323232;
+    --footer-text-color: #888888;
+}
+
+html {
+}
+
+body {
+ 
+}
+
+
+
+
+/* X-Large devices (large desktops, less than 1400px) */
+@media (max-width: 1399.98px) {
+
+}
+
+/* Large devices (desktops, less than 1200px) */
+@media (max-width: 1199.98px) {
+
+}
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+
+}
+
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+	
+}
+
+/* X-Small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+
+}
