@@ -14,7 +14,8 @@ class React extends MyController
     public function index()
     {
         //set theme
-        $this->themes->setTheme(config_item('theme_frontend'));
+        //$this->themes->setTheme(config_item('theme_frontend'));
+        $this->themes->setTheme('default_react');
       
         $data = [
             'location_list' => "",

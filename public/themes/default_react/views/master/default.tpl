@@ -44,6 +44,7 @@
     <script>{script_global()}</script>
 </head>
 <body class="{if !empty($body_class)}{$body_class}{/if}">
+	<noscript>You need to enable JavaScript to run this app.</noscript>
 
 	{$layout}
 
@@ -53,6 +54,8 @@
 	{if ENVIRONMENT === 'production'}
 		<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
 		<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+
+		<script src="{theme_url('reactjs/build/dist/main.js')}"></script>
 	{else}
 		<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
 		<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
@@ -60,12 +63,12 @@
 		{* <script src="https://unpkg.com/dompurify@2.0.12/dist/purify.js'"></script>
 		<script src="https://unpkg.com/html-react-parser@0.13.0/dist/html-react-parser.js"></script>
 		<script src="https://unpkg.com/react-router-dom@5.2.0/umd/react-router-dom.js"></script> *}
-
+		<script src="{theme_url('reactjs/public/dist/main.js')}"></script>
 		
 	{/if}
-	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+	{* <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script> *}
 
-	<script src="{base_url('/app/public/dist/main.js')}"></script>
+	
 
 	
 	<!-- JavaScripts -->
@@ -84,14 +87,17 @@
 			</script>
 		{/literal}
 	{/if}
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
+
+	{if ENVIRONMENT === 'production'}
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
 			var js, fjs = d.getElementsByTagName(s)[0];
 			if (d.getElementById(id)) return;
 			js = d.createElement(s); js.id = id;
 			js.src = 'https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v3.1';
 			fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));</script>
+	{/if}
 </body>
 </html>
 {/strip}

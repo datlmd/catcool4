@@ -1305,7 +1305,7 @@ if (!function_exists('filter_bad_word_comment_content')) {
 if (!function_exists('script_global')) {
     function script_global()
     {
-        $username = !empty(session('user_info.is_admin')) ? session('user_info.username') : session('customer.email');
+        $username = !empty(session('customer_info')) ? session('customer_info.username') : session('customer_info.email');
 
         return '
             var base_url = "' . base_url() . '";
@@ -1313,6 +1313,8 @@ if (!function_exists('script_global')) {
             var image_url = "' . base_url('img') . '";
             var image_root_url = "' . get_upload_url() . '";
             var username = "' . $username . '";
+            var theme_frontend = "' . config_item('theme_frontend') . '";
+            var theme_admin = "' . config_item('theme_admin') . '";
             var csrf_token = "' . csrf_token() . '";
             var decimal_point = "' . config_item('decimal_point') . '";
             var thousand_point = "' . config_item('thousand_point') . '";
