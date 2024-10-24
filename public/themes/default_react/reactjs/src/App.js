@@ -1,24 +1,35 @@
+import React, {useState} from 'react';
+import {clearState, loadJWT} from './utils/LocalStorage';
+import Authentication from './components/authentication/Authentication';
+import Dashboard from './components/restricted/dashboard/Index';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 
-import { lazy } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LayoutDefault from "./pages/Layouts/Default";
-import PageAbout from "./pages/Frontend/About";
-import PageHome from "./pages/Frontend/Home";
-import PageContact from "./pages/Frontend/Contact";
-import PageNotFound from "./pages/Frontend/NotFound";
+const Root = () => {
+    const [isAuthenticated, setIsAuthenticated] = useState(!!loadJWT());
+
+    const onLogin = () => {
+        setIsAuthenticated(true);
+    };
+
+    const onLogout = () => {
+        clearState();
+        setIsAuthenticated(false);
+    };
+
+    return !isAuthenticated ?
+        <Authentication
+            setIsAuthenticated={onLogin}
+        />
+        :
+        <Dashboard
+            logout={onLogout}
+        />;
+};
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LayoutDefault />}>
-          <Route index element={<PageHome />} />
-          <Route path="about" element={<PageAbout />} />
-          <Route path="contact" element={<PageContact />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <Root />
   );
 }
 

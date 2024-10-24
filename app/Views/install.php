@@ -500,6 +500,22 @@
 					<br/>
 					npx webpack --watch
 				</code>
+				<br/>
+				Create a new package.json <br/>
+				<code>
+					npm init<br/><br/>
+					npm add react react-dom react-router-dom<br/><br/>
+					npm add reactstrap bootstrap jquery popper<br/><br/>
+					npm add formik yup<br/><br/>
+					npm add axios luxon<br/><br/>
+					npm add --dev @babel/core @babel/preset-react babel-loader //Babel is used to compile our React code into browser-compatible code
+					<br/><br/>
+					npm add --dev @babel/plugin-proposal-optional-chaining @babel/plugin-proposal-nullish-coalescing-operator  
+					<br/><br/>
+					npm add --dev webpack webpack-cli path
+					<br/><br/>
+					npm add --dev css-loader style-loader
+				</code>
 				<br/><br/>
 				https://www.twilio.com/en-us/blog/build-single-page-application-php-codeigniter-react
 			</li>
