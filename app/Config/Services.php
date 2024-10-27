@@ -14,6 +14,7 @@ use App\Libraries\ZaloApi;
 use App\Libraries\Robot;
 use App\Libraries\Currency;
 use App\Libraries\Customer;
+use App\Libraries\React;
 use App\Libraries\User;
 use App\Libraries\Startup;
 
@@ -169,5 +170,22 @@ class Services extends BaseService
     public static function startup($getShared = true)
     {
         return ($getShared === true ? static::getSharedInstance('startup') : new Startup());
+    }
+
+    public static function language(string $locale = null, bool $getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('language', $locale)->setLocale($locale);
+        }
+
+        // Use '?:' for empty string check
+        $locale = $locale ?: \Config\Services::request()->getLocale();
+
+        return new \App\Libraries\Language($locale);
+    }
+
+    public static function react($getShared = true)
+    {
+        return ($getShared === true ? static::getSharedInstance('react') : new React());
     }
 }

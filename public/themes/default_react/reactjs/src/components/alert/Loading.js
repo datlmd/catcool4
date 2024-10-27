@@ -1,5 +1,5 @@
 import React from 'react';
-import {Spinner} from 'reactstrap';
+import {Spinner} from 'react-bootstrap/Spinner';
 
 const LoadingAlert = () => {
     return (

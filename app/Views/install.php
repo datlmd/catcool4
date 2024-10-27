@@ -505,8 +505,10 @@
 				<code>
 					npm init<br/><br/>
 					npm add react react-dom react-router-dom<br/><br/>
-					npm add reactstrap bootstrap jquery popper<br/><br/>
-					npm add formik yup<br/><br/>
+					npm add react-bootstrap bootstrap jquery popper<br/><br/>
+					npm install bootstrap-icons<br/><br/>
+					npm install font-awesome --save<br/><br/>
+					#npm add formik yup<br/><br/>
 					npm add axios luxon<br/><br/>
 					npm add --dev @babel/core @babel/preset-react babel-loader //Babel is used to compile our React code into browser-compatible code
 					<br/><br/>

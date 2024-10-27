@@ -1,0 +1,7 @@
+{
+  "BASE_URL": "https://localhost:8443/dev/catcool4/public/",
+  "THEME_COLORS": {
+    "PRIMARY": "#007bff",
+    "SECONDARY": "#fc3"
+  }
+}

@@ -14,3 +14,7 @@ $routes->get('about', 'Contact::index', ['namespace' => 'App\Modules\Frontend\Co
 
 $routes->get('contact', 'Contact::index', ['namespace' => 'App\Modules\Frontend\Controllers']);
 $routes->post('contact/send', 'Contact::send', ['namespace' => 'App\Modules\Frontend\Controllers']);
+
+$routes->group('frontend/api', ['namespace' => 'App\Modules\Frontend\Controllers\Api'], function($subroutes) {
+    $subroutes->add('contact', 'Contact::index');
+});

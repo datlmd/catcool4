@@ -1,5 +1,5 @@
 import React from 'react';
-import {UncontrolledAlert} from 'reactstrap';
+import Alert from 'react-bootstrap/Alert';
 
 const SuccessAlert = ({
                           message,
