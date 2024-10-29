@@ -1,7 +1,7 @@
 import React from 'react';
 import {Spinner} from 'react-bootstrap/Spinner';
 
-const LoadingAlert = () => {
+const Loading = () => {
     return (
         <div className='centredDiv'>
             <Spinner size='lg' type='grow' color='dark'/>
@@ -9,4 +9,4 @@ const LoadingAlert = () => {
     );
 };
 
-export default LoadingAlert;
+export default Loading;

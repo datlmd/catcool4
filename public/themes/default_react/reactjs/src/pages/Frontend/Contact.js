@@ -4,7 +4,7 @@ import React, { useState, useEffect, cache } from "react";
 
 import ContactForm from "../../components/Contact/Form";
 import { API, getRequestConfiguration } from "../../utils/callApi";
-import Loading from "../../components/UI/Loading";
+import LoadingContent from "../../components/Loading/Content";
 
 const PageContact = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -30,7 +30,7 @@ const PageContact = () => {
   };
 
   return isLoading ? (
-    <Loading />
+    <LoadingContent />
   ) : (
     <>
       <h1>{contents.lang.contact}</h1>
