@@ -19,6 +19,16 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
+/***/ "./src/components/Loading/Content.js":
+/*!*******************************************!*\
+  !*** ./src/components/Loading/Content.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react_bootstrap_Placeholder__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-bootstrap/Placeholder */ \"./node_modules/react-bootstrap/esm/Placeholder.js\");\n\nconst LoadingContent = () => {\n  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(\"h1\", {\n    \"aria-hidden\": \"true\"\n  }, /*#__PURE__*/React.createElement(react_bootstrap_Placeholder__WEBPACK_IMPORTED_MODULE_0__[\"default\"], {\n    xs: 6,\n    bg: \"light\"\n  })), /*#__PURE__*/React.createElement(\"div\", {\n    \"aria-hidden\": \"true\"\n  }, /*#__PURE__*/React.createElement(react_bootstrap_Placeholder__WEBPACK_IMPORTED_MODULE_0__[\"default\"], {\n    xs: 12,\n    bg: \"light\"\n  })), /*#__PURE__*/React.createElement(\"div\", {\n    \"aria-hidden\": \"true\"\n  }, /*#__PURE__*/React.createElement(react_bootstrap_Placeholder__WEBPACK_IMPORTED_MODULE_0__[\"default\"], {\n    xs: 12,\n    bg: \"light\"\n  })), /*#__PURE__*/React.createElement(\"div\", {\n    \"aria-hidden\": \"true\"\n  }, /*#__PURE__*/React.createElement(react_bootstrap_Placeholder__WEBPACK_IMPORTED_MODULE_0__[\"default\"], {\n    xs: 12,\n    bg: \"light\"\n  })));\n};\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LoadingContent);\n\n//# sourceURL=webpack://reactjs/./src/components/Loading/Content.js?");
+
+/***/ }),
+
 /***/ "./src/pages/Frontend/Contact.js":
 /*!***************************************!*\
   !*** ./src/pages/Frontend/Contact.js ***!
