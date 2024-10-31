@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const API = axios.create({
-  baseURL: 'https://localhost:8443/dev/catcool4/public/',
+  baseURL: window.base_url,
   responseType: 'json',
   contentType: 'application/json',
   headers: {"X-Requested-With": "XMLHttpRequest"}

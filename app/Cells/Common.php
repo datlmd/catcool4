@@ -64,7 +64,11 @@ class Common
         
         if (!empty($layout_list)) {
             foreach ($layout_list as $layout) {
-                $cell_name = sprintf("%s::%s", $layout['controller'], $layout['action']);
+                $action = explode("|", $layout['action']);
+                if (empty($action[0])) {
+                    continue;
+                }
+                $cell_name = sprintf("%s::%s", $layout['controller'], $action[0]);
                 $content_html .= view_cell("$cell_name", $params);
             }
         }

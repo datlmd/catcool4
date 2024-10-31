@@ -258,7 +258,7 @@ select.form-control {
 }
 
 .breadcrumb-item+.breadcrumb-item::before, .breadcrumb-item.active {
-	color: #fff !important;
+	/* color: #fff !important; */
 }
 
 .http-error h2 {
