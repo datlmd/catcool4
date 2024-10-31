@@ -54,7 +54,6 @@
 	{$layout}
 
 	<div id="root"></div>
-		
 
 	{if ENVIRONMENT === 'production'}
 		<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
@@ -74,7 +73,6 @@
 	{* <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script> *}
 
 	<script>
-		
 		var page_data = '{{$data}}';
 	</script>
 

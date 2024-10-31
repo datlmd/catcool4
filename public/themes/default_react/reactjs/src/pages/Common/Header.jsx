@@ -1,8 +1,8 @@
-import HeaderInfo from "../../components/Common/Header/Info";
-import HeaderLogo from "../../components/Common/Header/Logo";
-import HeaderMain from "../../components/Common/Header/Main";
-import HeaderSearch from "../../components/Common/Header/Search";
-import MenuMain from "../../components/Common/Menu/Main";
+import HeaderInfo from "../../components/Common/Header/Info.jsx";
+import HeaderLogo from "../../components/Common/Header/Logo.jsx";
+import HeaderMain from "../../components/Common/Header/Main.jsx";
+import HeaderSearch from "../../components/Common/Header/Search.jsx";
+import MenuMain from "../../components/Common/Menu/Main.jsx";
 
 const Header = (props) => {
   return (

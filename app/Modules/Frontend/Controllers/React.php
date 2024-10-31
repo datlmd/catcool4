@@ -22,28 +22,17 @@ class React extends MyController
 
         // cc_debug($layout_list);
 
-        $data = [
-            'template' => service("react")->getTemplate(),
-        ];
-
+       
 
         $this->breadcrumb->add(lang('General.text_home'), base_url());
         $this->breadcrumb->add(lang('Contact.text_title'), base_url('contact'));
 
-        $params['params'] = [
-            'breadcrumb' => $this->breadcrumb->render(),
+        $params = [
+            'breadcrumb' => htmlentities($this->breadcrumb->render()),
             'breadcrumb_title' => lang('Contact.text_title'),
         ];
 
-         $this->themes;
-        //     ->addPartial('header_top', $params)
-        //      ->addPartial('header_bottom', $params)
-        //      ->addPartial('content_left', $params)
-        //      ->addPartial('content_top', $params)
-        //      ->addPartial('content_bottom', $params)
-        //      ->addPartial('content_right', $params)
-        //      ->addPartial('footer_top', $params)
-        //      ->addPartial('footer_bottom', $params);
+        $data = service("react")->getTemplate(($params));
 
         add_meta(['title' => lang('Contact.text_title')], $this->themes);
 

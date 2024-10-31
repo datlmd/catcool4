@@ -494,6 +494,16 @@
 				</code>
 				<br/>
 				<br/>
+				NodeJS NPM
+				<code>
+					brew -v<br/>
+					brew update<br/>
+					brew install node (or ver: node@20)<br/>
+					npm install (den thu muc react)
+				</code>
+				https://www.newline.co/@Adele/how-to-install-nodejs-and-npm-on-macos--22782681
+				<br/>
+				<br/>
 				To generate a bundled js file run the following command in your terminal:<br/>
 				<code>
 					$ npx webpack

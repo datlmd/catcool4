@@ -1,4 +1,4 @@
-import Message from "../../components/UI/Message";
+import Message from "../../components/UI/Message.jsx";
 
 const PageContact = () => {
   return (

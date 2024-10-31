@@ -3,9 +3,9 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
-import Currency from "../Currency";
-import Language from "../Language";
-import MenuTop from "../Menu/Top";
+import Currency from "../Currency.jsx";
+import Language from "../Language.jsx";
+import MenuTop from "../Menu/Top.jsx";
 
 const HeaderMain = (props) => {
   const linkAccount = (props) => {

@@ -1,10 +1,10 @@
 "use strict";
 
 import React, { useState, useEffect, cache } from "react";
-
-import ContactForm from "../../components/Contact/Form";
 import { API, getRequestConfiguration } from "../../utils/callApi";
-import LoadingContent from "../../components/Loading/Content";
+
+import ContactForm from "../../components/Contact/Form.jsx";
+import LoadingContent from "../../components/Loading/Content.jsx";
 
 const PageContact = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,8 +14,7 @@ const PageContact = () => {
   useEffect(() => {
     //const [data, triggerData] = useCache("key_page_contact", LoadPage());
     LoadPage();
-   
-
+  
   }, []);
 
   const LoadPage = async () => {

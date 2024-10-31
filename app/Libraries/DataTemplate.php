@@ -6,7 +6,7 @@ use CodeIgniter\Config\Factories;
 
 class DataTemplate
 {
-    public function dataHeader(): array {
+    public function dataHeader(?array $params = []): array {
         $data['wishlist'] = site_url('account/wishlist') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : '');
         $data['logged'] = service('Customer')->isLogged();
 
@@ -48,8 +48,8 @@ class DataTemplate
         $data['menu_top'] = get_menu_by_position(MENU_POSITION_TOP);
         $data['menu_main'] = get_menu_by_position();
 
-        $data['currency'] = $this->getCurrency();
-        $data['language'] = $this->getLanguages();
+        $data['currency'] = $this->_getCurrency();
+        $data['language'] = $this->_getLanguages();
         
         $data['is_multi_language'] = is_multi_language();
 
@@ -61,7 +61,7 @@ class DataTemplate
      *
      * @return array
      */
-    public function getLanguages(): array {
+    private function _getLanguages(): array {
         $language = [];
         $code = language_code();
 
@@ -85,7 +85,7 @@ class DataTemplate
      *
      * @return array
      */
-    public function getCurrency(): array {
+    private function _getCurrency(): array {
         $currency = [];
         $code = config_item('currency');
 
@@ -101,4 +101,12 @@ class DataTemplate
 
         return $currency;
     }
+
+    public function dataBreadcrumb(?array $params = []): array {
+        
+        $data = $params;
+        
+        return $data;
+    }
+
 }

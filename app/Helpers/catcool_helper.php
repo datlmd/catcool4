@@ -1307,8 +1307,18 @@ if (!function_exists('script_global')) {
     {
         $username = !empty(session('customer_info')) ? session('customer_info.username') : session('customer_info.email');
 
+        $path_url = str_ireplace(['www.', 'http://', 'https://'], '', base_url());
+        $path_url = explode("/", $path_url);
+        if (count($path_url) <= 1) {
+            $path_url = "/";
+        } else {
+            unset($path_url[0]);
+            $path_url = "/" . implode("/", $path_url);
+        }
+
         return '
             var base_url = "' . base_url() . '";
+            var path_url = "' . $path_url . '";
             var current_url = "' . current_url() . '";
             var image_url = "' . base_url('img') . '";
             var image_root_url = "' . get_upload_url() . '";
