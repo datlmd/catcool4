@@ -11,18 +11,18 @@ const Currency = ({ currency, type }) => {
         return (
           <li key={value.code}>
             <a key={value.code} href={value.href}>
-              {value.symbol_left && value.symbol_left}
+              {value.symbol_left}
               {value.name}
-              {value.symbol_right && value.symbol_right}
+              {value.symbol_right}
             </a>
           </li>
         );
       } else {
         return (
           <Dropdown.Item key={value.code} href={value.href}>
-            {value.symbol_left && value.symbol_left}
+            {value.symbol_left}
             {value.name}
-            {value.symbol_right && value.symbol_right}
+            {value.symbol_right}
           </Dropdown.Item>
         );
       }
@@ -36,9 +36,9 @@ const Currency = ({ currency, type }) => {
           aria-controls="nav-collapse-currency-top"
           aria-expanded={open}
           className="nav-link icon-collapse collapsed">
-          {currency.info.symbol_left && currency.info.symbol_left}
+          {currency.info.symbol_left}
           <span className="d-none d-md-inline">{currency.info.code}</span>
-          {currency.info.symbol_right && currency.info.symbol_right}
+          {currency.info.symbol_right}
         </Button>
         <Collapse in={open}>
           <div
@@ -57,9 +57,9 @@ const Currency = ({ currency, type }) => {
             as="a"
             className="nav-link dropdown-toggle"
             id="nav-currency-account-top">
-            {currency.info.symbol_left && currency.info.symbol_left}
+            {currency.info.symbol_left}
             <span className="d-none d-md-inline">{currency.info.code}</span>
-            {currency.info.symbol_right && currency.info.symbol_right}
+            {currency.info.symbol_right}
           </Dropdown.Toggle>
           <Dropdown.Menu>{currencyItem}</Dropdown.Menu>
         </Dropdown>

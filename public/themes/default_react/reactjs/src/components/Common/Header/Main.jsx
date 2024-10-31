@@ -29,17 +29,17 @@ const HeaderMain = (props) => {
 
             <Dropdown.Menu>
               <Dropdown.Item href={props.account}>
-                {props.text_account && props.text_account}
+                {props.text_account}
               </Dropdown.Item>
               <Dropdown.Item href={props.order}>
-                {props.text_order && props.text_order}
+                {props.text_order}
               </Dropdown.Item>
               <Dropdown.Item href={props.transaction}>
-                {props.text_transaction && props.text_transaction}
+                {props.text_transaction}
               </Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item href={props.logout}>
-                {props.text_logout && props.text_logout}
+                {props.text_logout}
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
@@ -55,16 +55,16 @@ const HeaderMain = (props) => {
               id="dropdown-account-top">
               <i className="fas fa-user"></i>
               <span className="d-none d-md-inline ms-1">
-                {props.text_my_account && props.text_my_account}
+                {props.text_my_account}
               </span>
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
               <Dropdown.Item href={props.login}>
-                {props.text_login && props.text_login}
+                {props.text_login}
               </Dropdown.Item>
               <Dropdown.Item href={props.register}>
-                {props.text_register && props.text_register}
+                {props.text_register}
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
@@ -87,14 +87,14 @@ const HeaderMain = (props) => {
               <Nav.Link href={props.wishlist}>
                 <i className="far fa-heart"></i>
                 <span className="d-none d-md-inline ms-1">
-                  {props.text_wishlist && props.text_wishlist}
+                  {props.text_wishlist}
                 </span>
                 <span className="ms-1">(0)</span>
               </Nav.Link>
               <Nav.Link href={props.shopping_cart}>
                 <i className="fas fa-shopping-cart"></i>
                 <span className="d-none d-md-inline ms-1">
-                  {props.text_shopping_cart && props.text_shopping_cart}
+                  {props.text_shopping_cart}
                 </span>
                 <span className="ms-1">(0)</span>
               </Nav.Link>

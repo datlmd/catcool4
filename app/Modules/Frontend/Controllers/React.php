@@ -32,7 +32,7 @@ class React extends MyController
             'breadcrumb_title' => lang('Contact.text_title'),
         ];
 
-        $data = service("react")->getTemplate(($params));
+        $data['layouts'] = service("react")->getTemplate(($params));
 
         add_meta(['title' => lang('Contact.text_title')], $this->themes);
 

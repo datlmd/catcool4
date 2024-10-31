@@ -3,7 +3,7 @@ import { decodeHtml } from "../../utils/String";
 function Breadcrumb(props) {
   return (
     <>
-      <div className="container-fluid breadcumb-content">
+      <div className="container-fluid breadcumb-content mb-4">
         <div className="container-xxl">
           <nav
             aria-label="breadcrumb"

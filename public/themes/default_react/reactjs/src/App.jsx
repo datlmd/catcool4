@@ -30,7 +30,7 @@ const App = () => {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path={pathUrl} element={<LayoutDefault {...pageData} />}>
+          <Route path={pathUrl} element={<LayoutDefault {...pageData.layouts} />}>
             <Route index element={<PageHome />} />
             <Route
               path={pathUrl + "about"}
