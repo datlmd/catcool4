@@ -1,6 +1,7 @@
 import HeaderInfo from "../../components/Common/Header/Info.jsx";
 import HeaderLogo from "../../components/Common/Header/Logo.jsx";
 import HeaderMain from "../../components/Common/Header/Main.jsx";
+import HeaderMobile from "../../components/Common/Header/Mobile.jsx";
 import HeaderSearch from "../../components/Common/Header/Search.jsx";
 import MenuMain from "../../components/Common/Menu/Main.jsx";
 
@@ -35,6 +36,11 @@ const Header = (props) => {
             </div>
           </div>
         </div>
+      </header>
+
+      {/* Mobile Menu */}
+      <header id="header_main_mobile" className="d-block d-lg-none">
+        <HeaderMobile {...props} />
       </header>
     </>
   );

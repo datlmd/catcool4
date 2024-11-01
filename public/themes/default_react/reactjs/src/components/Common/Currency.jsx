@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dropdown, Collapse, Button } from "react-bootstrap";
+import { Dropdown, Collapse } from "react-bootstrap";
 
 const Currency = ({ currency, type }) => {
   const [open, setOpen] = useState(false);
@@ -31,19 +31,22 @@ const Currency = ({ currency, type }) => {
   if (type == "collapse") {
     return (
       <>
-        <Button
+        <a
           onClick={() => setOpen(!open)}
           aria-controls="nav-collapse-currency-top"
           aria-expanded={open}
-          className="nav-link icon-collapse collapsed">
+          className="nav-item icon-collapse collapsed"
+        >
           {currency.info.symbol_left}
-          <span className="d-none d-md-inline">{currency.info.code}</span>
+          {currency.info.code}
           {currency.info.symbol_right}
-        </Button>
+          <span></span>
+        </a>
         <Collapse in={open}>
           <div
             id="nav-collapse-currency-top"
-            className="collapse multi-collapse">
+            className="collapse multi-collapse"
+          >
             <ul className="list-unstyled">{currencyItem}</ul>
           </div>
         </Collapse>
@@ -56,7 +59,8 @@ const Currency = ({ currency, type }) => {
           <Dropdown.Toggle
             as="a"
             className="nav-link dropdown-toggle"
-            id="nav-currency-account-top">
+            id="nav-currency-account-top"
+          >
             {currency.info.symbol_left}
             <span className="d-none d-md-inline">{currency.info.code}</span>
             {currency.info.symbol_right}

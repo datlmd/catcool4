@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dropdown, Collapse, Button } from "react-bootstrap";
+import { Dropdown, Collapse } from "react-bootstrap";
 
 export default function Language({ language, type }) {
   const [open, setOpen] = useState(false);
@@ -27,20 +27,21 @@ export default function Language({ language, type }) {
   if (type && type == "collapse") {
     return (
       <>
-        <Button
+        <a
           onClick={() => setOpen(!open)}
           aria-controls="nav-collapse-account-top"
           aria-expanded={open}
-          className="nav-link icon-collapse collapsed">
-          <i className={language.info.icon}></i>{" "}
-          <span className="d-none d-md-inline">
-            {language.info.text_language}
-          </span>
-        </Button>
+          className="nav-item icon-collapse collapsed"
+        >
+          <i className={language.info.icon + " me-1"}></i>
+          {language.info.text_language}
+          <span></span>
+        </a>
         <Collapse in={open}>
           <div
             id="nav-collapse-account-top"
-            className="collapse multi-collapse">
+            className="collapse multi-collapse"
+          >
             <ul className="list-unstyled">{languageItem}</ul>
           </div>
         </Collapse>
@@ -53,7 +54,8 @@ export default function Language({ language, type }) {
           <Dropdown.Toggle
             as="a"
             className="nav-link dropdown-toggle"
-            id="nav-dropdown-account-top">
+            id="nav-dropdown-account-top"
+          >
             <i className={language.info.icon}></i>{" "}
             <span className="d-none d-md-inline">
               {language.info.text_language}

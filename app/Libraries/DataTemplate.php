@@ -43,6 +43,9 @@ class DataTemplate
         $data['text_login'] = lang('General.text_login');
         $data['text_register'] = lang('General.text_register');
 
+        $data['text_menu'] = lang('Frontend.text_menu');
+        $data['text_search_title'] = lang('Frontend.text_search_title');
+
         $data['logo'] = image_url(config_item('image_logo_url'), 120, 100);
 
         $data['menu_top'] = get_menu_by_position(MENU_POSITION_TOP);

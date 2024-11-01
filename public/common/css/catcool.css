@@ -726,7 +726,7 @@ header .header-bottom.fixed, #header_main_mobile.fixed .header-mobile-content {
 }
 
 .header-mobile-content .header-mobile-menu-icon a {
-    padding: 6px 10px;
+    padding: 6px 10px !important;
     color: var(--body-color-main);
 }
 
