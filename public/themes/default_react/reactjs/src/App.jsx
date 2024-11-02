@@ -8,6 +8,7 @@ import LayoutDefault from "./pages/Layouts/Default.jsx";
 import PageHome from "./pages/Frontend/Home.jsx";
 import PageNotFound from "./pages/Frontend/NotFound.jsx";
 import Loading from "./components/Loading/Loading.jsx";
+import { sanitizeJSONString } from "./utils/String.js";
 
 const PageContact = lazy(() => import("./pages/Frontend/Contact.jsx"));
 const PageAbout = lazy(() => import("./pages/Frontend/About.jsx"));
@@ -19,8 +20,8 @@ const App = () => {
   const [pageData, setPageData] = useState([]);
 
   useEffect(() => {
-    if (window.page_data && window.page_data !== undefined) {
-      setPageData(JSON.parse(window.page_data));
+    if (window.page_data && window.page_data !== undefined) {      
+      setPageData(JSON.parse(sanitizeJSONString(window.page_data)));
     } else {
       console.log("window.page_data is empty!!!");
     }

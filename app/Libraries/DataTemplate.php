@@ -112,4 +112,17 @@ class DataTemplate
         return $data;
     }
 
+    public function dataFooter(?array $params = []): array {
+        
+        $data = [];
+
+        $data['store_open'] = config_item('store_open');
+
+        $data['text_business_hours'] = lang('Frontend.text_business_hours');
+        $data['text_copyright'] = lang('Frontend.text_copyright');
+
+        $data['payment_icon'] = img_url('payment-icon.png');
+        //cc_debug($data);
+        return $data;
+    }
 }

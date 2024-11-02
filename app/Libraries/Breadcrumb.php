@@ -7,9 +7,9 @@ class Breadcrumb
 
     function __construct()
     {
-        $this->tags['open'] = "<ol class='breadcrumb'>";
+        $this->tags['open'] = '<ol class="breadcrumb">';
         $this->tags['close'] = "</ol>";
-        $this->tags['itemOpen'] = "<li class='breadcrumb-item'>";
+        $this->tags['itemOpen'] = '<li class="breadcrumb-item">';
         $this->tags['itemClose'] = "</li>";
     }
 
@@ -17,6 +17,11 @@ class Breadcrumb
     {
         if (!$title or !$href) return;
         $this->breadcrumbs[] = ['title' => $title, 'href' => $href];
+    }
+
+    function get()
+    {
+        return $this->breadcrumbs;
     }
 
     function reset()

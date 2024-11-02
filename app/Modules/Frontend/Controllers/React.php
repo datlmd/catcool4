@@ -28,7 +28,7 @@ class React extends MyController
         $this->breadcrumb->add(lang('Contact.text_title'), base_url('contact'));
 
         $params = [
-            'breadcrumb' => htmlentities($this->breadcrumb->render()),
+            'breadcrumbs' => $this->breadcrumb->get(),
             'breadcrumb_title' => lang('Contact.text_title'),
         ];
 

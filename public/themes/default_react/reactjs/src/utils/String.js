@@ -3,3 +3,7 @@ export function decodeHtml(html) {
   txt.innerHTML = html;
   return txt.value;
 }
+
+export function sanitizeJSONString(input) {
+  return input.replace(/[\n\r\t]/g, '');;
+}

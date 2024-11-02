@@ -19,45 +19,70 @@ const LayoutDefault = ({
   footer_top,
   footer_bottom,
 }) => {
-  const [headerTopViews, setHeaderTopViews] = useState([]);
-  const [headerBottomViews, setHeaderBottomViews] = useState([]);
+  const [headerTopView, setHeaderTopView] = useState([]);
+  const [headerBottomView, setHeaderBottomView] = useState([]);
+
+  const [contentLeftView, setContentLeftView] = useState([]);
+  const [contentRightView, setContentRightView] = useState([]);
+
+  const [footerTopView, setFooterTopView] = useState([]);
+  const [footerBottomView, setFooterBottomView] = useState([]);
 
   useEffect(() => {
     async function LoadViews(component, position) {
-      const componentPromises = component.map(async (data) => {
-        const View = await importView(data.subreddit);
-        return <View key={data.key} {...data.data} />;
-      });
+      if (component && component !== undefined) {
+        const componentPromises = component.map(async (data) => {
+          const View = await importView(data.subreddit);
+          return <View key={data.key} {...data.data} />;
+        });
 
-      if (position == "header_top") {
-        Promise.all(componentPromises).then(setHeaderTopViews);
-      } else if (position == "header_bottom") {
-        Promise.all(componentPromises).then(setHeaderBottomViews);
+        switch(position) {
+          case 'header_top':
+            Promise.all(componentPromises).then(setHeaderTopView);
+            break;
+          case 'header_bottom':
+            Promise.all(componentPromises).then(setHeaderBottomView);
+            break;
+          case 'content_left':
+            Promise.all(componentPromises).then(setContentLeftView);
+            break;
+          case 'content_right':
+            Promise.all(componentPromises).then(setContentRightView);
+            break;
+          case 'footer_top':
+            console.log(component);
+            Promise.all(componentPromises).then(setFooterTopView);
+            break;
+          case 'footer_bottom':
+            console.log(component);
+            Promise.all(componentPromises).then(setFooterBottomView);
+            break;
+        }
+      } else {
+        console.log(position + " is empty");
       }
     }
 
-    if (header_top && header_top !== undefined) {
-      LoadViews(header_top, "header_top");
-    } else {
-      console.log("header_top is empty");
-    }
+    LoadViews(header_top, "header_top");
+    LoadViews(header_bottom, "header_bottom");
+    
+    LoadViews(content_left, "content_left");
+    LoadViews(content_right, "content_right");
 
-    if (header_bottom && header_bottom !== undefined) {
-      LoadViews(header_bottom, "header_bottom");
-    } else {
-      console.log("header_bottom is empty");
-    }
-  }, [header_top, header_bottom]);
+    LoadViews(footer_top, "footer_top");
+    LoadViews(footer_bottom, "footer_bottom");
+
+  }, [header_top, header_bottom, content_left, content_right, footer_top, footer_bottom]);
 
   return (
     <>
       <div className="body">
-        {headerTopViews && (
-          <Suspense fallback={<LoadingHeader />}>{headerTopViews}</Suspense>
+        {headerTopView && (
+          <Suspense fallback={<LoadingHeader />}>{headerTopView}</Suspense>
         )}
         
-        {headerBottomViews && (
-          <Suspense fallback={<LoadingHeader />}>{headerBottomViews}</Suspense>
+        {headerBottomView && (
+          <Suspense fallback={<LoadingHeader />}>{headerBottomView}</Suspense>
         )}
       
         <div role="main" className="main">
@@ -89,21 +114,29 @@ const LayoutDefault = ({
               <Col xs={{ order: 1 }}>
                 <Outlet />
               </Col>
-              {content_right && (
+             
+              {contentRightView && (
                 <Col
                   as="aside"
                   xs={{ order: 2 }}
                   id="content_right"
                   className="d-none d-md-block col-3"
                 >
-                  {content_right}
+                  <Suspense fallback={<LoadingHeader />}>{contentRightView}</Suspense>
                 </Col>
               )}
+
             </Row>
           </Container>
         </div>
-        {footer_top && footer_top}
-        {footer_bottom && footer_bottom}
+
+        {footerTopView && (
+          <Suspense fallback={<LoadingHeader />}>{footerTopView}</Suspense>
+        )}
+
+        {footerBottomView && (
+          <Suspense fallback={<LoadingHeader />}>{footerBottomView}</Suspense>
+        )}
       </div>
     </>
   );

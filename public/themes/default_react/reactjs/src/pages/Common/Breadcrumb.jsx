@@ -1,14 +1,26 @@
-import { decodeHtml } from "../../utils/String";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
 
-function Breadcrumb(props) {
+function CommonBreadcrumb(props) {
+  const breadcrumbItem = props.breadcrumbs.map((value, index, array) => {
+    if (array.length - 1 === index) {
+      return (
+        <Breadcrumb.Item key={"breadcrumb" + value.title} active>
+          {value.title}
+        </Breadcrumb.Item>
+      );
+    } else {
+      return (
+        <Breadcrumb.Item key={"breadcrumb" + value.title} href={value.href}>
+          {value.title}
+        </Breadcrumb.Item>
+      );
+    }
+  });
   return (
     <>
       <div className="container-fluid breadcumb-content mb-4">
         <div className="container-xxl">
-          <nav
-            aria-label="breadcrumb"
-            dangerouslySetInnerHTML={{ __html: decodeHtml(props.breadcrumb) }}
-          ></nav>
+          <Breadcrumb>{breadcrumbItem}</Breadcrumb>
           {/* {props.breadcrumb_title} */}
         </div>
       </div>
@@ -16,4 +28,4 @@ function Breadcrumb(props) {
   );
 }
 
-export default Breadcrumb;
+export default CommonBreadcrumb;

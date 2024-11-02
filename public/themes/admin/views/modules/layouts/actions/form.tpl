@@ -27,7 +27,7 @@
                     <div class="card">
                         <h5 class="card-header"><i class="fas {if !empty($edit_data.layout_action_id)}fa-edit{else}fa-plus{/if} me-2"></i>{$text_form}</h5>
                         <div class="card-body">
-                            <div class="form-group row">
+                            <div class="form-group row mb-3">
                                 <label class="col-12 col-sm-3 text-sm-end required-label col-form-label">
                                     {lang('Admin.text_name')}
                                 </label>
@@ -37,7 +37,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="form-group row mb-3">
                                 <label class="col-12 col-sm-3 text-sm-end required-label col-form-label">
                                     {lang('LayoutActionAdmin.text_controller')}
                                 </label>
@@ -54,6 +54,7 @@
                                 <div class="col-12 col-sm-8 col-lg-6">
                                     <input type="text" name="action" value="{old('action', $edit_data.action)}" id="action" class="form-control {if validation_show_error('action')}is-invalid{/if}">
                                     <div class="invalid-feedback">{validation_show_error("action")}</div>
+                                    <label class="mt-2">Ex: template_name|page_name_react_path (page_name_path: Đường dẫn react trong thư mục Pages)</label>
                                 </div>
                             </div>
 
