@@ -1,6 +1,10 @@
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 function CommonBreadcrumb(props) {
+  if (props.breadcrumbs.length <= 0 || props.breadcrumbs === undefined) {
+    return <></>;
+  }
+
   const breadcrumbItem = props.breadcrumbs.map((value, index, array) => {
     if (array.length - 1 === index) {
       return (

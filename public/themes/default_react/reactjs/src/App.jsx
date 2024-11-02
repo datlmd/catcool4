@@ -4,14 +4,14 @@ import { Suspense, lazy, useEffect, useState } from "react";
 // import "bootstrap-icons/font/bootstrap-icons.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LayoutDefault from "./pages/Layouts/Default.jsx";
-import PageHome from "./pages/Frontend/Home.jsx";
-import PageNotFound from "./pages/Frontend/NotFound.jsx";
+import LayoutDefault from "./views/Layouts/Default.jsx";
+import PageHome from "./views/Frontend/Home.jsx";
+import PageNotFound from "./views/Frontend/NotFound.jsx";
 import Loading from "./components/Loading/Loading.jsx";
 import { sanitizeJSONString } from "./utils/String.js";
 
-const PageContact = lazy(() => import("./pages/Frontend/Contact.jsx"));
-const PageAbout = lazy(() => import("./pages/Frontend/About.jsx"));
+const PageContact = lazy(() => import("./views/Frontend/Contact.jsx"));
+const PageAbout = lazy(() => import("./views/Frontend/About.jsx"));
 
 const baseUrl = window.base_url;
 const pathUrl = window.path_url;

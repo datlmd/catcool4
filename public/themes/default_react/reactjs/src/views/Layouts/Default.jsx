@@ -5,7 +5,7 @@ import LoadingHeader from "../../components/Loading/Header.jsx";
 
 const importView = (subreddit) =>
   lazy(() =>
-    import(`../${subreddit}.jsx`)//.catch(() => import(`../Common/NullView.jsx`))
+    import(`../${subreddit}.jsx`).catch(() => import(`../Common/NullView.jsx`))
   );
 
 const LayoutDefault = ({
