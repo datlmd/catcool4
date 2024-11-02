@@ -5,7 +5,8 @@ class React extends DataTemplate
     public function getTemplate(?array $params = []): array {
         $layout_model = new \App\Modules\Layouts\Models\LayoutModel();
 
-        $module = get_module();
+        $module = !empty($params["module"]) ? $params["module"] : get_module();
+
         $template = [];
         
         $position_list = [
@@ -20,8 +21,9 @@ class React extends DataTemplate
         ];
 
         foreach ($position_list as $value) {
-            $layout_list = $layout_model->getLayoutsByPostion($module, $value);
+            $template[$value] = [];//khoi tao null
 
+            $layout_list = $layout_model->getLayoutsByPostion($module, $value);
             if (empty($layout_list)) {
                 continue;
             }

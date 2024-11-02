@@ -6,7 +6,7 @@ import { API, getRequestConfiguration } from "../../utils/callApi";
 import ContactForm from "../../components/Contact/Form.jsx";
 import LoadingContent from "../../components/Loading/Content.jsx";
 
-const PageContact = () => {
+const PageContact = (props) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [contents, setContents] = useState([]);
@@ -17,12 +17,18 @@ const PageContact = () => {
   
   }, []);
 
+  const sendLayout = (layouts) => {
+    props.parentLayout(layouts);
+  };
+
   const LoadPage = async () => {
     try {
       const response = await API.get("frontend/api/contact", getRequestConfiguration());
      
       setContents(response.data);
       setIsLoading(false);
+      
+      sendLayout(response.data.layouts);
     } catch (error) {
       console.error(error);
     }

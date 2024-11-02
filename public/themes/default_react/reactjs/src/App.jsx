@@ -18,26 +18,37 @@ const pathUrl = window.path_url;
 
 const App = () => {
   const [pageData, setPageData] = useState([]);
+  const [layouts, setLayouts] = useState([]);
 
   useEffect(() => {
-    if (window.page_data && window.page_data !== undefined) {      
-      setPageData(JSON.parse(sanitizeJSONString(window.page_data)));
+    if (window.page_data && window.page_data !== undefined) {
+      let data = JSON.parse(sanitizeJSONString(window.page_data));
+
+      setPageData(data);
+
+      if (data.layouts !== undefined) {
+        setLayouts(data.layouts);
+      }
     } else {
       console.log("window.page_data is empty!!!");
     }
   }, []);
 
+  const callbackLayout = (data) => {
+    setLayouts(data);
+  };
+
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path={pathUrl} element={<LayoutDefault {...pageData.layouts} />}>
+          <Route path={pathUrl} element={<LayoutDefault {...layouts} />}>
             <Route index element={<PageHome />} />
             <Route
               path={pathUrl + "about"}
               element={
                 <Suspense fallback={<Loading />}>
-                  <PageAbout />
+                  <PageAbout parentLayout={callbackLayout} />
                 </Suspense>
               }
             />
@@ -45,7 +56,7 @@ const App = () => {
               path={pathUrl + "contact"}
               element={
                 <Suspense fallback={<Loading />}>
-                  <PageContact />
+                  <PageContact parentLayout={callbackLayout} />
                 </Suspense>
               }
             />

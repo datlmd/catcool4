@@ -2,18 +2,17 @@ import { lazy, useEffect, useState, Suspense } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import LoadingHeader from "../../components/Loading/Header.jsx";
-//import Breadcrumb from "../Common/Breadcrumb.jsx";
 
 const importView = (subreddit) =>
   lazy(() =>
-    import(`../${subreddit}.jsx`).catch(() => import(`../Common/NullView.jsx`))
+    import(`../${subreddit}.jsx`)//.catch(() => import(`../Common/NullView.jsx`))
   );
 
 const LayoutDefault = ({
   header_top,
   header_bottom,
-  content_left,
-  content_right,
+  column_left,
+  column_right,
   content_top,
   content_bottom,
   footer_top,
@@ -21,74 +20,98 @@ const LayoutDefault = ({
 }) => {
   const [headerTopView, setHeaderTopView] = useState([]);
   const [headerBottomView, setHeaderBottomView] = useState([]);
-
-  const [contentLeftView, setContentLeftView] = useState([]);
-  const [contentRightView, setContentRightView] = useState([]);
-
+  const [columnLeftView, setColumnLeftView] = useState([]);
+  const [columnRightView, setColumnRightView] = useState([]);
+  const [contentTopView, setContentTopView] = useState([]);
+  const [contentBottomView, setContentBottomView] = useState([]);
   const [footerTopView, setFooterTopView] = useState([]);
   const [footerBottomView, setFooterBottomView] = useState([]);
 
   useEffect(() => {
     async function LoadViews(component, position) {
-      if (component && component !== undefined) {
+      if (Array.isArray(component) && component !== undefined) {
+        
         const componentPromises = component.map(async (data) => {
           const View = await importView(data.subreddit);
           return <View key={data.key} {...data.data} />;
         });
 
-        switch(position) {
-          case 'header_top':
+        switch (position) {
+          case "header_top":
             Promise.all(componentPromises).then(setHeaderTopView);
             break;
-          case 'header_bottom':
+          case "header_bottom":
             Promise.all(componentPromises).then(setHeaderBottomView);
             break;
-          case 'content_left':
-            Promise.all(componentPromises).then(setContentLeftView);
+          case "column_left":
+            Promise.all(componentPromises).then(setColumnLeftView);
             break;
-          case 'content_right':
-            Promise.all(componentPromises).then(setContentRightView);
+          case "column_right":
+            Promise.all(componentPromises).then(setColumnRightView);
             break;
-          case 'footer_top':
-            console.log(component);
+          case "content_top":
+            Promise.all(componentPromises).then(setContentTopView);
+            break;
+          case "content_bottom":
+            Promise.all(componentPromises).then(setContentBottomView);
+            break;
+          case "footer_top":
             Promise.all(componentPromises).then(setFooterTopView);
             break;
-          case 'footer_bottom':
-            console.log(component);
+          case "footer_bottom":
             Promise.all(componentPromises).then(setFooterBottomView);
             break;
         }
-      } else {
-        console.log(position + " is empty");
       }
+      // else {
+      //   console.log(position + " is empty");
+      // }
     }
 
     LoadViews(header_top, "header_top");
     LoadViews(header_bottom, "header_bottom");
-    
-    LoadViews(content_left, "content_left");
-    LoadViews(content_right, "content_right");
-
+    LoadViews(column_left, "column_left");
+    LoadViews(column_right, "column_right");
+    LoadViews(content_top, "content_top");
+    LoadViews(content_bottom, "content_bottom");
     LoadViews(footer_top, "footer_top");
     LoadViews(footer_bottom, "footer_bottom");
-
-  }, [header_top, header_bottom, content_left, content_right, footer_top, footer_bottom]);
+  }, [
+    header_top,
+    header_bottom,
+    column_left,
+    column_right,
+    content_top,
+    content_bottom,
+    footer_top,
+    footer_bottom,
+  ]);
 
   return (
     <>
       <div className="body">
-        {headerTopView && (
+        {headerTopView.length > 0 && (
           <Suspense fallback={<LoadingHeader />}>{headerTopView}</Suspense>
         )}
-        
-        {headerBottomView && (
+
+        {headerBottomView.length > 0 && (
           <Suspense fallback={<LoadingHeader />}>{headerBottomView}</Suspense>
         )}
-      
+
         <div role="main" className="main">
-          
           <Container fluid="xxl">
             <Row>
+              {columnLeftView.length > 0 && (
+                <Col
+                  as="aside"
+                  id="column_left"
+                  className="d-none d-md-block col-3"
+                >
+                  <Suspense fallback={<LoadingHeader />}>
+                    {columnLeftView}
+                  </Suspense>
+                </Col>
+              )}
               <Col
                 as="aside"
                 xs={{ order: 0 }}
@@ -111,30 +134,42 @@ const LayoutDefault = ({
                   </ul>
                 </nav>
               </Col>
-              <Col xs={{ order: 1 }}>
+              <Col id="content">
+                {contentTopView.length > 0 && (
+                  <Suspense fallback={<LoadingHeader />}>
+                    {contentTopView}
+                  </Suspense>
+                )}
+
                 <Outlet />
+
+                {contentBottomView.length > 0 && (
+                  <Suspense fallback={<LoadingHeader />}>
+                    {contentBottomView}
+                  </Suspense>
+                )}
               </Col>
-             
-              {contentRightView && (
+
+              {columnRightView.length > 0 && (
                 <Col
                   as="aside"
-                  xs={{ order: 2 }}
-                  id="content_right"
+                  id="column_right"
                   className="d-none d-md-block col-3"
                 >
-                  <Suspense fallback={<LoadingHeader />}>{contentRightView}</Suspense>
+                  <Suspense fallback={<LoadingHeader />}>
+                    {columnRightView}
+                  </Suspense>
                 </Col>
               )}
-
             </Row>
           </Container>
         </div>
 
-        {footerTopView && (
+        {footerTopView.length > 0 && (
           <Suspense fallback={<LoadingHeader />}>{footerTopView}</Suspense>
         )}
 
-        {footerBottomView && (
+        {footerBottomView.length > 0&& (
           <Suspense fallback={<LoadingHeader />}>{footerBottomView}</Suspense>
         )}
       </div>

@@ -4,7 +4,7 @@ use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Controller;
 use App\Controllers\MyController;
 
-class Contact extends MyController
+class About extends MyController
 {
     use ResponseTrait;
 
@@ -28,7 +28,7 @@ class Contact extends MyController
         $params = [
             'breadcrumbs' => service('breadcrumb')->get(),
             'breadcrumb_title' => lang('Contact.text_title'),
-            'module' => 'frontend/contact',// su dung de load template layout cho trang
+            'module' => 'frontend/about',// su dung de load template layout cho trang
         ];
 
         $data = [
