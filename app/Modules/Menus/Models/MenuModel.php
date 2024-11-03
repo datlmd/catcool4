@@ -163,4 +163,39 @@ class MenuModel extends MyModel
 
         return $url;
     }
+
+    public function getMenuByPosition($position = MENU_POSITION_MAIN)
+    {
+        $menus = $this->getMenusActive(null, 3600 * 30 * 12);
+        if (empty($menus)) {
+            return false;
+        }
+
+        foreach ($menus as $menu_key => $menu) {
+            if ($menu['context'] != $position) {
+                unset($menus[$menu_key]);
+            }
+        }
+
+        $menus = format_tree(['data' => $menus, 'key_id' => 'menu_id']);
+
+        $menus = $this->_sortMenu($menus);
+
+        return $menus;
+    }
+
+    private function _sortMenu($menus)
+    {
+        $sort_ids = array_column($menus, "sort_order");
+        array_multisort($sort_ids, SORT_DESC, $menus);
+        
+        foreach ($menus as $key => $value) {
+            if (empty($value['subs'])) {
+                continue;
+            }
+            $menus[$key]['subs'] = $this->_sortMenu($value['subs']);
+        }
+
+        return $menus;
+    }
 }

@@ -120,9 +120,23 @@ class DataTemplate
 
         $data['text_business_hours'] = lang('Frontend.text_business_hours');
         $data['text_copyright'] = lang('Frontend.text_copyright');
+        $data['text_newsletter'] = lang('Frontend.text_newsletter');
+        $data['text_newsletter_description'] = lang('Frontend.text_newsletter_description');
+        $data['text_follow'] = lang('Frontend.text_follow');
+        $data['social_facebook_link'] = lang('Frontend.social_facebook_link');
+        $data['social_twitter_link'] = lang('Frontend.social_twitter_link');
+        $data['social_tiktok_link'] = lang('Frontend.social_tiktok_link');
+        $data['social_linkedin_link'] = lang('Frontend.social_linkedin_link');
+        $data['social_instagram_link'] = lang('Frontend.social_instagram_link');
+        $data['social_pinterest_link'] = lang('Frontend.social_pinterest_link');
+
+        $data['text_subscribe_email'] = lang('General.text_subscribe_email');
+        $data['button_subscribe'] = lang('General.button_subscribe');
 
         $data['payment_icon'] = img_url('payment-icon.png');
-        //cc_debug($data);
+
+        $data['menu_footer'] = get_menu_by_position(MENU_POSITION_FOOTER);
+        
         return $data;
     }
 }

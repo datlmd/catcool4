@@ -1467,21 +1467,8 @@ if (!function_exists('get_menu_by_position')) {
     function get_menu_by_position($position = MENU_POSITION_MAIN)
     {
         $menu_model = new \App\Modules\Menus\Models\MenuModel();
-
-        $menus = $menu_model->getMenusActive(null, 3600 * 30 * 12);
-        if (empty($menus)) {
-            return false;
-        }
-
-        foreach ($menus as $menu_key => $menu) {
-            if ($menu['context'] != $position) {
-                unset($menus[$menu_key]);
-            }
-        }
-
-        $menus = format_tree(['data' => $menus, 'key_id' => 'menu_id']);
-
-        return $menus;
+       
+        return $menu_model->getMenuByPosition($position);
     }
 }
 
