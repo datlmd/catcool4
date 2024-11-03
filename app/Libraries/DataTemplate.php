@@ -139,4 +139,47 @@ class DataTemplate
         
         return $data;
     }
+
+    public function dataAccount(?array $params = []): array {
+        
+        $data = [];
+
+        $data['logged'] = service('customer')->isLogged();
+        $data['register'] = site_url('account/register');
+        $data['login'] = site_url('account/login');
+        $data['logout'] = site_url('account/logout');
+        $data['forgotten'] = site_url('account/forgotten');
+
+        $data['profile'] = site_url('account/profile') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
+        $data['edit'] = site_url('account/edit') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
+        $data['password'] = site_url('account/password') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
+        $data['address'] = site_url('account/address') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
+        $data['wishlist'] = site_url('account/wishlist') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
+        $data['order'] = site_url('account/order') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
+        $data['download'] = site_url('account/download') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
+        $data['reward'] = site_url('account/reward') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
+        $data['return'] = site_url('account/return') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
+        $data['transaction'] = site_url('account/transaction') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
+        $data['newsletter'] = site_url('account/newsletter') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
+        $data['subscription'] = site_url('account/subscription') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
+
+        $data['text_login'] = lang('Customer.text_login');
+        $data['text_register'] = lang('Customer.text_register');
+        $data['text_forgotten'] = lang('Customer.text_forgotten');
+        $data['text_profile'] = lang('Customer.text_profile');
+        $data['text_account_edit'] = lang('Customer.text_account_edit');
+        $data['text_password'] = lang('Customer.text_password');
+        $data['text_address'] = lang('Customer.text_address');
+        $data['text_wishlist'] = lang('Customer.text_wishlist');
+        $data['text_order'] = lang('Customer.text_order');
+        $data['text_download'] = lang('Customer.text_download');
+        $data['text_reward'] = lang('Customer.text_reward');
+        $data['text_return'] = lang('Customer.text_return');
+        $data['text_transaction'] = lang('Customer.text_transaction');
+        $data['text_newsletter'] = lang('Customer.text_newsletter');
+        $data['text_subscription'] = lang('Customer.text_subscription');
+        $data['text_logout'] = lang('Customer.text_logout');
+        
+        return $data;
+    }
 }

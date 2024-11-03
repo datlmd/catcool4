@@ -127,7 +127,7 @@ class MyController extends Controller
         service('startup')->event();
 
         //load ecommerce: currency, tax
-        if (!empty(config_item('is_ ecommerce'))) {
+        if (!empty(config_item('is_ecommerce'))) {
             service('startup')->currency();
         }
     }
