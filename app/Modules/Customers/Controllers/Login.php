@@ -16,6 +16,10 @@ class Login extends MyController
 
     public function index()
     {
+        if (IS_REACT) {
+            return theme_load('react');
+        }
+
         $data = [];
 
         $return_url = $this->request->getGet('return_url');

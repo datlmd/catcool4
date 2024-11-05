@@ -118,7 +118,8 @@ class MyController extends Controller
         $this->validator = \Config\Services::validation();
         $this->smarty->assign('validator', $this->validator);
 
-        $this->smarty->assign('request', \Config\Services::request());
+        $this->request = \Config\Services::request();
+        $this->smarty->assign('request', $this->request);
 
         //check clear cache
         $this->clearCacheAuto();

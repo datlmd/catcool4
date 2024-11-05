@@ -4,7 +4,7 @@ const PageContact = () => {
   return (
     <>
       <h1>Home</h1>
-      <Message message={['ok','dsjksdfhdls']} type={'success'} isShow={true} />
+      <Message message={'dsjksdfhdls'} type={'success'} isShow={true} />
     </>
   );
 };

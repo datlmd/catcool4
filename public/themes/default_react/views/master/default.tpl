@@ -74,6 +74,8 @@
 
 	<script>
 		var page_data = '{{$data}}';
+		var csrf_name = '{{csrf_token()}}';
+		var csrf_value = '{{csrf_hash()}}';
 	</script>
 
 	

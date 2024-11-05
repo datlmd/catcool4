@@ -42,3 +42,7 @@ $routes->group('account', ['namespace' => 'App\Modules\Customers\Controllers'], 
     $subroutes->post('password/save', 'Password::save');
 });
 
+$routes->group('account/api', ['namespace' => 'App\Modules\Customers\Controllers\Api'], function($subroutes) {
+    $subroutes->get('login', 'Login::index');
+    $subroutes->post('login', 'Login::login');
+});

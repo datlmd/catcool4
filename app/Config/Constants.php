@@ -182,3 +182,6 @@ defined('SEO_ARTICLE_ID') OR define('SEO_ARTICLE_ID', 'a');
 defined('SEO_ARTICLE_CATEGORY_ID') OR define('SEO_ARTICLE_CATEGORY_ID', 'ac');
 defined('SEO_PRODUCT_ID') OR define('SEO_PRODUCT_ID', 'p');
 defined('SEO_PRODUCT_CATEGORY_ID') OR define('SEO_PRODUCT_CATEGORY_ID', 'pc');
+
+//REACT JS
+defined('IS_REACT') OR define('IS_REACT', true);

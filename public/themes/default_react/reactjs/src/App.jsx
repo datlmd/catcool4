@@ -9,6 +9,7 @@ import PageHome from "./views/Frontend/Home.jsx";
 import PageNotFound from "./views/Frontend/NotFound.jsx";
 import Loading from "./components/Loading/Loading.jsx";
 import { sanitizeJSONString } from "./utils/String.js";
+import LoginView from "./views/Account/Login.jsx";
 
 const PageContact = lazy(() => import("./views/Frontend/Contact.jsx"));
 const PageAbout = lazy(() => import("./views/Frontend/About.jsx"));
@@ -32,6 +33,12 @@ const App = () => {
     } else {
       console.log("window.page_data is empty!!!");
     }
+
+    setPageData({
+      ...pageData,
+      tokenName: window.csrf_name,
+      tokenValue: window.csrf_value,
+    })
   }, []);
 
   const callbackLayout = (data) => {
@@ -59,6 +66,10 @@ const App = () => {
                   <PageContact parentLayout={callbackLayout} />
                 </Suspense>
               }
+            />
+            <Route
+              path={pathUrl + "account/login"}
+              element={<LoginView {...pageData} parentLayout={callbackLayout} />}
             />
             <Route path="*" element={<PageNotFound />} />
           </Route>

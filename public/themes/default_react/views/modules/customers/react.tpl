@@ -1,3 +1,2 @@
 {strip}
-
 {/strip}
