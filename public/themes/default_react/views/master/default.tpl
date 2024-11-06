@@ -48,11 +48,7 @@
 
     <script>{script_global()}</script>
 
-	{if ENVIRONMENT === 'production'}
-		<link rel="stylesheet" href="{theme_url('reactjs/dist/static/css/main.css')}" type="text/css">
-	{else}
-		<link rel="stylesheet" href="{theme_url('reactjs/dist/main.css')}" type="text/css">
-	{/if}
+	{reactjs_css()}
 </head>
 <body class="{if !empty($body_class)}{$body_class}{/if}">
 	<noscript>You need to enable JavaScript to run this app.</noscript>
@@ -64,19 +60,11 @@
 	{if ENVIRONMENT === 'production'}
 		<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
 		<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-
-		<script src="{theme_url('reactjs/build/dist/main.js')}"></script>
 	{else}
 		<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
 		<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-
-		{* <script src="https://unpkg.com/dompurify@2.0.12/dist/purify.js'"></script>
-		<script src="https://unpkg.com/html-react-parser@0.13.0/dist/html-react-parser.js"></script>
-		<script src="https://unpkg.com/react-router-dom@5.2.0/umd/react-router-dom.js"></script> *}
-		<script src="{theme_url('reactjs/dist/dist/main.js')}"></script>
-		
 	{/if}
-	{* <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script> *}
+	{reactjs_script()}
 
 	<script>
 		var page_data = '{{$data}}';

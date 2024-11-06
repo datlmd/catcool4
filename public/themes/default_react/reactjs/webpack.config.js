@@ -82,7 +82,7 @@ module.exports = (env, argv) => {
     },
 
     output: {
-      filename: 'static/js/main.[contenthash:6].js', // Thêm mã hash tên file dựa vào content để tránh bị cache bởi CDN hay browser.
+      filename: isProduction ? 'static/js/main.[contenthash:6].js' : 'static/js/dev-main.js', // Thêm mã hash tên file dựa vào content để tránh bị cache bởi CDN hay browser.
       path: path.resolve(__dirname, 'dist'), // Build ra thư mục dist
       publicPath: '/'
     },

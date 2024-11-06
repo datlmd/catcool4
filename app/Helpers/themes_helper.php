@@ -235,3 +235,60 @@ if ( ! function_exists('theme_load'))
         return App\Libraries\Themes::load($viewPath, $data);
     }
 }
+
+if ( ! function_exists('reactjs_script'))
+{
+    function reactjs_script()
+    {
+        helper('filesystem');
+
+        $script = [
+            'development' => "",
+            'testing' => "",
+            'production' => "",
+        ];
+        $path = get_theme_path('reactjs/dist/static/js');
+
+        $dir_js = directory_map($path);
+        foreach ($dir_js as $file) {
+            if (pathinfo($file, PATHINFO_EXTENSION) != 'js') {
+                continue;
+            }
+            //cc_debug(strpos($file, 'dev-'), false);
+            if (strpos($file, 'dev') !== false) {
+                $script['development'] .= script_tag(theme_url("reactjs/dist/static/js/$file"));
+                $script['testing'] .= script_tag(theme_url("reactjs/dist/static/js/$file"));
+            } else {
+                $script['production'] .= script_tag(theme_url("reactjs/dist/static/js/$file"));
+            }
+        }
+
+        return $script[ENVIRONMENT] ?? "";
+    }   
+}
+
+if ( ! function_exists('reactjs_css'))
+{
+    function reactjs_css()
+    {
+        helper('filesystem');
+
+        $style = [
+            'development' => link_tag(theme_url("reactjs/dist/main.css")),
+            'testing' => link_tag(theme_url("reactjs/dist/main.css")),
+            'production' => "",
+        ];
+
+        $path = get_theme_path('reactjs/dist/static/css');
+
+        $dir_js = directory_map($path);
+        foreach ($dir_js as $file) {
+            if (pathinfo($file, PATHINFO_EXTENSION) != 'css') {
+                continue;
+            }
+            $style['production'] .= link_tag(theme_url("reactjs/dist/static/css/$file"));
+        }
+
+        return $style[ENVIRONMENT] ?? "";
+    }   
+}
