@@ -1,12 +1,12 @@
 "use strict";
 
-import React, { useState, useEffect, cache } from "react";
+import React, { useState, useEffect } from "react";
 import { API, getRequestConfiguration } from "../../utils/callApi";
 
-import ContactForm from "../../components/Contact/Form.jsx";
-import LoadingContent from "../../components/Loading/Content.jsx";
+import LoadingContent from "../../components/Loading/Content.tsx";
+import CustomerLoginForm from "../../components/Customer/Login.tsx";
 
-const PageContact = (props) => {
+const LoginView = (props) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [contents, setContents] = useState([]);
@@ -23,7 +23,7 @@ const PageContact = (props) => {
 
   const LoadPage = async () => {
     try {
-      const response = await API.get("frontend/api/contact", getRequestConfiguration());
+      const response = await API.get("account/api/login", getRequestConfiguration());
      
       setContents(response.data);
       setIsLoading(false);
@@ -38,10 +38,12 @@ const PageContact = (props) => {
     <LoadingContent />
   ) : (
     <>
-      <h1>{contents.lang.contact}</h1>
-      <ContactForm contents />
+      <h1 className="text-uppercase mb-4 text-center">
+        {contents.text_login}
+      </h1>
+      <CustomerLoginForm {...props} {...contents} />
     </>
   );
 };
 
-export default PageContact;
+export default LoginView;

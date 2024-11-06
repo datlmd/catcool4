@@ -1,6 +1,6 @@
 import Form from 'react-bootstrap/Form';
 
-function ContactForm() {
+const ContactForm = () => {
   return (
     <Form>
       <Form.Group className="mb-3" controlId="formGroupEmail">

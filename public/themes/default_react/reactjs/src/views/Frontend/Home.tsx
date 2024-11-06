@@ -1,6 +1,7 @@
-import Message from "../../components/UI/Message.jsx";
+import Message from "../../components/UI/Message.tsx";
 
-const PageContact = () => {
+
+const HomeView = () => {
   return (
     <>
       <h1>Home</h1>
@@ -9,4 +10,4 @@ const PageContact = () => {
   );
 };
 
-export default PageContact;
+export default HomeView;

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 
-import Currency from "../Currency.jsx";
-import Language from "../Language.jsx";
-import HeaderAccount from "./Account.jsx";
-import HeaderLogo from "./Logo.jsx";
-import MenuMain from "../Menu/Main.jsx";
-import HeaderSearch from "./Search.jsx";
+import Currency from "../Currency.tsx";
+import Language from "../Language.tsx";
+import HeaderAccount from "./Account.tsx";
+import HeaderLogo from "./Logo.tsx";
+import MenuMain from "../Menu/Main.tsx";
+import HeaderSearch from "./Search.tsx";
 
 const HeaderMobile = (props) => {
   const [show, setShow] = useState(false);

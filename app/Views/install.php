@@ -506,25 +506,38 @@
 				<br/>
 				To generate a bundled js file run the following command in your terminal:<br/>
 				<code>
-					$ npx webpack
+					$ npx webpack (npm run dev/build)
 					<br/>
 					npx webpack --watch
 				</code>
 				<br/>
 				Create a new package.json <br/>
 				<code>
-					npm init<br/><br/>
-					npm add react react-dom react-router-dom<br/><br/>
+					1: npm init<br/><br/>
+					
+					2: npm add react react-dom react-router-dom<br/><br/>
+					
+					3: npm install @types/react @types/react-dom<br/><br/>
+
+					4: npm add --dev webpack webpack-cli path<br/>
+					(npm add -D webpack webpack-cli webpack-dev-server)
+					
 					npm add react-bootstrap bootstrap jquery popper<br/><br/>
 					npm install bootstrap-icons<br/><br/>
 					npm install font-awesome --save<br/><br/>
 					#npm add formik yup<br/><br/>
 					npm add axios luxon<br/><br/>
-					npm add --dev @babel/core @babel/preset-react babel-loader //Babel is used to compile our React code into browser-compatible code
+					5: npm add --dev @babel/core @babel/preset-react babel-loader //Babel is used to compile our React code into browser-compatible code
+					npm add -D @babel/core @babel/preset-env @babel/preset-react @babel/preset-typescript babel-loader
+
+					<br/><br/>
+					6: npm add -D clean-webpack-plugin compression-webpack-plugin copy-webpack-plugin css-loader css-minimizer-webpack-plugin dotenv-webpack file-loader html-webpack-plugin mini-css-extract-plugin sass sass-loader serve webpack-bundle-analyzer
+					<br/><br/>
+					7: npm add -D eslint prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-prettier eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-prettier eslint-plugin-react eslint-plugin-react-hooks eslint-webpack-plugin eslint-import-resolver-typescript
+
 					<br/><br/>
 					npm add --dev @babel/plugin-proposal-optional-chaining @babel/plugin-proposal-nullish-coalescing-operator  
-					<br/><br/>
-					npm add --dev webpack webpack-cli path
+					
 					<br/><br/>
 					npm add --dev css-loader style-loader
 				</code>

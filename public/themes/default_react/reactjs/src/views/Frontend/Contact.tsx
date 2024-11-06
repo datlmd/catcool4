@@ -1,7 +1,12 @@
-import React, { useState, useEffect, cache } from "react";
+"use strict";
+
+import React, { useState, useEffect } from "react";
 import { API, getRequestConfiguration } from "../../utils/callApi";
 
-const PageAbout = (props) => {
+import ContactForm from "../../components/Contact/Form.tsx";
+import LoadingContent from "../../components/Loading/Content.tsx";
+
+const ContactView = (props) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [contents, setContents] = useState([]);
@@ -18,7 +23,7 @@ const PageAbout = (props) => {
 
   const LoadPage = async () => {
     try {
-      const response = await API.get("frontend/api/about", getRequestConfiguration());
+      const response = await API.get("frontend/api/contact", getRequestConfiguration());
      
       setContents(response.data);
       setIsLoading(false);
@@ -29,7 +34,14 @@ const PageAbout = (props) => {
     }
   };
 
-  return <h1>About US</h1>;
+  return isLoading ? (
+    <LoadingContent />
+  ) : (
+    <>
+      <h1>{contents.lang.contact}</h1>
+      <ContactForm contents />
+    </>
+  );
 };
 
-export default PageAbout;
+export default ContactView;

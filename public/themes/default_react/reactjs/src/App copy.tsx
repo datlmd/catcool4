@@ -4,20 +4,20 @@ import { Suspense, lazy, useEffect, useState } from "react";
 // import "bootstrap-icons/font/bootstrap-icons.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LayoutDefault from "./views/Layouts/Default.jsx";
-import PageHome from "./views/Frontend/Home.jsx";
-import PageNotFound from "./views/Frontend/NotFound.jsx";
-import Loading from "./components/Loading/Loading.jsx";
+import LayoutDefault from "./views/Layouts/Default.tsx";
+import HomeView from "./views/Frontend/Home.tsx";
+import PageNotFound from "./views/Frontend/NotFound.tsx";
+import Loading from "./components/Loading/Loading.tsx";
 import { sanitizeJSONString } from "./utils/String.js";
-import LoginView from "./views/Account/Login.jsx";
+import LoginView from "./views/Account/Login.tsx";
 
-const PageContact = lazy(() => import("./views/Frontend/Contact.jsx"));
-const PageAbout = lazy(() => import("./views/Frontend/About.jsx"));
+const ContactView = lazy(() => import("./views/Frontend/Contact.tsx"));
+const AboutView = lazy(() => import("./views/Frontend/About.tsx"));
 
 const baseUrl = window.base_url;
 const pathUrl = window.path_url;
 
-const App = () => {
+const AppBK = () => {
   const [pageData, setPageData] = useState([]);
   const [layouts, setLayouts] = useState([]);
 
@@ -50,12 +50,12 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path={pathUrl} element={<LayoutDefault {...layouts} />}>
-            <Route index element={<PageHome />} />
+            <Route index element={<HomeView />} />
             <Route
               path={pathUrl + "about"}
               element={
                 <Suspense fallback={<Loading />}>
-                  <PageAbout parentLayout={callbackLayout} />
+                  <AboutView parentLayout={callbackLayout} />
                 </Suspense>
               }
             />
@@ -63,7 +63,7 @@ const App = () => {
               path={pathUrl + "contact"}
               element={
                 <Suspense fallback={<Loading />}>
-                  <PageContact parentLayout={callbackLayout} />
+                  <ContactView parentLayout={callbackLayout} />
                 </Suspense>
               }
             />
@@ -79,7 +79,7 @@ const App = () => {
   );
 };
 
-export default App;
+export default AppBK;
 
 // Thêm một khoảng thời gian trì hoãn để bạn có thể thấy được loading state
 function delayForDemo(promise) {

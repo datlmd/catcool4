@@ -1,7 +1,7 @@
-import Copyright from "../../components/Common/Footer/Copyright.jsx";
-import NewsLetter from "../../components/Common/Footer/NewsLetter.jsx";
-import Social from "../../components/Common/Footer/Social.jsx";
-import MenuFooter from "../../components/Common/Menu/Footer.jsx";
+import Copyright from "../../components/Common/Footer/Copyright.tsx";
+import NewsLetter from "../../components/Common/Footer/NewsLetter.tsx";
+import Social from "../../components/Common/Footer/Social.tsx";
+import MenuFooter from "../../components/Common/Menu/Footer.tsx";
 
 const Footer = (props) => {
   return (

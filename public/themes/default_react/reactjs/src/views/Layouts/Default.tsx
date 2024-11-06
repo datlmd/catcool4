@@ -1,11 +1,11 @@
 import { lazy, useEffect, useState, Suspense } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
-import LoadingHeader from "../../components/Loading/Header.jsx";
+import LoadingHeader from "../../components/Loading/Header.tsx";
 
 const importView = (subreddit) =>
   lazy(() =>
-    import(`../${subreddit}.jsx`).catch(() => import(`../Common/NullView.jsx`))
+    import(`../${subreddit}.tsx`).catch(() => import(`../Common/NullView.tsx`))
   );
 
 const LayoutDefault = ({

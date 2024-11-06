@@ -2,10 +2,10 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
-import Currency from "../Currency.jsx";
-import Language from "../Language.jsx";
-import MenuTop from "../Menu/Top.jsx";
-import HeaderAccount from "./Account.jsx";
+import Currency from "../Currency.tsx";
+import Language from "../Language.tsx";
+import MenuTop from "../Menu/Top.tsx";
+import HeaderAccount from "./Account.tsx";
 
 const HeaderMain = (props) => {
   return (
