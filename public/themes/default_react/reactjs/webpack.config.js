@@ -38,9 +38,19 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
-          test: /\.tsx?$/, // duyệt các file .ts || .tsx
+          test: /\.(?:js|jsx|ts|tsx)$/,
+          //test: /\.tsx?$/, // duyệt các file .ts || .tsx
           exclude: /node_modules/,
-          use: ['babel-loader'] // Giúp dịch code TS, React sang JS,
+          use: {
+            loader: 'babel-loader',
+            options: {
+                presets: ['@babel/preset-react'],
+                plugins: [
+                    '@babel/plugin-proposal-optional-chaining',
+                    '@babel/plugin-proposal-nullish-coalescing-operator'
+                ]
+            }
+          } // Giúp dịch code TS, React sang JS,
         },
         {
           test: /\.(s[ac]ss|css)$/, // duyệt các file sass || scss || css
@@ -62,7 +72,7 @@ module.exports = (env, argv) => {
             {
               loader: 'file-loader',
               options: {
-                name: isProduction ? 'static/media/[name].[contenthash:6].[ext]' : '[path][name]_dev.[ext]'
+                name: isProduction ? 'static/media/[name].[contenthash:6].[ext]' : '[path][name].[ext]'
               }
             }
           ]
@@ -73,18 +83,18 @@ module.exports = (env, argv) => {
             {
               loader: 'file-loader',
               options: {
-                name: isProduction ? 'static/fonts/[name].[ext]' : '[path][name]_dev.[ext]'
+                name: isProduction ? 'static/fonts/[name].[ext]' : '[path][name].[ext]'
               }
             }
           ]
         }
       ]
     },
-
+    mode: isProduction ? 'production' : 'development',
     output: {
-      filename: isProduction ? 'static/js/main.[contenthash:6].js' : 'static/js/dev-main.js', // Thêm mã hash tên file dựa vào content để tránh bị cache bởi CDN hay browser.
+      filename: isProduction ? 'static/js/main.[contenthash:6].js' : 'dev/main.js', // Thêm mã hash tên file dựa vào content để tránh bị cache bởi CDN hay browser.
       path: path.resolve(__dirname, 'dist'), // Build ra thư mục dist
-      publicPath: '/'
+      //publicPath: '/'
     },
     // devServer: {
     //   hot: true, // enable Hot Module Replacement, kiểu như reload nhanh
@@ -101,7 +111,7 @@ module.exports = (env, argv) => {
     plugins: [
       // Đưa css ra thành một file .css riêng biệt thay vì bỏ vào file .js
       new MiniCssExtractPlugin({
-        filename: isProduction ? 'static/css/[name].[contenthash:6].css' : '[name].css'
+        filename: isProduction ? 'static/css/[name].[contenthash:6].css' : 'dev/[name].css'
       }),
       // Dùng biến môi trường env trong dự án
       new Dotenv(),
