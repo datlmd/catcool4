@@ -1,18 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
-import { IMenuInfo } from "src/store/types";
+import { IMenuInfo } from 'src/store/types'
 
 const MenuTop = ({ menuTop }: { menuTop: IMenuInfo[] }) => {
-
   const menuItem = Object.values(menuTop).map((item) => {
     return (
-      <Link key={item.slug} to={item.slug} className="nav-link">
+      <Link key={item.slug} to={item.slug} className='nav-link'>
         {item.name}
       </Link>
-    );
-  });
+    )
+  })
 
-  return <>{menuItem}</>;
-};
+  return <>{menuItem}</>
+}
 
-export default MenuTop;
+export default MenuTop

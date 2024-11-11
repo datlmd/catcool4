@@ -1,10 +1,10 @@
-export const PAGE_CONTACT = "PAGE_CONTACT";
+export const PAGE_CONTACT = 'PAGE_CONTACT';
 
 /**
  * Layout
  */
 export interface ILayout {
-  data: any,
+  data: any
 };
 
 export interface ILayoutView {
@@ -41,12 +41,12 @@ export interface ICurrencyInfo {
   symbol_left: string,
   symbol_right: string,
   name: string,
-  href: string,
+  href: string
 }
 
 export interface ICurrency {
   list: ICurrencyInfo[],
-  info: ICurrencyInfo,
+  info: ICurrencyInfo
 }
 
 /**
@@ -62,12 +62,12 @@ export interface ILanguageInfo {
 
 export interface ILanguage {
   list: ILanguageInfo[],
-  info: ILanguageInfo,
+  info: ILanguageInfo
 }
 
 export interface IBreadcrumbInfo {
   title: string,
-  href: string,
+  href: string
 }
 
 /**

@@ -15,7 +15,7 @@ export const getRequestToken = (authorization?: string) => {
   if (!authorization) return
 
   const headers = {
-    'Authorization': `Bearer ${authorization}`,
+    Authorization: `Bearer ${authorization}`,
   }
 
   return { headers }

@@ -1,22 +1,22 @@
-import Alert from "react-bootstrap/Alert";
-import { IMessageInfo } from "src/store/types";
+import Alert from 'react-bootstrap/Alert'
+import { IMessageInfo } from 'src/store/types'
 
 function Message({ message, isShow, type }: IMessageInfo) {
   if (!isShow) {
-    return <></>;
+    return <></>
   }
 
   function iType(type: string) {
-    if (type == "danger" || type == "info") {
-      return <i className="fas fa-exclamation-circle me-2"></i>;
-    } else if (type == "success") {
-      return <i className="fas fa-check-circle me-2"></i>;
+    if (type == 'danger' || type == 'info') {
+      return <i className='fas fa-exclamation-circle me-2'></i>
+    } else if (type == 'success') {
+      return <i className='fas fa-check-circle me-2'></i>
     } else {
-      return <></>;
+      return <></>
     }
   }
 
-  if (typeof message === "string") {
+  if (typeof message === 'string') {
     return (
       <>
         <Alert key={type} variant={type} onClose={() => isShow} dismissible>
@@ -27,16 +27,16 @@ function Message({ message, isShow, type }: IMessageInfo) {
           </p>
         </Alert>
       </>
-    );
+    )
   } else {
-    const messageItem = Object.values(message).map(item => {
+    const messageItem = Object.values(message).map((item) => {
       return (
         <p key={item}>
           {iType(type)}
           {item}
         </p>
-      );
-    });
+      )
+    })
 
     return (
       <>
@@ -44,8 +44,8 @@ function Message({ message, isShow, type }: IMessageInfo) {
           {messageItem}
         </Alert>
       </>
-    );
+    )
   }
 }
 
-export default Message;
+export default Message

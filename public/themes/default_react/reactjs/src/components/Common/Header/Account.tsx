@@ -1,22 +1,22 @@
-import Dropdown from "react-bootstrap/Dropdown";
+import Dropdown from 'react-bootstrap/Dropdown'
 
-import { ILayout } from "src/store/types";
+import { ILayout } from 'src/store/types'
 
 const HeaderAccount = ({ data }: ILayout) => {
   if (data.logged) {
     return (
       <>
-        <Dropdown align="end">
+        <Dropdown align='end'>
           <Dropdown.Toggle
-            as="a"
-            className="nav-link dropdown-toggle"
-            id="dropdown-account-top">
+            as='a'
+            className='nav-link dropdown-toggle'
+            id='dropdown-account-top'>
             <img
               src={data.customer_avatar}
               alt={data.customer_name}
-              className="rounded-circle customer-avatar"
+              className='rounded-circle customer-avatar'
             />
-            <span className="d-none d-lg-inline ms-1">
+            <span className='d-none d-lg-inline ms-1'>
               {data.customer_name}
             </span>
           </Dropdown.Toggle>
@@ -38,17 +38,17 @@ const HeaderAccount = ({ data }: ILayout) => {
           </Dropdown.Menu>
         </Dropdown>
       </>
-    );
+    )
   } else {
     return (
       <>
-        <Dropdown align="end">
+        <Dropdown align='end'>
           <Dropdown.Toggle
-            as="a"
-            className="nav-link dropdown-toggle"
-            id="dropdown-account-top">
-            <i className="fas fa-user"></i>
-            <span className="d-none d-lg-inline ms-1">
+            as='a'
+            className='nav-link dropdown-toggle'
+            id='dropdown-account-top'>
+            <i className='fas fa-user'></i>
+            <span className='d-none d-lg-inline ms-1'>
               {data.text_my_account}
             </span>
           </Dropdown.Toggle>
@@ -63,8 +63,8 @@ const HeaderAccount = ({ data }: ILayout) => {
           </Dropdown.Menu>
         </Dropdown>
       </>
-    );
+    )
   }
-};
+}
 
-export default HeaderAccount;
+export default HeaderAccount

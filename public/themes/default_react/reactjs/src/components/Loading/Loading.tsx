@@ -1,4 +1,4 @@
-import Spinner from 'react-bootstrap/Spinner';
+import Spinner from 'react-bootstrap/Spinner'
 
 const Loading = () => {
   return (
@@ -7,7 +7,7 @@ const Loading = () => {
         <Spinner size='lg' type='grow' color='dark' />
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Loading;
+export default Loading
