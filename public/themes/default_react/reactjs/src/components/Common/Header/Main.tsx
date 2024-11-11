@@ -23,16 +23,12 @@ const HeaderMain = ({ data }: ILayout) => {
 
               <Nav.Link href={data.wishlist}>
                 <i className='far fa-heart'></i>
-                <span className='d-none d-md-inline ms-1'>
-                  {data.text_wishlist}
-                </span>
+                <span className='d-none d-md-inline ms-1'>{data.text_wishlist}</span>
                 <span className='ms-1'>(0)</span>
               </Nav.Link>
               <Nav.Link href={data.shopping_cart}>
                 <i className='fas fa-shopping-cart'></i>
-                <span className='d-none d-md-inline ms-1'>
-                  {data.text_shopping_cart}
-                </span>
+                <span className='d-none d-md-inline ms-1'>{data.text_shopping_cart}</span>
                 <span className='ms-1'>(0)</span>
               </Nav.Link>
 

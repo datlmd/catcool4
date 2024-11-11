@@ -34,42 +34,23 @@ const HeaderMobile = ({ data }: ILayout) => {
                 <Navbar.Toggle aria-controls='header-mobile-navbar-nav' />
                 <Navbar.Collapse id='header-mobile-navbar-nav'>
                   <Nav className='me-auto'>
-                    <Nav.Link
-                      onClick={handleSearchShow}
-                      className='header-menu-icon-search'
-                    >
+                    <Nav.Link onClick={handleSearchShow} className='header-menu-icon-search'>
                       <i className='fas fa-search'></i>
                     </Nav.Link>
 
-                    <Nav.Link
-                      href={data.wishlist}
-                      className='position-relative'
-                      title={data.text_wishlist}
-                    >
+                    <Nav.Link href={data.wishlist} className='position-relative' title={data.text_wishlist}>
                       <i className='far fa-heart'></i>
-                      <span className='position-absolute top-1 translate-middle badge rounded-pill bg-danger'>
-                        0
-                      </span>
+                      <span className='position-absolute top-1 translate-middle badge rounded-pill bg-danger'>0</span>
                     </Nav.Link>
 
-                    <Nav.Link
-                      href={data.shopping_cart}
-                      className='position-relative'
-                      title={data.text_shopping_cart}
-                    >
+                    <Nav.Link href={data.shopping_cart} className='position-relative' title={data.text_shopping_cart}>
                       <i className='fas fa-shopping-cart'></i>
-                      <span className='position-absolute top-1 translate-middle badge rounded-pill bg-danger'>
-                        0
-                      </span>
+                      <span className='position-absolute top-1 translate-middle badge rounded-pill bg-danger'>0</span>
                     </Nav.Link>
 
                     <HeaderAccount data={data} />
 
-                    <Nav.Link
-                      onClick={handleShow}
-                      className='position-relative'
-                      title={data.text_shopping_cart}
-                    >
+                    <Nav.Link onClick={handleShow} className='position-relative' title={data.text_shopping_cart}>
                       <i className='fas fa-bars'></i>
                     </Nav.Link>
                   </Nav>
@@ -91,11 +72,7 @@ const HeaderMobile = ({ data }: ILayout) => {
       </Offcanvas>
 
       {/* ---Khu vuc hien thi menu mobile--- */}
-      <Offcanvas
-        show={show}
-        onHide={handleClose}
-        className='offcanvas-start header-mobile-offcanvas'
-      >
+      <Offcanvas show={show} onHide={handleClose} className='offcanvas-start header-mobile-offcanvas'>
         <Offcanvas.Header closeButton className='border-bottom'>
           <Offcanvas.Title>{data.text_menu}</Offcanvas.Title>
         </Offcanvas.Header>

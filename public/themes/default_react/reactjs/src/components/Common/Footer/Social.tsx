@@ -1,4 +1,5 @@
 import { ILayout } from 'src/store/types'
+import { Link } from 'react-router-dom'
 
 const Social = ({ data }: ILayout) => {
   return (
@@ -8,60 +9,59 @@ const Social = ({ data }: ILayout) => {
       <ul className='social-icon-list social-icons'>
         {data.social_facebook_link && (
           <li className='social-icons-facebook'>
-            <a href={data.social_facebook_link} target='_blank' title='Facebook'>
+            <Link to={data.social_facebook_link} target='_blank' title='Facebook'>
               <i className='fab fa-facebook-f'></i>
-            </a>
+            </Link>
           </li>
         )}
 
         {data.social_twitter_link && (
           <li className='social-icons-twitter'>
-            <a href={data.social_twitter_link} target='_blank' title='Twitter'>
+            <Link to={data.social_twitter_link} target='_blank' title='Twitter'>
               <i className='fab fa-twitter'></i>
-            </a>
+            </Link>
           </li>
         )}
 
         {data.social_tiktok_link && (
           <li className='social-icons-tiktok'>
-            <a href={data.social_tiktok_link} target='_blank' title='Tiktok'>
+            <Link to={data.social_tiktok_link} target='_blank' title='Tiktok'>
               <i className='fab fa-tiktok'></i>
-            </a>
+            </Link>
           </li>
         )}
 
         {data.social_linkedin_link && (
           <li className='social-icons-linkedin'>
-            <a href={data.social_linkedin_link} target='_blank' title='Linkedin'>
+            <Link to={data.social_linkedin_link} target='_blank' title='Linkedin'>
               <i className='fab fa-linkedin-in'></i>
-            </a>
+            </Link>
           </li>
         )}
 
         {data.social_youtube_link && (
           <li className='social-icons-youtube'>
-            <a href={data.social_youtube_link} target='_blank' title='Youtube'>
+            <Link to={data.social_youtube_link} target='_blank' title='Youtube'>
               <i className='fab fa-youtube'></i>
-            </a>
+            </Link>
           </li>
         )}
 
         {data.social_instagram_link && (
           <li className='social-icons-instagram'>
-            <a href={data.social_instagram_link} target='_blank' title='Instagram'>
+            <Link to={data.social_instagram_link} target='_blank' title='Instagram'>
               <i className='fab fa-instagram'></i>
-            </a>
+            </Link>
           </li>
         )}
 
         {data.social_pinterest_link && (
           <li className='social-icons-pinterest'>
-            <a href={data.social_pinterest_link} target='_blank' title='Pinterest'>
+            <Link to={data.social_pinterest_link} target='_blank' title='Pinterest'>
               <i className='fab fa-pinterest'></i>
-            </a>
+            </Link>
           </li>
         )}
-
       </ul>
     </>
   )

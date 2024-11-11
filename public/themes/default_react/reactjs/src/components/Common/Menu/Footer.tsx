@@ -14,19 +14,12 @@ const MenuFooter = ({ data }: ILayout) => {
     return childrens.map((menu: IMenuInfo) => {
       return (
         <li key={'mn_footer_sub_li_' + menu.menu_id}>
-          <Link
-            key={'mn_footer_sub_link_' + menu.menu_id}
-            to={menu.slug}
-            className='nav-item'
-          >
+          <Link key={'mn_footer_sub_link_' + menu.menu_id} to={menu.slug} className='nav-item'>
             <span>{menu.name}</span>
           </Link>
           {menu.subs && (
             <>
-              <ul
-                key={'mn_footer_sub_ul_' + menu.menu_id}
-                className='list-unstyled'
-              >
+              <ul key={'mn_footer_sub_ul_' + menu.menu_id} className='list-unstyled'>
                 Children(menu.subs)
               </ul>
             </>
@@ -51,10 +44,7 @@ const MenuFooter = ({ data }: ILayout) => {
         </Accordion.Header>
 
         {item.subs && (
-          <Accordion.Body
-            as='ul'
-            className='list-unstyled collapse show p-0'
-          >
+          <Accordion.Body as='ul' className='list-unstyled collapse show p-0'>
             {ChildrenItem(item.subs)}
           </Accordion.Body>
         )}
@@ -64,12 +54,7 @@ const MenuFooter = ({ data }: ILayout) => {
 
   return (
     <>
-      <Accordion
-        key={'fdsfdsfds'}
-        defaultActiveKey={menuKeys}
-        id='accordion_menu_footer'
-        className='row'
-      >
+      <Accordion key={'fdsfdsfds'} defaultActiveKey={menuKeys} id='accordion_menu_footer' className='row'>
         {menuItem}
       </Accordion>
     </>

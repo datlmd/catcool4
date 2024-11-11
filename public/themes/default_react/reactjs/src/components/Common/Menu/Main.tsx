@@ -19,10 +19,7 @@ function Children(childrens: IMenuInfo[]) {
   const childrenItem = Object.values(childrens).map((item) => {
     return (
       <li key={'mn_main_sub_li_' + item.menu_id}>
-        <Link
-          key={'mn_main_sub_link_' + item.menu_id}
-          to={item.slug}
-          className='nav-item'>
+        <Link key={'mn_main_sub_link_' + item.menu_id} to={item.slug} className='nav-item'>
           <span>{item.name}</span>
         </Link>
         {item.subs && Children(item.subs)}
@@ -40,14 +37,10 @@ function Children(childrens: IMenuInfo[]) {
 }
 
 const MenuMain = ({ menuMain }: { menuMain: IMenuInfo[] }) => {
-
   const menuItem = Object.values(menuMain).map((item: IMenuInfo) => {
     return (
       <Nav.Item key={'mn_main_li_' + item.menu_id} as='li' className='dropdown'>
-        <Link
-          key={'mn_main_link_' + item.menu_id}
-          to={item.slug}
-          className='dropdown-item'>
+        <Link key={'mn_main_link_' + item.menu_id} to={item.slug} className='dropdown-item'>
           <span>{item.name}</span>
         </Link>
         {item.subs && Children(item.subs)}

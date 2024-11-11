@@ -48,7 +48,7 @@ const App = () => {
     }
 
     setPageData({
-      ...pageData,
+      ...pageData
       // tokenName: window.csrf_name,
       // tokenValue: window.csrf_value,
     })

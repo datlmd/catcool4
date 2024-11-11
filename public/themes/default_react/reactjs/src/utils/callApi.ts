@@ -15,7 +15,7 @@ export const getRequestToken = (authorization?: string) => {
   if (!authorization) return
 
   const headers = {
-    Authorization: `Bearer ${authorization}`,
+    Authorization: `Bearer ${authorization}`
   }
 
   return { headers }
@@ -29,14 +29,13 @@ export const makeRequest = ({
   requestType = 'POST',
   authorization = ''
 }: {
-  url: string,
-  values?: object | null,
-  successCallback?: object,
-  failureCallback?: object,
-  requestType?: RequestType,
+  url: string
+  values?: object | null
+  successCallback?: object
+  failureCallback?: object
+  requestType?: RequestType
   authorization?: string
 }) => {
-
   const requestConfiguration = getRequestToken(authorization)
   let promise
 

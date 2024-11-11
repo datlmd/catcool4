@@ -10,8 +10,16 @@ const NewsLetter = ({ data }: ILayout) => {
 
         <form id='newsletter_form' action='php/newsletter-subscribe.php' method='POST' className='mw-100'>
           <div className='input-group input-group-rounded'>
-            <input className='form-control bg-light px-3 fs-5' placeholder={data.text_subscribe_email} name='newsletterEmail' id='newsletterEmail' type='text' />
-            <button className='input-group-text bg-secondary py-3 px-3' type='submit'><strong>{data.button_subscribe}</strong></button>
+            <input
+              className='form-control bg-light px-3 fs-5'
+              placeholder={data.text_subscribe_email}
+              name='newsletterEmail'
+              id='newsletterEmail'
+              type='text'
+            />
+            <button className='input-group-text bg-secondary py-3 px-3' type='submit'>
+              <strong>{data.button_subscribe}</strong>
+            </button>
           </div>
         </form>
       </div>

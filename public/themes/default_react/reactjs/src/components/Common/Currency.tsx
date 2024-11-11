@@ -3,7 +3,7 @@ import { Dropdown, Collapse } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { ICurrency, ICurrencyInfo } from 'src/store/types'
 
-const Currency = ({ currency, type }: {currency: ICurrency, type?: string}) => {
+const Currency = ({ currency, type }: { currency: ICurrency; type?: string }) => {
   const [open, setOpen] = useState(false)
 
   const currencyItem =
@@ -46,10 +46,7 @@ const Currency = ({ currency, type }: {currency: ICurrency, type?: string}) => {
           <span></span>
         </Link>
         <Collapse in={open}>
-          <div
-            id='nav-collapse-currency-top'
-            className='collapse multi-collapse'
-          >
+          <div id='nav-collapse-currency-top' className='collapse multi-collapse'>
             <ul className='list-unstyled'>{currencyItem}</ul>
           </div>
         </Collapse>
@@ -59,11 +56,7 @@ const Currency = ({ currency, type }: {currency: ICurrency, type?: string}) => {
     return (
       <>
         <Dropdown align='end'>
-          <Dropdown.Toggle
-            as='a'
-            className='nav-link dropdown-toggle'
-            id='nav-currency-account-top'
-          >
+          <Dropdown.Toggle as='a' className='nav-link dropdown-toggle' id='nav-currency-account-top'>
             {currency.info.symbol_left}
             <span className='d-none d-md-inline'>{currency.info.code}</span>
             {currency.info.symbol_right}

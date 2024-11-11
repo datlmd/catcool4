@@ -1,6 +1,6 @@
 'use strict'
 
-import { useState, useEffect, forwardRef, useImperativeHandle } from 'react'
+import { useEffect } from 'react'
 import ContactForm from '../../components/Contact/Form'
 import LoadingContent from '../../components/Loading/Content'
 

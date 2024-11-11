@@ -3,7 +3,7 @@ import { Dropdown, Collapse } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { ILanguage, ILanguageInfo } from 'src/store/types'
 
-export default function Language({ language, type }: { language: ILanguage, type?: string }) {
+const Language = ({ language, type }: { language: ILanguage; type?: string }) => {
   const [open, setOpen] = useState(false)
 
   const languageItem =
@@ -41,10 +41,7 @@ export default function Language({ language, type }: { language: ILanguage, type
           <span></span>
         </Link>
         <Collapse in={open}>
-          <div
-            id='nav-collapse-account-top'
-            className='collapse multi-collapse'
-          >
+          <div id='nav-collapse-account-top' className='collapse multi-collapse'>
             <ul className='list-unstyled'>{languageItem}</ul>
           </div>
         </Collapse>
@@ -54,15 +51,9 @@ export default function Language({ language, type }: { language: ILanguage, type
     return (
       <>
         <Dropdown align='end'>
-          <Dropdown.Toggle
-            as='a'
-            className='nav-link dropdown-toggle'
-            id='nav-dropdown-account-top'
-          >
+          <Dropdown.Toggle as='a' className='nav-link dropdown-toggle' id='nav-dropdown-account-top'>
             <i className={language.info.icon}></i>{' '}
-            <span className='d-none d-md-inline'>
-              {language.info.text_language}
-            </span>
+            <span className='d-none d-md-inline'>{language.info.text_language}</span>
           </Dropdown.Toggle>
           <Dropdown.Menu>{languageItem}</Dropdown.Menu>
         </Dropdown>
@@ -70,3 +61,5 @@ export default function Language({ language, type }: { language: ILanguage, type
     )
   }
 }
+
+export default Language
