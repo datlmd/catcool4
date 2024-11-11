@@ -1,18 +1,10 @@
 import { Link } from "react-router-dom";
 
-// Vi du fix map is not a function
-// menuTop = {
-//   course: 'JavaScript for beginners',
-//   language: 'JavaScript',
-//   creator: 'decodingweb.dev'
-// }
+import { IMenuInfo } from "src/store/types";
 
-const MenuTop = ({ menuTop }) => {
-  let dataKeys = Object.keys(menuTop);
-  //let dataKeys = Object.values(data) - Array.isArray(menuTop)
+const MenuTop = ({ menuTop }: { menuTop: IMenuInfo[] }) => {
 
-  const menuItem = dataKeys.map((key) => {
-    let item = menuTop[key];
+  const menuItem = Object.values(menuTop).map((item) => {
     return (
       <Link key={item.slug} to={item.slug} className="nav-link">
         {item.name}

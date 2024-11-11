@@ -1,4 +1,4 @@
-import Message from "../../components/UI/Message";
+import Message from '../../components/UI/Message'
 
 const HomeView = () => {
   return (
@@ -6,7 +6,7 @@ const HomeView = () => {
       <h1>Home</h1>
       <Message message={'dsjksdfhdls'} type={'success'} isShow={true} />
     </>
-  );
-};
+  )
+}
 
-export default HomeView;
+export default HomeView

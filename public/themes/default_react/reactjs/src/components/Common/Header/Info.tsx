@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { ILayout } from "src/store/types";
 
 const HeaderInfo = ({ data }: ILayout) => {
@@ -6,26 +7,26 @@ const HeaderInfo = ({ data }: ILayout) => {
       <ul className="nav nav-pills">
         {data.store_address && (
           <li className="nav-item d-none d-md-inline">
-            <a className="nav-link disabled">
+            <Link to="#" className="nav-link disabled">
               <i className="far fa-dot-circle me-1"></i>
               {data.store_address}
-            </a>
+            </Link>
           </li>
         )}
         {data.store_phone && (
           <li className="nav-item contact-phone">
-            <a href={"tel:" + data.store_phone} className="nav-link">
+            <Link to={"tel:" + data.store_phone} className="nav-link">
               <i className="fas fa-phone me-1"></i>
               {data.store_phone}
-            </a>
+            </Link>
           </li>
         )}
         {data.store_email && (
           <li className="nav-item">
-            <a href={"mailto:" + data.store_email} className="nav-link">
+            <Link to={"mailto:" + data.store_email} className="nav-link">
               <i className="far fa-envelope me-1"></i>
               {data.store_email}
-            </a>
+            </Link>
           </li>
         )}
       </ul>

@@ -1,8 +1,5 @@
 const NullView = () => {
-  return (
-    <>
-    </>
-  );
-};
+  return <></>
+}
 
-export default NullView;
+export default NullView

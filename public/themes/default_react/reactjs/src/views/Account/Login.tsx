@@ -1,47 +1,36 @@
-"use strict";
+'use strict'
 
-import { useEffect } from "react";
+import { useEffect } from 'react'
+import LoadingContent from '../../components/Loading/Content'
+import CustomerLoginForm from '../../components/Customer/Login'
+import { useAppSelector, useAppDispatch } from '../../store/hooks'
+import { loadLogin, pageData, pageStatus } from '../../store/modules/account/loginSlice'
 
-import LoadingContent from "../../components/Loading/Content";
-import CustomerLoginForm from "../../components/Customer/Login";
-
-import { useAppSelector, useAppDispatch } from '../../store/hooks';
-import {
-  loadLogin,
-  pageData,
-  pageStatus,
-  //pageError 
-} from '../../store/modules/account/loginSlice';
-
-const LoginView = ({callbackLayout}: {callbackLayout: object}) => {
-  const dispatch = useAppDispatch();
-  const status = useAppSelector(pageStatus);
-  const data = useAppSelector(pageData);
-
+const LoginView = ({ callbackLayout }: { callbackLayout: any }) => {
+  const dispatch = useAppDispatch()
+  const status = useAppSelector(pageStatus)
+  const data = useAppSelector(pageData)
 
   useEffect(() => {
     if (status === 'idle') {
-      dispatch(loadLogin());
+      dispatch(loadLogin())
     }
 
     if (data.layouts && data.layouts != undefined) {
-      callbackLayout(data.layouts);
-    };
-    
-  }, [dispatch, status, data]);
+      callbackLayout(data.layouts)
+    }
+  }, [dispatch, status, data])
 
-  if (data.status === "pending") {
+  if (data.status === 'pending') {
     return <LoadingContent />
-  } else { 
+  } else {
     return (
       <>
-        <h1 className="text-uppercase mb-4 text-center">
-          {data.text_login}
-        </h1>
+        <h1 className='text-uppercase mb-4 text-center'>{data.text_login}</h1>
         <CustomerLoginForm {...data} />
       </>
-    );
+    )
   }
-};
+}
 
-export default LoginView;
+export default LoginView

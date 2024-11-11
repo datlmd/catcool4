@@ -11,13 +11,12 @@ import { IMenuInfo } from "src/store/types";
 // }
 
 function Children(childrens: IMenuInfo[]) {
-  let childrenKeys = Object.keys(childrens);
-  if (!Array.isArray(childrenKeys)) {
-    return <></>;
-  }
+  // let childrenKeys = Object.keys(childrens);
+  // if (!Array.isArray(childrenKeys)) {
+  //   return <></>;
+  // }
 
-  const childrenItem = childrenKeys.map((key) => {
-    let item: IMenuInfo = childrens[key];
+  const childrenItem = Object.values(childrens).map((item) => {
     return (
       <li key={"mn_main_sub_li_" + item.menu_id}>
         <Link
@@ -40,12 +39,9 @@ function Children(childrens: IMenuInfo[]) {
   );
 }
 
-const MenuMain = ({ menuMain }) => {
-  let dataKeys = Object.keys(menuMain);
-  //let dataKeys = Object.values(data) - Array.isArray(menuTop)
+const MenuMain = ({ menuMain }: { menuMain: IMenuInfo[] }) => {
 
-  const menuItem = dataKeys.map((key) => {
-    let item = menuMain[key];
+  const menuItem = Object.values(menuMain).map((item: IMenuInfo) => {
     return (
       <Nav.Item key={"mn_main_li_" + item.menu_id} as="li" className="dropdown">
         <Link
