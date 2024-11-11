@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 
-import Currency from "../Currency.tsx";
-import Language from "../Language.tsx";
-import HeaderAccount from "./Account.tsx";
-import HeaderLogo from "./Logo.tsx";
-import MenuMain from "../Menu/Main.tsx";
-import HeaderSearch from "./Search.tsx";
+import Currency from "../Currency";
+import Language from "../Language";
+import HeaderAccount from "./Account";
+import HeaderLogo from "./Logo";
+import MenuMain from "../Menu/Main";
+import HeaderSearch from "./Search";
 
-const HeaderMobile = (props) => {
+import { ILayout } from "src/store/types";
+
+const HeaderMobile = ({ data }: ILayout) => {
   const [show, setShow] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
 
@@ -24,7 +26,7 @@ const HeaderMobile = (props) => {
 
       <div className="header-mobile-content container-fluid border-bottom">
         <div className="d-flex justify-content-between">
-          <HeaderLogo {...props} />
+          <HeaderLogo data={data} />
 
           <div className="header-mobile-menu-icon">
             <Navbar className="nav p-0">
@@ -40,9 +42,9 @@ const HeaderMobile = (props) => {
                     </Nav.Link>
 
                     <Nav.Link
-                      href={props.wishlist}
+                      href={data.wishlist}
                       className="position-relative"
-                      title={props.text_wishlist}
+                      title={data.text_wishlist}
                     >
                       <i className="far fa-heart"></i>
                       <span className="position-absolute top-1 translate-middle badge rounded-pill bg-danger">
@@ -51,9 +53,9 @@ const HeaderMobile = (props) => {
                     </Nav.Link>
 
                     <Nav.Link
-                      href={props.shopping_cart}
+                      href={data.shopping_cart}
                       className="position-relative"
-                      title={props.text_shopping_cart}
+                      title={data.text_shopping_cart}
                     >
                       <i className="fas fa-shopping-cart"></i>
                       <span className="position-absolute top-1 translate-middle badge rounded-pill bg-danger">
@@ -61,12 +63,12 @@ const HeaderMobile = (props) => {
                       </span>
                     </Nav.Link>
 
-                    <HeaderAccount {...props} />
+                    <HeaderAccount data={data} />
 
                     <Nav.Link
                       onClick={handleShow}
                       className="position-relative"
-                      title={props.text_shopping_cart}
+                      title={data.text_shopping_cart}
                     >
                       <i className="fas fa-bars"></i>
                     </Nav.Link>
@@ -81,10 +83,10 @@ const HeaderMobile = (props) => {
       {/* ---Khu vuc tim kiem mobile--- */}
       <Offcanvas show={showSearch} onHide={handleSearchClose} placement="top">
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>{props.text_search_title}</Offcanvas.Title>
+          <Offcanvas.Title>{data.text_search_title}</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <HeaderSearch {...props} />
+          <HeaderSearch data={data} />
         </Offcanvas.Body>
       </Offcanvas>
 
@@ -95,20 +97,20 @@ const HeaderMobile = (props) => {
         className="offcanvas-start header-mobile-offcanvas"
       >
         <Offcanvas.Header closeButton className="border-bottom">
-          <Offcanvas.Title>{props.text_menu}</Offcanvas.Title>
+          <Offcanvas.Title>{data.text_menu}</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <div className="d-flex align-items-start flex-column h-100">
             <div className="mb-auto overflow-auto header-mobile-menu-main">
-              <MenuMain menuMain={props.menu_main} />
+              <MenuMain menuMain={data.menu_main} />
             </div>
             <div className="header-mobile-menu-bottom">
               <ul className="nav header-mobile-menu-main">
                 <li className="nav-item">
-                  <Language language={props.language} type="collapse" />
+                  <Language language={data.language} type="collapse" />
                 </li>
                 <li className="nav-item">
-                  <Currency currency={props.currency} type="collapse" />
+                  <Currency currency={data.currency} type="collapse" />
                 </li>
               </ul>
             </div>

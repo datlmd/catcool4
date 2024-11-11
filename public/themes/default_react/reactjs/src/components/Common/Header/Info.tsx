@@ -1,28 +1,30 @@
-const HeaderInfo = (props) => {
+import { ILayout } from "src/store/types";
+
+const HeaderInfo = ({ data }: ILayout) => {
   return (
     <>
       <ul className="nav nav-pills">
-        {props.store_address && (
+        {data.store_address && (
           <li className="nav-item d-none d-md-inline">
             <a className="nav-link disabled">
               <i className="far fa-dot-circle me-1"></i>
-              {props.store_address}
+              {data.store_address}
             </a>
           </li>
         )}
-        {props.store_phone && (
+        {data.store_phone && (
           <li className="nav-item contact-phone">
-            <a href={"tel:" + props.store_phone} className="nav-link">
+            <a href={"tel:" + data.store_phone} className="nav-link">
               <i className="fas fa-phone me-1"></i>
-              {props.store_phone}
+              {data.store_phone}
             </a>
           </li>
         )}
-        {props.store_email && (
+        {data.store_email && (
           <li className="nav-item">
-            <a href={"mailto:" + props.store_email} className="nav-link">
+            <a href={"mailto:" + data.store_email} className="nav-link">
               <i className="far fa-envelope me-1"></i>
-              {props.store_email}
+              {data.store_email}
             </a>
           </li>
         )}

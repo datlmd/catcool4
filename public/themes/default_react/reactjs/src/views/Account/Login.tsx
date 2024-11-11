@@ -13,7 +13,7 @@ import {
   //pageError 
 } from '../../store/modules/account/loginSlice';
 
-const LoginView = ({callbackLayout}: {callbackLayout: any}) => {
+const LoginView = ({callbackLayout}: {callbackLayout: object}) => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(pageStatus);
   const data = useAppSelector(pageData);

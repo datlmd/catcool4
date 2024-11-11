@@ -5,7 +5,9 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
-const HeaderSearch = (props) => {
+import { ILayout } from "src/store/types";
+
+const HeaderSearch = ({ data }: ILayout) => {
   return (
     <>
       <Navbar expand="lg" className="bg-body-tertiary">

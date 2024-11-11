@@ -1,7 +1,9 @@
 import Dropdown from "react-bootstrap/Dropdown";
 
-const HeaderAccount = (props) => {
-  if (props.logged) {
+import { ILayout } from "src/store/types";
+
+const HeaderAccount = ({ data }: ILayout) => {
+  if (data.logged) {
     return (
       <>
         <Dropdown align="end">
@@ -10,28 +12,28 @@ const HeaderAccount = (props) => {
             className="nav-link dropdown-toggle"
             id="dropdown-account-top">
             <img
-              src={props.customer_avatar}
-              alt={props.customer_name}
+              src={data.customer_avatar}
+              alt={data.customer_name}
               className="rounded-circle customer-avatar"
             />
             <span className="d-none d-lg-inline ms-1">
-              {props.customer_name}
+              {data.customer_name}
             </span>
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <Dropdown.Item href={props.account}>
-              {props.text_account}
+            <Dropdown.Item href={data.account}>
+              {data.text_account}
             </Dropdown.Item>
-            <Dropdown.Item href={props.order}>
-              {props.text_order}
+            <Dropdown.Item href={data.order}>
+              {data.text_order}
             </Dropdown.Item>
-            <Dropdown.Item href={props.transaction}>
-              {props.text_transaction}
+            <Dropdown.Item href={data.transaction}>
+              {data.text_transaction}
             </Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item href={props.logout}>
-              {props.text_logout}
+            <Dropdown.Item href={data.logout}>
+              {data.text_logout}
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
@@ -47,16 +49,16 @@ const HeaderAccount = (props) => {
             id="dropdown-account-top">
             <i className="fas fa-user"></i>
             <span className="d-none d-lg-inline ms-1">
-              {props.text_my_account}
+              {data.text_my_account}
             </span>
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <Dropdown.Item href={props.login}>
-              {props.text_login}
+            <Dropdown.Item href={data.login}>
+              {data.text_login}
             </Dropdown.Item>
-            <Dropdown.Item href={props.register}>
-              {props.text_register}
+            <Dropdown.Item href={data.register}>
+              {data.text_register}
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>

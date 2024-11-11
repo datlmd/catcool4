@@ -2,8 +2,9 @@ import Copyright from "../../components/Common/Footer/Copyright";
 import NewsLetter from "../../components/Common/Footer/NewsLetter";
 import Social from "../../components/Common/Footer/Social";
 import MenuFooter from "../../components/Common/Menu/Footer";
+import { ILayout } from "src/store/types";
 
-const Footer = (props: any) => {
+const Footer = ({data}: ILayout) => {
   return (
     <>
       <footer id="footer">
@@ -12,11 +13,11 @@ const Footer = (props: any) => {
           <div className="container-xxl">
             <div className="row">
               <div className="col-md-6 col-lg-8 mb-3">
-                <NewsLetter {...props} />
+                <NewsLetter data={data} />
               </div>
 
               <div className="col-md-6 col-lg-4 text-center">
-                <Social {...props} />
+                <Social data={data} />
               </div>
             </div>
           </div>
@@ -24,11 +25,11 @@ const Footer = (props: any) => {
 
         <div className="container-fluid">
           <div className="container-xxl menu-footer">
-            <MenuFooter {...props} />
+            <MenuFooter data={data} />
           </div>
         </div>
 
-        <Copyright {...props} />
+        <Copyright data={data} />
 
       </footer>
     </>

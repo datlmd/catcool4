@@ -2,12 +2,14 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
-import Currency from "../Currency.tsx";
-import Language from "../Language.tsx";
-import MenuTop from "../Menu/Top.tsx";
-import HeaderAccount from "./Account.tsx";
+import Currency from "../Currency";
+import Language from "../Language";
+import MenuTop from "../Menu/Top";
+import HeaderAccount from "./Account";
 
-const HeaderMain = (props) => {
+import { ILayout } from "src/store/types";
+
+const HeaderMain = ({ data }: ILayout) => {
   return (
     <>
       <Navbar className="bg-body-tertiary p-0">
@@ -15,28 +17,28 @@ const HeaderMain = (props) => {
           <Navbar.Toggle aria-controls="header-main-navbar-nav" />
           <Navbar.Collapse id="header-main-navbar-nav">
             <Nav className="me-auto">
-              <Currency currency={props.currency} />
+              <Currency currency={data.currency} />
 
-              <MenuTop menuTop={props.menu_top} />
+              <MenuTop menuTop={data.menu_top} />
 
-              <Nav.Link href={props.wishlist}>
+              <Nav.Link href={data.wishlist}>
                 <i className="far fa-heart"></i>
                 <span className="d-none d-md-inline ms-1">
-                  {props.text_wishlist}
+                  {data.text_wishlist}
                 </span>
                 <span className="ms-1">(0)</span>
               </Nav.Link>
-              <Nav.Link href={props.shopping_cart}>
+              <Nav.Link href={data.shopping_cart}>
                 <i className="fas fa-shopping-cart"></i>
                 <span className="d-none d-md-inline ms-1">
-                  {props.text_shopping_cart}
+                  {data.text_shopping_cart}
                 </span>
                 <span className="ms-1">(0)</span>
               </Nav.Link>
 
-              <HeaderAccount {...props} />
+              <HeaderAccount data={data} />
 
-              <Language language={props.language} />
+              <Language language={data.language} />
             </Nav>
           </Navbar.Collapse>
         </Container>

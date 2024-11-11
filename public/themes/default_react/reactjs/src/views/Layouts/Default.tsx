@@ -2,38 +2,32 @@ import { lazy, useEffect, useState, Suspense } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import LoadingHeader from "../../components/Loading/Header";
+import { ILayoutView } from "src/store/types";
 
-const importView = (subreddit) =>
+const importView = (subreddit: string) =>
   lazy(() =>
     import(`../${subreddit}`).catch(() => import(`../Common/NullView`))
   );
 
-const LayoutDefault = ({
-  header_top,
-  header_bottom,
-  column_left,
-  column_right,
-  content_top,
-  content_bottom,
-  footer_top,
-  footer_bottom,
-}) => {
-  const [headerTopView, setHeaderTopView] = useState([]);
-  const [headerBottomView, setHeaderBottomView] = useState([]);
-  const [columnLeftView, setColumnLeftView] = useState([]);
-  const [columnRightView, setColumnRightView] = useState([]);
-  const [contentTopView, setContentTopView] = useState([]);
-  const [contentBottomView, setContentBottomView] = useState([]);
-  const [footerTopView, setFooterTopView] = useState([]);
-  const [footerBottomView, setFooterBottomView] = useState([]);
+function LayoutDefault({
+  header_top, header_bottom, column_left, column_right, content_top, content_bottom, footer_top, footer_bottom,
+}: ILayoutView) {
+  const [headerTopView, setHeaderTopView] = useState({});
+  const [headerBottomView, setHeaderBottomView] = useState({});
+  const [columnLeftView, setColumnLeftView] = useState({});
+  const [columnRightView, setColumnRightView] = useState({});
+  const [contentTopView, setContentTopView] = useState({});
+  const [contentBottomView, setContentBottomView] = useState({});
+  const [footerTopView, setFooterTopView] = useState({});
+  const [footerBottomView, setFooterBottomView] = useState({});
 
   useEffect(() => {
-    async function LoadViews(component: any, position: string) {
+    async function LoadViews(component: object, position: string) {
       if (Array.isArray(component) && component !== undefined) {
-        
+
         const componentPromises = component.map(async (data) => {
           const View = await importView(data.subreddit);
-          return <View key={data.key} {...data.data} />;
+          return <View key={data.key} data={data.data} />;
         });
 
         switch (position) {
@@ -90,18 +84,18 @@ const LayoutDefault = ({
   return (
     <>
       <div className="body">
-        {headerTopView.length > 0 && (
+        {headerTopView && headerTopView.length > 0 && (
           <Suspense fallback={<LoadingHeader />}>{headerTopView}</Suspense>
         )}
 
-        {headerBottomView.length > 0 && (
+        {headerBottomView && headerBottomView.length > 0 && (
           <Suspense fallback={<LoadingHeader />}>{headerBottomView}</Suspense>
         )}
 
         <div role="main" className="main">
           <Container fluid="xxl">
             <Row>
-              {columnLeftView.length > 0 && (
+              {columnLeftView && columnLeftView.length > 0 && (
                 <Col
                   as="aside"
                   id="column_left"
@@ -135,7 +129,7 @@ const LayoutDefault = ({
                 </nav>
               </Col>
               <Col id="content">
-                {contentTopView.length > 0 && (
+                {contentTopView && contentTopView.length > 0 && (
                   <Suspense fallback={<LoadingHeader />}>
                     {contentTopView}
                   </Suspense>
@@ -143,14 +137,14 @@ const LayoutDefault = ({
 
                 <Outlet />
 
-                {contentBottomView.length > 0 && (
+                {contentBottomView && contentBottomView.length > 0 && (
                   <Suspense fallback={<LoadingHeader />}>
                     {contentBottomView}
                   </Suspense>
                 )}
               </Col>
 
-              {columnRightView.length > 0 && (
+              {columnRightView && columnRightView.length > 0 && (
                 <Col
                   as="aside"
                   id="column_right"
@@ -165,16 +159,16 @@ const LayoutDefault = ({
           </Container>
         </div>
 
-        {footerTopView.length > 0 && (
+        {footerTopView && footerTopView.length > 0 && (
           <Suspense fallback={<LoadingHeader />}>{footerTopView}</Suspense>
         )}
 
-        {footerBottomView.length > 0&& (
+        {footerBottomView && footerBottomView.length > 0 && (
           <Suspense fallback={<LoadingHeader />}>{footerBottomView}</Suspense>
         )}
       </div>
     </>
   );
-};
+}
 
 export default LayoutDefault;

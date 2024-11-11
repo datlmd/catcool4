@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import {
   loadAbout,
   aboutData,
   aboutStatus,
-  aboutError 
+  //aboutError 
 } from '../../store/modules/about/aboutSlice';
 
-const AboutView = ({callbackLayout}: {callbackLayout: any}) => {
+const AboutView = ({callbackLayout}: {callbackLayout: object}) => {
   const dispatch = useAppDispatch();
   const status = useAppSelector(aboutStatus);
   const data = useAppSelector(aboutData);

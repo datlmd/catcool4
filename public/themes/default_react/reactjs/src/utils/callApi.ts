@@ -30,9 +30,9 @@ export const makeRequest = ({
                               authorization = "",
                             }: {
                               url: string,
-                              values?: any,
-                              successCallback?: any,
-                              failureCallback?: any,
+                              values?: object | null,
+                              successCallback?: object,
+                              failureCallback?: object,
                               requestType?: RequestType,
                               authorization?: string,
                             }) => {

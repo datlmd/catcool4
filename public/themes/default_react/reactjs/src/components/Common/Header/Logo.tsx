@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
+import { ILayout } from "src/store/types";
 
-const HeaderLogo = (props) => {
+const HeaderLogo = ({ data }: ILayout) => {
   return (
     <>
       <div className="header-logo">
-        <Link key="logo-site" href={props.site_url}>
-          <img alt={props.site_name} src={props.logo} />
+        <Link key="logo-site" to={data.site_url}>
+          <img alt={data.site_name} src={data.logo} />
         </Link>
       </div>
     </>

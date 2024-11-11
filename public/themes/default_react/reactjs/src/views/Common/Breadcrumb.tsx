@@ -1,12 +1,13 @@
 import Breadcrumb from "react-bootstrap/Breadcrumb";
+import { ILayout, IBreadcrumbInfo } from "src/store/types";
 
-function CommonBreadcrumb(props: any) {
-  if (props.breadcrumbs.length <= 0 || props.breadcrumbs === undefined) {
+function CommonBreadcrumb({data}: ILayout) {
+  if (data.breadcrumbs.length <= 0 || data.breadcrumbs === undefined) {
     return <></>;
   }
 
-  const breadcrumbItem = props.breadcrumbs.map((value: any, index: number, array: any) => {
-    if (array.length - 1 === index) {
+  const breadcrumbItem = data.breadcrumbs.map((value: IBreadcrumbInfo, index: number) => {
+    if (data.breadcrumbs.length - 1 === index) {
       return (
         <Breadcrumb.Item key={"breadcrumb" + value.title} active>
           {value.title}
@@ -25,7 +26,7 @@ function CommonBreadcrumb(props: any) {
       <div className="container-fluid breadcumb-content mb-4">
         <div className="container-xxl">
           <Breadcrumb>{breadcrumbItem}</Breadcrumb>
-          {/* {props.breadcrumb_title} */}
+          {/* {data.breadcrumb_title} */}
         </div>
       </div>
     </>

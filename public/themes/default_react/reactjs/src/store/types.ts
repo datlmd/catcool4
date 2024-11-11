@@ -1,5 +1,8 @@
 export const PAGE_CONTACT = "PAGE_CONTACT";
 
+/**
+ * Layout
+ */
 export interface ILayout {
   data: any,
 };
@@ -21,8 +24,48 @@ export interface ILayoutData {
   key: string
 }
 
+/**
+ * Page
+ */
 export interface IPage {
   data: any,
   status: 'idle' | 'pending' | 'success' | 'failed'
   error: string | null
 };
+
+/**
+ * Currency
+ */
+export interface ICurrencyInfo {
+  code: string,
+  symbol_left: string,
+  symbol_right: string,
+  name: string,
+  href: string,
+}
+
+export interface ICurrency {
+  list: ICurrencyInfo[],
+  info: ICurrencyInfo,
+}
+
+/**
+ * Language
+ */
+export interface ILanguageInfo {
+  code: string,
+  text_language: string,
+  icon: string
+  name?: string,
+  href: string,
+}
+
+export interface ILanguage {
+  list: ILanguageInfo[],
+  info: ILanguageInfo,
+}
+
+export interface IBreadcrumbInfo {
+  title: string,
+  href: string,
+}

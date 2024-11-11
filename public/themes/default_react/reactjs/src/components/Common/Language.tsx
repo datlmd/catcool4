@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Dropdown, Collapse } from "react-bootstrap";
 
-export default function Language({ language, type }) {
+import { ILanguage, ILanguageInfo } from "src/store/types";
+
+export default function Language({ language, type }: { language: ILanguage, type?: string }) {
   const [open, setOpen] = useState(false);
 
   const languageItem =
     language.list &&
-    language.list.map((value) => {
+    language.list.map((value: ILanguageInfo) => {
       if (type && type == "collapse") {
         return (
           <li key={value.code}>

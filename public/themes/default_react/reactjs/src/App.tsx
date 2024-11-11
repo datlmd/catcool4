@@ -9,17 +9,30 @@ import HomeView from "./views/Frontend/Home";
 import PageNotFound from "./views/Frontend/NotFound";
 import Loading from "./components/Loading/Loading";
 import { sanitizeJSONString } from "./utils/String";
-import LoginView from "./views/Account/Login";
 
+const LoginView = lazy(() => import("./views/Account/Login"));
 const ContactView = lazy(() => import("./views/Frontend/Contact"));
 const AboutView = lazy(() => import("./views/Frontend/About"));
+
+import { ILayoutView } from "src/store/types";
 
 const baseUrl = window.base_url;
 const pathUrl = window.path_url;
 
+const intLayoutView = {
+  header_top: null,
+  header_bottom: null,
+  column_left: null,
+  column_right: null,
+  content_top: null,
+  content_bottom: null,
+  footer_top: null,
+  footer_bottom: null
+};
+
 const App = () => {
   const [pageData, setPageData] = useState([]);
-  const [layouts, setLayouts] = useState([]);
+  const [layouts, setLayouts] = useState<ILayoutView>(intLayoutView);
 
   useEffect(() => {
     if (window.page_data && window.page_data !== undefined) {
@@ -42,8 +55,8 @@ const App = () => {
   }, []);
 
   const callbackLayout = (data: any) => {
-    console.log("sadfdsf")
     setLayouts(data);
+    console.log("parennn");
   };
 
   return (
@@ -70,7 +83,11 @@ const App = () => {
             />
             <Route
               path={pathUrl + "account/login"}
-              element={<LoginView {...pageData} callbackLayout={callbackLayout} />}
+              element={
+                <Suspense fallback={<Loading />}>
+                  <LoginView {...pageData} callbackLayout={callbackLayout} />
+                </Suspense>
+              }
             />
             <Route path="*" element={<PageNotFound />} />
           </Route>
@@ -83,8 +100,8 @@ const App = () => {
 export default App;
 
 // Thêm một khoảng thời gian trì hoãn để bạn có thể thấy được loading state
-function delayForDemo(promise) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, 2000);
-  }).then(() => promise);
-}
+// function delayForDemo(promise) {
+//   return new Promise((resolve) => {
+//     setTimeout(resolve, 2000);
+//   }).then(() => promise);
+// }

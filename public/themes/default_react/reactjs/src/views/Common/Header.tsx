@@ -5,25 +5,27 @@ import HeaderMobile from "../../components/Common/Header/Mobile";
 import HeaderSearch from "../../components/Common/Header/Search";
 import MenuMain from "../../components/Common/Menu/Main";
 
-const Header = (props: any) => {
+import { ILayout } from "src/store/types";
+
+const Header = ({data}: ILayout) => {
   return (
     <>
       <header id="header_main_pc" className="d-none d-lg-inline">
         <div className="container-fluid header-top">
           <div className="container-xxl d-flex justify-content-between">
             <div className="header-top-contact">
-              <HeaderInfo {...props} />
+              <HeaderInfo data={data} />
             </div>
             <div className="header-top-account">
-              <HeaderMain {...props} />
+              <HeaderMain data={data} />
             </div>
           </div>
         </div>
         {/* {* phan header logo và tim kiem *} */}
         <div className="container-fluid header-center">
           <div className="container-xxl d-flex justify-content-between">
-            <HeaderLogo {...props} />
-            <HeaderSearch {...props} />
+            <HeaderLogo data={data} />
+            <HeaderSearch data={data} />
           </div>
         </div>
         {/* {* phan header menu chinh *} */}
@@ -32,7 +34,7 @@ const Header = (props: any) => {
         <div className="container-fluid header-bottom">
           <div className="container-xxl header-menu">
             <div className="header-menu-content">
-              <MenuMain menuMain={props.menu_main} />
+              <MenuMain menuMain={data.menu_main} />
             </div>
           </div>
         </div>
@@ -40,7 +42,7 @@ const Header = (props: any) => {
 
       {/* Mobile Menu */}
       <header id="header_main_mobile" className="d-block d-lg-none">
-        <HeaderMobile {...props} />
+        <HeaderMobile data={data} />
       </header>
     </>
   );

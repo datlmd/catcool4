@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Dropdown, Collapse } from "react-bootstrap";
 
-const Currency = ({ currency, type }) => {
+import { ICurrency, ICurrencyInfo } from "src/store/types";
+
+const Currency = ({ currency, type }: {currency: ICurrency, type?: string}) => {
   const [open, setOpen] = useState(false);
 
   const currencyItem =
     currency.list &&
-    currency.list.map((value) => {
+    currency.list.map((value: ICurrencyInfo) => {
       if (type == "collapse") {
         return (
           <li key={value.code}>

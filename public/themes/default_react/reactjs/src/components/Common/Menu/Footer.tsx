@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
 import Accordion from "react-bootstrap/Accordion";
 
-const MenuFooter = (props) => {
-  if (!props.menu_footer || props.menu_footer === undefined) {
+import { ILayout } from "src/store/types";
+
+const MenuFooter = ({data}: ILayout) => {
+  if (!data.menu_footer || data.menu_footer === undefined) {
     return <></>;
   }
 
-  let menuKeys = Object.keys(props.menu_footer);
+  let menuKeys = Object.keys(data.menu_footer);
 
   function ChildrenItem(childrens) {
     return childrens.map((menu) => {
@@ -34,7 +36,7 @@ const MenuFooter = (props) => {
     });
   }
 
-  const menuItem = props.menu_footer.map((item, index) => {
+  const menuItem = data.menu_footer.map((item, index) => {
     return (
       <Accordion.Item
         key={"footer_accordion_item_" + index}
