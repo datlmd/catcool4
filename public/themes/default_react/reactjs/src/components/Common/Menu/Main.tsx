@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 
+import { IMenuInfo } from "src/store/types";
+
 // Vi du fix map is not a function
 // menuTop = {
 //   course: 'JavaScript for beginners',
@@ -8,14 +10,14 @@ import Nav from "react-bootstrap/Nav";
 //   creator: 'decodingweb.dev'
 // }
 
-function Children(childrens) {
+function Children(childrens: IMenuInfo[]) {
   let childrenKeys = Object.keys(childrens);
   if (!Array.isArray(childrenKeys)) {
     return <></>;
   }
 
   const childrenItem = childrenKeys.map((key) => {
-    let item = childrens[key];
+    let item: IMenuInfo = childrens[key];
     return (
       <li key={"mn_main_sub_li_" + item.menu_id}>
         <Link

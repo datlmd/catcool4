@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Dropdown, Collapse } from "react-bootstrap";
-
+import { Link } from "react-router-dom";
 import { ILanguage, ILanguageInfo } from "src/store/types";
 
 export default function Language({ language, type }: { language: ILanguage, type?: string }) {
@@ -29,7 +29,8 @@ export default function Language({ language, type }: { language: ILanguage, type
   if (type && type == "collapse") {
     return (
       <>
-        <a
+        <Link
+          to="#"
           onClick={() => setOpen(!open)}
           aria-controls="nav-collapse-account-top"
           aria-expanded={open}
@@ -38,7 +39,7 @@ export default function Language({ language, type }: { language: ILanguage, type
           <i className={language.info.icon + " me-1"}></i>
           {language.info.text_language}
           <span></span>
-        </a>
+        </Link>
         <Collapse in={open}>
           <div
             id="nav-collapse-account-top"

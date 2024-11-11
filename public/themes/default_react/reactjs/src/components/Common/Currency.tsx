@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Dropdown, Collapse } from "react-bootstrap";
-
+import { Link } from "react-router-dom";
 import { ICurrency, ICurrencyInfo } from "src/store/types";
 
 const Currency = ({ currency, type }: {currency: ICurrency, type?: string}) => {
@@ -33,7 +33,8 @@ const Currency = ({ currency, type }: {currency: ICurrency, type?: string}) => {
   if (type == "collapse") {
     return (
       <>
-        <a
+        <Link
+          to="#"
           onClick={() => setOpen(!open)}
           aria-controls="nav-collapse-currency-top"
           aria-expanded={open}
@@ -43,7 +44,7 @@ const Currency = ({ currency, type }: {currency: ICurrency, type?: string}) => {
           {currency.info.code}
           {currency.info.symbol_right}
           <span></span>
-        </a>
+        </Link>
         <Collapse in={open}>
           <div
             id="nav-collapse-currency-top"

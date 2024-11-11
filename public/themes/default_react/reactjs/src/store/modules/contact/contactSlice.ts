@@ -1,4 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  //PayloadAction
+} from '@reduxjs/toolkit';
 import type { RootState } from '../../index';
 import { loadContact } from './contactApi';
 import { IPage } from '../../types';
@@ -15,13 +18,13 @@ export const contactSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    clearSuccessMessage: (state, payload) => {
-      // TODO: Update state to clear success message
-    }
+    // clearSuccessMessage: (state, payload) => {
+    //   // TODO: Update state to clear success message
+    // }
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loadContact.pending, (state, action) => {
+      .addCase(loadContact.pending, (state) => {
         state.status = 'pending'
       })
       .addCase(loadContact.fulfilled, (state, action) => {
@@ -39,9 +42,9 @@ export const contactData = (state: RootState) => state.contact.data;
 export const contactStatus = (state: RootState) => state.contact.status;
 export const contactError = (state: RootState) => state.contact.error;
 
-export const { 
-  clearSuccessMessage
-} = contactSlice.actions;
+// export const {
+
+// } = contactSlice.actions;
 
 export default contactSlice.reducer;
 

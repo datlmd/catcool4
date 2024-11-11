@@ -1,12 +1,7 @@
 import Alert from "react-bootstrap/Alert";
+import { IMessageInfo } from "src/store/types";
 
-interface AlertData {
-  message: any,
-  isShow: boolean,
-  type: string
-}
-
-function Message({ message, isShow, type }: AlertData) {
+function Message({ message, isShow, type }: IMessageInfo) {
   if (!isShow) {
     return <></>;
   }

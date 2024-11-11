@@ -69,3 +69,22 @@ export interface IBreadcrumbInfo {
   title: string,
   href: string,
 }
+
+/**
+ * Menu
+ */
+export interface IMenuInfo {
+  menu_id?: number,
+  slug: string,
+  name: string,
+  subs: IMenuInfo[]
+}
+
+/**
+ * Message
+ */
+export interface IMessageInfo {
+  message: string | string[],
+  isShow: boolean,
+  type: string
+}
