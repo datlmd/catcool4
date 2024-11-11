@@ -1,49 +1,47 @@
 "use strict";
 
-import React, { useState, useEffect } from "react";
-import { API, getRequestConfiguration } from "../../utils/callApi";
+import { useEffect } from "react";
 
-import LoadingContent from "../../components/Loading/Content.tsx";
-import CustomerLoginForm from "../../components/Customer/Login.tsx";
+import LoadingContent from "../../components/Loading/Content";
+import CustomerLoginForm from "../../components/Customer/Login";
 
-const LoginView = (props) => {
-  const [isLoading, setIsLoading] = useState(true);
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
+import {
+  loadLogin,
+  pageData,
+  pageStatus,
+  //pageError 
+} from '../../store/modules/account/loginSlice';
 
-  const [contents, setContents] = useState([]);
+const LoginView = ({callbackLayout}: {callbackLayout: any}) => {
+  const dispatch = useAppDispatch();
+  const status = useAppSelector(pageStatus);
+  const data = useAppSelector(pageData);
+
 
   useEffect(() => {
-    //const [data, triggerData] = useCache("key_page_contact", LoadPage());
-    LoadPage();
-  
-  }, []);
-
-  const sendLayout = (layouts) => {
-    props.parentLayout(layouts);
-  };
-
-  const LoadPage = async () => {
-    try {
-      const response = await API.get("account/api/login", getRequestConfiguration());
-     
-      setContents(response.data);
-      setIsLoading(false);
-      
-      sendLayout(response.data.layouts);
-    } catch (error) {
-      console.error(error);
+    if (status === 'idle') {
+      dispatch(loadLogin());
     }
-  };
 
-  return isLoading ? (
-    <LoadingContent />
-  ) : (
-    <>
-      <h1 className="text-uppercase mb-4 text-center">
-        {contents.text_login}
-      </h1>
-      <CustomerLoginForm {...props} {...contents} />
-    </>
-  );
+    if (data.layouts && data.layouts != undefined) {
+      callbackLayout(data.layouts);
+    };
+    
+  }, [dispatch, status, data]);
+
+  if (data.status === "pending") {
+    return <LoadingContent />
+  } else { 
+    return (
+      <>
+        <h1 className="text-uppercase mb-4 text-center">
+          {data.text_login}
+        </h1>
+        <CustomerLoginForm {...data} />
+      </>
+    );
+  }
 };
 
 export default LoginView;

@@ -1,12 +1,17 @@
 import Alert from "react-bootstrap/Alert";
-import Button from "react-bootstrap/Button";
 
-function Message({ message, isShow, type }) {
+interface AlertData {
+  message: any,
+  isShow: boolean,
+  type: string
+}
+
+function Message({ message, isShow, type }: AlertData) {
   if (!isShow) {
     return <></>;
   }
 
-  function iType(type) {
+  function iType(type: string) {
     if (type == "danger" || type == "info") {
       return <i className="fas fa-exclamation-circle me-2"></i>;
     } else if (type == "success") {
@@ -29,7 +34,7 @@ function Message({ message, isShow, type }) {
       </>
     );
   } else {
-    const messageItem = Object.values(message).map((item) => {
+    const messageItem = Object.values(message).map(item => {
       return (
         <p key={item}>
           {iType(type)}

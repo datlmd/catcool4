@@ -243,8 +243,8 @@ if ( ! function_exists('reactjs_script'))
         helper('filesystem');
 
         $script = [
-            'development' => "",
-            'testing' => "",
+            'development' => script_tag(theme_url("reactjs/dist/dev/main.js")),
+            'testing' => script_tag(theme_url("reactjs/dist/dev/main.js")),
             'production' => "",
         ];
         $path = get_theme_path('reactjs/dist/static/js');
@@ -254,13 +254,8 @@ if ( ! function_exists('reactjs_script'))
             if (pathinfo($file, PATHINFO_EXTENSION) != 'js') {
                 continue;
             }
-            //cc_debug(strpos($file, 'dev-'), false);
-            if (strpos($file, 'dev') !== false) {
-                $script['development'] .= script_tag(theme_url("reactjs/dist/static/js/$file"));
-                $script['testing'] .= script_tag(theme_url("reactjs/dist/static/js/$file"));
-            } else {
-                $script['production'] .= script_tag(theme_url("reactjs/dist/static/js/$file"));
-            }
+
+            $script['production'] .= script_tag(theme_url("reactjs/dist/static/js/$file"));
         }
 
         return $script[ENVIRONMENT] ?? "";
@@ -274,8 +269,8 @@ if ( ! function_exists('reactjs_css'))
         helper('filesystem');
 
         $style = [
-            'development' => link_tag(theme_url("reactjs/dist/main.css")),
-            'testing' => link_tag(theme_url("reactjs/dist/main.css")),
+            'development' => link_tag(theme_url("reactjs/dist/dev/main.css")),
+            'testing' => link_tag(theme_url("reactjs/dist/dev/main.css")),
             'production' => "",
         ];
 

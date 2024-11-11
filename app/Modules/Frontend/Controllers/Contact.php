@@ -16,6 +16,10 @@ class Contact extends MyController
         //set theme
         $this->themes->setTheme(config_item('theme_frontend'));
 
+        if (IS_REACT) {
+            return theme_load('react');
+        }
+
         $location_list = null;
 
         if (!empty(config_item('store_location'))) {

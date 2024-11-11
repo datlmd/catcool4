@@ -1,47 +1,44 @@
 "use strict";
 
-import React, { useState, useEffect } from "react";
-import { API, getRequestConfiguration } from "../../utils/callApi";
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
+import { connect } from 'react-redux';
+import ContactForm from "../../components/Contact/Form";
+import LoadingContent from "../../components/Loading/Content";
 
-import ContactForm from "../../components/Contact/Form.tsx";
-import LoadingContent from "../../components/Loading/Content.tsx";
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
+import {
+  loadContact,
+  contactData,
+  contactStatus,
+  contactError 
+} from '../../store/modules/contact/contactSlice';
 
-const ContactView = (props) => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  const [contents, setContents] = useState([]);
+const ContactView = ({callbackLayout}: {callbackLayout: any}) => {
+  const dispatch = useAppDispatch();
+  const status = useAppSelector(contactStatus);
+  const data = useAppSelector(contactData);
 
   useEffect(() => {
-    //const [data, triggerData] = useCache("key_page_contact", LoadPage());
-    LoadPage();
-  
-  }, []);
-
-  const sendLayout = (layouts) => {
-    props.parentLayout(layouts);
-  };
-
-  const LoadPage = async () => {
-    try {
-      const response = await API.get("frontend/api/contact", getRequestConfiguration());
-     
-      setContents(response.data);
-      setIsLoading(false);
-      
-      sendLayout(response.data.layouts);
-    } catch (error) {
-      console.error(error);
+    if (status === 'idle') {
+      dispatch(loadContact());
     }
-  };
 
-  return isLoading ? (
-    <LoadingContent />
-  ) : (
-    <>
-      <h1>{contents.lang.contact}</h1>
-      <ContactForm contents />
-    </>
-  );
+    if (data.layouts && data.layouts != undefined) {
+      callbackLayout(data.layouts);
+    };
+    
+  }, [dispatch, status, data, callbackLayout]);
+
+  if (data.status === "pending") {
+    return <LoadingContent />;
+  } else {
+    return (
+      <>
+        <h1>{data.contact1}</h1>
+        <ContactForm {...data} />
+      </>
+    );
+  }
 };
 
 export default ContactView;

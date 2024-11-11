@@ -1,11 +1,11 @@
-import HeaderInfo from "../../components/Common/Header/Info.tsx";
-import HeaderLogo from "../../components/Common/Header/Logo.tsx";
-import HeaderMain from "../../components/Common/Header/Main.tsx";
-import HeaderMobile from "../../components/Common/Header/Mobile.tsx";
-import HeaderSearch from "../../components/Common/Header/Search.tsx";
-import MenuMain from "../../components/Common/Menu/Main.tsx";
+import HeaderInfo from "../../components/Common/Header/Info";
+import HeaderLogo from "../../components/Common/Header/Logo";
+import HeaderMain from "../../components/Common/Header/Main";
+import HeaderMobile from "../../components/Common/Header/Mobile";
+import HeaderSearch from "../../components/Common/Header/Search";
+import MenuMain from "../../components/Common/Menu/Main";
 
-const Header = (props) => {
+const Header = (props: any) => {
   return (
     <>
       <header id="header_main_pc" className="d-none d-lg-inline">

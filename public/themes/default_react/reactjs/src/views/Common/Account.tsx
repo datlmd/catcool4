@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Account = (props) => {
+const Account = (props: any) => {
   return (
     <>
       <div className="list-group mb-3">

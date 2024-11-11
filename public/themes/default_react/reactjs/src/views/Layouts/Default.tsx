@@ -1,11 +1,11 @@
 import { lazy, useEffect, useState, Suspense } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
-import LoadingHeader from "../../components/Loading/Header.tsx";
+import LoadingHeader from "../../components/Loading/Header";
 
 const importView = (subreddit) =>
   lazy(() =>
-    import(`../${subreddit}.tsx`).catch(() => import(`../Common/NullView.tsx`))
+    import(`../${subreddit}`).catch(() => import(`../Common/NullView`))
   );
 
 const LayoutDefault = ({
@@ -28,7 +28,7 @@ const LayoutDefault = ({
   const [footerBottomView, setFooterBottomView] = useState([]);
 
   useEffect(() => {
-    async function LoadViews(component, position) {
+    async function LoadViews(component: any, position: string) {
       if (Array.isArray(component) && component !== undefined) {
         
         const componentPromises = component.map(async (data) => {

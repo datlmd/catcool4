@@ -5,11 +5,11 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-import Message from "../UI/Message.tsx";
+import Message from "../UI/Message";
 
-import { Redirect } from 'react-router-dom';
+//import { Redirect } from 'react-router-dom';
 
-const CustomerLoginForm = (props) => {
+const CustomerLoginForm = (props: any) => {
   const initialValues = {
     identity: '',
     password: '',
@@ -18,14 +18,14 @@ const CustomerLoginForm = (props) => {
 
   const [formValue, setFormValue] = useState({
     ...initialValues,
-    [props.tokenName]: props.tokenValue
+    //[props.tokenName]: props.tokenValue
   });
 
   const [isShowError, setIsShowError] = useState(false);
   const [errors, setErrors] = useState({...initialValues});
   const [alert, setAlert] = useState("");
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     if (e.target.name == "remember") {
       setFormValue({ ...formValue, [e.target.name]: e.target.checked });
     } else {
@@ -33,7 +33,7 @@ const CustomerLoginForm = (props) => {
     } 
   };
 
-  const login = async (e) => {
+  const login = async (e: any) => {
     setIsShowError(false);
 
     try {
@@ -52,7 +52,7 @@ const CustomerLoginForm = (props) => {
       console.log(response.data);
       console.log(formValue);
      // return false;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.toString());
     }
   };

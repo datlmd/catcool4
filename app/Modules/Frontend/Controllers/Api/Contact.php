@@ -14,7 +14,7 @@ class Contact extends MyController
         //     return $this->failNotFound(lang('Contact.text_contact'));
         // }
         
-        $lang = [
+        $data = [
             'contact' => lang('Contact.text_contact'),
             'title' => lang('Contact.text_title'),
             'email' => lang('Contact.text_email'),
@@ -31,10 +31,7 @@ class Contact extends MyController
             'module' => 'frontend/contact',// su dung de load template layout cho trang
         ];
 
-        $data = [
-            'lang' => $lang,
-            'layouts' => service("react")->getTemplate(($params))
-        ];
+        $data['layouts'] = service("react")->getTemplate(($params));
         
         return $this->setResponseFormat('json')->respond($data, 200);
     }

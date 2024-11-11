@@ -1,30 +1,43 @@
 import axios from 'axios';
 
+type RequestType = "GET" | "POST" | "PUT" | "DELETE";
+
 export const API = axios.create({
-  baseURL: window.base_url,
+  baseURL: process.env.HOST ? process.env.HOST : window.base_url,
   responseType: 'json',
-  contentType: 'application/json',
-  headers: {"X-Requested-With": "XMLHttpRequest"}
+  headers: {
+    "Content-type": "application/json",
+    "X-Requested-With": "XMLHttpRequest"
+  }
 });
 
-export const getRequestConfiguration = (authorization) => {
+export const getRequestToken = (authorization?: string) => {
+  if (!authorization) return;
+
   const headers = {
-      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authorization}`,
   };
-  if (authorization) headers.Authorization = `Bearer ${authorization}`;
+  
   return { headers };
 };
 
 export const makeRequest = ({
                               url,
-                              values,
+                              values = null,
                               successCallback,
                               failureCallback,
                               requestType = 'POST',
-                              authorization = null,
+                              authorization = "",
+                            }: {
+                              url: string,
+                              values?: any,
+                              successCallback?: any,
+                              failureCallback?: any,
+                              requestType?: RequestType,
+                              authorization?: string,
                             }) => {
     
-  const requestConfiguration = getRequestConfiguration(authorization);
+  const requestConfiguration = getRequestToken(authorization);
   let promise;
   
   switch (requestType) {
@@ -32,6 +45,7 @@ export const makeRequest = ({
       promise = API.get(url, requestConfiguration);
       break;
     case 'POST':
+    case 'PUT':
       promise = API.post(url, values, requestConfiguration);
       break;
     case 'DELETE':
@@ -47,6 +61,7 @@ export const makeRequest = ({
       successCallback(data);
     })
     .catch((error) => {
+      console.log(error);
       if (error.response) {
           failureCallback(error.response.data);
       }

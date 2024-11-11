@@ -1,35 +1,35 @@
-import React, { useState, useEffect } from "react";
-import { API, getRequestConfiguration } from "../../utils/callApi";
+import { useState, useEffect } from "react";
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
+import {
+  loadAbout,
+  aboutData,
+  aboutStatus,
+  aboutError 
+} from '../../store/modules/about/aboutSlice';
 
-const AboutView = (props) => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  const [contents, setContents] = useState([]);
+const AboutView = ({callbackLayout}: {callbackLayout: any}) => {
+  const dispatch = useAppDispatch();
+  const status = useAppSelector(aboutStatus);
+  const data = useAppSelector(aboutData);
 
   useEffect(() => {
-    //const [data, triggerData] = useCache("key_page_contact", LoadPage());
-    LoadPage();
-  
-  }, []);
-
-  const sendLayout = (layouts) => {
-    props.parentLayout(layouts);
-  };
-
-  const LoadPage = async () => {
-    try {
-      const response = await API.get("frontend/api/about", getRequestConfiguration());
-     
-      setContents(response.data);
-      setIsLoading(false);
-      
-      sendLayout(response.data.layouts);
-    } catch (error) {
-      console.error(error);
+    if (status === 'idle') {
+      dispatch(loadAbout());
     }
-  };
+    if (data.layouts && data.layouts != undefined) {
+      callbackLayout(data.layouts);
+    };
+    
+  }, [dispatch, status, data, callbackLayout]);
 
-  return <h1>About US</h1>;
+  return (
+    <>
+      {/* {data} */}
+      {status}
+      <h1>About US</h1>
+    </>
+
+  );
 };
 
 export default AboutView;

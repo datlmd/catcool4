@@ -1,5 +1,4 @@
-import Message from "../../components/UI/Message.tsx";
-
+import Message from "../../components/UI/Message";
 
 const HomeView = () => {
   return (
