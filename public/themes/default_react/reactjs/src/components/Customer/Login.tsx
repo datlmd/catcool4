@@ -1,66 +1,84 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
-import { API, getRequestConfiguration } from '../../utils/callApi'
+import { Suspense, lazy, useEffect, useState, useContext } from 'react'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
 import Message from '../UI/Message'
-
+import { useAppSelector, useAppDispatch } from '../../store/hooks'
+import { submitLogin } from '../../store/modules/account/loginSlice'
 //import { Redirect } from 'react-router-dom'
+import { ILayout } from 'src/store/types'
+import { PageContext } from '../../contexts/Page'
 
-const CustomerLoginForm = (props: any) => {
-  const initialValues = {
-    identity: '',
-    password: '',
-    remember: false
-  }
+interface ILogin {
+  identity: string,
+  password: string,
+  remember: boolean
+}
 
-  const [formValue, setFormValue] = useState({
-    ...initialValues
-    //[props.tokenName]: props.tokenValue
-  })
+const initialValues: ILogin = {
+  identity: '',
+  password: '',
+  remember: false
+}
+
+const CustomerLoginForm = ({ data }: ILayout) => {
+  const pageContext = useContext(PageContext)
+  const dispatch = useAppDispatch()
+  const [formValue, setFormValue] = useState(initialValues)
 
   const [isShowError, setIsShowError] = useState(false)
   const [errors, setErrors] = useState({ ...initialValues })
   const [alert, setAlert] = useState('')
 
-  const handleChange = (e: any) => {
-    if (e.target.name == 'remember') {
-      setFormValue({ ...formValue, [e.target.name]: e.target.checked })
-    } else {
-      setFormValue({ ...formValue, [e.target.name]: e.target.value })
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, checked } = e.target
+    setFormValue((prevState) => ({
+      ...prevState,
+      [name]: name === "remember" ? checked : value
+    }))
   }
 
-  const login = async (e: any) => {
+  const submit = (e: React.SyntheticEvent) => {
+    e.preventDefault()
     setIsShowError(false)
-
-    try {
-      e.preventDefault()
-
-      const response = await API.post('account/api/login', formValue, getRequestConfiguration())
-
-      if (response.data.error && response.data.error !== undefined) {
-        setErrors(response.data.error)
-        setIsShowError(true)
-      }
-
-      if (response.data.alert && response.data.alert !== undefined) {
-        setAlert(response.data.alert)
-      }
-      console.log(response.data)
-      console.log(formValue)
-      // return false
-    } catch (error: any) {
-      console.log(error.toString())
-    }
+//     setFormValue({
+//       ...formValue,
+//       [csrf.name]: csrf.value
+//     })
+// console.log(formValue)
+    dispatch(submitLogin(formValue))
+      .unwrap()
+      .then((response) => {
+        if (response.error && response.error !== undefined) {
+          setErrors(response.error)
+          setIsShowError(true)
+        }
+        if (response.alert && response.alert !== undefined) {
+          setAlert(response.alert)
+        }
+        // toast.success(response)
+        // resetForm()
+        // dispatch(getEmployees())
+      })
+      .catch((error: object) => {
+        console.log(error.toString())
+        //toast.error(error)
+      })
   }
 
   return (
     <div className='mx-auto' style={{ maxWidth: '500px' }}>
-      <form onSubmit={login}>
+      <form onSubmit={submit}>
         <Message message={errors} isShow={isShowError} type='danger' />
+        <Form.Control
+            name={pageContext.token.name}
+            id='input_csrf'
+            type='text'
+            placeholder=''
+            value={pageContext.token.value}
+        />
         <Form.Floating className='mb-3'>
           <Form.Control
             name='identity'
@@ -71,8 +89,8 @@ const CustomerLoginForm = (props: any) => {
             onChange={handleChange}
             isInvalid={!!errors.identity}
           />
-          <label htmlFor='input_identity'>{props.text_login_identity}</label>
-          <Form.Control.Feedback type='invalid'>{errors.identity}</Form.Control.Feedback>
+          <label htmlFor='input_identity'>{data.text_login_identity}</label>
+          <Form.Control.Feedback type='invalid'>{data.identity}</Form.Control.Feedback>
         </Form.Floating>
 
         <Form.Floating className='mb-3'>
@@ -85,7 +103,7 @@ const CustomerLoginForm = (props: any) => {
             onChange={handleChange}
             isInvalid={!!errors.password}
           />
-          <label htmlFor='input_password'>{props.text_password}</label>
+          <label htmlFor='input_password'>{data.text_password}</label>
           <Form.Control.Feedback type='invalid'>{errors.password}</Form.Control.Feedback>
         </Form.Floating>
 
@@ -94,7 +112,7 @@ const CustomerLoginForm = (props: any) => {
             <Form.Check
               name='remember'
               id='input_remember'
-              label={props.text_remember}
+              label={data.text_remember}
               value='1'
               onChange={handleChange}
             />

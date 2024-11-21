@@ -7,6 +7,7 @@ export const API = axios.create({
   responseType: 'json',
   headers: {
     'Content-type': 'application/json',
+    'Content-type': 'multipart/form-data',
     'X-Requested-With': 'XMLHttpRequest'
   }
 })
@@ -44,8 +45,10 @@ export const makeRequest = ({
       promise = API.get(url, requestConfiguration)
       break
     case 'POST':
-    case 'PUT':
       promise = API.post(url, values, requestConfiguration)
+      break
+    case 'PUT':
+      promise = API.put(url, values, requestConfiguration)
       break
     case 'DELETE':
       promise = API.delete(url, requestConfiguration)

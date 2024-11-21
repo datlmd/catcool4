@@ -88,3 +88,21 @@ export interface IMessageInfo {
   isShow: boolean,
   type: string
 }
+
+
+// ----- Context -----
+
+export interface IPageContext {
+  token: {
+    name: string,
+    value: string | null
+  },
+  customer: ICustomerInfo | null
+}
+
+// ----- Customer -----
+
+export interface ICustomerInfo {
+  email: string,
+  phone?: number
+}

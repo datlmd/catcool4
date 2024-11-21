@@ -3,7 +3,7 @@ import {
   //PayloadAction
 } from '@reduxjs/toolkit'
 import type { RootState } from '../../index'
-import { loadLogin } from './accountApi'
+import { loadLogin, submitLogin } from './accountApi'
 import { IPage } from '../../types'
 
 // Define the initial state using that type
@@ -17,7 +17,20 @@ export const loginSlice = createSlice({
   name: 'login',
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
-  reducers: {},
+  reducers: {
+    // login: {
+    //   reducer(
+    //     state,
+    //     action: PayloadAction<{ currentPage: number }>
+    //   ) {
+    //     state.all = action.payload
+    //     state.meta = action.meta
+    //   },
+    //   prepare(payload: Page[], currentPage: number) {
+    //     return { payload, meta: { currentPage } }
+    //   }
+    // }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loadLogin.pending, (state) => {
@@ -28,6 +41,19 @@ export const loginSlice = createSlice({
         state.status = 'success'
       })
       .addCase(loadLogin.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message ?? 'Unknown Error'
+      })
+      .addCase(submitLogin.pending, (state) => {
+        state.status = 'pending'
+      })
+      .addCase(submitLogin.fulfilled, (state, action) => {
+        state.data = action.payload
+
+        console.log(action.payload)
+        state.status = 'success'
+      })
+      .addCase(submitLogin.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message ?? 'Unknown Error'
       })
@@ -42,4 +68,4 @@ export const pageError = (state: RootState) => state.login.error
 
 export default loginSlice.reducer
 
-export { loadLogin }
+export { loadLogin, submitLogin }

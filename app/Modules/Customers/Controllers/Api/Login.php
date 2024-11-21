@@ -76,7 +76,11 @@ class Login extends MyController
         }
 
         $remember = (bool)$this->request->getPost('remember');
-        if (!service('customer')->login($this->request->getPost('login_identity'), html_entity_decode($this->request->getPost('login_password'), ENT_QUOTES, 'UTF-8'), $remember)) {
+
+        cc_debug($_GET, false);
+        cc_debug($_POST, false);
+        cc_debug("---" . $this->request->getPost('identity') . "---");
+        if (!service('customer')->login($this->request->getPost('identity'), html_entity_decode($this->request->getPost('password'), ENT_QUOTES, 'UTF-8'), $remember)) {
             $errors = empty(service('customer')->getErrors()) ? lang('Customer.text_login_unsuccessful') : service('customer')->getErrors();
 
             $data = [

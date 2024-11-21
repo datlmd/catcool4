@@ -9,3 +9,12 @@ export const loadLogin = createAsyncThunk('page/login', async () => {
     console.log(error)
   }
 })
+
+export const submitLogin = createAsyncThunk('page/submitLogin', async (params) => {
+  try {
+    const res = await API.post('account/api/login', params, getRequestToken())
+    return res.data
+  } catch (error) {
+    console.log(error)
+  }
+})

@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useState, createContext } from 'react'
 // import 'bootstrap/dist/css/bootstrap.min.css'
 // import 'font-awesome/css/font-awesome.min.css'
 // import 'bootstrap-icons/font/bootstrap-icons.css'
@@ -14,9 +14,10 @@ const LoginView = lazy(() => import('./views/Account/Login'))
 const ContactView = lazy(() => import('./views/Frontend/Contact'))
 const AboutView = lazy(() => import('./views/Frontend/About'))
 
-import { ILayoutView } from 'src/store/types'
+import { ILayoutView, IPageContext } from './store/types'
+import { PageContext } from './contexts/Page'
 
-const baseUrl = window.base_url
+//const baseUrl = window.base_url
 const pathUrl = window.path_url
 
 const intLayoutView = {
@@ -33,10 +34,16 @@ const intLayoutView = {
 const App = () => {
   const [pageData, setPageData] = useState([])
   const [layouts, setLayouts] = useState<ILayoutView>(intLayoutView)
+  const pageContext: IPageContext = {
+    token: {
+      name: window.csrf_name,
+      value: window.csrf_value
+    }
+  }
 
   useEffect(() => {
     if (window.page_data && window.page_data !== undefined) {
-      let data = JSON.parse(sanitizeJSONString(window.page_data))
+      const data = JSON.parse(sanitizeJSONString(window.page_data))
 
       setPageData(data)
 
@@ -46,12 +53,6 @@ const App = () => {
     } else {
       console.log('window.page_data is empty!!!')
     }
-
-    setPageData({
-      ...pageData
-      // tokenName: window.csrf_name,
-      // tokenValue: window.csrf_value,
-    })
   }, [])
 
   const callbackLayout = (data: any) => {
@@ -61,38 +62,40 @@ const App = () => {
 
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path={pathUrl} element={<LayoutDefault {...layouts} />}>
-            <Route index element={<HomeView />} />
-            <Route
-              path={pathUrl + 'about'}
-              element={
-                <Suspense fallback={<Loading />}>
-                  <AboutView callbackLayout={callbackLayout} />
-                </Suspense>
-              }
-            />
-            <Route
-              path={pathUrl + 'contact'}
-              element={
-                <Suspense fallback={<Loading />}>
-                  <ContactView callbackLayout={callbackLayout} />
-                </Suspense>
-              }
-            />
-            <Route
-              path={pathUrl + 'account/login'}
-              element={
-                <Suspense fallback={<Loading />}>
-                  <LoginView {...pageData} callbackLayout={callbackLayout} />
-                </Suspense>
-              }
-            />
-            <Route path='*' element={<PageNotFound />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <PageContext.Provider value={pageContext}>
+        <BrowserRouter>
+          <Routes>
+            <Route path={pathUrl} element={<LayoutDefault {...layouts} />}>
+              <Route index element={<HomeView />} />
+              <Route
+                path={pathUrl + 'about'}
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <AboutView callbackLayout={callbackLayout} />
+                  </Suspense>
+                }
+              />
+              <Route
+                path={pathUrl + 'contact'}
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <ContactView callbackLayout={callbackLayout} />
+                  </Suspense>
+                }
+              />
+              <Route
+                path={pathUrl + 'account/login'}
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <LoginView {...pageData} callbackLayout={callbackLayout} />
+                  </Suspense>
+                }
+              />
+              <Route path='*' element={<PageNotFound />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </PageContext.Provider>
     </>
   )
 }
