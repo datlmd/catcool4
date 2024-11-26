@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Countries\Controllers\Api;
+<?php
+
+namespace App\Modules\Countries\Controllers\Api;
 
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Controller;
@@ -12,17 +14,18 @@ class Districts extends Controller
         if (!$this->request->isAJAX()) {
             return $this->failNotFound(lang('Country.text_none'));
         }
-        
+
         if (empty($this->request->getPost('zone_id'))) {
             return $this->failNotFound(lang('Country.text_none'));
         }
 
         $district_model = \CodeIgniter\Config\Factories::models('\App\Modules\Countries\Models\DistrictModel');
         $district_list = $district_model->getDistrictsByZone($this->request->getPost('zone_id'));
-       
+
+        $data['text_select'] = lang('Country.text_select');
         $data['none'] = lang('Country.text_none');
         $data['districts'] = [];
-        
+
         if (empty($district_list)) {
             return $this->respond($data);
         }
@@ -31,7 +34,7 @@ class Districts extends Controller
             $district_list['_'.$key] = $value;
             unset($district_list[$key]);
         }
-        
+
         $data['districts'] = $district_list;
 
         return $this->respond($data, 200);
