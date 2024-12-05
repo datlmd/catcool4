@@ -93,11 +93,14 @@ export interface IMessageInfo {
 // ----- Context -----
 
 export interface IPageContext {
-  token: {
-    name: string,
-    value: string | null
-  },
-  customer: ICustomerInfo | null
+  token: ITokenInfo | null,
+  customer?: ICustomerInfo | null
+}
+
+// ----- Token Info -----
+export interface ITokenInfo {
+  name: string,
+  value: string
 }
 
 // ----- Customer -----

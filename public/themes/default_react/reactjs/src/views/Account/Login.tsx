@@ -9,11 +9,10 @@ import { loadLogin, pageData, pageStatus, submitLogin } from '../../store/module
 
 import { PageContext } from '../../contexts/Page'
 
-
 interface ILogin {
-  identity: string,
-  password: string,
-  remember: boolean,
+  identity: string
+  password: string
+  remember: boolean
 }
 
 const initialValues: ILogin = {
@@ -22,7 +21,7 @@ const initialValues: ILogin = {
   remember: false
 }
 
-const LoginView = ({ callbackLayout }: { callbackLayout: any }) => {
+const LoginView = ({ callbackLayout }: { callbackLayout: void }) => {
   const pageContext = useContext(PageContext)
   const dispatch = useAppDispatch()
   const status = useAppSelector(pageStatus)
@@ -41,7 +40,6 @@ const LoginView = ({ callbackLayout }: { callbackLayout: any }) => {
   const [formValue, setFormValue] = useState(initialValues)
   const [isShowError, setIsShowError] = useState<boolean>(false)
   const [errors, setErrors] = useState({ ...initialValues })
-  const [alert, setAlert] = useState('')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, checked } = e.target
@@ -56,8 +54,8 @@ const LoginView = ({ callbackLayout }: { callbackLayout: any }) => {
 
     setIsShowError(false)
 
-    const params = {...formValue, [pageContext.token.name]: pageContext.token.value}
-    console.log(params)
+    const params = { ...formValue, [pageContext.token.name]: pageContext.token.value }
+
     dispatch(submitLogin(params))
       .unwrap()
       .then((response) => {
@@ -65,9 +63,7 @@ const LoginView = ({ callbackLayout }: { callbackLayout: any }) => {
           setErrors(response.error)
           setIsShowError(true)
         }
-        if (response.alert && response.alert !== undefined) {
-          setAlert(response.alert)
-        }
+
         // resetForm()
         // dispatch(getEmployees())
       })
@@ -85,7 +81,7 @@ const LoginView = ({ callbackLayout }: { callbackLayout: any }) => {
         <div className='mx-auto' style={{ maxWidth: '500px' }}>
           <form onSubmit={submit}>
             <Message message={errors} isShow={isShowError} type='danger' />
-           
+
             <Form.Floating className='mb-3'>
               <Form.Control
                 name='identity'

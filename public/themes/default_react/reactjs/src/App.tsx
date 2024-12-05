@@ -55,7 +55,7 @@ const App = () => {
     }
   }, [])
 
-  const callbackLayout = (data: any) => {
+  const callbackLayout = (data: ILayoutView) => {
     setLayouts(data)
     console.log('parennn')
   }

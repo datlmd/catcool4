@@ -47,10 +47,7 @@ export const loginSlice = createSlice({
       .addCase(submitLogin.pending, (state) => {
         state.status = 'pending'
       })
-      .addCase(submitLogin.fulfilled, (state, action) => {
-        state.data = action.payload
-
-        console.log(action.payload)
+      .addCase(submitLogin.fulfilled, (state) => {
         state.status = 'success'
       })
       .addCase(submitLogin.rejected, (state, action) => {
