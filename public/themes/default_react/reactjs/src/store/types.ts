@@ -84,7 +84,7 @@ export interface IMenuInfo {
  * Message
  */
 export interface IMessageInfo {
-  message: string | string[],
+  message: any,
   isShow: boolean,
   type: string
 }
