@@ -13,18 +13,6 @@ class Profile extends MyController
             return $this->failNotFound();
         }
 
-        $redirect_url = "";
-        if (!service('customer')->isLogged() || (empty($this->request->getGet('customer_token')) || empty(session('customer_token')) || ($this->request->getGet('customer_token') != session('customer_token')))) {
-            $redirect_url = site_url("account/login?return_url=" . current_url());
-            if (service('customer')->loginRememberedCustomer()) {
-                $redirect_url = current_url() . '?customer_token=' . session('customer_token');
-            }
-        }
-
-        if (!empty($redirect_url)) {
-            return $this->setResponseFormat('json')->respond(['redirect_url' => $redirect_url], 200);
-        }
-
         //breadcrumb
         $this->breadcrumb->add(lang('General.text_home'), base_url());
         $this->breadcrumb->add(lang('Customer.text_profile'), site_url('account/profile') . '?customer_token=' . session('customer_token'));
@@ -34,14 +22,25 @@ class Profile extends MyController
             'breadcrumb_title' => lang('Customer.text_profile'),
             'module' => 'frontend/account',// su dung de load template layout cho trang
         ];
-
         $data['layouts'] = service("react")->getTemplate(($params));
+
+        $redirect_url = "";
+        if (!service('customer')->isLogged() || (empty($this->request->getGet('customer_token')) || empty(session('customer_token')) || ($this->request->getGet('customer_token') != session('customer_token')))) {
+            $redirect_url = "/account/login?return_url=" . current_url();
+            if (service('customer')->loginRememberedCustomer()) {
+                $redirect_url = '/account/profile?customer_token=' . session('customer_token');
+            }
+        }
+
+        $data['redirect_url'] = $redirect_url;
+        if (!empty($redirect_url)) {
+            return $this->setResponseFormat('json')->respond($data, 200);
+        }
 
         $data['edit'] = site_url('account/edit') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
         $data['password'] = site_url('account/password') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
         $data['address'] = site_url('account/address') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
         $data['wishlist'] = site_url('account/wishlist') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
-
         $data['order'] = site_url('account/order') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
         $data['download'] = site_url('account/download') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");
         $data['reward'] = site_url('account/reward') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : "");

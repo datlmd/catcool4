@@ -11,6 +11,7 @@ import Loading from './components/Loading/Loading'
 import { sanitizeJSONString } from './utils/String'
 
 const LoginView = lazy(() => import('./views/Account/Login'))
+const ProfileView = lazy(() => import('./views/Account/Profile'))
 const ContactView = lazy(() => import('./views/Frontend/Contact'))
 const AboutView = lazy(() => import('./views/Frontend/About'))
 
@@ -88,6 +89,14 @@ const App = () => {
                 element={
                   <Suspense fallback={<Loading />}>
                     <LoginView {...pageData} callbackLayout={callbackLayout} />
+                  </Suspense>
+                }
+              />
+              <Route
+                path={pathUrl + 'account/profile'}
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <ProfileView {...pageData} callbackLayout={callbackLayout} />
                   </Suspense>
                 }
               />

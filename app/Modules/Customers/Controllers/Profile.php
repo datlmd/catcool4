@@ -18,6 +18,10 @@ class Profile extends UserController
 
     public function index()
     {
+        if (IS_REACT) {
+            return theme_load('react');
+        }
+        
         if (!service('customer')->isLogged() || (empty($this->request->getGet('customer_token')) || empty(session('customer_token')) || ($this->request->getGet('customer_token') != session('customer_token')))) {
             if (service('customer')->loginRememberedCustomer()) {
                 return redirect()->to(current_url() . '?customer_token=' . session('customer_token'));

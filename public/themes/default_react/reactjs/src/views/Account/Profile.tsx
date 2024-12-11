@@ -1,35 +1,28 @@
 'use strict'
 
 import { useEffect, useState, useContext } from 'react'
-import { Col, Form, Row, Button } from 'react-bootstrap'
-import Message from '../../components/UI/Message'
+import { useNavigate } from "react-router-dom";
 import LoadingContent from '../../components/Loading/Content'
 import { useAppSelector, useAppDispatch } from '../../store/hooks'
-import { loadLogin, pageData, pageStatus, submitLogin } from '../../store/modules/account/loginSlice'
-
+import { loadProfile, pageData, pageStatus } from '../../store/modules/account/profileSlice'
 import { PageContext } from '../../contexts/Page'
 
-interface ILogin {
-  identity: string
-  password: string
-  remember: boolean
-}
-
-const initialValues: ILogin = {
-  identity: '',
-  password: '',
-  remember: false
-}
-
-const LoginView = ({ callbackLayout }: { callbackLayout: void }) => {
+const ProfileView = ({ callbackLayout }: { callbackLayout: void }) => {
   const pageContext = useContext(PageContext)
   const dispatch = useAppDispatch()
   const status = useAppSelector(pageStatus)
   const data = useAppSelector(pageData)
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (status === 'idle') {
-      dispatch(loadLogin())
+      dispatch(loadProfile())
+    }
+    
+    if (data.redirect_url && data.redirect_url != undefined) {
+      //window.location.replace(data.redirect_url)
+      navigate(data.redirect_url)
+      console.log(data.redirect_url)
     }
 
     if (data.layouts && data.layouts != undefined) {
@@ -37,18 +30,12 @@ const LoginView = ({ callbackLayout }: { callbackLayout: void }) => {
     }
   }, [dispatch, status, data, callbackLayout])
 
-  const [formValue, setFormValue] = useState(initialValues)
-  const [isShowError, setIsShowError] = useState<boolean>(false)
-  const [errors, setErrors] = useState({ ...initialValues })
-
-
-
   if (data.status === 'pending') {
     return <LoadingContent />
   } else {
     return (
       <>
-        <h1 className='text-uppercase mb-4 text-center'>{data.text_login}</h1>
+        <h1 className='text-uppercase mb-4 text-center'>{data.text_my_account}</h1>
         <div className='mx-auto' style={{ maxWidth: '500px' }}>
           fdfdf
         </div>
@@ -57,4 +44,4 @@ const LoginView = ({ callbackLayout }: { callbackLayout: void }) => {
   }
 }
 
-export default LoginView
+export default ProfileView

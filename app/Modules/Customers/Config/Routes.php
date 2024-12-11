@@ -45,4 +45,5 @@ $routes->group('account', ['namespace' => 'App\Modules\Customers\Controllers'], 
 $routes->group('account/api', ['namespace' => 'App\Modules\Customers\Controllers\Api'], function($subroutes) {
     $subroutes->get('login', 'Login::index');
     $subroutes->post('login', 'Login::login');
+    $subroutes->get('profile', 'Profile::index');
 });

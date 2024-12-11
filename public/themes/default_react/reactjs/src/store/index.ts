@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit'
 import { contactSlice } from './modules/contact/contactSlice'
 import { aboutSlice } from './modules/about/aboutSlice'
 import { loginSlice } from './modules/account/loginSlice'
+import { profileSlice } from './modules/account/profileSlice'
 
 export const store = configureStore({
   reducer: {
     contact: contactSlice.reducer,
     about: aboutSlice.reducer,
-    login: loginSlice.reducer
+    login: loginSlice.reducer,
+    profile: profileSlice.reducer
   }
 })
 
