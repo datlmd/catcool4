@@ -464,7 +464,7 @@ class Themes
         $data_master['metadata']    = $objTheme->_outputMeta();
         $data_master['css_files']   = $objTheme->_outputCSS();
         $data_master['js_files']    = $objTheme->_outputJS();
-//cc_debug($data_master);
+
         $objTheme->setVar($data_master);
 
         $layout = [];
@@ -539,6 +539,7 @@ class Themes
                 // prepare all path
                 $paths = [
                     build_path(FCPATH, self::$config[THEME_PATH], self::$config[THEME], 'views', 'modules', strtolower($objTheme->module)),
+					build_path(FCPATH, self::$config[THEME_PATH], self::$config[THEME], 'views'),
                     build_path(APPPATH, 'Modules', $objTheme->module, 'Views'),
 					build_path(APPPATH, 'Views'),
                 ];

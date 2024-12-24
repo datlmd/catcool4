@@ -18,7 +18,7 @@
 		<link rel="icon" type="image/png" sizes="32x32" href="{base_url()}{config_item('favicon_32_32')}">
 	{/if}
 
-	<title>{if !empty($page_title)}{$page_title}{/if}</title>
+	<title inertia>{if !empty($page_title)}{$page_title}{/if}</title>
 	{$metadata}
 
 	<!-- Mobile Metas -->
@@ -55,7 +55,7 @@
 
 	{$layout}
 
-	<div id="root"></div>
+	<div id="app" data-page='{{json_encode($page)}}'></div>
 
 	{if ENVIRONMENT === 'production'}
 		<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>

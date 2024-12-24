@@ -26,9 +26,9 @@ class Profile extends MyController
 
         $redirect_url = "";
         if (!service('customer')->isLogged() || (empty($this->request->getGet('customer_token')) || empty(session('customer_token')) || ($this->request->getGet('customer_token') != session('customer_token')))) {
-            $redirect_url = "/account/login?return_url=" . current_url();
+            $redirect_url = site_url("account/login?return_url=" . current_url());
             if (service('customer')->loginRememberedCustomer()) {
-                $redirect_url = '/account/profile?customer_token=' . session('customer_token');
+                $redirect_url = site_url('account/profile?customer_token=' . session('customer_token'));
             }
         }
 

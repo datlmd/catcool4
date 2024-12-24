@@ -16,10 +16,6 @@ class Login extends MyController
 
     public function index()
     {
-        if (IS_REACT) {
-            return theme_load('react');
-        }
-
         $data = [];
 
         $return_url = $this->request->getGet('return_url');
@@ -45,6 +41,24 @@ class Login extends MyController
             'breadcrumb_title' => lang('Customer.text_account_login'),
         ];
 
+        add_meta(['title' => lang("Customer.text_account_login")], $this->themes);
+
+        if (IS_REACT) {
+            $data = [
+                'page' => [
+                    'component' => 'Account/Login',
+                    'props' => [
+                        'message' => 'Hello from Inertia.js and React!',
+                        'layouts' => [
+                            'header_top' => view_cell('Common::headerTop', $params),
+                        ]
+                    ],
+                    'url' => site_url('account/login')
+                ]
+            ];
+            return theme_load('react', $data);
+        }
+
         $this->themes->addPartial('header_top', $params)
             ->addPartial('header_bottom', $params)
             ->addPartial('content_left', $params)
@@ -53,8 +67,6 @@ class Login extends MyController
             ->addPartial('content_right', $params)
             ->addPartial('footer_top', $params)
             ->addPartial('footer_bottom', $params);
-
-        add_meta(['title' => lang("Customer.text_account_login")], $this->themes);
 
         theme_load('login', $data);
     }
