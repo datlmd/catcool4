@@ -188,4 +188,13 @@ class Services extends BaseService
     {
         return ($getShared === true ? static::getSharedInstance('react') : new React());
     }
+
+    public static function inertia($getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('inertia');
+        }
+
+        return new \Inertia\Factory;
+    }
 }

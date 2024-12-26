@@ -45,35 +45,29 @@ class Login extends MyController
 
         if (IS_REACT) {
             $data = [
-                'page_title' => lang("Customer.text_account_login"),
-                'page' => [
-                    'component' => 'Account/Login',
-                    'props' => [
-                        'message' => 'Hello from Inertia.js and React!',
-                        'layouts' => [
-                            'header_top' => view_cell('Common::headerTop', $params),
-                        ],
-                        'lang' => [
-                            'forgotten' => site_url('account/forgotten'),
-                            'login' => site_url('account/login'),
-                    
-                            'text_login' => lang('General.text_login'),
-                            'text_login_identity' => lang('General.text_login_identity'),
-                            'text_password' => lang('General.text_password'),
-                            'text_remember' => lang('General.text_remember'),
-                            'button_login' => lang('General.button_login'),
-                            'text_or' => lang('General.text_or')
-                        ],
-                        'crsf_token' => [
-                            'name' => csrf_token(),
-                            'value' => csrf_hash(),
-                        ]
-                    ],
-                    'url' => site_url('account/login'),
-                    'status' => 200
-                ]
+                'message' => 'Hello from Inertia.js and React!',
+                'layouts' => [
+                    'header_top' => view_cell('Common::headerTop', $params),
+                ],
+                'lang' => [
+                    'forgotten' => site_url('account/forgotten'),
+                    'login' => site_url('account/login'),
+            
+                    'text_login' => lang('General.text_login'),
+                    'text_login_identity' => lang('General.text_login_identity'),
+                    'text_password' => lang('General.text_password'),
+                    'text_remember' => lang('General.text_remember'),
+                    'button_login' => lang('General.button_login'),
+                    'text_or' => lang('General.text_or')
+                ],
+                'crsf_token' => [
+                    'name' => csrf_token(),
+                    'value' => csrf_hash(),
+                ],
+                'errors' => session()->getFlashdata('errors')
             ];
-            return theme_load('react', $data);
+
+            return inertia('Account/Login', $data);
         }
 
         $this->themes->addPartial('header_top', $params)
@@ -90,37 +84,24 @@ class Login extends MyController
 
     public function login()
     {
-        $this->validator->setRule('login_identity', lang('Customer.text_login_identity'), 'required');
-        $this->validator->setRule('login_password', lang('Customer.text_password'), 'required');
+        $this->validator->setRule('identity', lang('Customer.text_login_identity'), 'required');
+        $this->validator->setRule('password', lang('Customer.text_password'), 'required');
 
         if (!$this->validator->withRequest($this->request)->run()) {
             $errors = $this->validator->getErrors();
-
-            if (IS_REACT) {
-                $data = [
-                    'page_title' => lang("Customer.text_account_login"),
-                    'page' => [
-                        'component' => 'Account/Login',
-                        'errors' => $errors
-                        // 'url' => site_url('account/login'),
-                        // 'status' => 200
-                    ]
-                ];
-                //return theme_load('react', $data);
-            }
-            //return redirect()->back()->with('errors', $errors);
             json_output([
                 'errors' => $errors,
                 'alert' => print_alert($errors, ALERT_ERROR)
             ]);
+            //return $this->setResponseFormat('json')->respond($data);
         }
 
         $remember = (bool)$this->request->getPost('remember');
-        if (!service('customer')->login($this->request->getPost('login_identity'), html_entity_decode($this->request->getPost('login_password'), ENT_QUOTES, 'UTF-8'), $remember)) {
+        if (!service('customer')->login($this->request->getPost('identity'), html_entity_decode($this->request->getPost('password'), ENT_QUOTES, 'UTF-8'), $remember)) {
             $errors = empty(service('customer')->getErrors()) ? lang('Customer.text_login_unsuccessful') : service('customer')->getErrors();
 
             json_output([
-                'error' => $errors,
+                'errors' => $errors,
                 'alert' => print_alert($errors, ALERT_ERROR)
             ]);
         }

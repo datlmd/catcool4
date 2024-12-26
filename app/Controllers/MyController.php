@@ -57,7 +57,7 @@ class MyController extends Controller
      *
      * @var array
      */
-    protected $helpers = ['html', 'url', 'themes', 'catcool', 'customer', 'form', 'inflector', 'cookie', 'setting'];
+    protected $helpers = ['html', 'url', 'inertia', 'themes', 'catcool', 'customer', 'form', 'inflector', 'cookie', 'setting'];
 
     protected $validator;
 

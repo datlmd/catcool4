@@ -4,11 +4,11 @@ import { useEffect, useState, useContext, FormEventHandler } from 'react'
 import { Col, Form, Row, Button } from 'react-bootstrap'
 import DefaultLayout from '../../Layouts/DefaultLayout'
 import { Head, useForm, usePage} from '@inertiajs/inertia-react';
-
+import { API, getRequestToken } from '../../utils/callApi'
 // import Checkbox from '@/Components/Checkbox';
 import InputError from '../../Components/InputError';
 import InputLabel from '../../Components/InputLabel';
-import CsrfInput from '../../Components/CsrfInput';
+//import CsrfInput from '../../Components/CsrfInput';
 // import TextInput from '@/Components/TextInput';
 
 const Login = ({
@@ -17,32 +17,55 @@ const Login = ({
     status?: string
 }) => {
 
-    useEffect(() => {
-
-    }, [])
-
     const lang = usePage().props.lang
     const crsf_token = usePage().props.crsf_token
 
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const [data, setData] = useState({
         identity: '',
         password: '',
         remember: false,
         [crsf_token.name]: crsf_token.value
     })
 
-    const submit: FormEventHandler = (e) => {
-        e.preventDefault();
+    const [errors, setErrors] = useState({
+        identity: '',
+        password: '',
+    })
+
+    useEffect(() => {
+
+    }, [])
+
     
-        post(lang.login, {
-            errorBag: 'createPost',
-            wantsJson: true,
-            onSuccess: (response) => {
-                console.log(55)
-                console.log(response)
-            },
-           // onFinish: () => reset('password'),
-        })
+
+    // const { data, setData, processing, errors, reset } = useForm({
+    //     identity: '',
+    //     password: '',
+    //     remember: false,
+    //     [crsf_token.name]: crsf_token.value
+    // })
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value, checked } = e.target
+        setData((prevState) => ({
+            ...prevState,
+            [name]: name === 'remember' ? checked : value
+        }))
+    }
+
+    const submit: FormEventHandler = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await API.post('account/login', data, getRequestToken())
+
+            if (response.data.errors && response.data.errors !== undefined) {
+                setErrors(response.data.errors)
+                
+              }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -51,7 +74,7 @@ const Login = ({
             <div className='mx-auto' style={{ maxWidth: '500px' }}>
                 <form onSubmit={submit}>
                     {/* <Message message={errors} isShow={isShowError} type='danger' /> */}
-                    <CsrfInput></CsrfInput>
+    
                     <Form.Floating className='mb-3'>
                         <Form.Control
                         name='identity'
@@ -59,13 +82,11 @@ const Login = ({
                         type='text'
                         placeholder=''
                         value={data.identity}
-                        onChange={(e) => setData('identity', e.target.value)}
+                        onChange={handleChange}
                         isInvalid={!!errors.identity}
                         />
-                        {/* // <label htmlFor='input_identity'>{lang.text_login_identity}</label>
-                        // <Form.Control.Feedback type='invalid'>{errors.identity}</Form.Control.Feedback> */}
-                        <InputLabel htmlFor="identity" value={lang.text_login_identity} />
-                        <InputError message={errors.identity} className="mt-2" />
+                        <label htmlFor='input_identity'>{lang.text_login_identity}</label>
+                        <Form.Control.Feedback type='invalid'>{errors.identity}</Form.Control.Feedback>
                     </Form.Floating>
 
                     <Form.Floating className='mb-3'>
@@ -75,7 +96,7 @@ const Login = ({
                         type='password'
                         placeholder=''
                         value={data.password}
-                        onChange={(e) => setData('password', e.target.value)}
+                        onChange={handleChange}
                         isInvalid={!!errors.password}
                         />
                         <label htmlFor='input_password'>{lang.text_password}</label>
@@ -89,14 +110,14 @@ const Login = ({
                             id='input_remember'
                             label={lang.text_remember}
                             checked={data.remember}
-                            onChange={(e) => setData('remember', e.target.value)}
+                            onChange={handleChange}
                         />
                         </Col>
                     </Form.Group>
 
                     <Form.Group as={Row} className='mb-3'>
                         <Col sm={{ span: 12 }}>
-                            <Button type='submit'  disabled={processing}>Sign in</Button>
+                            <Button type='submit'>Sign in</Button>
                         </Col>
                     </Form.Group>
                 </form>
