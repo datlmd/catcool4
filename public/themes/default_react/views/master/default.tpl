@@ -1,6 +1,6 @@
 {strip}
 <!DOCTYPE html>
-<html class="{if !empty($html_class)}{$html_class}{/if}" dir="{lang('General.direction')}" lang="{lang('General.code')}">
+<html class="{if !empty($html_class)}{$html_class}{/if}" dir="{lang('General.direction')}" lang="{str_replace('_', '-', lang('General.code'))}">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -18,12 +18,15 @@
 		<link rel="icon" type="image/png" sizes="32x32" href="{base_url()}{config_item('favicon_32_32')}">
 	{/if}
 
-	<title inertia>{if !empty($page_title)}{$page_title}{/if}</title>
+	<title inertia>{$page_title}</title>
+
+	<meta name="csrf-header" content="{csrf_token()}">
+	<meta name="csrf-value" content="{csrf_hash()}">
+
 	{$metadata}
 
 	<!-- Mobile Metas -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
-
 
 	<link
 		rel="stylesheet"
@@ -45,6 +48,12 @@
 
 	{include file=get_theme_path('views/master/common/css_theme.tpl')}
 
+	<!-- Head Libs -->
+	<script src="{base_url('common/plugin/modernizr/modernizr.min.js')}"></script>
+
+	<script src="{base_url('common/plugin/bootstrap/js/bootstrap.bundle.js')}" type="text/javascript"></script>
+	<script src="{base_url('common/plugin/jquery/jquery.min.js')}" type="text/javascript"></script>
+	<script src="{base_url('common/plugin/bootstrap/js/popper.min.js')}" type="text/javascript"></script>
 
     <script>{script_global()}</script>
 
@@ -64,6 +73,7 @@
 		<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
 		<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
 	{/if}
+	
 	{reactjs_script()}
 
 	<script>

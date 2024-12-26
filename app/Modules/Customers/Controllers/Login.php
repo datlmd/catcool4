@@ -45,15 +45,32 @@ class Login extends MyController
 
         if (IS_REACT) {
             $data = [
+                'page_title' => lang("Customer.text_account_login"),
                 'page' => [
                     'component' => 'Account/Login',
                     'props' => [
                         'message' => 'Hello from Inertia.js and React!',
                         'layouts' => [
                             'header_top' => view_cell('Common::headerTop', $params),
+                        ],
+                        'lang' => [
+                            'forgotten' => site_url('account/forgotten'),
+                            'login' => site_url('account/login'),
+                    
+                            'text_login' => lang('General.text_login'),
+                            'text_login_identity' => lang('General.text_login_identity'),
+                            'text_password' => lang('General.text_password'),
+                            'text_remember' => lang('General.text_remember'),
+                            'button_login' => lang('General.button_login'),
+                            'text_or' => lang('General.text_or')
+                        ],
+                        'crsf_token' => [
+                            'name' => csrf_token(),
+                            'value' => csrf_hash(),
                         ]
                     ],
-                    'url' => site_url('account/login')
+                    'url' => site_url('account/login'),
+                    'status' => 200
                 ]
             ];
             return theme_load('react', $data);
@@ -79,8 +96,21 @@ class Login extends MyController
         if (!$this->validator->withRequest($this->request)->run()) {
             $errors = $this->validator->getErrors();
 
+            if (IS_REACT) {
+                $data = [
+                    'page_title' => lang("Customer.text_account_login"),
+                    'page' => [
+                        'component' => 'Account/Login',
+                        'errors' => $errors
+                        // 'url' => site_url('account/login'),
+                        // 'status' => 200
+                    ]
+                ];
+                //return theme_load('react', $data);
+            }
+            //return redirect()->back()->with('errors', $errors);
             json_output([
-                'error' => $errors,
+                'errors' => $errors,
                 'alert' => print_alert($errors, ALERT_ERROR)
             ]);
         }
