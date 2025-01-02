@@ -18,10 +18,6 @@ class Profile extends UserController
 
     public function index()
     {
-        if (IS_REACT) {
-            return theme_load('react');
-        }
-        
         if (!service('customer')->isLogged() || (empty($this->request->getGet('customer_token')) || empty(session('customer_token')) || ($this->request->getGet('customer_token') != session('customer_token')))) {
             if (service('customer')->loginRememberedCustomer()) {
                 return redirect()->to(current_url() . '?customer_token=' . session('customer_token'));
@@ -52,6 +48,26 @@ class Profile extends UserController
             'breadcrumb' => $this->breadcrumb->render(),
             'breadcrumb_title' => lang('Customer.text_profile'),
         ];
+
+        if (IS_REACT) {
+            $data = [
+                'message' => 'Hello from Inertia.js and React!',
+                'layouts' => [
+                    'header_top' => view_cell('Common::headerTop', $params),
+                ],
+                'lang' => [
+                   
+                    'text_profile' => lang('Customer.text_profile'),
+                ],
+                'crsf_token' => [
+                    'name' => csrf_token(),
+                    'value' => csrf_hash(),
+                ],
+                'errors' => session()->getFlashdata('errors')
+            ];
+    
+            return inertia('Account/Profile', $data);
+        }
 
         $this->themes->addPartial('header_top', $params)
             ->addPartial('header_bottom', $params)
