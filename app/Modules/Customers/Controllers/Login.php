@@ -58,7 +58,8 @@ class Login extends MyController
                     'text_password' => lang('General.text_password'),
                     'text_remember' => lang('General.text_remember'),
                     'button_login' => lang('General.button_login'),
-                    'text_or' => lang('General.text_or')
+                    'text_or' => lang('General.text_or'),
+                    'text_lost_password' => lang('General.text_lost_password'),
                 ],
                 'crsf_token' => [
                     'name' => csrf_token(),

@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { InertiaApp, createInertiaApp } from '@inertiajs/inertia-react';  // Inertia.js for React
+import { InertiaApp } from '@inertiajs/inertia-react' // Inertia.js for React
 
 const app = document.getElementById('app') // The div with id 'app' in your view
 
