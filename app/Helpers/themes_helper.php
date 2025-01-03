@@ -236,6 +236,14 @@ if ( ! function_exists('theme_load'))
     }
 }
 
+if ( ! function_exists('theme_var'))
+{
+    function theme_var()
+    {
+        return ['meta' => App\Libraries\Themes::getVars()];
+    }
+}
+
 if ( ! function_exists('reactjs_script'))
 {
     function reactjs_script()
@@ -259,7 +267,7 @@ if ( ! function_exists('reactjs_script'))
         }
 
         return $script[ENVIRONMENT] ?? "";
-    }   
+    }
 }
 
 if ( ! function_exists('reactjs_css'))

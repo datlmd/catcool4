@@ -30,8 +30,6 @@ class Login extends MyController
             return redirect()->to($return_url . '?customer_token=' . session('customer_token'));
         }
 
-        $data['return_url'] = $return_url;
-
         //breadcrumb
         $this->breadcrumb->add(lang('General.text_home'), base_url());
         $this->breadcrumb->add(lang('Customer.text_account_login'), base_url('account/login'));
@@ -44,29 +42,21 @@ class Login extends MyController
         add_meta(['title' => lang("Customer.text_account_login")], $this->themes);
 
         if (IS_REACT) {
-            $data = [
-                'message' => 'Hello from Inertia.js and React!',
-                'layouts' => [
-                    'header_top' => view_cell('Common::headerTop', $params),
-                ],
-                'lang' => [
-                    'forgotten' => site_url('account/forgotten'),
-                    'login' => site_url('account/login'),
-            
-                    'text_login' => lang('General.text_login'),
-                    'text_login_identity' => lang('General.text_login_identity'),
-                    'text_password' => lang('General.text_password'),
-                    'text_remember' => lang('General.text_remember'),
-                    'button_login' => lang('General.button_login'),
-                    'text_or' => lang('General.text_or'),
-                    'text_lost_password' => lang('General.text_lost_password'),
-                ],
-                'crsf_token' => [
-                    'name' => csrf_token(),
-                    'value' => csrf_hash(),
-                ],
-                'errors' => session()->getFlashdata('errors')
+            $data['params'] = $params['params'];
+            $data['contents'] = [
+                'forgotten' => site_url('account/forgotten'),
+                'login' => site_url('account/login'),
+                'text_login' => lang('General.text_login'),
+                'text_login_identity' => lang('General.text_login_identity'),
+                'text_password' => lang('General.text_password'),
+                'text_remember' => lang('General.text_remember'),
+                'button_login' => lang('General.button_login'),
+                'text_or' => lang('General.text_or'),
+                'text_lost_password' => lang('General.text_lost_password'),
             ];
+
+            $data = array_merge($data, theme_var());
+            $data = inertia_data($data);
 
             return inertia('Account/Login', $data);
         }
@@ -80,7 +70,7 @@ class Login extends MyController
             ->addPartial('footer_top', $params)
             ->addPartial('footer_bottom', $params);
 
-        theme_load('login', $data);
+        theme_load('login', $data['contents']);
     }
 
     public function login()

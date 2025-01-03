@@ -1,25 +1,8 @@
 import { PropsWithChildren, ReactNode, useEffect } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import { Link, usePage } from '@inertiajs/inertia-react'
+import { usePage } from '@inertiajs/inertia-react'
 
-export default function Default({
-    header_bottom,
-    column_left,
-    column_right,
-    content_top,
-    content_bottom,
-    footer_top,
-    footer_bottom,
-    children
-}: PropsWithChildren<{
-    header_bottom?: ReactNode
-    column_left?: ReactNode
-    column_right?: ReactNode
-    content_top?: ReactNode
-    content_bottom?: ReactNode
-    footer_top?: ReactNode
-    footer_bottom?: ReactNode
-}>) {
+export default function Default({ children }: PropsWithChildren) {
     const layouts = usePage().props.layouts
 
     useEffect(() => {}, [])
@@ -29,44 +12,37 @@ export default function Default({
             <div className='body'>
                 {layouts.header_top && <span dangerouslySetInnerHTML={{ __html: layouts.header_top }}></span>}
 
-                {header_bottom && header_bottom}
+                {layouts.header_bottom && <span dangerouslySetInnerHTML={{ __html: layouts.header_bottom }}></span>}
 
                 <div role='main' className='main'>
                     <Container fluid='xxl'>
                         <Row>
-                            {column_left && column_left}
+                            {layouts.column_left && (
+                                <span dangerouslySetInnerHTML={{ __html: layouts.column_left }}></span>
+                            )}
 
-                            <Col as='aside' xs={{ order: 0 }} id='content_left' className='d-none d-md-block col-3'>
-                                <nav>
-                                    <ul>
-                                        <li>
-                                            <Link href='/dev/catcool4/public/'>Home</Link>
-                                        </li>
-                                        <li>
-                                            <Link href='/dev/catcool4/public/about'>About</Link>
-                                        </li>
-                                        <li>
-                                            <Link href='/dev/catcool4/public/contact'>Contact</Link>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </Col>
                             <Col id='content'>
-                                {content_top && content_top}
+                                {layouts.content_top && (
+                                    <span dangerouslySetInnerHTML={{ __html: layouts.content_top }}></span>
+                                )}
 
                                 {children}
 
-                                {content_bottom && content_bottom}
+                                {layouts.content_bottom && (
+                                    <span dangerouslySetInnerHTML={{ __html: layouts.content_bottom }}></span>
+                                )}
                             </Col>
 
-                            {column_right && column_right}
+                            {layouts.column_right && (
+                                <span dangerouslySetInnerHTML={{ __html: layouts.column_right }}></span>
+                            )}
                         </Row>
                     </Container>
                 </div>
 
-                {footer_top && footer_top}
+                {layouts.footer_top && <span dangerouslySetInnerHTML={{ __html: layouts.footer_top }}></span>}
 
-                {footer_bottom && footer_bottom}
+                {layouts.footer_bottom && <span dangerouslySetInnerHTML={{ __html: layouts.footer_bottom }}></span>}
             </div>
         </>
     )

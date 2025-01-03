@@ -1,3 +1,11 @@
+<?php
+	$page_meta = $page['props']['meta'] ?? "";
+	
+	if (isset($page['props']['meta'])) {
+		unset($page['props']['meta']);
+	}
+?>
+
 <!DOCTYPE html>
 <html dir="<?= lang('General.direction') ?>" lang="<?= str_replace('_', '-', lang('General.code')) ?>">
     <head>
@@ -17,9 +25,8 @@
 			<link rel="icon" type="image/png" sizes="32x32" href="<?= base_url(config_item('favicon_32_32')) ?>">
 		<? endif; ?>
 
-
-        <title inertia></title>
-
+        <title inertia><?= $page_meta['page_title'] ?? "" ?></title>
+		<?= $page_meta['metadata'] ?? "" ?>
         <!-- Mobile Metas -->
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
 
@@ -29,6 +36,8 @@
 			integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
 			crossorigin="anonymous"
 		/>
+
+		<?= $page_meta['css_files'] ?? "" ?>
 
 		<!--[if lt IE 9]>
 		<script type="text/javascript" src="<?php base_url('common/js/html5shiv-3.7.3.min.js') ?>"></script>
@@ -56,7 +65,7 @@
         @vite(['resources/js/app.tsx', "resources/js/Pages/{$page['component']}.tsx"]) -->
         <!-- @inertiaHead -->
     </head>
-    <body class="font-sans antialiased">
+    <body class="<?= $page_meta['body_class'] ?? "" ?>">
         <!-- @inertia -->
 		<div id="app" data-page='<?= htmlentities(json_encode($page)) ?>'></div>
 
@@ -67,6 +76,8 @@
 			<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
 			<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
 		<? endif; ?>
+
+		<?= $page_meta['js_files'] ?? "" ?>
 
 		<?= reactjs_script() ?>
     </body>

@@ -63,7 +63,7 @@ class Response
         $page = [
             'component' => $this->component,
             'props' => $props,
-            'url' => $this->request()->detectPath() !== '/' ?  site_url('/'. $this->request()->detectPath()) : site_url('/'),
+            'url' => $this->request()->getPath() !== '/' ?  site_url('/' . $this->request()->getPath() . http_get_query()) : site_url('/' . http_get_query()),
             'version' => $this->version,
         ];
 

@@ -450,6 +450,28 @@ class Themes
         return $this;
     }
 
+	static function getVars()
+	{
+		if (is_null(self::$instance))
+		{
+			self::init();
+		}
+		$objTheme = self::$instance;
+
+		$data_master['title']          = !empty(self::$metadata['title']) ? self::$metadata['title'] : "";
+        $data_master['description']    = !empty(self::$metadata['description']) ? self::$metadata['description'] : "";
+        $data_master['keywords']       = !empty(self::$metadata['keywords']) ? self::$metadata['keywords'] : "";
+        $data_master['metadata']       = $objTheme->_outputMeta();
+        $data_master['css_files']      = $objTheme->_outputCSS();
+        $data_master['js_files']       = $objTheme->_outputJS();
+		$data_master[self::PAGE_TITLE] = self::$themeVars[self::PAGE_TITLE] ?? "";
+
+		$body_class = sprintf("%s-%s-%s", self::$instance->module, self::$instance->controller, self::$instance->method);
+		$data_master['body_class'] = strtolower($body_class);
+
+		return $data_master;
+	}
+
 	static function load($viewPath = null, $data = [])
 	{
 		if (is_null(self::$instance))

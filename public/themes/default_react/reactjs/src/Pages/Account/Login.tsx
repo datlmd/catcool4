@@ -7,8 +7,7 @@ import { usePage, Link } from '@inertiajs/inertia-react'
 import { API, getRequestToken } from '../../utils/callApi'
 import Message from '../../Components/UI/Message'
 
-const Login = () => {
-    const lang = usePage().props.lang
+const Login = ({ contents, alert }: { contents?: any; alert?: string }) => {
     const crsf_token = usePage().props.crsf_token
     const [data, setData] = useState({
         identity: '',
@@ -54,8 +53,9 @@ const Login = () => {
 
     return (
         <DefaultLayout>
-            <h1 className='text-uppercase mb-4 text-center'>{lang.text_login}</h1>
+            <h1 className='text-uppercase mb-4 text-center'>{contents.text_login}</h1>
             <div className='mx-auto' style={{ maxWidth: '500px' }}>
+                {alert && <div id='profile_alert' className='mb-4' dangerouslySetInnerHTML={{ __html: alert }}></div>}
                 <form onSubmit={submit}>
                     <Message message={errors} isShow={isShowError} type='danger' />
 
@@ -69,7 +69,7 @@ const Login = () => {
                             onChange={handleChange}
                             isInvalid={!!errors.identity}
                         />
-                        <label htmlFor='input_identity'>{lang.text_login_identity}</label>
+                        <label htmlFor='input_identity'>{contents.text_login_identity}</label>
                         <Form.Control.Feedback type='invalid'>{errors.identity}</Form.Control.Feedback>
                     </Form.Floating>
 
@@ -83,7 +83,7 @@ const Login = () => {
                             onChange={handleChange}
                             isInvalid={!!errors.password}
                         />
-                        <label htmlFor='input_password'>{lang.text_password}</label>
+                        <label htmlFor='input_password'>{contents.text_password}</label>
                         <Form.Control.Feedback type='invalid'>{errors.password}</Form.Control.Feedback>
                     </Form.Floating>
 
@@ -92,7 +92,7 @@ const Login = () => {
                             <Form.Check
                                 name='remember'
                                 id='input_remember'
-                                label={lang.text_remember}
+                                label={contents.text_remember}
                                 checked={data.remember}
                                 onChange={handleChange}
                             />
@@ -101,10 +101,10 @@ const Login = () => {
 
                     <Form.Group as={Row} className='mb-3'>
                         <Col sm={{ span: 6 }}>
-                            <Button type='submit'>{lang.button_login}</Button>
+                            <Button type='submit'>{contents.button_login}</Button>
                         </Col>
                         <Col sm={{ span: 6 }} className='text-end'>
-                            <Link href={lang.forgotten}>{lang.text_lost_password}</Link>
+                            <Link href={contents.forgotten}>{contents.text_lost_password}</Link>
                         </Col>
                     </Form.Group>
                 </form>
