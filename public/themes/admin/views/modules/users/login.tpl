@@ -20,13 +20,13 @@
                     <div id="login_alert"></div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="input_username" name="username" value="{old('username', $username)}" placeholder="{lang('Admin.text_username')}" autocomplete="off">
+                        <input type="text" class="form-control" id="input_username" name="username" value="{old('username', $username)}" placeholder="" autocomplete="off">
                         <label for="input_username">{lang('Admin.text_username')}</label>
                         <div class="invalid-feedback" id="error_username"></div>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control" id="input_password" name="password" value="" placeholder="{lang('Admin.text_password')}">
+                        <input type="password" class="form-control" id="input_password" name="password" value="" placeholder="">
                         <label for="input_password">{lang('Admin.text_password')}</label>
                         <div class="invalid-feedback" id="error_password"></div>
                     </div>
