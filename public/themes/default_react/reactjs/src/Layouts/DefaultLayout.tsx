@@ -69,28 +69,28 @@ export default function Default({ children }: PropsWithChildren) {
     return (
         <>
             <div className='body'>
-                {headerTopView && headerTopView}
+                {headerTopView && headerTopView.length > 0 && headerTopView}
 
-                {headerBottomView && headerBottomView}
+                {headerBottomView && headerBottomView.length > 0 && headerBottomView}
 
                 <div role='main' className='main'>
                     <Container fluid='xxl'>
                         <Row>
-                            {columnLeftView && (
+                            {columnLeftView && columnLeftView.length > 0 && (
                                 <Col as='aside' id='column_left' className='d-none d-md-block col-3'>
                                     {columnLeftView}
                                 </Col>
                             )}
 
                             <Col id='content'>
-                                {contentTopView && contentTopView}
+                                {contentTopView && contentTopView.length > 0 && contentTopView}
 
                                 {children}
 
-                                {contentBottomView && contentBottomView}
+                                {contentBottomView && contentBottomView.length > 0 && contentBottomView}
                             </Col>
 
-                            {columnRightView && (
+                            {columnRightView && columnRightView.length > 0 && (
                                 <Col as='aside' id='column_right' className='d-none d-md-block col-3'>
                                     {columnRightView}
                                 </Col>
@@ -99,9 +99,9 @@ export default function Default({ children }: PropsWithChildren) {
                     </Container>
                 </div>
 
-                {footerTopView && footerTopView}
+                {footerTopView && footerTopView.length > 0 && footerTopView}
 
-                {footerBottomView && footerBottomView}
+                {footerBottomView && footerBottomView.length > 0 && footerBottomView}
             </div>
         </>
     )
