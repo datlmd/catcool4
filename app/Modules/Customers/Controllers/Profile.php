@@ -41,7 +41,13 @@ class Profile extends UserController
         $data = [];
 
         if (IS_REACT) {
-            $data['params'] = $params['params'];
+            
+            $data['params'] = [
+                'breadcrumbs' => service('breadcrumb')->get(),
+                'breadcrumb_title' => lang('Contact.text_profile'),
+                'module' => 'frontend/account',// su dung de load template layout cho trang
+            ];
+
             $data['contents'] = [
                 'customer_name' => full_name(service('Customer')->getFirstName(), service('Customer')->getLastName()),
                 'customer_avatar' => image_url(service('Customer')->getImage(), 45, 45),

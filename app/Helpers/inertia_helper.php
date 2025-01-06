@@ -31,16 +31,17 @@ if (! function_exists('inertia_data')) {
     function inertia_data($data)
     {
         $inertia_data = [
-            'layouts' => [
-                'header_top' => view_cell('Common::headerTop', $data['params'] ?? []),
-                'header_bottom' => view_cell('Common::headerBottom', $data['params'] ?? []),
-                'content_left' => view_cell('Common::contentLeft', $data['params'] ?? []),
-                'content_top' => view_cell('Common::contentTop', $data['params'] ?? []),
-                'content_bottom' => view_cell('Common::contentBottom', $data['params'] ?? []),
-                'content_right' => view_cell('Common::contentRight', $data['params'] ?? []),
-                'footer_top' => view_cell('Common::footerTop', $data['params'] ?? []),
-                'footer_bottom' => view_cell('Common::footerBottom', $data['params'] ?? []),
-            ],
+            // 'layouts' => [
+            //     'header_top' => view_cell('Common::headerTop', $data['params'] ?? []),
+            //     'header_bottom' => view_cell('Common::headerBottom', $data['params'] ?? []),
+            //     'content_left' => view_cell('Common::contentLeft', $data['params'] ?? []),
+            //     'content_top' => view_cell('Common::contentTop', $data['params'] ?? []),
+            //     'content_bottom' => view_cell('Common::contentBottom', $data['params'] ?? []),
+            //     'content_right' => view_cell('Common::contentRight', $data['params'] ?? []),
+            //     'footer_top' => view_cell('Common::footerTop', $data['params'] ?? []),
+            //     'footer_bottom' => view_cell('Common::footerBottom', $data['params'] ?? []),
+            // ],
+            'layouts' => service("react")->getTemplate(($data['params'] ?? [])),
             'crsf_token' => [
                 'name' => csrf_token(),
                 'value' => csrf_hash(),

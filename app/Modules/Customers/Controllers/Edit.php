@@ -60,15 +60,6 @@ class Edit extends UserController
             'breadcrumb_title' => lang('Customer.text_account_edit'),
         ];
 
-        $this->themes->addPartial('header_top', $params)
-            ->addPartial('header_bottom', $params)
-            ->addPartial('content_left', $params)
-            ->addPartial('content_top', $params)
-            ->addPartial('content_bottom', $params)
-            ->addPartial('content_right', $params)
-            ->addPartial('footer_top', $params)
-            ->addPartial('footer_bottom', $params);
-
         //load datepicker
         $this->themes->addJS('common/plugin/datepicker/moment.min');
         $this->themes->addCSS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
@@ -79,7 +70,66 @@ class Edit extends UserController
 
         add_meta(['title' => lang("Customer.text_account_edit_title")], $this->themes);
 
-        theme_load('edit', $data);
+        if (!IS_REACT) {
+            $this->themes->addPartial('header_top', $params)
+            ->addPartial('header_bottom', $params)
+            ->addPartial('content_left', $params)
+            ->addPartial('content_top', $params)
+            ->addPartial('content_bottom', $params)
+            ->addPartial('content_right', $params)
+            ->addPartial('footer_top', $params)
+            ->addPartial('footer_bottom', $params);
+            
+            theme_load('edit', $data);
+        }
+
+        $data['params'] = [
+            'breadcrumbs' => service('breadcrumb')->get(),
+            'breadcrumb_title' => lang('Customer.text_account_edit'),
+            'module' => 'frontend/account',// su dung de load template layout cho trang
+        ];
+        
+        $data['contents'] = [
+            'customer_name' => full_name(service('Customer')->getFirstName(), service('Customer')->getLastName()),
+            'customer_avatar' => image_url(service('Customer')->getImage(), 45, 45),
+            
+            'edit' => site_url('account/edit') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
+            'password' => site_url('account/password') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
+            'address' => site_url('account/address') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
+            'wishlist' => site_url('account/wishlist') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
+            'order' => site_url('account/order') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
+            'download' => site_url('account/download') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
+            'reward' => site_url('account/reward') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
+            'return' => site_url('account/return') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
+            'transaction' => site_url('account/transaction') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
+            'newsletter' => site_url('account/newsletter') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
+            'subscription' => site_url('account/subscription') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
+
+            'text_account_edit_title' => lang('Customer.text_account_edit_title'),
+            'text_your_details' => lang('Customer.text_your_details'),
+            'text_first_name' => lang('Customer.text_first_name'),
+            'help_first_name' => lang('Customer.help_first_name'),
+            'text_last_name' => lang('Customer.text_last_name'),
+            'help_last_name' => lang('Customer.help_last_name'),
+            'text_gender' => lang('General.text_gender'),
+            'text_male' => lang('General.text_male'),
+            'text_female' => lang('General.text_female'),
+            'text_other' => lang('General.text_other'),
+            'text_dob' => lang('General.text_dob'),
+            'text_email' => lang('Customer.text_email'),
+            'text_username' => lang('Customer.text_username'),
+            'text_phone' => lang('Customer.text_phone'),
+            'text_customer_group' => lang('Customer.text_customer_group'),
+
+            'text_gender' => lang('General.button_back'),
+            'text_male' => lang('General.button_save'),
+        ];
+
+        $data = array_merge($data, theme_var());
+        $data = inertia_data($data);
+
+        return inertia('Account/Edit', $data);
+        
     }
 
     public function save()

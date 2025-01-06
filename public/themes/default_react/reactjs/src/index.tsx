@@ -8,7 +8,7 @@ const root = ReactDOM.createRoot(document.getElementById('app'))
 
 root.render(
     <InertiaApp
-        initialPage={JSON.parse(app.dataset.page)} // Passing page data from server
+        initialPage={JSON.parse(document.getElementById('app').dataset.page)} // Passing page data from server
         resolveComponent={(name) => import(`./Pages/${name}.tsx`).then((module) => module.default)} // Dynamic import for React components
     />
 )

@@ -42,7 +42,12 @@ class Login extends MyController
         add_meta(['title' => lang("Customer.text_account_login")], $this->themes);
 
         if (IS_REACT) {
-            $data['params'] = $params['params'];
+            $data['params'] = [
+                'breadcrumbs' => service('breadcrumb')->get(),
+                'breadcrumb_title' => lang('Customer.text_account_login'),
+                'module' => 'frontend/account',// su dung de load template layout cho trang
+            ];
+
             $data['contents'] = [
                 'forgotten' => site_url('account/forgotten'),
                 'login' => site_url('account/login'),

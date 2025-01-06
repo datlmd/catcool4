@@ -1,48 +1,107 @@
-import { PropsWithChildren, ReactNode, useEffect } from 'react'
+import { PropsWithChildren, lazy, useEffect, useState, ReactNode } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { usePage } from '@inertiajs/inertia-react'
+
+const importView = (subreddit: string) => lazy(() => import(`./${subreddit}`).catch(() => import(`./Common/NullView`)))
 
 export default function Default({ children }: PropsWithChildren) {
     const layouts = usePage().props.layouts
 
-    useEffect(() => {}, [])
+    const [headerTopView, setHeaderTopView] = useState<ReactNode>()
+    const [headerBottomView, setHeaderBottomView] = useState<ReactNode>()
+    const [columnLeftView, setColumnLeftView] = useState<ReactNode>()
+    const [columnRightView, setColumnRightView] = useState<ReactNode>()
+    const [contentTopView, setContentTopView] = useState<ReactNode>()
+    const [contentBottomView, setContentBottomView] = useState<ReactNode>()
+    const [footerTopView, setFooterTopView] = useState<ReactNode>()
+    const [footerBottomView, setFooterBottomView] = useState<ReactNode>()
+
+    useEffect(() => {
+        async function LoadViews(component: object, position: string) {
+            if (Array.isArray(component) && component !== undefined) {
+                const componentPromises = component.map(async (data) => {
+                    const View = await importView(data.subreddit)
+                    return <View key={data.key} data={data.data} />
+                })
+
+                switch (position) {
+                    case 'header_top':
+                        Promise.all(componentPromises).then(setHeaderTopView)
+                        break
+                    case 'header_bottom':
+                        Promise.all(componentPromises).then(setHeaderBottomView)
+                        break
+                    case 'column_left':
+                        Promise.all(componentPromises).then(setColumnLeftView)
+                        break
+                    case 'column_right':
+                        Promise.all(componentPromises).then(setColumnRightView)
+                        break
+                    case 'content_top':
+                        Promise.all(componentPromises).then(setContentTopView)
+                        break
+                    case 'content_bottom':
+                        Promise.all(componentPromises).then(setContentBottomView)
+                        break
+                    case 'footer_top':
+                        Promise.all(componentPromises).then(setFooterTopView)
+                        break
+                    case 'footer_bottom':
+                        Promise.all(componentPromises).then(setFooterBottomView)
+                        break
+                }
+            }
+            // else {
+            //   console.log(position + ' is empty')
+            // }
+        }
+
+        LoadViews(layouts.header_top, 'header_top')
+        LoadViews(layouts.header_bottom, 'header_bottom')
+        LoadViews(layouts.column_left, 'column_left')
+        LoadViews(layouts.column_right, 'column_right')
+        LoadViews(layouts.content_top, 'content_top')
+        LoadViews(layouts.content_bottom, 'content_bottom')
+        LoadViews(layouts.footer_top, 'footer_top')
+        LoadViews(layouts.footer_bottom, 'footer_bottom')
+    }, [layouts])
 
     return (
         <>
             <div className='body'>
-                {layouts.header_top && <span dangerouslySetInnerHTML={{ __html: layouts.header_top }}></span>}
+                {headerTopView && headerTopView}
 
-                {layouts.header_bottom && <span dangerouslySetInnerHTML={{ __html: layouts.header_bottom }}></span>}
+                {headerBottomView && headerBottomView}
 
                 <div role='main' className='main'>
                     <Container fluid='xxl'>
                         <Row>
-                            {layouts.column_left && (
-                                <span dangerouslySetInnerHTML={{ __html: layouts.column_left }}></span>
+                            {columnLeftView && (
+                                <Col as='aside' id='column_left' className='d-none d-md-block col-3'>
+                                    {columnLeftView}
+                                </Col>
                             )}
 
                             <Col id='content'>
-                                {layouts.content_top && (
-                                    <span dangerouslySetInnerHTML={{ __html: layouts.content_top }}></span>
-                                )}
+                                {contentTopView && contentTopView}
 
                                 {children}
 
-                                {layouts.content_bottom && (
-                                    <span dangerouslySetInnerHTML={{ __html: layouts.content_bottom }}></span>
-                                )}
+                                {contentBottomView && contentBottomView}
                             </Col>
 
-                            {layouts.column_right && (
-                                <span dangerouslySetInnerHTML={{ __html: layouts.column_right }}></span>
+                            {columnRightView && (
+                                <Col as='aside' id='column_right' className='d-none d-md-block col-3'>
+                                    {columnRightView}
+                                </Col>
                             )}
                         </Row>
                     </Container>
                 </div>
 
-                {layouts.footer_top && <span dangerouslySetInnerHTML={{ __html: layouts.footer_top }}></span>}
+                {footerTopView && footerTopView}
 
-                {layouts.footer_bottom && <span dangerouslySetInnerHTML={{ __html: layouts.footer_bottom }}></span>}
+                {footerBottomView && footerBottomView}
             </div>
         </>
     )
