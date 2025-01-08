@@ -1,4 +1,4 @@
-import { InertiaLinkProps, Link } from '@inertiajs/react';
+import { InertiaLinkProps, Link } from '@inertiajs/inertia-react'
 
 export default function NavLink({
     active = false,

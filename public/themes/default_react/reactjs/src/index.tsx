@@ -2,8 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { InertiaApp } from '@inertiajs/inertia-react' // Inertia.js for React
 
-const app = document.getElementById('app') // The div with id 'app' in your view
-
 const root = ReactDOM.createRoot(document.getElementById('app'))
 
 root.render(

@@ -1,5 +1,5 @@
 import { Transition } from '@headlessui/react';
-import { InertiaLinkProps, Link } from '@inertiajs/react';
+import { InertiaLinkProps, Link } from '@inertiajs/inertia-react'
 import {
     createContext,
     Dispatch,
