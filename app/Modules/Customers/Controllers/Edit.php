@@ -83,11 +83,12 @@ class Edit extends UserController
             theme_load('edit', $data);
         }
 
-        $data['params'] = [
-            'breadcrumbs' => service('breadcrumb')->get(),
-            'breadcrumb_title' => lang('Customer.text_account_edit'),
-            'module' => 'frontend/account',// su dung de load template layout cho trang
-        ];
+        $data['params'] = $params['params'];
+        // $data['params'] = [
+        //     'breadcrumbs' => service('breadcrumb')->get(),
+        //     'breadcrumb_title' => lang('Customer.text_account_edit'),
+        //     'module' => 'frontend/account',// su dung de load template layout cho trang
+        // ];
         
         $data['contents'] = [
             'customer_name' => full_name(service('Customer')->getFirstName(), service('Customer')->getLastName()),
