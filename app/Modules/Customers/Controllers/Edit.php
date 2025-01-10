@@ -26,40 +26,6 @@ class Edit extends UserController
             return redirect()->to(site_url("account/login?return_url=" . current_url()));
         }
 
-        $customer_model = new \App\Modules\Customers\Models\CustomerModel();
-
-        $customer_info = $customer_model->getCustomerInfo(service('customer')->getId());
-        $data['customer_info'] = $customer_info;
-
-        $data['customer_group_list'] = [];
-        if (!empty(config_item('customer_group_display'))) {
-            $customer_group_display = explode(',', config_item('customer_group_display'));
-
-            $customer_group_model = new \App\Modules\Customers\Models\GroupModel();
-            $customer_group_list = $customer_group_model->getCustomerGroups($this->language_id);
-
-            foreach ($customer_group_list as $customer_group) {
-                if (in_array($customer_group['customer_group_id'], $customer_group_display)) {
-                    $data['customer_group_list'][] = $customer_group;
-                }
-            }
-        }
-        $data['customer_group_id'] = config_item('customer_group_id');
-
-        $data['back'] = site_url('account/profile') . '?customer_token=' . session('customer_token');
-        $data['save'] = site_url('account/edit/save') . '?customer_token=' . session('customer_token');
-
-        //breadcrumb
-        $this->breadcrumb->add(lang('General.text_home'), base_url());
-        $this->breadcrumb->add(lang('Customer.text_account'), site_url('account/profile') . '?customer_token=' . session('customer_token'));
-        $this->breadcrumb->add(lang('Customer.text_account_edit'), site_url('account/edit') . '?customer_token=' . session('customer_token'));
-
-        //set params khi call cell
-        $params['params'] = [
-            'breadcrumb' => $this->breadcrumb->render(),
-            'breadcrumb_title' => lang('Customer.text_account_edit'),
-        ];
-
         //load datepicker
         $this->themes->addJS('common/plugin/datepicker/moment.min');
         $this->themes->addCSS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
@@ -68,43 +34,40 @@ class Edit extends UserController
             $this->themes->addJS('common/plugin/datepicker/locale/vi');
         }
 
-        add_meta(['title' => lang("Customer.text_account_edit_title")], $this->themes);
+        //breadcrumb
+        $this->breadcrumb->add(lang('General.text_home'), base_url());
+        $this->breadcrumb->add(lang('Customer.text_account'), site_url('account/profile') . '?customer_token=' . session('customer_token'));
+        $this->breadcrumb->add(lang('Customer.text_account_edit'), site_url('account/edit') . '?customer_token=' . session('customer_token'));
 
-        if (!IS_REACT) {
-            $this->themes->addPartial('header_top', $params)
-            ->addPartial('header_bottom', $params)
-            ->addPartial('content_left', $params)
-            ->addPartial('content_top', $params)
-            ->addPartial('content_bottom', $params)
-            ->addPartial('content_right', $params)
-            ->addPartial('footer_top', $params)
-            ->addPartial('footer_bottom', $params);
+        //set params khi call cell
+        $data['params'] = [
+            'breadcrumb' => $this->breadcrumb->render(),
+            'breadcrumb_title' => lang('Customer.text_account_edit'),
+        ];
+
+        $customer_model = new \App\Modules\Customers\Models\CustomerModel();
+
+        $customer_group_list = [];
+        if (!empty(config_item('customer_group_display'))) {
+            $customer_group_display = explode(',', config_item('customer_group_display'));
+
+            $customer_group_model = new \App\Modules\Customers\Models\GroupModel();
+            $customer_group_list = $customer_group_model->getCustomerGroups($this->language_id);
             
-            theme_load('edit', $data);
+            foreach ($customer_group_list ?? [] as $customer_group) {
+                if (in_array($customer_group['customer_group_id'], $customer_group_display)) {
+                    $customer_group_list[] = $customer_group;
+                }
+            }
         }
 
-        $data['params'] = $params['params'];
-        // $data['params'] = [
-        //     'breadcrumbs' => service('breadcrumb')->get(),
-        //     'breadcrumb_title' => lang('Customer.text_account_edit'),
-        //     'module' => 'frontend/account',// su dung de load template layout cho trang
-        // ];
-        
         $data['contents'] = [
-            'customer_name' => full_name(service('Customer')->getFirstName(), service('Customer')->getLastName()),
-            'customer_avatar' => image_url(service('Customer')->getImage(), 45, 45),
+            'back' => site_url('account/profile') . '?customer_token=' . session('customer_token'),
+            'save' => site_url('account/edit/save') . '?customer_token=' . session('customer_token'),
             
-            'edit' => site_url('account/edit') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
-            'password' => site_url('account/password') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
-            'address' => site_url('account/address') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
-            'wishlist' => site_url('account/wishlist') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
-            'order' => site_url('account/order') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
-            'download' => site_url('account/download') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
-            'reward' => site_url('account/reward') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
-            'return' => site_url('account/return') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
-            'transaction' => site_url('account/transaction') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
-            'newsletter' => site_url('account/newsletter') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
-            'subscription' => site_url('account/subscription') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
+            'customer_info' => $customer_model->getCustomerInfo(service('customer')->getId()),
+            'customer_group_id' => config_item('customer_group_id'),
+            'customer_group_list' => $customer_group_list,
 
             'text_account_edit_title' => lang('Customer.text_account_edit_title'),
             'text_your_details' => lang('Customer.text_your_details'),
@@ -121,14 +84,15 @@ class Edit extends UserController
             'text_username' => lang('Customer.text_username'),
             'text_phone' => lang('Customer.text_phone'),
             'text_customer_group' => lang('Customer.text_customer_group'),
-
-            'text_gender' => lang('General.button_back'),
-            'text_male' => lang('General.button_save'),
+            'button_back' => lang('General.button_back'),
+            'button_save' => lang('General.button_save'),
         ];
 
         $data = array_merge($data, theme_var());
         $data = inertia_data($data);
 
+        add_meta(['title' => lang("Customer.text_account_edit_title")], $this->themes);
+        
         return inertia('Account/Edit', $data);
         
     }

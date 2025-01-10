@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import DefaultLayout from '../../Layouts/DefaultLayout'
-import { Link } from '@inertiajs/inertia-react'
+// import { Link } from '@inertiajs/inertia-react'
 
 const Profile = ({ contents, alert }: { contents?: any; alert?: string }) => {
     useEffect(() => {}, [])
@@ -29,7 +29,7 @@ const Profile = ({ contents, alert }: { contents?: any; alert?: string }) => {
                     <h2 className='mb-2'>{contents.text_my_account}</h2>
                     <ul className='list-unstyled'>
                         <li className='pb-2'>
-                            <Link href={contents.edit}>{contents.text_profile_edit}</Link>
+                            <a href={contents.edit}>{contents.text_profile_edit}</a>
                         </li>
                         <li className='pb-2'>
                             <a href={contents.password}>{contents.text_profile_password}</a>
