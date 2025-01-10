@@ -18,8 +18,12 @@ class Response
     {
         $this->component = $component;
         $this->props = $props;
-        $this->rootView = $rootView;
         $this->version = $version;
+
+        $this->rootView = $rootView;
+        if (!empty(config_item('theme_frontend'))) {
+            $this->rootView = config_item('theme_frontend') . '/' . $rootView;
+        }
     }
 
     public function with($key, $value = null): Response
