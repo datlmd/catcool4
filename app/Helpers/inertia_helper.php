@@ -23,14 +23,16 @@ if (! function_exists('inertia')) {
 
 if (! function_exists('inertia_data')) {
     /**
-     * Undocumented function
+     * Get inertia_data
      *
      * @param [type] $data
+     * @param [type] $is_layout
      * @return void
      */
-    function inertia_data($data)
+    function inertia_data($data, $is_layout = true)
     {
-        $inertia_data = [
+        $inertia_data = [];
+        $is_layout && $inertia_data = [
             'layouts' => [
                 'header_top' => view_cell('Common::headerTop', $data['params'] ?? []),
                 'header_bottom' => view_cell('Common::headerBottom', $data['params'] ?? []),
@@ -46,7 +48,8 @@ if (! function_exists('inertia_data')) {
                 'name' => csrf_token(),
                 'value' => csrf_hash(),
             ],
-            'alert' => print_flash_alert()
+            'alert' => print_flash_alert(),
+            'errors' => session()->getFlashdata('errors')
         ];
 
         if (isset($data['params'])) {

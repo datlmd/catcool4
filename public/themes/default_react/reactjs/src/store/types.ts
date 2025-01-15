@@ -28,9 +28,8 @@ export interface ILayoutData {
  * Page
  */
 export interface IPage {
-  data: any,
-  status: 'idle' | 'pending' | 'success' | 'failed'
-  error: string | null
+  contents?: any,
+  alert?: string | null
 };
 
 /**

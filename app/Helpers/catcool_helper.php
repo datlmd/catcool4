@@ -2116,3 +2116,14 @@ if (!function_exists('get_domain')) {
         return FALSE;
     }
 }
+
+if (!function_exists('genders')) {
+    function genders()
+    {
+        return [
+            'male' => GENDER_MALE,
+            'female' => GENDER_FEMALE,
+            'other' => GENDER_OTHER,
+        ];
+    }
+}

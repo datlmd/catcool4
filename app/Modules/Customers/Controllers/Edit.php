@@ -26,14 +26,6 @@ class Edit extends UserController
             return redirect()->to(site_url("account/login?return_url=" . current_url()));
         }
 
-        //load datepicker
-        $this->themes->addJS('common/plugin/datepicker/moment.min');
-        $this->themes->addCSS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
-        $this->themes->addJS('common/plugin/datepicker/tempusdominus-bootstrap-4.min');
-        if (language_code() == 'vi') {
-            $this->themes->addJS('common/plugin/datepicker/locale/vi');
-        }
-
         //breadcrumb
         $this->breadcrumb->add(lang('General.text_home'), base_url());
         $this->breadcrumb->add(lang('Customer.text_account'), site_url('account/profile') . '?customer_token=' . session('customer_token'));
@@ -47,7 +39,7 @@ class Edit extends UserController
 
         $customer_model = new \App\Modules\Customers\Models\CustomerModel();
 
-        $customer_group_list = [];
+        $customer_groups = [];
         if (!empty(config_item('customer_group_display'))) {
             $customer_group_display = explode(',', config_item('customer_group_display'));
 
@@ -56,18 +48,24 @@ class Edit extends UserController
             
             foreach ($customer_group_list ?? [] as $customer_group) {
                 if (in_array($customer_group['customer_group_id'], $customer_group_display)) {
-                    $customer_group_list[] = $customer_group;
+                    $customer_groups[] = $customer_group;
                 }
             }
         }
+
+        $customer_info = $customer_model->getCustomerInfo(service('customer')->getId());
+        $customer_info['dob'] = date(get_date_format(true), strtotime($customer_info['dob'] ?? 0));
 
         $data['contents'] = [
             'back' => site_url('account/profile') . '?customer_token=' . session('customer_token'),
             'save' => site_url('account/edit/save') . '?customer_token=' . session('customer_token'),
             
-            'customer_info' => $customer_model->getCustomerInfo(service('customer')->getId()),
+            'customer_info' => $customer_info,
             'customer_group_id' => config_item('customer_group_id'),
-            'customer_group_list' => $customer_group_list,
+            'customer_groups' => $customer_groups,
+            'genders' => genders(),
+            'date_format' => str_ireplace('mm', 'MM', get_date_format_ajax()),
+            'language_code' => language_code(),
 
             'text_account_edit_title' => lang('Customer.text_account_edit_title'),
             'text_your_details' => lang('Customer.text_your_details'),
@@ -94,16 +92,14 @@ class Edit extends UserController
         add_meta(['title' => lang("Customer.text_account_edit_title")], $this->themes);
         
         return inertia('Account/Edit', $data);
-        
     }
 
     public function save()
     {
         if (!service('customer')->isLogged() || (empty($this->request->getGet('customer_token')) || empty(session('customer_token')) || (session('customer_token') != $this->request->getGet('customer_token')))) {
             set_alert(lang('Customer.error_edit_token'), ALERT_ERROR);
-            json_output([
-                'redirect' => site_url('account/edit' . '?customer_token=' . session('customer_token')),
-            ]);
+
+            return redirect()->to(site_url('account/login' . '?return_url=' . site_url('account/edit')));
         }
 
         $customer_id = service('customer')->getId();
@@ -139,10 +135,13 @@ class Edit extends UserController
 
         if (!$this->validator->withRequest($this->request)->run()) {
             $errors = $this->validator->getErrors();
-            json_output([
-                'error' => $errors,
-                'alert' => print_alert($errors, ALERT_ERROR),
-            ]);
+            set_alert($errors, ALERT_ERROR);
+
+            return redirect()->back()->with('errors', $errors);
+            // json_output([
+            //     'error' => $errors,
+            //     'alert' => print_alert($errors, ALERT_ERROR),
+            // ]);
         }
 
         $customer_model = new \App\Modules\Customers\Models\CustomerModel();
@@ -153,10 +152,8 @@ class Edit extends UserController
 
         if (!$customer_model->editCustomer($customer_id, $edit_data)) {
             $errors = lang('Customer.error_account_edit');
-            json_output([
-                'error' => $errors,
-                'alert' => print_alert($errors, ALERT_ERROR),
-            ]);
+            set_alert($errors, ALERT_ERROR);
+            return redirect()->back()->with('errors', $errors);
         }
 
         // Update customer session details
@@ -177,10 +174,8 @@ class Edit extends UserController
             'payment_methods',
         ]);
 
-        $success = lang('Customer.text_account_edit_success');
-        json_output([
-            'success' => $success,
-            'alert' => print_alert($success, ALERT_SUCCESS),
-        ]);
+        set_alert(lang('Customer.text_account_edit_success'), ALERT_SUCCESS);
+
+        return redirect()->back();
     }
 }
