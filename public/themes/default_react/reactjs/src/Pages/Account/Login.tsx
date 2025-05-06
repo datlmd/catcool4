@@ -7,7 +7,7 @@ import { usePage, Link } from '@inertiajs/inertia-react'
 import { API, getRequestToken } from '../../utils/callApi'
 import Message from '../../Components/UI/Message'
 
-const Login = ({ contents, alert }: { contents?: any; alert?: string }) => {
+const Login = ({ contents, alert }: { contents: { [key: string]: string }; alert?: string }) => {
     const crsf_token = usePage().props.crsf_token
     const [data, setData] = useState({
         identity: '',
@@ -45,7 +45,11 @@ const Login = ({ contents, alert }: { contents?: any; alert?: string }) => {
                 window.location = response.data.redirect
             }
         } catch (error) {
-            setErrors(error)
+            if (error instanceof Error && error.message) {
+                setErrors({ identity: '', password: error.message });
+            } else {
+                setErrors({ identity: '', password: 'An unknown error occurred' });
+            }
             setIsShowError(true)
             console.log(error)
         }

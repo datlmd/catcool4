@@ -11,7 +11,7 @@ import { IPage } from '@/types'
 import 'react-datepicker/dist/react-datepicker.css'
 
 const Edit = ({ contents, alert }: IPage) => {
-    const crsf_token = usePage().props.crsf_token
+    const crsf_token = usePage().props.crsf_token ?? { name: '', value: '' }
 
     useEffect(() => {}, [])
 

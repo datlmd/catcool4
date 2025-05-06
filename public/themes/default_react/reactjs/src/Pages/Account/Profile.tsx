@@ -4,7 +4,38 @@ import { useEffect } from 'react'
 import DefaultLayout from '../../Layouts/DefaultLayout'
 // import { Link } from '@inertiajs/inertia-react'
 
-const Profile = ({ contents, alert }: { contents?: any; alert?: string }) => {
+interface ProfileProps {
+    contents: {
+        customer_avatar: string;
+        customer_name: string;
+        text_my_account: string;
+        edit: string;
+        text_profile_edit: string;
+        password: string;
+        text_profile_password: string;
+        address: string;
+        text_profile_address: string;
+        wishlist: string;
+        text_profile_wishlist: string;
+        order: string;
+        text_profile_order: string;
+        subscription: string;
+        text_profile_subscription: string;
+        download: string;
+        text_profile_download: string;
+        reward?: string;
+        text_profile_reward?: string;
+        return: string;
+        text_profile_return: string;
+        transaction: string;
+        text_profile_transaction: string;
+        newsletter: string;
+        text_profile_newsletter: string;
+    };
+    alert?: string;
+}
+
+const Profile = ({ contents, alert }: ProfileProps) => {
     useEffect(() => {}, [])
 
     return (
