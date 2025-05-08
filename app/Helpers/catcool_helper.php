@@ -2127,3 +2127,23 @@ if (!function_exists('genders')) {
         ];
     }
 }
+
+if (!function_exists('get_languages')) {
+    function get_languages($file_name = null)
+    {
+        if (empty($file_name)) {
+            return [];
+        }
+
+        $locale = service('request')->getLocale();
+        $path = "Language/{$locale}/{$file_name}.php";
+
+        if (!is_file(APPPATH . $path)) {
+            return [];
+        }
+
+        $lang =  require APPPATH . $path;
+
+        return $lang;
+    }
+}
