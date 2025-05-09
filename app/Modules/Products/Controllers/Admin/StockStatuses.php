@@ -12,8 +12,8 @@ class StockStatuses extends AdminController
 
     protected $model_lang;
 
-    const MANAGE_ROOT = 'manage/product_stock_statuses';
-    const MANAGE_URL = 'manage/product_stock_statuses';
+    public const MANAGE_ROOT = 'manage/product_stock_statuses';
+    public const MANAGE_URL = 'manage/product_stock_statuses';
 
     public function __construct()
     {
@@ -57,8 +57,7 @@ class StockStatuses extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('stock_statuses/list', $data);
+            ->addPartial('sidebar')::load('stock_statuses/list', $data);
     }
 
     public function add()
@@ -178,8 +177,7 @@ class StockStatuses extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('stock_statuses/form', $data);
+            ->addPartial('sidebar')::load('stock_statuses/form', $data);
     }
 
     private function _validateForm()

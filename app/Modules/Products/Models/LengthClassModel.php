@@ -22,8 +22,8 @@ class LengthClassModel extends MyModel
 
     protected $table_lang = 'length_class_lang';
 
-    const LENGTH_CLASS_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'length_class_list_all';
-    const LENGTH_CLASS_CACHE_EXPIRE = YEAR;
+    public const LENGTH_CLASS_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'length_class_list_all';
+    public const LENGTH_CLASS_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {

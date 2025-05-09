@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Images\Controllers;
+<?php
+
+namespace App\Modules\Images\Controllers;
 
 use App\Controllers\MyController;
 
@@ -71,7 +73,7 @@ class File extends MyController
             }
             if ($range == '-') {
                 $c_start = $size - substr($range, 1);
-            }else{
+            } else {
                 $range  = explode('-', $range);
                 $c_start = $range[0];
                 $c_end   = (isset($range[1]) && is_numeric($range[1])) ? $range[1] : $size;
@@ -94,7 +96,7 @@ class File extends MyController
         //helper("Content-Disposition: attachment;");
 
         $buffer = 1024 * 8;
-        while(!feof($fp) && ($p = ftell($fp)) <= $end) {
+        while (!feof($fp) && ($p = ftell($fp)) <= $end) {
 
             if ($p + $buffer > $end) {
                 $buffer = $end - $p + 1;

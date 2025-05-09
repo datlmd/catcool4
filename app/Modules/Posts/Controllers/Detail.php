@@ -80,7 +80,7 @@ class Detail extends MyController
                     }
                 }
                 $lesson_categories = $lesson_categories[$lesson_parent_id];
-            } 
+            }
 
             $this->_setMeta($detail);
 
@@ -123,7 +123,7 @@ class Detail extends MyController
                 if (isset($category_list[$category_id])) {
                     $script_breadcrumb[] = [
                         'name' => $category_list[$category_id]['name'],
-                        'url'  => sprintf('%s/%s',  base_url(), $category_list[$category_id]['slug'])
+                        'url'  => sprintf('%s/%s', base_url(), $category_list[$category_id]['slug'])
                     ];
                 }
             }

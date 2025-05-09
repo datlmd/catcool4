@@ -12,8 +12,8 @@ class Statuses extends AdminController
 
     protected $model_lang;
 
-    const MANAGE_ROOT = 'manage/return_statuses';
-    const MANAGE_URL = 'manage/return_statuses';
+    public const MANAGE_ROOT = 'manage/return_statuses';
+    public const MANAGE_URL = 'manage/return_statuses';
 
     public function __construct()
     {
@@ -57,8 +57,7 @@ class Statuses extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('statuses/list', $data);
+            ->addPartial('sidebar')::load('statuses/list', $data);
     }
 
     public function add()
@@ -175,8 +174,7 @@ class Statuses extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('statuses/form', $data);
+            ->addPartial('sidebar')::load('statuses/form', $data);
     }
 
     private function _validateForm()

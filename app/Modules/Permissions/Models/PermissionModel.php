@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Permissions\Models;
+<?php
+
+namespace App\Modules\Permissions\Models;
 
 use App\Models\MyModel;
 use App\Modules\Users\Models\UserPermissionModel;
@@ -15,10 +17,10 @@ class PermissionModel extends MyModel
         'published',
     ];
 
-    const PERMISSION_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'permission_list';
-    const PERMISSION_CACHE_EXPIRE = YEAR;
+    public const PERMISSION_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'permission_list';
+    public const PERMISSION_CACHE_EXPIRE = YEAR;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -69,7 +71,7 @@ class PermissionModel extends MyModel
     public function getTextPermission($permission = null)
     {
         helper(['cookie', 'catcool', 'admin', 'inflector']);
-        
+
         \Config\Services::language()->setLocale(language_code_admin());
 
         $text_permission = lang('PermissionAdmin.not_permission');
@@ -105,7 +107,7 @@ class PermissionModel extends MyModel
             }
 
             $is_super_admin = session('user_info.super_admin');
-            if (!empty($is_super_admin) && $is_super_admin === TRUE) {
+            if (!empty($is_super_admin) && $is_super_admin === true) {
                 return true;
             }
 

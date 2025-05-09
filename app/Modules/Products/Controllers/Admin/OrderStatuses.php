@@ -12,8 +12,8 @@ class OrderStatuses extends AdminController
 
     protected $model_lang;
 
-    const MANAGE_ROOT = 'manage/product_order_statuses';
-    const MANAGE_URL = 'manage/product_order_statuses';
+    public const MANAGE_ROOT = 'manage/product_order_statuses';
+    public const MANAGE_URL = 'manage/product_order_statuses';
 
     public function __construct()
     {
@@ -57,8 +57,7 @@ class OrderStatuses extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('order_statuses/list', $data);
+            ->addPartial('sidebar')::load('order_statuses/list', $data);
     }
 
     public function add()
@@ -175,8 +174,7 @@ class OrderStatuses extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('order_statuses/form', $data);
+            ->addPartial('sidebar')::load('order_statuses/form', $data);
     }
 
     private function _validateForm()

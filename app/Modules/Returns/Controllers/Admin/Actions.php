@@ -12,8 +12,8 @@ class Actions extends AdminController
 
     protected $model_lang;
 
-    const MANAGE_ROOT = 'manage/return_actions';
-    const MANAGE_URL = 'manage/return_actions';
+    public const MANAGE_ROOT = 'manage/return_actions';
+    public const MANAGE_URL = 'manage/return_actions';
 
     public function __construct()
     {
@@ -57,8 +57,7 @@ class Actions extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('actions/list', $data);
+            ->addPartial('sidebar')::load('actions/list', $data);
     }
 
     public function add()
@@ -175,8 +174,7 @@ class Actions extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('actions/form', $data);
+            ->addPartial('sidebar')::load('actions/form', $data);
     }
 
     private function _validateForm()

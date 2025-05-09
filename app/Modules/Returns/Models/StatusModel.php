@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Returns\Models;
+<?php
+
+namespace App\Modules\Returns\Models;
 
 use App\Models\MyModel;
 

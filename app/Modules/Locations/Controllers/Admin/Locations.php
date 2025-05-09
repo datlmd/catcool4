@@ -11,8 +11,8 @@ class Locations extends AdminController
 
     protected $model_lang;
 
-    const MANAGE_ROOT = 'manage/locations';
-    const MANAGE_URL = 'manage/locations';
+    public const MANAGE_ROOT = 'manage/locations';
+    public const MANAGE_URL = 'manage/locations';
 
     public function __construct()
     {
@@ -59,8 +59,7 @@ class Locations extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('index', $data);
+            ->addPartial('sidebar')::load('index', $data);
     }
 
     public function add()
@@ -170,8 +169,7 @@ class Locations extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

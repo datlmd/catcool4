@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Dummy\Models;
+<?php
+
+namespace App\Modules\Dummy\Models;
 
 use App\Models\MyModel;
 
@@ -14,7 +16,7 @@ class GroupModel extends MyModel
         //FIELD_ROOT
     ];
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }

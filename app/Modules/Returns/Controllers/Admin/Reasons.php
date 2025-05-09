@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Returns\Controllers\Admin;
+<?php
+
+namespace App\Modules\Returns\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Returns\Models\ReasonModel;
@@ -10,8 +12,8 @@ class Reasons extends AdminController
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'manage/return_reasons';
-    CONST MANAGE_URL  = 'manage/return_reasons';
+    public const MANAGE_ROOT = 'manage/return_reasons';
+    public const MANAGE_URL  = 'manage/return_reasons';
 
     public function __construct()
     {
@@ -31,8 +33,8 @@ class Reasons extends AdminController
         $this->breadcrumb->add(lang('ReturnReasonAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
-	public function index()
-	{
+    public function index()
+    {
         add_meta(['title' => lang('ReturnReasonAdmin.heading_title')], $this->themes);
 
         $limit       = $this->request->getGet('limit');
@@ -42,7 +44,7 @@ class Reasons extends AdminController
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
-	    $data = [
+        $data = [
             'breadcrumb'    => $this->breadcrumb->render(),
             'list'          => $list->paginate($limit),
             'pager'         => $list->pager,
@@ -55,9 +57,8 @@ class Reasons extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('reasons/list', $data);
-	}
+            ->addPartial('sidebar')::load('reasons/list', $data);
+    }
 
     public function add()
     {
@@ -71,7 +72,7 @@ class Reasons extends AdminController
                 'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
             $id = $this->model->insert($add_data);
-            if ($id === FALSE) {
+            if ($id === false) {
                 set_alert(lang('Admin.error'), ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
@@ -109,7 +110,7 @@ class Reasons extends AdminController
                 $edit_data_lang[$language['id']]['return_reason_id'] = $id;
 
                 if (!empty($this->model_lang->where(['return_reason_id' => $id, 'language_id' => $language['id']])->find())) {
-                    $this->model_lang->where('language_id', $language['id'])->update($id,$edit_data_lang[$language['id']]);
+                    $this->model_lang->where('language_id', $language['id'])->update($id, $edit_data_lang[$language['id']]);
                 } else {
                     $this->model_lang->insert($edit_data_lang[$language['id']]);
                 }
@@ -119,7 +120,7 @@ class Reasons extends AdminController
                 'return_reason_id' => $id,
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
-            if ($this->model->save($edit_data) !== FALSE) {
+            if ($this->model->save($edit_data) !== false) {
                 set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
             } else {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
@@ -167,13 +168,12 @@ class Reasons extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('reasons/form', $data);
+            ->addPartial('sidebar')::load('reasons/form', $data);
     }
 
     private function _validateForm()
     {
-        foreach(list_language_admin() as $value) {
+        foreach (list_language_admin() as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
         }
 

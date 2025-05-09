@@ -13,11 +13,11 @@ class Categories extends AdminController
     protected $model_lang;
     protected $model_route;
 
-    const MANAGE_ROOT = 'manage/news_categories';
-    const MANAGE_URL = 'manage/news_categories';
+    public const MANAGE_ROOT = 'manage/news_categories';
+    public const MANAGE_URL = 'manage/news_categories';
 
-    const SEO_URL_MODULE = 'news';
-    const SEO_URL_RESOURCE = 'Categories::Detail/%s';
+    public const SEO_URL_MODULE = 'news';
+    public const SEO_URL_RESOURCE = 'Categories::Detail/%s';
 
     public function __construct()
     {
@@ -55,8 +55,7 @@ class Categories extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('categories/list', $data);
+            ->addPartial('sidebar')::load('categories/list', $data);
     }
 
     public function add()
@@ -267,8 +266,7 @@ class Categories extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('categories/form', $data);
+            ->addPartial('sidebar')::load('categories/form', $data);
     }
 
     private function _validateForm()

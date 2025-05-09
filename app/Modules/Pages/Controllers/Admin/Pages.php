@@ -14,11 +14,11 @@ class Pages extends AdminController
     protected $model_lang;
     protected $model_route;
 
-    const MANAGE_ROOT = 'manage/pages';
-    const MANAGE_URL = 'manage/pages';
+    public const MANAGE_ROOT = 'manage/pages';
+    public const MANAGE_URL = 'manage/pages';
 
-    const SEO_URL_MODULE = 'pages';
-    const SEO_URL_RESOURCE = 'Pages::Detail/%s';
+    public const SEO_URL_MODULE = 'pages';
+    public const SEO_URL_RESOURCE = 'Pages::Detail/%s';
 
     public function __construct()
     {
@@ -63,8 +63,7 @@ class Pages extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('list', $data);
+            ->addPartial('sidebar')::load('list', $data);
     }
 
     public function add()
@@ -279,8 +278,7 @@ class Pages extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

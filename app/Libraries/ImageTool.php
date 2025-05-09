@@ -14,8 +14,8 @@ class ImageTool
     protected $upload_type = 'jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,bmp,BMP,webp,WEBP,tiff,TIFF,svg,SVG,svgz,SVGZ,psd,PSD,raw,RAW,heif,HEIF,indd,INDD,ai,AI';
     private $_driver       = 'imagick'; //gd,gd2,imagick
 
-    const IMAGE_WATER_MINIMUM_WIDTH  = 600;
-    const IMAGE_WATER_MINIMUM_HEIGHT = 450;
+    public const IMAGE_WATER_MINIMUM_WIDTH  = 600;
+    public const IMAGE_WATER_MINIMUM_HEIGHT = 450;
     public function __construct()
     {
         helper('filesystem');
@@ -166,7 +166,7 @@ class ImageTool
         return $image_new;
     }
 
-    function resizeUpload($file)
+    public function resizeUpload($file)
     {
         if (empty($file) || empty(config_item('enable_resize_image'))) {
             return false;
@@ -182,7 +182,7 @@ class ImageTool
         }
 
         list($width_orig, $height_orig, $image_type) = getimagesize($file_path);
-        if (!in_array($image_type, array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF)) || empty($width_orig) || empty($height_orig)) {
+        if (!in_array($image_type, [IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF]) || empty($width_orig) || empty($height_orig)) {
             return false;
         }
 
@@ -428,7 +428,7 @@ class ImageTool
     public function watermarkDemo($file_name = null)
     {
         $file_name = !empty($file_name) ? get_upload_path() . $file_name : FCPATH . 'common/images/watermark_bg.jpg';
-        
+
         if (!is_dir($this->dir_image_path . 'tmp')) {
             mkdir($this->dir_image_path . 'tmp', 0777);
         }

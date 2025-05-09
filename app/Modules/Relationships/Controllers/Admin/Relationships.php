@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Relationships\Controllers\Admin;
+<?php
+
+namespace App\Modules\Relationships\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Relationships\Models\RelationshipModel;
@@ -7,8 +9,8 @@ class Relationships extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/relationships';
-    CONST MANAGE_URL  = 'manage/relationships';
+    public const MANAGE_ROOT = 'manage/relationships';
+    public const MANAGE_URL  = 'manage/relationships';
 
     public function __construct()
     {
@@ -50,8 +52,7 @@ class Relationships extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('list', $data);
+            ->addPartial('sidebar')::load('list', $data);
     }
 
     public function add()
@@ -121,8 +122,7 @@ class Relationships extends AdminController
         $token = csrf_hash();
 
         //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
@@ -190,8 +190,7 @@ class Relationships extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

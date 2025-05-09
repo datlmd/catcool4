@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Customers\Models;
+<?php
+
+namespace App\Modules\Customers\Models;
 
 use App\Models\MyModel;
 
@@ -21,11 +23,12 @@ class IpModel extends MyModel
         parent::__construct();
     }
 
-    public function addLogin(int $customer_id, string $agent = ''): void {
-     
+    public function addLogin(int $customer_id, string $agent = ''): void
+    {
+
         $request = \Config\Services::request();
         $agent   = $request->getUserAgent();
-            
+
         $data = [
             'customer_id' => $customer_id,
             'ip' => service('request')->getIPAddress(),

@@ -23,8 +23,8 @@ class FilterModel extends MyModel
 
     protected $table_lang = 'filter_lang';
 
-    const FILTER_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'filter_list';
-    const FILTER_CACHE_EXPIRE = YEAR;
+    public const FILTER_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'filter_list';
+    public const FILTER_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {

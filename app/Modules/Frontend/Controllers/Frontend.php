@@ -1,10 +1,11 @@
-<?php namespace App\Modules\Frontend\Controllers;
+<?php
+
+namespace App\Modules\Frontend\Controllers;
 
 use App\Controllers\MyController;
 
 class Frontend extends MyController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -19,12 +20,12 @@ class Frontend extends MyController
 
 
         $this->breadcrumb->add(lang('General.text_home'), base_url());
-        
+
         $params['params'] = [
             'breadcrumb' => $this->breadcrumb->render(),
             'breadcrumb_title' => lang('General.text_home'),
         ];
-        
+
         $this->themes->addPartial('header_top', $params)
              ->addPartial('header_bottom', $params)
              ->addPartial('content_left', $params)

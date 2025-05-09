@@ -22,8 +22,8 @@ class WeightClassModel extends MyModel
 
     protected $table_lang = 'weight_class_lang';
 
-    const WEIGHT_CLASS_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'weight_class_list_all';
-    const WEIGHT_CLASS_CACHE_EXPIRE = YEAR;
+    public const WEIGHT_CLASS_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'weight_class_list_all';
+    public const WEIGHT_CLASS_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {

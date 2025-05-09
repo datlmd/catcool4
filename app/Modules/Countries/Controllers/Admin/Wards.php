@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Countries\Controllers\Admin;
+<?php
+
+namespace App\Modules\Countries\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Countries\Models\ZoneModel;
@@ -10,8 +12,8 @@ class Wards extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/country_wards';
-    CONST MANAGE_URL  = 'manage/country_wards';
+    public const MANAGE_ROOT = 'manage/country_wards';
+    public const MANAGE_URL  = 'manage/country_wards';
 
     public function __construct()
     {
@@ -55,8 +57,7 @@ class Wards extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('wards/list', $data);
+            ->addPartial('sidebar')::load('wards/list', $data);
     }
 
     public function add()
@@ -136,8 +137,7 @@ class Wards extends AdminController
         $token = csrf_hash();
 
         //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
@@ -241,8 +241,7 @@ class Wards extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('wards/form', $data);
+            ->addPartial('sidebar')::load('wards/form', $data);
     }
 
     private function _validateForm()

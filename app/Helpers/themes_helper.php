@@ -1,89 +1,80 @@
 <?php
 
 // @codeCoverageIgnoreStart
-if (! function_exists('link_tag'))
-{
-// @codeCoverageIgnoreEnd
-	// generate link css tags
-	function link_tag($css)
-	{
-		return '<link rel="stylesheet" href="' . $css . '" />' . PHP_EOL;
-	}
-// @codeCoverageIgnoreStart
+if (! function_exists('link_tag')) {
+    // @codeCoverageIgnoreEnd
+    // generate link css tags
+    function link_tag($css)
+    {
+        return '<link rel="stylesheet" href="' . $css . '" />' . PHP_EOL;
+    }
+    // @codeCoverageIgnoreStart
 }
 
-if (! function_exists('script_tag'))
-{
-// @codeCoverageIgnoreEnd
-	// generate js script tags
-	function script_tag($js)
-	{
-		return '<script src="' . $js . '"></script>' . PHP_EOL;
-	}
-// @codeCoverageIgnoreStart
+if (! function_exists('script_tag')) {
+    // @codeCoverageIgnoreEnd
+    // generate js script tags
+    function script_tag($js)
+    {
+        return '<script src="' . $js . '"></script>' . PHP_EOL;
+    }
+    // @codeCoverageIgnoreStart
 }
 
-if (! function_exists('validate_ext'))
-{
-// @codeCoverageIgnoreEnd
-	// validate file to have required exyension
-	function validate_ext($file, $ext = '.tpl')
-	{
-		$fileExt  = pathinfo($file, PATHINFO_EXTENSION);
-		return empty($fileExt) ? $file . $ext : $file; 
-	}
-// @codeCoverageIgnoreStart
+if (! function_exists('validate_ext')) {
+    // @codeCoverageIgnoreEnd
+    // validate file to have required exyension
+    function validate_ext($file, $ext = '.tpl')
+    {
+        $fileExt  = pathinfo($file, PATHINFO_EXTENSION);
+        return empty($fileExt) ? $file . $ext : $file;
+    }
+    // @codeCoverageIgnoreStart
 }
 
-if (! function_exists('remove_extension'))
-{
+if (! function_exists('remove_extension')) {
     function remove_extension($file, $ext = '.css')
     {
         // In case of multiple items
-        if (is_array($file))
-        {
-            $file = array_map(function($f) use ($ext) {
+        if (is_array($file)) {
+            $file = array_map(function ($f) use ($ext) {
                 $f = preg_replace('/'.$ext.'$/', '', $f);
                 return $f;
             }, $file);
         }
         // In case of a single element
-        else
-        {
+        else {
             $file = preg_replace('/'.$ext.'$/', '', $file);
         }
         return $file;
     }
 }
 
-if (! function_exists('theme_url'))
-{
-// @codeCoverageIgnoreEnd
-	// return full path from active theme URL
-	function theme_url($path = null)
-	{
-		$themeVars = App\Libraries\Themes::getData();
+if (! function_exists('theme_url')) {
+    // @codeCoverageIgnoreEnd
+    // return full path from active theme URL
+    function theme_url($path = null)
+    {
+        $themeVars = App\Libraries\Themes::getData();
 
-		return $themeVars['theme_url'] . (is_string($path) ? $path : '');
-	}
-// @codeCoverageIgnoreStart
+        return $themeVars['theme_url'] . (is_string($path) ? $path : '');
+    }
+    // @codeCoverageIgnoreStart
 }
 
-if (! function_exists('img_url'))
-{
-// @codeCoverageIgnoreEnd
-	// return full path to image URL in active theme
-	function img_url($path = null)
-	{
-		$themeVars = App\Libraries\Themes::getData();
+if (! function_exists('img_url')) {
+    // @codeCoverageIgnoreEnd
+    // return full path to image URL in active theme
+    function img_url($path = null)
+    {
+        $themeVars = App\Libraries\Themes::getData();
 
-		return $themeVars['image_url'] . (is_string($path) ? $path : '');
-	}
-// @codeCoverageIgnoreStart
+        return $themeVars['image_url'] . (is_string($path) ? $path : '');
+    }
+    // @codeCoverageIgnoreStart
 }
 
-if ( ! function_exists('get_theme_path'))
-{
+if (! function_exists('get_theme_path')) {
     function get_theme_path($path = null)
     {
         $themeVars = App\Libraries\Themes::getData();
@@ -92,33 +83,30 @@ if ( ! function_exists('get_theme_path'))
     }
 }
 
-if ( ! function_exists('get_module_path'))
-{
+if (! function_exists('get_module_path')) {
     function get_module_path($path = null)
     {
         return APPPATH . 'Modules/' . (is_string($path) ? $path : '');
     }
 }
 
-if ( ! function_exists('get_view_path'))
-{
+if (! function_exists('get_view_path')) {
     function get_view_path($path = null)
     {
         return APPPATH . 'Views/' . (is_string($path) ? $path : '');
     }
 }
 
-if (! function_exists('plugin_url'))
-{
-// @codeCoverageIgnoreEnd
-	// return full path to plugin URL in active theme
-	function plugin_url($path = null)
-	{
-		$themeVars = App\Libraries\Themes::getData();
+if (! function_exists('plugin_url')) {
+    // @codeCoverageIgnoreEnd
+    // return full path to plugin URL in active theme
+    function plugin_url($path = null)
+    {
+        $themeVars = App\Libraries\Themes::getData();
 
-		return $themeVars['plugin_url'] . (is_string($path) ? $path : '');
-	}
-// @codeCoverageIgnoreStart
+        return $themeVars['plugin_url'] . (is_string($path) ? $path : '');
+    }
+    // @codeCoverageIgnoreStart
 }
 // @codeCoverageIgnoreEnd
 
@@ -132,23 +120,20 @@ if (! function_exists('plugin_url'))
  */
 function translate(string $file, array $langs = [])
 {
-	$contents = is_file($file) ? file_get_contents($file) : $file;
+    $contents = is_file($file) ? file_get_contents($file) : $file;
 
-	preg_match_all("/\{\{(.*?)\}\}/", $contents, $matches, PREG_PATTERN_ORDER);
+    preg_match_all("/\{\{(.*?)\}\}/", $contents, $matches, PREG_PATTERN_ORDER);
 
-	if ($matches)
-	{
-		foreach ($matches[1] as $match)
-		{
-			$contents = str_replace("{{{$match}}}", isset($langs[trim($match)]) ? $langs[trim($match)] : lang($match), $contents);
-		}
-	}
+    if ($matches) {
+        foreach ($matches[1] as $match) {
+            $contents = str_replace("{{{$match}}}", isset($langs[trim($match)]) ? $langs[trim($match)] : lang($match), $contents);
+        }
+    }
 
-	return $contents;
+    return $contents;
 }
 
-if ( ! function_exists('print_alert'))
-{
+if (! function_exists('print_alert')) {
     /**
      * Prints an alert.
      *
@@ -159,8 +144,7 @@ if ( ! function_exists('print_alert'))
      */
     function print_alert($message = '', $type = 'info', $view = 'alert')
     {
-        if (empty($message))
-        {
+        if (empty($message)) {
             return null;
         }
         return App\Libraries\Themes::partial($view, [
@@ -170,8 +154,7 @@ if ( ! function_exists('print_alert'))
     }
 }
 
-if ( ! function_exists('set_alert'))
-{
+if (! function_exists('set_alert')) {
     function set_alert($message = '', $type = 'info', $view = 'alert')
     {
         // If not message is set, nothing to do.
@@ -194,8 +177,7 @@ if ( ! function_exists('set_alert'))
     }
 }
 
-if ( ! function_exists('print_flash_alert'))
-{
+if (! function_exists('print_flash_alert')) {
     /**
      * Prints already stored flashdata messages.
      *
@@ -205,8 +187,7 @@ if ( ! function_exists('print_flash_alert'))
     function print_flash_alert($view = 'alert')
     {
         $alert_list = session('__ci_flash');
-        if (!empty($alert_list) && is_array($alert_list))
-        {
+        if (!empty($alert_list) && is_array($alert_list)) {
             $output = '';
             foreach ($alert_list as $message) {
                 if ($message['view'] == $view) {
@@ -218,8 +199,7 @@ if ( ! function_exists('print_flash_alert'))
         return null;
     }
 }
-if ( ! function_exists('theme_load'))
-{
+if (! function_exists('theme_load')) {
     /**
      * @param null $viewPath
      * @param array $data
@@ -227,8 +207,7 @@ if ( ! function_exists('theme_load'))
      */
     function theme_load($viewPath = null, $data = [])
     {
-        if (empty($viewPath))
-        {
+        if (empty($viewPath)) {
             return null;
         }
 
@@ -236,16 +215,14 @@ if ( ! function_exists('theme_load'))
     }
 }
 
-if ( ! function_exists('theme_var'))
-{
+if (! function_exists('theme_var')) {
     function theme_var()
     {
         return ['meta' => App\Libraries\Themes::getVars()];
     }
 }
 
-if ( ! function_exists('reactjs_script'))
-{
+if (! function_exists('reactjs_script')) {
     function reactjs_script()
     {
         helper('filesystem');
@@ -270,8 +247,7 @@ if ( ! function_exists('reactjs_script'))
     }
 }
 
-if ( ! function_exists('reactjs_css'))
-{
+if (! function_exists('reactjs_css')) {
     function reactjs_css()
     {
         helper('filesystem');
@@ -293,5 +269,5 @@ if ( ! function_exists('reactjs_css'))
         }
 
         return $style[ENVIRONMENT] ?? "";
-    }   
+    }
 }

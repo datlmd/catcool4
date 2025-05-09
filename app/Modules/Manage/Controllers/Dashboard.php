@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Manage\Controllers;
+<?php
+
+namespace App\Modules\Manage\Controllers;
 
 use App\Controllers\AdminController;
 
@@ -6,8 +8,8 @@ class Dashboard extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/dashboard';
-    CONST MANAGE_URL  = 'manage/dashboard';
+    public const MANAGE_ROOT = 'manage/dashboard';
+    public const MANAGE_URL  = 'manage/dashboard';
 
     public function __construct()
     {

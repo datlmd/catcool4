@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Customers\Models;
+<?php
+
+namespace App\Modules\Customers\Models;
 
 use App\Models\MyModel;
 
@@ -14,12 +16,12 @@ class LoginAttemptModel extends MyModel
         'time'
     ];
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
-    public function getTotalAttempts($customer_id, $ip_address = NULL)
+    public function getTotalAttempts($customer_id, $ip_address = null)
     {
         if (!empty(config_item('track_login_attempts'))) {
             $this->where('customer_id', $customer_id);
@@ -39,7 +41,7 @@ class LoginAttemptModel extends MyModel
         return 0;
     }
 
-    public function getRemainingAttempts($customer_id, $ip_address = NULL)
+    public function getRemainingAttempts($customer_id, $ip_address = null)
     {
         if (!empty(config_item('track_login_attempts'))) {
             $max_attempts = config_item('maximum_login_attempts');
@@ -53,7 +55,7 @@ class LoginAttemptModel extends MyModel
     }
 
 
-    public function isMaxLoginAttemptsExceeded($customer_id, $ip_address = NULL)
+    public function isMaxLoginAttemptsExceeded($customer_id, $ip_address = null)
     {
         if (!empty(config_item('track_login_attempts'))) {
             $max_attempts = config_item('maximum_login_attempts');
@@ -66,7 +68,7 @@ class LoginAttemptModel extends MyModel
         return false;
     }
 
-    public function clearLoginAttempts($customer_id, $old_attempts_expire_period = 86400, $ip_address = NULL)
+    public function clearLoginAttempts($customer_id, $old_attempts_expire_period = 86400, $ip_address = null)
     {
         if (!empty(config_item('track_login_attempts'))) {
             // Make sure $old_attempts_expire_period is at least equals to lockout_time
@@ -84,7 +86,7 @@ class LoginAttemptModel extends MyModel
 
             return $this->delete();
         }
-        return FALSE;
+        return false;
     }
 
     public function increaseLoginAttempts($customer_id)
@@ -100,6 +102,6 @@ class LoginAttemptModel extends MyModel
             }
             return $this->insert($data);
         }
-        return FALSE;
+        return false;
     }
 }

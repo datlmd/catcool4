@@ -12,8 +12,8 @@ class GeoZones extends AdminController
 
     protected $model_zone_to_geo_zone;
 
-    const MANAGE_ROOT = 'manage/geo_zones';
-    const MANAGE_URL = 'manage/geo_zones';
+    public const MANAGE_ROOT = 'manage/geo_zones';
+    public const MANAGE_URL = 'manage/geo_zones';
 
     public function __construct()
     {
@@ -44,7 +44,7 @@ class GeoZones extends AdminController
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
-        
+
         $data = [
             'breadcrumb' => $this->breadcrumb->render(),
             'list' => $list->paginate($limit),
@@ -62,8 +62,7 @@ class GeoZones extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('geo_zone', $data);
+            ->addPartial('sidebar')::load('geo_zone', $data);
     }
 
     public function add()
@@ -137,7 +136,7 @@ class GeoZones extends AdminController
                     'country_id' => $value['country_id'],
                     'zone_id' => $value['zone_id'],
                 ];
-    
+
                 $this->model_zone_to_geo_zone->insert($data_zone_to_geo_zone);
             }
         }
@@ -197,8 +196,7 @@ class GeoZones extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

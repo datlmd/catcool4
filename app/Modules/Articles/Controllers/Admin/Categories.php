@@ -14,8 +14,8 @@ class Categories extends AdminController
     protected $model_lang;
     protected $model_route;
 
-    const MANAGE_ROOT = 'manage/article_categories';
-    const MANAGE_URL = 'manage/article_categories';
+    public const MANAGE_ROOT = 'manage/article_categories';
+    public const MANAGE_URL = 'manage/article_categories';
 
     public function __construct()
     {
@@ -54,8 +54,7 @@ class Categories extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('categories/list', $data);
+            ->addPartial('sidebar')::load('categories/list', $data);
     }
 
     public function add()
@@ -276,8 +275,7 @@ class Categories extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('categories/form', $data);
+            ->addPartial('sidebar')::load('categories/form', $data);
     }
 
     private function _validateForm()

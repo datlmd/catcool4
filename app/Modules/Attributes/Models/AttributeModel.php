@@ -23,8 +23,8 @@ class AttributeModel extends MyModel
 
     protected $table_lang = 'attribute_lang';
 
-    const ATTRIBUTE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'attribute_list_all';
-    const ATTRIBUTE_CACHE_EXPIRE = YEAR;
+    public const ATTRIBUTE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'attribute_list_all';
+    public const ATTRIBUTE_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {

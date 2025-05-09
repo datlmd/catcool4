@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Common\Controllers;
+<?php
+
+namespace App\Modules\Common\Controllers;
 
 use App\Controllers\AdminController;
 use App\Libraries\Themes;
@@ -15,10 +17,10 @@ class FileManager extends AdminController
     protected $_image_thumb_width  = '';
     protected $_image_thumb_height = '';
 
-    CONST PATH_SUB_NAME   = 'root';
-    CONST FILE_PAGE_LIMIT = 30;
+    public const PATH_SUB_NAME   = 'root';
+    public const FILE_PAGE_LIMIT = 30;
 
-    CONST MANAGE_URL = 'common/filemanager';
+    public const MANAGE_URL = 'common/filemanager';
 
     public function __construct()
     {
@@ -49,11 +51,11 @@ class FileManager extends AdminController
         $this->_image_thumb_height = !empty(config_item('image_thumbnail_small_height')) ? config_item('image_thumbnail_small_height') : RESIZE_IMAGE_THUMB_HEIGHT;
 
         if (!is_dir($this->_dir_image_path . 'cache')) {
-            mkdir($this->_dir_image_path . 'cache', 0777, TRUE);
+            mkdir($this->_dir_image_path . 'cache', 0777, true);
         }
 
         if (!is_dir($this->_dir_image_path . 'tmp')) {
-            mkdir($this->_dir_image_path . 'tmp', 0777, TRUE);
+            mkdir($this->_dir_image_path . 'tmp', 0777, true);
         }
     }
 
@@ -65,8 +67,7 @@ class FileManager extends AdminController
             return $this->themes->setTheme(config_item('theme_admin'))
                 ->addPartial('header')
                 ->addPartial('footer')
-                ->addPartial('sidebar')
-                ::load('index');
+                ->addPartial('sidebar')::load('index');
         }
 
         $server = site_url();
@@ -531,13 +532,13 @@ class FileManager extends AdminController
                 $file_name => $valids
             ]);
 
-            if ($validation->withRequest($this->request)->run() == FALSE) {
+            if ($validation->withRequest($this->request)->run() == false) {
                 json_output(['error' => $validation->getError($file_name)]);
             }
 
             if ($this->request->getFileMultiple($file_name)) {
                 //if ($file->isValid() && !$file->hasMoved()) {
-                foreach($this->request->getFileMultiple($file_name) as $file) {
+                foreach ($this->request->getFileMultiple($file_name) as $file) {
                     // Get random file name
                     $newName = !empty(config_item('file_encrypt_name')) ? trim($file->getRandomName()) : str_replace(" ", "", trim($file->getName()));
                     if (preg_match('/\A[a-z 0-9~%.:_\-]+\z/iu', $newName) !== 1) {
@@ -692,7 +693,7 @@ class FileManager extends AdminController
                 if (is_file($path)) {
                     unlink($path);
 
-                // If path is a directory beging deleting each file and sub folder
+                    // If path is a directory beging deleting each file and sub folder
                 } elseif (is_dir($path)) {
                     $files = [];
 
@@ -722,7 +723,7 @@ class FileManager extends AdminController
                         if (is_file($file)) {
                             unlink($file);
 
-                        // If directory use the remove directory function
+                            // If directory use the remove directory function
                         } elseif (is_dir($file)) {
                             rmdir($file);
                         }
@@ -745,7 +746,7 @@ class FileManager extends AdminController
         if (!is_file($this->_dir_image_path . $path)) {
             $json['error'] = lang('FileManager.error_rotation');
         }
-  
+
         if (empty($json)) {
             // Loop through each path
             $image = $this->_image_tool->rotation($path, $type);
@@ -791,7 +792,7 @@ class FileManager extends AdminController
 
         $p        = "";
         if ($pages > 1) {
-            for ($i=1; $i<= $pages; $i++) {
+            for ($i = 1; $i <= $pages; $i++) {
                 $p .= ($page == $i) ? '<li class="page-item numlink active">' : '<li class="page-item numlink">';
                 $p .= '<a class="page-link directory" href="' . $base_url . '?page=' . $i . $url . '" >' . $i . '</a></li>';
             }
@@ -802,7 +803,7 @@ class FileManager extends AdminController
 
     private function _convertFileSize($bytes, $decimals = 2)
     {
-        $size   = array('B','kB','MB','GB','TB','PB','EB','ZB','YB');
+        $size   = ['B','kB','MB','GB','TB','PB','EB','ZB','YB'];
         $factor = floor((strlen($bytes) - 1) / 3);
 
         return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor];

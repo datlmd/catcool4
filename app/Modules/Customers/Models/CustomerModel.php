@@ -585,7 +585,7 @@ class CustomerModel extends MyModel
 
         return $this->update($customer_id, $edit_data);
     }
-    
+
     public function changePassword($customer_id, $password_old, $password_new)
     {
         if (empty($password_old) || empty($password_new)) {

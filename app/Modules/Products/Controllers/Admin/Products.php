@@ -12,13 +12,13 @@ class Products extends AdminController
 
     protected $model_lang;
 
-    const MANAGE_ROOT = 'manage/products';
-    const MANAGE_URL = 'manage/products';
+    public const MANAGE_ROOT = 'manage/products';
+    public const MANAGE_URL = 'manage/products';
 
-    const SEO_URL_MODULE = 'products';
-    const SEO_URL_RESOURCE = 'Products::Detail/%s';
+    public const SEO_URL_MODULE = 'products';
+    public const SEO_URL_RESOURCE = 'Products::Detail/%s';
 
-    const FOLDER_UPLOAD = 'products/';
+    public const FOLDER_UPLOAD = 'products/';
 
     public function __construct()
     {
@@ -116,8 +116,7 @@ class Products extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('product', $data);
+            ->addPartial('sidebar')::load('product', $data);
     }
 
     public function add()

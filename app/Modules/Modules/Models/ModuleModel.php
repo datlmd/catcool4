@@ -19,8 +19,8 @@ class ModuleModel extends MyModel
         'updated_at',
     ];
 
-    const MODULE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'module_list';
-    const MODULE_CACHE_EXPIRE = 30 * MINUTE;
+    public const MODULE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'module_list';
+    public const MODULE_CACHE_EXPIRE = 30 * MINUTE;
 
     public function __construct()
     {

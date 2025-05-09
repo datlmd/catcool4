@@ -13,8 +13,8 @@ class Attributes extends AdminController
 
     protected $model_lang;
 
-    const MANAGE_ROOT = 'manage/attributes';
-    const MANAGE_URL = 'manage/attributes';
+    public const MANAGE_ROOT = 'manage/attributes';
+    public const MANAGE_URL = 'manage/attributes';
 
     public function __construct()
     {
@@ -61,8 +61,7 @@ class Attributes extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('list', $data);
+            ->addPartial('sidebar')::load('list', $data);
     }
 
     public function add()
@@ -188,8 +187,7 @@ class Attributes extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

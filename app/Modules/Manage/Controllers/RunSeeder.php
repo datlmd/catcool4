@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Manage\Controllers;
+<?php
+
+namespace App\Modules\Manage\Controllers;
 
 use App\Controllers\AdminController;
 
@@ -6,8 +8,8 @@ class RunSeeder extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/run_seeder';
-    CONST MANAGE_URL  = 'manage/run_seeder';
+    public const MANAGE_ROOT = 'manage/run_seeder';
+    public const MANAGE_URL  = 'manage/run_seeder';
 
     public function __construct()
     {

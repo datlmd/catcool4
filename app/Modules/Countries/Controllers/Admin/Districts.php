@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Countries\Controllers\Admin;
+<?php
+
+namespace App\Modules\Countries\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Countries\Models\ZoneModel;
@@ -9,8 +11,8 @@ class Districts extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/country_districts';
-    CONST MANAGE_URL  = 'manage/country_districts';
+    public const MANAGE_ROOT = 'manage/country_districts';
+    public const MANAGE_URL  = 'manage/country_districts';
 
     public function __construct()
     {
@@ -54,8 +56,7 @@ class Districts extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('districts/list', $data);
+            ->addPartial('sidebar')::load('districts/list', $data);
     }
 
     public function add()
@@ -135,8 +136,7 @@ class Districts extends AdminController
         $token = csrf_hash();
 
         //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
@@ -230,8 +230,7 @@ class Districts extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('districts/form', $data);
+            ->addPartial('sidebar')::load('districts/form', $data);
     }
 
     private function _validateForm()

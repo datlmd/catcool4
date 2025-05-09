@@ -18,8 +18,8 @@ class Articles extends AdminController
     protected $model_category;
     protected $model_categories;
 
-    const MANAGE_ROOT = 'manage/articles';
-    const MANAGE_URL = 'manage/articles';
+    public const MANAGE_ROOT = 'manage/articles';
+    public const MANAGE_URL = 'manage/articles';
 
     public function __construct()
     {
@@ -81,8 +81,7 @@ class Articles extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('list', $data);
+            ->addPartial('sidebar')::load('list', $data);
     }
 
     public function add()
@@ -216,7 +215,7 @@ class Articles extends AdminController
                     $edit_data_lang[$value['id']]['language_id'] = $value['id'];
                     $edit_data_lang[$value['id']]['article_id'] = $id;
                     $edit_data_lang[$value['id']]['slug'] = !empty($seo_urls[$value['id']]['route']) ? clear_seo_extension(get_seo_extension($seo_urls[$value['id']]['route'])) : '';
-                    
+
                     if (!empty($this->model_lang->where(['article_id' => $id, 'language_id' => $value['id']])->find())) {
                         $this->model_lang->where('language_id', $value['id'])->update($id, $edit_data_lang[$value['id']]);
                     } else {
@@ -355,8 +354,7 @@ class Articles extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()
@@ -416,18 +414,18 @@ class Articles extends AdminController
         $token = csrf_hash();
 
         $is_trash = $this->request->getGetPost('is_trash');
-        
+
         //delete
         if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(',', $ids);
-            
+
             if (!empty($is_trash) && $is_trash == 1) {
                 $list_delete = $this->model->onlyDeleted()->getArticlesByIds($ids, $this->language_id);
             } else {
                 $list_delete = $this->model->getArticlesByIds($ids, $this->language_id);
             }
-            
+
             if (empty($list_delete)) {
                 json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
             }
@@ -443,7 +441,7 @@ class Articles extends AdminController
             $this->model->deleteCache();
 
             json_output(['token' => $token, 'status' => 'ok', 'ids' => $ids, 'msg' => lang('Admin.text_delete_success')]);
-            
+
             // set_alert(lang('Admin.text_delete_success'), ALERT_SUCCESS, ALERT_POPUP);
             // json_output(['status' => 'redirect', 'url' => site_url(self::MANAGE_URL)]);
         }
@@ -454,7 +452,7 @@ class Articles extends AdminController
         if (!empty($this->request->getPost('delete_ids'))) {
             $delete_ids = $this->request->getPost('delete_ids');
         }
-        
+
         if (empty($delete_ids)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }
@@ -462,11 +460,11 @@ class Articles extends AdminController
         $delete_ids = is_array($delete_ids) ? $delete_ids : explode(',', $delete_ids);
         if (!empty($is_trash) && $is_trash == 1) {
             $list_delete = $this->model->onlyDeleted()->getArticlesByIds($delete_ids, $this->language_id);
-            
+
         } else {
             $list_delete = $this->model->getArticlesByIds($delete_ids, $this->language_id);
         }
-        
+
         if (empty($list_delete)) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_empty')]);
         }

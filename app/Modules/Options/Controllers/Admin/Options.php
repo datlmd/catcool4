@@ -14,8 +14,8 @@ class Options extends AdminController
 
     protected $model_lang;
 
-    const MANAGE_ROOT = 'manage/options';
-    const MANAGE_URL = 'manage/options';
+    public const MANAGE_ROOT = 'manage/options';
+    public const MANAGE_URL = 'manage/options';
 
     public function __construct()
     {
@@ -65,8 +65,7 @@ class Options extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('option', $data);
+            ->addPartial('sidebar')::load('option', $data);
     }
 
     public function add()
@@ -228,8 +227,7 @@ class Options extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

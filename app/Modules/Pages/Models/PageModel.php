@@ -25,8 +25,8 @@ class PageModel extends MyModel
     protected $useSoftDeletes = true;
     protected $deletedField = 'deleted_at';
 
-    const PAGE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'page_list';
-    const PAGE_CACHE_EXPIRE = YEAR;
+    public const PAGE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'page_list';
+    public const PAGE_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {

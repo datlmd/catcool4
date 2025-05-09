@@ -1,8 +1,10 @@
-<?php namespace App\Modules\Countries\Models;
+<?php
+
+namespace App\Modules\Countries\Models;
 
 use App\Models\MyModel;
 
-class  ZoneModel extends MyModel
+class ZoneModel extends MyModel
 {
     protected $table      = 'country_zone';
     protected $primaryKey = 'zone_id';
@@ -18,17 +20,17 @@ class  ZoneModel extends MyModel
         'published',
     ];
 
-    const COUNTRY_ZONE_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_zone_list';
-    const COUNTRY_ZONE_CACHE_EXPIRE = YEAR;
+    public const COUNTRY_ZONE_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_zone_list';
+    public const COUNTRY_ZONE_CACHE_EXPIRE = YEAR;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sorts =[
+        $sorts = [
             'c.name' => '`c`.`name`',
             'z.name' => '`z`.`name`',
             'zone_id' => '`z`.`zone_id`',

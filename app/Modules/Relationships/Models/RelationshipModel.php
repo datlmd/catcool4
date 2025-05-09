@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Relationships\Models;
+<?php
+
+namespace App\Modules\Relationships\Models;
 
 use App\Models\MyModel;
 
@@ -15,7 +17,7 @@ class RelationshipModel extends MyModel
         'foreign_key',
     ];
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }

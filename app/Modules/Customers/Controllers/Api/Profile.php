@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Customers\Controllers\Api;
+<?php
+
+namespace App\Modules\Customers\Controllers\Api;
 
 use CodeIgniter\API\ResponseTrait;
 use App\Controllers\MyController;
@@ -63,7 +65,7 @@ class Profile extends MyController
         $data["text_profile_transaction"] = lang('Customer.text_profile_transaction');
         $data["text_newsletter"] = lang('Customer.text_newsletter');
         $data["text_profile_newsletter"] = lang('Customer.text_profile_newsletter');
-    
+
         return $this->setResponseFormat('json')->respond($data, 200);
     }
 }

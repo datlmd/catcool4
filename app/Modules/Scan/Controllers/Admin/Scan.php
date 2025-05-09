@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Scan\Controllers\Admin;
+<?php
+
+namespace App\Modules\Scan\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Scan\Models\ScanModel;
@@ -9,8 +11,8 @@ class Scan extends AdminController
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'manage/scan';
-    CONST MANAGE_URL  = 'manage/scan';
+    public const MANAGE_ROOT = 'manage/scan';
+    public const MANAGE_URL  = 'manage/scan';
 
     public function __construct()
     {
@@ -29,15 +31,15 @@ class Scan extends AdminController
         $this->breadcrumb->add(lang('Scan.heading_title'), site_url(self::MANAGE_URL));
     }
 
-	public function index()
-	{
+    public function index()
+    {
         add_meta(['title' => lang('Scan.heading_title')], $this->themes);
 
-       
+
 
         $list = [];
 
-	    $data = [
+        $data = [
             'breadcrumb'    => $this->breadcrumb->render(),
             'list'          => $list,
         ];
@@ -45,9 +47,8 @@ class Scan extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('scan', $data);
-	}
+            ->addPartial('sidebar')::load('scan', $data);
+    }
 
     public function getContent()
     {
@@ -63,7 +64,7 @@ class Scan extends AdminController
         }
 
         $content = $this->model->scanUrl($url);
-        
+
         $data['content'] = $content;
 
         json_output(['token' => $token, 'data' => $this->themes::view('content', $data)]);

@@ -11,7 +11,7 @@ class Facebook extends Controller
 
     protected $helpers = ['url', 'date', 'catcool', 'inflector'];
 
-    const SITEMAP_NEWS_FROM = '2021-06-01';
+    public const SITEMAP_NEWS_FROM = '2021-06-01';
 
     public function __construct()
     {
@@ -109,12 +109,12 @@ class Facebook extends Controller
                     $rssfeed .= '</header>';
                     $rssfeed .= '<p> '.$value['content'].' </p>';
 
-//                    // Optional :  please reveiw Guide line https://developers.facebook.com/docs/instant-articles/reference/embeds
-//                    $rssfeed .= '<figure class="op-interactive">';
-//                    $rssfeed .= '<iframe class="column-width" height="180" width="320" src="https://www.youtube.com/embed/'.$youtube_id.'"></iframe>';
-//
-//                    $rssfeed .= '<figcaption>' . $title . '</figcaption>';
-//                    $rssfeed .= '</figure>';
+                    //                    // Optional :  please reveiw Guide line https://developers.facebook.com/docs/instant-articles/reference/embeds
+                    //                    $rssfeed .= '<figure class="op-interactive">';
+                    //                    $rssfeed .= '<iframe class="column-width" height="180" width="320" src="https://www.youtube.com/embed/'.$youtube_id.'"></iframe>';
+                    //
+                    //                    $rssfeed .= '<figcaption>' . $title . '</figcaption>';
+                    //                    $rssfeed .= '</figure>';
 
                     $rssfeed .= '<footer>';
                     $rssfeed .= '<aside>Managed By loitraitim.vn</aside>';

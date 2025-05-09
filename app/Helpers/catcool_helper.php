@@ -173,7 +173,7 @@ if (!function_exists('http_get_query')) {
 if (!function_exists('format_tree')) {
     /**
      * $list_data =['data' => $post_category_list, 'key_id' => 'category_id']
-     * 
+     *
      */
     function format_tree($list_data, $parent_id = 0)
     {
@@ -621,7 +621,7 @@ if (!function_exists('image_action')) {
 
 /**
  * Hien thi hinh anh goc khong cat hinh
- * 
+ *
  */
 if (!function_exists('image_url')) {
     function image_url($image = null, $width = null, $height = null)
@@ -1467,7 +1467,7 @@ if (!function_exists('get_menu_by_position')) {
     function get_menu_by_position($position = MENU_POSITION_MAIN)
     {
         $menu_model = new \App\Modules\Menus\Models\MenuModel();
-       
+
         return $menu_model->getMenuByPosition($position);
     }
 }
@@ -1955,10 +1955,10 @@ if (!function_exists('get_module')) {
     function get_module()
     {
         $router = service('router');
-        
+
         $controller_full = $router->controllerName(); //\App\Modules\Dummy\Controllers\Manage
         $controller_full = explode('\\', $controller_full);
-        
+
         $module = !empty($controller_full[3]) ? $controller_full[3] : null;
         $controller = !empty($controller_full[5]) ? $controller_full[5] : $module;
 
@@ -1969,7 +1969,7 @@ if (!function_exists('get_module')) {
         if ($controller == 'Admin') {
             $controller = !empty($controller_full[6]) ? $controller_full[6] : $module;
         }
-        
+
         return "$module/$controller";
     }
 }
@@ -2058,7 +2058,7 @@ if (!function_exists('auto_table_of_contents')) {
                 $current_level = $row[1];
                 if ($current_level == $previous_level) {
                     $ul_content .=  "<li>" . $row[0];
-                } else if ($current_level < $previous_level) {
+                } elseif ($current_level < $previous_level) {
                     $ul_content .= str_repeat('</ul>', $previous_level - $current_level) . "<li>" . $row[0];
                 } else {
                     $ul_content .= '<ul class="nav nav-pills"><li>' . $row[0];
@@ -2113,7 +2113,7 @@ if (!function_exists('get_domain')) {
         if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
             return $regs['domain'];
         }
-        return FALSE;
+        return false;
     }
 }
 

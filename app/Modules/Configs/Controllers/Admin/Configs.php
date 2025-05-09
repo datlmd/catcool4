@@ -10,8 +10,8 @@ class Configs extends AdminController
 {
     protected $errors = [];
 
-    const MANAGE_ROOT = 'manage/configs';
-    const MANAGE_URL = 'manage/configs';
+    public const MANAGE_ROOT = 'manage/configs';
+    public const MANAGE_URL = 'manage/configs';
 
     protected $model;
     protected $group_model;
@@ -65,8 +65,7 @@ class Configs extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('list', $data);
+            ->addPartial('sidebar')::load('list', $data);
     }
 
     public function write()
@@ -173,12 +172,12 @@ class Configs extends AdminController
                     $data_settings['currency_auto'] = !empty($this->request->getPost('currency_auto')) ? STATUS_ON : STATUS_OFF;
                     break;
                 case 'tab_option':
-                        $data_settings['customer_online'] = !empty($this->request->getPost('customer_online')) ? STATUS_ON : STATUS_OFF;
-                        $data_settings['customer_activity'] = !empty($this->request->getPost('customer_activity')) ? STATUS_ON : STATUS_OFF;
-                        $data_settings['customer_price'] = !empty($this->request->getPost('customer_price')) ? STATUS_ON : STATUS_OFF;
-                        $data_settings['customer_search'] = !empty($this->request->getPost('customer_search')) ? STATUS_ON : STATUS_OFF;
-                        $data_settings['customer_group_display'] = implode(',', $this->request->getPost('customer_group_display[]'));
-                        break;
+                    $data_settings['customer_online'] = !empty($this->request->getPost('customer_online')) ? STATUS_ON : STATUS_OFF;
+                    $data_settings['customer_activity'] = !empty($this->request->getPost('customer_activity')) ? STATUS_ON : STATUS_OFF;
+                    $data_settings['customer_price'] = !empty($this->request->getPost('customer_price')) ? STATUS_ON : STATUS_OFF;
+                    $data_settings['customer_search'] = !empty($this->request->getPost('customer_search')) ? STATUS_ON : STATUS_OFF;
+                    $data_settings['customer_group_display'] = implode(',', $this->request->getPost('customer_group_display[]'));
+                    break;
                 case 'tab_page':
                     $data_settings['enable_scroll_menu_admin'] = !empty($this->request->getPost('enable_scroll_menu_admin')) ? STATUS_ON : STATUS_OFF;
                     $data_settings['enable_icon_menu_admin'] = !empty($this->request->getPost('enable_icon_menu_admin')) ? STATUS_ON : STATUS_OFF;
@@ -527,8 +526,7 @@ class Configs extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

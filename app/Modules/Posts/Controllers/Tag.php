@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Posts\Controllers;
+<?php
+
+namespace App\Modules\Posts\Controllers;
 
 use App\Controllers\MyController;
 use App\Modules\Posts\Models\CategoryModel;

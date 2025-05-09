@@ -1,11 +1,13 @@
-<?php namespace App\Libraries;
+<?php
+
+namespace App\Libraries;
 
 class Breadcrumb
 {
     private $breadcrumbs = [];
     private $tags = [];
 
-    function __construct()
+    public function __construct()
     {
         $this->tags['open'] = '<ol class="breadcrumb">';
         $this->tags['close'] = "</ol>";
@@ -13,23 +15,25 @@ class Breadcrumb
         $this->tags['itemClose'] = "</li>";
     }
 
-    function add($title, $href)
+    public function add($title, $href)
     {
-        if (!$title or !$href) return;
+        if (!$title or !$href) {
+            return;
+        }
         $this->breadcrumbs[] = ['title' => $title, 'href' => $href];
     }
 
-    function get()
+    public function get()
     {
         return $this->breadcrumbs;
     }
 
-    function reset()
+    public function reset()
     {
         $this->breadcrumbs = [];
     }
 
-    function openTag($tags = "")
+    public function openTag($tags = "")
     {
         if (empty($tags)) {
             return $this->tags['open'];
@@ -38,7 +42,7 @@ class Breadcrumb
         }
     }
 
-    function closeTag($tags = "")
+    public function closeTag($tags = "")
     {
         if (empty($tags)) {
             return $this->tags['close'];
@@ -47,7 +51,7 @@ class Breadcrumb
         }
     }
 
-    function itemOpenTag($tags = "")
+    public function itemOpenTag($tags = "")
     {
         if (empty($tags)) {
             return $this->tags['itemOpen'];
@@ -56,7 +60,7 @@ class Breadcrumb
         }
     }
 
-    function itemCloseTage($tags = "")
+    public function itemCloseTage($tags = "")
     {
         if (empty($tags)) {
             return $this->tags['itemClose'];
@@ -65,7 +69,7 @@ class Breadcrumb
         }
     }
 
-    function render()
+    public function render()
     {
         if (!empty($this->tags['open'])) {
             $output = $this->tags['open'];

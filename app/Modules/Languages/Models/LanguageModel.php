@@ -20,8 +20,8 @@ class LanguageModel extends MyModel
         'updated_at',
     ];
 
-    const LANGUAGE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'language_list';
-    const LANGUAGE_CACHE_EXPIRE = YEAR;
+    public const LANGUAGE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'language_list';
+    public const LANGUAGE_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {

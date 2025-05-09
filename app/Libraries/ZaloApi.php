@@ -1,10 +1,12 @@
-<?php namespace App\Libraries;
+<?php
+
+namespace App\Libraries;
 
 // Include the autoloader provided in the SDK
 require_once ROOTPATH . 'vendor/autoload.php';
 
-use \Zalo\Zalo;
-use \Zalo\ZaloEndPoint;
+use Zalo\Zalo;
+use Zalo\ZaloEndPoint;
 
 class ZaloApi
 {

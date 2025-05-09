@@ -1,11 +1,10 @@
 <?php
 
-if(!isset($routes))
-{
+if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Utilities\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes){
+$routes->group('manage', ['namespace' => 'App\Modules\Utilities\Controllers\Admin', 'filter' => 'auth_admin'], function ($subroutes) {
     $subroutes->add('utilities', 'Utilities::index');
     $subroutes->add('utility_php_info', 'Utilities::phpInfo');
     $subroutes->add('utility_list_file', 'Utilities::listFile');

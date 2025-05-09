@@ -12,8 +12,8 @@ class WeightClasses extends AdminController
 
     protected $model_lang;
 
-    const MANAGE_ROOT = 'manage/product_weight_classes';
-    const MANAGE_URL = 'manage/product_weight_classes';
+    public const MANAGE_ROOT = 'manage/product_weight_classes';
+    public const MANAGE_URL = 'manage/product_weight_classes';
 
     public function __construct()
     {
@@ -58,8 +58,7 @@ class WeightClasses extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('weight_classes/list', $data);
+            ->addPartial('sidebar')::load('weight_classes/list', $data);
     }
 
     public function add()
@@ -184,8 +183,7 @@ class WeightClasses extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('weight_classes/form', $data);
+            ->addPartial('sidebar')::load('weight_classes/form', $data);
     }
 
     private function _validateForm()

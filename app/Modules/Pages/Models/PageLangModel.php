@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Pages\Models;
+<?php
+
+namespace App\Modules\Pages\Models;
 
 use App\Models\MyModel;
 
@@ -18,7 +20,7 @@ class PageLangModel extends MyModel
         'meta_keyword',
     ];
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }

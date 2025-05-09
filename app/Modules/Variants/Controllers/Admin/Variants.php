@@ -14,8 +14,8 @@ class Variants extends AdminController
 
     protected $model_lang;
 
-    const MANAGE_ROOT = 'manage/variants';
-    const MANAGE_URL = 'manage/variants';
+    public const MANAGE_ROOT = 'manage/variants';
+    public const MANAGE_URL = 'manage/variants';
 
     public function __construct()
     {
@@ -65,8 +65,7 @@ class Variants extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('variant', $data);
+            ->addPartial('sidebar')::load('variant', $data);
     }
 
     public function add()
@@ -225,8 +224,7 @@ class Variants extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

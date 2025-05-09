@@ -1,11 +1,10 @@
 <?php
 
-if(!isset($routes))
-{
+if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('frontend', ['namespace' => 'App\Modules\Frontend\Controllers'], function($subroutes){
+$routes->group('frontend', ['namespace' => 'App\Modules\Frontend\Controllers'], function ($subroutes) {
     $subroutes->add('', 'Frontend::index');
 });
 
@@ -15,7 +14,7 @@ $routes->get('about', 'Contact::index', ['namespace' => 'App\Modules\Frontend\Co
 $routes->get('contact', 'Contact::index', ['namespace' => 'App\Modules\Frontend\Controllers']);
 $routes->post('contact/send', 'Contact::send', ['namespace' => 'App\Modules\Frontend\Controllers']);
 
-$routes->group('frontend/api', ['namespace' => 'App\Modules\Frontend\Controllers\Api'], function($subroutes) {
+$routes->group('frontend/api', ['namespace' => 'App\Modules\Frontend\Controllers\Api'], function ($subroutes) {
     $subroutes->add('contact', 'Contact::index');
     $subroutes->add('about', 'About::index');
 });

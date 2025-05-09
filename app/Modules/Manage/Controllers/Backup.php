@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Manage\Controllers;
+<?php
+
+namespace App\Modules\Manage\Controllers;
 
 use App\Controllers\AdminController;
 use App\Modules\Manage\Models\BackupModel;
@@ -7,15 +9,15 @@ class Backup extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/backup';
-    CONST MANAGE_URL  = 'manage/backup';
+    public const MANAGE_ROOT = 'manage/backup';
+    public const MANAGE_URL  = 'manage/backup';
 
     protected $model;
     protected $db;
 
     protected $backup_path;
 
-    CONST FILE_PAGE_LIMIT = 30;
+    public const FILE_PAGE_LIMIT = 30;
 
     public function __construct()
     {
@@ -33,7 +35,7 @@ class Backup extends AdminController
         $this->backup_path = WRITEPATH . "database/backup/";
 
         helper('filesystem');
-        
+
         //create url manage
         $this->smarty->assign('manage_url', self::MANAGE_URL);
         $this->smarty->assign('manage_root', self::MANAGE_ROOT);
@@ -245,7 +247,7 @@ class Backup extends AdminController
 
         $p        = "";
         if ($pages > 1) {
-            for ($i=1; $i<= $pages; $i++) {
+            for ($i = 1; $i <= $pages; $i++) {
                 $p .= ($page == $i) ? '<li class="page-item active">' : '<li class="page-item">';
                 $p .= '<a class="page-link directory" href="' . $base_url . '?page=' . $i . '" >' . $i . '</a></li>';
             }
@@ -305,9 +307,10 @@ class Backup extends AdminController
                     $start = true;
                 }
 
-                if ($i > 0 && (strpos(strtolower($line), 'user_admin') !== false
+                if ($i > 0 && (
+                    strpos(strtolower($line), 'user_admin') !== false
                         || strpos(strtolower($line), 'sessions') !== false
-                    )
+                )
                 ) {
                     fseek($handle, $position, SEEK_SET);
 
@@ -320,7 +323,7 @@ class Backup extends AdminController
 
                 if ($start && substr($line, -2) == ";\n") {
                     try {
-                        $this->db->query(substr($sql, 0, strlen($sql) -2));
+                        $this->db->query(substr($sql, 0, strlen($sql) - 2));
                     } catch (\Exception $ex) {
                         log_message('error', $sql);
                         log_message('error', $ex->getMessage());
@@ -534,13 +537,13 @@ class Backup extends AdminController
 
     private function convertBytes($value)
     {
-        if ( is_numeric( $value ) ) {
+        if (is_numeric($value)) {
             return $value;
         } else {
             $value_length = strlen($value);
-            $qty = substr( $value, 0, $value_length - 1 );
-            $unit = strtolower( substr( $value, $value_length - 1 ) );
-            switch ( $unit ) {
+            $qty = substr($value, 0, $value_length - 1);
+            $unit = strtolower(substr($value, $value_length - 1));
+            switch ($unit) {
                 case 'k':
                     $qty *= 1024;
                     break;

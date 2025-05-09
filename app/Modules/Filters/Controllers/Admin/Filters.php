@@ -14,8 +14,8 @@ class Filters extends AdminController
 
     protected $model_lang;
 
-    const MANAGE_ROOT = 'manage/filters';
-    const MANAGE_URL = 'manage/filters';
+    public const MANAGE_ROOT = 'manage/filters';
+    public const MANAGE_URL = 'manage/filters';
 
     public function __construct()
     {
@@ -65,8 +65,7 @@ class Filters extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('filter', $data);
+            ->addPartial('sidebar')::load('filter', $data);
     }
 
     public function add()
@@ -221,8 +220,7 @@ class Filters extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

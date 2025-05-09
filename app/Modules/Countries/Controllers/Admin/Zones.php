@@ -10,8 +10,8 @@ class Zones extends AdminController
 {
     protected $errors = [];
 
-    const MANAGE_ROOT = 'manage/country_zones';
-    const MANAGE_URL = 'manage/country_zones';
+    public const MANAGE_ROOT = 'manage/country_zones';
+    public const MANAGE_URL = 'manage/country_zones';
 
     public function __construct()
     {
@@ -54,8 +54,7 @@ class Zones extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('zones/list', $data);
+            ->addPartial('sidebar')::load('zones/list', $data);
     }
 
     public function add()
@@ -222,8 +221,7 @@ class Zones extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('zones/form', $data);
+            ->addPartial('sidebar')::load('zones/form', $data);
     }
 
     private function _validateForm()

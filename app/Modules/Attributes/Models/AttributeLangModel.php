@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Attributes\Models;
+<?php
+
+namespace App\Modules\Attributes\Models;
 
 use App\Models\MyModel;
 

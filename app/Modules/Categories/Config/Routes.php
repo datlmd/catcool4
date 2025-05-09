@@ -1,11 +1,10 @@
 <?php
 
-if(!isset($routes))
-{
+if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Categories\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes){
+$routes->group('manage', ['namespace' => 'App\Modules\Categories\Controllers\Admin', 'filter' => 'auth_admin'], function ($subroutes) {
     $subroutes->add('categories', 'Categories::index');
     $subroutes->add('categories/add', 'Categories::add');
     $subroutes->add('categories/edit/(:num)', 'Categories::edit/$1');

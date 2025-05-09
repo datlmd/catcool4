@@ -25,7 +25,7 @@ class Login extends MyController
 
         if (service('customer')->isLogged() && !empty(session('customer_token'))) {
             return redirect()->to($return_url . '?customer_token=' . session('customer_token'));
-        } else if (service('customer')->loginRememberedCustomer()) {
+        } elseif (service('customer')->loginRememberedCustomer()) {
             //neu da logout thi check auto login
             return redirect()->to($return_url . '?customer_token=' . session('customer_token'));
         }

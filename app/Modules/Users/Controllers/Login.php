@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Users\Controllers;
+<?php
+
+namespace App\Modules\Users\Controllers;
 
 use App\Controllers\UserController;
 use App\Modules\Users\Models\UserModel;
@@ -104,11 +106,11 @@ class Login extends UserController
 
                     // Load zalo oauth library
                     $google = service('google');
-                    if(!empty($this->request->getGet('code'))) {
+                    if (!empty($this->request->getGet('code'))) {
 
                         // Authenticate user with google
                         $access_token = $google->getAuthenticate($this->request->getGet('code'));
-                        if($access_token) {
+                        if ($access_token) {
 
                             // Get user info from google
                             $gg_user = $google->getUserInfo();

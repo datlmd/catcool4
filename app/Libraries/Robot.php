@@ -2,8 +2,8 @@
 
 namespace App\Libraries;
 
-class Robot {
-
+class Robot
+{
     public function __construct()
     {
         // Do something with $params
@@ -23,12 +23,14 @@ class Robot {
     {
         $p = stripos($content, $tag_and_more, 0);
 
-        if ($p === false)
+        if ($p === false) {
             return "";
+        }
         $content = substr($content, $p);
         $p = stripos($content, " ", 0);
-        if (abs($p) == 0)
+        if (abs($p) == 0) {
             return "";
+        }
         $open_tag = substr($content, 0, $p);
         $close_tag = substr($open_tag, 0, 1) . "/" . substr($open_tag, 1) . ">";
 
@@ -40,8 +42,9 @@ class Robot {
             $p_open_inner_tag = stripos($content, $open_tag, $p_open_inner_tag);
             $p_close_inner_tag = stripos($content, $close_tag, $p_close_inner_tag);
             $count++;
-            if ($p_close_inner_tag !== false)
+            if ($p_close_inner_tag !== false) {
                 $p = $p_close_inner_tag;
+            }
             if ($p_open_inner_tag !== false) {
                 if (abs($p_open_inner_tag) < abs($p_close_inner_tag)) {
                     $count_inner_tag++;
@@ -52,13 +55,14 @@ class Robot {
                 }
             } else {
                 $count_inner_tag--;
-                if ($p_close_inner_tag > 0)
+                if ($p_close_inner_tag > 0) {
                     $p_close_inner_tag++;
+                }
             }
-        }while ($count_inner_tag > 0);
-        if ($include_tag)
+        } while ($count_inner_tag > 0);
+        if ($include_tag) {
             return substr($content, 0, $p + strlen($close_tag));
-        else {
+        } else {
             $content = substr($content, 0, $p);
             $p = stripos($content, ">", 0);
             return substr($content, $p + 1);
@@ -72,8 +76,9 @@ class Robot {
         $start_tag = "<img";
         $loop = true;
         $double_ = true;
-        if (substr($url, strlen($url) - 1, 1) == "/")
+        if (substr($url, strlen($url) - 1, 1) == "/") {
             $url = substr($url, 0, strlen($url) - 1);
+        }
         $src = "src=";
         $content = str_ireplace("src =", $src, $content);
         $content = str_ireplace("src= ", $src, $content);
@@ -92,30 +97,32 @@ class Robot {
                     }
                     $content = substr($content, 0, $p_start) . $url . substr($content, $p_start);
                 }
-                $p_start+=$len + 1;
+                $p_start += $len + 1;
             } else {
                 $loop = false;
             }
         } while ($loop);
         return $content;
     }
-    
-    public function getBetween($var1,$var2,$pool)
+
+    public function getBetween($var1, $var2, $pool)
     {
-        $temp1 = strpos($pool,$var1)+strlen($var1);
-        $result = substr($pool,$temp1,strlen($pool));
-        $dd=strpos($result,$var2);
-        if($dd == 0){
+        $temp1 = strpos($pool, $var1) + strlen($var1);
+        $result = substr($pool, $temp1, strlen($pool));
+        $dd = strpos($result, $var2);
+        if ($dd == 0) {
             $dd = strlen($result);
         }
 
-        return substr($result,0,$dd);
+        return substr($result, 0, $dd);
     }
-    
-    function findBetween($string, $start, $end, $trim = true, $greedy = false)
+
+    public function findBetween($string, $start, $end, $trim = true, $greedy = false)
     {
         $pattern = '/' . preg_quote($start) . '(.*';
-        if (!$greedy) $pattern .= '?';
+        if (!$greedy) {
+            $pattern .= '?';
+        }
         $pattern .= ')' . preg_quote($end) . '/';
         preg_match($pattern, $string, $matches);
         $string = $matches[0];
@@ -130,19 +137,19 @@ class Robot {
     /*
      *
      * $arr_attribute = array(
-			'start' => '<article',
-			'end' => '</article',
-			'title' => '/title=\"(.*?)\"/',
-			'note' => '/class=\"summary\">(.*?)</',
-			'datetime' => '/datetime=\"(.*?)\">(.*?)</',
-			'image' => '/src=\"(.*?)\"/',
-			'href' => '/href=\"(.*?)\"/',
-		);
+            'start' => '<article',
+            'end' => '</article',
+            'title' => '/title=\"(.*?)\"/',
+            'note' => '/class=\"summary\">(.*?)</',
+            'datetime' => '/datetime=\"(.*?)\">(.*?)</',
+            'image' => '/src=\"(.*?)\"/',
+            'href' => '/href=\"(.*?)\"/',
+        );
      */
     public function getItemNews($arr_attribute, $url, $cate, $url_cate, $domain, $limit = 0, $attribute = "class", $remove_image_link = true)
     {
         try {
-            include_once ("Crawl.php");
+            include_once("Crawl.php");
             $H_Crawl = new H_Crawl();
 
             $content = $this->runBrowser($url_cate);
@@ -152,15 +159,16 @@ class Robot {
 
             if (isset($arr_attribute['content'])) {
                 preg_match($arr_attribute['content'], $content, $matches);
-                if ($matches)
+                if ($matches) {
                     $content = $matches[1];
+                }
             }
 
             if (isset($arr_attribute['replace_content']) && isset($arr_attribute['replace_content_to'])) {
                 $content = str_replace($arr_attribute['replace_content'], $arr_attribute['replace_content_to'], $content);
             }
 
-            $list = array();
+            $list = [];
             $bool = true;
             $i = 0;
             $href = "";
@@ -173,8 +181,9 @@ class Robot {
             $content = str_ireplace("ata-background-image=", "src=", $content);
 
             do {
-                if ($limit > 0 && $i == $limit)
+                if ($limit > 0 && $i == $limit) {
                     break;
+                }
 
                 $p_start = 0;
                 $p_end = 0;
@@ -191,8 +200,9 @@ class Robot {
                         $href = $img = $title = $note = $date = '';
 
                         preg_match($arr_attribute['href'], $temp, $matches);
-                        if ($matches)
+                        if ($matches) {
                             $href = str_ireplace($url, '', $matches[1]);
+                        }
 
                         if (empty($href)) {
                             log_message('error', 'Lấy url lỗi:' . $arr_attribute['href']);
@@ -201,14 +211,16 @@ class Robot {
                         $temp_image = str_ireplace("data-src", "none", $temp);
                         $temp_image = str_ireplace("poster", "src=", $temp_image);
                         preg_match($arr_attribute['image'], $temp_image, $matches);
-                        if ($matches)
+                        if ($matches) {
                             $img = $matches[1];
+                        }
 
                         if (empty($img)) {
                             $arr_attribute['image'] = str_replace('"', "'", $arr_attribute['image']);
                             preg_match($arr_attribute['image'], $temp_image, $matches);
-                            if ($matches)
+                            if ($matches) {
                                 $img = $matches[1];
+                            }
                         }
 
                         if (empty($img)) {
@@ -216,8 +228,9 @@ class Robot {
                         }
 
                         preg_match($arr_attribute['title'], $temp, $matches);
-                        if ($matches)
+                        if ($matches) {
                             $title = $matches[1];
+                        }
 
                         if (empty($title)) {
                             log_message('error', 'Lấy tiêu đề lỗi:' . $arr_attribute['title']);
@@ -226,8 +239,9 @@ class Robot {
                         $is_match = explode('(.*?)', $arr_attribute['note']);
                         if (count($is_match) > 1) {
                             preg_match($arr_attribute['note'], $temp, $matches);
-                            if ($matches)
+                            if ($matches) {
                                 $note = $matches[1];
+                            }
                         } else {
                             $note = trim($H_Crawl->getTitle($url_cate, $arr_attribute['note']));
                         }
@@ -242,7 +256,7 @@ class Robot {
                             if ($matches) {
                                 $date = $matches[1];
                                 if (empty($date) || $date != '') {
-                                    if(isset($matches[1])) {
+                                    if (isset($matches[1])) {
                                         $date = $matches[2];
                                     }
                                 }
@@ -260,8 +274,8 @@ class Robot {
                                 $list[$i]['id'] = $id_item;
                                 $title = trim(str_replace("&nbsp;", " ", $title));
                                 if ($href[0] == '/') {
-                                    $list[$i]['href'] = substr(strip_tags($href),1);
-                                    $list[$i]['href_root'] = substr(strip_tags($href),1);
+                                    $list[$i]['href'] = substr(strip_tags($href), 1);
+                                    $list[$i]['href_root'] = substr(strip_tags($href), 1);
                                 } else {
                                     $list[$i]['href'] = strip_tags($href);
                                     $list[$i]['href_root'] = strip_tags($href);
@@ -302,15 +316,15 @@ class Robot {
                     $bool = false;
                 }
             } while ($bool);
-        } catch(Exception $e) {
-            $list = array();
+        } catch (Exception $e) {
+            $list = [];
         }
         return $list;
     }
 
     public function getListNews($arr_attribute, $url, $cate, $url_cate, $domain, $limit = 0, $attribute = "class", $remove_image_link = true)
     {
-        $list = array();
+        $list = [];
         foreach ($arr_attribute as $key => $val) {
             $limit = $limit - count($list);
             $list = array_merge($list, $this->getItemNews($val, $url, $cate, $url_cate, $domain, $limit, $attribute, $remove_image_link));
@@ -320,7 +334,7 @@ class Robot {
 
     public function getDetail($arr_attribute, $url, $url_domain, $url_detail = "")
     {
-        $detail = array();
+        $detail = [];
         foreach ($arr_attribute as $key => $val) {
             if (empty($val)) {
                 continue;
@@ -331,10 +345,10 @@ class Robot {
         }
         return $detail;
     }
-    
+
     private function _getDetail($arr_attribute, $url, $url_domain, $url_detail)
     {
-        include_once ("Crawl.php");
+        include_once("Crawl.php");
         $H_Crawl = new H_Crawl();
 
         $content = $this->runBrowser($url);
@@ -348,7 +362,7 @@ class Robot {
 
 
 
-        $detail = array();
+        $detail = [];
         $detail['html'] = $content;
 
         foreach ($arr_attribute as $key => $value) {
@@ -356,7 +370,7 @@ class Robot {
                 continue;
             }
             $is_match = explode('(.*?)', $value);
-        
+
             if (count($is_match) > 1) {
                 preg_match($value, $content, $matches);
 
@@ -368,17 +382,17 @@ class Robot {
                 $detail[$key] = $H_Crawl->removeLink($str_robot);
             }
 
-//            if ($key == 'content' && $url_domain == 'http://kenh14.vn/') {
-//                $video = '';
-//                preg_match('/data-src=\"(.*?)\"/', $detail[$key], $matches);
-//                if ($matches)
-//                    $video = str_ireplace($url, '', $matches[1]);
-//                if (!empty($video))
-//                    $video = '<p style="text-align: center;"><iframe class="video" align="middle" style="width: 100%; max-width: 500px; height:auto; min-height:300px; overflow: hidden; margin: 20px auto; border: 0px;" src="' . base_url('video?u=') . $video . '"></iframe></p>';
-//                $detail[$key] = $video . $detail[$key];
-//
-//                //$content = str_ireplace("href=", "href=", $content);
-//            }
+            //            if ($key == 'content' && $url_domain == 'http://kenh14.vn/') {
+            //                $video = '';
+            //                preg_match('/data-src=\"(.*?)\"/', $detail[$key], $matches);
+            //                if ($matches)
+            //                    $video = str_ireplace($url, '', $matches[1]);
+            //                if (!empty($video))
+            //                    $video = '<p style="text-align: center;"><iframe class="video" align="middle" style="width: 100%; max-width: 500px; height:auto; min-height:300px; overflow: hidden; margin: 20px auto; border: 0px;" src="' . base_url('video?u=') . $video . '"></iframe></p>';
+            //                $detail[$key] = $video . $detail[$key];
+            //
+            //                //$content = str_ireplace("href=", "href=", $content);
+            //            }
             $detail[$key] = str_ireplace($url, '', $detail[$key]);
             $detail[$key] = str_ireplace('href="', 'href="' . $url_detail, $detail[$key]);
         }
@@ -392,13 +406,13 @@ class Robot {
         $content = str_ireplace("href =", "href=", $content);
         $content = str_ireplace("href= ", "href=", $content);
 
-        $meta = array();
+        $meta = [];
         foreach ($arr_attribute as $key => $value) {
             preg_match($value, $content, $matches);//echo '<pre>'; print_r($content);
             if ($matches) {
-                $meta[$key] = strip_tags(trim(str_replace(array('"', "'"), '', $matches[1])));
+                $meta[$key] = strip_tags(trim(str_replace(['"', "'"], '', $matches[1])));
                 if ($key == 'description' || $key == 'keywords') {
-                    $meta[$key] = str_replace(array('VnExpress', 'vnexpress', '.net' , 'Kênh 14', 'kenh14', 'zing', 'Zing'), array('','','','','','',''), $meta[$key]);
+                    $meta[$key] = str_replace(['VnExpress', 'vnexpress', '.net' , 'Kênh 14', 'kenh14', 'zing', 'Zing'], ['','','','','','',''], $meta[$key]);
                 }
             }
         }
@@ -408,10 +422,10 @@ class Robot {
 
     public function getMenu($arr_attribute, $url_domain, $domain_id = 1)
     {
-        include_once ("Crawl.php");
-        $H_Crawl = new H_Crawl ( );
+        include_once("Crawl.php");
+        $H_Crawl = new H_Crawl();
 
-        $list = array();
+        $list = [];
         $bool = true;
         $i = 0;
         $id_cate = 1;
@@ -456,7 +470,7 @@ class Robot {
                     if ($title != '' && $href != '') {
                         $key = array_search($id, array_column($list, 'key'));
                         $title = trim(str_replace("&nbsp;", " ", $title));
-                        
+
                         $is_add_menu = false;
                         if (isset($arr_attribute['not_show'])) {
                             if (stripos($arr_attribute['not_show'], $title) !== false) {
@@ -469,12 +483,12 @@ class Robot {
                             $list[$i]['href'] = $href;
 
                             if (isset($arr_attribute['replace_from']) && isset($arr_attribute['replace_to'])) {
-                                $href = str_replace($arr_attribute['replace_from'], $arr_attribute['replace_to'],$href);
+                                $href = str_replace($arr_attribute['replace_from'], $arr_attribute['replace_to'], $href);
                             }
                             if ($href[0] == '/') {
-                                $list[$i]['href_show'] = substr(str_replace('/','-',$href),1);
+                                $list[$i]['href_show'] = substr(str_replace('/', '-', $href), 1);
                             } else {
-                                $list[$i]['href_show'] = str_replace('/','-',$href);
+                                $list[$i]['href_show'] = str_replace('/', '-', $href);
                             }
 
                             $list[$i]['title'] = trim($title);
@@ -501,12 +515,14 @@ class Robot {
 
     public function multiUnique($src)
     {
-        $output = array_map("unserialize",
-            array_unique(array_map("serialize", $src)));
+        $output = array_map(
+            "unserialize",
+            array_unique(array_map("serialize", $src))
+        );
         return $output;
     }
 
-    public function runBrowser($url) 
+    public function runBrowser($url)
     {
         if (function_exists('curl_init')) {
             $ch = curl_init();
@@ -553,8 +569,9 @@ class Robot {
                         $href = $img = $title = $note = $date = '';
 
                         preg_match($arr_attribute['tag'], $temp, $matches);
-                        if ($matches)
+                        if ($matches) {
                             $tags[] = $matches[1];
+                        }
 
                         if ($i % 50 == 0) {
                             sleep(1);
@@ -564,13 +581,13 @@ class Robot {
                     $bool = false;
                 }
             } while ($bool);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $tags = [];
         }
 
         return $tags;
     }
-    
+
     public function convertImageToBase($html, $is_domain_root = false)
     {
         try {
@@ -640,7 +657,7 @@ class Robot {
                     $bool = false;
                 }
             } while ($bool);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return $html;
         }
 
@@ -701,7 +718,7 @@ class Robot {
                     $bool = false;
                 }
             } while ($bool);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return $image;
         }
 
@@ -782,11 +799,11 @@ class Robot {
                     $bool = false;
                 }
             } while ($bool);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return $html;
         }
 
-        if (strpos($html, 'data-original=') !== FALSE) {
+        if (strpos($html, 'data-original=') !== false) {
             $html = str_ireplace('src=', 'data-src-tmp=', $html);
             $html = str_ireplace("data-original=", "src=", $html);
         }
@@ -840,7 +857,7 @@ class Robot {
                     $bool = false;
                 }
             } while ($bool);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return $html;
         }
 
@@ -860,7 +877,7 @@ class Robot {
     {
         $videos = [];
 
-        if (strpos($domain, 'kenh14') === FALSE) {
+        if (strpos($domain, 'kenh14') === false) {
             return false;
         }
 
@@ -918,14 +935,14 @@ class Robot {
                     $bool = false;
                 }
             } while ($bool);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return $html;
         }
 
         $video_html = "";
         if (!empty($videos)) {
             foreach ($videos as $video) {
-                if (strpos($video['url'], 'http') === FALSE) {
+                if (strpos($video['url'], 'http') === false) {
                     $video['url'] = 'https://' . $video['url'];
                 }
 

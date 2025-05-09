@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Images\Controllers;
+<?php
+
+namespace App\Modules\Images\Controllers;
 
 use App\Controllers\MyController;
 

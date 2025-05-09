@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Articles\Models;
+<?php
+
+namespace App\Modules\Articles\Models;
 
 use App\Models\MyModel;
 
@@ -19,7 +21,7 @@ class ArticleLangModel extends MyModel
         'meta_keyword',
     ];
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }

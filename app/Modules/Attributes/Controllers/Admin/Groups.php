@@ -12,8 +12,8 @@ class Groups extends AdminController
 
     protected $model_lang;
 
-    const MANAGE_ROOT = 'manage/attribute_groups';
-    const MANAGE_URL = 'manage/attribute_groups';
+    public const MANAGE_ROOT = 'manage/attribute_groups';
+    public const MANAGE_URL = 'manage/attribute_groups';
 
     public function __construct()
     {
@@ -48,8 +48,7 @@ class Groups extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('groups/list', $data);
+            ->addPartial('sidebar')::load('groups/list', $data);
     }
 
     public function add()
@@ -166,8 +165,7 @@ class Groups extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('groups/form', $data);
+            ->addPartial('sidebar')::load('groups/form', $data);
     }
 
     private function _validateForm()

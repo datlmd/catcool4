@@ -1,15 +1,19 @@
-<?php namespace App\Libraries;
+<?php
+
+namespace App\Libraries;
 
 class Currency
 {
     private array $currencies = [];
 
-    public function __construct() {
+    public function __construct()
+    {
         $currency_model = new \App\Modules\Currencies\Models\CurrencyModel();
         $this->currencies = $currency_model->getListPublished();
     }
 
-    public function format(float $number, string $currency, float $value = 0, bool $format = true): string {
+    public function format(float $number, string $currency, float $value = 0, bool $format = true): string
+    {
         if (!isset($this->currencies[$currency])) {
             return '';
         }
@@ -45,7 +49,8 @@ class Currency
         return $string;
     }
 
-    public function convert(float $value, string $from, string $to): float {
+    public function convert(float $value, string $from, string $to): float
+    {
         if (isset($this->currencies[$from])) {
             $from = $this->currencies[$from]['value'];
         } else {
@@ -61,7 +66,8 @@ class Currency
         return $value * ($to / $from);
     }
 
-    public function getId(string $currency): int {
+    public function getId(string $currency): int
+    {
         if (isset($this->currencies[$currency])) {
             return $this->currencies[$currency]['currency_id'];
         } else {
@@ -69,7 +75,8 @@ class Currency
         }
     }
 
-    public function getSymbolLeft(string $currency): string {
+    public function getSymbolLeft(string $currency): string
+    {
         if (isset($this->currencies[$currency])) {
             return $this->currencies[$currency]['symbol_left'];
         } else {
@@ -77,7 +84,8 @@ class Currency
         }
     }
 
-    public function getSymbolRight(string $currency): string {
+    public function getSymbolRight(string $currency): string
+    {
         if (isset($this->currencies[$currency])) {
             return $this->currencies[$currency]['symbol_right'];
         } else {
@@ -85,7 +93,8 @@ class Currency
         }
     }
 
-    public function getDecimalPlace(string $currency): string {
+    public function getDecimalPlace(string $currency): string
+    {
         if (isset($this->currencies[$currency])) {
             return $this->currencies[$currency]['decimal_place'];
         } else {
@@ -93,7 +102,8 @@ class Currency
         }
     }
 
-    public function getValue(string $currency): float {
+    public function getValue(string $currency): float
+    {
         if (isset($this->currencies[$currency])) {
             return $this->currencies[$currency]['value'];
         } else {
@@ -101,7 +111,8 @@ class Currency
         }
     }
 
-    public function has(string $currency): bool {
+    public function has(string $currency): bool
+    {
         return isset($this->currencies[$currency]);
     }
 }

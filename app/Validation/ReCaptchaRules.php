@@ -6,7 +6,6 @@ use Exception;
 
 class ReCaptchaRules
 {
-
     public function reCaptcha2(string $token, string $params, array $data, &$error = null)
     {
         $service = service('reCaptcha2');
@@ -15,13 +14,11 @@ class ReCaptchaRules
 
         $response = $service->verify($token);
 
-        if ($response->isSuccess())
-        {
+        if ($response->isSuccess()) {
             return true;
         }
 
-        foreach($response->getErrorCodes() as $key => $value)
-        {
+        foreach ($response->getErrorCodes() as $key => $value) {
             $error = lang('ReCaptcha.' . $value);
 
             break;
@@ -36,25 +33,21 @@ class ReCaptchaRules
 
         $params = explode(',', $params);
 
-        if (count($params) > 0)
-        {
+        if (count($params) > 0) {
             $service->setExpectedAction($params[0]);
         }
 
-        if (count($params) > 1)
-        {
+        if (count($params) > 1) {
             $service->setScoreThreshold($params[1]);
         }
 
         $response = $service->verify($token);
 
-        if ($response->isSuccess())
-        {
+        if ($response->isSuccess()) {
             return true;
         }
 
-        foreach($response->getErrorCodes() as $key => $value)
-        {
+        foreach ($response->getErrorCodes() as $key => $value) {
             $error = lang('ReCaptcha.' . $value);
 
             break;

@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Customers\Controllers\Api;
+<?php
+
+namespace App\Modules\Customers\Controllers\Api;
 
 use CodeIgniter\API\ResponseTrait;
 use App\Controllers\MyController;
@@ -23,7 +25,7 @@ class Login extends MyController
         $redirect = "";
         if (service('customer')->isLogged() && !empty(session('customer_token'))) {
             $redirect = $return_url . '?customer_token=' . session('customer_token');
-        } else if (service('customer')->loginRememberedCustomer()) {
+        } elseif (service('customer')->loginRememberedCustomer()) {
             //neu da logout thi check auto login
             $redirect = $return_url . '?customer_token=' . session('customer_token');
         }
@@ -53,7 +55,7 @@ class Login extends MyController
         $data["text_remember"] = lang('General.text_remember');
         $data["button_login"] = lang('General.button_login');
         $data["text_or"] = lang('General.text_or');
-        
+
         return $this->setResponseFormat('json')->respond($data, 200);
     }
 

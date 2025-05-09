@@ -1,11 +1,10 @@
 <?php
 
-if(!isset($routes))
-{
+if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\News\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes){
+$routes->group('manage', ['namespace' => 'App\Modules\News\Controllers\Admin', 'filter' => 'auth_admin'], function ($subroutes) {
     $subroutes->add('news', 'News::index');
     $subroutes->add('news/add', 'News::add');
     $subroutes->add('news/edit/(:any)', 'News::edit/$1');
@@ -26,7 +25,7 @@ $routes->group('manage', ['namespace' => 'App\Modules\News\Controllers\Admin', '
     $subroutes->add('news_categories/update_sort', 'Categories::updateSort');
 });
 
-$routes->group('news', ['namespace' => 'App\Modules\News\Controllers'], function($subroutes){
+$routes->group('news', ['namespace' => 'App\Modules\News\Controllers'], function ($subroutes) {
     $subroutes->add('test/(:any)', 'News::test/$1');
     $subroutes->add('test', 'News::test');
 });

@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Users\Models;
+<?php
+
+namespace App\Modules\Users\Models;
 
 use App\Models\MyModel;
 
@@ -12,7 +14,7 @@ class UserGroupModel extends MyModel
         'group_id',
     ];
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }

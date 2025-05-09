@@ -3,19 +3,16 @@
 use Config\ReCaptcha2;
 use Config\ReCaptcha3;
 
-if (!function_exists('reCaptcha2'))
-{
+if (!function_exists('reCaptcha2')) {
     function reCaptcha2(string $name, array $attributes = [], array $options = [], bool $init = true)
     {
         $config = config(ReCaptcha2::class);
 
-        if (!$config)
-        {
+        if (!$config) {
             throw new Exception(ReCaptcha2::class . ' not found.');
         }
 
-        if (empty($attributes['id']))
-        {
+        if (empty($attributes['id'])) {
             $attributes['id'] = $name;
         }
 
@@ -27,8 +24,7 @@ if (!function_exists('reCaptcha2'))
 
         $return = form_input($attributes) . PHP_EOL;
 
-        if ($init)
-        {
+        if ($init) {
             $return .= view_cell('App\Cells\ReCaptcha::init_v2', [
                 'key' => $config->key,
                 'id' => $attributes['id'],
@@ -40,21 +36,18 @@ if (!function_exists('reCaptcha2'))
     }
 }
 
-if (!function_exists('reCaptcha3'))
-{
+if (!function_exists('reCaptcha3')) {
     function reCaptcha3(string $name, array $attributes = [], array $options = [], bool $init = true)
     {
         $config = config(ReCaptcha3::class);
 
-        if (!$config)
-        {
+        if (!$config) {
             throw new Exception(ReCaptcha3::class . ' not found.');
         }
 
         helper('form');
 
-        if (empty($attributes['id']))
-        {
+        if (empty($attributes['id'])) {
             $attributes['id'] = $name;
         }
 
@@ -64,8 +57,7 @@ if (!function_exists('reCaptcha3'))
 
         $return = form_input($attributes) . PHP_EOL;
 
-        if ($init)
-        {
+        if ($init) {
             $return .= view_cell('App\Cells\ReCaptcha::init_v3', [
                 'key' => $config->key,
                 'id' => $attributes['id'],

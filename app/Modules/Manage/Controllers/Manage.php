@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Manage\Controllers;
+<?php
+
+namespace App\Modules\Manage\Controllers;
 
 use App\Controllers\AdminController;
 
@@ -6,8 +8,8 @@ class Manage extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/';
-    CONST MANAGE_URL  = 'manage/';
+    public const MANAGE_ROOT = 'manage/';
+    public const MANAGE_URL  = 'manage/';
 
     public function __construct()
     {

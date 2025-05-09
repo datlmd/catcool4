@@ -28,7 +28,7 @@ class Articles extends MyController
                 $category_list[$key]['href'] = $category_model->getUrl($value);
             }
         }
-        
+
         $article_model = new ArticleModel();
 
         if (!empty($category_id)) {

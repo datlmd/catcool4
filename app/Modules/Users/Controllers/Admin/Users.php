@@ -18,8 +18,8 @@ class Users extends AdminController
 {
     public $errors = [];
 
-    const MANAGE_ROOT = 'manage/users';
-    const MANAGE_URL = 'manage/users';
+    public const MANAGE_ROOT = 'manage/users';
+    public const MANAGE_URL = 'manage/users';
 
     protected $group_model;
     protected $user_group_model;
@@ -27,9 +27,9 @@ class Users extends AdminController
     protected $user_permission_model;
     protected $auth_model;
 
-    const DOB_DEFAULT = '1970-01-01';
+    public const DOB_DEFAULT = '1970-01-01';
 
-    const FOLDER_UPLOAD = 'users/';
+    public const FOLDER_UPLOAD = 'users/';
 
     public function __construct()
     {
@@ -79,8 +79,7 @@ class Users extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('list', $data);
+            ->addPartial('sidebar')::load('list', $data);
     }
 
     public function add()
@@ -243,8 +242,7 @@ class Users extends AdminController
 
         $this->themes->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm($id = null)
@@ -346,9 +344,9 @@ class Users extends AdminController
 
                 $avatar = $avatar_name;
             }
-//            else {
-//                $avatar = $this->request->getPost('avatar_root');
-//            }
+            //            else {
+            //                $avatar = $this->request->getPost('avatar_root');
+            //            }
 
             $edit_data = [
                 'email' => strtolower($this->request->getPost('email')),
@@ -477,8 +475,7 @@ class Users extends AdminController
 
         $this->themes->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('change_password', $data);
+            ->addPartial('sidebar')::load('change_password', $data);
     }
 
     public function permission($id = null)
@@ -537,8 +534,7 @@ class Users extends AdminController
 
         $this->themes->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('permission', $data);
+            ->addPartial('sidebar')::load('permission', $data);
     }
 
     public function delete($id = null)
@@ -682,9 +678,9 @@ class Users extends AdminController
             'login' => site_url('manage/users/api_login').'?login_token='.session('login_token'),
         ];
 
-//        if (!empty($this->validator->getErrors())) {
-//            $data['errors'] = $this->validator->getErrors();
-//        }
+        //        if (!empty($this->validator->getErrors())) {
+        //            $data['errors'] = $this->validator->getErrors();
+        //        }
 
         add_meta(['title' => lang('UserAdmin.login_heading')], $this->themes);
 

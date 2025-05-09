@@ -15,8 +15,8 @@ class AddressFormatModel extends MyModel
         'address_format',
     ];
 
-    const ADDRESS_FORMAT_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'address_format_list';
-    const ADDRESS_FORMAT_EXPIRE = YEAR;
+    public const ADDRESS_FORMAT_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'address_format_list';
+    public const ADDRESS_FORMAT_EXPIRE = YEAR;
 
     public function __construct()
     {

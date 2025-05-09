@@ -1,13 +1,16 @@
-<?php namespace App\Modules\Customers\Controllers;
+<?php
+
+namespace App\Modules\Customers\Controllers;
 
 use App\Controllers\MyController;
 
 class Logout extends MyController
 {
-    public function index(): void {
+    public function index(): void
+    {
 
         if (service('customer')->isLogged()) {
-			service('customer')->logout();
+            service('customer')->logout();
 
             session()->remove([
                 'customer',
@@ -27,7 +30,7 @@ class Logout extends MyController
             ]);
 
             redirect()->to(site_url('account/logout'));
-		}
+        }
 
         //set theme
         $this->themes->setTheme(config_item('theme_frontend'));
@@ -43,7 +46,7 @@ class Logout extends MyController
             'breadcrumb' => $this->breadcrumb->render(),
             'breadcrumb_title' => lang('General.text_logout'),
         ];
-        
+
         $this->themes->addPartial('header_top', $params)
              ->addPartial('header_bottom', $params)
              ->addPartial('content_left', $params)
@@ -58,4 +61,3 @@ class Logout extends MyController
         theme_load('logout', $data);
     }
 }
-

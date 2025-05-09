@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Customers\Models;
+<?php
+
+namespace App\Modules\Customers\Models;
 
 use App\Models\MyAuthModel;
 
 class AuthModel extends MyAuthModel
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 

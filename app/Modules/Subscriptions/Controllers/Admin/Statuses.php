@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Subscriptions\Controllers\Admin;
+<?php
+
+namespace App\Modules\Subscriptions\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Subscriptions\Models\StatusModel;
@@ -10,8 +12,8 @@ class Statuses extends AdminController
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'manage/subscription_statuses';
-    CONST MANAGE_URL  = 'manage/subscription_statuses';
+    public const MANAGE_ROOT = 'manage/subscription_statuses';
+    public const MANAGE_URL  = 'manage/subscription_statuses';
 
     public function __construct()
     {
@@ -31,8 +33,8 @@ class Statuses extends AdminController
         $this->breadcrumb->add(lang('SubscriptionStatusAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
-	public function index()
-	{
+    public function index()
+    {
         add_meta(['title' => lang('SubscriptionStatusAdmin.heading_title')], $this->themes);
 
         $limit       = $this->request->getGet('limit');
@@ -42,7 +44,7 @@ class Statuses extends AdminController
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
-	    $data = [
+        $data = [
             'breadcrumb'    => $this->breadcrumb->render(),
             'list'          => $list->paginate($limit),
             'pager'         => $list->pager,
@@ -55,9 +57,8 @@ class Statuses extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('statuses/list', $data);
-	}
+            ->addPartial('sidebar')::load('statuses/list', $data);
+    }
 
     public function add()
     {
@@ -71,7 +72,7 @@ class Statuses extends AdminController
                 'published' => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
             ];
             $id = $this->model->insert($add_data);
-            if ($id === FALSE) {
+            if ($id === false) {
                 set_alert(lang('Admin.error'), ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
@@ -109,7 +110,7 @@ class Statuses extends AdminController
                 $edit_data_lang[$language['id']]['subscription_status_id'] = $id;
 
                 if (!empty($this->model_lang->where(['subscription_status_id' => $id, 'language_id' => $language['id']])->find())) {
-                    $this->model_lang->where('language_id', $language['id'])->update($id,$edit_data_lang[$language['id']]);
+                    $this->model_lang->where('language_id', $language['id'])->update($id, $edit_data_lang[$language['id']]);
                 } else {
                     $this->model_lang->insert($edit_data_lang[$language['id']]);
                 }
@@ -118,9 +119,9 @@ class Statuses extends AdminController
             $edit_data = [
                 'subscription_status_id' => $id,
                 'published'              => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
-                
+
             ];
-            if ($this->model->save($edit_data) !== FALSE) {
+            if ($this->model->save($edit_data) !== false) {
                 set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
             } else {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
@@ -168,13 +169,12 @@ class Statuses extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('statuses/form', $data);
+            ->addPartial('sidebar')::load('statuses/form', $data);
     }
 
     private function _validateForm()
     {
-        foreach(list_language_admin() as $value) {
+        foreach (list_language_admin() as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('Admin.text_name') . ' (' . $value['name']  . ')', 'required');
         }
 

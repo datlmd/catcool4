@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Languages\Controllers\Admin;
+<?php
+
+namespace App\Modules\Languages\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Languages\Models\LanguageModel;
@@ -7,8 +9,8 @@ class Languages extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/languages';
-    CONST MANAGE_URL  = 'manage/languages';
+    public const MANAGE_ROOT = 'manage/languages';
+    public const MANAGE_URL  = 'manage/languages';
 
     public function __construct()
     {
@@ -47,8 +49,7 @@ class Languages extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('list', $data);
+            ->addPartial('sidebar')::load('list', $data);
     }
 
     public function switch($code)
@@ -133,8 +134,7 @@ class Languages extends AdminController
         $token = csrf_hash();
 
         //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
@@ -178,7 +178,7 @@ class Languages extends AdminController
     {
         $this->themes->addCSS('common/js/iconpicker/iconpicker');
         $this->themes->addJS('common/js/iconpicker/iconpicker');
-        
+
         //edit
         if (!empty($id) && is_numeric($id)) {
             $data['text_form']   = lang('LanguageAdmin.text_edit');
@@ -209,8 +209,7 @@ class Languages extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

@@ -1,8 +1,10 @@
-<?php namespace App\Modules\Countries\Models;
+<?php
+
+namespace App\Modules\Countries\Models;
 
 use App\Models\MyModel;
 
-class  WardModel extends MyModel
+class WardModel extends MyModel
 {
     protected $table      = 'country_ward';
     protected $primaryKey = 'ward_id';
@@ -19,17 +21,17 @@ class  WardModel extends MyModel
         'published',
     ];
 
-    const COUNTRY_WARD_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_ward_list';
-    const COUNTRY_WARD_CACHE_EXPIRE = YEAR;
+    public const COUNTRY_WARD_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_ward_list';
+    public const COUNTRY_WARD_CACHE_EXPIRE = YEAR;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sorts =[
+        $sorts = [
             'district' => '`d`.`name`',
             'name' => '`w`.`name`',
             'ward_id' => '`w`.`ward_id`',

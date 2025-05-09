@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Posts\Controllers\Admin;
+<?php
+
+namespace App\Modules\Posts\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Posts\Models\PostModel;
@@ -11,11 +13,11 @@ class Posts extends AdminController
     protected $model_categories;
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/posts';
-    CONST MANAGE_URL  = 'manage/posts';
+    public const MANAGE_ROOT = 'manage/posts';
+    public const MANAGE_URL  = 'manage/posts';
 
-    CONST SEO_URL_MODULE   = 'posts';
-    CONST SEO_URL_RESOURCE = 'Posts::Detail/%s';
+    public const SEO_URL_MODULE   = 'posts';
+    public const SEO_URL_RESOURCE = 'Posts::Detail/%s';
 
     public function __construct()
     {
@@ -85,8 +87,7 @@ class Posts extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load($tpl_name, $data);
+            ->addPartial('sidebar')::load($tpl_name, $data);
     }
 
     public function add()
@@ -137,7 +138,7 @@ class Posts extends AdminController
                     }
                 }
             }
-            
+
             $add_data = [
                 'name'              => $this->request->getPost('name'),
                 'slug'              => !empty($this->request->getPost('slug')) ? slugify($this->request->getPost('slug')) : slugify($this->request->getPost('name')),
@@ -478,8 +479,7 @@ class Posts extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

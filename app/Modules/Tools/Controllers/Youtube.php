@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Tools\Controllers;
+<?php
+
+namespace App\Modules\Tools\Controllers;
 
 use App\Controllers\MyController;
 
@@ -29,8 +31,7 @@ class Youtube extends MyController
             ->addPartial('header_top')
             ->addPartial('header_bottom')
             ->addPartial('footer_top')
-            ->addPartial('footer_bottom')
-            ::load('youtube_download');
+            ->addPartial('footer_bottom')::load('youtube_download');
     }
 
     public function apiYoutubeVideo()
@@ -101,8 +102,7 @@ class Youtube extends MyController
 
         $data['error_message'] = $error_message;
 
-        echo $this->themes
-            ::view('api/youtube_download', $data);
+        echo $this->themes::view('api/youtube_download', $data);
     }
 
     public function download()
@@ -118,13 +118,13 @@ class Youtube extends MyController
         //@todo fix download
         if (!empty($download_url) && substr($download_url, 0, 8) === 'https://') {
 
-//            header("Cache-Control: public");
-//            header("Content-Transfer-Encoding: binary");
-//            header('Content-Disposition: attachment;filename="' . $download_file_name . '"');
-//            header("Content-Transfer-Encoding: binary");
-//            header('Content-Type: application/octet-stream');
-//
-//            readfile($download_url);
+            //            header("Cache-Control: public");
+            //            header("Content-Transfer-Encoding: binary");
+            //            header('Content-Disposition: attachment;filename="' . $download_file_name . '"');
+            //            header("Content-Transfer-Encoding: binary");
+            //            header('Content-Type: application/octet-stream');
+            //
+            //            readfile($download_url);
         }
     }
 
@@ -148,7 +148,7 @@ class Youtube extends MyController
         "autonavState": "STATE_NONE","html5Preference": "HTML5_PREF_WANTS","lactMilliseconds": "-1"}},
         "racyCheckOk": false,  "contentCheckOk": false}';
         curl_setopt($ch, CURLOPT_POSTFIELDS, $curlOptions);
-        $headers = array();
+        $headers = [];
         $headers[] = 'Content-Type: application/json';
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         $curlResult = curl_exec($ch);

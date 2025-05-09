@@ -23,8 +23,8 @@ class VariantModel extends MyModel
 
     protected $table_lang = 'variant_lang';
 
-    const CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'variant_list_all';
-    const CACHE_EXPIRE = DAY;
+    public const CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'variant_list_all';
+    public const CACHE_EXPIRE = DAY;
 
     public function __construct()
     {

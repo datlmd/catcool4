@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Images\Controllers;
+<?php
+
+namespace App\Modules\Images\Controllers;
 
 use App\Controllers\AdminController;
 
@@ -16,7 +18,6 @@ class Editor extends AdminController
         $this->themes->setTheme(config_item('theme_admin'))
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('editor');
+            ->addPartial('sidebar')::load('editor');
     }
 }

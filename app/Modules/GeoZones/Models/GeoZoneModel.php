@@ -22,8 +22,8 @@ class GeoZoneModel extends MyModel
 
     protected $table_lang = 'option_lang';
 
-    const OPTION_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'option_list_all';
-    const OPTION_CACHE_EXPIRE = DAY;
+    public const OPTION_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'option_list_all';
+    public const OPTION_CACHE_EXPIRE = DAY;
 
     public function __construct()
     {

@@ -1,4 +1,6 @@
-<?php namespace App\Modules\CountriesOld\Controllers\Admin;
+<?php
+
+namespace App\Modules\CountriesOld\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\CountriesOld\Models\CountryModel;
@@ -7,8 +9,8 @@ class Countries extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/old/countries';
-    CONST MANAGE_URL  = 'manage/old/countries';
+    public const MANAGE_ROOT = 'manage/old/countries';
+    public const MANAGE_URL  = 'manage/old/countries';
 
     public function __construct()
     {
@@ -51,8 +53,7 @@ class Countries extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('list', $data);
+            ->addPartial('sidebar')::load('list', $data);
     }
 
     public function add()
@@ -152,8 +153,7 @@ class Countries extends AdminController
         $token = csrf_hash();
 
         //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
@@ -225,8 +225,7 @@ class Countries extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

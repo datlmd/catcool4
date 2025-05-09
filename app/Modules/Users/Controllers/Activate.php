@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Users\Controllers;
+<?php
+
+namespace App\Modules\Users\Controllers;
 
 use App\Controllers\UserController;
 use App\Modules\Users\Models\UserModel;

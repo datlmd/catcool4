@@ -1,10 +1,12 @@
-<?php namespace App\Modules\Users\Models;
+<?php
+
+namespace App\Modules\Users\Models;
 
 use App\Models\MyAuthModel;
 
 class AuthModel extends MyAuthModel
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -29,7 +31,7 @@ class AuthModel extends MyAuthModel
         ];
 
         if (isset($user_info['super_admin']) && $user_info['super_admin'] == true) {
-            $session_data['super_admin'] = TRUE;
+            $session_data['super_admin'] = true;
         }
 
         session()->set([

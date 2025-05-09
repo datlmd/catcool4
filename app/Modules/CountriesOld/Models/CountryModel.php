@@ -38,8 +38,8 @@ class CountryModel extends MyModel
         'deleted_at',
     ];
 
-    const COUNTRY_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'country_list';
-    const COUNTRY_CACHE_EXPIRE = YEAR;
+    public const COUNTRY_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'country_list';
+    public const COUNTRY_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {

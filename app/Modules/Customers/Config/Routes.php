@@ -1,11 +1,10 @@
 <?php
 
-if(!isset($routes))
-{
+if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Customers\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes) {
+$routes->group('manage', ['namespace' => 'App\Modules\Customers\Controllers\Admin', 'filter' => 'auth_admin'], function ($subroutes) {
     $subroutes->add('customers', 'Customers::index');
     $subroutes->add('customers/add', 'Customers::add');
     $subroutes->add('customers/edit/(:num)', 'Customers::edit/$1');
@@ -20,7 +19,7 @@ $routes->group('manage', ['namespace' => 'App\Modules\Customers\Controllers\Admi
     $subroutes->add('customer_groups/save', 'Groups::save');
 });
 
-$routes->group('account', ['namespace' => 'App\Modules\Customers\Controllers'], function($subroutes) {
+$routes->group('account', ['namespace' => 'App\Modules\Customers\Controllers'], function ($subroutes) {
     $subroutes->get('login', 'Login::index');
     $subroutes->post('login', 'Login::login');
     $subroutes->get('forgotten', 'Forgotten::index');
@@ -42,7 +41,7 @@ $routes->group('account', ['namespace' => 'App\Modules\Customers\Controllers'], 
     $subroutes->post('password/save', 'Password::save');
 });
 
-$routes->group('account/api', ['namespace' => 'App\Modules\Customers\Controllers\Api'], function($subroutes) {
+$routes->group('account/api', ['namespace' => 'App\Modules\Customers\Controllers\Api'], function ($subroutes) {
     $subroutes->get('login', 'Login::index');
     $subroutes->post('login', 'Login::login');
     $subroutes->get('profile', 'Profile::index');

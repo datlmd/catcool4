@@ -1,8 +1,10 @@
-<?php namespace App\Modules\CountriesOld\Models;
+<?php
+
+namespace App\Modules\CountriesOld\Models;
 
 use App\Models\MyModel;
 
-class  ProvinceModel extends MyModel
+class ProvinceModel extends MyModel
 {
     protected $table      = 'country_province_bk';
     protected $primaryKey = 'province_id';
@@ -25,10 +27,10 @@ class  ProvinceModel extends MyModel
         'deleted_at',
     ];
 
-    const COUNTRY_PROVINCE_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_province_list';
-    const COUNTRY_PROVINCE_CACHE_EXPIRE = YEAR;
+    public const COUNTRY_PROVINCE_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_province_list';
+    public const COUNTRY_PROVINCE_CACHE_EXPIRE = YEAR;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }

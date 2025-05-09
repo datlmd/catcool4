@@ -12,8 +12,8 @@ class Layouts extends AdminController
 {
     protected $errors = [];
 
-    const MANAGE_ROOT = 'manage/layouts';
-    const MANAGE_URL = 'manage/layouts';
+    public const MANAGE_ROOT = 'manage/layouts';
+    public const MANAGE_URL = 'manage/layouts';
 
     public function __construct()
     {
@@ -59,8 +59,7 @@ class Layouts extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('/list', $data);
+            ->addPartial('sidebar')::load('/list', $data);
     }
 
     public function add()
@@ -277,8 +276,7 @@ class Layouts extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('/form', $data);
+            ->addPartial('sidebar')::load('/form', $data);
     }
 
     private function _validateForm($id = null)

@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Translations\Controllers\Admin;
+<?php
+
+namespace App\Modules\Translations\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Modules\Models\ModuleModel;
@@ -9,10 +11,10 @@ class Translations extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/translations';
-    CONST MANAGE_URL  = 'manage/translations';
+    public const MANAGE_ROOT = 'manage/translations';
+    public const MANAGE_URL  = 'manage/translations';
 
-    const FILTER_DEFAULT_FRONTEND = 44;
+    public const FILTER_DEFAULT_FRONTEND = 44;
 
     public function __construct()
     {
@@ -88,8 +90,7 @@ class Translations extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('list', $data);
+            ->addPartial('sidebar')::load('list', $data);
     }
 
     public function add()

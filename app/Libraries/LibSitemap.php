@@ -2,8 +2,8 @@
 
 namespace App\Libraries;
 
-class LibSitemap {
-
+class LibSitemap
+{
     public $urls = [];
     public $changefreqs = [
         'always',
@@ -29,14 +29,15 @@ class LibSitemap {
      * @access public
      * @return boolean
      */
-    public function add($loc, $lastmod = NULL, $changefreq = NULL, $priority = NULL, $news = NULL) {
+    public function add($loc, $lastmod = null, $changefreq = null, $priority = null, $news = null)
+    {
         // Do not continue if the changefreq value is not a valid value
-        if ($changefreq !== NULL && !in_array($changefreq, $this->changefreqs)) {
+        if ($changefreq !== null && !in_array($changefreq, $this->changefreqs)) {
             show_error('Unknown value for changefreq: '.$changefreq);
             return false;
         }
         // Do not continue if the priority value is not a valid number between 0 and 1
-        if ($priority !== NULL && ($priority < 0 || $priority > 1)) {
+        if ($priority !== null && ($priority < 0 || $priority > 1)) {
             show_error('Invalid value for priority: '.$priority);
             return false;
         }
@@ -58,7 +59,8 @@ class LibSitemap {
      * @access public
      * @return void
      */
-    public function output($type = 'urlset', $attrs = null) {
+    public function output($type = 'urlset', $attrs = null)
+    {
 
         $attrs = !empty($attrs) ? $attrs : 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"';
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8" ?><'. $type . ' ' . $attrs . ' />');
@@ -76,22 +78,33 @@ class LibSitemap {
                     $child_news = $child->addChild('news:news', null, "http://www.google.com/schemas/sitemap-news/0.9");
 
                     $child_news_publication = $child_news->addChild('news:publication', null, "http://www.google.com/schemas/sitemap-news/0.9");
-                    if (isset($url->news['publication']['name']))
+                    if (isset($url->news['publication']['name'])) {
                         $child_news_publication->addChild('news:name', $url->news['publication']['name'], "http://www.google.com/schemas/sitemap-news/0.9");
-                    if (isset($url->news['publication']['language']))
+                    }
+                    if (isset($url->news['publication']['language'])) {
                         $child_news_publication->addChild('news:language', $url->news['publication']['language'], "http://www.google.com/schemas/sitemap-news/0.9");
+                    }
 
-                    if (isset($url->news['publication_date']))
+                    if (isset($url->news['publication_date'])) {
                         $child_news->addChild('news:publication_date', $url->news['publication_date'], "http://www.google.com/schemas/sitemap-news/0.9");
-                    if (isset($url->news['title']))
+                    }
+                    if (isset($url->news['title'])) {
                         $child_news->addChild('news:title', $url->news['title'], "http://www.google.com/schemas/sitemap-news/0.9");
-                    if (isset($url->news['keywords']))
+                    }
+                    if (isset($url->news['keywords'])) {
                         $child_news->addChild('news:keywords', $url->news['keywords'], "http://www.google.com/schemas/sitemap-news/0.9");
+                    }
 
                 } else {
-                    if (isset($url->lastmod)) $child->addChild('lastmod', $url->lastmod);
-                    if (isset($url->changefreq)) $child->addChild('changefreq', $url->changefreq);
-                    if (isset($url->priority)) $child->addChild('priority', number_format($url->priority, 1));
+                    if (isset($url->lastmod)) {
+                        $child->addChild('lastmod', $url->lastmod);
+                    }
+                    if (isset($url->changefreq)) {
+                        $child->addChild('changefreq', $url->changefreq);
+                    }
+                    if (isset($url->priority)) {
+                        $child->addChild('priority', number_format($url->priority, 1));
+                    }
                 }
 
             }
@@ -99,7 +112,9 @@ class LibSitemap {
             foreach ($this->urls as $url) {
                 $child = $xml->addChild('sitemap');
                 $child->addChild('loc', strtolower($url->loc));
-                if (isset($url->lastmod)) $child->addChild('lastmod', $url->lastmod);
+                if (isset($url->lastmod)) {
+                    $child->addChild('lastmod', $url->lastmod);
+                }
             }
         }
         //$xml->asXml('sitemap.xml');
@@ -112,7 +127,8 @@ class LibSitemap {
      * @access public
      * @return boolean
      */
-    public function clear() {
+    public function clear()
+    {
         $this->urls = [];
         return true;
     }

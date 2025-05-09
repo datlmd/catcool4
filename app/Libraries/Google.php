@@ -1,10 +1,12 @@
-<?php namespace App\Libraries;
+<?php
+
+namespace App\Libraries;
 
 // Include the autoloader provided in the SDK
 require_once ROOTPATH . 'vendor/autoload.php';
 
-use \Google_Client;
-use \Google_Service_Oauth2;
+use Google_Client;
+use Google_Service_Oauth2;
 
 class Google
 {
@@ -26,11 +28,13 @@ class Google
         $this->oauth2 = new Google_Service_Oauth2($this->client);
     }
 
-    public function loginUrl() {
+    public function loginUrl()
+    {
         return $this->client->createAuthUrl();
     }
 
-    public function getAuthenticate($code) {
+    public function getAuthenticate($code)
+    {
         if (empty($code)) {
             return false;
         }
@@ -38,11 +42,13 @@ class Google
         return $this->client->authenticate($code);
     }
 
-    public function getAccessToken() {
+    public function getAccessToken()
+    {
         return $this->client->getAccessToken();
     }
 
-    public function setAccessToken() {
+    public function setAccessToken()
+    {
         return $this->client->setAccessToken();
     }
 
@@ -51,11 +57,13 @@ class Google
      *
      * @return bool
      */
-    public function revokeToken() {
+    public function revokeToken()
+    {
         return $this->client->revokeToken();
     }
 
-    public function getUserInfo() {
+    public function getUserInfo()
+    {
         return $this->oauth2->userinfo->get();
     }
 }

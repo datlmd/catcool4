@@ -43,8 +43,8 @@ class Category extends MyController
         if (empty($category_list[$parent_id])) {
             page_not_found();
         }
-        
-        $category_tree = format_tree([$category_list, 'category_id']);        
+
+        $category_tree = format_tree([$category_list, 'category_id']);
         $category_list = $category_model->getChildrenQuantity($category_list, $category_tree);
 
         $product_model = new ProductModel();
@@ -61,7 +61,7 @@ class Category extends MyController
 
         $product_list = [];
         list($products, $product_pager) = $product_model->getProducts($filter_data, $this->language_id);
-        
+
         foreach ($products as $key => $value) {
             $price = service('currency')->format($value['price'], session('currency'));
             $special = service('currency')->format(199000, session('currency'));

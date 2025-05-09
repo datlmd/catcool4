@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Currencies\Controllers\Admin;
+<?php
+
+namespace App\Modules\Currencies\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Currencies\Models\CurrencyModel;
@@ -7,8 +9,8 @@ class Currencies extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/currencies';
-    CONST MANAGE_URL  = 'manage/currencies';
+    public const MANAGE_ROOT = 'manage/currencies';
+    public const MANAGE_URL  = 'manage/currencies';
 
     public function __construct()
     {
@@ -46,8 +48,7 @@ class Currencies extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('list', $data);
+            ->addPartial('sidebar')::load('list', $data);
     }
 
     public function add()
@@ -129,8 +130,7 @@ class Currencies extends AdminController
         $token = csrf_hash();
 
         //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
@@ -201,8 +201,7 @@ class Currencies extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

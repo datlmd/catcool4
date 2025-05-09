@@ -1,4 +1,6 @@
-<?php namespace App\Modules\News\Controllers;
+<?php
+
+namespace App\Modules\News\Controllers;
 
 use App\Controllers\MyController;
 use App\Modules\News\Models\NewsModel;
@@ -12,7 +14,7 @@ class Robot extends MyController
         parent::__construct();
 
     }
-        /**
+    /**
      *
      * @param null $robot_type
      * @param int $robot_href_position - index array config
@@ -56,8 +58,7 @@ class Robot extends MyController
             $model->deleteCache();
 
             echo "Đã thêm được {$total} tin!" . PHP_EOL;
-        } catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             echo $e->getMessage() . PHP_EOL;
         }
     }

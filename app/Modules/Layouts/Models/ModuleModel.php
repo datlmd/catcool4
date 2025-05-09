@@ -16,8 +16,8 @@ class ModuleModel extends MyModel
         'sort_order',
     ];
 
-    const CACHE_NAME_LIST = PREFIX_CACHE_NAME_MYSQL.'layout_module_list';
-    const CACHE_EXPIRE = YEAR;
+    public const CACHE_NAME_LIST = PREFIX_CACHE_NAME_MYSQL.'layout_module_list';
+    public const CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {

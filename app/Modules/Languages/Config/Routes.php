@@ -1,11 +1,10 @@
 <?php
 
-if(!isset($routes))
-{
+if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Languages\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes){
+$routes->group('manage', ['namespace' => 'App\Modules\Languages\Controllers\Admin', 'filter' => 'auth_admin'], function ($subroutes) {
     $subroutes->add('languages', 'Languages::index');
     $subroutes->add('languages/add', 'Languages::add');
     $subroutes->add('languages/edit/(:num)', 'Languages::edit/$1');

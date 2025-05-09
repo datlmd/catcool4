@@ -1,4 +1,6 @@
-<?php namespace App\Libraries;
+<?php
+
+namespace App\Libraries;
 
 /**
  * Themes Library for CodeIgniter 4
@@ -17,73 +19,73 @@ use App\Exceptions\ThemesException;
 /**
  * Class Themes
  *
- * @package 
+ * @package
  */
-class Themes 
+class Themes
 {
-	/**
-	 * Constant of key for css themes
-	 */
-	const CSS_THEME = 'css_file';
+    /**
+     * Constant of key for css themes
+     */
+    public const CSS_THEME = 'css_file';
 
-	/**
-	 * Constant of key for external css
-	 */
-	const EXTERNAL_CSS = 'external_css';
+    /**
+     * Constant of key for external css
+     */
+    public const EXTERNAL_CSS = 'external_css';
 
-	/**
-	 * Constant of key for js themes
-	 */
-	const JS_THEME = 'js_file';
+    /**
+     * Constant of key for js themes
+     */
+    public const JS_THEME = 'js_file';
 
-	/**
-	 * Constant of key for external js
-	 */
-	const EXTERNAL_JS = 'external_js';
+    /**
+     * Constant of key for external js
+     */
+    public const EXTERNAL_JS = 'external_js';
 
-	/**
-	 * Constant of key for inline js
-	 */
-	const INLINE_JS = 'inline_js';
+    /**
+     * Constant of key for inline js
+     */
+    public const INLINE_JS = 'inline_js';
 
-	/**
-	 * Constant of key for loaded plugin
-	 */
-	const LOADED_PLUGIN = 'loaded_plugins';
+    /**
+     * Constant of key for loaded plugin
+     */
+    public const LOADED_PLUGIN = 'loaded_plugins';
 
-	/**
-	 * Constant of variable that will be used as page title inside template
-	 */
-	const PAGE_TITLE = 'page_title';
+    /**
+     * Constant of variable that will be used as page title inside template
+     */
+    public const PAGE_TITLE = 'page_title';
 
-	/**
-	 * Constant of variable that will be used as content inside template
-	 */
-	const CONTENT = 'content';
-	
-	/**
-	 * Themes instance 
-	 *
-	 * @var    object||null
-	 * @access private
-	 */
-	private static $instance = null;
+    /**
+     * Constant of variable that will be used as content inside template
+     */
+    public const CONTENT = 'content';
 
-	/**
-	 * Theme variables - store variables to be used in template file
-	 *
-	 * @var    array
-	 * @access protected
-	 */
-	protected static $themeVars = [];
+    /**
+     * Themes instance
+     *
+     * @var    object||null
+     * @access private
+     */
+    private static $instance = null;
 
-	/**
-	 * Themes Configuration - Used from \Catcool\Config\Themes but can be overiden in the run-time
-	 *
-	 * @var    array
-	 * @access protected
-	 */
-	protected static $config = [];
+    /**
+     * Theme variables - store variables to be used in template file
+     *
+     * @var    array
+     * @access protected
+     */
+    protected static $themeVars = [];
+
+    /**
+     * Themes Configuration - Used from \Catcool\Config\Themes but can be overiden in the run-time
+     *
+     * @var    array
+     * @access protected
+     */
+    protected static $config = [];
 
     public $module = null;
     public $controller = null;
@@ -91,46 +93,42 @@ class Themes
     protected static $metadata = [];
     protected static $partials = [];
 
-	/**
-	 * Intantiate Themes with default config 
-	 *
-	 * @param  \Config\Themes    $config
-	 * 
-	 * @return void
-	 */
-	public static function init($config = null)
-	{
-		if (self::$instance === null)
-		{
-			self::$instance = new self;
-		}
+    /**
+     * Intantiate Themes with default config
+     *
+     * @param  \Config\Themes    $config
+     *
+     * @return void
+     */
+    public static function init($config = null)
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
 
-		if (is_null($config))
-		{
-			$config = config('Themes');
-		}
+        if (is_null($config)) {
+            $config = config('Themes');
+        }
 
-		self::$instance::$themeVars = null;
+        self::$instance::$themeVars = null;
 
-		self::$config = (array) $config;
+        self::$config = (array) $config;
 
-		// define constant for config reference key var
-		foreach($config as $theme_key => $theme_value)
-		{
-			$constant = strtoupper($theme_key);
+        // define constant for config reference key var
+        foreach ($config as $theme_key => $theme_value) {
+            $constant = strtoupper($theme_key);
 
-			if (!defined($constant))
-			{
-				define($constant, $theme_key);
-			}
-		}
+            if (!defined($constant)) {
+                define($constant, $theme_key);
+            }
+        }
 
-		if (!empty(config_item('theme_frontend'))) {
-			self::$instance->setTheme(config_item('theme_frontend'));
-		} else {
-			self::$instance->setTheme(self::$config[THEME]);
-		}
-		
+        if (!empty(config_item('theme_frontend'))) {
+            self::$instance->setTheme(config_item('theme_frontend'));
+        } else {
+            self::$instance->setTheme(self::$config[THEME]);
+        }
+
 
         $router          = service('router');
         $controller_full = $router->controllerName();//\App\Modules\Dummy\Controllers\Manage
@@ -140,345 +138,320 @@ class Themes
         self::$instance->controller = !empty($controller_full[5]) ? $controller_full[5] : self::$instance->module;
         self::$instance->method     = $router->methodName();
 
-		return self::$instance;
-	}
+        return self::$instance;
+    }
 
-	/**
-	 * add css file(s) to be loaded inside template
-	 *
-	 * @param   string||array   $css_files
-	 * 
-	 *@return $this \Themes
-	 */	
-	public function addCSS($css_files = [])
-	{
-		$css_files = is_array($css_files) ? $css_files : explode(',', $css_files);
+    /**
+     * add css file(s) to be loaded inside template
+     *
+     * @param   string||array   $css_files
+     *
+     *@return $this \Themes
+     */
+    public function addCSS($css_files = [])
+    {
+        $css_files = is_array($css_files) ? $css_files : explode(',', $css_files);
 
-		foreach ($css_files as $css)
-		{
-			$css = trim($css);
+        foreach ($css_files as $css) {
+            $css = trim($css);
 
-			if (!empty($css))
-			{
-				// set unique key-index to prevent duplicate css being included
-				self::$themeVars[self::CSS_THEME][sha1($css)] = $css;
-			}			
-		}
+            if (!empty($css)) {
+                // set unique key-index to prevent duplicate css being included
+                self::$themeVars[self::CSS_THEME][sha1($css)] = $css;
+            }
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * add js file(s) to be loaded inside template
-	 *
-	 * @param   string||array   $js_files
-	 * 
-	 *@return $this \Themes
-	 */
-	public function addJS($js_files)
-	{
-		$js_files = is_array($js_files) ? $js_files : explode(',', $js_files);
+    /**
+     * add js file(s) to be loaded inside template
+     *
+     * @param   string||array   $js_files
+     *
+     *@return $this \Themes
+     */
+    public function addJS($js_files)
+    {
+        $js_files = is_array($js_files) ? $js_files : explode(',', $js_files);
 
-		foreach ($js_files as $js)
-		{
-			$js = trim($js);
+        foreach ($js_files as $js) {
+            $js = trim($js);
 
-			if (!empty($js))
-			{
-				// set unique key-index to prevent duplicate js being included
-				self::$themeVars[self::JS_THEME][sha1($js)] = $js;
-			}
-		}
+            if (!empty($js)) {
+                // set unique key-index to prevent duplicate js being included
+                self::$themeVars[self::JS_THEME][sha1($js)] = $js;
+            }
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Adding inline JS to the template
-	 *  
-	 * @param string $js_scripts
-	 * 
-	 * @return $this \Themes
-	 */ 
-	public function addInlineJS($js_scripts)
-	{
-		$js = trim($js_scripts);
+    /**
+     * Adding inline JS to the template
+     *
+     * @param string $js_scripts
+     *
+     * @return $this \Themes
+     */
+    public function addInlineJS($js_scripts)
+    {
+        $js = trim($js_scripts);
 
-		if (!empty($js))
-		{
-			self::$themeVars[self::INLINE_JS][sha1($js)] = $js;
-		}
+        if (!empty($js)) {
+            self::$themeVars[self::INLINE_JS][sha1($js)] = $js;
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Adding i18n JS to the template
-	 *  
-	 * @param string  $js_scripts
-	 * @param mixed[] $langs
-	 * 
-	 * @return $this \Themes
-	 */ 
-	public function addI18nJS(string $js_scripts, array $langs = [])
-	{
-		helper('themes');
+    /**
+     * Adding i18n JS to the template
+     *
+     * @param string  $js_scripts
+     * @param mixed[] $langs
+     *
+     * @return $this \Themes
+     */
+    public function addI18nJS(string $js_scripts, array $langs = [])
+    {
+        helper('themes');
 
-		$js = trim($js_scripts);
+        $js = trim($js_scripts);
 
-		if (!empty($js))
-		{
-			if (pathinfo($js, PATHINFO_EXTENSION) == 'js')
-			{
-				$js = FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[JS_PATH] . '/' . $js;
-			}
+        if (!empty($js)) {
+            if (pathinfo($js, PATHINFO_EXTENSION) == 'js') {
+                $js = FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[JS_PATH] . '/' . $js;
+            }
 
-			self::$themeVars[self::INLINE_JS][sha1($js)] = translate($js, $langs);
-		}
+            self::$themeVars[self::INLINE_JS][sha1($js)] = translate($js, $langs);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Add CSS from external source (fully css url)
-	 * 
-	 * @param string||array $full_css_path
-	 * 
-	 * @return $this \Themes
-	 */
-	public function addExternalCSS($full_css_path = null)
-	{
-		$full_css_path = is_array($full_css_path) ? $full_css_path : explode(',', $full_css_path);
+    /**
+     * Add CSS from external source (fully css url)
+     *
+     * @param string||array $full_css_path
+     *
+     * @return $this \Themes
+     */
+    public function addExternalCSS($full_css_path = null)
+    {
+        $full_css_path = is_array($full_css_path) ? $full_css_path : explode(',', $full_css_path);
 
-		foreach ($full_css_path as $css)
-		{
-			$css = trim($css);
+        foreach ($full_css_path as $css) {
+            $css = trim($css);
 
-			if (!empty( $css ))
-			{
-				self::$themeVars[self::EXTERNAL_CSS][sha1($css)] = $css;
-			}
-		}
+            if (!empty($css)) {
+                self::$themeVars[self::EXTERNAL_CSS][sha1($css)] = $css;
+            }
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Add JS from external source (fully js url)
-	 * 
-	 * @param string||array $full_js_path
-	 * 
-	 * @return $this \Themes
-	 */
-	public function addExternalJS($full_js_path = null)
-	{
-		$full_js_path = is_array($full_js_path) ? $full_js_path : explode(',', $full_js_path);
+    /**
+     * Add JS from external source (fully js url)
+     *
+     * @param string||array $full_js_path
+     *
+     * @return $this \Themes
+     */
+    public function addExternalJS($full_js_path = null)
+    {
+        $full_js_path = is_array($full_js_path) ? $full_js_path : explode(',', $full_js_path);
 
-		foreach ($full_js_path as $js)
-		{
-			$js = trim($js);
+        foreach ($full_js_path as $js) {
+            $js = trim($js);
 
-			if (!empty($js))
-			{
-				self::$themeVars[self::EXTERNAL_JS][sha1($js)] = $js;
-			}
-		}
+            if (!empty($js)) {
+                self::$themeVars[self::EXTERNAL_JS][sha1($js)] = $js;
+            }
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Load Registered Plugins
-	 * 
-	 * @param string||array $plugins
-	 * 
-	 * @return $this \Themes
-	 */
-	public function loadPlugins($plugins)
-	{
-		$plugins = is_array($plugins) ? $plugins : explode(',', $plugins);
+    /**
+     * Load Registered Plugins
+     *
+     * @param string||array $plugins
+     *
+     * @return $this \Themes
+     */
+    public function loadPlugins($plugins)
+    {
+        $plugins = is_array($plugins) ? $plugins : explode(',', $plugins);
 
-		foreach ($plugins as $plugin)
-		{
-			$plugin = trim($plugin);
+        foreach ($plugins as $plugin) {
+            $plugin = trim($plugin);
 
-			if (!empty($plugin))
-			{
-				if (!array_key_exists($plugin, self::$config['plugins']))
-				{
-					throw ThemesException::forPluginNotRegistered($plugin);
-				}
+            if (!empty($plugin)) {
+                if (!array_key_exists($plugin, self::$config['plugins'])) {
+                    throw ThemesException::forPluginNotRegistered($plugin);
+                }
 
-				$this->loadPlugin($plugin);
-			}
-		}
+                $this->loadPlugin($plugin);
+            }
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Load Each Plugin
-	 * 
-	 * @param string $plugin key of plugin
-	 */
-	protected function loadPlugin($plugin)
-	{
-		$plugin_url = self::$themeVars['plugin_url'];
+    /**
+     * Load Each Plugin
+     *
+     * @param string $plugin key of plugin
+     */
+    protected function loadPlugin($plugin)
+    {
+        $plugin_url = self::$themeVars['plugin_url'];
 
-		foreach(self::$config['plugins'][$plugin] as $type => $plugin_files)
-		{
-			foreach($plugin_files as $plugin_file)
-			{
-				$plugin_path = str_replace(base_url(), FCPATH, $plugin_url);
+        foreach (self::$config['plugins'][$plugin] as $type => $plugin_files) {
+            foreach ($plugin_files as $plugin_file) {
+                $plugin_path = str_replace(base_url(), FCPATH, $plugin_url);
 
-				if (!is_file($plugin_path . $plugin_file))
-				{
-					throw ThemesException::forPluginNotFound($plugin_file);
-				}
+                if (!is_file($plugin_path . $plugin_file)) {
+                    throw ThemesException::forPluginNotFound($plugin_file);
+                }
 
-				self::$themeVars[self::LOADED_PLUGIN][$type][] = $plugin_url . $plugin_file;
-			}
-		}
-	}
+                self::$themeVars[self::LOADED_PLUGIN][$type][] = $plugin_url . $plugin_file;
+            }
+        }
+    }
 
-	/**
-	 * Wether themes used full template or not
-	 * 
-	 * @param boolean $use_full_template
-	 * 
-	 * @return $this \Themes
-	 */
-	public function useFullTemplate($use_full_template = true)
-	{
-		self::$config['use_full_template'] = $use_full_template;
+    /**
+     * Wether themes used full template or not
+     *
+     * @param boolean $use_full_template
+     *
+     * @return $this \Themes
+     */
+    public function useFullTemplate($use_full_template = true)
+    {
+        self::$config['use_full_template'] = $use_full_template;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Set Header Template in the run-time
-	 * 
-	 * @param string $header_name
-	 * 
-	 * @return $this \Themes
-	 */
-	public function setHeader($header_name = null)
-	{
-		if (is_string($header_name))
-		{
-			self::$config[HEADER] = $header_name;
-		}
+    /**
+     * Set Header Template in the run-time
+     *
+     * @param string $header_name
+     *
+     * @return $this \Themes
+     */
+    public function setHeader($header_name = null)
+    {
+        if (is_string($header_name)) {
+            self::$config[HEADER] = $header_name;
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Set Main Template in the run-time
-	 * 
-	 * @param string $template_name
-	 * 
-	 * @return $this \Themes
-	 */
-	public function setTemplate($template_name = null)
-	{
-		if (is_string($template_name))
-		{
-			self::$config[TEMPLATE] = $template_name;
-		}
+    /**
+     * Set Main Template in the run-time
+     *
+     * @param string $template_name
+     *
+     * @return $this \Themes
+     */
+    public function setTemplate($template_name = null)
+    {
+        if (is_string($template_name)) {
+            self::$config[TEMPLATE] = $template_name;
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Set Footer Template in the run-time
-	 * 
-	 * @param string $footer_name
-	 * 
-	 * @return $this \Themes
-	 */
-	public function setFooter($footer_name = null)
-	{
-		if (is_string($footer_name))
-		{
-			self::$config[FOOTER] = $footer_name;
-		}
+    /**
+     * Set Footer Template in the run-time
+     *
+     * @param string $footer_name
+     *
+     * @return $this \Themes
+     */
+    public function setFooter($footer_name = null)
+    {
+        if (is_string($footer_name)) {
+            self::$config[FOOTER] = $footer_name;
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Set Theme in the run-time
-	 * 
-	 * @param string $theme_name
-	 * 
-	 * @return $this \Themes
-	 */
-	public function setTheme($theme_name = null)
-	{
-		if (is_string($theme_name))
-		{
-			self::$config[THEME] = $theme_name;
-		}
+    /**
+     * Set Theme in the run-time
+     *
+     * @param string $theme_name
+     *
+     * @return $this \Themes
+     */
+    public function setTheme($theme_name = null)
+    {
+        if (is_string($theme_name)) {
+            self::$config[THEME] = $theme_name;
+        }
 
-		self::$instance->setVar([
-			'theme_url'  => base_url(self::$config[THEME_PATH] . '/' . self::$config[THEME]) . '/',
-			'image_url'  => base_url(self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[IMAGE_PATH]) . '/',
-			'plugin_url' => base_url(self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[PLUGIN_PATH]) . '/',
+        self::$instance->setVar([
+            'theme_url'  => base_url(self::$config[THEME_PATH] . '/' . self::$config[THEME]) . '/',
+            'image_url'  => base_url(self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[IMAGE_PATH]) . '/',
+            'plugin_url' => base_url(self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[PLUGIN_PATH]) . '/',
             'theme_path' => FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/',
-		]);
+        ]);
 
-		return $this;
-	}
+        return $this;
+    }
 
     public function setMaster($theme_master = null)
     {
-        if (is_string($theme_master))
-        {
+        if (is_string($theme_master)) {
             self::$config[MASTER] = $theme_master;
         }
 
         return $this;
     }
 
-    public function setLayout ($theme_layout = null)
+    public function setLayout($theme_layout = null)
     {
-        if (is_string($theme_layout))
-        {
+        if (is_string($theme_layout)) {
             self::$config[LAYOUT] = $theme_layout;
         }
 
         return $this;
     }
 
-	static function getVars()
-	{
-		if (is_null(self::$instance))
-		{
-			self::init();
-		}
-		$objTheme = self::$instance;
+    public static function getVars()
+    {
+        if (is_null(self::$instance)) {
+            self::init();
+        }
+        $objTheme = self::$instance;
 
-		$data_master['title']          = !empty(self::$metadata['title']) ? self::$metadata['title'] : "";
+        $data_master['title']          = !empty(self::$metadata['title']) ? self::$metadata['title'] : "";
         $data_master['description']    = !empty(self::$metadata['description']) ? self::$metadata['description'] : "";
         $data_master['keywords']       = !empty(self::$metadata['keywords']) ? self::$metadata['keywords'] : "";
         $data_master['metadata']       = $objTheme->_outputMeta();
         $data_master['css_files']      = $objTheme->_outputCSS();
         $data_master['js_files']       = $objTheme->_outputJS();
-		$data_master[self::PAGE_TITLE] = self::$themeVars[self::PAGE_TITLE] ?? "";
+        $data_master[self::PAGE_TITLE] = self::$themeVars[self::PAGE_TITLE] ?? "";
 
-		$body_class = sprintf("%s-%s-%s", self::$instance->module, self::$instance->controller, self::$instance->method);
-		$data_master['body_class'] = strtolower($body_class);
+        $body_class = sprintf("%s-%s-%s", self::$instance->module, self::$instance->controller, self::$instance->method);
+        $data_master['body_class'] = strtolower($body_class);
 
-		return $data_master;
-	}
+        return $data_master;
+    }
 
-	static function load($viewPath = null, $data = [])
-	{
-		if (is_null(self::$instance))
-		{
-			self::init();
-		}
-		$objTheme = self::$instance;
+    public static function load($viewPath = null, $data = [])
+    {
+        if (is_null(self::$instance)) {
+            self::init();
+        }
+        $objTheme = self::$instance;
 
         $data_master['title']       = !empty($data['title']) ? $data['title'] : (!empty(self::$metadata['title']) ? self::$metadata['title'] : "");
         $data_master['description'] = !empty($data['description']) ? $data['description'] : (!empty(self::$metadata['description']) ? self::$metadata['description'] : "");
@@ -491,10 +464,8 @@ class Themes
 
         $layout = [];
         // Add partial views only if requested
-        if ( ! empty(self::$partials))
-        {
-            foreach (self::$partials as $key => $value)
-            {
+        if (! empty(self::$partials)) {
+            foreach (self::$partials as $key => $value) {
                 $layout[$key] = $value;
             }
             unset($key, $value);
@@ -508,8 +479,8 @@ class Themes
         $objTheme->setVar('layout', $objTheme->_loadFile('layout', self::$config[LAYOUT], $layout, true));
 
         // Prepare the output
-		$body_class = sprintf("%s-%s-%s", self::$instance->module, self::$instance->controller, self::$instance->method);
-		$objTheme->setVar('body_class', strtolower($body_class));
+        $body_class = sprintf("%s-%s-%s", self::$instance->module, self::$instance->controller, self::$instance->method);
+        $objTheme->setVar('body_class', strtolower($body_class));
 
         $output = $objTheme->_loadFile('default', self::$config[MASTER], $objTheme::getData(), true);
 
@@ -520,35 +491,30 @@ class Themes
         $output =  str_replace('___theme_time___', $totalTime, $output);
 
         // Minify HTML output if set to TRE
-        if (self::$config[COMPRESS] === true)
-        {
+        if (self::$config[COMPRESS] === true) {
             $output = $objTheme->_compress_output($output);
         }
 
         //echo \Config\Services::renderer()->renderString($output);
         echo $output;
-	}
+    }
 
     protected function _loadFile($type = 'view', $view = '', $data = [], $return = false)
     {
-        if (is_null(self::$instance))
-        {
+        if (is_null(self::$instance)) {
             self::init();
         }
         $objTheme = self::$instance;
 
-        if (!empty($data))
-        {
-            foreach ($data AS $key => $val)
-            {
+        if (!empty($data)) {
+            foreach ($data as $key => $val) {
                 service('smartyEngine')->assign($key, $val);
             }
         }
 
         // If no file extension dot has been found default to defined extension for view extensions
         $template = $view;
-        if ( !stripos($view, '.'))
-        {
+        if (!stripos($view, '.')) {
             $template = $view.".".service('smartyEngine')->template_ext;
         }
 
@@ -561,36 +527,31 @@ class Themes
                 // prepare all path
                 $paths = [
                     build_path(FCPATH, self::$config[THEME_PATH], self::$config[THEME], 'views', 'modules', strtolower($objTheme->module)),
-					build_path(FCPATH, self::$config[THEME_PATH], self::$config[THEME], 'views'),
+                    build_path(FCPATH, self::$config[THEME_PATH], self::$config[THEME], 'views'),
                     build_path(APPPATH, 'Modules', $objTheme->module, 'Views'),
-					build_path(APPPATH, 'Views'),
+                    build_path(APPPATH, 'Views'),
                 ];
                 // remove uneccessary paths if $this->module is null
-                if (empty($objTheme->module))
-                {
+                if (empty($objTheme->module)) {
                     unset($paths[1]);
                 }
-                if ( ! empty($paths))
-                {
+                if (! empty($paths)) {
                     $found  = false;
                     $output = '';
-                    foreach (array_unique($paths) as $path)
-                    {
-                        if (file_exists($path . $template))
-                        {
+                    foreach (array_unique($paths) as $path) {
+                        if (file_exists($path . $template)) {
                             $found  = true;
                             $output = service('smartyEngine')->fetch($path . $template);
                             break;
                         }
                     }
-                    if ($found !== true)
-                    {
+                    if ($found !== true) {
                         throw ThemesException::forMissingTemplateView(" (".$template.") ".implode("<br/>", array_unique($paths)));
                     }
                     return $output;
                 }
                 break;
-            // In case of a partial view
+                // In case of a partial view
             case 'partial':
             case 'partials':
                 // prepare all path
@@ -600,32 +561,27 @@ class Themes
                     build_path(APPPATH, 'Modules', $objTheme->module, 'Views', "partials"),
                 ];
                 // remove uneccessary paths if $this->module is null
-                if (empty($objTheme->module))
-                {
+                if (empty($objTheme->module)) {
                     unset($paths[1], $paths[2]);
                 }
-                if ( ! empty($paths))
-                {
+                if (! empty($paths)) {
                     $found  = false;
                     $output = '';
-                    foreach (array_unique($paths) as $path)
-                    {
-                        if (file_exists($path . $template))
-                        {
+                    foreach (array_unique($paths) as $path) {
+                        if (file_exists($path . $template)) {
                             $found  = true;
                             $output = service('smartyEngine')->fetch($path . $template);
                             break;
                         }
                     }
-                    if ($found !== true)
-                    {
+                    if ($found !== true) {
                         throw ThemesException::forMissingTemplateView(" (".$template.") ".implode("<br/>", array_unique($paths)));
                     }
                     return $output;
                 }
 
                 break;
-            // In case of a layout view
+                // In case of a layout view
             case 'layout':
             case 'layouts':
                 // prepare all path
@@ -635,32 +591,27 @@ class Themes
                     //build_path(APPPATH, 'modules', $this->module, 'views', '_layouts'),
                 ];
                 // remove uneccessary paths if $this->module is null
-                if (empty($objTheme->module))
-                {
+                if (empty($objTheme->module)) {
                     unset($paths[1]);
                 }
-                if ( ! empty($paths))
-                {
+                if (! empty($paths)) {
                     $found  = false;
                     $output = '';
-                    foreach (array_unique($paths) as $path)
-                    {
-                        if (file_exists($path . $template))
-                        {
+                    foreach (array_unique($paths) as $path) {
+                        if (file_exists($path . $template)) {
                             $found  = true;
                             $output = service('smartyEngine')->fetch($path . $template);
                             break;
                         }
                     }
-                    if ($found !== true)
-                    {
+                    if ($found !== true) {
                         throw ThemesException::forMissingTemplateView(" (".$template.") ".implode("<br/>", array_unique($paths)));
                     }
                     return $output;
                 }
 
                 break;
-            // Load main theme file
+                // Load main theme file
             case 'main':
             case 'theme':
             case 'master':
@@ -673,25 +624,20 @@ class Themes
                     //build_path(APPPATH, 'modules', $this->module, 'views', '_master'),
                 ];
                 // remove uneccessary paths if $this->module is null
-                if (empty($objTheme->module))
-                {
+                if (empty($objTheme->module)) {
                     unset($paths[1]);
                 }
-                if ( ! empty($paths))
-                {
+                if (! empty($paths)) {
                     $found  = false;
                     $output = '';
-                    foreach (array_unique($paths) as $path)
-                    {
-                        if (file_exists($path . $template))
-                        {
+                    foreach (array_unique($paths) as $path) {
+                        if (file_exists($path . $template)) {
                             $found  = true;
                             $output = service('smartyEngine')->fetch($path . $template);
                             break;
                         }
                     }
-                    if ($found !== true)
-                    {
+                    if ($found !== true) {
                         throw ThemesException::forMissingTemplateView(" (".$template.") ".implode("<br/>", array_unique($paths)));
                     }
                     return $output;
@@ -704,8 +650,7 @@ class Themes
 
     public function addPartial($view, $data = [], $name = null)
     {
-        if (is_null(self::$instance))
-        {
+        if (is_null(self::$instance)) {
             self::init();
         }
         $objTheme = self::$instance;
@@ -719,8 +664,7 @@ class Themes
 
     public static function partial($view, $data = [], $return = false)
     {
-        if (is_null(self::$instance))
-        {
+        if (is_null(self::$instance)) {
             self::init();
         }
         $objTheme = self::$instance;
@@ -730,8 +674,7 @@ class Themes
 
     public static function view($view, $data = [], $return = false)
     {
-        if (is_null(self::$instance))
-        {
+        if (is_null(self::$instance)) {
             self::init();
         }
         $objTheme = self::$instance;
@@ -741,71 +684,62 @@ class Themes
 
     public function addMeta($name, $content = null, $type = 'meta', $attrs = [])
     {
-        if (is_null(self::$instance))
-        {
+        if (is_null(self::$instance)) {
             self::init();
         }
         $objTheme = self::$instance;
 
         // In case of multiple elements
-        if (is_array($name))
-        {
-            foreach ($name as $key => $val)
-            {
+        if (is_array($name)) {
+            foreach ($name as $key => $val) {
                 $objTheme->addMeta($key, $val, $type, $attrs);
             }
             return $this;
         }
-		if (!empty($attrs['id'])) {
-			self::$metadata[$type.'::'.$name.'::'.$attrs['id']] = [
-				'content' => $content,
-				'attrs'   => $attrs,
-			];
-		} else {
-			self::$metadata[$type.'::'.$name] = [
-				'content' => $content,
-				'attrs'   => $attrs,
-			];
-		}
+        if (!empty($attrs['id'])) {
+            self::$metadata[$type.'::'.$name.'::'.$attrs['id']] = [
+                'content' => $content,
+                'attrs'   => $attrs,
+            ];
+        } else {
+            self::$metadata[$type.'::'.$name] = [
+                'content' => $content,
+                'attrs'   => $attrs,
+            ];
+        }
 
         return $this;
     }
 
     public function meta($name, $content = null, $type = 'meta', $attrs = [])
     {
-        if (is_null(self::$instance))
-        {
+        if (is_null(self::$instance)) {
             self::init();
         }
         $objTheme = self::$instance;
 
         // Loop through multiple meta tags
-        if (is_array($name))
-        {
+        if (is_array($name)) {
             $meta = [];
-            foreach ($name as $key => $val)
-            {
+            foreach ($name as $key => $val) {
                 $meta[] = $objTheme->meta($key, $val, $type, $attrs);
             }
             return implode("\t", $meta);
         }
         $attributes = [];
-        switch ($type)
-        {
+        switch ($type) {
             case 'rel':
                 $tag = 'link';
                 $attributes['rel']  = $name;
                 $attributes['href'] = $content;
                 break;
-            // In case of a meta tag.
+                // In case of a meta tag.
             case 'meta':
             default:
-                if ($name == 'charset')
-                {
+                if ($name == 'charset') {
                     return "<meta charset=\"{$content}\">\n\t";
                 }
-                if ($name == 'base')
-                {
+                if ($name == 'base') {
                     return "<base href=\"{$content}\">\n\t";
                 }
                 // The tag by default is "meta"
@@ -813,24 +747,18 @@ class Themes
 
                 // In case of using Open Graph tags,
                 // we user 'property' instead of 'name'.
-                $type = (strpos($name, 'og:') !== false)? 'property': 'name';
-                if ($content === null)
-                {
+                $type = (strpos($name, 'og:') !== false) ? 'property' : 'name';
+                if ($content === null) {
                     $attributes[$type] = $name;
-                }
-                else
-                {
+                } else {
                     $attributes[$type] = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
                     $attributes['content'] = htmlspecialchars($content, ENT_QUOTES, 'UTF-8');
                 }
                 break;
         }
-        if (is_array($attrs))
-        {
+        if (is_array($attrs)) {
             $attributes = _stringify_attributes(array_merge($attributes, $attrs));
-        }
-        else
-        {
+        } else {
             $attributes = _stringify_attributes($attributes).' '.$attrs;
         }
         return "<{$tag}{$attributes}>\n\t";
@@ -838,21 +766,18 @@ class Themes
 
     protected function _outputMeta()
     {
-        if (is_null(self::$instance))
-        {
+        if (is_null(self::$instance)) {
             self::init();
         }
         $objTheme = self::$instance;
 
         $output = '';
 
-        if ( ! empty(self::$metadata))
-        {
-            foreach(self::$metadata as $key => $val)
-            {
+        if (! empty(self::$metadata)) {
+            foreach (self::$metadata as $key => $val) {
                 list($type, $name) = explode('::', $key);
-                $content = isset($val['content'])? $val['content']: null;
-                $attrs   = isset($val['attrs'])? $val['attrs']: null;
+                $content = isset($val['content']) ? $val['content'] : null;
+                $attrs   = isset($val['attrs']) ? $val['attrs'] : null;
                 $output .= $objTheme->meta($name, $content, $type, $attrs);
             }
         }
@@ -897,18 +822,16 @@ class Themes
      * @param string $viewPath
      * @param array  $data
      */
-    static function render($viewPath = null, $data = [])
+    public static function render($viewPath = null, $data = [])
     {
-        if (is_null(self::$instance))
-        {
+        if (is_null(self::$instance)) {
             self::init();
         }
 
         $objTheme = self::$instance;
         $objTheme->setvar($data);
 
-        if (!$objTheme->templateExist(self::$config[TEMPLATE]))
-        {
+        if (!$objTheme->templateExist(self::$config[TEMPLATE])) {
             throw ThemesException::forMissingTemplateView(self::$config[TEMPLATE]);
         }
 
@@ -921,79 +844,65 @@ class Themes
 
         $view->setData($objTheme::getData());
 
-        if (self::$config['use_full_template'])
-        {
+        if (self::$config['use_full_template']) {
             echo $view->render(self::$config[TEMPLATE]);
-        }
-        else
-        {
-            if ($objTheme->templateExist(self::$config[HEADER]))
-            {
+        } else {
+            if ($objTheme->templateExist(self::$config[HEADER])) {
                 echo $view->render(self::$config[HEADER]);
             }
 
             echo $view->render(self::$config[TEMPLATE]);
 
-            if ($objTheme->templateExist(self::$config[FOOTER]))
-            {
+            if ($objTheme->templateExist(self::$config[FOOTER])) {
                 echo $view->render(self::$config[FOOTER]);
             }
         }
     }
 
-	/**
-	 * render CSS themes
-	 */
-	public static function renderCSS()
-	{
-		helper('themes');
+    /**
+     * render CSS themes
+     */
+    public static function renderCSS()
+    {
+        helper('themes');
 
-		// proceed external css, if exist
-		if (array_key_exists(self::EXTERNAL_CSS, self::$themeVars))
-		{
-			foreach(self::$themeVars[self::EXTERNAL_CSS] as $css)
-			{
-				echo link_tag($css);
-			}
-		}
+        // proceed external css, if exist
+        if (array_key_exists(self::EXTERNAL_CSS, self::$themeVars)) {
+            foreach (self::$themeVars[self::EXTERNAL_CSS] as $css) {
+                echo link_tag($css);
+            }
+        }
 
-		// proceed plugin css, if exist
-		if (array_key_exists(self::LOADED_PLUGIN, self::$themeVars) && array_key_exists('css', self::$themeVars[self::LOADED_PLUGIN]))
-		{
-			foreach(self::$themeVars[self::LOADED_PLUGIN]['css'] as $css)
-			{
-				echo link_tag($css);
-			}
-		}
+        // proceed plugin css, if exist
+        if (array_key_exists(self::LOADED_PLUGIN, self::$themeVars) && array_key_exists('css', self::$themeVars[self::LOADED_PLUGIN])) {
+            foreach (self::$themeVars[self::LOADED_PLUGIN]['css'] as $css) {
+                echo link_tag($css);
+            }
+        }
 
-		// proceed css themes, if exist
-		if (array_key_exists(self::CSS_THEME, self::$themeVars))
-		{
-			foreach(self::$themeVars[self::CSS_THEME] as $css)
-			{
-				$css_file = FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config['css_path'] . '/' . remove_extension($css, '.css').'.css';
+        // proceed css themes, if exist
+        if (array_key_exists(self::CSS_THEME, self::$themeVars)) {
+            foreach (self::$themeVars[self::CSS_THEME] as $css) {
+                $css_file = FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config['css_path'] . '/' . remove_extension($css, '.css').'.css';
 
-				if (is_file($css_file))
-				{
-					$latest_version = filemtime($css_file);
+                if (is_file($css_file)) {
+                    $latest_version = filemtime($css_file);
 
-					$css_file   = str_replace(FCPATH, '', $css_file);
-					$latest_css = base_url($css_file . '?v=' . $latest_version);
+                    $css_file   = str_replace(FCPATH, '', $css_file);
+                    $latest_css = base_url($css_file . '?v=' . $latest_version);
 
-					echo link_tag($latest_css);
-				}
-			}
-		}
-	}
+                    echo link_tag($latest_css);
+                }
+            }
+        }
+    }
 
     protected function _outputCSS($attrs = '')
     {
         $css_list = [];
 
-        if (array_key_exists(self::CSS_THEME, self::$themeVars))
-        {
-            foreach(self::$themeVars[self::CSS_THEME] as $css)
-            {
+        if (array_key_exists(self::CSS_THEME, self::$themeVars)) {
+            foreach (self::$themeVars[self::CSS_THEME] as $css) {
                 $paths = [
                     FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config['css_path'] . '/' . remove_extension($css, '.css').'.css',
                     FCPATH . remove_extension($css, '.css').'.css',
@@ -1017,49 +926,44 @@ class Themes
         return implode("\t", $css_list);
     }
 
-	/**
-	 * render JS themes
-	 */
-	public static function renderJS()
-	{
-		helper('themes');
-	
-		self::renderExtraJs();
+    /**
+     * render JS themes
+     */
+    public static function renderJS()
+    {
+        helper('themes');
 
-		// proceed main js theme, if exist
-		if (array_key_exists(self::JS_THEME, self::$themeVars))
-		{
-			foreach(self::$themeVars[self::JS_THEME] as $js)
-			{
-				$js_file = FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[JS_PATH] . '/' . remove_extension($js, '.js').'.js';
+        self::renderExtraJs();
 
-				if (is_file($js_file))
-				{
-					$latest_version = filemtime($js_file);
-					
-					$js_file   = str_replace(FCPATH, '', $js_file);
-					$latest_js = base_url($js_file . '?v=' . $latest_version);
+        // proceed main js theme, if exist
+        if (array_key_exists(self::JS_THEME, self::$themeVars)) {
+            foreach (self::$themeVars[self::JS_THEME] as $js) {
+                $js_file = FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . self::$config[JS_PATH] . '/' . remove_extension($js, '.js').'.js';
 
-					echo script_tag($latest_js);
-				}
-			}
-		}
+                if (is_file($js_file)) {
+                    $latest_version = filemtime($js_file);
 
-		// proceed inline js, if exist
-		if (array_key_exists(self::INLINE_JS, self::$themeVars))
-		{
-			$inline_js = '<script type="text/javascript">' . PHP_EOL; 
-			
-			foreach(self::$themeVars[self::INLINE_JS] as $js)
-			{
-				$inline_js .= $js . PHP_EOL;
-			}
+                    $js_file   = str_replace(FCPATH, '', $js_file);
+                    $latest_js = base_url($js_file . '?v=' . $latest_version);
 
-			$inline_js .= '</script>' . PHP_EOL;
+                    echo script_tag($latest_js);
+                }
+            }
+        }
 
-			echo $inline_js;
-		}
-	}
+        // proceed inline js, if exist
+        if (array_key_exists(self::INLINE_JS, self::$themeVars)) {
+            $inline_js = '<script type="text/javascript">' . PHP_EOL;
+
+            foreach (self::$themeVars[self::INLINE_JS] as $js) {
+                $inline_js .= $js . PHP_EOL;
+            }
+
+            $inline_js .= '</script>' . PHP_EOL;
+
+            echo $inline_js;
+        }
+    }
 
     protected function _outputJS($attrs = '')
     {
@@ -1091,151 +995,135 @@ class Themes
         return implode("\t", $js_list);
     }
 
-	/**
-	 * Render Inline JS
-	 */
-	protected static function renderExtraJs()
-	{
-		// proceed external js, if exist
-		if (array_key_exists(self::EXTERNAL_JS, self::$themeVars))
-		{
-			foreach(self::$themeVars[self::EXTERNAL_JS] as $js)
-			{
-				echo script_tag($js);
-			}
-		}
+    /**
+     * Render Inline JS
+     */
+    protected static function renderExtraJs()
+    {
+        // proceed external js, if exist
+        if (array_key_exists(self::EXTERNAL_JS, self::$themeVars)) {
+            foreach (self::$themeVars[self::EXTERNAL_JS] as $js) {
+                echo script_tag($js);
+            }
+        }
 
-		// proceed plugin js, if exist
-		if (array_key_exists(self::LOADED_PLUGIN, self::$themeVars) && array_key_exists('js', self::$themeVars[self::LOADED_PLUGIN]))
-		{
-			foreach(self::$themeVars[self::LOADED_PLUGIN]['js'] as $js)
-			{
-				echo script_tag($js);
-			}
-		}
-	}
+        // proceed plugin js, if exist
+        if (array_key_exists(self::LOADED_PLUGIN, self::$themeVars) && array_key_exists('js', self::$themeVars[self::LOADED_PLUGIN])) {
+            foreach (self::$themeVars[self::LOADED_PLUGIN]['js'] as $js) {
+                echo script_tag($js);
+            }
+        }
+    }
 
-	/**
- 	* Check does template exist 
- 	* 
- 	* @param string $template
- 	* 
- 	* @return boolean
- 	*/
-	protected function templateExist($template = null)
-	{
-		helper('themes');
+    /**
+    * Check does template exist
+    *
+    * @param string $template
+    *
+    * @return boolean
+    */
+    protected function templateExist($template = null)
+    {
+        helper('themes');
 
-		return is_file(FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . validate_ext($template));
-	}
+        return is_file(FCPATH . self::$config[THEME_PATH] . '/' . self::$config[THEME] . '/' . validate_ext($template));
+    }
 
-	/**
-	 * Set Main Content
-	 * 
-	 * @param string $viewPath
-	 * @param array  $data
-	 */
-	protected function setContent($viewPath = null, $data = [], $viewDir = 'Views')
-	{
-		$content = "";
+    /**
+     * Set Main Content
+     *
+     * @param string $viewPath
+     * @param array  $data
+     */
+    protected function setContent($viewPath = null, $data = [], $viewDir = 'Views')
+    {
+        $content = "";
 
-		if (is_string($viewPath))
-		{
-			$content = $viewPath; 
-		}
+        if (is_string($viewPath)) {
+            $content = $viewPath;
+        }
 
-		if (!empty($viewPath))
-		{
-			$fileExt = pathinfo($viewPath, PATHINFO_EXTENSION);
+        if (!empty($viewPath)) {
+            $fileExt = pathinfo($viewPath, PATHINFO_EXTENSION);
 
-			$locator = \Config\Services::locator();
-			$view    = $locator->locateFile($viewPath, $viewDir, empty($fileExt) ? 'php' : $fileExt);
+            $locator = \Config\Services::locator();
+            $view    = $locator->locateFile($viewPath, $viewDir, empty($fileExt) ? 'php' : $fileExt);
 
-			if (!empty($view))
-			{
-				$content = view($viewPath, $data);
-			}
-		}
+            if (!empty($view)) {
+                $content = view($viewPath, $data);
+            }
+        }
 
-		$this->setVar(self::CONTENT, $content);
-		$this->setPageTitle($data);
-	}
+        $this->setVar(self::CONTENT, $content);
+        $this->setPageTitle($data);
+    }
 
-	/**
-	 * Set Page Title - used in <title> tags
-	 * 
-	 * @param string $page_title
-	 */
-	public function setPageTitle($page_title = null)
-	{
-		$_page_title = '';
+    /**
+     * Set Page Title - used in <title> tags
+     *
+     * @param string $page_title
+     */
+    public function setPageTitle($page_title = null)
+    {
+        $_page_title = '';
 
-		if (is_string($page_title))
-		{
-			$_page_title = $page_title;
-		}
-		elseif (is_array($page_title) && array_key_exists(self::PAGE_TITLE, $page_title))
-		{
-			$_page_title = $page_title[self::PAGE_TITLE];
-		}
-		elseif (!array_key_exists(self::PAGE_TITLE, self::$themeVars) && !is_cli()) 
-		{
-			// page_title is not defined, so detect current controller/method as page title
-			$router = service('router');
-		
-			$controllers = explode('\\', $router->controllerName());
-			$controller  = $controllers[count($controllers)-1];
+        if (is_string($page_title)) {
+            $_page_title = $page_title;
+        } elseif (is_array($page_title) && array_key_exists(self::PAGE_TITLE, $page_title)) {
+            $_page_title = $page_title[self::PAGE_TITLE];
+        } elseif (!array_key_exists(self::PAGE_TITLE, self::$themeVars) && !is_cli()) {
+            // page_title is not defined, so detect current controller/method as page title
+            $router = service('router');
 
-			$_page_title = ($controller . ' | ' . ucfirst($router->methodName()));
-		}
+            $controllers = explode('\\', $router->controllerName());
+            $controller  = $controllers[count($controllers) - 1];
 
-		$this->setVar(self::PAGE_TITLE, $_page_title);
+            $_page_title = ($controller . ' | ' . ucfirst($router->methodName()));
+        }
 
-		return $this;
-	}
+        $this->setVar(self::PAGE_TITLE, $_page_title);
 
-	/**
-	 * Set Variable to be passed into template
-	 * 
-	 * @param string||array $key
-	 * @param mixed         $value
-	 * 
-	 * @return $this \Themes
-	 */
-	public function setVar($key, $value = false)
-	{
-		if (is_array($key))
-		{
-			foreach ($key as $_key => $_value)
-			{
-				self::$themeVars[$_key] = $_value;
-			}
-		}
-		else
-		{
-			self::$themeVars[$key] = $value;
-		}
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * Set Variable to be passed into template
+     *
+     * @param string||array $key
+     * @param mixed         $value
+     *
+     * @return $this \Themes
+     */
+    public function setVar($key, $value = false)
+    {
+        if (is_array($key)) {
+            foreach ($key as $_key => $_value) {
+                self::$themeVars[$_key] = $_value;
+            }
+        } else {
+            self::$themeVars[$key] = $value;
+        }
 
-	/**
-	 * Get All Themes Variables
-	 * 
-	 * @return array
-	 */
-	public static function getData(): array
-	{
-		return self::$themeVars;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get All Themes Configs
-	 * 
-	 * @return array
-	 */
-	public static function getConfig(): array
-	{
-		return self::$config;
-	}
+    /**
+     * Get All Themes Variables
+     *
+     * @return array
+     */
+    public static function getData(): array
+    {
+        return self::$themeVars;
+    }
+
+    /**
+     * Get All Themes Configs
+     *
+     * @return array
+     */
+    public static function getConfig(): array
+    {
+        return self::$config;
+    }
 }

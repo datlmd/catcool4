@@ -1,11 +1,10 @@
 <?php
 
-if(!isset($routes))
-{
+if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Returns\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes){
+$routes->group('manage', ['namespace' => 'App\Modules\Returns\Controllers\Admin', 'filter' => 'auth_admin'], function ($subroutes) {
 
     $subroutes->add('return_actions', 'Actions::index');
     $subroutes->add('return_actions/add', 'Actions::add');

@@ -1,11 +1,10 @@
 <?php
 
-if(!isset($routes))
-{
+if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('tools', ['namespace' => 'App\Modules\Tools\Controllers'], function($subroutes){
+$routes->group('tools', ['namespace' => 'App\Modules\Tools\Controllers'], function ($subroutes) {
     $subroutes->add('youtube', 'Youtube::index');
     $subroutes->add('youtube/api_youtube_video', 'Youtube::apiYoutubeVideo');
     $subroutes->add('youtube/huong-dan-tai', 'Youtube::download');

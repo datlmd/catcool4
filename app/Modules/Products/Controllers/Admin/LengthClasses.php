@@ -12,8 +12,8 @@ class LengthClasses extends AdminController
 
     protected $model_lang;
 
-    const MANAGE_ROOT = 'manage/product_length_classes';
-    const MANAGE_URL = 'manage/product_length_classes';
+    public const MANAGE_ROOT = 'manage/product_length_classes';
+    public const MANAGE_URL = 'manage/product_length_classes';
 
     public function __construct()
     {
@@ -58,8 +58,7 @@ class LengthClasses extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('length_classes/list', $data);
+            ->addPartial('sidebar')::load('length_classes/list', $data);
     }
 
     public function add()
@@ -184,8 +183,7 @@ class LengthClasses extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('length_classes/form', $data);
+            ->addPartial('sidebar')::load('length_classes/form', $data);
     }
 
     private function _validateForm()

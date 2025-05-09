@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Countries\Controllers\Admin;
+<?php
+
+namespace App\Modules\Countries\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Countries\Models\CountryModel;
@@ -7,8 +9,8 @@ class Countries extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/countries';
-    CONST MANAGE_URL  = 'manage/countries';
+    public const MANAGE_ROOT = 'manage/countries';
+    public const MANAGE_URL  = 'manage/countries';
 
     public function __construct()
     {
@@ -51,8 +53,7 @@ class Countries extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('list', $data);
+            ->addPartial('sidebar')::load('list', $data);
     }
 
     public function add()
@@ -132,8 +133,7 @@ class Countries extends AdminController
         $token = csrf_hash();
 
         //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
@@ -180,9 +180,9 @@ class Countries extends AdminController
             $data['text_form']   = lang('CountryAdmin.text_edit');
             $data['text_submit'] = lang('CountryAdmin.button_save');
             $breadcrumb_url      = site_url(self::MANAGE_URL . "/edit/$id");
-            
+
             $data_form = $this->model->find($id);
-            
+
             if (empty($data_form)) {
                 set_alert(lang('Admin.error_empty'), ALERT_ERROR, ALERT_POPUP);
                 return redirect()->to(site_url(self::MANAGE_URL));
@@ -214,8 +214,7 @@ class Countries extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

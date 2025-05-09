@@ -12,8 +12,8 @@ class Dummy extends AdminController
 
     protected $model_lang;
 
-    const MANAGE_ROOT = 'manage/dummy';
-    const MANAGE_URL  = 'manage/dummy';
+    public const MANAGE_ROOT = 'manage/dummy';
+    public const MANAGE_URL  = 'manage/dummy';
 
     public function __construct()
     {
@@ -57,8 +57,7 @@ class Dummy extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('manage/list', $data);
+            ->addPartial('sidebar')::load('manage/list', $data);
     }
 
     public function add()
@@ -75,7 +74,7 @@ class Dummy extends AdminController
                 //ADD_DUMMY_ROOT
             ];
             $id = $this->model->insert($add_data);
-            if ($id === FALSE) {
+            if ($id === false) {
                 set_alert(lang('Admin.error'), ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
@@ -125,7 +124,7 @@ class Dummy extends AdminController
                 'published'  => !empty($this->request->getPost('published')) ? STATUS_ON : STATUS_OFF,
                 //ADD_DUMMY_ROOT
             ];
-            if ($this->model->save($edit_data) !== FALSE) {
+            if ($this->model->save($edit_data) !== false) {
                 set_alert(lang('Admin.text_edit_success'), ALERT_SUCCESS, ALERT_POPUP);
             } else {
                 set_alert(lang('Admin.error'), ALERT_ERROR, ALERT_POPUP);
@@ -173,8 +172,7 @@ class Dummy extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('manage/form', $data);
+            ->addPartial('sidebar')::load('manage/form', $data);
     }
 
     private function _validateForm()

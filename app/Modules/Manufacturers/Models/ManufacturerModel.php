@@ -24,8 +24,8 @@ class ManufacturerModel extends MyModel
 
     protected $table_lang = 'manufacturer_lang';
 
-    const MANUFACTURER_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'manufacturer_list';
-    const MANUFACTURER_CACHE_EXPIRE = YEAR;
+    public const MANUFACTURER_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'manufacturer_list';
+    public const MANUFACTURER_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {

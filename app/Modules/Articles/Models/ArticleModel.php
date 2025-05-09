@@ -33,9 +33,9 @@ class ArticleModel extends MyModel
         'updated_at',
     ];
 
-    const ARTICLE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'article_list';
-    const ARTICLE_DETAIL_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'article_detail_id_';
-    const ARTICLE_CACHE_EXPIRE = HOUR;
+    public const ARTICLE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'article_list';
+    public const ARTICLE_DETAIL_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'article_detail_id_';
+    public const ARTICLE_CACHE_EXPIRE = HOUR;
 
     public function __construct()
     {
@@ -58,9 +58,9 @@ class ArticleModel extends MyModel
             $this->like("$this->table_lang.name", $filter['name']);
         }
 
-//        if (!empty($filter["category"])) {
-//            $this->like("$this->table_lang.name", $filter["name"]);
-//        }
+        //        if (!empty($filter["category"])) {
+        //            $this->like("$this->table_lang.name", $filter["name"]);
+        //        }
 
         if (!empty($filter['published'])) {
             $this->where("$this->table.published", $filter['published']);
@@ -98,7 +98,7 @@ class ArticleModel extends MyModel
             'publish_date <=' => get_date(),
             "$this->table_lang.language_id" => $language_id
         ];
-        
+
         $result = $this->select("$this->table.article_id, name, description, slug, tags, author, counter_view, counter_comment, category_ids, publish_date, images")
             ->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
             ->where($where)
@@ -120,7 +120,7 @@ class ArticleModel extends MyModel
             'publish_date <=' => get_date(),
             "$this->table_lang.language_id" => $language_id
         ];
-        
+
         $result = $this->select("$this->table.article_id, name, description, slug, tags, author, counter_view, counter_comment, category_ids, publish_date, images")
             ->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
             ->join("article_categories", "article_categories.article_id = $this->table.$this->primaryKey")
@@ -133,7 +133,7 @@ class ArticleModel extends MyModel
         if (empty($list)) {
             return [[],[]];
         }
-        
+
         return [$list, $result->pager];
     }
 
@@ -145,7 +145,7 @@ class ArticleModel extends MyModel
 
         $where = [
             "$this->table.$this->primaryKey" => $article_id,
-            'published' => STATUS_ON, 
+            'published' => STATUS_ON,
             'publish_date <=' => get_date()
         ];
 

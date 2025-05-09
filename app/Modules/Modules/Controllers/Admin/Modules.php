@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Modules\Controllers\Admin;
+<?php
+
+namespace App\Modules\Modules\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Modules\Models\ModuleModel;
@@ -7,8 +9,8 @@ class Modules extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/modules';
-    CONST MANAGE_URL  = 'manage/modules';
+    public const MANAGE_ROOT = 'manage/modules';
+    public const MANAGE_URL  = 'manage/modules';
 
     public function __construct()
     {
@@ -50,14 +52,12 @@ class Modules extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('list', $data);
+            ->addPartial('sidebar')::load('list', $data);
     }
 
     public function add()
     {
-        if (!empty($this->request->getPost()))
-        {
+        if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
                 return redirect()->back()->withInput();
@@ -122,8 +122,7 @@ class Modules extends AdminController
         $token = csrf_hash();
 
         //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
@@ -188,8 +187,7 @@ class Modules extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

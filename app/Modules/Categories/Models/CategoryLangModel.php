@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Categories\Models;
+<?php
+
+namespace App\Modules\Categories\Models;
 
 use App\Models\MyModel;
 
@@ -18,7 +20,7 @@ class CategoryLangModel extends MyModel
         'meta_keyword',
     ];
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }

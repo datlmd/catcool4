@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Permissions\Controllers\Admin;
+<?php
+
+namespace App\Modules\Permissions\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Permissions\Models\PermissionModel;
@@ -7,8 +9,8 @@ class Permissions extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/permissions';
-    CONST MANAGE_URL  = 'manage/permissions';
+    public const MANAGE_ROOT = 'manage/permissions';
+    public const MANAGE_URL  = 'manage/permissions';
 
     public function __construct()
     {
@@ -51,8 +53,7 @@ class Permissions extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('list', $data);
+            ->addPartial('sidebar')::load('list', $data);
     }
 
     public function add()
@@ -157,7 +158,7 @@ class Permissions extends AdminController
 
             $controllers = get_filenames(APPPATH . 'Modules/' . $module . '/Controllers/Admin/');
             foreach ($controllers as $key => $value) {
-                if( strpos( $value, '.php' ) === FALSE) {
+                if (strpos($value, '.php') === false) {
                     unset($controllers[$key]);
                 }
 
@@ -214,8 +215,7 @@ class Permissions extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('check_module', $data);
+            ->addPartial('sidebar')::load('check_module', $data);
     }
 
     public function delete($id = null)
@@ -227,8 +227,7 @@ class Permissions extends AdminController
         $token = csrf_hash();
 
         //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
@@ -309,8 +308,7 @@ class Permissions extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm($id = null)
@@ -369,7 +367,6 @@ class Permissions extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('not_allowed', $data);
+            ->addPartial('sidebar')::load('not_allowed', $data);
     }
 }

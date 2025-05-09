@@ -51,19 +51,19 @@ class NewsModel extends FarmModel
     protected $useSoftDeletes = true;
     protected $deletedField = 'deleted_at';
 
-    const NEWS_CACHE_EXPIRE = 10 * MINUTE; //10 phut
-    const NEWS_CACHE_DETAIL = PREFIX_CACHE_NAME_MYSQL.'news_detail_id_%s_%s';
-    const NEWS_CACHE_CATEGORY_HOME = PREFIX_CACHE_NAME_MYSQL.'news_category_home_list';
-    const NEWS_CACHE_SLIDE_HOME = PREFIX_CACHE_NAME_MYSQL.'news_slide_home_list';
-    const NEWS_CACHE_COUNTER_LIST = PREFIX_CACHE_NAME_MYSQL.'news_counter_list';
-    const NEWS_CACHE_HOT_LIST = PREFIX_CACHE_NAME_MYSQL.'news_hot_list';
-    const NEWS_CACHE_NEW_LIST = PREFIX_CACHE_NAME_MYSQL.'news_new_list';
+    public const NEWS_CACHE_EXPIRE = 10 * MINUTE; //10 phut
+    public const NEWS_CACHE_DETAIL = PREFIX_CACHE_NAME_MYSQL.'news_detail_id_%s_%s';
+    public const NEWS_CACHE_CATEGORY_HOME = PREFIX_CACHE_NAME_MYSQL.'news_category_home_list';
+    public const NEWS_CACHE_SLIDE_HOME = PREFIX_CACHE_NAME_MYSQL.'news_slide_home_list';
+    public const NEWS_CACHE_COUNTER_LIST = PREFIX_CACHE_NAME_MYSQL.'news_counter_list';
+    public const NEWS_CACHE_HOT_LIST = PREFIX_CACHE_NAME_MYSQL.'news_hot_list';
+    public const NEWS_CACHE_NEW_LIST = PREFIX_CACHE_NAME_MYSQL.'news_new_list';
 
-    const FORMAT_NEWS_ID = '%sc%s';
-    const SOURCE_TYPE_ROBOT = 1;
-    const POST_FORMAT_NORMAL = 1;
+    public const FORMAT_NEWS_ID = '%sc%s';
+    public const SOURCE_TYPE_ROBOT = 1;
+    public const POST_FORMAT_NORMAL = 1;
 
-    const NEWS_DETAIL_FORMAT = '%s-post%s.html';
+    public const NEWS_DETAIL_FORMAT = '%s-post%s.html';
 
     private $_news_date_from = '3';
 
@@ -599,9 +599,9 @@ class NewsModel extends FarmModel
                     $list_tags = $robot->getTags($attribute['attribute_tags'], $detail['html']);
                     $list_news[$news_key]['tags'] = implode(',', $list_tags);
 
-//                if ($news_key % 10 == 0) {
-//                    sleep(1);
-//                }
+                    //                if ($news_key % 10 == 0) {
+                    //                    sleep(1);
+                    //                }
                 } catch (\Exception $e) {
                     continue;
                 }

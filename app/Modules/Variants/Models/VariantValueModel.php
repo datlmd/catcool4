@@ -24,8 +24,8 @@ class VariantValueModel extends MyModel
 
     protected $table_lang = 'variant_value_lang';
 
-    const VALUE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'variant_value_list_all';
-    const VALUE_CACHE_EXPIRE = YEAR;
+    public const VALUE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'variant_value_list_all';
+    public const VALUE_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {

@@ -1,12 +1,11 @@
 <?php
 
-if(!isset($routes))
-{
+if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Countries\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes){
-    
+$routes->group('manage', ['namespace' => 'App\Modules\Countries\Controllers\Admin', 'filter' => 'auth_admin'], function ($subroutes) {
+
     $subroutes->add('countries', 'Countries::index');
     $subroutes->add('countries/add', 'Countries::add');
     $subroutes->add('countries/edit/(:num)', 'Countries::edit/$1');
@@ -32,7 +31,7 @@ $routes->group('manage', ['namespace' => 'App\Modules\Countries\Controllers\Admi
     $subroutes->add('country_wards/publish', 'Wards::publish');
 });
 
-$routes->group('countries/api', ['namespace' => 'App\Modules\Countries\Controllers\Api'], function($subroutes) {
+$routes->group('countries/api', ['namespace' => 'App\Modules\Countries\Controllers\Api'], function ($subroutes) {
     $subroutes->add('zones', 'Zones::index');
     $subroutes->add('districts', 'Districts::index');
     $subroutes->add('wards', 'Wards::index');

@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Users\Models;
+<?php
+
+namespace App\Modules\Users\Models;
 
 use App\Models\MyModel;
 
@@ -12,10 +14,10 @@ class UserPermissionModel extends MyModel
         'permission_id',
     ];
 
-    const USER_PERMISSION_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'user_permission_%d';
-    const USER_PERMISSION_CACHE_EXPIRE = HOUR;
+    public const USER_PERMISSION_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'user_permission_%d';
+    public const USER_PERMISSION_CACHE_EXPIRE = HOUR;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }

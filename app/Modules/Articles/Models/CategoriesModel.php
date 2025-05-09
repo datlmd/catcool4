@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Articles\Models;
+<?php
+
+namespace App\Modules\Articles\Models;
 
 use App\Models\MyModel;
 
@@ -12,7 +14,7 @@ class CategoriesModel extends MyModel
         'category_id',
     ];
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }

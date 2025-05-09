@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Customers\Models;
+<?php
+
+namespace App\Modules\Customers\Models;
 
 use App\Models\MyModel;
 
@@ -19,7 +21,8 @@ class WishlistModel extends MyModel
         parent::__construct();
     }
 
-    public function addWishlist(int $customer_id, int $product_id): void {
+    public function addWishlist(int $customer_id, int $product_id): void
+    {
         try {
             $data = [
                 'customer_id' => $customer_id,
@@ -31,6 +34,6 @@ class WishlistModel extends MyModel
             $this->insert($data);
         } catch (\Exception $ex) {
             error_log($ex->getMessage());
-        } 
+        }
     }
 }

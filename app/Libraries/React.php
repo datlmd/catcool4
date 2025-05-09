@@ -1,14 +1,17 @@
-<?php namespace App\Libraries;
+<?php
+
+namespace App\Libraries;
 
 class React extends DataTemplate
 {
-    public function getTemplate(?array $params = []): array {
+    public function getTemplate(?array $params = []): array
+    {
         $layout_model = new \App\Modules\Layouts\Models\LayoutModel();
 
         $module = !empty($params["module"]) ? $params["module"] : get_module();
 
         $template = [];
-        
+
         $position_list = [
             'header_top',
             'header_bottom',
@@ -27,7 +30,7 @@ class React extends DataTemplate
             if (empty($layout_list)) {
                 continue;
             }
-            
+
             foreach ($layout_list as $layout) {
                 $action = explode("|", $layout['action']);
                 if (count($action) != 2) {
@@ -49,8 +52,8 @@ class React extends DataTemplate
                 ];
             }
         }
-        
+
         return $template;
     }
-    
+
 }

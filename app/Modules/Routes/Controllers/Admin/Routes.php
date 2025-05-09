@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Routes\Controllers\Admin;
+<?php
+
+namespace App\Modules\Routes\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Routes\Models\RouteModel;
@@ -7,8 +9,8 @@ class Routes extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/routes';
-    CONST MANAGE_URL  = 'manage/routes';
+    public const MANAGE_ROOT = 'manage/routes';
+    public const MANAGE_URL  = 'manage/routes';
 
     public function __construct()
     {
@@ -53,8 +55,7 @@ class Routes extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('list', $data);
+            ->addPartial('sidebar')::load('list', $data);
     }
 
     public function write()
@@ -70,8 +71,7 @@ class Routes extends AdminController
 
     public function add()
     {
-        if (!empty($this->request->getPost()))
-        {
+        if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
                 return redirect()->back()->withInput();
@@ -199,8 +199,7 @@ class Routes extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm($route = null, $language_id = null)

@@ -29,8 +29,8 @@ class CategoryModel extends MyModel
 
     protected $table_lang = 'product_category_lang';
 
-    const CATEGORY_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'product_category_list';
-    const CATEGORY_CACHE_EXPIRE = YEAR;
+    public const CATEGORY_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'product_category_list';
+    public const CATEGORY_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {
@@ -84,7 +84,7 @@ class CategoryModel extends MyModel
     public function getProductCategories($language_id, $is_cache = true)
     {
         $result = $is_cache ? cache()->get(self::CATEGORY_CACHE_NAME) : null;
-        
+
         if (empty($result)) {
             $result = $this->select("$this->table.category_id, name, $this->table_lang.description, slug, image, meta_title, meta_description, meta_keyword, sort_order, language_id, parent_id")
                 ->join($this->table_lang, "$this->table_lang.$this->primaryKey = $this->table.$this->primaryKey")
@@ -92,7 +92,7 @@ class CategoryModel extends MyModel
                 ->orderBy('sort_order', 'DESC')
                 //->orderBy("LCASE($this->table_lang.name)", 'ASC')
                 ->findAll();
-                
+
             if (empty($result)) {
                 return [];
             }
@@ -102,7 +102,7 @@ class CategoryModel extends MyModel
                 cache()->save(self::CATEGORY_CACHE_NAME, $result, self::CATEGORY_CACHE_EXPIRE);
             }
         }
-        
+
         return $this->formatDataLanguage($result, $language_id);
     }
 
@@ -148,7 +148,7 @@ class CategoryModel extends MyModel
                 $list[$key]['count'] = 0;
                 continue;
             }
-  
+
             $quantity = count($value['subs']);
 
             $list = $this->getChildrenQuantity($list, $value['subs']);

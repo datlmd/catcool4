@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Layouts\Controllers\Admin;
+<?php
+
+namespace App\Modules\Layouts\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Layouts\Models\ActionModel;
@@ -7,8 +9,8 @@ class Actions extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/layout_actions';
-    CONST MANAGE_URL  = 'manage/layout_actions';
+    public const MANAGE_ROOT = 'manage/layout_actions';
+    public const MANAGE_URL  = 'manage/layout_actions';
 
     public function __construct()
     {
@@ -51,8 +53,7 @@ class Actions extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('actions/list', $data);
+            ->addPartial('sidebar')::load('actions/list', $data);
     }
 
     public function add()
@@ -125,8 +126,7 @@ class Actions extends AdminController
         $token = csrf_hash();
 
         //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
@@ -193,8 +193,7 @@ class Actions extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('actions/form', $data);
+            ->addPartial('sidebar')::load('actions/form', $data);
     }
 
     private function _validateForm()

@@ -74,7 +74,7 @@ class Posts extends MyController
             foreach ($category_list as $category) {
                 $script_breadcrumb[] = [
                     'name' => $category['name'],
-                    'url'  => sprintf('%s/%s',  base_url(), $category['slug'])
+                    'url'  => sprintf('%s/%s', base_url(), $category['slug'])
                 ];
             }
         }
@@ -169,7 +169,7 @@ class Posts extends MyController
 
             $id = 1580578;
             foreach ($city_list as $key => $val) {
-                if (strpos(convert_accented_characters(strtolower($val)), convert_accented_characters(strtolower($getloc->region))) !== FALSE) {
+                if (strpos(convert_accented_characters(strtolower($val)), convert_accented_characters(strtolower($getloc->region))) !== false) {
                     $id = $key;
                     break;
                 }

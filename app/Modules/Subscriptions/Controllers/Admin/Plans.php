@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Subscriptions\Controllers\Admin;
+<?php
+
+namespace App\Modules\Subscriptions\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Subscriptions\Models\PlanModel;
@@ -10,8 +12,8 @@ class Plans extends AdminController
 
     protected $model_lang;
 
-    CONST MANAGE_ROOT = 'manage/subscription_plans';
-    CONST MANAGE_URL  = 'manage/subscription_plans';
+    public const MANAGE_ROOT = 'manage/subscription_plans';
+    public const MANAGE_URL  = 'manage/subscription_plans';
 
     public function __construct()
     {
@@ -31,8 +33,8 @@ class Plans extends AdminController
         $this->breadcrumb->add(lang('SubscriptionPlanAdmin.heading_title'), site_url(self::MANAGE_URL));
     }
 
-	public function index()
-	{
+    public function index()
+    {
         add_meta(['title' => lang('SubscriptionPlanAdmin.heading_title')], $this->themes);
 
         $limit       = $this->request->getGet('limit');
@@ -42,7 +44,7 @@ class Plans extends AdminController
 
         $list = $this->model->getAllByFilter($this->request->getGet($filter_keys), $sort, $order);
 
-	    $data = [
+        $data = [
             'breadcrumb'    => $this->breadcrumb->render(),
             'list'          => $list->paginate($limit),
             'pager'         => $list->pager,
@@ -59,9 +61,8 @@ class Plans extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('plans/plan', $data);
-	}
+            ->addPartial('sidebar')::load('plans/plan', $data);
+    }
 
     public function add()
     {
@@ -195,8 +196,7 @@ class Plans extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('plans/form', $data);
+            ->addPartial('sidebar')::load('plans/form', $data);
     }
 
     private function _validateForm()
@@ -208,7 +208,7 @@ class Plans extends AdminController
         $this->validator->setRule('price', lang('SubscriptionPlanAdmin.text_price'), 'decimal');
         $this->validator->setRule('duration', lang('SubscriptionPlanAdmin.text_duration'), 'is_natural_no_zero');
         $this->validator->setRule('cycle', lang('SubscriptionPlanAdmin.text_cycle'), 'is_natural');
-        foreach(list_language_admin() as $value) {
+        foreach (list_language_admin() as $value) {
             $this->validator->setRule(sprintf('lang.%s.name', $value['id']), lang('SubscriptionPlanAdmin.text_plan_name') . ' (' . $value['name']  . ')', 'required|min_length[3]|max_length[255]');
         }
 

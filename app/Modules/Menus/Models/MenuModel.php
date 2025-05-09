@@ -188,7 +188,7 @@ class MenuModel extends MyModel
     {
         $sort_ids = array_column($menus, "sort_order");
         array_multisort($sort_ids, SORT_DESC, $menus);
-        
+
         foreach ($menus as $key => $value) {
             if (empty($value['subs'])) {
                 continue;

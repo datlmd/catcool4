@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Pages\Controllers;
+<?php
+
+namespace App\Modules\Pages\Controllers;
 
 use App\Controllers\MyController;
 use App\Modules\Pages\Models\PageModel;
@@ -14,10 +16,10 @@ class Pages extends MyController
 
     public function detail($id = null)
     {
-         //set theme
-         $this->themes->setTheme(config_item('theme_frontend'));
-        
-         $this->mode = new PageModel();
+        //set theme
+        $this->themes->setTheme(config_item('theme_frontend'));
+
+        $this->mode = new PageModel();
 
         $detail = $this->mode->getPageInfo($id, $this->language_id);
         if (empty($detail)) {
@@ -36,7 +38,7 @@ class Pages extends MyController
             'breadcrumb' => $this->breadcrumb->render(),
             'breadcrumb_title' => $detail['name'],
         ];
-        
+
         $this->themes->addPartial('header_top', $params)
              ->addPartial('header_bottom', $params)
              ->addPartial('content_left', $params)

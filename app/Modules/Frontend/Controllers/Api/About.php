@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Frontend\Controllers\Api;
+<?php
+
+namespace App\Modules\Frontend\Controllers\Api;
 
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Controller;
@@ -13,7 +15,7 @@ class About extends MyController
         // if (!$this->request->isAJAX()) {
         //     return $this->failNotFound(lang('Contact.text_contact'));
         // }
-        
+
         $lang = [
             'contact' => lang('Contact.text_contact'),
             'title' => lang('Contact.text_title'),
@@ -35,7 +37,7 @@ class About extends MyController
             'lang' => $lang,
             'layouts' => service("react")->getTemplate(($params))
         ];
-        
+
         return $this->setResponseFormat('json')->respond($data, 200);
     }
 }

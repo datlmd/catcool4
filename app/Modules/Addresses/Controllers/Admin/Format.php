@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Addresses\Controllers\Admin;
+<?php
+
+namespace App\Modules\Addresses\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Addresses\Models\AddressFormatModel;
@@ -7,8 +9,8 @@ class Format extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/addresses_format';
-    CONST MANAGE_URL  = 'manage/addresses_format';
+    public const MANAGE_ROOT = 'manage/addresses_format';
+    public const MANAGE_URL  = 'manage/addresses_format';
 
     public function __construct()
     {
@@ -46,8 +48,7 @@ class Format extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('list', $data);
+            ->addPartial('sidebar')::load('list', $data);
     }
 
     public function add()
@@ -119,8 +120,7 @@ class Format extends AdminController
         $token = csrf_hash();
 
         //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
@@ -191,8 +191,7 @@ class Format extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

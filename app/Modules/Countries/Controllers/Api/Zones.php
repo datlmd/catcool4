@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Countries\Controllers\Api;
+<?php
+
+namespace App\Modules\Countries\Controllers\Api;
 
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Controller;
@@ -12,7 +14,7 @@ class Zones extends Controller
         if (!$this->request->isAJAX()) {
             return $this->failNotFound(lang('Country.text_none'));
         }
-        
+
         if (empty($this->request->getPost('country_id'))) {
             return $this->failNotFound(lang('Country.text_none'));
         }
@@ -32,9 +34,9 @@ class Zones extends Controller
             $zone_list['_'.$key] = $value;
             unset($zone_list[$key]);
         }
-        
+
         $data['zones'] = $zone_list;
-        
+
         return $this->setResponseFormat('json')->respond($data, 200);
     }
 }

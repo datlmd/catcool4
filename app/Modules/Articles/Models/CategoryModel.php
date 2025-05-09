@@ -21,8 +21,8 @@ class CategoryModel extends MyModel
         'updated_at',
     ];
 
-    const CATEGORY_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'category_list';
-    const CATEGORY_CACHE_EXPIRE = YEAR;
+    public const CATEGORY_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'category_list';
+    public const CATEGORY_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {

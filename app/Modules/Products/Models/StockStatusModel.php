@@ -22,8 +22,8 @@ class StockStatusModel extends MyModel
 
     protected $table_lang = 'stock_status_lang';
 
-    const STOCK_STATUS_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'stock_status_list';
-    const STOCK_STATUS_CACHE_EXPIRE = YEAR;
+    public const STOCK_STATUS_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'stock_status_list';
+    public const STOCK_STATUS_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {

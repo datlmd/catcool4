@@ -41,7 +41,7 @@ class Profile extends UserController
         $data = [];
 
         if (IS_REACT) {
-            
+
             $data['params'] = $params['params'];
             // [
             //     'breadcrumbs' => service('breadcrumb')->get(),
@@ -52,7 +52,7 @@ class Profile extends UserController
             $data['contents'] = [
                 'customer_name' => full_name(service('Customer')->getFirstName(), service('Customer')->getLastName()),
                 'customer_avatar' => image_url(service('Customer')->getImage(), 45, 45),
-                
+
                 'edit' => site_url('account/edit') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
                 'password' => site_url('account/password') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),
                 'address' => site_url('account/address') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : ''),

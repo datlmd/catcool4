@@ -7,7 +7,7 @@ use Exception;
 
 class CustomRules
 {
-    public function checkRoute(string $str = null, string $params = null, array $data = null, string &$error = null) : bool
+    public function checkRoute(string $str = null, string $params = null, array $data = null, string &$error = null): bool
     {
         $seo_url = $str;
 

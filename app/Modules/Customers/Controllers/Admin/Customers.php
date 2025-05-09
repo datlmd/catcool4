@@ -11,14 +11,14 @@ class Customers extends AdminController
 {
     public $errors = [];
 
-    const MANAGE_ROOT = 'manage/customers';
-    const MANAGE_URL = 'manage/customers';
+    public const MANAGE_ROOT = 'manage/customers';
+    public const MANAGE_URL = 'manage/customers';
 
     protected $group_model;
     protected $auth_model;
 
-    const DOB_DEFAULT = '1970-01-01';
-    const FOLDER_UPLOAD = 'customers/';
+    public const DOB_DEFAULT = '1970-01-01';
+    public const FOLDER_UPLOAD = 'customers/';
 
     public function __construct()
     {
@@ -321,16 +321,16 @@ class Customers extends AdminController
         $is_validation = $this->validator->withRequest($this->request)->run();
         $this->errors = $this->validator->getErrors();
 
-//        if (!empty($this->request->getPost('email'))) {
-//            if (!empty($this->request->getPost('customer_id'))) {
-//                $email = $this->model->where(['email' => $this->request->getPost('email'), 'customer_id !=' => $this->request->getPost('customer_id')])->findAll();
-//            } else {
-//                $email = $this->model->where('email', $this->request->getPost('email'))->findAll();
-//            }
-//            if (!empty($email)) {
-//                $this->errors['email'] = lang('CustomerAdmin.account_creation_duplicate_email');
-//            }
-//        }
+        //        if (!empty($this->request->getPost('email'))) {
+        //            if (!empty($this->request->getPost('customer_id'))) {
+        //                $email = $this->model->where(['email' => $this->request->getPost('email'), 'customer_id !=' => $this->request->getPost('customer_id')])->findAll();
+        //            } else {
+        //                $email = $this->model->where('email', $this->request->getPost('email'))->findAll();
+        //            }
+        //            if (!empty($email)) {
+        //                $this->errors['email'] = lang('CustomerAdmin.account_creation_duplicate_email');
+        //            }
+        //        }
 
         if (!empty($this->errors)) {
             return false;

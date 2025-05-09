@@ -13,7 +13,7 @@ class Sitemap extends Controller
 
     protected $helpers = ['url', 'date', 'catcool', 'inflector'];
 
-    const SITEMAP_NEWS_FROM = '2021-06-01';
+    public const SITEMAP_NEWS_FROM = '2021-06-01';
 
     public function __construct()
     {

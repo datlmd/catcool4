@@ -1,4 +1,6 @@
-<?php namespace App\Libraries;
+<?php
+
+namespace App\Libraries;
 
 class Fba
 {
@@ -14,9 +16,9 @@ class Fba
     {
         $files = [];
 
-        if(scandir($dir)){
-            foreach(scandir($dir) as $f) {
-                if(!$f || $f[0] == '.') {
+        if (scandir($dir)) {
+            foreach (scandir($dir) as $f) {
+                if (!$f || $f[0] == '.') {
                     continue; // Abaikan file tersembunyi
                 }
                 $files[] = [
@@ -39,7 +41,7 @@ class Fba
     {
         $files = [];
 
-        if(preg_match('/\.\./', $path)){
+        if (preg_match('/\.\./', $path)) {
             $path = '';
         }
 
@@ -48,35 +50,33 @@ class Fba
         $browser = (empty($path) ? ROOTPATH . $this->path : ROOTPATH . $this->path . '/' .$path);
 
         // Apakah benar-benar terdapat folder/file?
-        if(file_exists($browser)){
+        if (file_exists($browser)) {
 
             $files['status'] = 'success';
 
-            foreach(scandir($browser) as $f) {
+            foreach (scandir($browser) as $f) {
 
-                if(!$f || $f[0] == '.') {
+                if (!$f || $f[0] == '.') {
                     continue; // Abaikan file tersembunyi
                 }
 
-                if(is_dir($browser . '/' . $f)) {
+                if (is_dir($browser . '/' . $f)) {
                     // List folder
                     $files['data'][] = [
                         "name"  => $f,
                         "type"  => "dir",
-                        "modif" => date('Y-m-d h:i:s',filemtime($browser . '/' . $f)),
+                        "modif" => date('Y-m-d h:i:s', filemtime($browser . '/' . $f)),
                         "path"  => (empty($path) ? $f : $path . '/' .$f),
                         "items" => count($this->_item($browser . '/' . $f)) // Menscan lagi isi folder
                     ];
-                }
-
-                else {
+                } else {
                     // List file
                     $files['data'][] = [
                         "name"  => $f,
                         "type"  => "file",
                         "dir"   => $this->path,
                         "path"  => (empty($path) ? $f : $path . '/' .$f),
-                        "modif" => date('Y-m-d h:i:s',filemtime($browser . '/' . $f)),
+                        "modif" => date('Y-m-d h:i:s', filemtime($browser . '/' . $f)),
                         "size"  => filesize($browser . '/' . $f) // Mendapatkan ukuran file
                     ];
                 }

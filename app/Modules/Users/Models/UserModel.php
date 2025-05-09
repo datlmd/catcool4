@@ -78,39 +78,39 @@ class UserModel extends MyModel
         return $this;
     }
 
-//    public function remove($id, $is_trash = false)
-//    {
-//        if (empty($id)) {
-//            return false;
-//        }
-//
-//        if ($is_trash == true) {
-//            $return = $this->delete($id);
-//        } else {
-//            $return = $this->update(['is_deleted' => STATUS_ON], $id);
-//        }
-//
-//        if (empty($return)) {
-//            return false;
-//        }
-//
-//        return $return;
-//    }
-//
-//    public function update_acitve($id, $active)
-//    {
-//        if (empty($id)) {
-//            return false;
-//        }
-//
-//        $return = $this->update(['active' => $active], $id);
-//        if (empty($return)) {
-//            return false;
-//        }
-//
-//        return $return;
-//    }
-//
+    //    public function remove($id, $is_trash = false)
+    //    {
+    //        if (empty($id)) {
+    //            return false;
+    //        }
+    //
+    //        if ($is_trash == true) {
+    //            $return = $this->delete($id);
+    //        } else {
+    //            $return = $this->update(['is_deleted' => STATUS_ON], $id);
+    //        }
+    //
+    //        if (empty($return)) {
+    //            return false;
+    //        }
+    //
+    //        return $return;
+    //    }
+    //
+    //    public function update_acitve($id, $active)
+    //    {
+    //        if (empty($id)) {
+    //            return false;
+    //        }
+    //
+    //        $return = $this->update(['active' => $active], $id);
+    //        if (empty($return)) {
+    //            return false;
+    //        }
+    //
+    //        return $return;
+    //    }
+    //
     public function login($username, $password, $remember = false)
     {
         $attempt_model = new LoginAttemptModel();

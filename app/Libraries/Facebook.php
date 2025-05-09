@@ -1,4 +1,6 @@
-<?php namespace App\Libraries;
+<?php
+
+namespace App\Libraries;
 
 // Include the autoloader provided in the SDK
 require_once ROOTPATH . 'vendor/autoload.php';
@@ -71,7 +73,7 @@ class Facebook
     public function isAuthenticated()
     {
         $access_token = $this->authenticate();
-        if(isset($access_token)) {
+        if (isset($access_token)) {
             return $access_token;
         }
         return false;
@@ -179,7 +181,7 @@ class Facebook
         }
         // Collect errors if any when using web redirect based login
         if (config_item('fb_login_type') === 'web') {
-            if($this->_helper->getError()) {
+            if ($this->_helper->getError()) {
                 // Collect error data
                 $error = [
                     'error'             => $this->_helper->getError(),

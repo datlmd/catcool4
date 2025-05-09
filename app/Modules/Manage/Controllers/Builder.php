@@ -6,8 +6,8 @@ use App\Controllers\AdminController;
 
 class Builder extends AdminController
 {
-    const MANAGE_ROOT = 'manage/builder';
-    const MANAGE_URL = 'manage/builder';
+    public const MANAGE_ROOT = 'manage/builder';
+    public const MANAGE_URL = 'manage/builder';
 
     private $db;
 

@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Filters\Models;
+<?php
+
+namespace App\Modules\Filters\Models;
 
 use App\Models\MyModel;
 

@@ -1,13 +1,15 @@
-<?php namespace App\Libraries;
+<?php
+
+namespace App\Libraries;
 
 require_once APPPATH.'ThirdParty/Smarty/Autoloader.php';
 require_once APPPATH.'ThirdParty/Smarty/Smarty.class.php';
 
-use \Smarty_Autoloader;
+use Smarty_Autoloader;
 
 Smarty_Autoloader::register();
 
-use \Smarty;
+use Smarty;
 
 class CI4Smarty extends Smarty
 {
@@ -17,7 +19,7 @@ class CI4Smarty extends Smarty
     {
         parent::__construct();
 
-        parent::setDebugging(FALSE);
+        parent::setDebugging(false);
 
         parent::setTemplateDir(FCPATH.'/themes');
         parent::setCompileDir(WRITEPATH . 'cache/smarty/templates_c/')->setCacheDir(WRITEPATH . 'cache/smarty/cache/');
@@ -30,16 +32,16 @@ class CI4Smarty extends Smarty
 
         //$this->assign("this", $this);
 
-        $this->assign( 'FCPATH', FCPATH );     // path to website
-        $this->assign( 'APPPATH', APPPATH );   // path to application directory
-        $this->assign( 'ROOTPATH', ROOTPATH ); // path to system directory
-        $this->assign( 'WRITEPATH', WRITEPATH ); // path to system directory
+        $this->assign('FCPATH', FCPATH);     // path to website
+        $this->assign('APPPATH', APPPATH);   // path to application directory
+        $this->assign('ROOTPATH', ROOTPATH); // path to system directory
+        $this->assign('WRITEPATH', WRITEPATH); // path to system directory
     }
 
     public function view($tpl_name)
     {
-        if (substr($tpl_name, -4) != '.tpl'){
-            $tpl_name.='.tpl';
+        if (substr($tpl_name, -4) != '.tpl') {
+            $tpl_name .= '.tpl';
         }
 
         parent::display($tpl_name);

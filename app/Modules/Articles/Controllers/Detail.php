@@ -37,7 +37,7 @@ class Detail extends MyController
             if (is_numeric($slug) && empty($article_id)) {
                 $article_id = (int) $slug;
             }
-           
+
             if (empty($article_id)) {
                 page_not_found();
             }
@@ -56,7 +56,7 @@ class Detail extends MyController
             if (!empty($article_info['is_toc'])) {
                 list($article_info['table_of_contents'], $article_info['content']) = auto_table_of_contents($article_info['content']);
             }
-           
+
             //get cate
             $article_category_model = new CategoryModel();
             $article_category_list  = $article_category_model->getArticleCategories($this->language_id);

@@ -1,11 +1,10 @@
 <?php
 
-if(!isset($routes))
-{
+if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Users\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes) {
+$routes->group('manage', ['namespace' => 'App\Modules\Users\Controllers\Admin', 'filter' => 'auth_admin'], function ($subroutes) {
     $subroutes->add('users', 'Users::index');
     $subroutes->add('users/add', 'Users::add');
     $subroutes->add('users/edit/(:num)', 'Users::edit/$1');
@@ -25,7 +24,7 @@ $routes->group('manage', ['namespace' => 'App\Modules\Users\Controllers\Admin', 
     $subroutes->add('user_groups/publish', 'Groups::publish');
 });
 
-$routes->group('manage', ['namespace' => 'App\Modules\Users\Controllers\Admin'], function($subroutes) {
+$routes->group('manage', ['namespace' => 'App\Modules\Users\Controllers\Admin'], function ($subroutes) {
     $subroutes->get('users/login', 'Users::login');
     $subroutes->post('users/api_login', 'Users::apiLogin');
     $subroutes->add('login', 'Users::login');

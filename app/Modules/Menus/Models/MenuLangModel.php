@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Menus\Models;
+<?php
+
+namespace App\Modules\Menus\Models;
 
 use App\Models\MyModel;
 
@@ -15,7 +17,7 @@ class MenuLangModel extends MyModel
         'slug'
     ];
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }

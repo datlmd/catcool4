@@ -23,8 +23,8 @@ class GroupModel extends MyModel
 
     protected $table_lang = 'customer_group_lang';
 
-    const CUSTOMER_GROUP_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'customer_group_list_all';
-    const CUSTOMER_GROUP_CACHE_EXPIRE = YEAR;
+    public const CUSTOMER_GROUP_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'customer_group_list_all';
+    public const CUSTOMER_GROUP_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {

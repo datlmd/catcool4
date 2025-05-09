@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Posts\Models;
+<?php
+
+namespace App\Modules\Posts\Models;
 
 use App\Models\MyModel;
 use CodeIgniter\Database\RawSql;
@@ -50,26 +52,26 @@ class PostModel extends MyModel
     protected $useSoftDeletes = true;
     protected $deletedField = 'deleted_at';
 
-    const POST_CACHE_EXPIRE = DAY;
-    const POST_CACHE_CATEGORY_HOME = PREFIX_CACHE_NAME_MYSQL.'post_category_home_list';
-    const POST_CACHE_HOT_LIST = PREFIX_CACHE_NAME_MYSQL.'post_hot_list';
-    const POST_CACHE_DETAIL = PREFIX_CACHE_NAME_MYSQL.'post_detail_id_%s';
-    const POST_CACHE_LATEST_LIST = PREFIX_CACHE_NAME_MYSQL.'post_latest_list';
+    public const POST_CACHE_EXPIRE = DAY;
+    public const POST_CACHE_CATEGORY_HOME = PREFIX_CACHE_NAME_MYSQL.'post_category_home_list';
+    public const POST_CACHE_HOT_LIST = PREFIX_CACHE_NAME_MYSQL.'post_hot_list';
+    public const POST_CACHE_DETAIL = PREFIX_CACHE_NAME_MYSQL.'post_detail_id_%s';
+    public const POST_CACHE_LATEST_LIST = PREFIX_CACHE_NAME_MYSQL.'post_latest_list';
 
-    const POST_DETAIL_FORMAT = "%s-post%s.html";
+    public const POST_DETAIL_FORMAT = "%s-post%s.html";
 
     private $_post_date_from = "3";
 
-    const SOURCE_TYPE_ROBOT = 1;
+    public const SOURCE_TYPE_ROBOT = 1;
 
-    const POST_FORMAT_NORMAL = 1;
-    const POST_FORMAT_LESSON = 4;
+    public const POST_FORMAT_NORMAL = 1;
+    public const POST_FORMAT_LESSON = 4;
 
     private $_queries = [
         'post_all' => "SELECT * FROM `TABLE_NAME`",
         ];
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
 
@@ -178,8 +180,8 @@ class PostModel extends MyModel
         cache()->delete(self::POST_CACHE_LATEST_LIST);
         cache()->delete(self::POST_CACHE_CATEGORY_HOME);
         cache()->delete(self::POST_CACHE_HOT_LIST);
-//        cache()->delete(self::NEWS_CACHE_HOT_LIST);
-//        cache()->delete(self::NEWS_CACHE_NEW_LIST);
+        //        cache()->delete(self::NEWS_CACHE_HOT_LIST);
+        //        cache()->delete(self::NEWS_CACHE_NEW_LIST);
 
         return true;
     }
@@ -380,13 +382,13 @@ class PostModel extends MyModel
             ->groupEnd()
             ->orderBy('sort_order')
             ->findAll();
-        
+
         if (empty($result)) {
             return [[]];
         }
 
         //array_map formatDetail Post & news
-        $result = array_map(function($value) {
+        $result = array_map(function ($value) {
             return $this->formatDetail($value);
         }, $result);
 

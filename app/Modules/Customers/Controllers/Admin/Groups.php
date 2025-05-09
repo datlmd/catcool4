@@ -12,8 +12,8 @@ class Groups extends AdminController
 
     protected $model_lang;
 
-    const MANAGE_ROOT = 'manage/customer_groups';
-    const MANAGE_URL = 'manage/customer_groups';
+    public const MANAGE_ROOT = 'manage/customer_groups';
+    public const MANAGE_URL = 'manage/customer_groups';
 
     public function __construct()
     {
@@ -61,8 +61,7 @@ class Groups extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('groups/index', $data);
+            ->addPartial('sidebar')::load('groups/index', $data);
     }
 
     public function add()
@@ -184,8 +183,7 @@ class Groups extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('groups/form', $data);
+            ->addPartial('sidebar')::load('groups/form', $data);
     }
 
     private function _validateForm()

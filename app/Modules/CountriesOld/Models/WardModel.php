@@ -1,8 +1,10 @@
-<?php namespace App\Modules\CountriesOld\Models;
+<?php
+
+namespace App\Modules\CountriesOld\Models;
 
 use App\Models\MyModel;
 
-class  WardModel extends MyModel
+class WardModel extends MyModel
 {
     protected $table      = 'country_ward';
     protected $primaryKey = 'ward_id';
@@ -23,10 +25,10 @@ class  WardModel extends MyModel
         'deleted_at',
     ];
 
-    const COUNTRY_WARD_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_ward_list';
-    const COUNTRY_WARD_CACHE_EXPIRE = YEAR;
+    public const COUNTRY_WARD_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_ward_list';
+    public const COUNTRY_WARD_CACHE_EXPIRE = YEAR;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }

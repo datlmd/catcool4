@@ -10,11 +10,11 @@ class News extends AdminController
 {
     protected $errors = [];
 
-    const MANAGE_ROOT = 'manage/news';
-    const MANAGE_URL = 'manage/news';
+    public const MANAGE_ROOT = 'manage/news';
+    public const MANAGE_URL = 'manage/news';
 
-    const SEO_URL_MODULE = 'news';
-    const SEO_URL_RESOURCE = 'News::Detail/%s';
+    public const SEO_URL_MODULE = 'news';
+    public const SEO_URL_RESOURCE = 'News::Detail/%s';
 
     public function __construct()
     {
@@ -83,8 +83,7 @@ class News extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load($tpl_name, $data);
+            ->addPartial('sidebar')::load($tpl_name, $data);
     }
 
     public function add()
@@ -448,8 +447,7 @@ class News extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

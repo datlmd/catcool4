@@ -45,7 +45,7 @@ class Edit extends UserController
 
             $customer_group_model = new \App\Modules\Customers\Models\GroupModel();
             $customer_group_list = $customer_group_model->getCustomerGroups($this->language_id);
-            
+
             foreach ($customer_group_list ?? [] as $customer_group) {
                 if (in_array($customer_group['customer_group_id'], $customer_group_display)) {
                     $customer_groups[] = $customer_group;
@@ -59,7 +59,7 @@ class Edit extends UserController
         $data['contents'] = [
             'back' => site_url('account/profile') . '?customer_token=' . session('customer_token'),
             'save' => site_url('account/edit/save') . '?customer_token=' . session('customer_token'),
-            
+
             'customer_info' => $customer_info,
             'customer_group_id' => config_item('customer_group_id'),
             'customer_groups' => $customer_groups,
@@ -90,7 +90,7 @@ class Edit extends UserController
         $data = inertia_data($data);
 
         add_meta(['title' => lang("Customer.text_account_edit_title")], $this->themes);
-        
+
         return inertia('Account/Edit', $data);
     }
 

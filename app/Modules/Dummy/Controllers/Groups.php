@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Dummy\Controllers;
+<?php
+
+namespace App\Modules\Dummy\Controllers;
 
 use App\Controllers\AdminController;
 use App\Modules\Dummy\Models\GroupModel;
@@ -7,8 +9,8 @@ class Groups extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/dummy_groups';
-    CONST MANAGE_URL  = 'manage/dummy_groups';
+    public const MANAGE_ROOT = 'manage/dummy_groups';
+    public const MANAGE_URL  = 'manage/dummy_groups';
 
     public function __construct()
     {
@@ -51,14 +53,12 @@ class Groups extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('groups/list', $data);
+            ->addPartial('sidebar')::load('groups/list', $data);
     }
 
     public function add()
     {
-        if (!empty($this->request->getPost()))
-        {
+        if (!empty($this->request->getPost())) {
             if (!$this->_validateForm()) {
                 set_alert([ALERT_ERROR => $this->errors]);
                 return redirect()->back()->withInput();
@@ -121,8 +121,7 @@ class Groups extends AdminController
         $token = csrf_hash();
 
         //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
@@ -187,8 +186,7 @@ class Groups extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('groups/form', $data);
+            ->addPartial('sidebar')::load('groups/form', $data);
     }
 
     private function _validateForm($id = null)

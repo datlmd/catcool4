@@ -1,11 +1,12 @@
-<?php namespace App\Modules\Manage\Models;
+<?php
 
+namespace App\Modules\Manage\Models;
 
 class BackupModel
 {
     protected $db;
 
-    function __construct()
+    public function __construct()
     {
         $this->db = db_connect();
     }

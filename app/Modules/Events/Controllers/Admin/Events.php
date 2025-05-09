@@ -9,8 +9,8 @@ class Events extends AdminController
 {
     protected $errors = [];
 
-    const MANAGE_ROOT = 'manage/events';
-    const MANAGE_URL = 'manage/events';
+    public const MANAGE_ROOT = 'manage/events';
+    public const MANAGE_URL = 'manage/events';
 
     public function __construct()
     {
@@ -63,8 +63,7 @@ class Events extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('index', $data);
+            ->addPartial('sidebar')::load('index', $data);
     }
 
     public function add()
@@ -171,8 +170,7 @@ class Events extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('form', $data);
+            ->addPartial('sidebar')::load('form', $data);
     }
 
     private function _validateForm()

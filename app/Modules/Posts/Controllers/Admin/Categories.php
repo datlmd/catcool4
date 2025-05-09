@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Posts\Controllers\Admin;
+<?php
+
+namespace App\Modules\Posts\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\Posts\Models\CategoryModel;
@@ -11,11 +13,11 @@ class Categories extends AdminController
     protected $model_lang;
     protected $model_route;
 
-    CONST MANAGE_ROOT = 'manage/post_categories';
-    CONST MANAGE_URL  = 'manage/post_categories';
+    public const MANAGE_ROOT = 'manage/post_categories';
+    public const MANAGE_URL  = 'manage/post_categories';
 
-    CONST SEO_URL_MODULE   = 'posts';
-    CONST SEO_URL_RESOURCE = 'Categories::Detail/%s';
+    public const SEO_URL_MODULE   = 'posts';
+    public const SEO_URL_RESOURCE = 'Categories::Detail/%s';
 
     public function __construct()
     {
@@ -53,8 +55,7 @@ class Categories extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('categories/list', $data);
+            ->addPartial('sidebar')::load('categories/list', $data);
     }
 
     public function add()
@@ -86,7 +87,7 @@ class Categories extends AdminController
             }
 
             $id = $this->model->insert($add_data);
-            if ($id === FALSE) {
+            if ($id === false) {
                 set_alert(lang('Admin.error'), ALERT_ERROR);
                 return redirect()->back()->withInput();
             }
@@ -179,7 +180,7 @@ class Categories extends AdminController
             $this->model->delete($ids);
 
             //xoa slug ra khoi route
-            foreach($list_delete as $value) {
+            foreach ($list_delete as $value) {
                 $this->model_route->deleteByModule(self::SEO_URL_MODULE, sprintf(self::SEO_URL_RESOURCE, $value['category_id']));
             }
 
@@ -257,8 +258,7 @@ class Categories extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('categories/form', $data);
+            ->addPartial('sidebar')::load('categories/form', $data);
     }
 
     private function _validateForm()
@@ -320,7 +320,7 @@ class Categories extends AdminController
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }
 
-        $data_sort = filter_sort_array(json_decode($this->request->getPost('ids'), true), 0 , "category_id");
+        $data_sort = filter_sort_array(json_decode($this->request->getPost('ids'), true), 0, "category_id");
         if (!$this->model->updateBatch($data_sort, 'category_id')) {
             json_output(['token' => $token, 'status' => 'ng', 'msg' => lang('Admin.error_json')]);
         }

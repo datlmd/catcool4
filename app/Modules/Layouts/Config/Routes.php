@@ -1,11 +1,10 @@
 <?php
 
-if(!isset($routes))
-{
+if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Layouts\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes){
+$routes->group('manage', ['namespace' => 'App\Modules\Layouts\Controllers\Admin', 'filter' => 'auth_admin'], function ($subroutes) {
     $subroutes->add('layouts', 'Layouts::index');
     $subroutes->add('layouts/add', 'Layouts::add');
     $subroutes->add('layouts/edit/(:num)', 'Layouts::edit/$1');

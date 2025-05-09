@@ -6,7 +6,8 @@ use CodeIgniter\Config\Factories;
 
 class DataTemplate
 {
-    public function dataHeader(?array $params = []): array {
+    public function dataHeader(?array $params = []): array
+    {
         $data['wishlist'] = site_url('account/wishlist') . (!empty(session('customer_token')) ? '?customer_token=' . session('customer_token') : '');
         $data['logged'] = service('Customer')->isLogged();
 
@@ -53,7 +54,7 @@ class DataTemplate
 
         $data['currency'] = $this->_getCurrency();
         $data['language'] = $this->_getLanguages();
-        
+
         $data['is_multi_language'] = is_multi_language();
 
         return $data;
@@ -64,7 +65,8 @@ class DataTemplate
      *
      * @return array
      */
-    private function _getLanguages(): array {
+    private function _getLanguages(): array
+    {
         $language = [];
         $code = language_code();
 
@@ -88,7 +90,8 @@ class DataTemplate
      *
      * @return array
      */
-    private function _getCurrency(): array {
+    private function _getCurrency(): array
+    {
         $currency = [];
         $code = config_item('currency');
 
@@ -105,15 +108,17 @@ class DataTemplate
         return $currency;
     }
 
-    public function dataBreadcrumb(?array $params = []): array {
-        
+    public function dataBreadcrumb(?array $params = []): array
+    {
+
         $data = $params;
-        
+
         return $data;
     }
 
-    public function dataFooter(?array $params = []): array {
-        
+    public function dataFooter(?array $params = []): array
+    {
+
         $data = [];
 
         $data['store_open'] = config_item('store_open');
@@ -136,12 +141,13 @@ class DataTemplate
         $data['payment_icon'] = img_url('payment-icon.png');
 
         $data['menu_footer'] = get_menu_by_position(MENU_POSITION_FOOTER);
-        
+
         return $data;
     }
 
-    public function dataAccount(?array $params = []): array {
-        
+    public function dataAccount(?array $params = []): array
+    {
+
         $data = [];
 
         $data['logged'] = service('customer')->isLogged();
@@ -179,7 +185,7 @@ class DataTemplate
         $data['text_newsletter'] = lang('Customer.text_newsletter');
         $data['text_subscription'] = lang('Customer.text_subscription');
         $data['text_logout'] = lang('Customer.text_logout');
-        
+
         return $data;
     }
 }

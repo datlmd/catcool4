@@ -6,15 +6,12 @@ require_once APPPATH . 'ThirdParty/ReCaptcha/autoload.php';
 
 class ReCaptcha extends \ReCaptcha\ReCaptcha
 {
-
     public function verify($response, $remoteIp = null)
     {
-        if (!$remoteIp)
-        {
+        if (!$remoteIp) {
             $ip = service('request')->getIPAddress();
 
-            if ($ip && ($ip != '0.0.0.0'))
-            {
+            if ($ip && ($ip != '0.0.0.0')) {
                 $remoteIp = $ip;
             }
         }

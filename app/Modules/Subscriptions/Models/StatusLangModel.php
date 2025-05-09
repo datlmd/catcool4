@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Subscriptions\Models;
+<?php
+
+namespace App\Modules\Subscriptions\Models;
 
 use App\Models\MyModel;
 

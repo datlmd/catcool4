@@ -57,8 +57,8 @@ class ProductModel extends MyModel
 
     protected $table_lang = 'product_lang';
 
-    const CATEGORY_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'product_list';
-    const CATEGORY_CACHE_EXPIRE = YEAR;
+    public const CATEGORY_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'product_list';
+    public const CATEGORY_CACHE_EXPIRE = YEAR;
 
     private $_queries = [
 
@@ -69,10 +69,10 @@ class ProductModel extends MyModel
         parent::__construct();
 
         // Storing some sub queries so that we are not typing them out multiple times.
-		$this->_queries['discount'] = "(SELECT `pd2`.`price` FROM `" . $this->db->getPrefix() . "product_discount` `pd2` WHERE `pd2`.`product_id` = `p`.`product_id` AND `pd2`.`customer_group_id` = '" . (int)config_customer_group_id() . "'AND `pd2`.`quantity` = '1' AND ((`pd2`.`date_start` = '0000-00-00' OR `pd2`.`date_start` < NOW()) AND (`pd2`.`date_end` = '0000-00-00' OR `pd2`.`date_end` > NOW())) ORDER BY `pd2`.`priority` ASC, `pd2`.`price` ASC LIMIT 1) AS `discount`";
-		$this->_queries['special'] = "(SELECT `ps`.`price` FROM `" . $this->db->getPrefix() . "product_special` `ps` WHERE `ps`.`product_id` = `p`.`product_id` AND `ps`.`customer_group_id` = '" . (int)config_customer_group_id() . "' AND ((`ps`.`date_start` = '0000-00-00' OR `ps`.`date_start` < NOW()) AND (`ps`.`date_end` = '0000-00-00' OR `ps`.`date_end` > NOW())) ORDER BY `ps`.`priority` ASC, `ps`.`price` ASC LIMIT 1) AS `special`";
-		$this->_queries['reward'] = "(SELECT `pr`.`points` FROM `" . $this->db->getPrefix() . "product_reward` `pr` WHERE `pr`.`product_id` = `p`.`product_id` AND `pr`.`customer_group_id` = '" . (int)config_customer_group_id() . "') AS `reward`";
-		$this->_queries['review'] = "(SELECT COUNT(*) FROM `" . $this->db->getPrefix() . "review` `r` WHERE `r`.`product_id` = `p`.`product_id` AND `r`.`status` = '1' GROUP BY `r`.`product_id`) AS `reviews`";
+        $this->_queries['discount'] = "(SELECT `pd2`.`price` FROM `" . $this->db->getPrefix() . "product_discount` `pd2` WHERE `pd2`.`product_id` = `p`.`product_id` AND `pd2`.`customer_group_id` = '" . (int)config_customer_group_id() . "'AND `pd2`.`quantity` = '1' AND ((`pd2`.`date_start` = '0000-00-00' OR `pd2`.`date_start` < NOW()) AND (`pd2`.`date_end` = '0000-00-00' OR `pd2`.`date_end` > NOW())) ORDER BY `pd2`.`priority` ASC, `pd2`.`price` ASC LIMIT 1) AS `discount`";
+        $this->_queries['special'] = "(SELECT `ps`.`price` FROM `" . $this->db->getPrefix() . "product_special` `ps` WHERE `ps`.`product_id` = `p`.`product_id` AND `ps`.`customer_group_id` = '" . (int)config_customer_group_id() . "' AND ((`ps`.`date_start` = '0000-00-00' OR `ps`.`date_start` < NOW()) AND (`ps`.`date_end` = '0000-00-00' OR `ps`.`date_end` > NOW())) ORDER BY `ps`.`priority` ASC, `ps`.`price` ASC LIMIT 1) AS `special`";
+        $this->_queries['reward'] = "(SELECT `pr`.`points` FROM `" . $this->db->getPrefix() . "product_reward` `pr` WHERE `pr`.`product_id` = `p`.`product_id` AND `pr`.`customer_group_id` = '" . (int)config_customer_group_id() . "') AS `reward`";
+        $this->_queries['review'] = "(SELECT COUNT(*) FROM `" . $this->db->getPrefix() . "review` `r` WHERE `r`.`product_id` = `p`.`product_id` AND `r`.`status` = '1' GROUP BY `r`.`product_id`) AS `reviews`";
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
@@ -116,7 +116,7 @@ class ProductModel extends MyModel
             ->like("$this->table_lang.name", trim($related))
             ->orLike("$this->table_lang.tag", trim($related))
             ->groupEnd();
-            //->where("$this->table_lang.language_id", $language_id);
+        //->where("$this->table_lang.language_id", $language_id);
 
         if (!empty($id)) {
             $this->where("$this->table.product_id !=", $id);
@@ -159,134 +159,135 @@ class ProductModel extends MyModel
     // ************* Frontend *************
 
     /**
-	 * @param array $data
-	 *
-	 * @return array
-	 */
-	public function getProducts(array $data = [], int $language_id, ?bool $is_cache = false): array {
+     * @param array $data
+     *
+     * @return array
+     */
+    public function getProducts(array $data = [], int $language_id, ?bool $is_cache = false): array
+    {
         $select = "`p`.*, `pl`.*, " . $this->_queries['discount'] . ", " . $this->_queries['special'] . ", " . $this->_queries['reward'];
         $where = "`p`.`published` = '1' AND `p`.`date_available` <= NOW()";
 
         if (!empty($data['filter_category_id'])) {
-			if (!empty($data['filter_sub_category'])) {
+            if (!empty($data['filter_sub_category'])) {
                 $implode = [];
 
                 $category_ids = is_array($data['filter_category_id']) ? $data['filter_category_id'] : explode(',', $data['filter_category_id']);
 
                 foreach ($category_ids as $category_id) {
-					$implode[] = (int)$category_id;
-				}
+                    $implode[] = (int)$category_id;
+                }
 
-				$where .= " AND `pc`.`category_id` IN (" . implode(',', $implode) . ")";
-			} else {
-				$where .= " AND `pc`.`category_id` = '" . (int)$data['filter_category_id'] . "'";
-			}
+                $where .= " AND `pc`.`category_id` IN (" . implode(',', $implode) . ")";
+            } else {
+                $where .= " AND `pc`.`category_id` = '" . (int)$data['filter_category_id'] . "'";
+            }
 
-			if (!empty($data['filter_filter'])) {
-				$implode = [];
+            if (!empty($data['filter_filter'])) {
+                $implode = [];
 
-				$filters = explode(',', $data['filter_filter']);
+                $filters = explode(',', $data['filter_filter']);
 
-				foreach ($filters as $filter_id) {
-					$implode[] = (int)$filter_id;
-				}
+                foreach ($filters as $filter_id) {
+                    $implode[] = (int)$filter_id;
+                }
 
-				$where .= " AND `pf`.`filter_id` IN (" . implode(',', $implode) . ")";
-			}
-		}
+                $where .= " AND `pf`.`filter_id` IN (" . implode(',', $implode) . ")";
+            }
+        }
 
         if (!empty($data['filter_search']) || !empty($data['filter_tag'])) {
-			$where .= " AND (";
+            $where .= " AND (";
 
-			if (!empty($data['filter_search'])) {
-				$implode = [];
+            if (!empty($data['filter_search'])) {
+                $implode = [];
 
-				$words = explode(' ', trim(preg_replace('/\s+/', ' ', $data['filter_search'])));
+                $words = explode(' ', trim(preg_replace('/\s+/', ' ', $data['filter_search'])));
 
-				foreach ($words as $word) {
-					$implode[] = "`pl`.`name` LIKE '" . $this->db->escape('%' . $word . '%') . "'";
-				}
+                foreach ($words as $word) {
+                    $implode[] = "`pl`.`name` LIKE '" . $this->db->escape('%' . $word . '%') . "'";
+                }
 
-				if ($implode) {
-					$where .= " (" . implode(" OR ", $implode) . ")";
-				}
+                if ($implode) {
+                    $where .= " (" . implode(" OR ", $implode) . ")";
+                }
 
-				if (!empty($data['filter_description'])) {
-					$where .= " OR `pl`.`description` LIKE '" . $this->db->escape('%' . (string)$data['filter_search'] . '%') . "'";
-				}
-			}
+                if (!empty($data['filter_description'])) {
+                    $where .= " OR `pl`.`description` LIKE '" . $this->db->escape('%' . (string)$data['filter_search'] . '%') . "'";
+                }
+            }
 
-			if (!empty($data['filter_search']) && !empty($data['filter_tag'])) {
-				$where .= " OR ";
-			}
+            if (!empty($data['filter_search']) && !empty($data['filter_tag'])) {
+                $where .= " OR ";
+            }
 
-			if (!empty($data['filter_tag'])) {
-				$implode = [];
+            if (!empty($data['filter_tag'])) {
+                $implode = [];
 
-				$words = explode(' ', trim(preg_replace('/\s+/', ' ', $data['filter_tag'])));
+                $words = explode(' ', trim(preg_replace('/\s+/', ' ', $data['filter_tag'])));
 
-				foreach ($words as $word) {
-					$implode[] = "`pl`.`tag` LIKE '" . $this->db->escape('%' . $word . '%') . "'";
-				}
+                foreach ($words as $word) {
+                    $implode[] = "`pl`.`tag` LIKE '" . $this->db->escape('%' . $word . '%') . "'";
+                }
 
-				if ($implode) {
-					$where .= " (" . implode(" OR ", $implode) . ")";
-				}
-			}
+                if ($implode) {
+                    $where .= " (" . implode(" OR ", $implode) . ")";
+                }
+            }
 
-			if (!empty($data['filter_search'])) {
-				$where .= " OR LCASE(`p`.`model`) = '" . $this->db->escape(strtolower($data['filter_search'])) . "'";
-				$where .= " OR LCASE(`p`.`sku`) = '" . $this->db->escape(strtolower($data['filter_search'])) . "'";
-				$where .= " OR LCASE(`p`.`upc`) = '" . $this->db->escape(strtolower($data['filter_search'])) . "'";
-				$where .= " OR LCASE(`p`.`ean`) = '" . $this->db->escape(strtolower($data['filter_search'])) . "'";
-				$where .= " OR LCASE(`p`.`jan`) = '" . $this->db->escape(strtolower($data['filter_search'])) . "'";
-				$where .= " OR LCASE(`p`.`isbn`) = '" . $this->db->escape(strtolower($data['filter_search'])) . "'";
-				$where .= " OR LCASE(`p`.`mpn`) = '" . $this->db->escape(strtolower($data['filter_search'])) . "'";
-			}
+            if (!empty($data['filter_search'])) {
+                $where .= " OR LCASE(`p`.`model`) = '" . $this->db->escape(strtolower($data['filter_search'])) . "'";
+                $where .= " OR LCASE(`p`.`sku`) = '" . $this->db->escape(strtolower($data['filter_search'])) . "'";
+                $where .= " OR LCASE(`p`.`upc`) = '" . $this->db->escape(strtolower($data['filter_search'])) . "'";
+                $where .= " OR LCASE(`p`.`ean`) = '" . $this->db->escape(strtolower($data['filter_search'])) . "'";
+                $where .= " OR LCASE(`p`.`jan`) = '" . $this->db->escape(strtolower($data['filter_search'])) . "'";
+                $where .= " OR LCASE(`p`.`isbn`) = '" . $this->db->escape(strtolower($data['filter_search'])) . "'";
+                $where .= " OR LCASE(`p`.`mpn`) = '" . $this->db->escape(strtolower($data['filter_search'])) . "'";
+            }
 
-			$where .= ")";
-		}
+            $where .= ")";
+        }
 
         if (!empty($data['filter_manufacturer_id'])) {
-			$where .= " AND `p`.`manufacturer_id` = '" . (int)$data['filter_manufacturer_id'] . "'";
-		}
+            $where .= " AND `p`.`manufacturer_id` = '" . (int)$data['filter_manufacturer_id'] . "'";
+        }
 
         $sort = "";
-		$sort_data = [
-			'`pd`.name',
-			'`p`.model',
-			'`p`.quantity',
-			'`p`.price',
-			'rating',
-			'`p`.sort_order',
-			'`p`.date_added'
-		];
+        $sort_data = [
+            '`pd`.name',
+            '`p`.model',
+            '`p`.quantity',
+            '`p`.price',
+            'rating',
+            '`p`.sort_order',
+            '`p`.date_added'
+        ];
 
-		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
-			if ($data['sort'] == '`pd`.name' || $data['sort'] == '`p`.model') {
-				$sort .= "LCASE(" . $data['sort'] . ")";
-			} elseif ($data['sort'] == '`p`.price') {
-				$sort .= "(CASE WHEN `special` IS NOT NULL THEN `special` WHEN `discount` IS NOT NULL THEN `discount` ELSE `p`.`price` END)";
-			} else {
-				$sort .= $data['sort'];
-			}
-		} else {
-			$sort .= "`p`.`sort_order`";
-		}
+        if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
+            if ($data['sort'] == '`pd`.name' || $data['sort'] == '`p`.model') {
+                $sort .= "LCASE(" . $data['sort'] . ")";
+            } elseif ($data['sort'] == '`p`.price') {
+                $sort .= "(CASE WHEN `special` IS NOT NULL THEN `special` WHEN `discount` IS NOT NULL THEN `discount` ELSE `p`.`price` END)";
+            } else {
+                $sort .= $data['sort'];
+            }
+        } else {
+            $sort .= "`p`.`sort_order`";
+        }
 
-		if (isset($data['order']) && ($data['order'] == 'DESC')) {
-			$sort .= " DESC, LCASE(`pl`.`name`) DESC";
-		} else {
-			$sort .= " ASC, LCASE(`pl`.`name`) ASC";
-		}
+        if (isset($data['order']) && ($data['order'] == 'DESC')) {
+            $sort .= " DESC, LCASE(`pl`.`name`) DESC";
+        } else {
+            $sort .= " ASC, LCASE(`pl`.`name`) ASC";
+        }
 
         $this->from([], true)->from('`product` `p`')->join("`product_lang` `pl`", "`pl`.`product_id` = `p`.`product_id`");
         if (!empty($data['filter_category_id'])) {
             $this->join("`product_categories` `pc`", "`pc`.`product_id` = `p`.`product_id`", 'LEFT');
-			
-			if (!empty($data['filter_filter'])) {
+
+            if (!empty($data['filter_filter'])) {
                 $this->join("`product_filter` `pf`", "`pf`.`product_id` = `p`.`product_id`", 'LEFT');
-			}
+            }
         }
         $result = $this->select($select)->where($where)->orderBy($sort);
 
@@ -299,10 +300,10 @@ class ProductModel extends MyModel
         if (empty($list)) {
             return [[],[]];
         }
-        
+
         return [$list, $result->pager];
     }
-    
+
     public function getUrl($category): string
     {
         if (empty($category['category_id'])) {

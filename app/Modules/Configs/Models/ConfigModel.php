@@ -22,8 +22,8 @@ class ConfigModel extends MyModel
         'updated_at',
     ];
 
-    const CONFIG_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'config_list';
-    const CONFIG_CACHE_EXPIRE = YEAR;
+    public const CONFIG_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'config_list';
+    public const CONFIG_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {

@@ -1,4 +1,6 @@
-<?php namespace App\Modules\Products\Models;
+<?php
+
+namespace App\Modules\Products\Models;
 
 use App\Models\MyModel;
 
@@ -47,7 +49,7 @@ class ProductSkuModel extends MyModel
             $variant_value_list = [];
             $variant_value_row_list = [];
 
-            foreach($sku_value_list as $key_sku_value => $sku_value) {
+            foreach ($sku_value_list as $key_sku_value => $sku_value) {
                 if ($value['product_sku_id'] != $sku_value['product_sku_id']) {
                     continue;
                 }

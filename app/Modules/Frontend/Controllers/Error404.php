@@ -1,10 +1,11 @@
-<?php namespace App\Modules\Frontend\Controllers;
+<?php
+
+namespace App\Modules\Frontend\Controllers;
 
 use App\Controllers\MyController;
 
 class Error404 extends MyController
 {
-
     public function __construct()
     {
         parent::__construct();

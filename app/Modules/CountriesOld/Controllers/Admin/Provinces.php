@@ -1,4 +1,6 @@
-<?php namespace App\Modules\CountriesOld\Controllers\Admin;
+<?php
+
+namespace App\Modules\CountriesOld\Controllers\Admin;
 
 use App\Controllers\AdminController;
 use App\Modules\CountriesOld\Models\ProvinceModel;
@@ -8,8 +10,8 @@ class Provinces extends AdminController
 {
     protected $errors = [];
 
-    CONST MANAGE_ROOT = 'manage/old/country_provinces';
-    CONST MANAGE_URL  = 'manage/old/country_provinces';
+    public const MANAGE_ROOT = 'manage/old/country_provinces';
+    public const MANAGE_URL  = 'manage/old/country_provinces';
 
     public function __construct()
     {
@@ -56,8 +58,7 @@ class Provinces extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('provinces/list', $data);
+            ->addPartial('sidebar')::load('provinces/list', $data);
     }
 
     public function add()
@@ -141,8 +142,7 @@ class Provinces extends AdminController
         $token = csrf_hash();
 
         //delete
-        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids')))
-        {
+        if (!empty($this->request->getPost('is_delete')) && !empty($this->request->getPost('ids'))) {
             $ids = $this->request->getPost('ids');
             $ids = (is_array($ids)) ? $ids : explode(",", $ids);
 
@@ -217,8 +217,7 @@ class Provinces extends AdminController
         $this->themes
             ->addPartial('header')
             ->addPartial('footer')
-            ->addPartial('sidebar')
-            ::load('provinces/form', $data);
+            ->addPartial('sidebar')::load('provinces/form', $data);
     }
 
     private function _validateForm()

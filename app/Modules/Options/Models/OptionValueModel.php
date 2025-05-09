@@ -24,8 +24,8 @@ class OptionValueModel extends MyModel
 
     protected $table_lang = 'option_value_lang';
 
-    const OPTION_VALUE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'option_value_list_all';
-    const OPTION_VALUE_CACHE_EXPIRE = YEAR;
+    public const OPTION_VALUE_CACHE_NAME = PREFIX_CACHE_NAME_MYSQL.'option_value_list_all';
+    public const OPTION_VALUE_CACHE_EXPIRE = YEAR;
 
     public function __construct()
     {

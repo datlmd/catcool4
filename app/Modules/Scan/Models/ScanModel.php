@@ -30,7 +30,7 @@ class ScanModel extends MyModel
 
         $domain = str_ireplace('www.', '', parse_url($url, PHP_URL_HOST));
         $domain = strtolower($domain);
-        
+
         $content = $this->getUrlData($url);
 
         return $content;
@@ -42,7 +42,7 @@ class ScanModel extends MyModel
         if (empty($contents)) {
             return null;
         }
-        
+
         $title = null;
         $meta_tags = [];
 
@@ -103,7 +103,7 @@ class ScanModel extends MyModel
         if (isset($match) && is_array($match) && count($match) > 0) {
             $contents = $match[1];
         }
-        
+
         //lay noi dung chinh
         $domain = get_domain($url);
         $content_temp = substr($contents, strpos($contents, substr($title, 0, 20)), strlen($contents));

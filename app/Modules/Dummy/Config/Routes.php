@@ -1,11 +1,10 @@
 <?php
 
-if(!isset($routes))
-{
+if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Dummy\Controllers', 'filter' => 'auth_admin'], function($subroutes){
+$routes->group('manage', ['namespace' => 'App\Modules\Dummy\Controllers', 'filter' => 'auth_admin'], function ($subroutes) {
     $subroutes->add('dummy', 'Dummy::index');
     $subroutes->add('dummy/add', 'Dummy::add');
     $subroutes->add('dummy/edit/(:num)', 'Dummy::edit/$1');

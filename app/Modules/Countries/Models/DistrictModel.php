@@ -1,8 +1,10 @@
-<?php namespace App\Modules\Countries\Models;
+<?php
+
+namespace App\Modules\Countries\Models;
 
 use App\Models\MyModel;
 
-class  DistrictModel extends MyModel
+class DistrictModel extends MyModel
 {
     protected $table      = 'country_district';
     protected $primaryKey = 'district_id';
@@ -19,17 +21,17 @@ class  DistrictModel extends MyModel
         'published',
     ];
 
-    const COUNTRY_DISTRICT_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_district_list';
-    const COUNTRY_DISTRICT_CACHE_EXPIRE = YEAR;
+    public const COUNTRY_DISTRICT_CACHE_NAME   = PREFIX_CACHE_NAME_MYSQL.'country_district_list';
+    public const COUNTRY_DISTRICT_CACHE_EXPIRE = YEAR;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
     public function getAllByFilter($filter = null, $sort = null, $order = null)
     {
-        $sorts =[
+        $sorts = [
             'zone' => '`z`.`name`',
             'name' => '`d`.`name`',
             'district_id' => '`d`.`zone_id`',

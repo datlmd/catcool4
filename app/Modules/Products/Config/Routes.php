@@ -1,11 +1,10 @@
 <?php
 
-if(!isset($routes))
-{
+if (!isset($routes)) {
     $routes = \Config\Services::routes(true);
 }
 
-$routes->group('manage', ['namespace' => 'App\Modules\Products\Controllers\Admin', 'filter' => 'auth_admin'], function($subroutes){
+$routes->group('manage', ['namespace' => 'App\Modules\Products\Controllers\Admin', 'filter' => 'auth_admin'], function ($subroutes) {
     $subroutes->add('products', 'Products::index');
     $subroutes->add('products/add', 'Products::add');
     $subroutes->add('products/save', 'Products::save');
@@ -57,5 +56,3 @@ $routes->group('product', ['namespace' => 'App\Modules\Products\Controllers'], f
 //Set route category
 $routes->add('(:any)-' . '(:num)' . SEO_PRODUCT_CATEGORY_ID . '.' . SEO_EXTENSION, 'Category::index/$1/$2', ['namespace' => 'App\Modules\Products\Controllers']);
 $routes->add('(:any)-' . '(:num)' . SEO_PRODUCT_CATEGORY_ID, 'Category::index/$1/$2', ['namespace' => 'App\Modules\Products\Controllers']);
-
-
