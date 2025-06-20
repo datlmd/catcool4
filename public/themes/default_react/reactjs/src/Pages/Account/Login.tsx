@@ -3,23 +3,17 @@
 import { useEffect, useState, FormEventHandler } from 'react'
 import { Col, Form, Row, Button } from 'react-bootstrap'
 import DefaultLayout from '../../Layouts/DefaultLayout'
-import { usePage, Link } from '@inertiajs/inertia-react'
-import { API, getRequestToken } from '../../utils/callApi'
+import { usePage, Link, router } from '@inertiajs/react'
 import Message from '../../Components/UI/Message'
 
 const Login = ({ contents, alert }: { contents: { [key: string]: string }; alert?: string }) => {
-    const crsf_token = usePage().props.crsf_token
+    const { errors, crsf_token } = usePage().props
     const [data, setData] = useState({
         identity: '',
         password: '',
         remember: false,
-        [crsf_token.name]: crsf_token.value
+        [crsf_token?.name ?? 'csrf_token']: crsf_token?.value ?? ''
     })
-    const [errors, setErrors] = useState({
-        identity: '',
-        password: ''
-    })
-    const [isShowError, setIsShowError] = useState<boolean>(false)
 
     useEffect(() => {}, [])
 
@@ -31,28 +25,9 @@ const Login = ({ contents, alert }: { contents: { [key: string]: string }; alert
         }))
     }
 
-    const submit: FormEventHandler = async (e) => {
+    const submitLogin: FormEventHandler = async (e) => {
         e.preventDefault()
-        try {
-            const response = await API.post('account/login', data, getRequestToken())
-
-            if (response.data.errors && response.data.errors !== undefined) {
-                setErrors(response.data.errors)
-                setIsShowError(true)
-            }
-
-            if (response.data.redirect !== undefined && response.data.redirect != '') {
-                window.location = response.data.redirect
-            }
-        } catch (error) {
-            if (error instanceof Error && error.message) {
-                setErrors({ identity: '', password: error.message });
-            } else {
-                setErrors({ identity: '', password: 'An unknown error occurred' });
-            }
-            setIsShowError(true)
-            console.log(error)
-        }
+        await router.post('login', data)
     }
 
     return (
@@ -60,9 +35,8 @@ const Login = ({ contents, alert }: { contents: { [key: string]: string }; alert
             <h1 className='text-uppercase mb-4 text-center'>{contents.text_login}</h1>
             <div className='mx-auto' style={{ maxWidth: '500px' }}>
                 {alert && <div id='profile_alert' className='mb-4' dangerouslySetInnerHTML={{ __html: alert }}></div>}
-                <form onSubmit={submit}>
-                    <Message message={errors} isShow={isShowError} type='danger' />
-
+                <form onSubmit={submitLogin}>
+                    <Message message={errors} isShow={!!errors} type='danger' />
                     <Form.Floating className='mb-3'>
                         <Form.Control
                             name='identity'
@@ -71,10 +45,10 @@ const Login = ({ contents, alert }: { contents: { [key: string]: string }; alert
                             placeholder=''
                             value={data.identity}
                             onChange={handleChange}
-                            isInvalid={!!errors.identity}
+                            isInvalid={!!errors?.identity}
                         />
                         <label htmlFor='input_identity'>{contents.text_login_identity}</label>
-                        <Form.Control.Feedback type='invalid'>{errors.identity}</Form.Control.Feedback>
+                        <Form.Control.Feedback type='invalid'>{errors?.identity}</Form.Control.Feedback>
                     </Form.Floating>
 
                     <Form.Floating className='mb-3'>
@@ -85,10 +59,10 @@ const Login = ({ contents, alert }: { contents: { [key: string]: string }; alert
                             placeholder=''
                             value={data.password}
                             onChange={handleChange}
-                            isInvalid={!!errors.password}
+                            isInvalid={!!errors?.password}
                         />
                         <label htmlFor='input_password'>{contents.text_password}</label>
-                        <Form.Control.Feedback type='invalid'>{errors.password}</Form.Control.Feedback>
+                        <Form.Control.Feedback type='invalid'>{errors?.password}</Form.Control.Feedback>
                     </Form.Floating>
 
                     <Form.Group as={Row} className='mb-3' controlId='input_remember'>

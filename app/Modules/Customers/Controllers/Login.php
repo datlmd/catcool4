@@ -81,10 +81,13 @@ class Login extends MyController
 
         if (!$this->validator->withRequest($this->request)->run()) {
             $errors = $this->validator->getErrors();
-            json_output([
-                'errors' => $errors,
-                'alert' => print_alert($errors, ALERT_ERROR)
-            ]);
+            
+            return redirect()->to(site_url('account/login'))->withInput()->with('errors', $errors);
+            
+            // json_output([
+            //     'errors' => $errors,
+            //     'alert' => print_alert($errors, ALERT_ERROR)
+            // ]);
             //return $this->setResponseFormat('json')->respond($data);
         }
 
@@ -92,6 +95,7 @@ class Login extends MyController
         if (!service('customer')->login($this->request->getPost('identity'), html_entity_decode($this->request->getPost('password'), ENT_QUOTES, 'UTF-8'), $remember)) {
             $errors = empty(service('customer')->getErrors()) ? lang('Customer.text_login_unsuccessful') : service('customer')->getErrors();
 
+            return redirect()->to(site_url('account/login'))->withInput()->with('errors', $errors);
             json_output([
                 'errors' => $errors,
                 'alert' => print_alert($errors, ALERT_ERROR)
