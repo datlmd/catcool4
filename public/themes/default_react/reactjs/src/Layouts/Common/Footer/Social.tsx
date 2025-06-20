@@ -1,5 +1,5 @@
 import { ILayout } from '../../../types/index'
-import { Link } from '@inertiajs/inertia-react'
+import { Link } from '@inertiajs/react'
 
 const Social = ({ data }: ILayout) => {
     return (

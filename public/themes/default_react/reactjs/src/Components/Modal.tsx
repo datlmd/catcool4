@@ -3,7 +3,7 @@ import {
     DialogPanel,
     Transition,
     TransitionChild,
-} from '@inertiajs/inertia-react'
+} from '@inertiajs/react'
 import { PropsWithChildren } from 'react';
 
 export default function Modal({

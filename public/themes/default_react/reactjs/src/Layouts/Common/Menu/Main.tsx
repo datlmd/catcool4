@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/inertia-react'
+import { Link } from '@inertiajs/react'
 import Nav from 'react-bootstrap/Nav'
 
 import { IMenuInfo } from '../../../types/index'

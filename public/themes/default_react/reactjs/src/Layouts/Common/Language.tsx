@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Dropdown, Collapse } from 'react-bootstrap'
-import { Link } from '@inertiajs/inertia-react'
+import { Link } from '@inertiajs/react'
 import { ILanguage, ILanguageInfo } from '../../types/index'
 
 const Language = ({ language, type }: { language: ILanguage; type?: string }) => {

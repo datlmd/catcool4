@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import DefaultLayout from '../../Layouts/DefaultLayout'
-// import { Link } from '@inertiajs/inertia-react'
+// import { Link } from '@inertiajs/react'
 
 interface ProfileProps {
     contents: {

@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/inertia-react'
+import { Link } from '@inertiajs/react'
 import Accordion from 'react-bootstrap/Accordion'
 
 import { ILayout, IMenuInfo } from '../../../types/index'

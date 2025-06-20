@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Dropdown, Collapse } from 'react-bootstrap'
-import { Link } from '@inertiajs/inertia-react'
+import { Link } from '@inertiajs/react'
 import { ICurrency, ICurrencyInfo } from '../../types/index'
 
 const Currency = ({ currency, type }: { currency: ICurrency; type?: string }) => {

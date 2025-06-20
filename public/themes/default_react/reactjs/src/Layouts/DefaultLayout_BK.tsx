@@ -1,6 +1,6 @@
 import { PropsWithChildren, lazy, useEffect, useState, ReactNode } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import { usePage } from '@inertiajs/inertia-react'
+import { usePage } from '@inertiajs/react'
 
 const importView = (subreddit: string) => lazy(() => import(`./${subreddit}`).catch(() => import(`./Common/NullView`)))
 
