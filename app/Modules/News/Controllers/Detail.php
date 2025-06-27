@@ -25,76 +25,76 @@ class Detail extends MyController
     {
         $news_model = new NewsModel();
 
-        //try {
-        if (!empty($type) && $type !== 'preview') {
-            page_not_found();
-        }
+        try {
+            if (!empty($type) && $type !== 'preview') {
+                page_not_found();
+            }
 
-        $is_preview = false;
-        if (!empty($type) && $type === 'preview') {
-            $is_preview = true;
-        }
+            $is_preview = false;
+            if (!empty($type) && $type === 'preview') {
+                $is_preview = true;
+            }
 
-        $category_model = new CategoryModel();
-        $category_list = $category_model->getNewsCategories($this->language_id);
+            $category_model = new CategoryModel();
+            $category_list = $category_model->getNewsCategories($this->language_id);
 
-        if ($is_preview) {
-            $detail = $news_model->getNewsInfo($news_id, $created_at, $is_preview, false);
-        } else {
-            $detail = $news_model->getNewsInfo($news_id, $created_at);
-        }
+            if ($is_preview) {
+                $detail = $news_model->getNewsInfo($news_id, $created_at, $is_preview, false);
+            } else {
+                $detail = $news_model->getNewsInfo($news_id, $created_at);
+            }
 
-        if (empty($detail)) {
-            page_not_found();
-        }
+            if (empty($detail)) {
+                page_not_found();
+            }
 
-        $news_the_same_list = [];
-        $data_category_list = $news_model->getListHome();
+            $news_the_same_list = [];
+            $data_category_list = $news_model->getListHome();
 
-        if (!empty($data_category_list) && !empty($detail['category_ids'])) {
-            foreach ($detail['category_ids'] as $category_id) {
-                if (!empty($data_category_list[$category_id]['list'])) {
+            if (!empty($data_category_list) && !empty($detail['category_ids'])) {
+                foreach ($detail['category_ids'] as $category_id) {
+                    if (!empty($data_category_list[$category_id]['list'])) {
 
-                    $news_the_same_list = array_merge($news_the_same_list, $data_category_list[$category_id]['list']);
+                        $news_the_same_list = array_merge($news_the_same_list, $data_category_list[$category_id]['list']);
+                    }
                 }
             }
+            shuffle($news_the_same_list);
+
+            //count detail
+            $news_model->updateView($news_id, $created_at);
+
+            $this->_setMeta($detail);
+
+            $data = [
+                'detail'               => $detail,
+                'related_list'         => $news_model->getListByRelatedIds($detail['related_ids'], 3),
+                'news_the_same_list'   => $news_the_same_list,
+                'news_category_list'   => $category_list,
+                'news_category_tree'   => get_list_tree_selected($category_list, $detail['category_ids'], 'category_id'),
+                'slide_list'           => $news_model->getSlideHome(5),
+                'new_list'             => $news_model->getListNew(5),
+                'counter_list'         => $news_model->getListCounter(6),
+                'script_google_search' => $this->_scriptGoogleSearch($detail, $category_list),
+            ];
+
+            $tpl_name = 'detail';
+            if (!empty($this->is_mobile)) {
+                $tpl_name = 'mobile/detail';
+            }
+
+            $this->themes->addCSS('common/plugin/fancybox/fancybox');
+            $this->themes->addJS('common/plugin/fancybox/fancybox');
+
+            //@todo Chan index tam thoi trang news
+            $this->themes->addMeta('robots', 'noindex,nofollow');
+            $this->themes->addMeta('googlebot', 'noindex,nofollow,');
+
+            theme_load($tpl_name, $data);
+        } catch (\Exception $ex) {
+            //log_message('error', $ex->getMessage() . "[ID: $news_id, $created_at, $slug]");
+            page_not_found();
         }
-        shuffle($news_the_same_list);
-
-        //count detail
-        $news_model->updateView($news_id, $created_at);
-
-        $this->_setMeta($detail);
-
-        $data = [
-            'detail'               => $detail,
-            'related_list'         => $news_model->getListByRelatedIds($detail['related_ids'], 3),
-            'news_the_same_list'   => $news_the_same_list,
-            'news_category_list'   => $category_list,
-            'news_category_tree'   => get_list_tree_selected($category_list, $detail['category_ids'], 'category_id'),
-            'slide_list'           => $news_model->getSlideHome(5),
-            'new_list'             => $news_model->getListNew(5),
-            'counter_list'         => $news_model->getListCounter(6),
-            'script_google_search' => $this->_scriptGoogleSearch($detail, $category_list),
-        ];
-
-        $tpl_name = 'detail';
-        if (!empty($this->is_mobile)) {
-            $tpl_name = 'mobile/detail';
-        }
-
-        $this->themes->addCSS('common/plugin/fancybox/fancybox');
-        $this->themes->addJS('common/plugin/fancybox/fancybox');
-
-        //@todo Chan index tam thoi trang news
-        $this->themes->addMeta('robots', 'noindex,nofollow');
-        $this->themes->addMeta('googlebot', 'noindex,nofollow,');
-
-        theme_load($tpl_name, $data);
-        // } catch (\Exception $ex) {
-        //     log_message('error', $ex->getMessage() . "[ID: $news_id, $created_at, $slug]");
-        //     page_not_found();
-        // }
     }
 
     private function _scriptGoogleSearch($detail, $category_list)

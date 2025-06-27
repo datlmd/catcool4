@@ -23,40 +23,45 @@ class Categories extends MyController
 
     public function detail($id = null)
     {
-        $news_category_model = new CategoryModel();
-        $news_model = new NewsModel();
+        try {
+            $news_category_model = new CategoryModel();
+            $news_model = new NewsModel();
 
-        $category_list = $news_category_model->getNewsCategories($this->language_id);
-        $detail = $category_list[$id] ?? null;
-        if (empty($detail)) {
+            $category_list = $news_category_model->getNewsCategories($this->language_id);
+            $detail = $category_list[$id] ?? null;
+            if (empty($detail)) {
+                $this->pageNotFound();
+            }
+
+            list($list, $pager) = $news_model->getListByCategory($id);
+
+            $data = [
+                'detail'             => $detail,
+                'list'               => $list,
+                'pager'              => $pager,
+                'slide_list'         => $news_model->getSlideHome(5),
+                'new_list'           => $news_model->getListNew(5),
+                'counter_list'       => $news_model->getListCounter(6),
+                'news_category_list' => $category_list,
+                'news_category_tree' => get_list_tree_selected($category_list, $id, 'category_id'),
+            ];
+
+            $this->_setMeta($detail);
+
+            //@todo Chan index tam thoi trang news
+            $this->themes->addMeta('robots', 'noindex');
+            $this->themes->addMeta('googlebot', 'noindex,');
+
+            $tpl_name = 'categories/list';
+            if (!empty($this->is_mobile)) {
+                $tpl_name = 'mobile/category';
+            }
+
+            theme_load($tpl_name, $data);
+        } catch (\Exception $e) {
+            //log_message('error', $e->getMessage());
             $this->pageNotFound();
         }
-
-        list($list, $pager) = $news_model->getListByCategory($id);
-
-        $data = [
-            'detail'             => $detail,
-            'list'               => $list,
-            'pager'              => $pager,
-            'slide_list'         => $news_model->getSlideHome(5),
-            'new_list'           => $news_model->getListNew(5),
-            'counter_list'       => $news_model->getListCounter(6),
-            'news_category_list' => $category_list,
-            'news_category_tree' => get_list_tree_selected($category_list, $id, 'category_id'),
-        ];
-
-        $this->_setMeta($detail);
-
-        //@todo Chan index tam thoi trang news
-        $this->themes->addMeta('robots', 'noindex');
-        $this->themes->addMeta('googlebot', 'noindex,');
-
-        $tpl_name = 'categories/list';
-        if (!empty($this->is_mobile)) {
-            $tpl_name = 'mobile/category';
-        }
-
-        theme_load($tpl_name, $data);
     }
 
     private function _setMeta($detail)
