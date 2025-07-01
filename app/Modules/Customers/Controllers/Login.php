@@ -47,14 +47,8 @@ class Login extends MyController
             $data['contents'] = [
                 'forgotten' => site_url('account/forgotten'),
                 'login' => site_url('account/login'),
-                'text_login' => lang('General.text_login'),
-                'text_login_identity' => lang('General.text_login_identity'),
-                'text_password' => lang('General.text_password'),
-                'text_remember' => lang('General.text_remember'),
-                'button_login' => lang('General.button_login'),
-                'text_or' => lang('General.text_or'),
-                'text_lost_password' => lang('General.text_lost_password'),
             ];
+            $data['lang'] = get_languages('General');
 
             $data = array_merge($data, theme_var());
             $data = inertia_data($data);
@@ -131,11 +125,13 @@ class Login extends MyController
         $success = lang('Customer.text_login_successful');
         set_alert($success, ALERT_SUCCESS);
 
-        json_output([
-            'success' => $success,
-            'alert' => print_alert($success, ALERT_SUCCESS),
-            'redirect' => urldecode($return_url) . '?customer_token=' . session('customer_token')
-        ]);
+        return redirect()->to(urldecode($return_url) . '?customer_token=' . session('customer_token'));
+
+        // json_output([
+        //     'success' => $success,
+        //     'alert' => print_alert($success, ALERT_SUCCESS),
+        //     'redirect' => urldecode($return_url) . '?customer_token=' . session('customer_token')
+        // ]);
     }
 
     public function socialLogin()

@@ -6,7 +6,15 @@ import DefaultLayout from '../../Layouts/DefaultLayout'
 import { usePage, Link, router } from '@inertiajs/react'
 import Message from '../../Components/UI/Message'
 
-const Login = ({ contents, alert }: { contents: { [key: string]: string }; alert?: string }) => {
+const Login = ({
+    contents,
+    alert,
+    lang
+}: {
+    contents: { [key: string]: string }
+    lang?: { [key: string]: string }
+    alert?: string
+}) => {
     const { errors, crsf_token } = usePage().props
     const [data, setData] = useState({
         identity: '',
@@ -32,7 +40,7 @@ const Login = ({ contents, alert }: { contents: { [key: string]: string }; alert
 
     return (
         <DefaultLayout>
-            <h1 className='text-uppercase mb-4 text-center'>{contents.text_login}</h1>
+            <h1 className='text-uppercase mb-4 text-center'>{lang?.text_login}</h1>
             <div className='mx-auto' style={{ maxWidth: '500px' }}>
                 {alert && <div id='profile_alert' className='mb-4' dangerouslySetInnerHTML={{ __html: alert }}></div>}
                 <form onSubmit={submitLogin}>
@@ -47,7 +55,7 @@ const Login = ({ contents, alert }: { contents: { [key: string]: string }; alert
                             onChange={handleChange}
                             isInvalid={!!errors?.identity}
                         />
-                        <label htmlFor='input_identity'>{contents.text_login_identity}</label>
+                        <label htmlFor='input_identity'>{lang?.text_login_identity}</label>
                         <Form.Control.Feedback type='invalid'>{errors?.identity}</Form.Control.Feedback>
                     </Form.Floating>
 
@@ -61,7 +69,7 @@ const Login = ({ contents, alert }: { contents: { [key: string]: string }; alert
                             onChange={handleChange}
                             isInvalid={!!errors?.password}
                         />
-                        <label htmlFor='input_password'>{contents.text_password}</label>
+                        <label htmlFor='input_password'>{lang?.text_password}</label>
                         <Form.Control.Feedback type='invalid'>{errors?.password}</Form.Control.Feedback>
                     </Form.Floating>
 
@@ -70,7 +78,7 @@ const Login = ({ contents, alert }: { contents: { [key: string]: string }; alert
                             <Form.Check
                                 name='remember'
                                 id='input_remember'
-                                label={contents.text_remember}
+                                label={lang?.text_remember}
                                 checked={data.remember}
                                 onChange={handleChange}
                             />
@@ -79,10 +87,10 @@ const Login = ({ contents, alert }: { contents: { [key: string]: string }; alert
 
                     <Form.Group as={Row} className='mb-3'>
                         <Col sm={{ span: 6 }}>
-                            <Button type='submit'>{contents.button_login}</Button>
+                            <Button type='submit'>{lang?.button_login}</Button>
                         </Col>
                         <Col sm={{ span: 6 }} className='text-end'>
-                            <Link href={contents.forgotten}>{contents.text_lost_password}</Link>
+                            <Link href={contents.forgotten}>{lang?.text_lost_password}</Link>
                         </Col>
                     </Form.Group>
                 </form>
