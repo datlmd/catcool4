@@ -15,7 +15,7 @@ const Login = ({
     lang?: { [key: string]: string }
     alert?: string
 }) => {
-    const { errors, crsf_token } = usePage().props
+    const { errors, crsf_token, layouts } = usePage().props
     const [data, setData] = useState({
         identity: '',
         password: '',

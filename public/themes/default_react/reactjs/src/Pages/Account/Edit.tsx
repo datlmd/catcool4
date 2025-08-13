@@ -10,7 +10,7 @@ import DefaultLayout from '../../Layouts/DefaultLayout'
 import { IPage } from '@/types'
 import 'react-datepicker/dist/react-datepicker.css'
 
-const Edit = ({ contents, alert }: IPage) => {
+const Edit = ({ contents, alert, layouts }: IPage) => {
     const crsf_token = usePage().props.crsf_token ?? { name: '', value: '' }
 
     useEffect(() => {}, [])
@@ -65,7 +65,7 @@ const Edit = ({ contents, alert }: IPage) => {
     }
 
     return (
-        <DefaultLayout>
+        <DefaultLayout layouts={layouts}>
             <h1 className='mb-3 text-start'>{contents.text_account_edit_title}</h1>
             {alert && <div id='account_edit_alert' className='mb-4' dangerouslySetInnerHTML={{ __html: alert }}></div>}
 

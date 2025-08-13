@@ -19,6 +19,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
 export interface IPage {
     contents?: any,
     alert?: string | null
+    layouts?: ILayoutView | null
 };
 
 /**

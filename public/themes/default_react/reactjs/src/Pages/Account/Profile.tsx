@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import DefaultLayout from '../../Layouts/DefaultLayout'
-// import { Link } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react'
 
 interface ProfileProps {
     contents: {
@@ -33,13 +33,16 @@ interface ProfileProps {
         text_profile_newsletter: string;
     };
     alert?: string;
+    layouts: any;
 }
 
-const Profile = ({ contents, alert }: ProfileProps) => {
+const Profile = ({ contents, alert, layouts }: ProfileProps) => {
+
     useEffect(() => {}, [])
 
     return (
-        <DefaultLayout>
+        <DefaultLayout layouts={layouts}>
+         {/* {layouts} */}
             <div className='row'>
                 <div className='col-sm-3'>
                     <div className='text-center'>
@@ -60,10 +63,10 @@ const Profile = ({ contents, alert }: ProfileProps) => {
                     <h2 className='mb-2'>{contents.text_my_account}</h2>
                     <ul className='list-unstyled'>
                         <li className='pb-2'>
-                            <a href={contents.edit}>{contents.text_profile_edit}</a>
+                            <Link href={contents.edit} only={['layouts']}>{contents.text_profile_edit}</Link>
                         </li>
                         <li className='pb-2'>
-                            <a href={contents.password}>{contents.text_profile_password}</a>
+                            <Link href={contents.password}>{contents.text_profile_password}</Link>
                         </li>
                         <li className='pb-2'>
                             <a href={contents.address}>{contents.text_profile_address}</a>

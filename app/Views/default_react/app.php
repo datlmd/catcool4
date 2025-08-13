@@ -1,12 +1,12 @@
 <?php
 $page_layouts = $page['props']['layouts'] ?? "";
 if (isset($page['props']['layouts'])) {
-	unset($page['props']['layouts']);
+	//unset($page['props']['layouts']);
 }
 
 $page_meta = $page['props']['meta'] ?? "";
 if (isset($page['props']['meta'])) {
-	unset($page['props']['meta']);
+	//unset($page['props']['meta']);
 }
 ?>
 
