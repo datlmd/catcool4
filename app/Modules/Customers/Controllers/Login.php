@@ -75,9 +75,9 @@ class Login extends MyController
 
         if (!$this->validator->withRequest($this->request)->run()) {
             $errors = $this->validator->getErrors();
-            
+
             return redirect()->to(site_url('account/login'))->withInput()->with('errors', $errors);
-            
+
             // json_output([
             //     'errors' => $errors,
             //     'alert' => print_alert($errors, ALERT_ERROR)
