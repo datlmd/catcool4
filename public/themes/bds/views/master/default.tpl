@@ -11,13 +11,9 @@
 	<base href="{site_url()}">
 
 	<!-- Favicon -->
-	<link rel="shortcut icon" href="{base_url()}{config_item('favicon')}" type="image/x-icon" />
-	{if !empty(config_item('favicon_apple_touche'))}
-		<link rel="apple-touch-icon" sizes="180x180" href="{base_url()}{config_item('favicon_apple_touche')}">
-	{/if}
-	{if !empty(config_item('favicon_32_32'))}
-		<link rel="icon" type="image/png" sizes="32x32" href="{base_url()}{config_item('favicon_32_32')}">
-	{/if}
+	<link rel="shortcut icon" href="{img_url('favicon-192x192.png')}" type="image/png" />
+	<link rel="apple-touch-icon" sizes="180x180" href="{img_url('favicon-180x180.png')}">
+	<link rel="icon" type="image/png" sizes="32x32" href="{img_url('favicon-32x32.png')}">
 
 	<title>{if !empty($page_title)}{$page_title}{/if}</title>
 	{$metadata}
@@ -26,7 +22,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
 
 	<!-- Web Fonts  -->
-	{*<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7CShadows+Into+Light" rel="stylesheet" type="text/css">*}
+	<link href="https://fonts.googleapis.com" rel="preconnect">
+	<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
 	<!-- StyleSheets -->
 	<link rel="stylesheet" type="text/css" href="{base_url('common/plugin/bootstrap/css/bootstrap.min.css')}">
@@ -60,7 +58,6 @@
 <body class="{if !empty($body_class)}{$body_class}{/if}">
 
 	{$layout}
-	<button id="btn_scroll_to_top" onclick="scrollToTop()"><i class="fas fa-angle-up"></i></button>
 
 	<!-- JavaScripts -->
 	{include file=get_theme_path('views/master/common/js.tpl')}
