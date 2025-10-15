@@ -97,7 +97,7 @@ class Bds extends MyController
         }
 
         $email_to = config_item('email_from');
-        $email_from = $this->request->getPost('email');
+        $email_from = config_item('email_from');//$this->request->getPost('email');
         $message = $this->request->getPost('message');
         $subject = lang('Contact.email_subject', [$this->request->getPost('name')]);
         $subject_title = config_item('email_subject_title');
