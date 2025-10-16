@@ -84,7 +84,7 @@ class Bds extends MyController
     public function send(): void
     {
         $this->validator->setRule('name', lang('Contact.text_name'), 'required|min_length[3]|max_length[40]');
-        $this->validator->setRule('email', lang('Contact.text_email'), 'required|valid_email');
+        $this->validator->setRule('email', lang('Contact.text_email'), 'permit_empty|valid_email');
         $this->validator->setRule('phone', lang('Contact.text_phone'), 'required|min_length[10]');
 
         if (!$this->validator->withRequest($this->request)->run()) {
@@ -97,12 +97,20 @@ class Bds extends MyController
         }
 
         $email_to = config_item('email_from');
-        $email_from = config_item('email_from');//$this->request->getPost('email');
+        $email_from = config_item('email_from'); //$this->request->getPost('email');
         $message = $this->request->getPost('message');
-        $subject = lang('Contact.email_subject', [$this->request->getPost('name')]);
+        $subject = lang('FrontendBd.text_email_subject', [$this->request->getPost('name')]);
         $subject_title = config_item('email_subject_title');
 
-        $send_email = send_email($email_to, $email_from, $subject, $message, $subject_title);
+        $data_email = [
+            'name' => $this->request->getPost('name'),
+            'phone' => $this->request->getPost('phone'),
+            'email' => $this->request->getPost('email'),
+            'message' => $this->request->getPost('message'),
+        ];
+        $content = $this->themes::view('email/contact', $data_email);
+
+        $send_email = send_email($email_to, $email_from, $subject, $content, $subject_title);
         if (!$send_email) {
             $unsuccess = lang('Email.error_sent_unsuccessful');
             json_output([
@@ -110,8 +118,25 @@ class Bds extends MyController
                 'alert' => print_alert($unsuccess, 'danger'),
             ]);
         }
+        $email_tos = [];
+        if (!empty(config_item('mail_alert_email'))) {
+            $email_tos = array_merge($email_tos, explode(',', (string) config_item('mail_alert_email')));
 
-        $success = lang('Contact.text_success');
+            foreach ($email_tos as $email_to) {
+                if (mb_strlen($email_to) > 0 && filter_var($email_to, FILTER_VALIDATE_EMAIL)) {
+                    $send_email = send_email($email_to, $email_from, $subject, $content, $subject_title);
+                    if (!$send_email) {
+                        $unsuccess = lang('Email.error_sent_unsuccessful');
+                        json_output([
+                            'error' => $unsuccess,
+                            'alert' => print_alert($unsuccess, 'danger'),
+                        ]);
+                    }
+                }
+            }
+        }
+
+        $success = lang('FrontendBd.text_email_success');
 
         json_output([
             'success' => $success,
