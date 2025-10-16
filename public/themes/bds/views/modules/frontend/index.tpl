@@ -332,7 +332,11 @@
 							<i class="bi bi-telephone flex-shrink-0"></i>
 							<div>
 								<h3>Điện thoại</h3>
-								<p>{lang('FrontendBd.text_contact_phone')}</p>
+								<p>
+									<a href="tel:{lang('FrontendBd.text_contact_phone')}" class="nav-link">
+										{lang('FrontendBd.text_contact_phone')}
+									</a>
+								</p>
 							</div>
 						</div><!-- End Info Item -->
 
@@ -340,7 +344,11 @@
 							<i class="bi bi-envelope flex-shrink-0"></i>
 							<div>
 								<h3>Email</h3>
-								<p>{lang('FrontendBd.text_contact_email')}</p>
+								<p>
+									<a href="mailto:{lang('FrontendBd.text_contact_email')}" class="nav-link">
+										{lang('FrontendBd.text_contact_email')}
+									</a>
+								</p>
 							</div>
 						</div><!-- End Info Item -->
 

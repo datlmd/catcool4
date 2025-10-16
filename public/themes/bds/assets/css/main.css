@@ -87,6 +87,43 @@ h6 {
   font-family: var(--heading-font);
 }
 
+.call-ring {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  width: 45px;
+  height: 45px;
+  background: #25d366; /* màu xanh điện thoại */
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 0 rgba(37, 211, 102, 0.7);
+  animation: ring 2s infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hiệu ứng rung */
+@keyframes ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 15px 15px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+/* Biểu tượng điện thoại bên trong */
+.call-ring svg {
+  width: 25px;
+  height: 25px;
+  fill: white;
+}
+
 /* Pulsating Play Button
 ------------------------------*/
 .pulsating-play-btn {
@@ -235,11 +272,6 @@ h6 {
 
 .header .logo {
   line-height: 1;
-}
-
-.header .logo img {
-  max-height: 36px;
-  margin-right: 8px;
 }
 
 .header .logo h1 {
