@@ -1,4 +1,6 @@
-<?php namespace App\Database\Migrations;
+<?php
+
+namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
@@ -36,6 +38,7 @@ class AddVariant extends Migration
             'language_id' => [
                 'type'       => 'INT',
                 'constraint' => '11',
+                'unsigned'   => true
             ],
             'name' => [
                 'type'       => 'VARCHAR',
@@ -45,11 +48,11 @@ class AddVariant extends Migration
         ]);
         $this->forge->addKey(['variant_id', 'language_id'], true);
 
-        $this->db->disableForeignKeyChecks();
+        //$this->db->disableForeignKeyChecks();
 
-        $this->forge->addForeignKey('variant_id', 'variant', 'variant_id', 'NO ACTION', 'CASCADE', 'variant_lang_ibfk_1');
+        $this->forge->addForeignKey('variant_id', 'variant', 'variant_id', 'CASCADE', 'CASCADE', 'fk_variant_lang_variant_id');
 
-        $this->db->enableForeignKeyChecks();
+        //$this->db->enableForeignKeyChecks();
 
         $this->forge->createTable('variant_lang');
     }

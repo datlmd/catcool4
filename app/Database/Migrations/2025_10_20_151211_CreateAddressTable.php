@@ -106,10 +106,32 @@ class CreateAddressTable extends Migration
         $this->forge->addKey('customer_id');
 
         $this->forge->createTable('address');
+
+        //Table address_format
+        $this->forge->addField([
+            'address_format_id' => [
+                'type'           => 'INT',
+                'constraint'     => 11,
+                'unsigned'       => true,
+                'auto_increment' => true,
+            ],
+            'name' => [
+                'type' => 'VARCHAR',
+                'constraint' => 128,
+                'null' => false,
+            ],
+            'address_format' => [
+                'type' => 'TEXT',
+                'null' => false,
+            ],
+        ]);
+        $this->forge->addKey('address_format_id', true);
+        $this->forge->createTable('address_format');
     }
 
     public function down()
     {
+        $this->forge->dropTable('address_format');
         $this->forge->dropTable('address');
     }
 }
