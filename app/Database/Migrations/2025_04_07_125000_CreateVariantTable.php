@@ -6,23 +6,21 @@ use CodeIgniter\Database\Migration;
 
 /**
  * Class AddVariant
- * php spark migrate:file "app/Database/Migrations/2024_04_07_125000_AddVariant.php"
- *
- * @package App\Database\Migrations
+ * php spark migrate:file "app/Database/Migrations/2025_04_07_125000_CreateVariantTable.php".
  */
-class AddVariant extends Migration
+class CreateVariantTable extends Migration
 {
     public function up()
     {
         $this->forge->addField([
             'variant_id' => [
-                'type'           => 'INT',
-                'constraint'     => 11,
-                'unsigned'       => true,
+                'type' => 'INT',
+                'constraint' => 11,
+                'unsigned' => true,
                 'auto_increment' => true,
             ],
             'sort_order' => [
-                'type'       => 'INT',
+                'type' => 'INT',
                 'constraint' => 3,
             ],
         ]);
@@ -31,17 +29,17 @@ class AddVariant extends Migration
 
         $this->forge->addField([
             'variant_id' => [
-                'type'       => 'INT',
+                'type' => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true
+                'unsigned' => true,
             ],
             'language_id' => [
-                'type'       => 'INT',
+                'type' => 'INT',
                 'constraint' => '11',
-                'unsigned'   => true
+                'unsigned' => true,
             ],
             'name' => [
-                'type'       => 'VARCHAR',
+                'type' => 'VARCHAR',
                 'constraint' => 128,
                 //'collation'  => 'utf8_general_ci',
             ],

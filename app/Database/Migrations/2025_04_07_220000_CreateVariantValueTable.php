@@ -6,10 +6,10 @@ use CodeIgniter\Database\Migration;
 
 /**
  * Class AddVariantValue
- * php spark migrate:file "app/Database/Migrations/2024_04_07_220000_AddVariantValue.php"
+ * php spark migrate:file "app/Database/Migrations/2025_04_07_220000_CreateVariantValueTable.php"
  * @package App\Database\Migrations
  */
-class AddVariantValue extends Migration
+class CreateVariantValueTable extends Migration
 {
     public function up()
     {
