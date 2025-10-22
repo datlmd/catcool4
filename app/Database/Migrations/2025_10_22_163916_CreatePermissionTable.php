@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Database\Migrations;
+
+use CodeIgniter\Database\Migration;
+
+class CreatePermissionTable extends Migration
+{
+    public function up()
+    {
+        $attributes = ['ENGINE' => 'InnoDB'];
+
+        /*
+         * Table permission
+         */
+        $this->forge->addField([
+            'id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT',
+            'name VARCHAR(50) NOT NULL',
+            'description VARCHAR(100) NOT NULL',
+            'published TINYINT(1) NOT NULL DEFAULT 1',
+        ]);
+
+        // Primary key
+        $this->forge->addKey('id', true);
+
+        // Index cho cột 'name'
+        $this->forge->addKey('name');
+
+        $this->forge->createTable('permission', false, $attributes);
+
+        /*
+         * Table user_permissions
+         */
+        $this->forge->addField([
+            'user_id INT(11) UNSIGNED NOT NULL',
+            'permission_id INT(11) UNSIGNED NOT NULL',
+        ]);
+
+        // Composite Primary Key
+        $this->forge->addKey(['user_id', 'permission_id'], true);
+
+        $this->forge->addKey('user_id');
+        $this->forge->addKey('permission_id');
+
+        $this->forge->addForeignKey('user_id', 'user', 'user_id', 'CASCADE', 'CASCADE', 'fk_user_permissions_user_id');
+        $this->forge->addForeignKey('permission_id', 'permission', 'id', 'CASCADE', 'CASCADE', 'fk_user_permissions_permission_id');
+
+        // Create table
+        $this->forge->createTable('user_permissions', false, $attributes);
+    }
+
+    public function down()
+    {
+        $this->forge->dropTable('user_permissions');
+        $this->forge->dropTable('permission');
+    }
+}

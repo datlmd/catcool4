@@ -10,7 +10,7 @@ class CreateArticleCategoryTable extends Migration
     {
         $attributes = ['ENGINE' => 'InnoDB'];
 
-        /**
+        /*
          * Table article_category
          */
         $this->forge->addField('category_id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY');
@@ -26,7 +26,7 @@ class CreateArticleCategoryTable extends Migration
 
         $this->forge->createTable('article_category', false, $attributes);
 
-        /**
+        /*
          * Table article_category_lang
          */
         $this->forge->addField([
@@ -49,7 +49,7 @@ class CreateArticleCategoryTable extends Migration
 
         $this->forge->createTable('article_category_lang', false, $attributes);
 
-        /**
+        /*
          * Table article_categories
          */
         $this->forge->addField([
@@ -59,6 +59,9 @@ class CreateArticleCategoryTable extends Migration
 
         // Khóa chính kép
         $this->forge->addKey(['article_id', 'category_id'], true);
+
+        $this->forge->addKey('article_id');
+        $this->forge->addKey('category_id');
 
         $this->forge->addForeignKey('article_id', 'article', 'article_id', 'CASCADE', 'CASCADE', 'fk_article_categories_article_id');
         $this->forge->addForeignKey('category_id', 'article_category', 'category_id', 'CASCADE', 'CASCADE', 'fk_article_categories_category_id');

@@ -35,6 +35,9 @@ class CreateUserGroupTable extends Migration
         // Composite Primary Key
         $this->forge->addKey(['user_id', 'group_id'], true); // true = PRIMARY KEY
 
+        $this->forge->addKey('user_id');
+        $this->forge->addKey('group_id');
+
         $this->forge->addForeignKey('group_id', 'user_group', 'id', 'CASCADE', 'CASCADE', 'fk_user_groups_group_id');
         $this->forge->addForeignKey('user_id', 'user', 'user_id', 'CASCADE', 'CASCADE', 'fk_user_groups_user_id');
 
