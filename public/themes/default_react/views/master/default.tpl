@@ -100,6 +100,11 @@
 		{/literal}
 	{/if}
 
+	<!-- Event snippet for Người liên hệ conversion page -->
+	<script>
+		gtag('event', 'conversion', {'send_to': 'AW-988506593/N1JLCKSg3rIbEOHTrdcD'});
+	</script>
+
 	{if ENVIRONMENT === 'production'}
 		<div id="fb-root"></div>
 		<script>(function(d, s, id) {
