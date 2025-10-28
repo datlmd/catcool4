@@ -14,8 +14,8 @@ class CreateVariantTable extends Migration
     {
         $this->forge->addField([
             'variant_id' => [
-                'type' => 'INT',
-                'constraint' => 11,
+                'type' => 'BIGINT',
+                'constraint' => 20,
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
@@ -25,12 +25,12 @@ class CreateVariantTable extends Migration
             ],
         ]);
         $this->forge->addKey('variant_id', true);
-        $this->forge->createTable('variant');
+        $this->forge->createTable('variants');
 
         $this->forge->addField([
             'variant_id' => [
-                'type' => 'INT',
-                'constraint' => 11,
+                'type' => 'BIGINT',
+                'constraint' => 20,
                 'unsigned' => true,
             ],
             'language_id' => [
@@ -48,17 +48,17 @@ class CreateVariantTable extends Migration
 
         //$this->db->disableForeignKeyChecks();
 
-        $this->forge->addForeignKey('variant_id', 'variant', 'variant_id', 'CASCADE', 'CASCADE', 'fk_variant_lang_variant_id');
+        $this->forge->addForeignKey('variant_id', 'variants', 'variant_id', 'CASCADE', 'CASCADE', 'fk_variant_translations_variant_id');
 
         //$this->db->enableForeignKeyChecks();
 
-        $this->forge->createTable('variant_lang');
+        $this->forge->createTable('variant_translations');
     }
 
     public function down()
     {
         //$this->forge->dropForeignKey('variant_lang', 'variant_lang_ibfk_1');
-        $this->forge->dropTable('variant_lang');
-        $this->forge->dropTable('variant');
+        $this->forge->dropTable('variant_translations');
+        $this->forge->dropTable('variants');
     }
 }

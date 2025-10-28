@@ -24,7 +24,7 @@ class CreateArticleCategoryTable extends Migration
         // Thêm index cho parent_id
         $this->forge->addKey('parent_id');
 
-        $this->forge->createTable('article_category', false, $attributes);
+        $this->forge->createTable('article_categories', false, $attributes);
 
         /*
          * Table article_category_lang
@@ -44,16 +44,16 @@ class CreateArticleCategoryTable extends Migration
         $this->forge->addKey(['category_id', 'language_id'], true);
 
         // (Tùy chọn) Foreign key
-        $this->forge->addForeignKey('category_id', 'article_category', 'category_id', 'CASCADE', 'CASCADE', 'fk_article_category_lang_category_id');
+        $this->forge->addForeignKey('category_id', 'article_categories', 'category_id', 'CASCADE', 'CASCADE', 'fk_article_category_translations_category_id');
         // $this->forge->addForeignKey('language_id', 'languages', 'id', 'CASCADE', 'CASCADE');
 
-        $this->forge->createTable('article_category_lang', false, $attributes);
+        $this->forge->createTable('article_category_translations', false, $attributes);
 
         /*
          * Table article_categories
          */
         $this->forge->addField([
-            'article_id  INT(11) UNSIGNED NOT NULL',
+            'article_id BIGINT(20) UNSIGNED NOT NULL',
             'category_id INT(11) UNSIGNED NOT NULL',
         ]);
 
@@ -63,16 +63,16 @@ class CreateArticleCategoryTable extends Migration
         $this->forge->addKey('article_id');
         $this->forge->addKey('category_id');
 
-        $this->forge->addForeignKey('article_id', 'article', 'article_id', 'CASCADE', 'CASCADE', 'fk_article_categories_article_id');
-        $this->forge->addForeignKey('category_id', 'article_category', 'category_id', 'CASCADE', 'CASCADE', 'fk_article_categories_category_id');
+        $this->forge->addForeignKey('article_id', 'articles', 'article_id', 'CASCADE', 'CASCADE', 'fk_article_to_categories_article_id');
+        $this->forge->addForeignKey('category_id', 'article_categories', 'category_id', 'CASCADE', 'CASCADE', 'fk_article_to_categories_category_id');
 
-        $this->forge->createTable('article_categories', false, $attributes);
+        $this->forge->createTable('article_to_categories', false, $attributes);
     }
 
     public function down()
     {
+        $this->forge->dropTable('article_to_categories');
+        $this->forge->dropTable('article_category_translations');
         $this->forge->dropTable('article_categories');
-        $this->forge->dropTable('article_category_lang');
-        $this->forge->dropTable('article_category');
     }
 }

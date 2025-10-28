@@ -14,7 +14,7 @@ class CreateUserTable extends Migration
          * Table user
          */
         $this->forge->addField([
-            'user_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT',
+            'user_id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT',
             'username VARCHAR(100) NOT NULL',
             'password VARCHAR(255) NOT NULL',
             'email VARCHAR(255) NULL',
@@ -49,14 +49,14 @@ class CreateUserTable extends Migration
         $this->forge->addKey('activation_selector');
         $this->forge->addKey('forgotten_password_selector');
 
-        $this->forge->createTable('user', false, $attributes);
+        $this->forge->createTable('users', false, $attributes);
 
         /*
          * Table user_ip
          */
         $this->forge->addField([
-            'user_ip_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT',
-            'user_id INT(11) UNSIGNED NOT NULL',
+            'user_ip_id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT',
+            'user_id BIGINT(20) UNSIGNED NOT NULL',
             'ip VARCHAR(40) NOT NULL',
             'agent VARCHAR(255) NULL',
             'created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',
@@ -70,15 +70,15 @@ class CreateUserTable extends Migration
         $this->forge->addKey('user_id');
 
         // Create table
-        $this->forge->createTable('user_ip', false, $attributes);
+        $this->forge->createTable('user_ips', false, $attributes);
 
         /*
          * Table user_login_attempt
          */
         $this->forge->addField([
-            'id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT',
+            'id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT',
             "ip VARCHAR(40) NOT NULL DEFAULT '0.0.0.0'",
-            'user_id INT(11) NOT NULL',
+            'user_id BIGINT(20) NOT NULL',
             'time INT(11) UNSIGNED NULL',
         ]);
 
@@ -89,13 +89,13 @@ class CreateUserTable extends Migration
         $this->forge->addKey('user_id');
 
         // Create table
-        $this->forge->createTable('user_login_attempt');
+        $this->forge->createTable('user_login_attempts');
 
         /*
          * ***** Table user_token *****
          */
         $this->forge->addField([
-            'user_id INT(11) UNSIGNED NOT NULL',
+            'user_id BIGINT(20) UNSIGNED NOT NULL',
             'remember_selector VARCHAR(255) NOT NULL',
             'remember_code VARCHAR(255) NULL',
             "ip VARCHAR(40) NULL DEFAULT '0.0.0.0'",
@@ -110,14 +110,14 @@ class CreateUserTable extends Migration
         // COMPOSITE PRIMARY KEY (user_id + remember_selector)
         $this->forge->addKey(['user_id', 'remember_selector'], true); // true = PRIMARY
 
-        $this->forge->createTable('user_token');
+        $this->forge->createTable('user_tokens');
     }
 
     public function down()
     {
-        $this->forge->dropTable('user_token');
-        $this->forge->dropTable('user_login_attempt');
-        $this->forge->dropTable('user_ip');
-        $this->forge->dropTable('user');
+        $this->forge->dropTable('user_tokens');
+        $this->forge->dropTable('user_login_attempts');
+        $this->forge->dropTable('user_ips');
+        $this->forge->dropTable('users');
     }
 }

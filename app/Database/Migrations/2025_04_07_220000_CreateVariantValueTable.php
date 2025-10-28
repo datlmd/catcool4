@@ -15,14 +15,14 @@ class CreateVariantValueTable extends Migration
     {
         $this->forge->addField([
             'variant_value_id' => [
-                'type'           => 'INT',
-                'constraint'     => 11,
+                'type'           => 'BIGINT',
+                'constraint'     => 20,
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
             'variant_id' => [
-                'type'       => 'INT',
-                'constraint' => '11',
+                'type'       => 'BIGINT',
+                'constraint' => '20',
                 'unsigned'   => true,
             ],
             'image' => [
@@ -35,12 +35,12 @@ class CreateVariantValueTable extends Migration
             ],
         ]);
         $this->forge->addKey('variant_value_id', true);
-        $this->forge->createTable('variant_value');
+        $this->forge->createTable('variant_values');
 
         $this->forge->addField([
             'variant_value_id' => [
-                'type'           => 'INT',
-                'constraint'     => 11,
+                'type'           => 'BIGINT',
+                'constraint'     => 20,
                 'unsigned'       => true,
             ],
             'language_id' => [
@@ -49,8 +49,8 @@ class CreateVariantValueTable extends Migration
                 'unsigned'       => true,
             ],
             'variant_id' => [
-                'type'       => 'INT',
-                'constraint' => '11',
+                'type'       => 'BIGINT',
+                'constraint' => '20',
                 'unsigned'   => true,
             ],
             'name' => [
@@ -61,14 +61,14 @@ class CreateVariantValueTable extends Migration
         ]);
 
         $this->forge->addKey(['variant_value_id', 'language_id'], true);
-        $this->forge->addForeignKey('variant_value_id', 'variant_value', 'variant_value_id', 'CASCADE', 'CASCADE', 'fk_variant_value_lang_variant_value_id');
+        $this->forge->addForeignKey('variant_value_id', 'variant_values', 'variant_value_id', 'CASCADE', 'CASCADE', 'fk_variant_value_translations_variant_value_id');
 
-        $this->forge->createTable('variant_value_lang');
+        $this->forge->createTable('variant_value_translations');
     }
 
     public function down()
     {
-        $this->forge->dropTable('variant_value_lang');
-        $this->forge->dropTable('variant_value');
+        $this->forge->dropTable('variant_value_translations');
+        $this->forge->dropTable('variant_values');
     }
 }
