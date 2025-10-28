@@ -78,7 +78,10 @@
 				gtag('js', new Date());
 
 				gtag('config', '{/literal}{config_item('ga_siteid')}{literal}');
+				gtag('config', 'AW-988506593');
 			</script>
+
+		<!-- Event snippet for Người liên hệ conversion page --> <script> gtag('event', 'conversion', {'send_to': 'AW-988506593/N1JLCKSg3rIbEOHTrdcD'}); </script>
 		{/literal}
 	{/if}
 
