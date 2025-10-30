@@ -10,7 +10,7 @@ class CreateLayoutRoutesTable extends Migration
     {
         $this->forge->addField([
             'layout_id INT(11) UNSIGNED NOT NULL',
-            'store_id INT(11) UNSIGNED NOT NULL DEFAULT 0',
+            'store_id BIGINT UNSIGNED NOT NULL DEFAULT 0',
             'route VARCHAR(100) NOT NULL',
         ]);
 
