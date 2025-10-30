@@ -19,7 +19,7 @@ class CreateCustomerApprovalsTable extends Migration
         $this->forge->addKey('customer_approval_id', true);
 
         // Tạo bảng
-        $this->forge->createTable('customer_approvals');
+        $this->forge->createTable('customer_approvals', true);
     }
 
     public function down()

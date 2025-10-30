@@ -25,7 +25,7 @@ class CreatePagesTable extends Migration
         $this->forge->addKey('deleted_at');    // Index
 
         // Tạo bảng
-        $this->forge->createTable('pages');
+        $this->forge->createTable('pages', true);
 
         /**
          * Tạo table: page_translations
@@ -54,7 +54,7 @@ class CreatePagesTable extends Migration
         );
 
         // Tạo bảng
-        $this->forge->createTable('page_translations');
+        $this->forge->createTable('page_translations', true);
     }
 
     public function down()

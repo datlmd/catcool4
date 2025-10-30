@@ -22,7 +22,7 @@ class CreateUserGroupTable extends Migration
         // Primary key
         $this->forge->addKey('id', true);
 
-        $this->forge->createTable('user_groups', false, $attributes);
+        $this->forge->createTable('user_groups', true, $attributes);
 
         /*
          * Table user_groups
@@ -42,7 +42,7 @@ class CreateUserGroupTable extends Migration
         $this->forge->addForeignKey('user_id', 'users', 'user_id', 'CASCADE', 'CASCADE', 'fk_user_to_groups_user_id');
 
         // Create table
-        $this->forge->createTable('user_to_groups', false, $attributes);
+        $this->forge->createTable('user_to_groups', true, $attributes);
     }
 
     public function down()

@@ -105,7 +105,7 @@ class CreateAddressTable extends Migration
         $this->forge->addKey('address_id', true);
         $this->forge->addKey('customer_id');
 
-        $this->forge->createTable('addresses');
+        $this->forge->createTable('addresses', true);
 
         //Table address_format
         $this->forge->addField([
@@ -126,7 +126,7 @@ class CreateAddressTable extends Migration
             ],
         ]);
         $this->forge->addKey('address_format_id', true);
-        $this->forge->createTable('address_formats');
+        $this->forge->createTable('address_formats', true);
     }
 
     public function down()

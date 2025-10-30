@@ -16,7 +16,7 @@ class CreateLayoutActionsTable extends Migration
         ]);
 
         $this->forge->addKey('layout_action_id', true);
-        $this->forge->createTable('layout_actions');
+        $this->forge->createTable('layout_actions', true);
     }
 
     public function down()

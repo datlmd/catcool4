@@ -32,7 +32,7 @@ class CreateMenusTable extends Migration
 
         $this->forge->addKey('menu_id', true); // Primary Key
         $this->forge->addKey('parent_id');     // Index
-        $this->forge->createTable('menus');
+        $this->forge->createTable('menus', true);
 
         /**
          * Table menu_translations

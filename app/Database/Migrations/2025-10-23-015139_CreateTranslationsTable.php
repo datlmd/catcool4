@@ -29,7 +29,7 @@ class CreateTranslationsTable extends Migration
         $this->forge->addKey('lang_id');
         $this->forge->addKey('module_id');
 
-        $this->forge->createTable('translations');
+        $this->forge->createTable('translations', true);
     }
 
     public function down()

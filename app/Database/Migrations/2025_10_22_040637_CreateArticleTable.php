@@ -123,7 +123,7 @@ class CreateArticleTable extends Migration
         $this->forge->addKey('published');
         $this->forge->addKey('deleted_at');
 
-        $this->forge->createTable('articles', false, $attributes);
+        $this->forge->createTable('articles', true, $attributes);
 
         //Table article_lang
         $this->forge->addField('article_id BIGINT(20) UNSIGNED NOT NULL');
@@ -140,7 +140,7 @@ class CreateArticleTable extends Migration
 
         $this->forge->addForeignKey('article_id', 'articles', 'article_id', 'CASCADE', 'CASCADE', 'fk_article_translations_article_id');
 
-        $this->forge->createTable('article_translations', false, $attributes);
+        $this->forge->createTable('article_translations', true, $attributes);
     }
 
     public function down()

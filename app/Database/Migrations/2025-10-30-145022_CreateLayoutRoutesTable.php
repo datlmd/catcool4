@@ -18,7 +18,7 @@ class CreateLayoutRoutesTable extends Migration
 
         $this->forge->addForeignKey('layout_id', 'layouts', 'layout_id', 'CASCADE', '', 'fk_layout_routes_layout_id');
 
-        $this->forge->createTable('layout_routes');
+        $this->forge->createTable('layout_routes', true);
     }
 
     public function down()

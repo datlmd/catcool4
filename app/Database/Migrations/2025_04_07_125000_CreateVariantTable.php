@@ -25,7 +25,7 @@ class CreateVariantTable extends Migration
             ],
         ]);
         $this->forge->addKey('variant_id', true);
-        $this->forge->createTable('variants');
+        $this->forge->createTable('variants', true);
 
         $this->forge->addField([
             'variant_id' => [
@@ -52,7 +52,7 @@ class CreateVariantTable extends Migration
 
         //$this->db->enableForeignKeyChecks();
 
-        $this->forge->createTable('variant_translations');
+        $this->forge->createTable('variant_translations', true);
     }
 
     public function down()

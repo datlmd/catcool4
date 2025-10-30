@@ -24,7 +24,7 @@ class CreateArticleCategoryTable extends Migration
         // Thêm index cho parent_id
         $this->forge->addKey('parent_id');
 
-        $this->forge->createTable('article_categories', false, $attributes);
+        $this->forge->createTable('article_categories', true, $attributes);
 
         /*
          * Table article_category_lang
@@ -47,7 +47,7 @@ class CreateArticleCategoryTable extends Migration
         $this->forge->addForeignKey('category_id', 'article_categories', 'category_id', 'CASCADE', 'CASCADE', 'fk_article_category_translations_category_id');
         // $this->forge->addForeignKey('language_id', 'languages', 'id', 'CASCADE', 'CASCADE');
 
-        $this->forge->createTable('article_category_translations', false, $attributes);
+        $this->forge->createTable('article_category_translations', true, $attributes);
 
         /*
          * Table article_categories
@@ -66,7 +66,7 @@ class CreateArticleCategoryTable extends Migration
         $this->forge->addForeignKey('article_id', 'articles', 'article_id', 'CASCADE', 'CASCADE', 'fk_article_to_categories_article_id');
         $this->forge->addForeignKey('category_id', 'article_categories', 'category_id', 'CASCADE', 'CASCADE', 'fk_article_to_categories_category_id');
 
-        $this->forge->createTable('article_to_categories', false, $attributes);
+        $this->forge->createTable('article_to_categories', true, $attributes);
     }
 
     public function down()

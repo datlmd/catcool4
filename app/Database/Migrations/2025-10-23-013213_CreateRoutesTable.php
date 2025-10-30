@@ -26,7 +26,7 @@ class CreateRoutesTable extends Migration
         // $this->forge->addKey('language_id');
         // $this->forge->addKey('user_id');
 
-        $this->forge->createTable('routes');
+        $this->forge->createTable('routes', true);
     }
 
     public function down()

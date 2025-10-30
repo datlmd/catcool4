@@ -22,7 +22,7 @@ class CreateLayoutModulesTable extends Migration
         $this->forge->addForeignKey('layout_action_id', 'layout_actions', 'layout_action_id', 'CASCADE', '', 'fk_layout_modules_layout_action_id');
 
         // Tạo bảng
-        $this->forge->createTable('layout_modules');
+        $this->forge->createTable('layout_modules', true);
     }
 
     public function down()

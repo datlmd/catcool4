@@ -35,7 +35,7 @@ class CreateVariantValueTable extends Migration
             ],
         ]);
         $this->forge->addKey('variant_value_id', true);
-        $this->forge->createTable('variant_values');
+        $this->forge->createTable('variant_values', true);
 
         $this->forge->addField([
             'variant_value_id' => [
@@ -63,7 +63,7 @@ class CreateVariantValueTable extends Migration
         $this->forge->addKey(['variant_value_id', 'language_id'], true);
         $this->forge->addForeignKey('variant_value_id', 'variant_values', 'variant_value_id', 'CASCADE', 'CASCADE', 'fk_variant_value_translations_variant_value_id');
 
-        $this->forge->createTable('variant_value_translations');
+        $this->forge->createTable('variant_value_translations', true);
     }
 
     public function down()

@@ -18,7 +18,7 @@ class CreateCustomerGroupsTable extends Migration
         $this->forge->addKey('customer_group_id', true);
 
         // Tạo bảng
-        $this->forge->createTable('customer_groups');
+        $this->forge->createTable('customer_groups', true);
 
         /**
          * Tạo table: customer_group_translations
@@ -43,7 +43,7 @@ class CreateCustomerGroupsTable extends Migration
         );
 
         // Tạo bảng
-        $this->forge->createTable('customer_group_translations');
+        $this->forge->createTable('customer_group_translations', true);
     }
 
     public function down()

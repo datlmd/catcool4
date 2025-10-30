@@ -49,7 +49,7 @@ class CreateUserTable extends Migration
         $this->forge->addKey('activation_selector');
         $this->forge->addKey('forgotten_password_selector');
 
-        $this->forge->createTable('users', false, $attributes);
+        $this->forge->createTable('users', true, $attributes);
 
         /*
          * Table user_ip
@@ -70,7 +70,7 @@ class CreateUserTable extends Migration
         $this->forge->addKey('user_id');
 
         // Create table
-        $this->forge->createTable('user_ips', false, $attributes);
+        $this->forge->createTable('user_ips', true, $attributes);
 
         /*
          * Table user_login_attempt
@@ -89,7 +89,7 @@ class CreateUserTable extends Migration
         $this->forge->addKey('user_id');
 
         // Create table
-        $this->forge->createTable('user_login_attempts');
+        $this->forge->createTable('user_login_attempts', true);
 
         /*
          * ***** Table user_token *****
@@ -110,7 +110,7 @@ class CreateUserTable extends Migration
         // COMPOSITE PRIMARY KEY (user_id + remember_selector)
         $this->forge->addKey(['user_id', 'remember_selector'], true); // true = PRIMARY
 
-        $this->forge->createTable('user_tokens');
+        $this->forge->createTable('user_tokens', true);
     }
 
     public function down()

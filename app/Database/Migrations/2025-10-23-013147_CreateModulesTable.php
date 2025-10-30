@@ -24,7 +24,7 @@ class CreateModulesTable extends Migration
         // Nếu có bảng users thì mở dòng này
         // $this->forge->addForeignKey('user_id', 'users', 'id', 'SET NULL', 'CASCADE');
 
-        $this->forge->createTable('modules');
+        $this->forge->createTable('modules', true);
     }
 
     public function down()

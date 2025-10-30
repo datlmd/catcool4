@@ -20,7 +20,7 @@ class CreateLanguagesTable extends Migration
         ]);
 
         $this->forge->addKey('id', true); // primary key
-        $this->forge->createTable('languages');
+        $this->forge->createTable('languages', true);
     }
 
     public function down()

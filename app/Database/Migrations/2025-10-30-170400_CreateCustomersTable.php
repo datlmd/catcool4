@@ -55,7 +55,7 @@ class CreateCustomersTable extends Migration
         $this->forge->addKey('forgotten_password_selector');
 
         // 🧱 Tạo bảng
-        $this->forge->createTable('customers');
+        $this->forge->createTable('customers', true);
 
 
         /**
@@ -78,7 +78,7 @@ class CreateCustomersTable extends Migration
         $this->forge->addKey('ip');
 
         // Tạo bảng
-        $this->forge->createTable('customer_ips');
+        $this->forge->createTable('customer_ips', true);
 
         /**
          * Table customer_login_attempts
@@ -97,7 +97,7 @@ class CreateCustomersTable extends Migration
         $this->forge->addKey(['ip', 'customer_id']);
 
         // Tạo bảng
-        $this->forge->createTable('customer_login_attempts');
+        $this->forge->createTable('customer_login_attempts', true);
 
         /**
          * Table customer_login_socials
@@ -119,7 +119,7 @@ class CreateCustomersTable extends Migration
         $this->forge->addKey('type');
 
         // Tạo bảng
-        $this->forge->createTable('customer_login_socials');
+        $this->forge->createTable('customer_login_socials', true);
 
         /**
          * Table customer_tokens
@@ -141,7 +141,7 @@ class CreateCustomersTable extends Migration
         $this->forge->addKey(['customer_id', 'remember_selector'], true);
 
         // Tạo bảng
-        $this->forge->createTable('customer_tokens');
+        $this->forge->createTable('customer_tokens', true);
     }
 
     public function down()

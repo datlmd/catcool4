@@ -26,7 +26,7 @@ class CreatePermissionTable extends Migration
         // Index cho cột 'name'
         $this->forge->addKey('name');
 
-        $this->forge->createTable('permissions', false, $attributes);
+        $this->forge->createTable('permissions', true, $attributes);
 
         /*
          * Table user_permissions
@@ -46,7 +46,7 @@ class CreatePermissionTable extends Migration
         $this->forge->addForeignKey('permission_id', 'permissions', 'id', 'CASCADE', 'CASCADE', 'fk_user_to_permissions_permission_id');
 
         // Create table
-        $this->forge->createTable('user_to_permissions', false, $attributes);
+        $this->forge->createTable('user_to_permissions', true, $attributes);
     }
 
     public function down()

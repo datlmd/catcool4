@@ -14,7 +14,7 @@ class CreateLayoutsTable extends Migration
         ]);
 
         $this->forge->addKey('layout_id', true); // Primary key
-        $this->forge->createTable('layouts');
+        $this->forge->createTable('layouts', true);
     }
 
     public function down()

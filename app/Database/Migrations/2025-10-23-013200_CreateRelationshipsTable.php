@@ -32,7 +32,7 @@ class CreateRelationshipsTable extends Migration
             'foreign_key'
         ], 'unique_key');
 
-        $this->forge->createTable('relationships');
+        $this->forge->createTable('relationships', true);
     }
 
     public function down()
