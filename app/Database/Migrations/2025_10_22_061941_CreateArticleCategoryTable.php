@@ -31,7 +31,7 @@ class CreateArticleCategoryTable extends Migration
          */
         $this->forge->addField([
             'category_id INT(11) UNSIGNED NOT NULL',
-            'language_id INT(11) UNSIGNED NOT NULL',
+            'language_id BIGINT UNSIGNED NOT NULL',
             'name VARCHAR(255) NOT NULL',
             'slug VARCHAR(255) NULL',
             'description VARCHAR(255) NULL',

@@ -25,7 +25,7 @@ class CreateCustomerGroupsTable extends Migration
          */
         $this->forge->addField([
             'customer_group_id BIGINT UNSIGNED NOT NULL',
-            'language_id INT(11) NOT NULL',
+            'language_id BIGINT UNSIGNED NOT NULL',
             'name VARCHAR(32) NOT NULL',
             'description TEXT NULL',
         ]);

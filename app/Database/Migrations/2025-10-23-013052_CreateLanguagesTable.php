@@ -9,7 +9,7 @@ class CreateLanguagesTable extends Migration
     public function up()
     {
         $this->forge->addField([
-            'id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT',
+            'id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT',
             'name VARCHAR(100) NOT NULL',
             'code VARCHAR(100) NOT NULL',
             'icon VARCHAR(100) NULL',

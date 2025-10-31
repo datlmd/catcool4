@@ -35,7 +35,7 @@ class CreateCustomersTable extends Migration
             'forgotten_password_code VARCHAR(255) NULL',
             'forgotten_password_time INT(11) UNSIGNED NULL DEFAULT NULL',
             'active TINYINT(1) NULL DEFAULT NULL',
-            'language_id INT(11) UNSIGNED NOT NULL',
+            'language_id BIGINT UNSIGNED NOT NULL',
             'customer_group_id BIGINT UNSIGNED NOT NULL DEFAULT 0',
             'store_id BIGINT NOT NULL DEFAULT 0',
             "ip VARCHAR(40) NULL DEFAULT '0.0.0.0'",

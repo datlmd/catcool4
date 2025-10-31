@@ -44,8 +44,8 @@ class CreateVariantValueTable extends Migration
                 'unsigned'       => true,
             ],
             'language_id' => [
-                'type'       => 'INT',
-                'constraint' => '11',
+                'type'       => 'BIGINT',
+                'constraint' => '20',
                 'unsigned'       => true,
             ],
             'variant_id' => [

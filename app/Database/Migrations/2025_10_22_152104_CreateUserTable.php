@@ -35,7 +35,7 @@ class CreateUserTable extends Migration
             'forgotten_password_time INT(10) UNSIGNED NULL',
             'last_login INT(10) UNSIGNED NULL',
             'active TINYINT(1) UNSIGNED NULL',
-            'language_id INT(11) UNSIGNED NULL',
+            'language_id BIGINT UNSIGNED NULL',
             "ip VARCHAR(40) NULL DEFAULT '0.0.0.0'",
             'deleted_at DATETIME NULL',
             'created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP',

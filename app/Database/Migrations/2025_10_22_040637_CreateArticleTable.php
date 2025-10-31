@@ -127,7 +127,7 @@ class CreateArticleTable extends Migration
 
         //Table article_lang
         $this->forge->addField('article_id BIGINT(20) UNSIGNED NOT NULL');
-        $this->forge->addField('language_id INT(11) UNSIGNED NOT NULL');
+        $this->forge->addField('language_id BIGINT UNSIGNED NOT NULL');
         $this->forge->addField('name VARCHAR(255) NOT NULL');
         $this->forge->addField('slug VARCHAR(255) NULL');
         $this->forge->addField('description VARCHAR(255) NULL');

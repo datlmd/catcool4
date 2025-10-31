@@ -10,7 +10,7 @@ class CreateRoutesTable extends Migration
     {
         $this->forge->addField([
             'route VARCHAR(255) NOT NULL',
-            'language_id INT(11) NOT NULL',
+            'language_id BIGINT NOT NULL',
             'module VARCHAR(255) NOT NULL',
             'resource VARCHAR(255) NOT NULL',
             'user_id BIGINT(20) UNSIGNED DEFAULT NULL',
